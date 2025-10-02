@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Clan Hearth - Scottish Heritage & Tourism Platform</title>
+    <meta name="description" content="Discover your Scottish heritage. Explore detailed clan histories, design tartans, plan trips, and discover the legends that shaped Scotland.">
+    <link rel="icon" href="https://theclanhearth.com/images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="https://theclanhearth.com/images/apple-touch-icon.png">
+    <!-- Using TailwindCSS v3 via the recommended CDN script -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" xintegrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoVBL5gI9kLmbG4Wd_QeU6NGyKv1dw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdf5e6; /* Parchment-like background */
+            background-image:
+                linear-gradient(rgba(161, 98, 7, 0.05), rgba(161, 98, 7, 0.05)),
+                radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 80%);
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.2);
+        }
+        .font-title { font-family: 'Cinzel', serif; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1e6d0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a16207;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #78350f;
+        }
+        
+        /* Navigation and Page Sections */
+        .nav-link.active { color: #a16207; border-bottom: 2px solid #a16207; }
+        .page-section { display: none; }
+        .page-section.active { display: block; animation: fadeIn 0.5s ease-in-out; }
+        
+        /* Search Bar */
+        .search-container {
+            position: relative;
+        }
+        .search-container input {
+            padding-left: 2.5rem;
+        }
+        .search-container i {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+        }
+        
+        /* Components and Cards */
+        .modal { backdrop-filter: blur(4px); background-color: rgba(0,0,0,0.7); }
+        .content-card { 
+            transition: all 0.3s ease;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        .content-card:hover { 
+            transform: translateY(-6px); 
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+        .persona-btn.active { 
+            background-color: #a16207; 
+            color: #FFFFFF; 
+            border-color: #a16207;
+            transform: scale(1.05);
+        }
+        .quiz-option { 
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .quiz-option:hover { 
+            background-color: #fef3c7; 
+            border-color: #a16207; 
+            transform: scale(1.02);
+        }
+        .quiz-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+        .quiz-option:hover::before {
+            left: 100%;
+        }
+        
+        /* Animations */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .scroll-animate.in-view { opacity: 1; transform: translateY(0); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-animation {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        /* Mobile Menu */
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        #mobile-menu.menu-open { max-height: 600px; }
+        
+        /* Map and Itinerary */
+        #plannerMap, #clanMap { height: 100%; min-height: 60vh; width: 100%; border-radius: 0.75rem; }
+        .leaflet-control-zoom-in, .leaflet-control-zoom-out { 
+            background-color: #a16207 !important; 
+            color: white !important; 
+            border-radius: 0.25rem !important; 
+        }
+        .map-emoji-icon { 
+            font-size: 24px; 
+            text-align: center; 
+            line-height: 24px; 
+            text-shadow: 0 0 3px #ffffff;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+        }
+        #itinerary-panel {
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            z-index: 1000; 
+            background-color: white;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.1); 
+            transition: transform 0.3s ease-in-out;
+            transform: translateY(calc(100% - 50px));
+        }
+        #itinerary-panel.open { transform: translateY(0); }
+        .itinerary-handle {
+            width: 60px;
+            height: 5px;
+            background-color: #d1d5db;
+            border-radius: 5px;
+            margin: 10px auto;
+        }
+        
+        /* Tartan & Emblem Designer */
+        .color-box { 
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .color-box:hover { 
+            transform: scale(1.15);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .color-box.selected { 
+            box-shadow: 0 0 0 3px #a16207; 
+            transform: scale(1.15);
+        }
+        
+        /* Finder/Creator Tabs */
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .tab-btn.active {
+            color: #a16207;
+            border-bottom-color: #a16207;
+            font-weight: 600;
+        }
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: #a16207;
+            transition: width 0.3s ease;
+        }
+        .tab-btn.active::after {
+            width: 100%;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Recipe/Legend/Clan list active state */
+        .item-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .item-card:hover {
+            border-color: #d9b99b;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        .item-card.active {
+            border-color: #a16207;
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+        #clan-list-container .item-card.active { background-color: #E8D5B7; }
+        
+        /* Hero Section & Background */
+        .hero-bg {
+            background-image: url('https://theclanhearth.com/images/castlehome.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.7));
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .hero-title {
+            animation: fadeInUp 1s ease-out;
+        }
+        .hero-subtitle {
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+        .hero-cta {
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Region Cards */
+        .region-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .region-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(161, 98, 7, 0.1), rgba(161, 98, 7, 0.3));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .region-card:hover::before {
+            opacity: 1;
+        }
+        .region-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .region-card.active {
+            border-color: #a16207;
+            background-color: rgba(161, 98, 7, 0.1);
+        }
+        
+        /* Back to top button */
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: #a16207;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        #back-to-top.visible {
+            opacity: 1;
+        }
+        #back-to-top:hover {
+            background-color: #78350f;
+        }
+        
+        /* Accessibility & Utility */
+        :focus { 
+            outline: 2px solid #a16207; 
+            outline-offset: 2px; 
+        }
+        .sr-only {
+            position: absolute; 
+            width: 1px; 
+            height: 1px; 
+            padding: 0; 
+            margin: -1px;
+            overflow: hidden; 
+            clip: rect(0, 0, 0, 0); 
+            border: 0;
+        }
+        
+        /* Loading skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Map cluster styles */
+        .cluster-marker {
+            background-color: #a16207;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: #1f2937;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        .toast.success {
+            background-color: #10b981;
+        }
+        .toast.error {
+            background-color: #ef4444;
+        }
+        .toast.info {
+            background-color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+    <!-- Header & Navigation -->
+    <header class="bg-white/90 backdrop-blur-sm shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <a href="#" class="focus:outline-none" data-target="home" aria-label="The Clan Hearth - Go to Homepage">
+                <img src="https://theclanhearth.com/images/clan_hearth.webp" alt="The Clan Hearth Logo" class="h-12">
+            </a>
+            <nav id="main-nav" class="hidden md:flex items-center space-x-1" role="navigation">
+                <button class="nav-link font-semibold text-stone-600 hover:text-yellow-800 px-3 py-2 text-sm" data-target="home">Home</button>
+                <button class="nav-link font-semibold text-stone-600 hover:text-yellow-800 px-3 py-2 text-sm" data-target="clans">Clans</button>
+                <button class="nav-link font-semibold text-stone-600 hover:text-yellow-800 px-3 py-2 text-sm" data-target="planner">Planner</button>
+                <button class="nav-link font-semibold text-stone-600 hover:text-yellow-800 px-3 py-2 text-sm" data-target="finder">Finder & Creator</button>
+                <button class="nav-link font-semibold text-stone-600 hover:text-yellow-800 px-3 py-2 text-sm" data-target="legends">Legends</button>
+                <button class="nav-link font-semibold text-stone-600 hover:text-yellow-800 px-3 py-2 text-sm" data-target="recipes">Recipes</button>
+                <button class="nav-link font-semibold text-stone-600 hover:text-yellow-800 px-3 py-2 text-sm" data-target="tartan-designer">Tartan Designer</button>
+            </nav>
+            <div class="flex items-center gap-4">
+                <!-- Search Button -->
+                <button id="search-toggle" class="text-stone-700 hover:text-yellow-800" aria-label="Toggle search">
+                    <i class="fas fa-search text-xl"></i>
+                </button>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-stone-700" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle mobile menu">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Search Bar -->
+        <div id="search-bar" class="hidden bg-white border-t border-gray-200 py-3 px-4">
+            <div class="max-w-3xl mx-auto">
+                <div class="relative">
+                    <input type="text" id="global-search" placeholder="Search clans, recipes, legends..." class="w-full p-3 pl-10 border border-stone-300 rounded-lg shadow-sm focus:ring-2 focus:ring-yellow-800 transition">
+                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-stone-400"></i>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="md:hidden bg-white/95">
+            <button class="block w-full text-left nav-link font-semibold text-stone-600 hover:text-yellow-800 p-4 border-t" data-target="home">Home</button>
+            <button class="block w-full text-left nav-link font-semibold text-stone-600 hover:text-yellow-800 p-4 border-t" data-target="clans">Clans</button>
+            <button class="block w-full text-left nav-link font-semibold text-stone-600 hover:text-yellow-800 p-4 border-t" data-target="planner">Planner</button>
+             <button class="block w-full text-left nav-link font-semibold text-stone-600 hover:text-yellow-800 p-4 border-t" data-target="finder">Finder & Creator</button>
+            <button class="block w-full text-left nav-link font-semibold text-stone-600 hover:text-yellow-800 p-4 border-t" data-target="legends">Legends</button>
+            <button class="block w-full text-left nav-link font-semibold text-stone-600 hover:text-yellow-800 p-4 border-t" data-target="recipes">Recipes</button>
+            <button class="block w-full text-left nav-link font-semibold text-stone-600 hover:text-yellow-800 p-4 border-t" data-target="tartan-designer">Tartan Designer</button>
+        </div>
+    </header>
+    
+    <!-- Breadcrumb Navigation -->
+    <nav id="breadcrumb" class="bg-stone-100 py-2 px-4 text-sm hidden" aria-label="Breadcrumb">
+        <div class="max-w-7xl mx-auto">
+            <ol class="flex items-center space-x-2">
+                <li><a href="#" data-target="home" class="text-stone-600 hover:text-yellow-800">Home</a></li>
+                <li class="text-stone-400">/</li>
+                <li id="breadcrumb-current" class="text-stone-800 font-medium"></li>
+            </ol>
+        </div>
+    </nav>
+    
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <!-- Home Section -->
+        <section id="home-section" class="page-section">
+            <div class="hero-bg text-white min-h-[70vh] flex items-center rounded-lg overflow-hidden shadow-2xl">
+                <div class="hero-content container mx-auto px-6 text-center py-16">
+                    <h1 class="hero-title text-4xl md:text-6xl font-bold font-title leading-tight mb-6">An Invitation to a Land of Legends</h1>
+                    <p class="hero-subtitle text-lg md:text-xl text-slate-200 mt-4 max-w-3xl mx-auto mb-8">Scotland is a country where myth and history are etched into the very landscape, from the volcanic crag of Edinburgh Castle to the mystical, brooding waters of its Highland lochs. It is a land of dramatic contrasts, where the echoes of clan battles resonate in silent glens, and where vibrant, modern cities rise from a bedrock of ancient stone.</p>
+                    <div class="hero-cta flex flex-col sm:flex-row justify-center gap-4">
+                        <button class="bg-yellow-800 hover:bg-yellow-900 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition transform hover:scale-105" data-target="finder">
+                            Discover Your Clan
+                        </button>
+                        <button class="bg-transparent hover:bg-white/20 text-white font-bold py-3 px-8 rounded-lg shadow-lg border-2 border-white transition transform hover:scale-105" data-target="planner">
+                            Plan Your Journey
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="py-16 bg-white/70 mt-12 rounded-lg shadow-lg">
+                <div class="container mx-auto px-6 text-center">
+                    <h3 class="text-3xl font-bold font-title mb-4">Explore by Region</h3>
+                    <p class="text-stone-700 mb-8 max-w-2xl mx-auto">Scotland's character is defined by its diverse regions. Select one to begin your journey.</p>
+                    <div id="region-buttons" class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                         <button data-region="highlands" class="region-card p-6 border bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 flex flex-col items-center">
+                            <span class="text-4xl mb-3 float-animation">🏔️</span>
+                            <span class="block font-semibold">Highlands & Islands</span>
+                        </button>
+                        <button data-region="north_east" class="region-card p-6 border bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 flex flex-col items-center">
+                            <span class="text-4xl mb-3 float-animation" style="animation-delay: 0.2s">🏰</span>
+                            <span class="block font-semibold">North East</span>
+                        </button>
+                        <button data-region="central" class="region-card p-6 border bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 flex flex-col items-center">
+                            <span class="text-4xl mb-3 float-animation" style="animation-delay: 0.4s">⚔️</span>
+                            <span class="block font-semibold">Central Scotland</span>
+                        </button>
+                        <button data-region="south" class="region-card p-6 border bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 flex flex-col items-center">
+                            <span class="text-4xl mb-3 float-animation" style="animation-delay: 0.6s">📜</span>
+                            <span class="block font-semibold">South of Scotland</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Featured Content Section -->
+            <div class="mt-16">
+                <h3 class="text-3xl font-bold font-title text-center mb-10">Featured Scottish Heritage</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="content-card bg-white rounded-xl shadow-md overflow-hidden">
+                        <div class="h-48 bg-gradient-to-r from-amber-700 to-amber-900 flex items-center justify-center">
+                            <i class="fas fa-crown text-white text-5xl"></i>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="font-title text-xl font-bold mb-2">Clan Histories</h4>
+                            <p class="text-stone-600 mb-4">Discover the rich histories and traditions of Scotland's most famous clans.</p>
+                            <button class="text-yellow-800 font-semibold hover:text-yellow-900 flex items-center" data-target="clans">
+                                Explore Clans <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="content-card bg-white rounded-xl shadow-md overflow-hidden">
+                        <div class="h-48 bg-gradient-to-r from-stone-700 to-stone-900 flex items-center justify-center">
+                            <i class="fas fa-book-open text-white text-5xl"></i>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="font-title text-xl font-bold mb-2">Legends & Myths</h4>
+                            <p class="text-stone-600 mb-4">Uncover the mystical tales and legendary figures that shaped Scottish folklore.</p>
+                            <button class="text-yellow-800 font-semibold hover:text-yellow-900 flex items-center" data-target="legends">
+                                Discover Legends <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="content-card bg-white rounded-xl shadow-md overflow-hidden">
+                        <div class="h-48 bg-gradient-to-r from-green-700 to-green-900 flex items-center justify-center">
+                            <i class="fas fa-utensils text-white text-5xl"></i>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="font-title text-xl font-bold mb-2">Traditional Recipes</h4>
+                            <p class="text-stone-600 mb-4">Taste Scotland's culinary heritage with authentic traditional recipes.</p>
+                            <button class="text-yellow-800 font-semibold hover:text-yellow-900 flex items-center" data-target="recipes">
+                                View Recipes <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Planner Section -->
+        <section id="planner-section" class="page-section">
+             <div class="scroll-animate bg-white/90 rounded-2xl shadow-xl overflow-hidden">
+                <div class="p-6 border-b">
+                    <h2 class="text-3xl font-bold font-title text-stone-900 text-center">Plan Your Scottish Journey</h2>
+                    <p class="text-center text-stone-700 mt-2">Use the interactive map to discover and plan your authentic Scottish experience.</p>
+                </div>
+                <div class="relative">
+                    <div id="plannerMap" style="height: 70vh; z-index: 10;"></div>
+                    <div id="map-controls" class="absolute top-5 right-5 bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow-lg w-64 max-h-[calc(70vh-40px)] overflow-y-auto" role="group" aria-label="Map filter controls" style="z-index: 1000;">
+                        <h3 class="text-xl font-bold text-gray-900 mb-4">Filter Sights</h3>
+                        <div id="tourism-filter-buttons" class="space-y-3">
+                            <!-- Filter buttons will be generated by JS -->
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h4 class="font-semibold text-gray-900 mb-3">Map Legend</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center">
+                                    <span class="text-xl mr-2">🛡️</span>
+                                    <span>Clan Seats</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-xl mr-2">🏰</span>
+                                    <span>Castles</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-xl mr-2">⚔️</span>
+                                    <span>Battlefields</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-xl mr-2">🥃</span>
+                                    <span>Whisky Distilleries</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-xl mr-2">🗿</span>
+                                    <span>Ancient Sites</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="itinerary-panel" class="max-h-80">
+                        <div id="itinerary-header" class="bg-gray-800 text-white p-3 flex justify-between items-center cursor-pointer" role="button" aria-expanded="false" aria-controls="itinerary-body">
+                            <div class="flex items-center">
+                                <div class="itinerary-handle mr-3"></div>
+                                <h3 class="text-lg font-bold">My Scottish Journey (<span id="trip-count">0</span>)</h3>
+                            </div>
+                            <div><span id="itinerary-toggle-text">Expand</span> <i class="fas fa-chevron-up ml-2"></i></div>
+                        </div>
+                        <div id="itinerary-body" class="p-4 overflow-y-auto bg-white" style="max-height: 200px;">
+                            <ul id="trip-list" class="space-y-2" role="list"></ul>
+                        </div>
+                        <div class="p-4 bg-gray-100 border-t flex justify-between">
+                            <button id="clear-trip-btn" class="bg-red-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-red-700 transition">Clear Trip</button>
+                            <button id="save-trip-btn" class="bg-green-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-green-700 transition">Save Trip</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Clans Section -->
+        <section id="clans-section" class="page-section">
+             <div class="scroll-animate bg-white/90 rounded-2xl shadow-xl p-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold font-title">Explore the Clans</h2>
+                    <p class="text-stone-700 mt-4 max-w-3xl mx-auto">The Scottish clan system is a cornerstone of the nation's history. These extended kinship groups, united by territory and a common chief, shaped the Highlands for centuries. Explore their stories, territories, and traditions below.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="md:col-span-1 space-y-4 max-h-[70vh] overflow-y-auto pr-4">
+                        <div class="search-container">
+                            <i class="fas fa-search"></i>
+                            <input type="search" id="clan-search-input" placeholder="Search for a clan..." class="w-full p-3 border border-stone-300 rounded-lg shadow-sm focus:ring-2 focus:ring-yellow-800 transition mb-4 sticky top-0 bg-white/80 backdrop-blur-sm">
+                        </div>
+                        <div id="clan-list-container">
+                           <!-- Clan list will be populated here -->
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <div id="clanMap" class="w-full h-80 rounded-lg shadow-lg mb-6"></div>
+                        <div id="clan-detail-container" class="bg-white/70 p-6 rounded-lg shadow-inner">
+                            <!-- Clan details will be shown here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Clan Finder & Creator Section -->
+        <section id="finder-section" class="page-section">
+            <div class="scroll-animate bg-white/90 rounded-2xl shadow-xl p-6 md:p-8">
+                <!-- Tabs -->
+                <div class="flex justify-center border-b-2 border-stone-200 mb-8">
+                    <button id="tab-finder-btn" class="tab-btn active">Find Your Spirit Clan</button>
+                    <button id="tab-creator-btn" class="tab-btn">Create Your Own Clan</button>
+                </div>
+                <!-- Finder Content -->
+                <div id="finder-content" class="tab-content active">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl md:text-4xl font-title font-bold text-stone-900">The Clan Finder</h2>
+                        <p class="text-lg text-stone-700 mt-2">Have Scottish roots? Answer a few questions to discover your spirit clan.</p>
+                    </div>
+                    <div id="quiz-container" class="max-w-2xl mx-auto"></div>
+                    <div id="quiz-result" class="hidden text-center max-w-2xl mx-auto">
+                        <div id="result-content" class="bg-white rounded-lg shadow-xl p-8"></div>
+                        <button id="restart-quiz-btn" class="mt-8 bg-stone-200 text-stone-800 font-semibold py-2 px-5 rounded-lg hover:bg-stone-300 shadow">Retake Quiz</button>
+                    </div>
+                </div>
+                <!-- Creator Content -->
+                <div id="creator-content" class="tab-content">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-title font-bold text-stone-900">Create Your Own Clan</h2>
+                        <p class="text-lg text-stone-700 mt-2">No Scottish roots? No problem! Forge your own legacy and create a personal clan identity.</p>
+                    </div>
+                    <div class="grid lg:grid-cols-2 gap-12">
+                        <!-- Step 1: Clan Details & Emblem -->
+                        <div class="space-y-8">
+                            <div>
+                                <label for="create-clan-name" class="block text-lg font-semibold mb-2">1. Name Your Clan</label>
+                                <input type="text" id="create-clan-name" class="w-full p-3 border border-stone-300 rounded-lg shadow-sm focus:ring-2 focus:ring-yellow-800 transition" placeholder="e.g., The Noble Order of the Digital Owl">
+                            </div>
+                            <div>
+                                <label for="create-clan-motto" class="block text-lg font-semibold mb-2">2. Write Your Motto</label>
+                                <input type="text" id="create-clan-motto" class="w-full p-3 border border-stone-300 rounded-lg shadow-sm focus:ring-2 focus:ring-yellow-800 transition" placeholder="e.g., Wisdom in the Wires">
+                            </div>
+                             <div>
+                                <h3 class="text-lg font-semibold mb-2">3. Design Your Tartan</h3>
+                                <p class="text-stone-700 mb-4">Click below to open the Tartan Designer. Your creation will be part of your clan's final charter.</p>
+                                <button id="go-to-tartan-designer" class="bg-yellow-800 text-white font-semibold px-5 py-2 rounded-lg hover:bg-yellow-900 shadow transition transform hover:scale-105">Design Tartan</button>
+                            </div>
+                        </div>
+                        <!-- Step 2: Preview & Finalize -->
+                        <div class="bg-stone-50 p-6 rounded-xl border border-stone-200 flex flex-col items-center">
+                            <h3 class="font-title text-2xl font-bold mb-6">Your Clan Charter</h3>
+                            <div class="w-48 h-48 mb-4 rounded-full overflow-hidden border-4 border-yellow-800 shadow-lg">
+                               <img src="https://theclanhearth.com/images/emblem.jpg" alt="Custom Clan Emblem" class="w-full h-full object-cover">
+                            </div>
+                            <h4 id="charter-clan-name" class="font-title text-2xl font-bold text-stone-800">Your Clan Name</h4>
+                            <p id="charter-clan-motto" class="text-stone-700 italic">"Your Motto"</p>
+                            <div class="mt-auto w-full pt-6">
+                                 <button id="finalize-clan-btn" class="w-full bg-green-700 text-white font-semibold px-5 py-3 rounded-lg hover:bg-green-800 shadow-lg transition transform hover:scale-105">Finalize & View Your Clan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Tartan Designer Section -->
+        <section id="tartan-designer-section" class="page-section">
+            <div class="scroll-animate bg-white/90 rounded-2xl shadow-xl p-6 md:p-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-title font-bold text-stone-900">Design Your Own Tartan</h2>
+                    <p class="text-lg text-stone-700 mt-2">Create, save, and share a unique pattern that tells your story.</p>
+                </div>
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <div class="lg:w-1/3 bg-stone-50 p-6 rounded-xl border border-stone-200">
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">1. Pick Colours (Max 5)</h3>
+                                <div id="color-palette" class="grid grid-cols-5 sm:grid-cols-6 gap-3"></div>
+                            </div>
+                            <div id="selected-colors">
+                                <h3 class="text-lg font-semibold mb-2">2. Selected Colours</h3>
+                                <div class="flex gap-2 flex-wrap"></div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">3. Set Thread Counts</h3>
+                                <input type="text" id="thread-counts" class="w-full p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-yellow-800 transition" placeholder="e.g., 24 16 8">
+                                <p class="text-sm text-stone-600 mt-1">Enter space-separated numbers (e.g., 24 16 8) for each colour.</p>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold mb-2">4. Generate Tartan</h3>
+                                <div class="flex justify-between gap-3">
+                                    <button id="generate-tartan-btn" class="flex-1 bg-yellow-800 text-white font-semibold px-5 py-2 rounded-lg hover:bg-yellow-900 shadow transition transform hover:scale-105">Generate</button>
+                                    <button id="download-tartan-btn" class="hidden flex-1 bg-green-700 text-white font-semibold px-5 py-2 rounded-lg hover:bg-green-800 shadow transition transform hover:scale-105">Download</button>
+                                </div>
+                                <p id="tartan-status" class="text-sm text-stone-700 mt-2">Choose colors and thread counts to see your tartan!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lg:w-2/3 flex flex-col">
+                        <div class="bg-white p-2 rounded-xl shadow-inner border flex-grow">
+                            <canvas id="tartan-canvas" class="w-full rounded-lg" style="height: 400px;"></canvas>
+                        </div>
+                        <div class="mt-4 bg-stone-50 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Tartan Pattern Name</h3>
+                            <input type="text" id="tartan-name" class="w-full p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-yellow-800 transition" placeholder="e.g., The Clan MacLeod Modern">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Recipes Section -->
+        <section id="recipes-section" class="page-section">
+            <div class="scroll-animate text-center mb-10">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold font-title text-stone-900">The Highlander's Larder</h2>
+                <p class="text-lg text-stone-700 mt-2">Traditional Scottish recipes from clan kitchens and Highland homes.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div id="recipe-list-container" class="md:col-span-1 space-y-4 max-h-[70vh] overflow-y-auto pr-4">
+                    <!-- Recipe list will be populated here -->
+                </div>
+                <div id="recipe-detail-container" class="md:col-span-2 bg-white/70 p-6 rounded-lg shadow-lg">
+                    <!-- Recipe details will be shown here -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Legends Section -->
+        <section id="legends-section" class="page-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold font-title">Legends of Scotland</h2>
+                <p class="text-stone-700 mt-4 max-w-3xl mx-auto">Discover the tales of heroes, myths, and mysteries that have shaped the nation's identity.</p>
+            </div>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div id="legends-list-container" class="md:col-span-1 space-y-4 max-h-[70vh] overflow-y-auto pr-4">
+                    <!-- Legend list will be populated here -->
+                </div>
+                <div id="legend-detail-container" class="md:col-span-2 bg-white/70 p-6 rounded-lg shadow-lg">
+                    <!-- Legend details will be shown here -->
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-stone-800 text-white py-8">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold font-title mb-4">The Clan Hearth</h3>
+                    <p class="text-stone-300">Discover your Scottish heritage and explore the rich history of Scotland's clans.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Explore</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" data-target="clans" class="text-stone-300 hover:text-white transition">Clans</a></li>
+                        <li><a href="#" data-target="planner" class="text-stone-300 hover:text-white transition">Trip Planner</a></li>
+                        <li><a href="#" data-target="legends" class="text-stone-300 hover:text-white transition">Legends</a></li>
+                        <li><a href="#" data-target="recipes" class="text-stone-300 hover:text-white transition">Recipes</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Connect</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-stone-300 hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="text-stone-300 hover:text-white transition">Contact</a></li>
+                        <li><a href="#" class="text-stone-300 hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="text-stone-300 hover:text-white transition">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Newsletter</h4>
+                    <p class="text-stone-300 mb-2">Subscribe for updates on Scottish heritage</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Your email" class="px-3 py-2 bg-stone-700 text-white rounded-l-lg focus:outline-none focus:ring-2 focus:ring-yellow-800 flex-grow">
+                        <button type="submit" class="bg-yellow-800 hover:bg-yellow-900 px-4 py-2 rounded-r-lg transition">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="border-t border-stone-700 mt-8 pt-6 text-center text-stone-400">
+                <p>&copy; 2025 The Clan Hearth. All rights reserved.</p>
+                <p class="text-sm mt-2">This is a fictional website created for demonstration purposes.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Modal Container -->
+    <div id="generic-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal" role="dialog" aria-modal="true">
+        <div id="modal-content" class="bg-[#FBF6E8] rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"></div>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <button id="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast" role="alert">
+        <i id="toast-icon" class="fas fa-check-circle"></i>
+        <span id="toast-message"></span>
+    </div>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        'use strict';
+        
+        const IMAGE_BASE_URL = 'https://theclanhearth.com/images/';
+        const APP_DATA = {
+            mapPoints: [
+                    { id: "inveraray", name: "Inveraray Castle (Campbell)", lat: 56.2393, lng: -5.0743, category: "clans", description: "Ancestral home of the Duke of Argyll, chief of Clan Campbell.", emoji: "🛡️" },
+                    { id: "eilean_donan", name: "Eilean Donan Castle (MacKenzie)", lat: 57.2738, lng: -5.5152, category: "clans", description: "Iconic castle, ancestral home of Clan MacRae.", emoji: "🏰" },
+                    { id: "dunvegan", name: "Dunvegan Castle (MacLeod)", lat: 57.4475, lng: -6.5937, category: "clans", description: "Oldest continuously inhabited castle in Scotland, home of Clan MacLeod.", emoji: "🛡️" },
+                    { id: "edinburgh_castle", name: "Edinburgh Castle", lat: 55.9486, lng: -3.1999, category: "castles", description: "Scotland's most famous castle, steeped in history.", emoji: "🏰" },
+                    { id: "stirlingcastle", name: "Stirling Castle", lat: 56.1205, lng: -3.9452, category: "castles", description: "One of Scotland's most historically important castles.", emoji: "🏰" },
+                    { id: "urquhart", name: "Urquhart Castle", lat: 57.3245, lng: -4.4367, category: "castles", description: "Dramatic ruins on the shore of Loch Ness.", emoji: "🏰" },
+                    { id: "gilnockie", name: "Gilnockie Tower (Armstrong)", lat: 55.08, lng: -2.98, category: "castles", description: "A 16th-century tower house, associated with Johnnie Armstrong.", emoji: "🛡️" },
+                    { id: "achnacarry", name: "Achnacarry Castle (Cameron)", lat: 56.97, lng: -4.95, category: "castles", description: "The ancestral seat of the chiefs of Clan Cameron.", emoji: "🛡️" },
+                    { id: "beaufort", name: "Beaufort Castle (Fraser)", lat: 57.45, lng: -4.43, category: "castles", description: "The historic seat of the Frasers of Lovat.", emoji: "🏰" },
+                    { id: "glenfiddich", name: "Glenfiddich Distillery", lat: 57.4851, lng: -3.1257, category: "whisky", description: "Famous Speyside single malt Scotch whisky distillery.", emoji: "🥃" },
+                    { id: "talisker", name: "Talisker Distillery", lat: 57.3079, lng: -6.3683, category: "whisky", description: "Skye's oldest working distillery, known for its peated whisky.", emoji: "🥃" },
+                    { id: "douneloch", name: "Doune Castle (Outlander)", lat: 56.1850, lng: -4.0550, category: "film", description: "Famous as Castle Leoch in Outlander.", emoji: "🎬" },
+                    { id: "bennevis", name: "Ben Nevis", lat: 56.7969, lng: -5.0036, category: "sports", description: "The highest mountain in the British Isles.", emoji: "🚵" },
+                    { id: "culloden", name: "Culloden Battlefield", lat: 57.4775, lng: -4.0906, category: "battles", description: "Site of the final confrontation of the Jacobite Rising.", emoji: "⚔️" },
+                    { id: "bannockburn", name: "Battle of Bannockburn", lat: 56.0963, lng: -3.9317, category: "battles", description: "Site of Robert the Bruce's decisive 1314 victory.", emoji: "⚔️" },
+                    { id: "glencoe", name: "Glencoe", lat: 56.6784, lng: -5.1009, category: "battles", description: "Stunning valley, site of the Glencoe Massacre.", emoji: "⚔️" },
+                    { id: "fortgeorge", name: "Fort George", lat: 57.5843, lng: -4.0722, category: "battles", description: "Massive 18th-century fortress near Inverness.", emoji: "⚔️" },
+                    { id: "skara_brae", name: "Skara Brae", lat: 59.0494, lng: -3.3421, category: "picts", description: "Neolithic settlement in Orkney, older than the pyramids.", emoji: "🗿" },
+                    { id: "callanish", name: "Callanish Standing Stones", lat: 58.1979, lng: -6.7369, category: "picts", description: "Ancient megalithic monument on the Isle of Lewis.", emoji: "🗿" },
+                    { id: "brodgar", name: "Ring of Brodgar", lat: 59.0016, lng: -3.2294, category: "picts", description: "UNESCO World Heritage site with various Neolithic monuments.", emoji: "🗿" },
+                    { id: "jarlshof", name: "Jarlshof", lat: 59.8665, lng: -1.2936, category: "vikings", description: "Prehistoric and Norse settlement on Shetland.", emoji: "🐉" },
+                    { id: "loch_ness", name: "Loch Ness", lat: 57.3229, lng: -4.4283, category: "legends", description: "Home of the elusive Nessie!", emoji: "🐉" },
+                    { id: "iona_abbey", name: "Isle of Iona Abbey", lat: 56.3353, lng: -6.0792, category: "legends", description: "Historic centre of Scottish Christianity.", emoji: "🙏" },
+                    { id: "melrose_abbey", name: "Melrose Abbey", lat: 55.5975, lng: -2.7169, category: "legends", description: "Beautiful ruined abbey, burial place of Robert the Bruce's heart.", emoji: "✝️" },
+                    { id: "wallace_monument", name: "National Wallace Monument", lat: 56.139, lng: -3.917, category: "legends", description: "A famous tower on the shoulder of the Abbey Craig, commemorating Sir William Wallace.", emoji: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
+                    { id: "rob_roy_grave", name: "Rob Roy's Grave", lat: 56.39, lng: -4.36, category: "legends", description: "The final resting place of the famous Highland outlaw, Rob Roy MacGregor.", emoji: "🏴‍☠️" },
+                    { id: "flora_macdonald_grave", name: "Flora MacDonald's Grave", lat: 57.65, lng: -6.37, category: "legends", description: "Resting place of the Jacobite heroine on the Isle of Skye.", emoji: "💙" },
+                    { id: "the_kelpies", name: "The Kelpies", lat: 56.01, lng: -3.75, category: "legends", description: "Monumental horse-head sculptures depicting mythical water spirits.", emoji: "🐴" },
+                    { id: "glenfinnan", name: "Glenfinnan Monument", lat: 56.87, lng: -5.43, category: "legends", description: "Site where Bonnie Prince Charlie raised his standard in 1745.", emoji: "🚩" },
+                    { id: "st_andrews", name: "St Andrews Old Course", lat: 56.3429, lng: -2.8028, category: "golf", description: "The Home of Golf, where the game began.", emoji: "⛳" }
+            ],
+            legendsData: [
+                { id: "brahan_seer", name: "The Brahan Seer", image: "https://theclanhearth.com/images/brahan_seer.jpg", shortDesc: "Coinneach Odhar, the Highland Prophet of Clan MacKenzie.", details: "Coinneach Odhar, known as the Brahan Seer, was a legendary prophet from the 17th century, closely associated with Clan MacKenzie. It's said he gained his second sight from a magical 'seeing stone'. His prophecies, often dark and cryptic, foretold major events in Scottish history, including the Battle of Culloden and the Highland Clearances. His most famous prediction was the doom of the Seaforth MacKenzie line, which came to pass with chilling accuracy, cementing his status as Scotland's most famous seer." },
+                { id: "fairies_of_skye", name: "The Fairies of Skye", image: "https://theclanhearth.com/images/fairies_of_skye.jpg", shortDesc: "The magical beings said to inhabit the island's most beautiful spots.", details: "The Isle of Skye is steeped in folklore about the 'Sìth', or fairies. The most famous legend is tied to Dunvegan Castle, home of the MacLeod clan's Fairy Flag, a sacred banner said to have magical properties, gifted by a fairy queen. The enchanting Fairy Pools at the foot of the Black Cuillin mountains are also said to be their home, a place of otherworldly beauty where mortals might catch a glimpse of the fairy folk." },
+                { id: "blue_men_minch", name: "Blue Men of the Minch", image: "https://theclanhearth.com/images/blue_men_of_the_minch.jpg", shortDesc: "Mythical sea-sprites who haunt the strait between the Hebrides and mainland.", details: "Also known as storm kelpies, the Blue Men of the Minch are legendary sea creatures who swim the waters looking for sailors to drown and boats to sink. They are said to be the same size and shape as humans, and are completely blue. Before a storm, they are said to float, half-submerged, and challenge the captains of passing ships to rhyming contests. If the captain is witty enough to have the last word, the Blue Men will let the ship pass safely." },
+                { id: "cailleach", name: "The Cailleach", image: "https://theclanhearth.com/images/cailleach.jpg", shortDesc: "The divine hag and goddess of winter in Gaelic mythology.", details: "The Cailleach is a powerful creator deity and weather witch from Gaelic mythology. She is said to have formed the mountains and lochs of Scotland with her magic hammer. She rules the winter months, from Samhainn (Nov 1st) to Bealltainn (May 1st). The Corryvreckan whirlpool, between Jura and Scarba, is said to be her cauldron where she washes her great plaid, signaling the arrival of winter when it turns white." },
+                { id: "selkies", name: "The Selkies", image: "https://theclanhearth.com/images/selkies.jpg", shortDesc: "Mythical seals who can shed their skin to become human on land.", details: "Selkies are mythological beings from the folklore of Orkney and Shetland. In the sea, they live as seals, but on land, they can shed their skin to reveal a beautiful human form. Stories often tell of a human man stealing a female selkie's skin, forcing her to become his wife. Though she may bear his children, her longing for the sea never fades, and if she ever finds her hidden skin, she will immediately return to her true home." },
+                { id: "ghillie_dhu", name: "The Ghillie Dhu", image: "https://theclanhearth.com/images/ghillie_dhu.jpg", shortDesc: "A wild but kind-hearted fairy who guards the birch forests of the Gairloch.", details: "The Ghillie Dhu is a solitary male fairy, a guardian of the trees. He is said to be cloaked in leaves and moss, making him almost impossible to see in his native birch woods. Unlike more malicious fairies, the Ghillie Dhu is shy and generally kind to children. Legend says he once rescued a lost local girl, keeping her warm through the night before guiding her home the next day." },
+                { id: "nuckelavee", name: "The Nuckelavee", image: "https://theclanhearth.com/images/nuckelavee.jpg", shortDesc: "A horrifying horse-like demon from Orcadian mythology.", details: "The Nuckelavee is one of Scotland's most grotesque and malevolent demons. It is a creature of the sea with a man's torso attached to a horse's back. It has no skin, revealing pulsing muscles and black blood. Its breath can wilt crops and sicken livestock, and it is blamed for plagues and droughts. Its only weakness is fresh running water, so crossing a stream is the only way to escape it." }
+            ],
+            clanData: [
+            { id: "armstrong", name: "Clan Armstrong", gaelicName: "MacGhillielàidir", motto: "Invictus Maneo (I remain unvanquished)", territories: "Liddesdale, Border Reiver lands", historicSeats: "Gilnockie Tower", emblemImage: `${IMAGE_BASE_URL}armstrong-emblem.jpg`, tartanImage: `${IMAGE_BASE_URL}armstrong-tartan.jpg`, monumentImage: `${IMAGE_BASE_URL}armstrong-monument.jpg`, lore: "Embodying the fierce, lawless spirit of the Border Reivers, Clan Armstrong was a dominant power in the disputed lands between Scotland and England. Their motto, 'I remain unvanquished,' was a stark warning to their many rivals. Their strength in Liddesdale was so great that they could summon 3,000 horsemen, making them a threat not just to other clans, but to the Scottish Crown itself. This power led to their downfall when King James V, under the guise of a truce, captured and hanged the famous laird Johnnie Armstrong of Gilnockie in 1530, a betrayal that lives on in Border ballads.", recipe: { id: "border_hotpot", name: "Border Reiver's Hot Pot" } },
+            { id: "campbell", name: "Clan Campbell", gaelicName: "Na Caimbeulaich", motto: "Ne Obliviscaris (Forget Not)", territories: "Argyll, Breadalbane", historicSeats: "Inveraray Castle", emblemImage: `${IMAGE_BASE_URL}campbell-emblem.jpg`, tartanImage: `${IMAGE_BASE_URL}campbell-tartan.jpg`, monumentImage: `${IMAGE_BASE_URL}campbell-monument.jpg`, lore: "From their origins as minor chiefs in Argyll, the Campbells rose to become one of the most powerful families in the kingdom. Through shrewd political alliances, strategic marriages, and formidable military prowess, they expanded their territory across the Highlands. Their history is deeply intertwined with the royal court and the shaping of modern Scotland, though their role in events like the Glencoe Massacre has left a complex and often controversial legacy.", recipe: { id: "argyll_stovies", name: "Argyll Lamb Stovies" } },
+            { id: "cameron", name: "Clan Cameron", gaelicName: "Camshron", motto: "Aonaibh ri chéile (Unite)", territories: "Lochaber", historicSeats: "Achnacarry Castle", emblemImage: `${IMAGE_BASE_URL}cameron-emblem.jpg`, tartanImage: `${IMAGE_BASE_URL}cameron-tartan.jpg`, monumentImage: `${IMAGE_BASE_URL}cameron-monument.jpg`, lore: "Known for their loyalty and warlike nature, the Camerons of Lochaber were among the most feared warriors of the Highlands. They were stalwart supporters of the Jacobite cause, famously led by the 'Gentle Lochiel,' Donald Cameron, who fatefully committed the clan to Bonnie Prince Charlie's rising in 1745. Their charge at the Battle of Culloden, though valiant, was a devastating blow from which the clan took generations to recover.", recipe: { id: "lochaber_sausages", name: "Lochaber Venison Sausages" } },
+            { id: "chattan", name: "Clan Chattan", gaelicName: "Clann Chatain", motto: "Touch not the cat bot a glove", territories: "Badenoch, Strathnairn", historicSeats: "Moy Hall", emblemImage: `${IMAGE_BASE_URL}chattan-emblem.jpg`, tartanImage: `${IMAGE_BASE_URL}chattan-tartan.jpg`, monumentImage: `${IMAGE_BASE_URL}chattan-monument.jpg`, lore: "Clan Chattan is unique, being a powerful confederation of several distinct clans, including the Macphersons, MacGillivrays, and Davidsons, all united under the leadership of the Mackintosh chiefs. Their symbol is the fierce Scottish wildcat. Their history is marked by internal feuds and legendary clashes with rivals, most notably the Battle of the North Inch in Perth in 1396, a brutal trial by combat against Clan Cameron.", recipe: { id: "highland_stew", name: "Highland Rabbit Stew" } },
+            { id: "douglas", name: "Clan Douglas", gaelicName: "Dùbhghlas", motto: "Jamais arrière (Never behind)", territories: "The Scottish Lowlands, Lanarkshire", historicSeats: "Tantallon Castle", emblemImage: `${IMAGE_BASE_URL}douglas-emblem.jpg`, tartanImage: `${IMAGE_BASE_URL}douglas-tartan.jpg`, monumentImage: `${IMAGE_BASE_URL}douglas-monument.jpg`, lore: "The 'Black Douglases' were one of the most powerful and feared noble families in medieval Scotland. Their influence was so immense that they often rivaled the power of the Scottish kings themselves. Sir James Douglas, 'the Good,' was a key commander and close friend to Robert the Bruce, instrumental in winning the Wars of Scottish Independence. The clan's ambition eventually led to their downfall at the hands of the Crown.", recipe: { id: "cullen_skink", name: "Cullen Skink" } },
+            { id: "fraser", name: "Clan Fraser", gaelicName: "Friseal", motto: "Je Suis Prêt (I am ready)", territories: "Inverness-shire, Aberdeenshire", historicSeats: "Beaufort Castle", emblemImage: `${IMAGE_BASE_URL}fraser-emblem.jpg`, tartanImage: `${IMAGE_BASE_URL}fraser-tartan.jpg`, monumentImage: `${IMAGE_BASE_URL}fraser-monument.jpg`, lore: "A powerful and numerous clan with deep roots in the Highlands around Inverness. The Frasers are divided into two main branches: the Frasers of Lovat and the Frasers of Philorth. The Lovat branch, in particular, was deeply involved in the Jacobite cause, with their chief, Simon Fraser, the 'Old Fox', being the last man beheaded in Britain for his role in the 1745 rising.", recipe: { id: "salmon_whisky", name: "Scottish Salmon with Whisky Cream Sauce" } },
+            { id: "macdonald", name: "Clan MacDonald", gaelicName: "Clann Dòmhnaill", motto: "Per Mare Per Terras (By sea and by land)", territories: "The Hebrides, Western Highlands", historicSeats: "Armadale Castle, Finlaggan Castle", emblemImage: `${IMAGE_BASE_URL}macdonald-emblem.jpg`, tartanImage: `${IMAGE_BASE_URL}macdonald-tartan.jpg`, monumentImage: `${IMAGE_BASE_URL}macdonald-monument.jpg`, lore: "As the largest and most powerful of all Highland clans, the MacDonalds, known as the 'Lords of the Isles,' built a vast maritime empire that operated with virtual independence from the Scottish Crown for centuries. Descended from the great Norse-Gaelic warrior Somerled, their history is one of fierce pride, cultural patronage, and constant struggle against royal authority.", recipe: { id: "haggis", name: "Haggis, Neeps, and Tatties" } },
+            { id: "macgregor", name: "Clan MacGregor", gaelicName: "Clann Ghriogair", motto: "S' Rioghal Mo Dhream (My race is royal)", territories: "Loch Lomond, Trossachs", historicSeats: "None (Proscribed)", emblemImage: `${IMAGE_BASE_URL}macgregor-emblem.jpg`, tartanImage: `${IMAGE_BASE_URL}macgregor-tartan.jpg`, monumentImage: `${IMAGE_BASE_URL}macgregor-monument.jpg`, lore: "The history of Clan MacGregor is one of tragedy and resilience. For nearly two centuries, their very name was proscribed by law, making it a capital crime to be a MacGregor. Stripped of their lands and hunted, they became legendary outlaws, a story epitomized by the famous Rob Roy MacGregor, whose exploits as a cattleman, soldier, and rogue cemented his place as a Scottish folk hero.", recipe: { id: "skirlie", name: "Skirlie (Oatmeal Stuffing)" } },
+            { id: "mackenzie", name: "Clan MacKenzie", gaelicName: "MacCoinnich", motto: "Luceo non uro (I shine, not burn)", territories: "Ross-shire, Kintail", historicSeats: "Eilean Donan Castle", emblemImage: `${IMAGE_BASE_URL}mackenzie-emblem.jpg`, tartanImage: `${IMAGE_BASE_URL}mackenzie-tartan.jpg`, monumentImage: `${IMAGE_BASE_URL}mackenzie-monument.jpg`, lore: "From their stronghold at Eilean Donan Castle, the MacKenzies rose to become a dominant force in the North-West Highlands. They were known for their astute political manoeuvring and their association with the Brahan Seer, a legendary prophet from their lands who was said to have foreseen the Battle of Culloden and the Highland Clearances.", recipe: { id: "venison_pie", name: "Venison Pie with Puff Pastry" } },
+            { id: "macleod", name: "Clan MacLeod", gaelicName: "Clann Mhic Leòid", motto: "Hold Fast", territories: "Isle of Skye, Lewis and Harris", historicSeats: "Dunvegan Castle", emblemImage: `${IMAGE_BASE_URL}macleod-emblem.jpg`, tartanImage: `${IMAGE_BASE_URL}macleod-tartan.jpg`, monumentImage: `${IMAGE_BASE_URL}macleod-monument.jpg`, lore: "With a proud Norse-Gaelic heritage, the MacLeods are famously associated with the Isle of Skye. Their ancestral seat, Dunvegan Castle, is the oldest continuously inhabited castle in Scotland. The clan is the keeper of the legendary Fairy Flag, a sacred banner said to have the power to save the clan from destruction in battle, a gift from a fairy queen.", recipe: { id: "cranachan", name: "Cranachan" } },
+            { id: "stuart", name: "Clan Stuart", gaelicName: "Stiùbhart", motto: "Virescit Vulnere Virtus (Courage grows strong at a wound)", territories: "Nationwide (Royal connections)", historicSeats: "Stirling Castle, Holyrood Palace", emblemImage: `${IMAGE_BASE_URL}stuart-emblem.jpg`, tartanImage: `${IMAGE_BASE_URL}stuart-tartan.jpg`, monumentImage: `${IMAGE_BASE_URL}stuart-monument.jpg`, lore: "The Royal House of Stewart (later Stuart) ruled Scotland for over 300 years. Their story is filled with drama, intrigue, and tragedy, producing some of Scotland's most famous monarchs, including Mary Queen of Scots and James VI, who united the crowns of Scotland and England. Their claim to the throne was championed by the Jacobites, culminating in the final, fateful rising led by Bonnie Prince Charlie.", recipe: { id: "shortbread", name: "Traditional Shortbread" } },
+            { id: "wallace", name: "Clan Wallace", gaelicName: "Uallais", motto: "Pro Libertate (For Liberty)", territories: "Ayrshire, Renfrewshire", historicSeats: "Elderslie", emblemImage: `${IMAGE_BASE_URL}wallace-emblem.jpg`, tartanImage: `${IMAGE_BASE_URL}wallace-tartan.jpg`, monumentImage: `${IMAGE_BASE_URL}wallace-monument.jpg`, lore: "Though a smaller clan from the Lowlands, the Wallaces hold a place in history far exceeding their numbers, thanks to one man: Sir William Wallace. His leadership during the First War of Scottish Independence, and his stunning victory at the Battle of Stirling Bridge, made him a national hero and an enduring symbol of the fight for freedom against tyranny.", recipe: { id: "scotch_broth", name: "Scotch Broth" } }
+        ],
+        recipesData: [
+            { id: "cullen_skink", name: "Cullen Skink", description: "A thick, creamy smoked haddock soup, a speciality from the north-east coast.", image: "https://placehold.co/600x400/c7a98b/ffffff?text=Cullen+Skink+Soup", prepTime: "15 min", cookTime: "30 min", servings: "4", ingredients: ["500g undyed smoked haddock", "1 large onion, finely chopped", "2 large potatoes, peeled and diced", "500ml whole milk", "25g butter", "Fresh chives, chopped"], instructions: ["Place haddock in a pan with the milk. Bring slowly to a simmer and cook for 5 minutes until the fish flakes easily.", "Carefully remove the fish, reserving the milk. Flake the fish into large chunks, discarding any skin and bones.", "In another pot, melt the butter and gently soften the onion. Add the diced potatoes and the reserved, strained milk. Simmer for 15-20 mins until potatoes are soft.", "Lightly crush some of the potatoes against the side of the pan to thicken the soup. Stir in the flaked haddock and cream, and heat through gently. Season with black pepper and garnish with chives."] },
+            { id: "cranachan", name: "Cranachan", description: "A traditional Hebridean dessert of oats, cream, whisky, and raspberries.", image: "https://placehold.co/600x400/c23b5b/ffffff?text=Scottish+Cranachan", prepTime: "15 min", cookTime: "5 min", servings: "4", ingredients: ["50g pinhead oatmeal", "300ml double cream", "2-3 tbsp heather honey", "2-3 tbsp single malt whisky", "300g fresh raspberries"], instructions: ["Gently toast the oatmeal in a dry pan until it smells nutty. Set aside to cool.", "In a bowl, whip the cream until it forms soft peaks. Fold in the honey and whisky.", "Gently crush half of the raspberries. Fold the toasted oatmeal and crushed raspberries into the cream mixture.", "Spoon the mixture into serving glasses, layering with the remaining whole raspberries. Chill until ready to serve."] },
+            { id: "smokie_pate", name: "Arbroath Smokie Pâté", description: "A creamy, smoky pâté made with the famous local hot-smoked haddock.", image: "https://placehold.co/600x400/d6a88b/ffffff?text=Arbroath+Smokie+Pate", prepTime: "15 min", cookTime: "0 min", servings: "6", ingredients: ["2 Arbroath Smokies (about 400g total)", "200g full-fat cream cheese", "100g crème fraîche", "Juice of 1 lemon", "Small bunch of chives, finely chopped", "Black pepper"], instructions: ["Carefully remove the skin and bones from the Arbroath Smokies, flaking the flesh into a bowl.", "In a separate bowl, beat the cream cheese and crème fraîche together until smooth.", "Add the flaked fish, lemon juice, and chives to the cream cheese mixture.", "Mix well, but keep some texture from the fish. Season generously with black pepper. Taste and add more lemon juice if needed.", "Serve chilled with oatcakes or crusty bread."] },
+            { id: "forfar_bridie", name: "Forfar Bridie", description: "A traditional D-shaped meat pastry from the nearby town of Forfar, Angus.", image: "https://placehold.co/600x400/b9936c/ffffff?text=Forfar+Bridie+Pastry", prepTime: "25 min", cookTime: "30 min", servings: "4", ingredients: ["450g good quality beef mince", "50g beef suet, shredded", "1 large onion, chopped", "1 tsp salt", "1/2 tsp black pepper", "500g block of shortcrust pastry", "1 egg, beaten"], instructions: ["In a bowl, mix the mince, suet, chopped onion, salt, and pepper. Add a tablespoon of cold water to bind.", "Roll out the pastry and cut four 18cm circles.", "Divide the filling between the circles, placing it on one half of each circle. Brush the edges with beaten egg.", "Fold the pastry over to create a D-shape and crimp the edges firmly to seal. Brush the tops with more egg wash and make a small slit in the top of each.", "Bake at 200°C (400°F) for 25-30 minutes until golden brown and cooked through."] },
+            { id: "dundee_cake", name: "Dundee Cake", description: "A famous traditional fruit cake with a rich flavour, originating from Dundee.", image: "https://placehold.co/600x400/a16207/ffffff?text=Dundee+Cake", prepTime: "20 min", cookTime: "1h 45m", servings: "12", ingredients: ["225g unsalted butter, softened", "225g soft brown sugar", "4 eggs", "225g plain flour", "50g ground almonds", "400g mixed dried fruit (sultanas, currants)", "100g glacé cherries, halved", "Zest of 1 orange", "50g blanched almonds to decorate"], instructions: ["Preheat oven to 150°C (300°F). Grease and line an 8-inch round cake tin.", "Cream the butter and sugar together until light and fluffy. Gradually beat in the eggs.", "Fold in the flour and ground almonds, followed by the mixed fruit, cherries, and orange zest.", "Spoon the mixture into the prepared tin and level the top. Arrange the blanched almonds in a decorative pattern on top.", "Bake for about 1 hour and 45 minutes, or until a skewer inserted into the center comes out clean. Allow to cool in the tin."] },
+            { id: "bannocks", name: "Hebridean Bannocks", description: "A simple, traditional flatbread from the Scottish Isles, cooked on a griddle.", image: "https://placehold.co/600x400/eaddc5/ffffff?text=Hebridean+Bannocks", prepTime: "10 min", cookTime: "15 min", servings: "8", ingredients: ["250g plain flour", "1 tsp bicarbonate of soda", "1/2 tsp salt", "30g butter, chilled", "150ml buttermilk"], instructions: ["Sift the flour, bicarbonate of soda, and salt into a bowl. Rub in the butter until the mixture resembles fine breadcrumbs.", "Make a well in the centre and pour in the buttermilk. Mix to a soft, slightly sticky dough.", "Turn out onto a floured surface and gently knead. Roll out to a 1cm thick round.", "Cut into 8 wedges (farls). Cook on a lightly floured, hot griddle or heavy-based frying pan for 5-7 minutes on each side until golden and cooked through.", "Best served warm with butter and cheese or jam."] }
+        ],
+        quizQuestions: [
+            { question: "What aspect of Scotland's landscape most captivates you?", options: [ { text: "The rugged, majestic Highlands", value: "mountain" }, { text: "The dramatic, windswept coastline and islands", value: "coast" }, { text: "The ancient, mystical forests and glens", value: "forest" }, { text: "The rolling green Lowlands and fertile plains", value: "lowland" } ] },
+            { question: "Which historical role would you most identify with?", options: [ { text: "A fierce warrior defending ancient lands", value: "warrior" }, { text: "A wise chieftain leading a community", value: "chieftain" }, { text: "A cunning diplomat navigating alliances", value: "diplomat" }, { text: "A skilled artisan preserving culture", value: "artisan" } ] },
+            { question: "What quality do you value most in a community?", options: [ { text: "Unwavering loyalty and kinship", value: "loyalty" }, { text: "Resilience and adaptability", value: "resilience" }, { text: "Innovation and progress", value: "innovation" }, { text: "Respect for tradition and history", value: "tradition" } ] },
+            { question: "If you could possess a mythical Scottish creature's trait, what would it be?", options: [ { text: "The strength of the Kelpie", value: "strength" }, { text: "The wisdom of the Great Stag", value: "wisdom" }, { text: "The freedom of the Golden Eagle", value: "freedom" }, { text: "The magic of the Faerie folk", value: "magic" } ] }
+        ],
+        colors: { 'red': '#B22222', 'dark-red': '#8B0000', 'green': '#006400', 'dark-green': '#003300', 'blue': '#000080', 'dark-blue': '#00004C', 'yellow': '#FFD700', 'dark-yellow': '#DAA520', 'white': '#F8F8F8', 'black': '#1a1a1a', 'purple': '#800080', 'brown': '#A52A2A', 'grey': '#808080', 'light-blue': '#ADD8E6' }
+    };
+    
+    // --- APP STATE ---
+    let maps = {};
+    let tripItinerary = [];
+    let currentQuizQuestion = 0;
+    let quizAnswers = {};
+    let modalTrapFocusHandler = null;
+    let customClanTartan = { colors: [], counts: [] };
+    let savedTrips = JSON.parse(localStorage.getItem('savedTrips')) || [];
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    
+    // --- UTILITY FUNCTIONS ---
+    function showModal(contentHtml) {
+        const modalContent = document.getElementById('modal-content');
+        const genericModal = document.getElementById('generic-modal');
+        
+        modalContent.innerHTML = `
+            <div class="relative p-6 sm:p-8">
+                <button class="modal-close absolute top-4 right-4 text-stone-600 hover:text-stone-900 text-3xl font-bold" aria-label="Close modal">&times;</button>
+                ${contentHtml}
+            </div>
+        `;
+        genericModal.classList.remove('hidden');
+        genericModal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+        modalContent.querySelector('.modal-close').addEventListener('click', closeModal);
+        const focusableElements = modalContent.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableElements.length > 0) {
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            firstElement.focus();
+            
+            modalTrapFocusHandler = function(e) {
+                if (e.key === 'Tab') {
+                    if (e.shiftKey && document.activeElement === firstElement) { e.preventDefault(); lastElement.focus(); } 
+                    else if (!e.shiftKey && document.activeElement === lastElement) { e.preventDefault(); firstElement.focus(); }
+                } else if (e.key === 'Escape') { closeModal(); }
+            };
+            genericModal.addEventListener('keydown', modalTrapFocusHandler);
+        }
+    }
+    function closeModal() {
+        const genericModal = document.getElementById('generic-modal');
+        genericModal.classList.add('hidden');
+        genericModal.classList.remove('flex');
+        document.body.style.overflow = 'auto';
+        if (modalTrapFocusHandler) {
+            genericModal.removeEventListener('keydown', modalTrapFocusHandler);
+            modalTrapFocusHandler = null;
+        }
+    }
+    
+    function showToast(message, type = 'success', duration = 3000) {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        const toastIcon = document.getElementById('toast-icon');
+        
+        // Set message and type
+        toastMessage.textContent = message;
+        toast.className = 'toast';
+        toast.classList.add(type);
+        
+        // Set icon based on type
+        if (type === 'success') {
+            toastIcon.className = 'fas fa-check-circle';
+        } else if (type === 'error') {
+            toastIcon.className = 'fas fa-exclamation-circle';
+        } else if (type === 'info') {
+            toastIcon.className = 'fas fa-info-circle';
+        }
+        
+        // Show toast
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 10);
+        
+        // Hide toast after duration
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, duration);
+    }
+    
+    function updateBreadcrumb(pageName) {
+        const breadcrumb = document.getElementById('breadcrumb');
+        const breadcrumbCurrent = document.getElementById('breadcrumb-current');
+        
+        breadcrumbCurrent.textContent = pageName;
+        breadcrumb.classList.remove('hidden');
+    }
+    
+    // --- INITIALIZATION ---
+    function initializeApp() {
+        initNav();
+        initScrollAnimations();
+        initBackToTop();
+        initSearch();
+        populateRecipesList();
+        populateLegendsList();
+        initPersonaButtons();
+        
+        document.getElementById('home-section').classList.add('active');
+        document.querySelector('.nav-link[data-target="home"]').classList.add('active');
+        
+        const lazyLoaders = {
+            planner: initPlanner,
+            clans: initClanExplorer,
+            finder: initFinderCreator,
+            'tartan-designer': initTartanDesigner
+        };
+        
+        document.querySelectorAll('.nav-link').forEach(link => {
+            const target = link.dataset.target;
+            if (lazyLoaders[target]) {
+                link.addEventListener('click', lazyLoaders[target], { once: true });
+            }
+        });
+        
+        document.getElementById('generic-modal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+        
+        // Initialize newsletter form
+        document.querySelector('footer form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = e.target.querySelector('input[type="email"]').value;
+            if (email) {
+                showToast('Thank you for subscribing to our newsletter!', 'success');
+                e.target.reset();
+            }
+        });
+    }
+    
+    // --- CORE FEATURES ---
+    function initNav() {
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const searchToggle = document.getElementById('search-toggle');
+        const searchBar = document.getElementById('search-bar');
+        
+        const handleNavClick = (targetId) => {
+            document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
+            const targetSection = document.getElementById(targetId + '-section');
+            if (targetSection) {
+                targetSection.classList.add('active');
+                // Update breadcrumb
+                const pageNames = {
+                    'home': 'Home',
+                    'clans': 'Clans',
+                    'planner': 'Trip Planner',
+                    'finder': 'Clan Finder & Creator',
+                    'legends': 'Legends',
+                    'recipes': 'Recipes',
+                    'tartan-designer': 'Tartan Designer'
+                };
+                updateBreadcrumb(pageNames[targetId] || targetId);
+            }
+            
+            navLinks.forEach(nav => nav.classList.remove('active'));
+            document.querySelectorAll(`.nav-link[data-target="${targetId}"]`).forEach(l => l.classList.add('active'));
+            
+            if (maps.planner) setTimeout(() => maps.planner.invalidateSize(), 50);
+            if (maps.clans) setTimeout(() => maps.clans.invalidateSize(), 50);
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            document.getElementById('mobile-menu').classList.remove('menu-open');
+            searchBar.classList.add('hidden');
+            window.scrollTo(0, 0);
+        };
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => handleNavClick(link.dataset.target));
+        });
+        
+        document.querySelector('a[data-target="home"]').addEventListener('click', (e) => {
+            e.preventDefault();
+            handleNavClick('home');
+        });
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const isOpen = mobileMenu.classList.toggle('menu-open');
+            mobileMenuBtn.setAttribute('aria-expanded', isOpen);
+        });
+        
+        searchToggle.addEventListener('click', () => {
+            searchBar.classList.toggle('hidden');
+            if (!searchBar.classList.contains('hidden')) {
+                document.getElementById('global-search').focus();
+            }
+        });
+    }
+    
+    function initScrollAnimations() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        const observeElements = () => {
+            document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+        };
+        
+        observeElements();
+        window.reObserveScrollAnimations = observeElements;
+    }
+    
+    function initBackToTop() {
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+    
+    function initSearch() {
+        const globalSearch = document.getElementById('global-search');
+        
+        globalSearch.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            if (searchTerm.length < 2) return;
+            
+            // Search in clans
+            const matchingClans = APP_DATA.clanData.filter(clan => 
+                clan.name.toLowerCase().includes(searchTerm) || 
+                clan.motto.toLowerCase().includes(searchTerm) ||
+                clan.territories.toLowerCase().includes(searchTerm)
+            );
+            
+            // Search in recipes
+            const matchingRecipes = APP_DATA.recipesData.filter(recipe => 
+                recipe.name.toLowerCase().includes(searchTerm) || 
+                recipe.description.toLowerCase().includes(searchTerm)
+            );
+            
+            // Search in legends
+            const matchingLegends = APP_DATA.legendsData.filter(legend => 
+                legend.name.toLowerCase().includes(searchTerm) || 
+                legend.shortDesc.toLowerCase().includes(searchTerm) ||
+                legend.details.toLowerCase().includes(searchTerm)
+            );
+            
+            // Display search results
+            displaySearchResults(searchTerm, matchingClans, matchingRecipes, matchingLegends);
+        });
+    }
+    
+    function displaySearchResults(searchTerm, clans, recipes, legends) {
+        let resultsHtml = `
+            <div class="bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold font-title mb-4">Search Results for "${searchTerm}"</h3>
+        `;
+        
+        if (clans.length > 0) {
+            resultsHtml += `
+                <div class="mb-6">
+                    <h4 class="text-xl font-semibold mb-3 text-yellow-800">Clans</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            `;
+            clans.forEach(clan => {
+                resultsHtml += `
+                    <div class="p-3 bg-stone-50 rounded-lg hover:bg-stone-100 transition cursor-pointer search-result-clan" data-clan-id="${clan.id}">
+                        <div class="flex items-center gap-3">
+                            <img src="${clan.emblemImage}" alt="${clan.name}" class="w-12 h-12 rounded-full object-cover">
+                            <div>
+                                <h5 class="font-semibold">${clan.name}</h5>
+                                <p class="text-sm text-stone-600">${clan.territories}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            resultsHtml += `
+                    </div>
+                </div>
+            `;
+        }
+        
+        if (recipes.length > 0) {
+            resultsHtml += `
+                <div class="mb-6">
+                    <h4 class="text-xl font-semibold mb-3 text-yellow-800">Recipes</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            `;
+            recipes.forEach(recipe => {
+                resultsHtml += `
+                    <div class="p-3 bg-stone-50 rounded-lg hover:bg-stone-100 transition cursor-pointer search-result-recipe" data-recipe-id="${recipe.id}">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-utensils text-yellow-800"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold">${recipe.name}</h5>
+                                <p class="text-sm text-stone-600">${recipe.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            resultsHtml += `
+                    </div>
+                </div>
+            `;
+        }
+        
+        if (legends.length > 0) {
+            resultsHtml += `
+                <div class="mb-6">
+                    <h4 class="text-xl font-semibold mb-3 text-yellow-800">Legends</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            `;
+            legends.forEach(legend => {
+                resultsHtml += `
+                    <div class="p-3 bg-stone-50 rounded-lg hover:bg-stone-100 transition cursor-pointer search-result-legend" data-legend-id="${legend.id}">
+                        <div class="flex items-center gap-3">
+                            <img src="${legend.image}" alt="${legend.name}" class="w-12 h-12 rounded-full object-cover">
+                            <div>
+                                <h5 class="font-semibold">${legend.name}</h5>
+                                <p class="text-sm text-stone-600">${legend.shortDesc}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            resultsHtml += `
+                    </div>
+                </div>
+            `;
+        }
+        
+        if (clans.length === 0 && recipes.length === 0 && legends.length === 0) {
+            resultsHtml += `<p class="text-stone-600">No results found for "${searchTerm}".</p>`;
+        }
+        
+        resultsHtml += `
+            </div>
+        `;
+        
+        showModal(resultsHtml);
+        
+        // Add event listeners to search results
+        document.querySelectorAll('.search-result-clan').forEach(el => {
+            el.addEventListener('click', () => {
+                closeModal();
+                document.querySelector('.nav-link[data-target="clans"]').click();
+                displayClanDetails(el.dataset.clanId);
+            });
+        });
+        
+        document.querySelectorAll('.search-result-recipe').forEach(el => {
+            el.addEventListener('click', () => {
+                closeModal();
+                document.querySelector('.nav-link[data-target="recipes"]').click();
+                displayRecipeDetails(el.dataset.recipeId);
+            });
+        });
+        
+        document.querySelectorAll('.search-result-legend').forEach(el => {
+            el.addEventListener('click', () => {
+                closeModal();
+                document.querySelector('.nav-link[data-target="legends"]').click();
+                displayLegendDetails(el.dataset.legendId);
+            });
+        });
+    }
+    
+    // --- PAGE INITIALIZERS & RENDERERS ---
+    
+    function initPersonaButtons() {
+        const regionButtons = document.getElementById('region-buttons');
+        if (!regionButtons) return;
+        
+        regionButtons.addEventListener('click', (e) => {
+            const btn = e.target.closest('.region-card');
+            if (!btn) return;
+            
+            const region = btn.dataset.region;
+            // Set this button as active
+            document.querySelectorAll('#region-buttons .region-card').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Define the target coordinates for the map
+            const regionCoords = {
+                highlands: [[57.5, -5.5], 7],
+                north_east: [[57.14, -2.1], 9],
+                central: [[56.0, -4.0], 8],
+                south: [[55.3, -3.2], 8]
+            };
+            
+            const coords = regionCoords[region];
+            if (coords) {
+                // First, navigate to the planner section
+                document.querySelector('.nav-link[data-target="planner"]').click();
+                
+                // Because the map might be lazy-loaded, we need to wait for it.
+                const checkMapReady = setInterval(() => {
+                    if (maps.planner) {
+                        clearInterval(checkMapReady);
+                        maps.planner.setView(coords[0], coords[1]);
+                        showToast(`Exploring the ${btn.textContent.trim()}!`, 'info');
+                    }
+                }, 100);
+            }
+        });
+    }
+    
+    function initPlanner() {
+        if (maps.planner) return;
+        
+        try {
+            maps.planner = L.map('plannerMap').setView([57, -4.5], 7);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png', { 
+                attribution: '&copy; OpenStreetMap &copy; CARTO', 
+                maxZoom: 20 
+            }).addTo(maps.planner);
+            
+            maps.plannerMarkerGroup = L.layerGroup().addTo(maps.planner);
+            initMapControls();
+            initItineraryPanel();
+            updatePlannerMapMarkers('all');
+            
+            // Add a scale control
+            L.control.scale({
+                position: 'bottomleft',
+                maxWidth: 200,
+                metric: true,
+                imperial: true
+            }).addTo(maps.planner);
+            
+        } catch (error) { 
+            showToast("Error initializing planner map.", 'error'); 
+            console.error(error); 
+        }
+    }
+    
+    function initClanExplorer() {
+        if(maps.clans) return;
+        
+        try {
+            maps.clans = L.map('clanMap').setView([57, -4.5], 6);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', { 
+                attribution: '&copy; CARTO' 
+            }).addTo(maps.clans);
+            
+            maps.clanMarker = L.layerGroup().addTo(maps.clans);
+            populateClanList();
+            
+            document.getElementById('clan-search-input').addEventListener('input', e => {
+                populateClanList(e.target.value);
+            });
+            
+            // Add a scale control
+            L.control.scale({
+                position: 'bottomleft',
+                maxWidth: 200,
+                metric: true,
+                imperial: true
+            }).addTo(maps.clans);
+            
+        } catch (error) { 
+            console.error("Could not init clan map", error);
+            showToast("Error initializing clan map.", 'error');
+        }
+    }
+    
+    function populateClanList(filter = '') {
+        const listContainer = document.getElementById('clan-list-container');
+        if(!listContainer) return;
+        
+        const searchTerm = filter.trim().toLowerCase();
+        const filteredClans = APP_DATA.clanData.filter(clan => 
+            clan.name.toLowerCase().includes(searchTerm) ||
+            clan.motto.toLowerCase().includes(searchTerm) ||
+            clan.territories.toLowerCase().includes(searchTerm)
+        );
+        
+        if (filteredClans.length === 0) {
+            listContainer.innerHTML = `<p class="text-stone-700 text-center p-4">No clans found.</p>`;
+            document.getElementById('clan-detail-container').innerHTML = '';
+            return;
+        }
+        
+        listContainer.innerHTML = filteredClans.map(clan => `
+            <div class="item-card bg-white/70 p-4 rounded-lg shadow-md cursor-pointer border-2 border-transparent transition flex items-center gap-4" data-clan-id="${clan.id}" role="button" tabindex="0">
+                <img src="${clan.emblemImage}" alt="${clan.name} Crest" class="w-16 h-16 rounded-full object-cover border-2 border-amber-200">
+                <div class="flex-grow">
+                    <h3 class="font-title font-bold">${clan.name}</h3>
+                    <p class="text-sm text-stone-600 italic">"${clan.motto}"</p>
+                </div>
+                <button class="favorite-btn text-stone-400 hover:text-yellow-700" data-id="${clan.id}" data-type="clan">
+                    <i class="fas fa-heart"></i>
+                </button>
+            </div>
+        `).join('');
+        
+        // Add event listeners to clan cards
+        listContainer.addEventListener('click', (event) => {
+            const card = event.target.closest('.item-card');
+            const favoriteBtn = event.target.closest('.favorite-btn');
+            
+            if (favoriteBtn) {
+                toggleFavorite(favoriteBtn.dataset.id, favoriteBtn.dataset.type, favoriteBtn);
+                return;
+            }
+            
+            if(card) {
+                listContainer.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                displayClanDetails(card.dataset.clanId);
+            }
+        });
+        
+        // Update favorite button states
+        listContainer.querySelectorAll('.favorite-btn').forEach(btn => {
+            const isFavorite = favorites.some(fav => fav.id === btn.dataset.id && fav.type === btn.dataset.type);
+            if (isFavorite) {
+                btn.classList.add('text-yellow-700');
+                btn.classList.remove('text-stone-400');
+            }
+        });
+        
+        // Initially display the first clan
+        if (filteredClans.length > 0) {
+            displayClanDetails(filteredClans[0].id);
+            listContainer.querySelector('.item-card').classList.add('active');
+        }
+    }
+    
+    function displayClanDetails(clanId) {
+        const detailContainer = document.getElementById('clan-detail-container');
+        const clan = APP_DATA.clanData.find(c => c.id === clanId);
+        
+        if (!clan) {
+            detailContainer.innerHTML = `<p class="text-center p-4">Clan not found.</p>`;
+            return;
+        }
+        
+        let detailsHtml = `
+            <div class="p-2 animate-fade-in">
+                <div class="text-center mb-6">
+                    <img src="${clan.emblemImage}" alt="${clan.name} Crest" class="h-24 w-24 rounded-full mb-4 border-2 border-yellow-800 p-1 bg-white mx-auto">
+                    <h2 class="font-title text-3xl font-bold text-yellow-800 mb-2">${clan.name}</h2>
+                    <p class="text-lg text-stone-700 italic">"${clan.motto}"</p>
+                </div>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mt-4 text-left mb-6 bg-stone-100 p-4 rounded-lg">
+                    <div><strong class="font-semibold">Gaelic Name:</strong> ${clan.gaelicName}</div>
+                    <div><strong class="font-semibold">Territories:</strong> ${clan.territories}</div>
+                    <div class="md:col-span-2"><strong class="font-semibold">Historic Seats:</strong> ${clan.historicSeats}</div>
+                </div>
+                 <div class="grid grid-cols-2 gap-4 mb-6">
+                    <img src="${clan.tartanImage}" alt="${clan.name} Tartan" class="w-full h-32 object-cover rounded-lg shadow-md">
+                    <img src="${clan.monumentImage}" alt="${clan.name} Monument" class="w-full h-32 object-cover rounded-lg shadow-md">
+                </div>
+                <p class="text-stone-800 text-left leading-relaxed">${clan.lore.split('\n\n').map(p => `<p class="mb-4">${p}</p>`).join('')}</p>
+                ${clan.recipe ? `
+                    <div class="mt-8 pt-6 border-t border-stone-300 text-center">
+                        <p class="text-stone-700 mb-3">Try the <span class="font-semibold">${clan.recipe.name}</span>, a traditional dish associated with this clan.</p>
+                        <button class="view-recipe-btn bg-yellow-800 text-white px-5 py-2 rounded-lg hover:bg-yellow-700 transition transform hover:scale-105" data-recipe-id="${clan.recipe.id}">View Recipe</button>
+                    </div>` : ''}`;
+        
+        if (clan.id === 'mackenzie') {
+            detailsHtml += `<div class="text-center mt-6"><a href="https://docs.google.com/presentation/d/1gX7be1P5m1ST8ervkth44YvDN5wg9G_a/edit?usp=sharing&ouid=101142821870242637937&rtpof=true&sd=true" target="_blank" class="inline-block bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition transform hover:scale-105">View Presentation</a></div>`;
+        }
+        
+        detailsHtml += `</div>`;
+        detailContainer.innerHTML = detailsHtml;
+        
+        const recipeBtn = detailContainer.querySelector('.view-recipe-btn');
+        if (recipeBtn) {
+            recipeBtn.addEventListener('click', (e) => {
+                document.querySelector('.nav-link[data-target="recipes"]').click();
+                displayRecipeDetails(e.target.dataset.recipeId);
+                
+                // Highlight the correct recipe in the list
+                const recipeListContainer = document.getElementById('recipe-list-container');
+                recipeListContainer.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
+                const targetCard = recipeListContainer.querySelector(`.item-card[data-recipe-id="${e.target.dataset.recipeId}"]`);
+                if(targetCard) targetCard.classList.add('active');
+            });
+        }
+        
+        // Update clan map
+        if (maps.clans) {
+            maps.clanMarker.clearLayers();
+            const clanSeat = APP_DATA.mapPoints.find(p => 
+                (p.category === 'clans' || p.category === 'castles') && 
+                p.name.toLowerCase().includes(clan.name.split(" ")[1].toLowerCase())
+            );
+            
+            if (clanSeat) {
+                L.marker([clanSeat.lat, clanSeat.lng], { 
+                    icon: L.divIcon({ 
+                        html: '🛡️', 
+                        className: 'map-emoji-icon', 
+                        iconSize: [24, 24] 
+                    }) 
+                })
+                 .addTo(maps.clanMarker)
+                 .bindPopup(`<b>${clan.name}</b><br>${clan.historicSeats}`)
+                 .openPopup();
+                
+                maps.clans.setView([clanSeat.lat, clanSeat.lng], 8);
+            }
+        }
+    }
+    
+    function initMapControls() {
+        const filterContainer = document.getElementById('tourism-filter-buttons');
+        const categories = [...new Set(APP_DATA.mapPoints.map(p => p.category))];
+        const categoryEmojis = { 
+            clans: '🛡️', 
+            castles: '🏰', 
+            whisky: '🥃', 
+            film: '🎬', 
+            sports: '🚵', 
+            battles: '⚔️', 
+            picts: '🗿', 
+            vikings: '🐉', 
+            legends: '🙏', 
+            golf: '⛳' 
+        };
+        
+        let buttonsHtml = '<button class="tourism-filter-btn w-full text-left p-2 rounded-md hover:bg-stone-200 active font-semibold" data-category="all">All Locations</button>';
+        categories.forEach(cat => {
+            const emoji = categoryEmojis[cat] || '📍';
+            buttonsHtml += `<button class="tourism-filter-btn w-full text-left p-2 rounded-md hover:bg-stone-200" data-category="${cat}">${emoji} ${cat.charAt(0).toUpperCase() + cat.slice(1)}</button>`;
+        });
+        
+        filterContainer.innerHTML = buttonsHtml;
+        
+        filterContainer.addEventListener('click', e => {
+            if (e.target.classList.contains('tourism-filter-btn')) {
+                filterContainer.querySelector('.active').classList.remove('active', 'font-semibold');
+                e.target.classList.add('active', 'font-semibold');
+                updatePlannerMapMarkers(e.target.dataset.category);
+            }
+        });
+    }
+    
+    function updatePlannerMapMarkers(category) {
+        if (!maps.plannerMarkerGroup) return;
+        
+        maps.plannerMarkerGroup.clearLayers();
+        const filteredData = (category === 'all') ? APP_DATA.mapPoints : APP_DATA.mapPoints.filter(site => site.category === category);
+        
+        filteredData.forEach(item => {
+            const icon = L.divIcon({ 
+                html: `<div class="map-emoji-icon">${item.emoji}</div>`, 
+                className: '', 
+                iconSize: [30, 30], 
+                iconAnchor: [15, 30] 
+            });
+            
+            const marker = L.marker([item.lat, item.lng], { icon: icon });
+            
+            marker.bindPopup(`
+                <div class="text-center p-2">
+                    <strong class="font-semibold">${item.name}</strong>
+                    <p class="text-sm my-2">${item.description}</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <button class="add-to-trip-btn bg-yellow-800 text-white text-xs px-3 py-1 rounded-md hover:bg-yellow-700 transition">Add to Trip</button>
+                        <button class="favorite-btn text-stone-400 hover:text-yellow-700" data-id="${item.id}" data-type="location">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            `);
+            
+            marker.addTo(maps.plannerMarkerGroup);
+        });
+        
+        // Update favorite button states in popups
+        maps.planner.on('popupopen', e => {
+            const favoriteBtn = e.popup._container.querySelector('.favorite-btn');
+            if (favoriteBtn) {
+                const isFavorite = favorites.some(fav => fav.id === favoriteBtn.dataset.id && fav.type === favoriteBtn.dataset.type);
+                if (isFavorite) {
+                    favoriteBtn.classList.add('text-yellow-700');
+                    favoriteBtn.classList.remove('text-stone-400');
+                }
+                
+                favoriteBtn.addEventListener('click', () => {
+                    toggleFavorite(favoriteBtn.dataset.id, favoriteBtn.dataset.type, favoriteBtn);
+                });
+            }
+            
+            const addBtn = e.popup._container.querySelector('.add-to-trip-btn');
+            if (addBtn) {
+                addBtn.addEventListener('click', () => {
+                    const item = APP_DATA.mapPoints.find(p => p.id === addBtn.dataset.id);
+                    if (item) addToTrip(item);
+                });
+            }
+        });
+    }
+    
+    function toggleFavorite(id, type, buttonElement) {
+        const index = favorites.findIndex(fav => fav.id === id && fav.type === type);
+        
+        if (index === -1) {
+            // Add to favorites
+            favorites.push({ id, type });
+            buttonElement.classList.add('text-yellow-700');
+            buttonElement.classList.remove('text-stone-400');
+            showToast('Added to favorites', 'success');
+        } else {
+            // Remove from favorites
+            favorites.splice(index, 1);
+            buttonElement.classList.remove('text-yellow-700');
+            buttonElement.classList.add('text-stone-400');
+            showToast('Removed from favorites', 'info');
+        }
+        
+        // Save to localStorage
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+    
+    function initItineraryPanel() {
+        const itineraryPanel = document.getElementById('itinerary-panel');
+        
+        document.getElementById('itinerary-header').addEventListener('click', () => {
+            const isOpen = itineraryPanel.classList.toggle('open');
+            document.getElementById('itinerary-toggle-text').textContent = isOpen ? 'Collapse' : 'Expand';
+            document.querySelector('#itinerary-header i').style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+        
+        document.getElementById('clear-trip-btn').addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear your trip itinerary?')) {
+                tripItinerary = [];
+                renderTripList();
+                showToast('Trip itinerary cleared!', 'success');
+            }
+        });
+        
+        document.getElementById('save-trip-btn').addEventListener('click', () => {
+            if (tripItinerary.length === 0) {
+                showToast('Your trip is empty. Add some locations first.', 'error');
+                return;
+            }
+            
+            const tripName = prompt('Enter a name for your trip:');
+            if (tripName) {
+                const newTrip = {
+                    id: Date.now(),
+                    name: tripName,
+                    date: new Date().toISOString().split('T')[0],
+                    locations: [...tripItinerary]
+                };
+                
+                savedTrips.push(newTrip);
+                localStorage.setItem('savedTrips', JSON.stringify(savedTrips));
+                
+                showToast(`Trip "${tripName}" saved successfully!`, 'success');
+            }
+        });
+    }
+    
+    function addToTrip(item) {
+        if (!tripItinerary.some(tripItem => tripItem.id === item.id)) {
+            tripItinerary.push(item);
+            renderTripList();
+            showToast(`Added ${item.name} to your trip!`, 'success');
+        } else {
+            showToast(`${item.name} is already in your trip.`, 'info');
+        }
+    }
+    
+    function renderTripList() {
+        const tripList = document.getElementById('trip-list');
+        document.getElementById('trip-count').textContent = tripItinerary.length;
+        
+        if (tripItinerary.length === 0) {
+            tripList.innerHTML = '<li class="text-stone-500 text-center p-2">Your itinerary is empty.</li>';
+            return;
+        }
+        
+        tripList.innerHTML = tripItinerary.map((item, index) => `
+            <li class="flex justify-between items-center bg-gray-50 p-3 rounded-md shadow-sm">
+                <div class="flex items-center">
+                    <span class="mr-3 text-stone-500">${index + 1}.</span>
+                    <div>
+                        <div class="font-medium">${item.name}</div>
+                        <div class="text-xs text-stone-500">${item.category}</div>
+                    </div>
+                </div>
+                <button data-id="${item.id}" class="remove-from-trip text-red-500 hover:text-red-700 ml-2">
+                    <i class="fas fa-times-circle"></i>
+                </button>
+            </li>
+        `).join('');
+        
+        tripList.querySelectorAll('.remove-from-trip').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const itemId = e.currentTarget.dataset.id;
+                tripItinerary = tripItinerary.filter(item => item.id !== itemId);
+                renderTripList();
+                showToast(`Removed item from trip.`, 'success');
+            });
+        });
+    }
+    
+    function initFinderCreator() {
+        initClanFinder();
+        initCreateClan();
+        
+        const tabFinderBtn = document.getElementById('tab-finder-btn');
+        const tabCreatorBtn = document.getElementById('tab-creator-btn');
+        const finderContent = document.getElementById('finder-content');
+        const creatorContent = document.getElementById('creator-content');
+        
+        tabFinderBtn.addEventListener('click', () => {
+            tabFinderBtn.classList.add('active');
+            tabCreatorBtn.classList.remove('active');
+            finderContent.classList.add('active');
+            creatorContent.classList.remove('active');
+        });
+        
+        tabCreatorBtn.addEventListener('click', () => {
+            tabCreatorBtn.classList.add('active');
+            tabFinderBtn.classList.remove('active');
+            creatorContent.classList.add('active');
+            finderContent.classList.remove('active');
+        });
+    }
+    
+    function initClanFinder() {
+        const quizContainer = document.getElementById('quiz-container');
+        const quizResult = document.getElementById('quiz-result');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+        
+        function loadQuestion() {
+            if (currentQuizQuestion < APP_DATA.quizQuestions.length) {
+                const q = APP_DATA.quizQuestions[currentQuizQuestion];
+                
+                quizContainer.innerHTML = `
+                    <div class="text-center p-6 bg-white rounded-lg shadow-md mb-8">
+                        <div class="mb-4">
+                            <div class="text-sm text-stone-500">Question ${currentQuizQuestion + 1} of ${APP_DATA.quizQuestions.length}</div>
+                            <div class="w-full bg-stone-200 rounded-full h-2.5 mt-2">
+                                <div class="bg-yellow-800 h-2.5 rounded-full" style="width: ${((currentQuizQuestion + 1) / APP_DATA.quizQuestions.length) * 100}%"></div>
+                            </div>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-stone-900 mb-6">${q.question}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${q.options.map(opt => `<button class="quiz-option bg-stone-50 text-stone-700 py-3 px-5 rounded-lg border-2 border-stone-200 hover:border-yellow-800 transition" data-value="${opt.value}">${opt.text}</button>`).join('')}
+                        </div>
+                    </div>`;
+                
+                quizContainer.querySelectorAll('.quiz-option').forEach(btn => btn.addEventListener('click', handleAnswer));
+            } else {
+                showResult();
+            }
+        }
+        
+        function handleAnswer(e) {
+            quizAnswers[currentQuizQuestion] = e.target.dataset.value;
+            currentQuizQuestion++;
+            loadQuestion();
+        }
+        
+        function showResult() {
+            quizContainer.innerHTML = '';
+            
+            let scores = Object.fromEntries(APP_DATA.clanData.map(c => [c.id, 0]));
+            
+            // This is a simplified scoring logic. A real one would be more complex.
+            if(quizAnswers[0] === 'mountain') { scores.cameron += 2; scores.macgregor += 2; }
+            if(quizAnswers[0] === 'coast') { scores.macdonald += 2; scores.macleod += 2; }
+            if(quizAnswers[1] === 'warrior') { scores.wallace += 2; scores.cameron += 2; scores.macdonald += 1; }
+            if(quizAnswers[1] === 'chieftain') { scores.campbell += 2; scores.mackenzie += 2; }
+            if(quizAnswers[2] === 'loyalty') { scores.macgregor += 2; scores.cameron += 1; }
+            if(quizAnswers[2] === 'resilience') { scores.armstrong += 2; scores.macdonald += 1; }
+            
+            const topClanId = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            const clan = APP_DATA.clanData.find(c => c.id === topClanId);
+            
+            document.getElementById('result-content').innerHTML = `
+                <img src="${clan.emblemImage}" alt="${clan.name} Crest" class="h-24 w-24 mx-auto mb-4 border-2 border-amber-200 p-1 bg-white rounded-full">
+                <h3 class="font-title text-2xl font-bold text-stone-900 mb-2">Your spirit aligns with Clan ${clan.name}</h3>
+                <p class="text-lg text-stone-700 italic mb-4">"${clan.motto}"</p>
+                <p class="text-base text-stone-800 mb-6">${clan.lore.substring(0, 200)}...</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button class="bg-yellow-800 text-white px-5 py-2 rounded-lg hover:bg-yellow-700 transition transform hover:scale-105 view-clan-details-btn" data-clan-id="${clan.id}">Learn More</button>
+                    <button class="bg-stone-200 text-stone-800 px-5 py-2 rounded-lg hover:bg-stone-300 transition transform hover:scale-105 share-result-btn" data-clan="${clan.name}">Share Result</button>
+                </div>
+            `;
+            
+            quizResult.classList.remove('hidden');
+            
+            document.querySelector('.view-clan-details-btn').addEventListener('click', e => {
+                document.querySelector('.nav-link[data-target="clans"]').click();
+                displayClanDetails(e.target.dataset.clanId);
+                
+                const clanListContainer = document.getElementById('clan-list-container');
+                clanListContainer.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
+                const targetCard = clanListContainer.querySelector(`.item-card[data-clan-id="${e.target.dataset.clanId}"]`);
+                if(targetCard) targetCard.classList.add('active');
+            });
+            
+            document.querySelector('.share-result-btn').addEventListener('click', e => {
+                const clanName = e.target.dataset.clan;
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'My Scottish Clan Result',
+                        text: `My spirit clan is ${clanName}! Discover yours at The Clan Hearth.`,
+                        url: window.location.href
+                    });
+                } else {
+                    // Fallback for browsers that don't support the Web Share API
+                    const textArea = document.createElement('textarea');
+                    textArea.value = `My spirit clan is ${clanName}! Discover yours at The Clan Hearth: ${window.location.href}`;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showToast('Link copied to clipboard!', 'success');
+                }
+            });
+        }
+        
+        restartQuizBtn.addEventListener('click', () => {
+            currentQuizQuestion = 0;
+            quizAnswers = {};
+            quizResult.classList.add('hidden');
+            loadQuestion();
+        });
+        
+        loadQuestion();
+    }
+    
+    function initCreateClan() {
+        const nameInput = document.getElementById('create-clan-name');
+        const mottoInput = document.getElementById('create-clan-motto');
+        const charterName = document.getElementById('charter-clan-name');
+        const charterMotto = document.getElementById('charter-clan-motto');
+        
+        nameInput.addEventListener('input', updateCharterPreview);
+        mottoInput.addEventListener('input', updateCharterPreview);
+        
+        function updateCharterPreview() {
+            charterName.textContent = nameInput.value || "Your Clan Name";
+            charterMotto.textContent = `"${mottoInput.value || 'Your Motto'}"`;
+        }
+        
+        document.getElementById('go-to-tartan-designer').addEventListener('click', () => {
+            document.querySelector('.nav-link[data-target="tartan-designer"]').click();
+        });
+        
+        document.getElementById('finalize-clan-btn').addEventListener('click', () => {
+            if (!nameInput.value || !mottoInput.value) {
+                showToast("Please provide a clan name and motto.", "error");
+                return;
+            }
+            
+            const charterHtml = `
+                <div>
+                    <div id="clan-charter-content" class="p-8" style="background-color: #fdf5e6;">
+                        <div class="text-center">
+                            <h2 class="font-title text-3xl font-bold text-yellow-800 mb-6">Behold, the Charter of</h2>
+                            <div class="w-48 h-48 mx-auto mb-4 rounded-full overflow-hidden border-4 border-yellow-800 shadow-lg">
+                               <img src="https://theclanhearth.com/images/emblem.jpg" alt="Custom Clan Emblem" class="w-full h-full object-cover">
+                            </div>
+                            <h3 class="font-title text-4xl font-bold text-stone-800">${nameInput.value}</h3>
+                            <p class="text-stone-700 text-xl italic mt-2">"${mottoInput.value}"</p>
+                            <div class="mt-8">
+                                <h4 class="font-title text-xl font-bold mb-4">Your Clan Tartan</h4>
+                                <div id="modal-tartan-preview" class="w-full h-32 rounded-lg shadow-inner border bg-white mx-auto max-w-sm"></div>
+                            </div>
+                            <div class="mt-8">
+                                <h4 class="font-title text-xl font-bold mb-2">Created on</h4>
+                                <p class="text-stone-700">${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-stone-100 p-4 mt-4 flex justify-between">
+                        <button id="download-charter-btn" class="bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 shadow transition transform hover:scale-105"><i class="fas fa-download mr-2"></i>Download Charter</button>
+                        <button id="share-charter-btn" class="bg-green-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-green-700 shadow transition transform hover:scale-105"><i class="fas fa-share-alt mr-2"></i>Share Charter</button>
+                    </div>
+                </div>
+            `;
+            
+            showModal(charterHtml);
+            
+            const modalTartanPreview = document.getElementById('modal-tartan-preview');
+            if (customClanTartan.colors.length > 0 && customClanTartan.counts.length > 0) {
+                 const previewCanvas = document.createElement('canvas');
+                 modalTartanPreview.appendChild(previewCanvas);
+                 previewCanvas.style.width = '100%';
+                 previewCanvas.style.height = '100%';
+                 renderTartan(previewCanvas, customClanTartan.colors, customClanTartan.counts);
+            } else {
+                 modalTartanPreview.innerHTML = '<div class="flex items-center justify-center h-full text-stone-500">Tartan not yet designed.</div>';
+            }
+            
+            document.getElementById('download-charter-btn').addEventListener('click', () => {
+                const charterContent = document.getElementById('clan-charter-content');
+                if (charterContent) {
+                    showToast('Preparing your charter for download...', 'info', 2000);
+                    html2canvas(charterContent, { backgroundColor: '#fdf5e6' }).then(canvas => {
+                        const link = document.createElement('a');
+                        link.download = `${nameInput.value.replace(/\s+/g, '_') || 'My'}_Clan_Charter.png`;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                    }).catch(err => {
+                        console.error("Oops, something went wrong!", err);
+                        showToast('Could not generate charter image.', 'error');
+                    });
+                }
+            });
+            
+            document.getElementById('share-charter-btn').addEventListener('click', () => {
+                showToast('Share functionality would be implemented here', 'info');
+            });
+        });
+        
+        // Initial state
+        updateCharterPreview();
+    }
+    
+    function initTartanDesigner() {
+        const canvas = document.getElementById('tartan-canvas');
+        const colorPalette = document.getElementById('color-palette');
+        const selectedColorsFlex = document.getElementById('selected-colors').querySelector('.flex');
+        const threadCountsInput = document.getElementById('thread-counts');
+        const generateBtn = document.getElementById('generate-tartan-btn');
+        const downloadBtn = document.getElementById('download-tartan-btn');
+        const statusEl = document.getElementById('tartan-status');
+        const tartanNameInput = document.getElementById('tartan-name');
+        
+        let selectedColors = [];
+        
+        colorPalette.innerHTML = Object.entries(APP_DATA.colors).map(([name, hex]) => 
+            `<div class="color-box w-8 h-8 rounded-full cursor-pointer border border-gray-300 shadow-sm" style="background-color: ${hex};" data-color="${hex}" title="${name}"></div>`
+        ).join('');
+        
+        colorPalette.addEventListener('click', e => {
+            const target = e.target.closest('.color-box');
+            if (!target) return;
+            
+            const color = target.dataset.color;
+            if (selectedColors.includes(color)) {
+                selectedColors = selectedColors.filter(c => c !== color);
+                target.classList.remove('selected');
+            } else if (selectedColors.length < 5) {
+                selectedColors.push(color);
+                target.classList.add('selected');
+            } else {
+                showToast('Maximum of 5 colors allowed.', 'error');
+            }
+            renderSelectedColors();
+        });
+        
+        function renderSelectedColors() {
+            selectedColorsFlex.innerHTML = selectedColors.map(c => `<div class="w-8 h-8 rounded-full border-2 border-stone-300" style="background-color: ${c};"></div>`).join('');
+        }
+        
+        function handleGenerateTartan() {
+            const counts = threadCountsInput.value.trim().split(' ').map(Number).filter(n => n > 0);
+            if (selectedColors.length === 0 || counts.length === 0 || selectedColors.length !== counts.length) {
+                showToast('Match selected colors with positive thread counts.', 'error');
+                return;
+            }
+            
+            // Save for the custom clan charter
+            customClanTartan.colors = selectedColors;
+            customClanTartan.counts = counts;
+            renderTartan(canvas, selectedColors, counts);
+            
+            statusEl.textContent = "Your custom tartan is ready!";
+            downloadBtn.classList.remove('hidden');
+        }
+        
+        generateBtn.addEventListener('click', handleGenerateTartan);
+        
+        downloadBtn.addEventListener('click', () => {
+            const tartanName = tartanNameInput.value || 'my_clan_hearth_tartan';
+            const link = document.createElement('a');
+            link.download = `${tartanName.replace(/\s+/g, '_')}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+            showToast('Tartan downloaded successfully!', 'success');
+        });
+    }
+    
+    function renderTartan(canvas, colors, counts) {
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const pattern = [...colors, ...[...colors].reverse().slice(1)];
+        const threadPattern = [...counts, ...[...counts].reverse().slice(1)];
+        
+        let x = 0;
+        let totalWidth = threadPattern.reduce((a, b) => a + b, 0);
+        if (totalWidth === 0) return;
+        
+        // Scale factor to fit the canvas width
+        const scale = canvas.width / (totalWidth * 2);
+        
+        while(x < canvas.width) {
+            for(let j = 0; j < pattern.length; j++) {
+                ctx.fillStyle = pattern[j];
+                ctx.fillRect(x, 0, threadPattern[j] * scale, canvas.height);
+                x += threadPattern[j] * scale;
+            }
+        }
+        
+        let y = 0;
+        ctx.globalAlpha = 0.5;
+         while(y < canvas.height) {
+            for(let j = 0; j < pattern.length; j++) {
+                ctx.fillStyle = pattern[j];
+                ctx.fillRect(0, y, canvas.width, threadPattern[j] * scale);
+                y += threadPattern[j] * scale;
+            }
+        }
+        ctx.globalAlpha = 1.0;
+    }
+    
+    function populateRecipesList() {
+        const listContainer = document.getElementById('recipe-list-container');
+        
+        listContainer.innerHTML = APP_DATA.recipesData.map(recipe => `
+            <div class="item-card bg-white/70 p-4 rounded-lg shadow-md cursor-pointer border-2 border-transparent transition" data-recipe-id="${recipe.id}" role="button" tabindex="0">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-title font-bold">${recipe.name}</h3>
+                        <p class="text-sm text-stone-600 mt-1">${recipe.description}</p>
+                        <div class="flex items-center mt-2 text-xs text-stone-500">
+                            <i class="far fa-clock mr-1"></i> ${recipe.prepTime} prep
+                            <span class="mx-2">•</span>
+                            <i class="far fa-fire mr-1"></i> ${recipe.cookTime} cook
+                        </div>
+                    </div>
+                    <button class="favorite-btn text-stone-400 hover:text-yellow-700 ml-2" data-id="${recipe.id}" data-type="recipe">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+            </div>
+        `).join('');
+        
+        listContainer.addEventListener('click', (event) => {
+            const card = event.target.closest('.item-card');
+            const favoriteBtn = event.target.closest('.favorite-btn');
+            
+            if (favoriteBtn) {
+                toggleFavorite(favoriteBtn.dataset.id, favoriteBtn.dataset.type, favoriteBtn);
+                return;
+            }
+            
+            if(card) {
+                listContainer.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                displayRecipeDetails(card.dataset.recipeId);
+            }
+        });
+        
+        // Update favorite button states
+        listContainer.querySelectorAll('.favorite-btn').forEach(btn => {
+            const isFavorite = favorites.some(fav => fav.id === btn.dataset.id && fav.type === btn.dataset.type);
+            if (isFavorite) {
+                btn.classList.add('text-yellow-700');
+                btn.classList.remove('text-stone-400');
+            }
+        });
+        
+        // Initially display the first recipe
+        if (APP_DATA.recipesData.length > 0) {
+            displayRecipeDetails(APP_DATA.recipesData[0].id);
+            listContainer.querySelector('.item-card').classList.add('active');
+        }
+    }
+    
+    function displayRecipeDetails(recipeId) {
+        const detailContainer = document.getElementById('recipe-detail-container');
+        const recipe = APP_DATA.recipesData.find(r => r.id === recipeId);
+        
+        if (!recipe) {
+            detailContainer.innerHTML = `<p class="text-center p-4">Recipe not found.</p>`;
+            return;
+        }
+        
+        detailContainer.innerHTML = `
+             <div class="p-2 animate-fade-in">
+                <div class="flex flex-col md:flex-row gap-6 mb-6">
+                    <img src="${recipe.image}" alt="${recipe.name}" class="w-full md:w-1/3 h-48 object-cover rounded-lg shadow-md">
+                    <div class="md:w-2/3">
+                        <h2 class="font-title text-3xl font-bold text-yellow-800 mb-2">${recipe.name}</h2>
+                        <p class="text-lg text-stone-700 mb-4">${recipe.description}</p>
+                        <div class="flex justify-around text-center text-sm mb-4">
+                            <div class="bg-stone-100 p-2 rounded-lg">
+                                <i class="fas fa-hourglass-start text-yellow-800 block mb-1"></i> 
+                                <div>Prep: ${recipe.prepTime}</div>
+                            </div>
+                            <div class="bg-stone-100 p-2 rounded-lg">
+                                <i class="fas fa-clock text-yellow-800 block mb-1"></i> 
+                                <div>Cook: ${recipe.cookTime}</div>
+                            </div>
+                            <div class="bg-stone-100 p-2 rounded-lg">
+                                <i class="fas fa-users text-yellow-800 block mb-1"></i> 
+                                <div>Serves: ${recipe.servings}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-stone-800">
+                    <div>
+                        <h3 class="font-title text-xl font-bold mb-3 text-yellow-800 flex items-center">
+                            <i class="fas fa-shopping-basket mr-2"></i> Ingredients
+                        </h3>
+                        <ul class="list-disc list-inside space-y-1 bg-stone-50 p-4 rounded-lg">
+                            ${recipe.ingredients.map(i => `<li>${i}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-title text-xl font-bold mb-3 text-yellow-800 flex items-center">
+                            <i class="fas fa-clipboard-list mr-2"></i> Instructions
+                        </h3>
+                        <ol class="list-decimal list-inside space-y-2 bg-stone-50 p-4 rounded-lg">
+                            ${recipe.instructions.map(i => `<li class="pb-2">${i}</li>`).join('')}
+                        </ol>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-center gap-4">
+                    <button class="print-recipe-btn bg-stone-200 text-stone-800 px-4 py-2 rounded-lg hover:bg-stone-300 transition transform hover:scale-105">
+                        <i class="fas fa-print mr-2"></i> Print Recipe
+                    </button>
+                    <button class="share-recipe-btn bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition transform hover:scale-105">
+                        <i class="fas fa-share-alt mr-2"></i> Share Recipe
+                    </button>
+                </div>
+            </div>`;
+        
+        document.querySelector('.print-recipe-btn').addEventListener('click', () => {
+            window.print();
+        });
+        
+        document.querySelector('.share-recipe-btn').addEventListener('click', () => {
+            showToast('Share functionality would be implemented here', 'info');
+        });
+    }
+    
+    function populateLegendsList() {
+        const listContainer = document.getElementById('legends-list-container');
+        
+        listContainer.innerHTML = APP_DATA.legendsData.map(legend => `
+            <div class="item-card bg-white/70 p-4 rounded-lg shadow-md cursor-pointer border-2 border-transparent transition flex items-center gap-4" data-legend-id="${legend.id}" role="button" tabindex="0">
+                <img src="${legend.image}" alt="${legend.name}" class="w-16 h-16 rounded-full object-cover border-2 border-amber-200">
+                <div class="flex-grow">
+                    <h3 class="font-title font-bold">${legend.name}</h3>
+                </div>
+                <button class="favorite-btn text-stone-400 hover:text-yellow-700" data-id="${legend.id}" data-type="legend">
+                    <i class="fas fa-heart"></i>
+                </button>
+            </div>
+        `).join('');
+        
+        listContainer.addEventListener('click', (event) => {
+            const card = event.target.closest('.item-card');
+            const favoriteBtn = event.target.closest('.favorite-btn');
+            
+            if (favoriteBtn) {
+                toggleFavorite(favoriteBtn.dataset.id, favoriteBtn.dataset.type, favoriteBtn);
+                return;
+            }
+            
+            if(card) {
+                listContainer.querySelectorAll('.item-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                displayLegendDetails(card.dataset.legendId);
+            }
+        });
+        
+        // Update favorite button states
+        listContainer.querySelectorAll('.favorite-btn').forEach(btn => {
+            const isFavorite = favorites.some(fav => fav.id === btn.dataset.id && fav.type === btn.dataset.type);
+            if (isFavorite) {
+                btn.classList.add('text-yellow-700');
+                btn.classList.remove('text-stone-400');
+            }
+        });
+        
+        // Initially display the first legend
+        if (APP_DATA.legendsData.length > 0) {
+            displayLegendDetails(APP_DATA.legendsData[0].id);
+            listContainer.querySelector('.item-card').classList.add('active');
+        }
+    }
+    
+    function displayLegendDetails(legendId) {
+        const detailContainer = document.getElementById('legend-detail-container');
+        const legend = APP_DATA.legendsData.find(l => l.id === legendId);
+        
+        if (!legend) {
+            detailContainer.innerHTML = `<p class="text-center p-4">Legend not found.</p>`;
+            return;
+        }
+        
+        let detailsHtml = `
+             <div class="text-center p-2 animate-fade-in">
+                <img src="${legend.image}" alt="${legend.name}" class="w-40 h-40 rounded-full object-cover border-4 border-yellow-800 p-1 bg-white mx-auto mb-6">
+                <h2 class="font-title text-3xl font-bold text-yellow-800 mb-3">${legend.name}</h2>
+                <p class="text-lg text-stone-700 mb-6 italic">${legend.shortDesc}</p>
+                <div class="text-left bg-stone-50 p-6 rounded-lg mb-6">
+                    <p class="text-stone-800 leading-relaxed">${legend.details}</p>
+                </div>
+                <div class="flex justify-center gap-4">
+                    <button class="share-legend-btn bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition transform hover:scale-105">
+                        <i class="fas fa-share-alt mr-2"></i> Share Legend
+                    </button>
+                </div>
+            </div>`;
+        
+        if (legend.id === 'brahan_seer') {
+            detailsHtml += `<div class="text-center mt-6"><a href="https://docs.google.com/presentation/d/1gX7be1P5m1ST8ervkth44YvDN5wg9G_a/edit?usp=sharing&ouid=101142821870242637937&rtpof=true&sd=true" target="_blank" class="inline-block bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition transform hover:scale-105">View Presentation</a></div>`;
+        }
+        
+        detailContainer.innerHTML = detailsHtml;
+        
+        document.querySelector('.share-legend-btn').addEventListener('click', () => {
+            showToast('Share functionality would be implemented here', 'info');
+        });
+    }
+    
+    // --- START THE APP ---
+    initializeApp();
+});
+</script>
+</body>
+</html>
