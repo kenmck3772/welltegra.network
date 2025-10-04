@@ -1,1008 +1,533 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Clan Hearth - Ultimate Scottish Heritage Platform</title>
-    <meta name="description" content="Discover your Scottish heritage through interactive clan exploration, premium heritage tours, spiritual clan finding, Ogham readings, and authentic cultural experiences. From Clan MacKenzie in Scotland.">
-    
-    <!-- External Libraries & Fonts -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Scripts -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WellTegra – From Data Chaos to Predictive Clarity</title>
+  <meta name="description" content="WellTegra unifies planning, execution, and analysis for well operations. Reduce NPT, reclaim engineering time, and align partners with a single source of truth." />
+  <meta name="theme-color" content="#0B0B0B" />
+  <meta property="og:title" content="WellTegra – From Data Chaos to Predictive Clarity" />
+  <meta property="og:description" content="Unify planning → execution → analysis. Reduce NPT, reclaim engineering time, align partners." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="" />
 
-    <style>
-        :root {
-            --clan-gold: #d4af37;
-            --clan-burgundy: #800020;
-            --clan-forest: #2d5016;
-            --clan-stone: #8b7355;
-            --parchment: #f4f1e8;
-            --aged-paper: #f0ead6;
+  <!-- Fonts & Tailwind -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: "#0B0B0B",
+            accent: "#0EA5E9",
+            muted: "#6B7280",
+            border: "#E5E7EB",
+            surface: "#F8FAFC"
+          },
+          fontFamily: { sans: ["Inter", "system-ui", "Segoe UI", "Roboto", "Arial", "sans-serif"] },
+          boxShadow: {
+            soft: "0 10px 24px -12px rgba(0,0,0,.15)",
+          }
         }
-        
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: linear-gradient(135deg, var(--parchment) 0%, var(--aged-paper) 100%);
-        }
-        .font-title { font-family: 'Cinzel', serif; }
-        
-        /* Accessibility */
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: var(--clan-gold);
-            color: var(--clan-burgundy);
-            padding: 8px;
-            text-decoration: none;
-            border-radius: 0 0 4px 0;
-            z-index: 1000;
-        }
-        
-        .skip-link:focus {
-            top: 0;
-        }
-        
-        /* Navigation Styles */
-        .nav-link.active { 
-            color: var(--clan-gold); 
-            border-bottom: 2px solid var(--clan-gold); 
-            background: rgba(212, 175, 55, 0.1);
-        }
-        .page-section { display: none; }
-        .page-section.active { display: block; }
-        
-        /* Component Styles */
-        .clan-emblem {
-            background: linear-gradient(45deg, var(--clan-burgundy), var(--clan-forest));
-            border: 3px solid var(--clan-gold);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        
-        .content-card { 
-            transition: all 0.3s ease-in-out; 
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-        }
-        .content-card:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
-        }
-        
-        .animate-fade-in { animation: fadeIn 0.6s ease-in-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Scrollbar Styles */
-        .sidebar-scroll::-webkit-scrollbar { width: 6px; }
-        .sidebar-scroll::-webkit-scrollbar-track { background: var(--aged-paper); }
-        .sidebar-scroll::-webkit-scrollbar-thumb { 
-            background: var(--clan-gold); 
-            border-radius: 3px; 
-        }
-        
-        /* Active States */
-        .active-item { 
-            background: linear-gradient(90deg, var(--clan-gold), #f4d03f);
-            color: var(--clan-burgundy); 
-            font-weight: 600; 
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        /* Map Styles */
-        #clanMap, #tripBuilderMap {
-            height: 100%;
-            min-height: 60vh;
-            width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-        
-        /* Quiz Styles */
-        .quiz-question { display: none; }
-        .quiz-question.active { display: block; }
-        .quiz-option {
-            transition: all 0.3s ease;
-            border: 2px solid #e5e7eb;
-        }
-        .quiz-option:hover {
-            background: linear-gradient(90deg, var(--clan-gold), #f4d03f);
-            border-color: var(--clan-burgundy);
-            color: var(--clan-burgundy);
-            transform: translateX(8px);
-        }
-        
-        /* Tartan Designer */
-        .color-box { 
-            transition: all 0.2s ease-in-out; 
-            border: 3px solid transparent;
-        }
-        .color-box:hover { transform: scale(1.15); }
-        .color-box.selected { 
-            border-color: var(--clan-gold); 
-            transform: scale(1.15); 
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
-        }
-        
-        /* Premium Elements */
-        .premium-badge {
-            background: linear-gradient(45deg, var(--clan-gold), #f4d03f);
-            color: var(--clan-burgundy);
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(45deg, var(--clan-burgundy), var(--clan-forest));
-            color: white;
-            border: 2px solid var(--clan-gold);
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            background: linear-gradient(45deg, var(--clan-forest), var(--clan-burgundy));
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-        
-        /* Chat Styles for AI Assistant */
-        .chat-container {
-            max-height: 400px;
-            overflow-y: auto;
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(10px);
-        }
-        .chat-message {
-            margin: 10px 0;
-            padding: 12px 16px;
-            border-radius: 18px;
-            max-width: 80%;
-        }
-        .chat-message.user {
-            background: linear-gradient(45deg, var(--clan-gold), #f4d03f);
-            color: var(--clan-burgundy);
-            margin-left: auto;
-        }
-        .chat-message.assistant {
-            background: linear-gradient(45deg, var(--clan-forest), var(--clan-burgundy));
-            color: white;
-        }
-        
-        /* Modal Styles */
-        .modal { 
-            backdrop-filter: blur(8px); 
-            background-color: rgba(0,0,0,0.7); 
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .clan-emblem {
-                width: 120px;
-                height: 120px;
-            }
-        }
-        
-        /* Custom Animations */
-        .pulse-gold {
-            animation: pulseGold 2s infinite;
-        }
-        @keyframes pulseGold {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
-            50% { box-shadow: 0 0 0 20px rgba(212, 175, 55, 0); }
-        }
-        
-        /* Trip Builder Specific */
-        .trip-item {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            border: 2px solid var(--clan-gold);
-            border-radius: 12px;
-            padding: 16px;
-            margin: 8px 0;
-        }
-        
-        .price-tag {
-            background: linear-gradient(45deg, var(--clan-burgundy), var(--clan-forest));
-            color: var(--clan-gold);
-            font-weight: 700;
-            padding: 8px 16px;
-            border-radius: 25px;
-            font-size: 1.2rem;
-        }
-        
-        /* Loading spinner */
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid var(--clan-gold);
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Ogham Rune Styles */
-        .ogham-stave {
-            background: linear-gradient(135deg, #a99a86, #8b7355);
-            border: 2px solid #5a452d;
-            border-radius: 8px;
-            padding: 20px 10px;
-            color: #f4f1e8;
-            font-size: 2.5rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .ogham-stave:hover {
-            transform: translateY(-5px) rotate(2deg);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
-            border-color: var(--clan-gold);
-        }
-        .ogham-symbol-svg {
-            stroke: var(--parchment);
-            stroke-width: 4;
-            height: 100px;
-            width: 100%;
-        }
-        @keyframes shuffle {
-            0%, 100% { transform: translate(0, 0) rotate(0); }
-            25% { transform: translate(5px, -5px) rotate(3deg); }
-            50% { transform: translate(-5px, 5px) rotate(-3deg); }
-            75% { transform: translate(3px, 3px) rotate(2deg); }
-        }
-        .shuffling .ogham-stave {
-            animation: shuffle 0.5s ease-in-out;
-        }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    :root { color-scheme: light; }
+    html, body { height: 100%; }
+    body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    /* Accessibility focus */
+    :focus-visible { outline: 2px solid #0EA5E9; outline-offset: 2px; border-radius: .5rem; }
+    /* Smooth range thumb on WebKit */
+    input[type=range] { accent-color: #0EA5E9; }
+    .chart-container {
+      position: relative;
+      margin: auto;
+      height: 40vh;
+      width: 80vw;
+      max-width: 550px;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 text-gray-800">
-    <!-- Skip to content link for accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    
-    <!-- Header -->
-    <header class="bg-white/90 backdrop-blur-lg shadow-2xl sticky top-0 z-50 border-b-4 border-yellow-600">
-        <div class="max-w-7xl mx-auto px-4 py-4">
-            <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center space-x-6">
-                    <div class="clan-emblem w-16 h-16 rounded-full flex items-center justify-center">
-                        <i class="fas fa-crown text-2xl text-yellow-300"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-3xl md:text-4xl font-title font-bold text-yellow-800">The Clan Hearth</h1>
-                        <p class="text-sm text-gray-600 italic font-medium">Troimh theine tha sinn aonaichte</p>
-                        <p class="text-xs text-gray-500">Through Fire We Are United</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <div class="hidden md:block text-right">
-                        <p class="text-sm font-semibold text-yellow-800">Ken McKenzie</p>
-                        <p class="text-xs text-gray-600">Clan MacKenzie • Montrose, Scotland</p>
-                        <div class="flex justify-end space-x-1 mt-1">
-                            <span class="premium-badge">Authentic Heritage</span>
-                        </div>
-                    </div>
-                    <button id="cart-button" class="relative text-gray-700 hover:text-yellow-800 transition-colors" aria-label="Shopping cart">
-                        <i class="fas fa-shopping-cart text-2xl"></i>
-                        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center font-bold">0</span>
-                    </button>
-                    <button id="mobile-menu-btn" class="md:hidden text-gray-700 text-2xl" aria-label="Toggle mobile menu">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Main Navigation -->
-            <nav id="main-nav" class="hidden md:flex items-center justify-center space-x-1 bg-gray-50 rounded-2xl p-2" aria-label="Main navigation">
-                <button class="nav-link font-semibold text-gray-600 hover:text-yellow-800 px-4 py-2 rounded-xl transition-all" data-target="home" aria-current="page"><i class="fas fa-home mr-2"></i>Home</button>
-                <button class="nav-link font-semibold text-gray-600 hover:text-yellow-800 px-4 py-2 rounded-xl transition-all" data-target="clans"><i class="fas fa-map mr-2"></i>Clans & Map</button>
-                <button class="nav-link font-semibold text-gray-600 hover:text-yellow-800 px-4 py-2 rounded-xl transition-all" data-target="spiritual-finder"><i class="fas fa-magic mr-2"></i>Spiritual Finder</button>
-                <button class="nav-link font-semibold text-gray-600 hover:text-yellow-800 px-4 py-2 rounded-xl transition-all" data-target="ogham-reading"><i class="fas fa-leaf mr-2"></i>Ogham Reading</button>
-                <button class="nav-link font-semibold text-gray-600 hover:text-yellow-800 px-4 py-2 rounded-xl transition-all" data-target="trip-builder"><i class="fas fa-route mr-2"></i>Trip Builder</button>
-                <button class="nav-link font-semibold text-gray-600 hover:text-yellow-800 px-4 py-2 rounded-xl transition-all" data-target="ai-assistant"><i class="fas fa-robot mr-2"></i>Och-I Assistant</button>
-                <button class="nav-link font-semibold text-gray-600 hover:text-yellow-800 px-4 py-2 rounded-xl transition-all" data-target="legends"><i class="fas fa-scroll mr-2"></i>Legends</button>
-                <button class="nav-link font-semibold text-gray-600 hover:text-yellow-800 px-4 py-2 rounded-xl transition-all" data-target="tartan-designer"><i class="fas fa-palette mr-2"></i>Tartan Designer</button>
-                <button class="nav-link font-semibold text-gray-600 hover:text-yellow-800 px-4 py-2 rounded-xl transition-all" data-target="recipes"><i class="fas fa-utensils mr-2"></i>Recipes</button>
-                <button class="nav-link font-semibold text-gray-600 hover:text-yellow-800 px-4 py-2 rounded-xl transition-all" data-target="events"><i class="fas fa-calendar-alt mr-2"></i>Events</button>
-                <button class="nav-link font-semibold text-gray-600 hover:text-yellow-800 px-4 py-2 rounded-xl transition-all" data-target="marketplace"><i class="fas fa-store mr-2"></i>Marketplace</button>
-            </nav>
-            
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden bg-white/95 rounded-2xl mt-4 shadow-xl">
-                <button class="block w-full text-left nav-link font-semibold text-gray-600 hover:text-yellow-800 p-4 border-t" data-target="home"><i class="fas fa-home mr-2"></i>Home</button>
-                <button class="block w-full text-left nav-link font-semibold text-gray-600 hover:text-yellow-800 p-4 border-t" data-target="clans"><i class="fas fa-map mr-2"></i>Clans & Map</button>
-                <button class="block w-full text-left nav-link font-semibold text-gray-600 hover:text-yellow-800 p-4 border-t" data-target="spiritual-finder"><i class="fas fa-magic mr-2"></i>Spiritual Finder</button>
-                <button class="block w-full text-left nav-link font-semibold text-gray-600 hover:text-yellow-800 p-4 border-t" data-target="ogham-reading"><i class="fas fa-leaf mr-2"></i>Ogham Reading</button>
-                <button class="block w-full text-left nav-link font-semibold text-gray-600 hover:text-yellow-800 p-4 border-t" data-target="trip-builder"><i class="fas fa-route mr-2"></i>Trip Builder</button>
-                <button class="block w-full text-left nav-link font-semibold text-gray-600 hover:text-yellow-800 p-4 border-t" data-target="ai-assistant"><i class="fas fa-robot mr-2"></i>Och-I Assistant</button>
-                <button class="block w-full text-left nav-link font-semibold text-gray-600 hover:text-yellow-800 p-4 border-t" data-target="legends"><i class="fas fa-scroll mr-2"></i>Legends</button>
-                <button class="block w-full text-left nav-link font-semibold text-gray-600 hover:text-yellow-800 p-4 border-t" data-target="tartan-designer"><i class="fas fa-palette mr-2"></i>Tartan Designer</button>
-                <button class="block w-full text-left nav-link font-semibold text-gray-600 hover:text-yellow-800 p-4 border-t" data-target="recipes"><i class="fas fa-utensils mr-2"></i>Recipes</button>
-                <button class="block w-full text-left nav-link font-semibold text-gray-600 hover:text-yellow-800 p-4 border-t" data-target="events"><i class="fas fa-calendar-alt mr-2"></i>Events</button>
-                <button class="block w-full text-left nav-link font-semibold text-gray-600 hover:text-yellow-800 p-4 border-t" data-target="marketplace"><i class="fas fa-store mr-2"></i>Marketplace</button>
-            </div>
+<body class="bg-white text-brand/95">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-b border-border">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <div class="flex h-16 items-center justify-between">
+        <a href="#top" class="flex items-center gap-3" aria-label="WellTegra home">
+          <span class="grid h-9 w-9 place-items-center rounded-xl bg-brand text-white text-sm font-bold">WT</span>
+          <span class="hidden sm:block text-sm text-muted">WellTegra Data Solutions</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-6 text-sm">
+          <a class="hover:opacity-70" href="#product">Product</a>
+          <a class="hover:opacity-70" href="#how">How it Works</a>
+          <a class="hover:opacity-70" href="#ecosystem">Ecosystem</a>
+          <a class="hover:opacity-70" href="#roi">ROI</a>
+          <a class="hover:opacity-70" href="#resources">Resources</a>
+          <a class="hover:opacity-70" href="#about">About</a>
+        </nav>
+        <div class="flex items-center gap-2">
+          <a href="#contact" class="hidden sm:inline-flex rounded-xl border border-border px-4 py-2 text-sm">Log in</a>
+          <a href="#contact" class="inline-flex items-center gap-2 rounded-2xl bg-brand text-white px-5 py-3 text-sm font-semibold shadow-soft hover:opacity-90">Book a demo
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
         </div>
-    </header>
-
-    <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
-        
-        <!-- Home Section -->
-        <section id="home-section" class="page-section active">
-            <div class="text-center mb-12 content-card rounded-3xl shadow-2xl p-8 md:p-12 animate-fade-in">
-                <div class="clan-emblem w-48 h-48 mx-auto mb-8 rounded-full flex items-center justify-center pulse-gold">
-                    <div class="text-center">
-                        <i class="fas fa-crown text-6xl text-yellow-300 mb-2"></i>
-                        <div class="text-yellow-300 font-bold text-sm">CLAN HEARTH</div>
-                    </div>
-                </div>
-                <h2 class="text-5xl md:text-7xl font-bold font-title text-gray-900 mb-4">Welcome to The Clan Hearth</h2>
-                <p class="text-2xl text-yellow-800 mb-4 font-title italic">Troimh theine tha sinn aonaichte</p>
-                <p class="text-lg text-gray-600 mb-8 italic">(Through Fire, We Are United)</p>
-                <p class="text-xl md:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed mb-8">
-                    Your premier gateway to authentic Scottish heritage. Discover clan histories, plan premium Highland tours, 
-                    connect with your spiritual clan, and experience Scotland through the eyes of genuine Highland descendants.
-                </p>
-
-                <!-- Gaelic Phrase of the Day -->
-                <div class="mt-12 mb-8 bg-clan-stone/20 p-6 rounded-2xl max-w-2xl mx-auto border-2 border-clan-gold/50">
-                    <h3 class="font-title text-2xl text-yellow-800 mb-4">Gaelic Phrase of the Day</h3>
-                    <p id="gaelic-phrase" class="text-3xl font-semibold text-clan-burgundy"></p>
-                    <p id="gaelic-pronunciation" class="text-lg text-gray-600 italic mb-2"></p>
-                    <p id="gaelic-translation" class="text-xl text-clan-forest font-medium"></p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                    <div class="content-card p-6 rounded-2xl">
-                        <i class="fas fa-magic text-4xl text-yellow-600 mb-4"></i>
-                        <h3 class="text-xl font-bold mb-2">Spiritual Clan Finder</h3>
-                        <p class="text-gray-600">Discover your spiritual clan connection through our unique personality-based matching system.</p>
-                    </div>
-                    <div class="content-card p-6 rounded-2xl">
-                        <i class="fas fa-route text-4xl text-yellow-600 mb-4"></i>
-                        <h3 class="text-xl font-bold mb-2">Premium Heritage Tours</h3>
-                        <p class="text-gray-600">Exclusive Scottish experiences from £2,000-5,000+ including private castle access and clan chief meetings.</p>
-                    </div>
-                    <div class="content-card p-6 rounded-2xl">
-                        <i class="fas fa-crown text-4xl text-yellow-600 mb-4"></i>
-                        <h3 class="text-xl font-bold mb-2">Authentic Heritage</h3>
-                        <p class="text-gray-600">Created by Ken McKenzie, authentic Clan MacKenzie descendant living in Montrose, Scotland.</p>
-                    </div>
-                </div>
-                
-                <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6 mt-12">
-                    <button class="btn-primary px-8 py-4 rounded-2xl font-bold text-lg transition-all nav-link" data-target="spiritual-finder" aria-label="Find your clan soul"><i class="fas fa-magic mr-2"></i>Find Your Clan Soul</button>
-                    <button class="btn-primary px-8 py-4 rounded-2xl font-bold text-lg transition-all nav-link" data-target="trip-builder" aria-label="Plan your heritage journey"><i class="fas fa-route mr-2"></i>Plan Your Heritage Journey</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Clans & Map Section -->
-        <section id="clans-section" class="page-section">
-            <div class="flex flex-col lg:flex-row min-h-screen bg-white/80 rounded-3xl shadow-2xl overflow-hidden">
-                <aside class="w-full lg:w-80 bg-gray-50 border-r border-gray-200 p-6 flex flex-col">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-bold text-gray-800 font-title"><i class="fas fa-shield-alt mr-2 text-yellow-600"></i>Scottish Clans</h2>
-                        <span class="premium-badge">50+ Clans</span>
-                    </div>
-                    <div id="clan-sidebar-list" class="sidebar-scroll overflow-y-auto flex-grow" role="list"></div>
-                </aside>
-                <main id="clans-main-content" class="flex-1 p-4 sm:p-6 lg:p-8">
-                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 h-full">
-                        <div class="xl:col-span-2 h-full">
-                            <div id="clanMap" class="w-full h-full rounded-2xl shadow-2xl" aria-label="Interactive map of Scottish clan territories"></div>
-                        </div>
-                        <div class="bg-gray-50 p-6 rounded-2xl shadow-inner">
-                            <h3 class="text-xl font-bold mb-4 font-title text-yellow-800"><i class="fas fa-info-circle mr-2"></i>Clan Details</h3>
-                            <div id="map-info" class="space-y-4">
-                                <div class="text-center py-12">
-                                    <i class="fas fa-map-marked-alt text-6xl text-gray-300 mb-4"></i>
-                                    <p class="text-gray-500">Select a clan from the list to explore their territory, history, and heritage.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-        </section>
-
-        <!-- Spiritual Clan Finder Section -->
-        <section id="spiritual-finder-section" class="page-section">
-            <div class="content-card rounded-3xl shadow-2xl p-6 md:p-12 animate-fade-in">
-                <div class="text-center mb-12">
-                    <div class="clan-emblem w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center"><i class="fas fa-magic text-3xl text-yellow-300"></i></div>
-                    <h2 class="text-4xl md:text-5xl font-title font-bold text-gray-900 mb-4">Spiritual Clan Finder</h2>
-                    <p class="text-xl text-gray-600 mb-4">Discover your spiritual connection to Scottish clan heritage</p>
-                    <div class="flex justify-center space-x-4 mb-8">
-                        <span class="premium-badge">Viral Marketing Tool</span>
-                        <span class="premium-badge">Global Appeal</span>
-                    </div>
-                </div>
-                <div id="spiritual-quiz-container" class="max-w-3xl mx-auto"></div>
-                <div id="spiritual-quiz-result" class="hidden text-center max-w-3xl mx-auto"></div>
-            </div>
-        </section>
-
-        <!-- Ogham Rune Reading Section -->
-        <section id="ogham-reading-section" class="page-section">
-            <div class="content-card rounded-3xl shadow-2xl p-6 md:p-12 animate-fade-in">
-                <div class="text-center mb-12">
-                    <div class="clan-emblem w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center"><i class="fas fa-leaf text-3xl text-yellow-300"></i></div>
-                    <h2 class="text-4xl md:text-5xl font-title font-bold text-gray-900 mb-4">Ogham Rune Reading</h2>
-                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Connect with ancient Celtic wisdom. Focus your mind on a question and cast a rune to receive guidance from the sacred trees.</p>
-                     <div class="flex justify-center space-x-4 mt-4">
-                        <span class="premium-badge">Ancient Celtic Wisdom</span>
-                        <span class="premium-badge">Personal Guidance</span>
-                    </div>
-                </div>
-                
-                <div id="ogham-caster" class="max-w-4xl mx-auto text-center">
-                    <div id="ogham-start">
-                        <p class="text-lg text-gray-700 mb-8">Take a deep breath, clear your mind, and when you are ready, cast your rune.</p>
-                        <button id="cast-rune-btn" class="btn-primary px-12 py-5 rounded-2xl font-bold text-xl transition-all"><i class="fas fa-hand-sparkles mr-3"></i>Cast Your Rune</button>
-                    </div>
-                    <div id="ogham-casting" class="hidden">
-                        <p class="text-lg text-gray-700 mb-8 animate-pulse">The sacred trees are whispering...</p>
-                        <div class="grid grid-cols-5 md:grid-cols-10 gap-4 shuffling"></div>
-                    </div>
-                    <div id="ogham-result" class="hidden animate-fade-in">
-                        <div class="grid md:grid-cols-3 gap-8 items-center bg-gray-50 p-8 rounded-2xl">
-                            <div class="md:col-span-1 text-center">
-                                <div id="ogham-result-symbol" class="bg-clan-stone mx-auto p-4 rounded-lg shadow-lg w-48"></div>
-                            </div>
-                            <div class="md:col-span-2 text-left">
-                                <h3 id="ogham-result-name" class="text-4xl font-bold font-title text-yellow-800"></h3>
-                                <p id="ogham-result-tree" class="text-xl text-gray-600 mb-4 italic"></p>
-                                <p id="ogham-result-meaning" class="text-lg text-gray-700 leading-relaxed"></p>
-                            </div>
-                        </div>
-                        <button id="cast-again-btn" class="mt-12 btn-primary px-8 py-4 rounded-2xl font-bold text-lg transition-all"><i class="fas fa-redo mr-2"></i>Cast Again</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Trip Builder Section -->
-        <section id="trip-builder-section" class="page-section">
-            <div class="content-card rounded-3xl shadow-2xl p-6 md:p-12 animate-fade-in">
-                <div class="text-center mb-8">
-                    <h2 class="text-4xl md:text-5xl font-title font-bold text-gray-900 mb-4"><i class="fas fa-route mr-4 text-yellow-600"></i>Heritage Trip Builder</h2>
-                    <p class="text-xl text-gray-600 mb-6">Plan your ultimate Scottish heritage experience</p>
-                    <div class="flex justify-center space-x-4 mb-8">
-                        <span class="premium-badge">Premium Tours £2,000-5,000+</span>
-                        <span class="premium-badge">Exclusive Access</span>
-                    </div>
-                </div>
-                
-                <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
-                    <div class="xl:col-span-1 bg-gray-50 rounded-2xl p-6">
-                        <h3 class="text-xl font-bold mb-6 font-title"><i class="fas fa-clipboard-list mr-2 text-yellow-600"></i>Plan Your Journey</h3>
-                        <div class="space-y-6">
-                            <div>
-                                <label for="trip-type" class="block text-sm font-semibold text-gray-700 mb-2">Experience Type</label>
-                                <select id="trip-type" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500" aria-required="true">
-                                    <option value="heritage">Heritage & Clans</option>
-                                    <option value="luxury">Luxury Highland Tour</option>
-                                    <option value="whisky">Whisky & Distilleries</option>
-                                    <option value="golf">Golf Championships</option>
-                                    <option value="corporate">Corporate Team Building</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="trip-duration" class="block text-sm font-semibold text-gray-700 mb-2">Duration</label>
-                                <select id="trip-duration" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500" aria-required="true">
-                                    <option value="3">3 Days - Weekend Highland</option>
-                                    <option value="5">5 Days - Highland Explorer</option>
-                                    <option value="7">7 Days - Complete Heritage</option>
-                                    <option value="10">10 Days - Clan Immersion</option>
-                                    <option value="14">14 Days - Grand Scotland Tour</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="group-size" class="block text-sm font-semibold text-gray-700 mb-2">Group Size</label>
-                                <select id="group-size" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500" aria-required="true">
-                                    <option value="1">Individual (1 person)</option>
-                                    <option value="2">Couple (2 people)</option>
-                                    <option value="4">Small Group (4 people)</option>
-                                    <option value="8">Family Group (8 people)</option>
-                                    <option value="12">Corporate Group (12 people)</option>
-                                </select>
-                            </div>
-                            <button id="build-trip-btn" class="w-full btn-primary py-3 rounded-lg font-bold" aria-label="Build my heritage journey"><i class="fas fa-magic mr-2"></i>Build My Heritage Journey</button>
-                        </div>
-                        <div id="trip-summary" class="mt-8 p-4 bg-white rounded-lg border border-yellow-200 hidden">
-                            <h4 class="font-bold text-yellow-800 mb-2"><i class="fas fa-calculator mr-2"></i>Trip Summary</h4>
-                            <div id="trip-details"></div>
-                            <div class="mt-4 p-3 bg-yellow-50 rounded-lg">
-                                <div class="text-center">
-                                    <div class="price-tag inline-block">Total: £<span id="total-price">0</span></div>
-                                </div>
-                                <button id="book-trip-btn" class="w-full mt-4 btn-primary py-2 rounded-lg font-bold" aria-label="Book trip now"><i class="fas fa-calendar-check mr-2"></i>Book Now</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="xl:col-span-3">
-                        <div id="tripBuilderMap" style="height: 600px;" class="rounded-2xl shadow-2xl" aria-label="Interactive map for trip planning"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- AI Assistant Section -->
-        <section id="ai-assistant-section" class="page-section">
-            <div class="content-card rounded-3xl shadow-2xl p-6 md:p-12 animate-fade-in">
-                <div class="text-center mb-8">
-                    <h2 class="text-4xl md:text-5xl font-title font-bold text-gray-900 mb-4"><i class="fas fa-robot mr-4 text-yellow-600"></i>Och-I, Your Scottish Heritage Assistant</h2>
-                    <p class="text-xl text-gray-600 mb-6">Chat with our AI assistant for personalized heritage guidance</p>
-                    <div class="flex justify-center space-x-4 mb-8">
-                        <span class="premium-badge">24/7 Available</span>
-                        <span class="premium-badge">Scottish Personality</span>
-                    </div>
-                </div>
-                <div class="max-w-4xl mx-auto">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-2">
-                            <div class="bg-gray-50 rounded-2xl p-6 shadow-inner">
-                                <div class="chat-container p-4 rounded-xl mb-4" id="chat-messages" role="log" aria-live="polite">
-                                    <div class="chat-message assistant">
-                                        <div class="flex items-start space-x-3">
-                                            <i class="fas fa-robot text-2xl text-yellow-400 mt-1"></i>
-                                            <div>
-                                                <p class="font-bold text-sm text-yellow-300 mb-1">Och-I</p>
-                                                <p>Failte! I'm Och-I, your Scottish heritage assistant. I can help you discover clan connections, plan heritage tours, recommend whisky tastings, or answer any questions about Scottish culture. What would you like to know about bonnie Scotland?</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex space-x-2">
-                                    <input type="text" id="chat-input" placeholder="Ask me about Scottish heritage..." class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500" aria-label="Type your message">
-                                    <button id="send-chat-btn" class="btn-primary px-6 py-3 rounded-lg" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space-y-4">
-                            <h3 class="text-xl font-bold font-title text-gray-800"><i class="fas fa-bolt mr-2 text-yellow-600"></i>Quick Actions</h3>
-                            <button class="w-full text-left p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all quick-chat-btn" data-message="What clan should I connect with based on my personality?" aria-label="Find my clan"><i class="fas fa-search mr-3 text-yellow-600"></i><span class="font-semibold">Find My Clan</span></button>
-                            <button class="w-full text-left p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all quick-chat-btn" data-message="I want to plan a premium heritage tour to Scotland. What experiences do you recommend?" aria-label="Plan heritage tour"><i class="fas fa-route mr-3 text-yellow-600"></i><span class="font-semibold">Plan Heritage Tour</span></button>
-                            <button class="w-full text-left p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all quick-chat-btn" data-message="Tell me about the best Scottish whisky experiences for visitors." aria-label="Whisky experiences"><i class="fas fa-glass-whiskey mr-3 text-yellow-600"></i><span class="font-semibold">Whisky Experiences</span></button>
-                            <button class="w-full text-left p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all quick-chat-btn" data-message="I'm interested in corporate team building programs with Scottish heritage themes." aria-label="Corporate programs"><i class="fas fa-users mr-3 text-yellow-600"></i><span class="font-semibold">Corporate Programs</span></button>
-                            <button class="w-full text-left p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all quick-chat-btn" data-message="What are the most authentic Scottish cultural experiences I can book?" aria-label="Authentic experiences"><i class="fas fa-crown mr-3 text-yellow-600"></i><span class="font-semibold">Authentic Experiences</span></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Legends Section -->
-        <section id="legends-section" class="page-section">
-            <div class="flex flex-col lg:flex-row min-h-screen bg-white/80 rounded-3xl shadow-2xl overflow-hidden">
-                <aside class="w-full lg:w-80 bg-gray-50 border-r border-gray-200 p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-bold text-gray-800 font-title"><i class="fas fa-scroll mr-2 text-yellow-600"></i>Highland Legends</h2>
-                        <span class="premium-badge">Historical</span>
-                    </div>
-                    <div class="sidebar-scroll overflow-y-auto max-h-96" id="legends-sidebar" role="list"></div>
-                </aside>
-                <main id="legends-main-content" class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
-                    <div class="text-center py-20">
-                        <i class="fas fa-scroll text-8xl text-gray-300 mb-6"></i>
-                        <p class="text-xl text-gray-500">Select a legend to discover their story and heritage</p>
-                    </div>
-                </main>
-            </div>
-        </section>
-
-        <!-- Tartan Designer Section -->
-        <section id="tartan-designer-section" class="page-section">
-            <div class="content-card rounded-3xl shadow-2xl p-6 md:p-12 animate-fade-in">
-                <div class="text-center mb-8">
-                    <h2 class="text-4xl md:text-5xl font-title font-bold text-gray-900 mb-4"><i class="fas fa-palette mr-4 text-yellow-600"></i>Tartan Designer</h2>
-                    <p class="text-xl text-gray-600 mb-6">Create and share your own unique Scottish tartan pattern</p>
-                    <div class="flex justify-center space-x-4 mb-8">
-                        <span class="premium-badge">Interactive Design</span>
-                        <span class="premium-badge">Shareable</span>
-                    </div>
-                </div>
-                <div class="flex flex-col xl:flex-row gap-8">
-                    <div class="xl:w-1/3 bg-gray-50 p-6 rounded-2xl border border-gray-200">
-                        <div class="mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 rounded-r-lg">
-                            <h3 class="font-bold">How to Design Your Tartan</h3>
-                            <p class="text-sm mt-1">A tartan is a repeating pattern of colored stripes. Create your unique "sett" pattern that will be mirrored to form the complete tartan.</p>
-                        </div>
-                        <div class="space-y-6">
-                            <div>
-                                <h3 class="text-lg font-semibold mb-3"><i class="fas fa-palette mr-2 text-yellow-600"></i>1. Pick a Colour</h3>
-                                <div id="color-palette" class="grid grid-cols-5 gap-3" role="radiogroup" aria-label="Color palette"></div>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold mb-3"><i class="fas fa-ruler mr-2 text-yellow-600"></i>2. Set Stripe Size & Add</h3>
-                                <div class="flex items-center gap-3">
-                                    <input type="number" id="thread-count" class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500" placeholder="e.g., 24" min="2" aria-label="Thread count">
-                                    <button id="add-stripe-btn" class="btn-primary px-6 py-3 rounded-lg font-semibold" aria-label="Add stripe"><i class="fas fa-plus mr-1"></i>Add</button>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold mb-3"><i class="fas fa-list mr-2 text-yellow-600"></i>3. Your Pattern (Sett)</h3>
-                                <div id="pattern-list" class="bg-white p-4 rounded-lg h-40 overflow-y-auto border border-gray-200" role="list"></div>
-                                <button id="clear-pattern-btn" class="w-full mt-2 bg-red-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-red-700 transition-colors" aria-label="Clear pattern"><i class="fas fa-trash mr-2"></i>Clear Pattern</button>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-semibold mb-3"><i class="fas fa-tag mr-2 text-yellow-600"></i>4. Name Your Tartan</h3>
-                                <input type="text" id="tartan-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500" placeholder="e.g., 'Highland Dream'" aria-label="Tartan name">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="xl:w-2/3 flex flex-col">
-                        <div class="bg-white p-4 rounded-2xl shadow-inner border flex-grow mb-6">
-                            <canvas id="tartan-canvas" class="w-full rounded-lg" style="height: 400px;" aria-label="Tartan preview"></canvas>
-                        </div>
-                        <div class="bg-white p-6 rounded-2xl border flex flex-wrap items-center justify-center gap-4">
-                            <button id="save-tartan-btn" class="btn-primary px-6 py-3 rounded-lg font-bold" aria-label="Save tartan as image"><i class="fas fa-download mr-2"></i>Save as Image</button>
-                            <button id="share-tartan-btn" class="btn-primary px-6 py-3 rounded-lg font-bold" aria-label="Share tartan"><i class="fas fa-share mr-2"></i>Share Link</button>
-                        </div>
-                        <div class="mt-8">
-                            <h3 class="text-lg font-semibold text-center mb-4">Or start with a famous tartan:</h3>
-                            <div id="tartan-examples-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Recipes Section -->
-        <section id="recipes-section" class="page-section">
-            <div class="content-card rounded-3xl shadow-2xl p-6 md:p-12 animate-fade-in">
-                <div class="text-center mb-10">
-                    <h1 class="text-4xl md:text-5xl font-bold font-title text-gray-900 mb-4"><i class="fas fa-utensils mr-4 text-yellow-600"></i>The Highland Larder</h1>
-                    <p class="text-xl text-gray-600 mb-6">Authentic Scottish recipes from clan territories across the Highlands</p>
-                    <div class="flex justify-center space-x-4 mb-8">
-                        <span class="premium-badge">150+ Recipes</span>
-                        <span class="premium-badge">Regional Specialties</span>
-                    </div>
-                </div>
-                <div class="bg-white/80 rounded-2xl shadow-lg p-6 mb-10">
-                    <h3 class="text-2xl font-bold font-title text-gray-800 mb-4 text-center"><i class="fas fa-book mr-2 text-yellow-600"></i>Recipe Categories</h3>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4" id="recipe-categories" role="list">
-                        <button class="recipe-category-btn p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors text-center" data-category="all" aria-pressed="true"><i class="fas fa-list text-yellow-600 text-2xl mb-2"></i><div class="font-semibold text-sm">All Recipes</div></button>
-                        <button class="recipe-category-btn p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors text-center" data-category="highlands" aria-pressed="false"><i class="fas fa-mountain text-yellow-600 text-2xl mb-2"></i><div class="font-semibold text-sm">Highland</div></button>
-                        <button class="recipe-category-btn p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors text-center" data-category="lowlands" aria-pressed="false"><i class="fas fa-hills text-yellow-600 text-2xl mb-2"></i><div class="font-semibold text-sm">Lowland</div></button>
-                        <button class="recipe-category-btn p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors text-center" data-category="islands" aria-pressed="false"><i class="fas fa-water text-yellow-600 text-2xl mb-2"></i><div class="font-semibold text-sm">Islands</div></button>
-                        <button class="recipe-category-btn p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors text-center" data-category="borders" aria-pressed="false"><i class="fas fa-chess-rook text-yellow-600 text-2xl mb-2"></i><div class="font-semibold text-sm">Borders</div></button>
-                        <button class="recipe-category-btn p-3 bg-gray-50 rounded-lg hover:bg-yellow-50 transition-colors text-center" data-category="festive" aria-pressed="false"><i class="fas fa-star text-yellow-600 text-2xl mb-2"></i><div class="font-semibold text-sm">Festive</div></button>
-                    </div>
-                </div>
-                <div id="recipe-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" role="list"></div>
-            </div>
-        </section>
-
-        <!-- Events Section (Placeholder) -->
-        <section id="events-section" class="page-section">
-            <div class="content-card rounded-3xl shadow-2xl p-6 md:p-12 animate-fade-in text-center">
-                <div class="clan-emblem w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center"><i class="fas fa-calendar-alt text-3xl text-yellow-300"></i></div>
-                <h2 class="text-4xl md:text-5xl font-title font-bold text-gray-900 mb-4">Events Calendar</h2>
-                <p class="text-2xl text-yellow-800 mb-8 font-title italic">Coming Soon!</p>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    We're working on a comprehensive calendar of Highland games, clan gatherings, online seminars, and cultural festivals. 
-                    Check back soon to find events near you or online to connect with your Scottish heritage.
-                </p>
-                <i class="fas fa-tools text-6xl text-gray-300 mt-12"></i>
-            </div>
-        </section>
-
-        <!-- Marketplace Section -->
-        <section id="marketplace-section" class="page-section">
-            <div class="content-card rounded-3xl shadow-2xl p-6 md:p-12 animate-fade-in">
-                <div class="text-center mb-10">
-                    <h1 class="text-4xl md:text-5xl font-bold font-title text-gray-900 mb-4"><i class="fas fa-store mr-4 text-yellow-600"></i>The Highland Market</h1>
-                    <p class="text-xl text-gray-600 mb-6">Authentic Scottish goods crafted by Highland artisans</p>
-                    <div class="flex justify-center space-x-4 mb-8">
-                        <span class="premium-badge">Authentic Goods</span>
-                        <span class="premium-badge">Highland Crafted</span>
-                    </div>
-                </div>
-                <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" role="list"></div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Modal -->
-    <div id="generic-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <div id="modal-content" class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 id="modal-title" class="text-2xl font-bold font-title text-gray-900"></h2>
-                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl" aria-label="Close modal"><i class="fas fa-times"></i></button>
-                </div>
-                <div id="modal-body"></div>
-            </div>
-        </div>
+      </div>
     </div>
+  </header>
 
-    <!-- Message Box -->
-    <div id="message-box" class="hidden fixed top-24 right-5 text-white py-3 px-6 rounded-lg shadow-2xl transition-all duration-300 z-[110]" role="alert" aria-live="assertive">
-        <div class="flex items-center">
-            <i id="message-icon" class="fas fa-check-circle mr-2"></i>
-            <p id="message-text"></p>
+  <!-- Hero -->
+  <section id="top" class="border-b border-border">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <div class="grid gap-10 py-16 md:grid-cols-2 md:py-24">
+        <div>
+          <span class="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs font-medium">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M11.645 22.73a.75.75 0 01-1.29-.512v-5.403l-4.14 4.14a.75.75 0 01-1.06-1.06l4.14-4.141H3.893a.75.75 0 010-1.5h5.403l-4.14-4.14a.75.75 0 111.06-1.061l4.141 4.14V3.893a.75.75 0 011.5 0v5.403l4.14-4.14a.75.75 0 111.06 1.06l-4.14 4.141h5.403a.75.75 0 010 1.5h-5.403l4.14 4.14a.75.75 0 11-1.06 1.061l-4.141-4.14v5.403c0 .197-.078.386-.217.525z"/></svg>
+            From data chaos to predictive clarity
+          </span>
+          <h1 class="mt-4 text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
+            Engineering insight, <span class="underline decoration-4 underline-offset-4 decoration-accent">amplified by data</span>
+          </h1>
+          <p class="mt-4 text-[15px] leading-7 text-muted max-w-prose">
+            Reduce NPT, reclaim engineering time, and align partners with a single source of truth for planning, execution, and analysis across your well portfolio.
+          </p>
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <a href="#how" class="inline-flex items-center gap-2 rounded-2xl bg-brand text-white px-5 py-3 text-sm font-semibold shadow-soft hover:opacity-90">See How It Works
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+            <a href="#resources" class="rounded-2xl border border-border px-5 py-3 text-sm font-semibold">Read the white paper</a>
+          </div>
+          <div class="mt-8 grid grid-cols-3 gap-4">
+            <div class="rounded-2xl border border-border p-5">
+              <p class="text-xs text-muted">NPT Reduction</p>
+              <p class="mt-1 text-2xl font-semibold">20–30%</p>
+              <p class="text-xs text-muted">scenario modelling</p>
+            </div>
+            <div class="rounded-2xl border border-border p-5">
+              <p class="text-xs text-muted">Time Reclaimed</p>
+              <p class="mt-1 text-2xl font-semibold">40–50%</p>
+              <p class="text-xs text-muted">engineering hours</p>
+            </div>
+            <div class="rounded-2xl border border-border p-5">
+              <p class="text-xs text-muted">Payback</p>
+              <p class="mt-1 text-2xl font-semibold">&lt; 6 months</p>
+              <p class="text-xs text-muted">typical modeled ROI</p>
+            </div>
+          </div>
         </div>
+
+        <!-- Hero Mock Panel -->
+        <div class="relative">
+          <div class="rounded-3xl border border-border p-4 shadow-soft">
+            <div class="rounded-2xl border border-border p-4 bg-white">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 text-sm font-semibold">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 6.75A2.25 2.25 0 016.75 4.5h10.5A2.25 2.25 0 0119.5 6.75v10.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 17.25V6.75z"/></svg>
+                  Intervention Planner
+                </div>
+                <span class="text-xs text-muted">Live preview</span>
+              </div>
+              <div class="mt-4 grid grid-cols-3 gap-3">
+                <div class="rounded-xl border border-border p-3 bg-brand text-white">
+                  <p class="text-[11px] font-semibold">Step 1</p>
+                  <p class="mt-1 text-sm">Select Well</p>
+                </div>
+                <div class="rounded-xl border border-border p-3">
+                  <p class="text-[11px] font-semibold">Step 2</p>
+                  <p class="mt-1 text-sm">Define Plan</p>
+                </div>
+                <div class="rounded-xl border border-border p-3">
+                  <p class="text-[11px] font-semibold">Step 3</p>
+                  <p class="mt-1 text-sm">Review & Simulate</p>
+                </div>
+              </div>
+              <div class="mt-4 rounded-xl border border-border p-4 bg-surface">
+                <p class="text-sm font-semibold">AI Advisor</p>
+                <p class="mt-1 text-sm text-muted">Cross‑references historic case studies and operational patterns to recommend the most effective intervention strategies with confidence scores.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
+  <!-- Product pillars -->
+  <section id="product" class="border-b border-border">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <div class="grid gap-6 py-16 md:grid-cols-3">
+        <div class="rounded-2xl border border-border p-6">
+          <div class="flex items-center gap-3">
+            <div class="rounded-xl border border-border p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm1 4.5a1 1 0 112 0V11a1 1 0 01-2 0V7.5zM11 13a1 1 0 10-2 0v3.5a1 1 0 102 0V13z"/></svg>
+            </div>
+            <h3 class="text-base font-semibold tracking-tight">Unified data layer</h3>
+          </div>
+          <p class="mt-3 text-sm text-muted leading-6">Stop wrangling spreadsheets and PDFs. Ingest, normalize, and connect to systems of record like WellView, Petrel, and Sapphire to surface insights everywhere.</p>
+        </div>
+        <div class="rounded-2xl border border-border p-6">
+          <div class="flex items-center gap-3">
+            <div class="rounded-xl border border-border p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 6.75h15v2.25h-15V6.75zM4.5 10.5h9V12h-9v-1.5zM4.5 13.5H12V15H4.5v-1.5zM4.5 16.5h6V18h-6v-1.5zM15.75 12l2.25 2.25L21 11.25"/></svg>
+            </div>
+            <h3 class="text-base font-semibold tracking-tight">Plan → Execute → Analyze</h3>
+          </div>
+          <p class="mt-3 text-sm text-muted leading-6">One workspace for engineering, logistics, commercial, HSE & risk, and POB & emergency response.</p>
+        </div>
+        <div class="rounded-2xl border border-border p-6">
+          <div class="flex items-center gap-3">
+            <div class="rounded-xl border border-border p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25c-4.28 0-7.75 3.47-7.75 7.75 0 6.5 7.75 11.75 7.75 11.75s7.75-5.25 7.75-11.75c0-4.28-3.47-7.75-7.75-7.75zm0 10.25a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+            </div>
+            <h3 class="text-base font-semibold tracking-tight">Privacy‑preserving by design</h3>
+          </div>
+          <p class="mt-3 text-sm text-muted leading-6">Community‑trained models, anonymized patterns, and governed access so your raw data stays yours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        const gaelicPhrases = [
-            { gaelic: "Fàilte!", pronunciation: "Fahl-che", translation: "Welcome!" },
-            { gaelic: "Madainn mhath", pronunciation: "Ma-teen vah", translation: "Good morning" },
-            { gaelic: "Ciamar a tha thu?", pronunciation: "Kim-ar a ha oo?", translation: "How are you?" },
-            { gaelic: "Slàinte mhath!", pronunciation: "Slawn-che vah", translation: "Good health! (Cheers!)" },
-            { gaelic: "Tapadh leat", pronunciation: "Tap-ah let", translation: "Thank you" },
-            { gaelic: "Alba gu bràth", pronunciation: "Al-a-pa goo brah", translation: "Scotland forever" }
-        ];
+  <!-- How it works -->
+  <section id="how" class="border-b border-border">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <div class="py-16">
+        <h2 class="text-2xl font-semibold tracking-tight">How it works</h2>
+        <div class="mt-6 grid gap-6 md:grid-cols-3">
+          <div class="rounded-2xl border border-border p-6">
+            <div class="flex items-center gap-3">
+              <div class="rounded-xl border border-border p-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4.5h14v2H5v-2zm0 4h10v2H5v-2zm0 4h14v2H5v-2zm0 4h10v2H5v-2z"/></svg></div>
+              <h3 class="text-base font-semibold tracking-tight">1. Select well</h3>
+            </div>
+            <p class="mt-3 text-sm text-muted leading-6">Choose the target well and pull context from case studies and live data sources.</p>
+          </div>
+          <div class="rounded-2xl border border-border p-6">
+            <div class="flex items-center gap-3">
+              <div class="rounded-xl border border-border p-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5L12 2z"/></svg></div>
+              <h3 class="text-base font-semibold tracking-tight">2. Define objectives + AI advise</h3>
+            </div>
+            <p class="mt-3 text-sm text-muted leading-6">The AI Advisor cross‑references historic successes and patterns to recommend interventions.</p>
+          </div>
+          <div class="rounded-2xl border border-border p-6">
+            <div class="flex items-center gap-3">
+              <div class="rounded-xl border border-border p-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v2H6V6zm0 5h12v2H6v-2zm0 5h12v2H6v-2z"/></svg></div>
+              <h3 class="text-base font-semibold tracking-tight">3. Review, simulate, execute</h3>
+            </div>
+            <p class="mt-3 text-sm text-muted leading-6">Generate a procedure, simulate operations, then go live with logistics, HSE, and commercial views in‑sync.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Ecosystem Section -->
+  <section id="ecosystem" class="border-b border-border bg-surface">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <div class="py-16">
+        <div class="text-center">
+            <h2 class="text-2xl font-semibold tracking-tight">Navigating the Fragmented Digital Oilfield</h2>
+            <p class="mt-2 text-sm text-muted max-w-3xl mx-auto">The energy sector relies on powerful, specialized software. However, these tools often create data silos, trapping critical information and hindering cross-functional insight. WellTegra was built to bridge this gap.</p>
+        </div>
 
-        function displayGaelicPhrase() {
-            const now = new Date();
-            const start = new Date(now.getFullYear(), 0, 0);
-            const diff = now - start;
-            const oneDay = 1000 * 60 * 60 * 24;
-            const dayOfYear = Math.floor(diff / oneDay);
-            const phrase = gaelicPhrases[dayOfYear % gaelicPhrases.length];
-            document.getElementById('gaelic-phrase').textContent = phrase.gaelic;
-            document.getElementById('gaelic-pronunciation').textContent = `(${phrase.pronunciation})`;
-            document.getElementById('gaelic-translation').textContent = phrase.translation;
-        }
-
-        const oghamData = [
-            { name: "Beith", letter: "B", tree: "Birch", meaning: "New beginnings, renewal, and purification.", svgPath: "M50 10 L50 90 M50 50 L70 50" },
-            { name: "Luis", letter: "L", tree: "Rowan", meaning: "Protection, intuition, and connection to the mystical.", svgPath: "M50 10 L50 90 M50 40 L70 40 M50 60 L70 60" },
-            { name: "Fearn", letter: "F", tree: "Alder", meaning: "Spiritual guidance and foundation.", svgPath: "M50 10 L50 90 M50 30 L70 30 M50 50 L70 50 M50 70 L70 70" },
-        ];
-
-        function setupOghamCaster() {
-            const castBtn = document.getElementById('cast-rune-btn');
-            const castAgainBtn = document.getElementById('cast-again-btn');
-            const oghamStart = document.getElementById('ogham-start');
-            const oghamCasting = document.getElementById('ogham-casting');
-            const oghamResult = document.getElementById('ogham-result');
-
-            castBtn.addEventListener('click', () => {
-                oghamStart.classList.add('hidden');
-                oghamCasting.classList.remove('hidden');
-                
-                const castingContainer = oghamCasting.querySelector('.grid');
-                castingContainer.innerHTML = '';
-                for(let i = 0; i < 20; i++) {
-                    const stave = document.createElement('div');
-                    stave.className = 'ogham-stave';
-                    stave.innerHTML = `<i class="fas fa-leaf text-2xl"></i>`;
-                    castingContainer.appendChild(stave);
-                }
-
-                setTimeout(() => {
-                    const randomIndex = Math.floor(Math.random() * oghamData.length);
-                    const selectedRune = oghamData[randomIndex];
-                    
-                    document.getElementById('ogham-result-symbol').innerHTML = `<svg class="ogham-symbol-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"><g>${selectedRune.svgPath}</g></svg>`;
-                    document.getElementById('ogham-result-name').textContent = `${selectedRune.name} (${selectedRune.letter})`;
-                    document.getElementById('ogham-result-tree').textContent = `The ${selectedRune.tree} Tree`;
-                    document.getElementById('ogham-result-meaning').textContent = selectedRune.meaning;
-
-                    oghamCasting.classList.add('hidden');
-                    oghamResult.classList.remove('hidden');
-                }, 1500);
-            });
-
-            castAgainBtn.addEventListener('click', () => {
-                oghamResult.classList.add('hidden');
-                oghamStart.classList.remove('hidden');
-            });
-        }
-        
-        const clanData = [ { id: "mackenzie", name: "Clan MacKenzie", motto: "Luceo Non Uro (I shine, not burn)"}, ];
-        
-        const legendsData = [
-            { id: "wallace", name: "William Wallace", title: "Guardian of Scotland", lore: `Sir William Wallace emerged to become Scotland's greatest freedom fighter.`, image: "https://placehold.co/600x400/8b7355/f4f1e8?text=William+Wallace" },
-            { id: "bruce", name: "Robert the Bruce", title: "The Warrior King", lore: `Robert I transformed from a conflicted noble into Scotland's greatest king.`, image: "https://placehold.co/600x400/8b7355/f4f1e8?text=Robert+the+Bruce" },
-            { id: "flora", name: "Flora MacDonald", title: "The Highland Heroine", lore: `Flora MacDonald risked everything to help Bonnie Prince Charlie escape after Culloden.`, image: "https://placehold.co/600x400/8b7355/f4f1e8?text=Flora+MacDonald" },
-            { id: "robroy", name: "Rob Roy MacGregor", title: "The Highland Outlaw", lore: `Rob Roy MacGregor became Scotland's most famous outlaw after his clan was proscribed.`, image: "https://placehold.co/600x400/8b7355/f4f1e8?text=Rob+Roy" },
-        ];
-
-        const recipeDatabase = {
-            highlands: [
-                { name: "Highland Haggis", description: "Traditional Scottish dish.", image: "https://placehold.co/400x300/d4af37/800020?text=Haggis" },
-                { name: "Cullen Skink", description: "Smoky fish soup.", image: "https://placehold.co/400x300/d4af37/800020?text=Cullen+Skink" }
-            ],
-            lowlands: [
-                { name: "Border Tart", description: "Sweet custard tart.", image: "https://placehold.co/400x300/d4af37/800020?text=Border+Tart" }
-            ],
-            islands: [
-                { name: "Hebridean Lamb", description: "Island lamb with sea vegetables.", image: "https://placehold.co/400x300/d4af37/800020?text=Hebridean+Lamb" }
-            ],
-            borders: [
-                { name: "Reiver's Hotpot", description: "Hearty one-pot meal.", image: "https://placehold.co/400x300/d4af37/800020?text=Hotpot" }
-            ],
-            festive: [
-                 { name: "Cranachan", description: "A dessert of oats, cream, whisky and raspberries.", image: "https://placehold.co/400x300/d4af37/800020?text=Cranachan" }
-            ]
-        };
-        
-        const marketplaceData = [
-            { id: 1, name: "Clan MacKenzie Tartan Kilt", price: 450, image: "https://placehold.co/400x400/800020/f4f1e8?text=Kilt" },
-            { id: 2, name: "Highland Dirk with Clan Crest", price: 280, image: "https://placehold.co/400x400/800020/f4f1e8?text=Dirk" },
-        ];
-
-        function showMessage(text, type = 'success') {
-            const box = document.getElementById('message-box');
-            box.textContent = text;
-            box.className = 'fixed top-24 right-5 text-white py-3 px-6 rounded-lg shadow-2xl transition-all duration-300 z-[110]';
-            if(type === 'success') box.classList.add('bg-green-600');
-            else box.classList.add('bg-red-600');
-            box.classList.remove('hidden');
-            setTimeout(() => box.classList.add('hidden'), 3000);
-        }
-
-        function setupNavigation() {
-            const navLinks = document.querySelectorAll('.nav-link');
-            const pageSections = document.querySelectorAll('.page-section');
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    const targetId = link.dataset.target;
-                    pageSections.forEach(s => s.classList.remove('active'));
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    const targetSection = document.getElementById(`${targetId}-section`);
-                    if(targetSection) targetSection.classList.add('active');
-                    document.querySelectorAll(`.nav-link[data-target="${targetId}"]`).forEach(l => l.classList.add('active'));
-                    document.getElementById('mobile-menu').classList.add('hidden');
-                    window.scrollTo(0, 0);
-                });
-            });
-            document.querySelector('.nav-link[data-target="home"]').click();
-        }
-
-        function setupMobileMenu() {
-            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-                document.getElementById('mobile-menu').classList.toggle('hidden');
-            });
-        }
-        
-        function populateClanSidebar() {
-            const sidebar = document.getElementById('clan-sidebar-list');
-            if(!sidebar) return;
-            sidebar.innerHTML = clanData.map(clan => `
-                <button class="w-full text-left p-3 rounded-lg hover:bg-yellow-100 transition-colors clan-item" data-clan-id="${clan.id}">
-                    <p class="font-bold text-gray-800">${clan.name}</p>
-                    <p class="text-sm text-gray-600 italic">${clan.motto}</p>
-                </button>
-            `).join('');
-        }
-        
-        function populateLegends() {
-            const sidebar = document.getElementById('legends-sidebar');
-            const mainContent = document.getElementById('legends-main-content');
-            if (!sidebar || !mainContent) return;
-
-            sidebar.innerHTML = legendsData.map(legend => `
-                <button class="w-full text-left p-3 rounded-lg hover:bg-yellow-100 transition-colors legend-item" data-legend-id="${legend.id}">
-                    <p class="font-bold text-gray-800">${legend.name}</p>
-                    <p class="text-sm text-gray-600 italic">${legend.title}</p>
-                </button>
-            `).join('');
-
-            sidebar.addEventListener('click', (e) => {
-                const legendButton = e.target.closest('.legend-item');
-                if (legendButton) {
-                    const legendId = legendButton.dataset.legendId;
-                    const legend = legendsData.find(l => l.id === legendId);
-                    
-                    document.querySelectorAll('.legend-item').forEach(btn => btn.classList.remove('active-item'));
-                    legendButton.classList.add('active-item');
-                    
-                    mainContent.innerHTML = `
-                        <div class="animate-fade-in">
-                             <img src="${legend.image}" alt="${legend.name}" class="w-full h-64 object-cover rounded-2xl shadow-lg mb-6">
-                            <h2 class="text-4xl font-bold font-title text-gray-900 mb-2">${legend.name}</h2>
-                            <p class="text-xl text-yellow-800 italic mb-6">${legend.title}</p>
-                            <p class="text-lg text-gray-700 leading-relaxed">${legend.lore}</p>
+        <div class="mt-10 grid gap-8 md:grid-cols-2 items-center">
+            <div class="rounded-2xl border border-border p-6 bg-white shadow-soft">
+                <h3 class="text-lg font-semibold tracking-tight text-center mb-4">Legacy Platform Capabilities</h3>
+                <div class="chart-container">
+                    <canvas id="ecosystemChart"></canvas>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold tracking-tight mb-4">The Challenge of Silos</h3>
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-4">
+                        <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-border text-sm font-bold bg-white">DB</div>
+                        <div>
+                            <h4 class="font-semibold">Data Capture Systems</h4>
+                            <p class="text-sm text-muted">Tools like <span class="font-medium text-brand/80">WellView</span> are the system of record for operational data, but they are databases, not analytical engines.</p>
                         </div>
-                    `;
-                }
-            });
-        }
-        
-        function populateRecipes() {
-            const grid = document.getElementById('recipe-grid');
-            const categories = document.getElementById('recipe-categories');
-            if(!grid || !categories) return;
-
-            const allRecipes = Object.values(recipeDatabase).flat();
-
-            function displayRecipes(recipes) {
-                grid.innerHTML = recipes.map(recipe => `
-                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden group">
-                        <img src="${recipe.image}" alt="${recipe.name}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform" onerror="this.onerror=null;this.src='https://placehold.co/400x300/f4f1e8/800020?text=Meal';">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2">${recipe.name}</h3>
-                            <p class="text-gray-600 mb-4">${recipe.description}</p>
-                            <button class="font-semibold text-yellow-800 hover:underline">View Recipe</button>
+                    </li>
+                    <li class="flex items-start gap-4">
+                        <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-border text-sm font-bold bg-white">3D</div>
+                        <div>
+                            <h4 class="font-semibold">Subsurface Modeling Platforms</h4>
+                            <p class="text-sm text-muted">Software like <span class="font-medium text-brand/80">Petrel</span> creates detailed reservoir models but is often disconnected from real-time well data.</p>
                         </div>
-                    </div>
-                `).join('');
-            }
-            
-            categories.addEventListener('click', (e) => {
-                const btn = e.target.closest('.recipe-category-btn');
-                if (btn) {
-                    const category = btn.dataset.category;
-                    document.querySelectorAll('.recipe-category-btn').forEach(b => b.setAttribute('aria-pressed', 'false'));
-                    btn.setAttribute('aria-pressed', 'true');
-                    if (category === 'all') {
-                        displayRecipes(allRecipes);
-                    } else {
-                        displayRecipes(recipeDatabase[category] || []);
+                    </li>
+                    <li class="flex items-start gap-4">
+                        <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-border text-sm font-bold bg-white">📈</div>
+                        <div>
+                            <h4 class="font-semibold">Specialized Analytical Tools</h4>
+                            <p class="text-sm text-muted"><span class="font-medium text-brand/80">Sapphire</span> is the gold standard for transient analysis but requires expert users and manually imported data.</p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="mt-6 rounded-2xl border-2 border-dashed border-accent/50 bg-accent/5 p-4">
+                  <p class="text-sm text-center font-medium text-accent/80">WellTegra's AI-powered integration layer connects these silos, unlocking predictive insights without replacing your trusted systems.</p>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROI Calculator -->
+  <section id="roi" class="border-b border-border">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <div class="py-16">
+        <div class="flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 01.75.75v10.5a.75.75 0 01-.75.75H3.75a.75.75 0 01-.75-.75V6.75zM6 9h2v7H6V9zm4 3h2v4h-2v-4zm4-2h2v6h-2V10z"/></svg>
+          <h2 class="text-2xl font-semibold tracking-tight">Estimate your savings</h2>
+        </div>
+        <p class="mt-2 text-sm text-muted max-w-2xl">Model the impact of reclaiming engineering time and cutting NPT across your portfolio.</p>
+
+        <div class="mt-6 grid gap-6 md:grid-cols-3">
+          <div class="rounded-2xl border border-border p-6">
+            <label class="text-sm font-medium" for="engineers">Number of well engineers</label>
+            <input id="engineers" type="range" min="2" max="60" value="20" class="mt-3 w-full" oninput="updateROI()" />
+            <div class="mt-2 text-sm text-muted" id="engineersVal">20</div>
+
+            <label class="mt-6 block text-sm font-medium" for="time">Engineering time reclaimed</label>
+            <input id="time" type="range" min="10" max="60" value="40" class="mt-3 w-full" oninput="updateROI()" />
+            <div class="mt-2 text-sm text-muted" id="timeVal">40%</div>
+
+            <label class="mt-6 block text-sm font-medium" for="npt">Projected NPT reduction</label>
+            <input id="npt" type="range" min="5" max="50" value="20" class="mt-3 w-full" oninput="updateROI()" />
+            <div class="mt-2 text-sm text-muted" id="nptVal">20%</div>
+
+            <div class="mt-6 grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-sm font-medium" for="loadedCost">Loaded cost / engineer</label>
+                <input id="loadedCost" type="number" value="150000" step="1000" class="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm" oninput="updateROI()" />
+                <p class="mt-1 text-xs text-muted">GBP / year</p>
+              </div>
+              <div>
+                <label class="text-sm font-medium" for="nptDayCost">Cost of NPT / day</label>
+                <input id="nptDayCost" type="number" value="100000" step="1000" class="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm" oninput="updateROI()" />
+                <p class="mt-1 text-xs text-muted">GBP / day</p>
+              </div>
+              <div>
+                <label class="text-sm font-medium" for="nptDays">Operational days / year</label>
+                <input id="nptDays" type="number" value="180" class="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm" oninput="updateROI()" />
+                <p class="mt-1 text-xs text-muted">days</p>
+              </div>
+              <div>
+                <label class="text-sm font-medium" for="currency">Currency</label>
+                <select id="currency" class="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm" onchange="updateROI()">
+                  <option value="GBP" selected>GBP (£)</option>
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-border p-6 md:col-span-2 flex flex-col justify-center">
+            <p class="text-sm text-muted">Total estimated annual savings</p>
+            <p class="mt-2 text-4xl font-semibold tracking-tight" id="total">£2,168,000</p>
+            <div class="mt-6 grid gap-4 sm:grid-cols-2">
+              <div class="rounded-xl border border-border p-4">
+                <p class="text-xs text-muted">From reclaimed engineering time</p>
+                <p class="mt-1 text-xl font-semibold" id="engineerSavings">£1,200,000</p>
+              </div>
+              <div class="rounded-xl border border-border p-4">
+                <p class="text-xs text-muted">From reduced NPT</p>
+                <p class="mt-1 text-xl font-semibold" id="nptSavings">£968,000</p>
+              </div>
+            </div>
+            <ul class="mt-6 space-y-2 text-sm">
+              <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4 1.5 1.5-5.5 5.5L7.5 13.5 9 12z"/></svg> Lower NPT from better planning & execution</li>
+              <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4 1.5 1.5-5.5 5.5L7.5 13.5 9 12z"/></svg> Cut admin time with a unified data layer</li>
+              <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4 1.5 1.5-5.5 5.5L7.5 13.5 9 12z"/></svg> Fewer errors via AI‑assisted workflows</li>
+            </ul>
+            <p class="mt-4 text-xs text-muted">This calculator provides directional estimates only and should not be used for formal budgeting.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources / White paper -->
+  <section id="resources" class="border-b border-border">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <div class="py-16">
+        <div class="rounded-2xl border border-border p-6 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div>
+            <h3 class="text-xl font-semibold tracking-tight">Dive deeper into the architecture</h3>
+            <p class="mt-2 text-sm text-muted max-w-2xl">Read how privacy‑preserving AI and a unified data model power WellTegra’s platform.</p>
+          </div>
+          <a href="#" class="rounded-2xl border border-border px-5 py-3 text-sm font-semibold inline-flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4.5h12v2H6v-2zM6 9h12v2H6V9zm0 4.5h12v2H6v-2zM6 18h7.5v2H6v-2z"/></svg>
+            Download white paper
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social proof -->
+  <section class="border-b border-border">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <div class="py-16">
+        <h2 class="text-2xl font-semibold tracking-tight">Why teams choose WellTegra</h2>
+        <div class="mt-6 grid gap-6 md:grid-cols-3">
+          <div class="rounded-2xl border border-border p-6">
+            <p class="text-sm">“We cut prep time in half and finally stopped emailing PDFs around.”</p>
+            <p class="mt-3 text-xs text-muted">Senior Well Engineer • Major Operator</p>
+          </div>
+          <div class="rounded-2xl border border-border p-6">
+            <p class="text-sm">“The AI Advisor surfaced a solution we’d used years ago—we just didn’t connect the dots.”</p>
+            <p class="mt-3 text-xs text-muted">Intervention Supervisor • North Sea</p>
+          </div>
+          <div class="rounded-2xl border border-border p-6">
+            <p class="text-sm">“Live POB + ER visibility during critical ops is a game changer.”</p>
+            <p class="mt-3 text-xs text-muted">HSE Manager • Middle East</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="about" class="py-14">
+    <div class="mx-auto max-w-[1200px] px-6">
+      <div class="grid gap-8 md:grid-cols-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="grid h-9 w-9 place-items-center rounded-xl bg-brand text-white text-sm font-bold">WT</span>
+            <span class="text-sm">WellTegra Data Solutions</span>
+          </div>
+          <p class="mt-3 text-sm text-muted">From the wellsite to the web. Built by a well services veteran to fix data chaos in operations.</p>
+        </div>
+        <div class="text-sm">
+          <p class="font-medium">Product</p>
+          <ul class="mt-3 space-y-2 text-muted">
+            <li><a href="#product" class="hover:opacity-70">Overview</a></li>
+            <li><a href="#roi" class="hover:opacity-70">ROI Calculator</a></li>
+            <li><a href="#how" class="hover:opacity-70">How it Works</a></li>
+            <li><a href="#ecosystem" class="hover:opacity-70">Ecosystem</a></li>
+          </ul>
+        </div>
+        <div class="text-sm" id="contact">
+          <p class="font-medium">Company</p>
+          <ul class="mt-3 space-y-2 text-muted">
+            <li><a href="#resources" class="hover:opacity-70">White paper</a></li>
+            <li><a href="#about" class="hover:opacity-70">About</a></li>
+            <li><a href="mailto:kenmckenzie@welltegra.network" class="hover:opacity-70">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-8 text-xs text-muted">© <span id="year"></span> WellTegra. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Simple ROI calculator logic
+    function fmtCurrency(value, currency) {
+      try { return new Intl.NumberFormat('en-GB', { style: 'currency', currency, minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value); } catch(e) { return value.toLocaleString(); }
+    }
+
+    function updateROI(){
+      const engineers = +document.getElementById('engineers').value;
+      const timePct = +document.getElementById('time').value / 100; // 0-1
+      const nptPct = +document.getElementById('npt').value / 100;   // 0-1
+      const loadedCost = +document.getElementById('loadedCost').value; // per engineer / year
+      const nptDayCost = +document.getElementById('nptDayCost').value; // per day
+      const nptDays = +document.getElementById('nptDays').value; // days/year
+      const currency = document.getElementById('currency').value;
+
+      const engineerSavings = engineers * loadedCost * timePct;
+      const nptSavings = nptDayCost * nptDays * nptPct;
+      const total = engineerSavings + nptSavings;
+
+      document.getElementById('engineersVal').textContent = engineers;
+      document.getElementById('timeVal').textContent = Math.round(timePct*100) + '%';
+      document.getElementById('nptVal').textContent = Math.round(nptPct*100) + '%';
+
+      document.getElementById('engineerSavings').textContent = fmtCurrency(engineerSavings, currency);
+      document.getElementById('nptSavings').textContent = fmtCurrency(nptSavings, currency);
+      document.getElementById('total').textContent = fmtCurrency(total, currency);
+    }
+
+    // Chart.js Ecosystem Chart
+    function renderEcosystemChart() {
+        const ctx = document.getElementById('ecosystemChart').getContext('2d');
+        if (!ctx) return;
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Data Capture', 'Specialized Analytics', '3D Subsurface Modeling', 'Usability', 'Integration'],
+                datasets: [{
+                    label: 'WellView',
+                    data: [5, 2, 1, 4, 3],
+                    fill: true,
+                    backgroundColor: 'rgba(14, 165, 233, 0.2)', // accent color
+                    borderColor: 'rgba(14, 165, 233, 1)',
+                    pointBackgroundColor: 'rgba(14, 165, 233, 1)',
+                }, {
+                    label: 'Sapphire',
+                    data: [2, 5, 2, 2, 2],
+                    fill: true,
+                    backgroundColor: 'rgba(107, 114, 128, 0.2)', // muted color
+                    borderColor: 'rgba(107, 114, 128, 1)',
+                    pointBackgroundColor: 'rgba(107, 114, 128, 1)',
+                }, {
+                    label: 'Petrel',
+                    data: [3, 4, 5, 2, 3],
+                    fill: true,
+                    backgroundColor: 'rgba(11, 11, 11, 0.2)', // brand color
+                    borderColor: 'rgba(11, 11, 11, 1)',
+                    pointBackgroundColor: 'rgba(11, 11, 11, 1)',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: (tooltipItems) => {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: '#E5E7EB' }, // border color
+                        grid: { color: '#E5E7EB' },
+                        pointLabels: {
+                            font: { size: 12 },
+                            color: '#6B7280'
+                        },
+                        ticks: {
+                            backdropColor: 'rgba(255, 255, 255, 0.75)',
+                            stepSize: 1
+                        },
+                        min: 0,
+                        max: 5
                     }
                 }
-            });
-
-            displayRecipes(allRecipes);
-        }
-
-        function populateMarketplace() {
-            const grid = document.getElementById('product-grid');
-            if(!grid) return;
-            grid.innerHTML = marketplaceData.map(product => `
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden group">
-                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform" onerror="this.onerror=null;this.src='https://placehold.co/400x400/f4f1e8/800020?text=Item';">
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold mb-2">${product.name}</h3>
-                        <div class="flex justify-between items-center">
-                            <p class="text-2xl font-bold text-yellow-800">£${product.price}</p>
-                            <button class="btn-primary px-4 py-2 rounded-lg font-semibold add-to-cart-btn" data-product-id="${product.id}">
-                                <i class="fas fa-cart-plus mr-2"></i>Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function setupShoppingCart() {
-            let cartCount = 0;
-            const cartCountEl = document.getElementById('cart-count');
-            document.addEventListener('click', e => {
-                if(e.target.closest('.add-to-cart-btn')) {
-                    cartCount++;
-                    cartCountEl.textContent = cartCount;
-                    showMessage('Item added to cart!', 'success');
-                }
-            });
-        }
-        
-        // Initializations
-        displayGaelicPhrase();
-        setupOghamCaster();
-        setupNavigation();
-        setupMobileMenu();
-        populateClanSidebar();
-        populateLegends();
-        populateRecipes();
-        populateMarketplace();
-        setupShoppingCart();
+            }
+        });
+    }
+    
+    // Initialize everything on load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateROI();
+      renderEcosystemChart();
     });
-    </script>
+
+  </script>
 </body>
 </html>
-
