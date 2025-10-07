@@ -1,3 +1,8 @@
+
+
+I understand! Let me make this super simple for you. Here's a complete, ready-to-use HTML file with all the improvements already implemented. Just copy and paste this entire code to replace your current file:
+
+```html
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -10,13 +15,32 @@
   <meta property="og:description" content="Unify planning → execution → analysis. Reduce NPT, reclaim engineering time, align partners." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="" />
+  
+  <!-- SEO and Social Media -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="WellTegra – From Data Chaos to Predictive Clarity" />
+  <meta name="twitter:description" content="Unify planning → execution → analysis. Reduce NPT, reclaim engineering time, align partners." />
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "WellTegra Data Solutions",
+    "description": "Unify planning, execution, and analysis for well operations. Reduce NPT, reclaim engineering time, and align partners with a single source of truth.",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Service",
+      "email": "kenmckenzie@welltegra.network"
+    }
+  }
+  </script>
 
   <!-- Fonts & Tailwind -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
   <script>
     tailwind.config = {
       theme: {
@@ -37,7 +61,14 @@
     }
   </script>
   <style>
-    :root { color-scheme: light; }
+    :root { 
+      color-scheme: light;
+      --brand: #0B0B0B;
+      --accent: #0EA5E9;
+      --muted: #6B7280;
+      --border: #E5E7EB;
+      --surface: #F8FAFC;
+    }
     html, body { height: 100%; }
     body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
     /* Accessibility focus */
@@ -51,9 +82,25 @@
       width: 80vw;
       max-width: 550px;
     }
+    /* Mobile responsiveness */
+    @media (max-width: 640px) {
+      .chart-container {
+        height: 50vh;
+        width: 95vw;
+      }
+    }
+    /* Fallback for older browsers */
+    @supports not (backdrop-filter: blur(8px)) {
+      .backdrop-blur {
+        background-color: rgba(255, 255, 255, 0.9);
+      }
+    }
   </style>
 </head>
 <body class="bg-white text-brand/95">
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-brand text-white px-4 py-2 rounded-md">Skip to main content</a>
+
   <!-- Header -->
   <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-b border-border">
     <div class="mx-auto max-w-[1200px] px-6">
@@ -62,7 +109,18 @@
           <span class="grid h-9 w-9 place-items-center rounded-xl bg-brand text-white text-sm font-bold">WT</span>
           <span class="hidden sm:block text-sm text-muted">WellTegra Data Solutions</span>
         </a>
-        <nav class="hidden md:flex items-center gap-6 text-sm">
+        
+        <!-- Mobile menu button -->
+        <div class="md:hidden flex items-center">
+          <button id="mobile-menu-button" class="text-brand hover:text-accent focus:outline-none" aria-expanded="false" aria-controls="mobile-menu">
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+        
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center gap-6 text-sm" aria-label="Main navigation">
           <a class="hover:opacity-70" href="#product">Product</a>
           <a class="hover:opacity-70" href="#how">How it Works</a>
           <a class="hover:opacity-70" href="#ecosystem">Ecosystem</a>
@@ -70,325 +128,347 @@
           <a class="hover:opacity-70" href="#resources">Resources</a>
           <a class="hover:opacity-70" href="#about">About</a>
         </nav>
-        <div class="flex items-center gap-2">
-          <a href="#contact" class="hidden sm:inline-flex rounded-xl border border-border px-4 py-2 text-sm">Log in</a>
+        
+        <div class="hidden md:flex items-center gap-2">
+          <a href="#contact" class="rounded-xl border border-border px-4 py-2 text-sm">Log in</a>
           <a href="#contact" class="inline-flex items-center gap-2 rounded-2xl bg-brand text-white px-5 py-3 text-sm font-semibold shadow-soft hover:opacity-90">Book a demo
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
           </a>
         </div>
       </div>
+      
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="mobile-menu hidden md:hidden mt-4 pb-4 border-b border-border">
+        <div class="flex flex-col space-y-3">
+          <a class="hover:opacity-70" href="#product">Product</a>
+          <a class="hover:opacity-70" href="#how">How it Works</a>
+          <a class="hover:opacity-70" href="#ecosystem">Ecosystem</a>
+          <a class="hover:opacity-70" href="#roi">ROI</a>
+          <a class="hover:opacity-70" href="#resources">Resources</a>
+          <a class="hover:opacity-70" href="#about">About</a>
+          <div class="pt-3 flex flex-col gap-2">
+            <a href="#contact" class="rounded-xl border border-border px-4 py-2 text-sm">Log in</a>
+            <a href="#contact" class="inline-flex items-center gap-2 rounded-2xl bg-brand text-white px-5 py-3 text-sm font-semibold shadow-soft hover:opacity-90">Book a demo
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section id="top" class="border-b border-border">
-    <div class="mx-auto max-w-[1200px] px-6">
-      <div class="grid gap-10 py-16 md:grid-cols-2 md:py-24">
-        <div>
-          <span class="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs font-medium">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M11.645 22.73a.75.75 0 01-1.29-.512v-5.403l-4.14 4.14a.75.75 0 01-1.06-1.06l4.14-4.141H3.893a.75.75 0 010-1.5h5.403l-4.14-4.14a.75.75 0 111.06-1.061l4.141 4.14V3.893a.75.75 0 011.5 0v5.403l4.14-4.14a.75.75 0 111.06 1.06l-4.14 4.141h5.403a.75.75 0 010 1.5h-5.403l4.14 4.14a.75.75 0 11-1.06 1.061l-4.141-4.14v5.403c0 .197-.078.386-.217.525z"/></svg>
-            From data chaos to predictive clarity
-          </span>
-          <h1 class="mt-4 text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
-            Engineering insight, <span class="underline decoration-4 underline-offset-4 decoration-accent">amplified by data</span>
-          </h1>
-          <p class="mt-4 text-[15px] leading-7 text-muted max-w-prose">
-            Reduce NPT, reclaim engineering time, and align partners with a single source of truth for planning, execution, and analysis across your well portfolio.
-          </p>
-          <div class="mt-6 flex flex-wrap items-center gap-3">
-            <a href="#how" class="inline-flex items-center gap-2 rounded-2xl bg-brand text-white px-5 py-3 text-sm font-semibold shadow-soft hover:opacity-90">See How It Works
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </a>
-            <a href="#resources" class="rounded-2xl border border-border px-5 py-3 text-sm font-semibold">Read the white paper</a>
-          </div>
-          <div class="mt-8 grid grid-cols-3 gap-4">
-            <div class="rounded-2xl border border-border p-5">
-              <p class="text-xs text-muted">NPT Reduction</p>
-              <p class="mt-1 text-2xl font-semibold">20–30%</p>
-              <p class="text-xs text-muted">scenario modelling</p>
-            </div>
-            <div class="rounded-2xl border border-border p-5">
-              <p class="text-xs text-muted">Time Reclaimed</p>
-              <p class="mt-1 text-2xl font-semibold">40–50%</p>
-              <p class="text-xs text-muted">engineering hours</p>
-            </div>
-            <div class="rounded-2xl border border-border p-5">
-              <p class="text-xs text-muted">Payback</p>
-              <p class="mt-1 text-2xl font-semibold">&lt; 6 months</p>
-              <p class="text-xs text-muted">typical modeled ROI</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Hero Mock Panel -->
-        <div class="relative">
-          <div class="rounded-3xl border border-border p-4 shadow-soft">
-            <div class="rounded-2xl border border-border p-4 bg-white">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2 text-sm font-semibold">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 6.75A2.25 2.25 0 016.75 4.5h10.5A2.25 2.25 0 0119.5 6.75v10.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 17.25V6.75z"/></svg>
-                  Intervention Planner
-                </div>
-                <span class="text-xs text-muted">Live preview</span>
-              </div>
-              <div class="mt-4 grid grid-cols-3 gap-3">
-                <div class="rounded-xl border border-border p-3 bg-brand text-white">
-                  <p class="text-[11px] font-semibold">Step 1</p>
-                  <p class="mt-1 text-sm">Select Well</p>
-                </div>
-                <div class="rounded-xl border border-border p-3">
-                  <p class="text-[11px] font-semibold">Step 2</p>
-                  <p class="mt-1 text-sm">Define Plan</p>
-                </div>
-                <div class="rounded-xl border border-border p-3">
-                  <p class="text-[11px] font-semibold">Step 3</p>
-                  <p class="mt-1 text-sm">Review & Simulate</p>
-                </div>
-              </div>
-              <div class="mt-4 rounded-xl border border-border p-4 bg-surface">
-                <p class="text-sm font-semibold">AI Advisor</p>
-                <p class="mt-1 text-sm text-muted">Cross‑references historic case studies and operational patterns to recommend the most effective intervention strategies with confidence scores.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Product pillars -->
-  <section id="product" class="border-b border-border">
-    <div class="mx-auto max-w-[1200px] px-6">
-      <div class="grid gap-6 py-16 md:grid-cols-3">
-        <div class="rounded-2xl border border-border p-6">
-          <div class="flex items-center gap-3">
-            <div class="rounded-xl border border-border p-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm1 4.5a1 1 0 112 0V11a1 1 0 01-2 0V7.5zM11 13a1 1 0 10-2 0v3.5a1 1 0 102 0V13z"/></svg>
-            </div>
-            <h3 class="text-base font-semibold tracking-tight">Unified data layer</h3>
-          </div>
-          <p class="mt-3 text-sm text-muted leading-6">Stop wrangling spreadsheets and PDFs. Ingest, normalize, and connect to systems of record like WellView, Petrel, and Sapphire to surface insights everywhere.</p>
-        </div>
-        <div class="rounded-2xl border border-border p-6">
-          <div class="flex items-center gap-3">
-            <div class="rounded-xl border border-border p-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 6.75h15v2.25h-15V6.75zM4.5 10.5h9V12h-9v-1.5zM4.5 13.5H12V15H4.5v-1.5zM4.5 16.5h6V18h-6v-1.5zM15.75 12l2.25 2.25L21 11.25"/></svg>
-            </div>
-            <h3 class="text-base font-semibold tracking-tight">Plan → Execute → Analyze</h3>
-          </div>
-          <p class="mt-3 text-sm text-muted leading-6">One workspace for engineering, logistics, commercial, HSE & risk, and POB & emergency response.</p>
-        </div>
-        <div class="rounded-2xl border border-border p-6">
-          <div class="flex items-center gap-3">
-            <div class="rounded-xl border border-border p-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25c-4.28 0-7.75 3.47-7.75 7.75 0 6.5 7.75 11.75 7.75 11.75s7.75-5.25 7.75-11.75c0-4.28-3.47-7.75-7.75-7.75zm0 10.25a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
-            </div>
-            <h3 class="text-base font-semibold tracking-tight">Privacy‑preserving by design</h3>
-          </div>
-          <p class="mt-3 text-sm text-muted leading-6">Community‑trained models, anonymized patterns, and governed access so your raw data stays yours.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- How it works -->
-  <section id="how" class="border-b border-border">
-    <div class="mx-auto max-w-[1200px] px-6">
-      <div class="py-16">
-        <h2 class="text-2xl font-semibold tracking-tight">How it works</h2>
-        <div class="mt-6 grid gap-6 md:grid-cols-3">
-          <div class="rounded-2xl border border-border p-6">
-            <div class="flex items-center gap-3">
-              <div class="rounded-xl border border-border p-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4.5h14v2H5v-2zm0 4h10v2H5v-2zm0 4h14v2H5v-2zm0 4h10v2H5v-2z"/></svg></div>
-              <h3 class="text-base font-semibold tracking-tight">1. Select well</h3>
-            </div>
-            <p class="mt-3 text-sm text-muted leading-6">Choose the target well and pull context from case studies and live data sources.</p>
-          </div>
-          <div class="rounded-2xl border border-border p-6">
-            <div class="flex items-center gap-3">
-              <div class="rounded-xl border border-border p-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5L12 2z"/></svg></div>
-              <h3 class="text-base font-semibold tracking-tight">2. Define objectives + AI advise</h3>
-            </div>
-            <p class="mt-3 text-sm text-muted leading-6">The AI Advisor cross‑references historic successes and patterns to recommend interventions.</p>
-          </div>
-          <div class="rounded-2xl border border-border p-6">
-            <div class="flex items-center gap-3">
-              <div class="rounded-xl border border-border p-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v2H6V6zm0 5h12v2H6v-2zm0 5h12v2H6v-2z"/></svg></div>
-              <h3 class="text-base font-semibold tracking-tight">3. Review, simulate, execute</h3>
-            </div>
-            <p class="mt-3 text-sm text-muted leading-6">Generate a procedure, simulate operations, then go live with logistics, HSE, and commercial views in‑sync.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Ecosystem Section -->
-  <section id="ecosystem" class="border-b border-border bg-surface">
-    <div class="mx-auto max-w-[1200px] px-6">
-      <div class="py-16">
-        <div class="text-center">
-            <h2 class="text-2xl font-semibold tracking-tight">Navigating the Fragmented Digital Oilfield</h2>
-            <p class="mt-2 text-sm text-muted max-w-3xl mx-auto">The energy sector relies on powerful, specialized software. However, these tools often create data silos, trapping critical information and hindering cross-functional insight. WellTegra was built to bridge this gap.</p>
-        </div>
-
-        <div class="mt-10 grid gap-8 md:grid-cols-2 items-center">
-            <div class="rounded-2xl border border-border p-6 bg-white shadow-soft">
-                <h3 class="text-lg font-semibold tracking-tight text-center mb-4">Legacy Platform Capabilities</h3>
-                <div class="chart-container">
-                    <canvas id="ecosystemChart"></canvas>
-                </div>
-            </div>
-            <div>
-                <h3 class="text-lg font-semibold tracking-tight mb-4">The Challenge of Silos</h3>
-                <ul class="space-y-4">
-                    <li class="flex items-start gap-4">
-                        <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-border text-sm font-bold bg-white">DB</div>
-                        <div>
-                            <h4 class="font-semibold">Data Capture Systems</h4>
-                            <p class="text-sm text-muted">Tools like <span class="font-medium text-brand/80">WellView</span> are the system of record for operational data, but they are databases, not analytical engines.</p>
-                        </div>
-                    </li>
-                    <li class="flex items-start gap-4">
-                        <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-border text-sm font-bold bg-white">3D</div>
-                        <div>
-                            <h4 class="font-semibold">Subsurface Modeling Platforms</h4>
-                            <p class="text-sm text-muted">Software like <span class="font-medium text-brand/80">Petrel</span> creates detailed reservoir models but is often disconnected from real-time well data.</p>
-                        </div>
-                    </li>
-                    <li class="flex items-start gap-4">
-                        <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-border text-sm font-bold bg-white">📈</div>
-                        <div>
-                            <h4 class="font-semibold">Specialized Analytical Tools</h4>
-                            <p class="text-sm text-muted"><span class="font-medium text-brand/80">Sapphire</span> is the gold standard for transient analysis but requires expert users and manually imported data.</p>
-                        </div>
-                    </li>
-                </ul>
-                <div class="mt-6 rounded-2xl border-2 border-dashed border-accent/50 bg-accent/5 p-4">
-                  <p class="text-sm text-center font-medium text-accent/80">WellTegra's AI-powered integration layer connects these silos, unlocking predictive insights without replacing your trusted systems.</p>
-                </div>
-            </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ROI Calculator -->
-  <section id="roi" class="border-b border-border">
-    <div class="mx-auto max-w-[1200px] px-6">
-      <div class="py-16">
-        <div class="flex items-center gap-3">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 01.75.75v10.5a.75.75 0 01-.75.75H3.75a.75.75 0 01-.75-.75V6.75zM6 9h2v7H6V9zm4 3h2v4h-2v-4zm4-2h2v6h-2V10z"/></svg>
-          <h2 class="text-2xl font-semibold tracking-tight">Estimate your savings</h2>
-        </div>
-        <p class="mt-2 text-sm text-muted max-w-2xl">Model the impact of reclaiming engineering time and cutting NPT across your portfolio.</p>
-
-        <div class="mt-6 grid gap-6 md:grid-cols-3">
-          <div class="rounded-2xl border border-border p-6">
-            <label class="text-sm font-medium" for="engineers">Number of well engineers</label>
-            <input id="engineers" type="range" min="2" max="60" value="20" class="mt-3 w-full" oninput="updateROI()" />
-            <div class="mt-2 text-sm text-muted" id="engineersVal">20</div>
-
-            <label class="mt-6 block text-sm font-medium" for="time">Engineering time reclaimed</label>
-            <input id="time" type="range" min="10" max="60" value="40" class="mt-3 w-full" oninput="updateROI()" />
-            <div class="mt-2 text-sm text-muted" id="timeVal">40%</div>
-
-            <label class="mt-6 block text-sm font-medium" for="npt">Projected NPT reduction</label>
-            <input id="npt" type="range" min="5" max="50" value="20" class="mt-3 w-full" oninput="updateROI()" />
-            <div class="mt-2 text-sm text-muted" id="nptVal">20%</div>
-
-            <div class="mt-6 grid grid-cols-2 gap-4">
-              <div>
-                <label class="text-sm font-medium" for="loadedCost">Loaded cost / engineer</label>
-                <input id="loadedCost" type="number" value="150000" step="1000" class="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm" oninput="updateROI()" />
-                <p class="mt-1 text-xs text-muted">GBP / year</p>
-              </div>
-              <div>
-                <label class="text-sm font-medium" for="nptDayCost">Cost of NPT / day</label>
-                <input id="nptDayCost" type="number" value="100000" step="1000" class="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm" oninput="updateROI()" />
-                <p class="mt-1 text-xs text-muted">GBP / day</p>
-              </div>
-              <div>
-                <label class="text-sm font-medium" for="nptDays">Operational days / year</label>
-                <input id="nptDays" type="number" value="180" class="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm" oninput="updateROI()" />
-                <p class="mt-1 text-xs text-muted">days</p>
-              </div>
-              <div>
-                <label class="text-sm font-medium" for="currency">Currency</label>
-                <select id="currency" class="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm" onchange="updateROI()">
-                  <option value="GBP" selected>GBP (£)</option>
-                  <option value="USD">USD ($)</option>
-                  <option value="EUR">EUR (€)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="rounded-2xl border border-border p-6 md:col-span-2 flex flex-col justify-center">
-            <p class="text-sm text-muted">Total estimated annual savings</p>
-            <p class="mt-2 text-4xl font-semibold tracking-tight" id="total">£2,168,000</p>
-            <div class="mt-6 grid gap-4 sm:grid-cols-2">
-              <div class="rounded-xl border border-border p-4">
-                <p class="text-xs text-muted">From reclaimed engineering time</p>
-                <p class="mt-1 text-xl font-semibold" id="engineerSavings">£1,200,000</p>
-              </div>
-              <div class="rounded-xl border border-border p-4">
-                <p class="text-xs text-muted">From reduced NPT</p>
-                <p class="mt-1 text-xl font-semibold" id="nptSavings">£968,000</p>
-              </div>
-            </div>
-            <ul class="mt-6 space-y-2 text-sm">
-              <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4 1.5 1.5-5.5 5.5L7.5 13.5 9 12z"/></svg> Lower NPT from better planning & execution</li>
-              <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4 1.5 1.5-5.5 5.5L7.5 13.5 9 12z"/></svg> Cut admin time with a unified data layer</li>
-              <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4 1.5 1.5-5.5 5.5L7.5 13.5 9 12z"/></svg> Fewer errors via AI‑assisted workflows</li>
-            </ul>
-            <p class="mt-4 text-xs text-muted">This calculator provides directional estimates only and should not be used for formal budgeting.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Resources / White paper -->
-  <section id="resources" class="border-b border-border">
-    <div class="mx-auto max-w-[1200px] px-6">
-      <div class="py-16">
-        <div class="rounded-2xl border border-border p-6 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+  <!-- Main Content -->
+  <main id="main-content">
+    <!-- Hero -->
+    <section id="top" class="border-b border-border">
+      <div class="mx-auto max-w-[1200px] px-6">
+        <div class="grid gap-10 py-16 md:grid-cols-2 md:py-24">
           <div>
-            <h3 class="text-xl font-semibold tracking-tight">Dive deeper into the architecture</h3>
-            <p class="mt-2 text-sm text-muted max-w-2xl">Read how privacy‑preserving AI and a unified data model power WellTegra’s platform.</p>
+            <span class="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs font-medium">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M11.645 22.73a.75.75 0 01-1.29-.512v-5.403l-4.14 4.14a.75.75 0 01-1.06-1.06l4.14-4.141H3.893a.75.75 0 010-1.5h5.403l-4.14-4.14a.75.75 0 111.06-1.061l4.141 4.14V3.893a.75.75 0 011.5 0v5.403l4.14-4.14a.75.75 0 111.06 1.06l-4.14 4.141h5.403a.75.75 0 010 1.5h-5.403l4.14 4.14a.75.75 0 11-1.06 1.061l-4.141-4.14v5.403c0 .197-.078.386-.217.525z"/></svg>
+              From data chaos to predictive clarity
+            </span>
+            <h1 class="mt-4 text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
+              Engineering insight, <span class="underline decoration-4 underline-offset-4 decoration-accent">amplified by data</span>
+            </h1>
+            <p class="mt-4 text-[15px] leading-7 text-muted max-w-prose">
+              Reduce NPT, reclaim engineering time, and align partners with a single source of truth for planning, execution, and analysis across your well portfolio.
+            </p>
+            <div class="mt-6 flex flex-wrap items-center gap-3">
+              <a href="#how" class="inline-flex items-center gap-2 rounded-2xl bg-brand text-white px-5 py-3 text-sm font-semibold shadow-soft hover:opacity-90">See How It Works
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </a>
+              <a href="#resources" class="rounded-2xl border border-border px-5 py-3 text-sm font-semibold">Read the white paper</a>
+            </div>
+            <div class="mt-8 grid grid-cols-3 gap-4">
+              <div class="rounded-2xl border border-border p-5">
+                <p class="text-xs text-muted">NPT Reduction</p>
+                <p class="mt-1 text-2xl font-semibold">20–30%</p>
+                <p class="text-xs text-muted">scenario modelling</p>
+              </div>
+              <div class="rounded-2xl border border-border p-5">
+                <p class="text-xs text-muted">Time Reclaimed</p>
+                <p class="mt-1 text-2xl font-semibold">40–50%</p>
+                <p class="text-xs text-muted">engineering hours</p>
+              </div>
+              <div class="rounded-2xl border border-border p-5">
+                <p class="text-xs text-muted">Payback</p>
+                <p class="mt-1 text-2xl font-semibold">&lt; 6 months</p>
+                <p class="text-xs text-muted">typical modeled ROI</p>
+              </div>
+            </div>
           </div>
-          <a href="#" class="rounded-2xl border border-border px-5 py-3 text-sm font-semibold inline-flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4.5h12v2H6v-2zM6 9h12v2H6V9zm0 4.5h12v2H6v-2zM6 18h7.5v2H6v-2z"/></svg>
-            Download white paper
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Social proof -->
-  <section class="border-b border-border">
-    <div class="mx-auto max-w-[1200px] px-6">
-      <div class="py-16">
-        <h2 class="text-2xl font-semibold tracking-tight">Why teams choose WellTegra</h2>
-        <div class="mt-6 grid gap-6 md:grid-cols-3">
-          <div class="rounded-2xl border border-border p-6">
-            <p class="text-sm">“We cut prep time in half and finally stopped emailing PDFs around.”</p>
-            <p class="mt-3 text-xs text-muted">Senior Well Engineer • Major Operator</p>
-          </div>
-          <div class="rounded-2xl border border-border p-6">
-            <p class="text-sm">“The AI Advisor surfaced a solution we’d used years ago—we just didn’t connect the dots.”</p>
-            <p class="mt-3 text-xs text-muted">Intervention Supervisor • North Sea</p>
-          </div>
-          <div class="rounded-2xl border border-border p-6">
-            <p class="text-sm">“Live POB + ER visibility during critical ops is a game changer.”</p>
-            <p class="mt-3 text-xs text-muted">HSE Manager • Middle East</p>
+          <!-- Hero Mock Panel -->
+          <div class="relative">
+            <div class="rounded-3xl border border-border p-4 shadow-soft">
+              <div class="rounded-2xl border border-border p-4 bg-white">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2 text-sm font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 6.75A2.25 2.25 0 016.75 4.5h10.5A2.25 2.25 0 0119.5 6.75v10.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 17.25V6.75z"/></svg>
+                    Intervention Planner
+                  </div>
+                  <span class="text-xs text-muted">Live preview</span>
+                </div>
+                <div class="mt-4 grid grid-cols-3 gap-3">
+                  <div class="rounded-xl border border-border p-3 bg-brand text-white">
+                    <p class="text-[11px] font-semibold">Step 1</p>
+                    <p class="mt-1 text-sm">Select Well</p>
+                  </div>
+                  <div class="rounded-xl border border-border p-3">
+                    <p class="text-[11px] font-semibold">Step 2</p>
+                    <p class="mt-1 text-sm">Define Plan</p>
+                  </div>
+                  <div class="rounded-xl border border-border p-3">
+                    <p class="text-[11px] font-semibold">Step 3</p>
+                    <p class="mt-1 text-sm">Review & Simulate</p>
+                  </div>
+                </div>
+                <div class="mt-4 rounded-xl border border-border p-4 bg-surface">
+                  <p class="text-sm font-semibold">AI Advisor</p>
+                  <p class="mt-1 text-sm text-muted">Cross‑references historic case studies and operational patterns to recommend the most effective intervention strategies with confidence scores.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- Product pillars -->
+    <section id="product" class="border-b border-border">
+      <div class="mx-auto max-w-[1200px] px-6">
+        <div class="grid gap-6 py-16 md:grid-cols-3">
+          <div class="rounded-2xl border border-border p-6">
+            <div class="flex items-center gap-3">
+              <div class="rounded-xl border border-border p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm1 4.5a1 1 0 112 0V11a1 1 0 01-2 0V7.5zM11 13a1 1 0 10-2 0v3.5a1 1 0 102 0V13z"/></svg>
+              </div>
+              <h3 class="text-base font-semibold tracking-tight">Unified data layer</h3>
+            </div>
+            <p class="mt-3 text-sm text-muted leading-6">Stop wrangling spreadsheets and PDFs. Ingest, normalize, and connect to systems of record like WellView, Petrel, and Sapphire to surface insights everywhere.</p>
+          </div>
+          <div class="rounded-2xl border border-border p-6">
+            <div class="flex items-center gap-3">
+              <div class="rounded-xl border border-border p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 6.75h15v2.25h-15V6.75zM4.5 10.5h9V12h-9v-1.5zM4.5 13.5H12V15H4.5v-1.5zM4.5 16.5h6V18h-6v-1.5zM15.75 12l2.25 2.25L21 11.25"/></svg>
+              </div>
+              <h3 class="text-base font-semibold tracking-tight">Plan → Execute → Analyze</h3>
+            </div>
+            <p class="mt-3 text-sm text-muted leading-6">One workspace for engineering, logistics, commercial, HSE & risk, and POB & emergency response.</p>
+          </div>
+          <div class="rounded-2xl border border-border p-6">
+            <div class="flex items-center gap-3">
+              <div class="rounded-xl border border-border p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25c-4.28 0-7.75 3.47-7.75 7.75 0 6.5 7.75 11.75 7.75 11.75s7.75-5.25 7.75-11.75c0-4.28-3.47-7.75-7.75-7.75zm0 10.25a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+              </div>
+              <h3 class="text-base font-semibold tracking-tight">Privacy‑preserving by design</h3>
+            </div>
+            <p class="mt-3 text-sm text-muted leading-6">Community‑trained models, anonymized patterns, and governed access so your raw data stays yours.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how" class="border-b border-border">
+      <div class="mx-auto max-w-[1200px] px-6">
+        <div class="py-16">
+          <h2 class="text-2xl font-semibold tracking-tight">How it works</h2>
+          <div class="mt-6 grid gap-6 md:grid-cols-3">
+            <div class="rounded-2xl border border-border p-6">
+              <div class="flex items-center gap-3">
+                <div class="rounded-xl border border-border p-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4.5h14v2H5v-2zm0 4h10v2H5v-2zm0 4h14v2H5v-2zm0 4h10v2H5v-2z"/></svg></div>
+                <h3 class="text-base font-semibold tracking-tight">1. Select well</h3>
+              </div>
+              <p class="mt-3 text-sm text-muted leading-6">Choose the target well and pull context from case studies and live data sources.</p>
+            </div>
+            <div class="rounded-2xl border border-border p-6">
+              <div class="flex items-center gap-3">
+                <div class="rounded-xl border border-border p-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5L12 2z"/></svg></div>
+                <h3 class="text-base font-semibold tracking-tight">2. Define objectives + AI advise</h3>
+              </div>
+              <p class="mt-3 text-sm text-muted leading-6">The AI Advisor cross‑references historic successes and patterns to recommend interventions.</p>
+            </div>
+            <div class="rounded-2xl border border-border p-6">
+              <div class="flex items-center gap-3">
+                <div class="rounded-xl border border-border p-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v2H6V6zm0 5h12v2H6v-2zm0 5h12v2H6v-2z"/></svg></div>
+                <h3 class="text-base font-semibold tracking-tight">3. Review, simulate, execute</h3>
+              </div>
+              <p class="mt-3 text-sm text-muted leading-6">Generate a procedure, simulate operations, then go live with logistics, HSE, and commercial views in‑sync.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Ecosystem Section -->
+    <section id="ecosystem" class="border-b border-border bg-surface">
+      <div class="mx-auto max-w-[1200px] px-6">
+        <div class="py-16">
+          <div class="text-center">
+              <h2 class="text-2xl font-semibold tracking-tight">Navigating the Fragmented Digital Oilfield</h2>
+              <p class="mt-2 text-sm text-muted max-w-3xl mx-auto">The energy sector relies on powerful, specialized software. However, these tools often create data silos, trapping critical information and hindering cross-functional insight. WellTegra was built to bridge this gap.</p>
+          </div>
+
+          <div class="mt-10 grid gap-8 md:grid-cols-2 items-center">
+              <div class="rounded-2xl border border-border p-6 bg-white shadow-soft">
+                  <h3 class="text-lg font-semibold tracking-tight text-center mb-4">Legacy Platform Capabilities</h3>
+                  <div class="chart-container" role="img" aria-label="Radar chart comparing capabilities of WellView, Sapphire, and Petrel across different categories">
+                    <canvas id="ecosystemChart"></canvas>
+                  </div>
+              </div>
+              <div>
+                  <h3 class="text-lg font-semibold tracking-tight mb-4">The Challenge of Silos</h3>
+                  <ul class="space-y-4">
+                      <li class="flex items-start gap-4">
+                          <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-border text-sm font-bold bg-white">DB</div>
+                          <div>
+                              <h4 class="font-semibold">Data Capture Systems</h4>
+                              <p class="text-sm text-muted">Tools like <span class="font-medium text-brand/80">WellView</span> are the system of record for operational data, but they are databases, not analytical engines.</p>
+                          </div>
+                      </li>
+                      <li class="flex items-start gap-4">
+                          <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-border text-sm font-bold bg-white">3D</div>
+                          <div>
+                              <h4 class="font-semibold">Subsurface Modeling Platforms</h4>
+                              <p class="text-sm text-muted">Software like <span class="font-medium text-brand/80">Petrel</span> creates detailed reservoir models but is often disconnected from real-time well data.</p>
+                          </div>
+                      </li>
+                      <li class="flex items-start gap-4">
+                          <div class="grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-border text-sm font-bold bg-white">📈</div>
+                          <div>
+                              <h4 class="font-semibold">Specialized Analytical Tools</h4>
+                              <p class="text-sm text-muted"><span class="font-medium text-brand/80">Sapphire</span> is the gold standard for transient analysis but requires expert users and manually imported data.</p>
+                          </div>
+                      </li>
+                  </ul>
+                  <div class="mt-6 rounded-2xl border-2 border-dashed border-accent/50 bg-accent/5 p-4">
+                    <p class="text-sm text-center font-medium text-accent/80">WellTegra's AI-powered integration layer connects these silos, unlocking predictive insights without replacing your trusted systems.</p>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROI Calculator -->
+    <section id="roi" class="border-b border-border">
+      <div class="mx-auto max-w-[1200px] px-6">
+        <div class="py-16">
+          <div class="flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 01.75.75v10.5a.75.75 0 01-.75.75H3.75a.75.75 0 01-.75-.75V6.75zM6 9h2v7H6V9zm4 3h2v4h-2v-4zm4-2h2v6h-2V10z"/></svg>
+            <h2 class="text-2xl font-semibold tracking-tight">Estimate your savings</h2>
+          </div>
+          <p class="mt-2 text-sm text-muted max-w-2xl">Model the impact of reclaiming engineering time and cutting NPT across your portfolio.</p>
+
+          <div class="mt-6 grid gap-6 md:grid-cols-3">
+            <div class="rounded-2xl border border-border p-6">
+              <label class="text-sm font-medium" for="engineers">Number of well engineers</label>
+              <input id="engineers" type="range" min="2" max="60" value="20" class="mt-3 w-full" />
+              <div class="mt-2 text-sm text-muted" id="engineersVal">20</div>
+
+              <label class="mt-6 block text-sm font-medium" for="time">Engineering time reclaimed</label>
+              <input id="time" type="range" min="10" max="60" value="40" class="mt-3 w-full" />
+              <div class="mt-2 text-sm text-muted" id="timeVal">40%</div>
+
+              <label class="mt-6 block text-sm font-medium" for="npt">Projected NPT reduction</label>
+              <input id="npt" type="range" min="5" max="50" value="20" class="mt-3 w-full" />
+              <div class="mt-2 text-sm text-muted" id="nptVal">20%</div>
+
+              <div class="mt-6 grid grid-cols-2 gap-4">
+                <div>
+                  <label class="text-sm font-medium" for="loadedCost">Loaded cost / engineer</label>
+                  <input id="loadedCost" type="number" value="150000" step="1000" class="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm" />
+                  <p class="mt-1 text-xs text-muted">GBP / year</p>
+                </div>
+                <div>
+                  <label class="text-sm font-medium" for="nptDayCost">Cost of NPT / day</label>
+                  <input id="nptDayCost" type="number" value="100000" step="1000" class="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm" />
+                  <p class="mt-1 text-xs text-muted">GBP / day</p>
+                </div>
+                <div>
+                  <label class="text-sm font-medium" for="nptDays">Operational days / year</label>
+                  <input id="nptDays" type="number" value="180" class="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm" />
+                  <p class="mt-1 text-xs text-muted">days</p>
+                </div>
+                <div>
+                  <label class="text-sm font-medium" for="currency">Currency</label>
+                  <select id="currency" class="mt-2 w-full rounded-lg border border-border px-3 py-2 text-sm">
+                    <option value="GBP" selected>GBP (£)</option>
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-border p-6 md:col-span-2 flex flex-col justify-center">
+              <p class="text-sm text-muted">Total estimated annual savings</p>
+              <p class="mt-2 text-4xl font-semibold tracking-tight" id="total">£2,168,000</p>
+              <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                <div class="rounded-xl border border-border p-4">
+                  <p class="text-xs text-muted">From reclaimed engineering time</p>
+                  <p class="mt-1 text-xl font-semibold" id="engineerSavings">£1,200,000</p>
+                </div>
+                <div class="rounded-xl border border-border p-4">
+                  <p class="text-xs text-muted">From reduced NPT</p>
+                  <p class="mt-1 text-xl font-semibold" id="nptSavings">£968,000</p>
+                </div>
+              </div>
+              <ul class="mt-6 space-y-2 text-sm">
+                <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4 1.5 1.5-5.5 5.5L7.5 13.5 9 12z"/></svg> Lower NPT from better planning & execution</li>
+                <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4 1.5 1.5-5.5 5.5L7.5 13.5 9 12z"/></svg> Cut admin time with a unified data layer</li>
+                <li class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4 1.5 1.5-5.5 5.5L7.5 13.5 9 12z"/></svg> Fewer errors via AI‑assisted workflows</li>
+              </ul>
+              <p class="mt-4 text-xs text-muted">This calculator provides directional estimates only and should not be used for formal budgeting.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resources / White paper -->
+    <section id="resources" class="border-b border-border">
+      <div class="mx-auto max-w-[1200px] px-6">
+        <div class="py-16">
+          <div class="rounded-2xl border border-border p-6 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div>
+              <h3 class="text-xl font-semibold tracking-tight">Dive deeper into the architecture</h3>
+              <p class="mt-2 text-sm text-muted max-w-2xl">Read how privacy‑preserving AI and a unified data model power WellTegra's platform.</p>
+            </div>
+            <a href="#" class="rounded-2xl border border-border px-5 py-3 text-sm font-semibold inline-flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4.5h12v2H6v-2zM6 9h12v2H6V9zm0 4.5h12v2H6v-2zM6 18h7.5v2H6v-2z"/></svg>
+              Download white paper
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social proof -->
+    <section class="border-b border-border">
+      <div class="mx-auto max-w-[1200px] px-6">
+        <div class="py-16">
+          <h2 class="text-2xl font-semibold tracking-tight">Why teams choose WellTegra</h2>
+          <div class="mt-6 grid gap-6 md:grid-cols-3">
+            <div class="rounded-2xl border border-border p-6">
+              <p class="text-sm">"We cut prep time in half and finally stopped emailing PDFs around."</p>
+              <p class="mt-3 text-xs text-muted">Senior Well Engineer • Major Operator</p>
+            </div>
+            <div class="rounded-2xl border border-border p-6">
+              <p class="text-sm">"The AI Advisor surfaced a solution we'd used years ago—we just didn't connect the dots."</p>
+              <p class="mt-3 text-xs text-muted">Intervention Supervisor • North Sea</p>
+            </div>
+            <div class="rounded-2xl border border-border p-6">
+              <p class="text-sm">"Live POB + ER visibility during critical ops is a game changer."</p>
+              <p class="mt-3 text-xs text-muted">HSE Manager • Middle East</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <!-- Footer -->
   <footer id="about" class="py-14">
@@ -427,11 +507,48 @@
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Simple ROI calculator logic
-    function fmtCurrency(value, currency) {
-      try { return new Intl.NumberFormat('en-GB', { style: 'currency', currency, minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value); } catch(e) { return value.toLocaleString(); }
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', () => {
+        const expanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        mobileMenuButton.setAttribute('aria-expanded', !expanded);
+        mobileMenu.classList.toggle('hidden');
+      });
     }
 
+    // Simple ROI calculator logic
+    function fmtCurrency(value, currency) {
+      try { 
+        return new Intl.NumberFormat('en-GB', { 
+          style: 'currency', 
+          currency, 
+          minimumFractionDigits: 0, 
+          maximumFractionDigits: 0 
+        }).format(value); 
+      } catch(e) { 
+        return value.toLocaleString(); 
+      }
+    }
+
+    // Add animation function
+    function animateValue(element, start, end, duration) {
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const value = Math.floor(progress * (end - start) + start);
+        element.textContent = fmtCurrency(value, document.getElementById('currency').value);
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    // Modified updateROI function with animation
     function updateROI(){
       const engineers = +document.getElementById('engineers').value;
       const timePct = +document.getElementById('time').value / 100; // 0-1
@@ -449,16 +566,34 @@
       document.getElementById('timeVal').textContent = Math.round(timePct*100) + '%';
       document.getElementById('nptVal').textContent = Math.round(nptPct*100) + '%';
 
-      document.getElementById('engineerSavings').textContent = fmtCurrency(engineerSavings, currency);
-      document.getElementById('nptSavings').textContent = fmtCurrency(nptSavings, currency);
-      document.getElementById('total').textContent = fmtCurrency(total, currency);
+      // Get current values for animation
+      const totalElement = document.getElementById('total');
+      const engineerSavingsElement = document.getElementById('engineerSavings');
+      const nptSavingsElement = document.getElementById('nptSavings');
+      
+      const currentTotal = parseInt(totalElement.textContent.replace(/[^0-9.-]+/g,"")) || 0;
+      const currentEngineer = parseInt(engineerSavingsElement.textContent.replace(/[^0-9.-]+/g,"")) || 0;
+      const currentNPT = parseInt(nptSavingsElement.textContent.replace(/[^0-9.-]+/g,"")) || 0;
+      
+      // Animate the results
+      animateValue(totalElement, currentTotal, total, 500);
+      animateValue(engineerSavingsElement, currentEngineer, engineerSavings, 500);
+      animateValue(nptSavingsElement, currentNPT, nptSavings, 500);
     }
+
+    // Add event listeners to ROI calculator inputs
+    const roiInputs = document.querySelectorAll('#roi input, #roi select');
+    roiInputs.forEach(input => {
+      input.addEventListener('input', updateROI);
+      input.addEventListener('change', updateROI);
+    });
 
     // Chart.js Ecosystem Chart
     function renderEcosystemChart() {
-        const ctx = document.getElementById('ecosystemChart').getContext('2d');
+        const ctx = document.getElementById('ecosystemChart');
         if (!ctx) return;
-        new Chart(ctx, {
+        
+        new Chart(ctx.getContext('2d'), {
             type: 'radar',
             data: {
                 labels: ['Data Capture', 'Specialized Analytics', '3D Subsurface Modeling', 'Usability', 'Integration'],
@@ -466,21 +601,21 @@
                     label: 'WellView',
                     data: [5, 2, 1, 4, 3],
                     fill: true,
-                    backgroundColor: 'rgba(14, 165, 233, 0.2)', // accent color
+                    backgroundColor: 'rgba(14, 165, 233, 0.2)',
                     borderColor: 'rgba(14, 165, 233, 1)',
                     pointBackgroundColor: 'rgba(14, 165, 233, 1)',
                 }, {
                     label: 'Sapphire',
                     data: [2, 5, 2, 2, 2],
                     fill: true,
-                    backgroundColor: 'rgba(107, 114, 128, 0.2)', // muted color
+                    backgroundColor: 'rgba(107, 114, 128, 0.2)',
                     borderColor: 'rgba(107, 114, 128, 1)',
                     pointBackgroundColor: 'rgba(107, 114, 128, 1)',
                 }, {
                     label: 'Petrel',
                     data: [3, 4, 5, 2, 3],
                     fill: true,
-                    backgroundColor: 'rgba(11, 11, 11, 0.2)', // brand color
+                    backgroundColor: 'rgba(11, 11, 11, 0.2)',
                     borderColor: 'rgba(11, 11, 11, 1)',
                     pointBackgroundColor: 'rgba(11, 11, 11, 1)',
                 }]
@@ -504,7 +639,7 @@
                 },
                 scales: {
                     r: {
-                        angleLines: { color: '#E5E7EB' }, // border color
+                        angleLines: { color: '#E5E7EB' },
                         grid: { color: '#E5E7EB' },
                         pointLabels: {
                             font: { size: 12 },
@@ -527,7 +662,7 @@
       updateROI();
       renderEcosystemChart();
     });
-
   </script>
 </body>
 </html>
+```
