@@ -1,14 +1,44 @@
       - name: Prepare Pages artifact
         run: |
+          set -e
           mkdir -p ./_site
-          # core pages
-          cp -r index.html 404.html robots.txt sitemap.xml ./_site/
-          # css and js
+          # core files
+          cp -f index.html ./_site/
+          [ -f 404.html ] && cp -f 404.html ./_site/ || true
+          [ -f robots.txt ] && cp -f robots.txt ./_site/ || true
+          [ -f sitemap.xml ] && cp -f sitemap.xml ./_site/ || true
+          [ -f CNAME ] && cp -f CNAME ./_site/ || true
+
+          # css & js
           cp -r dist ./_site/dist
           mkdir -p ./_site/src
-          cp -r src/app.js ./_site/src/
-          # root assets (copy whatever exists, ignore if not present)
-          cp -f CNAME ./_site/ 2>/dev/null || true
+          cp -f src/app.js ./_site/src/
+
+          # root images (copy whatever exists)
           for ext in jpg jpeg png svg webp ico gif; do
-            cp -f *.$ext ./_site/ 2>/dev/null || true
+            for f in *.$ext; do
+              [ -f "$f" ] && cp -f "$f" ./_site/ || true
+            done
+          done
+      - name: Prepare Pages artifact
+        run: |
+          set -e
+          mkdir -p ./_site
+          # core files
+          cp -f index.html ./_site/
+          [ -f 404.html ] && cp -f 404.html ./_site/ || true
+          [ -f robots.txt ] && cp -f robots.txt ./_site/ || true
+          [ -f sitemap.xml ] && cp -f sitemap.xml ./_site/ || true
+          [ -f CNAME ] && cp -f CNAME ./_site/ || true
+
+          # css & js
+          cp -r dist ./_site/dist
+          mkdir -p ./_site/src
+          cp -f src/app.js ./_site/src/
+
+          # root images (copy whatever exists)
+          for ext in jpg jpeg png svg webp ico gif; do
+            for f in *.$ext; do
+              [ -f "$f" ] && cp -f "$f" ./_site/ || true
+            done
           done
