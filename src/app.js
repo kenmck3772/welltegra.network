@@ -1,8 +1,7 @@
 // src/app.js
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-const getVar = (name) =>
-  getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const getVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const rgba = (rgb, a = 1) => `rgba(${rgb},${a})`;
 
 // Year
@@ -23,7 +22,6 @@ function setupDarkMode() {
     html.classList.toggle('dark', nowDark);
     localStorage.setItem('theme', nowDark ? 'dark' : 'light');
     if (window.myEcosystemChart) window.myEcosystemChart.destroy();
-    // if chart already requested, re-render with new theme
     if (document.getElementById('ecosystemChart')?.dataset.rendered) {
       renderEcosystemChart();
     }
@@ -313,7 +311,7 @@ function renderEcosystemChart() {
   });
 }
 
-/* ---------- Form validation + local UX ---------- */
+/* ---------- Form validation (static UX) ---------- */
 function setupForm() {
   const form = $('#demoForm');
   if (!form) return;
@@ -343,7 +341,7 @@ function setupForm() {
 
   form.addEventListener('submit', (e) => {
     if (!validate()) { e.preventDefault(); return; }
-    // Local success UX (works on GitHub Pages). Replace with real action for Formspree if needed.
+    // Local success UX (works on GitHub Pages). Swap to Formspree/Netlify for real submissions.
     e.preventDefault();
     success.classList.add('hidden');
     submitBtn.disabled = true; label.textContent = 'Sending...';
