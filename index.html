@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -5,19 +6,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WellTegra – From Data Chaos to Predictive Clarity</title>
 
-  <!-- Basic SEO -->
   <meta name="description" content="WellTegra unifies planning, execution, and analysis for well operations. Reduce NPT, reclaim engineering time, and align partners with a single source of truth." />
   <meta name="theme-color" content="#0B0B0B" />
   <link rel="canonical" href="https://welltegra.network/">
+  <meta name="color-scheme" content="light dark">
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <!-- Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy"
+        content="
+          default-src 'self';
+          img-src 'self' data: https://i.ytimg.com https://img.youtube.com https://www.youtube.com;
+          style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+          font-src 'self' https://fonts.gstatic.com;
+          script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://plausible.io https://apis.google.com https://www.youtube.com https://www.gstatic.com;
+          frame-src https://www.youtube-nocookie.com https://www.youtube.com;
+          connect-src 'self' https://plausible.io;
+        ">
 
   <!-- Open Graph / Twitter -->
   <meta property="og:title" content="WellTegra – From Data Chaos to Predictive Clarity" />
   <meta property="og:description" content="Unify planning → execution → analysis. Reduce NPT, reclaim engineering time, align partners." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://welltegra.network/" />
-  <meta property="og:image" content="/og.jpg" />
+  <meta property="og:image" content="og.jpg" />
+  <meta property="og:image:alt" content="WellTegra: From data chaos to predictive clarity" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="/og.jpg" />
+  <meta name="twitter:image" content="og.jpg" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,29 +40,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <!-- Favicons -->
-  <link rel="icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
 
   <!-- Tailwind build -->
   <link rel="stylesheet" href="dist/output.css">
 
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <!-- Analytics (privacy-friendly) -->
+  <!-- Analytics -->
   <script defer data-domain="welltegra.network" src="https://plausible.io/js/script.js"></script>
 
+  <!-- Inline helpers & lite-youtube styles -->
   <style>
-    :root {
-      color-scheme: light;
-      --wt-accent: 14,165,233;  /* rgb triplet for rgba() */
-      --wt-axis: 11,11,11;
-      --wt-grid: 229,231,235;
-    }
-    .dark:root {
-      --wt-axis: 248,250,252;
-      --wt-grid: 55,65,81;
-    }
+    :root { color-scheme: light; --wt-accent: 14,165,233; --wt-axis: 11,11,11; --wt-grid: 229,231,235; }
+    .dark:root { --wt-axis: 248,250,252; --wt-grid: 55,65,81; }
     html, body { height: 100%; }
     body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
     :focus-visible { outline: 2px solid #0EA5E9; outline-offset: 2px; border-radius: .5rem; }
@@ -60,10 +65,22 @@
     .revealed { opacity: 1; transform: none; }
     @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
     .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; backdrop-filter: blur(8px); }
+    [id] { scroll-margin-top: 72px; }
+
+    /* Lite YouTube */
+    .lite-yt { position:relative; display:block; background:#000; border-radius:0.75rem; overflow:hidden; cursor:pointer; }
+    .lite-yt::before { content:""; display:block; padding-top:56.25%; }
+    .lite-yt > .thumb, .lite-yt > iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+    .lite-yt > .thumb { background-position:center; background-size:cover; filter:brightness(.9); transition:filter .2s ease; }
+    .lite-yt:hover > .thumb { filter:brightness(1); }
+    .lite-yt > .playbtn {
+      position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+      width:68px; height:48px; background:rgba(0,0,0,.6); border-radius:10px; display:grid; place-items:center;
+    }
+    .lite-yt > .playbtn svg { width:28px; height:28px; fill:#fff; }
   </style>
 </head>
 <body class="bg-white text-brand/95 dark:bg-darkBg dark:text-darkBrand">
-  <!-- Skip link -->
   <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:bg-accent focus:text-white focus:px-3 focus:py-2 focus:rounded-lg">Skip to content</a>
 
   <!-- HEADER -->
@@ -71,12 +88,15 @@
     <div class="mx-auto max-w-[1200px] px-6">
       <div class="flex h-16 items-center justify-between">
         <a href="#top" class="flex items-center gap-2" aria-label="WellTegra home">
-          <img src="welltegra-logo.jpg" alt="WellTegra Logo" class="h-8 w-auto" loading="lazy" decoding="async" width="128" height="32" />
+          <picture>
+            <source srcset="welltegra-logo.svg" type="image/svg+xml">
+            <img src="welltegra-logo.jpg" alt="WellTegra Logo" class="h-8 w-auto" loading="lazy" decoding="async" width="128" height="32" />
+          </picture>
           <span class="hidden sm:block text-xs font-semibold text-muted dark:text-darkBrand/60">Data Solutions</span>
         </a>
 
         <nav id="desktop-menu" class="hidden md:flex items-center gap-6 text-sm ml-auto">
-          <a class="hover:opacity-70 nav-link" href="#product">Product</a>
+          <a class="hover:opacity-70 nav-link" href="#product" aria-current="page">Product</a>
           <a class="hover:opacity-70 nav-link" href="#how">How it Works</a>
           <a class="hover:opacity-70 nav-link" href="#ecosystem">Ecosystem</a>
           <a class="hover:opacity-70 nav-link" href="#roi">ROI Calculator</a>
@@ -161,6 +181,7 @@
 
           <div class="relative reveal">
             <div class="relative w-full overflow-hidden rounded-3xl border border-border shadow-soft pt-[56.25%] bg-brand/5 dark:border-darkBorder dark:bg-darkSurface">
+              <!-- keep one normal embed in hero -->
               <iframe class="absolute inset-0 w-full h-full"
                 loading="lazy"
                 referrerpolicy="strict-origin-when-cross-origin"
@@ -185,7 +206,7 @@
               </div>
               <h3 class="text-base font-semibold tracking-tight">Data Normalization & Quality</h3>
             </div>
-            <p class="mt-3 text-sm text-muted leading-6 dark:text-darkBrand/70">Stop cleaning messy inputs. <strong>WellTegra</strong> automatically ingests, validates, and standardizes data from all systems (<em>WellView, Petrel, historian</em>), creating a reliable, unified data model ready for analytics.</p>
+            <p class="mt-3 text-sm text-muted leading-6 dark:text-darkBrand/70">Stop cleaning messy inputs. <strong>WellTegra</strong> ingests, validates, and standardizes data from all systems (<em>WellView, Petrel, historian</em>) into a unified model.</p>
           </div>
           <div class="rounded-2xl border border-border p-6 dark:border-darkBorder dark:bg-darkSurface reveal">
             <div class="flex items-center gap-3">
@@ -194,7 +215,7 @@
               </div>
               <h3 class="text-base font-semibold tracking-tight">Integrated Lifecycle Management</h3>
             </div>
-            <p class="mt-3 text-sm text-muted leading-6 dark:text-darkBrand/70">Manage the entire well lifecycle—from <strong>intervention planning</strong> to post-job analysis—in a single collaborative workspace.</p>
+            <p class="mt-3 text-sm text-muted leading-6 dark:text-darkBrand/70">Plan → execute → analyze, all in one collaborative workspace.</p>
           </div>
           <div class="rounded-2xl border border-border p-6 dark:border-darkBorder dark:bg-darkSurface reveal">
             <div class="flex items-center gap-3">
@@ -220,7 +241,7 @@
                 <div class="rounded-xl border border-border p-2 dark:border-darkBorder dark:bg-darkBg"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4.5h14v2H5v-2zm0 4h10v2H5v-2zm0 4h14v2H5v-2zm0 4h10v2H5v-2z"/></svg></div>
                 <h3 class="text-base font-semibold tracking-tight">1. Contextual Well Selection</h3>
               </div>
-              <p class="mt-3 text-sm text-muted leading-6 dark:text-darkBrand/70">Instant 360° view of history, diagnostics and live ops. No hunting.</p>
+              <p class="mt-3 text-sm text-muted leading-6 dark:text-darkBrand/70">Instant 360° view of history, diagnostics and live ops.</p>
             </div>
             <div class="rounded-2xl border border-border p-6 dark:border-darkBorder dark:bg-darkSurface reveal">
               <div class="flex items-center gap-3">
@@ -234,14 +255,14 @@
                 <div class="rounded-xl border border-border p-2 dark:border-darkBorder dark:bg-darkBg"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v2H6V6zm0 5h12v2H6v-2zm0 5h12v2H6v-2z"/></svg></div>
                 <h3 class="text-base font-semibold tracking-tight">3. Seamless Execution & Analysis</h3>
               </div>
-              <p class="mt-3 text-sm text-muted leading-6 dark:text-darkBrand/70">One-click procedures, live POB/HSE visibility, and auto post-job reviews.</p>
+              <p class="mt-3 text-sm text-muted leading-6 dark:text-darkBrand/70">One-click procedures, live POB/HSE visibility, automatic post-job review.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- YOUTUBE -->
+    <!-- YOUTUBE (lite embeds) -->
     <section id="youtube" class="border-b border-border dark:border-darkBorder bg-surface dark:bg-darkBg">
       <div class="mx-auto max-w-[1200px] px-6">
         <div class="py-16">
@@ -251,7 +272,7 @@
               <p class="mt-2 text-sm text-muted dark:text-darkBrand/70">Product walkthroughs, integration tips, and talks from the field.</p>
             </div>
             <div class="flex items-center gap-3">
-              <a href="https://www.youtube.com/@WellTegra" target="_blank" rel="noopener noreferrer"
+              <a href="https://www.youtube.com/channel/UCedD5TAvyQgV1LRFfjoNRww" target="_blank" rel="noopener noreferrer"
                  class="inline-flex items-center gap-2 rounded-2xl border border-border px-4 py-2 text-sm font-semibold hover:bg-surface dark:border-darkBorder dark:hover:bg-darkBg">
                 Visit Channel
               </a>
@@ -260,53 +281,45 @@
 
           <div class="mt-8 grid gap-8 md:grid-cols-2 items-start">
             <div class="rounded-2xl border border-border p-4 bg-white shadow-soft dark:border-darkBorder dark:bg-darkSurface reveal">
-              <div class="relative w-full overflow-hidden rounded-xl pt-[56.25%]">
-                <iframe class="absolute inset-0 w-full h-full rounded-xl"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        src="https://www.youtube-nocookie.com/embed?listType=search&list=WellTegra"
-                        title="Latest from WellTegra (search)" frameborder="0"
-                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen></iframe>
+              <div class="lite-yt" data-yt-src="https://www.youtube-nocookie.com/embed?listType=playlist&list=UUedD5TAvyQgV1LRFfjoNRww" aria-label="Play WellTegra uploads">
+                <span class="thumb" style="background-image:url('https://i.ytimg.com/vi/yxgyO79GxO8/hqdefault.jpg')"></span>
+                <span class="playbtn" aria-hidden="true">
+                  <svg viewBox="0 0 68 48"><path d="M66.5 7.5a8 8 0 0 0-5.6-5.7C56.3 0 34 0 34 0S11.7 0 7.1 1.8A8 8 0 0 0 1.5 7.5 83 83 0 0 0 0 24a83 83 0 0 0 1.5 16.5 8 8 0 0 0 5.6 5.7C11.7 48 34 48 34 48s22.3 0 26.9-1.8a8 8 0 0 0 5.6-5.7A83 83 0 0 0 68 24a83 83 0 0 0-1.5-16.5zM45 24 27 14v20z"/></svg>
+                </span>
               </div>
               <p class="mt-3 text-sm text-muted dark:text-darkBrand/70">Latest uploads from @WellTegra.</p>
             </div>
 
             <div class="grid gap-4 sm:grid-cols-2 reveal">
               <div class="rounded-xl border border-border p-2 dark:border-darkBorder dark:bg-darkSurface">
-                <div class="relative w-full overflow-hidden rounded-lg pt-[56.25%]">
-                  <iframe class="absolute inset-0 w-full h-full rounded-lg"
-                          loading="lazy"
-                          referrerpolicy="strict-origin-when-cross-origin"
-                          src="https://www.youtube-nocookie.com/embed?listType=search&list=WellTegra%20demo"
-                          title="Demo highlights" frameborder="0"
-                          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                          allowfullscreen></iframe>
+                <div class="lite-yt" data-yt-src="https://www.youtube-nocookie.com/embed?listType=playlist&list=UUedD5TAvyQgV1LRFfjoNRww" aria-label="Play WellTegra uploads">
+                  <span class="thumb" style="background-image:url('https://i.ytimg.com/vi/yxgyO79GxO8/hqdefault.jpg')"></span>
+                  <span class="playbtn" aria-hidden="true">
+                    <svg viewBox="0 0 68 48"><path d="M66.5 7.5a8 8 0 0 0-5.6-5.7C56.3 0 34 0 34 0S11.7 0 7.1 1.8A8 8 0 0 0 1.5 7.5 83 83 0 0 0 0 24a83 83 0 0 0 1.5 16.5 8 8 0 0 0 5.6 5.7C11.7 48 34 48 34 48s22.3 0 26.9-1.8a8 8 0 0 0 5.6-5.7A83 83 0 0 0 68 24a83 83 0 0 0-1.5-16.5zM45 24 27 14v20z"/></svg>
+                  </span>
                 </div>
-                <p class="mt-2 text-xs text-muted dark:text-darkBrand/60">Demo highlights</p>
+                <p class="mt-2 text-xs text-muted dark:text-darkBrand/60">Uploads</p>
               </div>
 
               <div class="rounded-xl border border-border p-2 dark:border-darkBorder dark:bg-darkSurface">
-                <div class="relative w-full overflow-hidden rounded-lg pt-[56.25%]">
-                  <iframe class="absolute inset-0 w-full h-full rounded-lg"
-                          loading="lazy"
-                          referrerpolicy="strict-origin-when-cross-origin"
-                          src="https://www.youtube-nocookie.com/embed?listType=search&list=WellTegra%20walkthrough"
-                          title="Platform walkthrough" frameborder="0"
-                          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                          allowfullscreen></iframe>
+                <div class="lite-yt" data-yt-src="https://www.youtube-nocookie.com/embed?listType=playlist&list=UUedD5TAvyQgV1LRFfjoNRww" aria-label="Play WellTegra uploads">
+                  <span class="thumb" style="background-image:url('https://i.ytimg.com/vi/yxgyO79GxO8/hqdefault.jpg')"></span>
+                  <span class="playbtn" aria-hidden="true">
+                    <svg viewBox="0 0 68 48"><path d="M66.5 7.5a8 8 0 0 0-5.6-5.7C56.3 0 34 0 34 0S11.7 0 7.1 1.8A8 8 0 0 0 1.5 7.5 83 83 0 0 0 0 24a83 83 0 0 0 1.5 16.5 8 8 0 0 0 5.6 5.7C11.7 48 34 48 34 48s22.3 0 26.9-1.8a8 8 0 0 0 5.6-5.7A83 83 0 0 0 68 24a83 83 0 0 0-1.5-16.5zM45 24 27 14v20z"/></svg>
+                  </span>
                 </div>
-                <p class="mt-2 text-xs text-muted dark:text-darkBrand/60">Platform walkthrough</p>
+                <p class="mt-2 text-xs text-muted dark:text-darkBrand/60">Uploads</p>
               </div>
             </div>
           </div>
 
-          <!-- Optional subscribe button — paste your UC… ID & uncomment
+          <!-- Official Subscribe button -->
           <div class="mt-6 reveal">
-            <div class="g-ytsubscribe" data-channelid="UCXXXXXXXXXXXXXXXXXXXX" data-layout="default" data-theme="default" data-count="default"></div>
+            <div class="g-ytsubscribe"
+                 data-channelid="UCedD5TAvyQgV1LRFfjoNRww"
+                 data-layout="default" data-theme="default" data-count="default"></div>
           </div>
           <script async defer src="https://apis.google.com/js/platform.js"></script>
-          -->
         </div>
       </div>
     </section>
@@ -375,12 +388,14 @@
             <p class="mt-1 text-xs text-red-600 hidden" data-error-for="interest">Please select one option.</p>
           </div>
 
-          <button id="submitBtn" type="submit"
-                  class="w-full inline-flex justify-center items-center gap-2 rounded-2xl bg-accent text-white px-6 py-3 text-base font-semibold shadow-soft hover:bg-accent/90">
-            <span class="btn-label">Schedule Demo Session</span>
-            <svg class="h-5 w-5 btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6a2 2 0 110 4h-1v4a2 2 0 11-4 0v-1H3a2 2 0 110-4h1V5a2 2 0 114 0v1h1zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <svg class="h-5 w-5 animate-spin hidden btn-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4A4 4 0 004 12z"/></svg>
-          </button>
+          <div class="flex items-center gap-3">
+            <button id="submitBtn" type="submit"
+                    class="w-full inline-flex justify-center items-center gap-2 rounded-2xl bg-accent text-white px-6 py-3 text-base font-semibold shadow-soft hover:bg-accent/90">
+              <span class="btn-label">Schedule Demo Session</span>
+              <svg class="h-5 w-5 btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6a2 2 0 110 4h-1v4a2 2 0 11-4 0v-1H3a2 2 0 110-4h1V5a2 2 0 114 0v1h1zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <svg class="h-5 w-5 animate-spin hidden btn-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4A4 4 0 004 12z"/></svg>
+            </button>
+          </div>
 
           <p class="text-xs text-muted/80 text-center dark:text-darkBrand/50">We respect your time. Demos are ~30 minutes and value-focused.</p>
           <p id="formSuccess" class="hidden text-center text-sm font-medium text-green-600">Thanks! We’ll be in touch shortly.</p>
@@ -447,6 +462,7 @@
           <div class="flex items-center gap-3">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 01.75.75v10.5a.75.75 0 01-.75.75H3.75a.75.75 0 01-.75-.75V6.75zM6 9h2v7H6V9zm4 3h2v4h-2v-4zm4-2h2v6h-2V10z"/></svg>
             <h2 class="text-2xl font-semibold tracking-tight">Estimate your savings</h2>
+            <button id="shareRoi" class="ml-3 inline-flex items-center gap-1 text-xs px-2 py-1 rounded-lg border border-border hover:bg-surface dark:border-darkBorder dark:hover:bg-darkBg">Copy link to this estimate</button>
           </div>
           <p class="mt-2 text-sm text-muted max-w-2xl dark:text-darkBrand/70">Model the impact of reclaiming engineering time and cutting NPT across your portfolio.</p>
 
@@ -615,7 +631,7 @@
   <!-- App JS -->
   <script src="src/app.js" type="module" defer></script>
 
-  <!-- Org schema (SEO) -->
+  <!-- Schema: Organization + WebSite + SoftwareApplication -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -623,7 +639,33 @@
     "name": "WellTegra",
     "url": "https://welltegra.network/",
     "logo": "https://welltegra.network/og.jpg",
-    "sameAs": ["https://www.youtube.com/@WellTegra"]
+    "sameAs": ["https://www.youtube.com/channel/UCedD5TAvyQgV1LRFfjoNRww"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "name":"WellTegra",
+    "url":"https://welltegra.network/",
+    "potentialAction":{
+      "@type":"SearchAction",
+      "target":"https://welltegra.network/?q={search_term_string}",
+      "query-input":"required name=search_term_string"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"SoftwareApplication",
+    "name":"WellTegra",
+    "applicationCategory":"BusinessApplication",
+    "operatingSystem":"Web",
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"},
+    "publisher":{"@type":"Organization","name":"WellTegra","url":"https://welltegra.network/"},
+    "url":"https://welltegra.network/",
+    "description":"Unify planning, execution, and analysis for well operations. Reduce NPT and reclaim engineering time."
   }
   </script>
 </body>
