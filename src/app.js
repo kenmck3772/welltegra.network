@@ -1,4 +1,4 @@
-// Helpers
+// src/app.js
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 const getVar = (name) =>
@@ -6,7 +6,9 @@ const getVar = (name) =>
 const rgba = (rgb, a = 1) => `rgba(${rgb},${a})`;
 
 // Year
-$('#year').textContent = new Date().getFullYear();
+document.addEventListener('DOMContentLoaded', () => {
+  const y = $('#year'); if (y) y.textContent = new Date().getFullYear();
+});
 
 /* ---------- Dark Mode ---------- */
 function setupDarkMode() {
@@ -21,7 +23,10 @@ function setupDarkMode() {
     html.classList.toggle('dark', nowDark);
     localStorage.setItem('theme', nowDark ? 'dark' : 'light');
     if (window.myEcosystemChart) window.myEcosystemChart.destroy();
-    renderEcosystemChart();
+    // if chart already requested, re-render with new theme
+    if (document.getElementById('ecosystemChart')?.dataset.rendered) {
+      renderEcosystemChart();
+    }
   };
 }
 
@@ -111,48 +116,68 @@ function fmtCurrency(value, currency) {
 function roiState() {
   return {
     engineers: +$('#engineers').value,
-    timePct: +$('#time').value / 100,
-    nptPct: +$('#npt').value / 100,
+    time: +$('#time').value,
+    npt: +$('#npt').value,
     loadedCost: +$('#loadedCost').value,
     nptDayCost: +$('#nptDayCost').value,
     nptDays: +$('#nptDays').value,
     currency: $('#currency').value
   };
 }
+function applyRoiToControls(q) {
+  const map = { engineers:'engineers', time:'time', npt:'npt', cost:'loadedCost', nptDay:'nptDayCost', days:'nptDays', cur:'currency' };
+  Object.entries(map).forEach(([k,id]) => {
+    if (q.get(k) !== null) {
+      const el = document.getElementById(id);
+      if (el) el.value = q.get(k);
+    }
+  });
+}
+function writeRoiToUrl(){
+  const s = roiState();
+  const p = new URLSearchParams({
+    engineers: s.engineers, time: s.time, npt: s.npt,
+    cost: s.loadedCost, nptDay: s.nptDayCost, days: s.nptDays, cur: s.currency
+  });
+  history.replaceState(null, '', `${location.pathname}?${p.toString()}#roi`);
+}
 export function updateROI(){
   const s = roiState();
-  const engineerSavings = s.engineers * s.loadedCost * s.timePct;
-  const nptSavings = s.nptDayCost * s.nptDays * s.nptPct;
+  const timePct = s.time / 100;
+  const nptPct = s.npt / 100;
+  const engineerSavings = s.engineers * s.loadedCost * timePct;
+  const nptSavings = s.nptDayCost * s.nptDays * nptPct;
   const total = engineerSavings + nptSavings;
 
   $('#engineersVal').textContent = s.engineers;
-  $('#timeVal').textContent = Math.round(s.timePct*100) + '%';
-  $('#nptVal').textContent = Math.round(s.nptPct*100) + '%';
-
+  $('#timeVal').textContent = Math.round(timePct*100) + '%';
+  $('#nptVal').textContent = Math.round(nptPct*100) + '%';
   $('#engineerSavings').textContent = fmtCurrency(engineerSavings, s.currency);
   $('#nptSavings').textContent = fmtCurrency(nptSavings, s.currency);
   $('#total').textContent = fmtCurrency(total, s.currency);
+
+  writeRoiToUrl();
 }
 function setupCsvDownload(){
   const btn = $('#downloadCsvBtn');
   if (!btn) return;
   btn.addEventListener('click', () => {
     const s = roiState();
-    const engineerSavings = s.engineers * s.loadedCost * s.timePct;
-    const nptSavings = s.nptDayCost * s.nptDays * s.nptPct;
+    const engineerSavings = s.engineers * s.loadedCost * (s.time/100);
+    const nptSavings = s.nptDayCost * s.nptDays * (s.npt/100);
     const total = engineerSavings + nptSavings;
     const rows = [
       ['Metric','Value'],
       ['Engineers', s.engineers],
-      ['Engineering Time Reclaimed (%)', Math.round(s.timePct*100)],
-      ['NPT Reduction (%)', Math.round(s.nptPct*100)],
+      ['Engineering Time Reclaimed (%)', s.time],
+      ['NPT Reduction (%)', s.npt],
       ['Loaded Cost / Engineer', s.loadedCost],
       ['NPT Cost / Day', s.nptDayCost],
       ['Operational Days / Year', s.nptDays],
       ['Currency', s.currency],
-      ['Engineer Savings', engineerSavings.toFixed(0)],
-      ['NPT Savings', nptSavings.toFixed(0)],
-      ['Total Savings', total.toFixed(0)],
+      ['Engineer Savings', Math.round(engineerSavings)],
+      ['NPT Savings', Math.round(nptSavings)],
+      ['Total Savings', Math.round(total)],
     ];
     const csv = rows.map(r => r.join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -163,15 +188,91 @@ function setupCsvDownload(){
     a.remove(); URL.revokeObjectURL(url);
   });
 }
+function setupRoiShare(){
+  const btn = document.getElementById('shareRoi');
+  if (!btn) return;
+  btn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(location.href);
+      btn.textContent = 'Copied!';
+      setTimeout(()=> btn.textContent = 'Copy link to this estimate', 1200);
+    } catch {
+      alert('Copy failed. You can copy the address bar URL.');
+    }
+  });
+}
 
-/* ---------- Chart.js — Grouped Horizontal Bar ---------- */
+/* ---------- UTM capture ---------- */
+function setupUtmCapture(){
+  const form = document.getElementById('demoForm');
+  if (!form) return;
+  const params = new URLSearchParams(window.location.search);
+  const fields = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
+  fields.forEach(name => {
+    const v = params.get(name);
+    if (!v) return;
+    let input = form.querySelector(`input[name="${name}"]`);
+    if (!input) {
+      input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      form.appendChild(input);
+    }
+    input.value = v;
+  });
+}
+
+/* ---------- Lite YouTube ---------- */
+function setupLiteYouTube(){
+  document.querySelectorAll('.lite-yt').forEach(el => {
+    const src = el.getAttribute('data-yt-src');
+    el.addEventListener('click', () => {
+      if (!src) return;
+      const ifr = document.createElement('iframe');
+      ifr.setAttribute('title', 'YouTube video player');
+      ifr.setAttribute('allowfullscreen', '');
+      ifr.setAttribute('loading', 'lazy');
+      ifr.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      ifr.setAttribute('allow', 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+      ifr.src = src + (src.includes('?') ? '&' : '?') + 'autoplay=1';
+      el.innerHTML = '';
+      el.appendChild(ifr);
+    });
+  });
+}
+
+/* ---------- Lazy-load Chart.js and render ---------- */
+async function lazyLoadChartJs() {
+  if (window.Chart) return Promise.resolve();
+  await new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+    s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+function setupChartLazyInit() {
+  const canvas = document.getElementById('ecosystemChart');
+  if (!canvas) return;
+  const obs = new IntersectionObserver(async (entries) => {
+    if (entries.some(e => e.isIntersecting)) {
+      obs.disconnect();
+      await lazyLoadChartJs();
+      renderEcosystemChart();
+      canvas.dataset.rendered = '1';
+    }
+  }, { rootMargin: '0px 0px -40% 0px' });
+  obs.observe(canvas);
+}
 let myEcosystemChart;
 function renderEcosystemChart() {
-  const canvas = $('#ecosystemChart');
-  if (!canvas) return;
+  const canvas = document.getElementById('ecosystemChart');
+  if (!canvas || !window.Chart) return;
+  if (myEcosystemChart) { myEcosystemChart.destroy(); }
   const ctx = canvas.getContext('2d');
   const axis = rgba(getVar('--wt-axis'));
   const grid = rgba(getVar('--wt-grid'));
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   myEcosystemChart = new Chart(ctx, {
     type: 'bar',
@@ -187,6 +288,7 @@ function renderEcosystemChart() {
       responsive: true,
       maintainAspectRatio: false,
       indexAxis: 'y',
+      animation: prefersReducedMotion ? false : { duration: 300 },
       scales: {
         y: { ticks: { color: axis, font: { weight: 500 } }, grid: { display: false } },
         x: {
@@ -211,7 +313,7 @@ function renderEcosystemChart() {
   });
 }
 
-/* ---------- Form validation + UX ---------- */
+/* ---------- Form validation + local UX ---------- */
 function setupForm() {
   const form = $('#demoForm');
   if (!form) return;
@@ -235,14 +337,13 @@ function setupForm() {
       setError(id, !valid);
       if (!valid) ok = false;
     });
-    // Honeypot
-    if (form.website && form.website.value) ok = false;
+    if (form.website && form.website.value) ok = false; // honeypot bot
     return ok;
   }
 
   form.addEventListener('submit', (e) => {
     if (!validate()) { e.preventDefault(); return; }
-    // Let Netlify handle submission if configured; still show UX spinner briefly
+    // Local success UX (works on GitHub Pages). Replace with real action for Formspree if needed.
     e.preventDefault();
     success.classList.add('hidden');
     submitBtn.disabled = true; label.textContent = 'Sending...';
@@ -268,11 +369,17 @@ document.addEventListener('DOMContentLoaded', () => {
   setupScrollSpy();
   setupRevealOnScroll();
   setupStickyCta();
+  setupLiteYouTube();
+  setupUtmCapture();
 
+  // ROI URL → controls
+  applyRoiToControls(new URLSearchParams(location.search));
+  // then compute + write URL
   updateROI();
   setupCsvDownload();
+  setupRoiShare();
 
-  renderEcosystemChart();
+  setupChartLazyInit();
   setupForm();
 });
 
