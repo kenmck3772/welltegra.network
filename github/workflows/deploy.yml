@@ -1,5 +1,64 @@
+# .github/workflows/deploy.yml
+name: Build and Deploy (Tailwind → GitHub Pages)
 
----
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
-### What next?
-1) Drop these files into your repo (`welltegra.network`), keep the structure:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build CSS
+        run: npm run build
+
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p ./_site
+          cp -r index.html 404.html robots.txt sitemap.xml ./_site/
+          cp -r dist ./_site/dist
+          mkdir -p ./_site/src
+          cp -r src/app.js ./_site/src/
+          if [ -f og.jpg ]; then cp og.jpg ./_site/; fi
+          if [ -f favicon.ico ]; then cp favicon.ico ./_site/; fi
+          if [ -f apple-touch-icon.png ]; then cp apple-touch-icon.png ./_site/; fi
+          if [ -f welltegra-logo.jpg ]; then cp welltegra-logo.jpg ./_site/; fi
+          if [ -f welltegra-logo.svg ]; then cp welltegra-logo.svg ./_site/; fi
+          if [ -f CNAME ]; then cp CNAME ./_site/; fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
