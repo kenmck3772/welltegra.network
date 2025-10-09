@@ -1,26 +1,24 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // Specify all files that contain Tailwind class names
-  content: [
-    './*.html', 
-  ],
+  content: ["./index.html", "./src/**/*.{html,js,ts}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        brand: "#0B0B0B",
-        accent: "#0EA5E9",
-        muted: "#6B7280",
-        border: "#E5E7EB",
-        surface: "#F8FAFC"
-      },
-      fontFamily: { 
-        // Inter is loaded via CDN link in the HTML head
-        sans: ["Inter", "system-ui", "Segoe UI", "Roboto", "Arial", "sans-serif"] 
+        brand:    "#0B0B0B",
+        accent:   "#0EA5E9",
+        surface:  "#F7FAFC",
+        border:   "#E5E7EB",
+        muted:    "#6B7280",
+        darkBg:       "#0F172A",
+        darkSurface:  "#1F2937",
+        darkBrand:    "#F8FAFC",
+        darkBorder:   "#374151"
       },
       boxShadow: {
-        soft: "0 10px 24px -12px rgba(0,0,0,.15)",
+        soft: "0 6px 18px rgba(0,0,0,0.08)"
       }
-    },
+    }
   },
-  plugins: [],
-}
+  plugins: []
+};
