@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- deploy trigger: refresh -->
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
@@ -38,7 +37,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Favicons (optional if you have them in repo root) -->
+  <!-- Favicons (optional if present) -->
   <link rel="icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 
@@ -48,7 +47,9 @@
   <!-- Analytics (optional) -->
   <script defer data-domain="welltegra.network" src="https://plausible.io/js/script.js"></script>
 
-  <!-- Small helpers + lite-youtube styles -->
+  <!-- Local helpers -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     :root { color-scheme: light; --wt-accent: 14,165,233; --wt-axis: 11,11,11; --wt-grid: 229,231,235; }
     .dark:root { --wt-axis: 248,250,252; --wt-grid: 55,65,81; }
@@ -66,7 +67,7 @@
     .sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; backdrop-filter: blur(8px); }
     [id] { scroll-margin-top: 72px; }
 
-    /* Lite YouTube */
+    /* Lite YouTube preview */
     .lite-yt { position:relative; display:block; background:#000; border-radius:0.75rem; overflow:hidden; cursor:pointer; }
     .lite-yt::before { content:""; display:block; padding-top:56.25%; }
     .lite-yt > .thumb, .lite-yt > iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
@@ -84,10 +85,7 @@
     <div class="mx-auto max-w-[1200px] px-6">
       <div class="flex h-16 items-center justify-between">
         <a href="#top" class="flex items-center gap-2" aria-label="WellTegra home">
-          <picture>
-            <source srcset="/welltegra-logo.svg" type="image/svg+xml">
-            <img src="/welltegra-logo.jpg" alt="WellTegra Logo" class="h-8 w-auto" loading="lazy" decoding="async" width="128" height="32" />
-          </picture>
+          <img src="/dist/welltegra-logo.jpg" alt="WellTegra Logo" class="h-8 w-auto" loading="lazy" decoding="async" width="128" height="32" />
           <span class="hidden sm:block text-xs font-semibold text-muted dark:text-darkBrand/60">Data Solutions</span>
         </a>
 
@@ -104,7 +102,7 @@
         <div class="flex items-center gap-2 ml-3">
           <button onclick="toggleDarkMode()" class="p-2 rounded-xl text-brand/80 hover:bg-surface dark:text-darkBrand/80 dark:hover:bg-darkSurface/50" aria-label="Toggle dark mode">
             <svg class="w-5 h-5 hidden dark:inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21.731 15.006A9.001 9.001 0 0010.51 3.267v2.09A7.001 7.001 0 0118.995 12h-2.09A9.001 9.001 0 0021.73 15.006z"/></svg>
-            <svg class="w-5 h-5 inline-block dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.76 6.275a.75.75 0 011.06 0l1.59 1.59a.75.75 0 01-1.06 1.06l-1.59-1.59a.75.75 0 010-1.06zM16.24 6.275a.75.75 0 010 1.06l-1.59 1.59a.75.75 0 01-1.06 0 .75.75 0 010-1.06l1.59-1.59a.75.75 0 011.06 0zM12 9a3 3 0 100 6 3 3 0 000-6zM3 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM17.25 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H18a.75.75 0 01-.75-.75zM7.76 17.725a.75.75 0 01-1.06 0l-1.59-1.59a.75.75 0 011.06-1.06l1.59 1.59a.75.75 0 010 1.06zM16.24 17.725a.75.75 0 011.06 0l1.59 1.59a.75.75 0 01-1.06 1.06l-1.59-1.59a.75.75 0 010-1.06zM12 17.25v2.25a.75.75 0 01-1.5 0v-2.25a.75.75 0 01.75-.75z"/></svg>
+            <svg class="w-5 h-5 inline-block dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.76 6.275a.75.75 0 011.06 0l1.59 1.59a.75.75 0 01-1.06 1.06l-1.59-1.59a.75.75 0 010-1.06zM16.24 6.275a.75.75 0 010 1.06l-1.59 1.59a.75.75 0 01-1.06 0 .75.75 0 010-1.06l1.59-1.59a.75.75 0 011.06 0zM12 9a3 3 0 100 6 3 3 0 000-6zM3 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM17.25 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H18a.75.75 0 01-.75-.75zM7.76 17.725a.75.75 0 01-1.06 0l-1.59-1.59a.75.75 0 011.06-1.06l1.59 1.59a.75.75 0 010 1.06zM16.24 17.725a.75.75 0 011.06 0l1.59 1.59a.75.75 0 01-1.06 1.06l-1.59-1.59a.75.75 0 010 1.06zM12 17.25v2.25a.75.75 0 01-1.5 0v-2.25a.75.75 0 01.75-.75z"/></svg>
           </button>
 
           <a href="#contact" class="hidden sm:inline-flex items-center gap-2 rounded-2xl bg-brand text-white px-5 py-3 text-sm font-semibold shadow-soft hover:opacity-90 dark:bg-accent dark:hover:bg-accent/90">Book a demo
@@ -257,7 +255,7 @@
       </div>
     </section>
 
-    <!-- YOUTUBE (lite embeds) -->
+    <!-- YOUTUBE -->
     <section id="youtube" class="border-b border-border dark:border-darkBorder bg-surface dark:bg-darkBg">
       <div class="mx-auto max-w-[1200px] px-6">
         <div class="py-16">
@@ -623,6 +621,9 @@
 
   <!-- App JS -->
   <script src="src/app.js" type="module" defer></script>
+
+  <!-- Google Subscribe btn -->
+  <script async defer src="https://apis.google.com/js/platform.js"></script>
 
   <!-- Schema.org -->
   <script type="application/ld+json">
