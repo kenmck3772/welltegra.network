@@ -1,71 +1,51 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WellTegra – Smarter Well Engineering Software</title>
-  <meta name="description" content="Bridge the gap between planning, performance and analysis in well interventions. AI-ready platform for slickline, wireline, coiled tubing.">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
-  <link rel="icon" type="image/png" href="welltegra-header-logo.png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WellTegra - AI for Well Delivery</title>
+    <meta name="description" content="WellTegra is a modern AI-enhanced platform for well intervention planning, execution, and performance tracking." />
+    <link rel="icon" href="assets/images/welltegra-logo.jpg" type="image/jpeg" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
 </head>
-<body class="bg-slate-950 text-white">
+<body class="bg-gray-100 text-gray-900 font-sans leading-relaxed tracking-wide flex flex-col">
 
-  <!-- Hero Section -->
-  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 bg-gradient-to-br from-sky-950 to-slate-900">
-    <img src="welltegra-header-logo.png" alt="WellTegra Logo" class="w-24 h-24 mb-6" />
-    <h1 class="text-4xl md:text-5xl font-extrabold text-cyan-300 mb-4">WellTegra</h1>
-    <p class="max-w-2xl text-lg md:text-xl text-slate-300 mb-6">
-      An integrated digital bridge between planning, execution, and lessons learned in well interventions.
-    </p>
-    <a href="#contact" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-6 rounded shadow">
-      Book a Demo
-    </a>
-  </section>
+    <!-- Header -->
+    <header class="bg-white shadow p-4 flex items-center justify-between">
+        <img src="assets/images/welltegra-logo.jpg" alt="WellTegra Logo" class="h-12" />
+        <nav class="space-x-4">
+            <a href="#planner" class="text-blue-600 hover:underline">Planner</a>
+            <a href="#performer" class="text-blue-600 hover:underline">Performer</a>
+            <a href="#analyzer" class="text-blue-600 hover:underline">Analyzer</a>
+        </nav>
+    </header>
 
-  <!-- Problem & Solution -->
-  <section class="py-20 px-6 bg-slate-900 text-center">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold text-cyan-400 mb-4">Why WellTegra?</h2>
-      <p class="text-slate-300 mb-8">
-        Engineers are overloaded with disconnected data — PDFs, spreadsheets, screenshots, and siloed systems.
-        WellTegra connects those dots into a single, AI-readable structure.
-      </p>
-      <div class="grid md:grid-cols-3 gap-8 text-left">
-        <div>
-          <h3 class="text-xl font-semibold text-white mb-2">🧠 Planner</h3>
-          <p class="text-slate-400">Pre-job design with risk-matrix overlays and AI-suggested strings from your own job history.</p>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold text-white mb-2">⚙️ Performer</h3>
-          <p class="text-slate-400">Track and validate execution in real time. Minimize NPT, errors and track KPIs per asset.</p>
-        </div>
-        <div>
-          <h3 class="text-xl font-semibold text-white mb-2">📊 Analyzer</h3>
-          <p class="text-slate-400">Lessons learned and tool performance visualized and searchable across the enterprise.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- Hero -->
+    <section class="text-center p-10 bg-gradient-to-br from-blue-100 to-white">
+        <h1 class="text-4xl font-bold mb-4">Welcome to WellTegra</h1>
+        <p class="text-lg mb-6">AI-Driven Well Engineering for Safer, Smarter, and More Efficient Interventions.</p>
+        <img src="assets/images/watermark.jpg" alt="Watermark" class="mx-auto opacity-10 max-w-xs" />
+    </section>
 
-  <!-- Call to Action -->
-  <section id="contact" class="py-20 px-6 bg-slate-800 text-center">
-    <h2 class="text-3xl font-bold text-cyan-400 mb-6">Interested in a Demo?</h2>
-    <p class="text-slate-300 mb-4">Submit your name and email — we'll get back to you with access to the live prototype.</p>
-    <form class="max-w-md mx-auto text-left space-y-4">
-      <input type="text" placeholder="Your Name" class="w-full p-3 rounded bg-slate-700 text-white border border-slate-600" />
-      <input type="email" placeholder="Email Address" class="w-full p-3 rounded bg-slate-700 text-white border border-slate-600" />
-      <textarea placeholder="Company / Interest" class="w-full p-3 rounded bg-slate-700 text-white border border-slate-600"></textarea>
-      <button class="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-6 rounded">
-        Submit Request
-      </button>
-    </form>
-  </section>
+    <!-- Sections -->
+    <section id="planner" class="p-8 bg-white shadow-inner">
+        <h2 class="text-2xl font-semibold mb-4">🗂️ Planner</h2>
+        <p>Plan your operations with integrated well schematics, AI risk matrices, and data-driven job planning tools.</p>
+    </section>
 
-  <!-- Footer -->
-  <footer class="bg-slate-950 text-slate-500 text-center py-8 text-sm">
-    &copy; 2025 WellTegra. Prototype access at <a href="https://app.welltegra.network" class="underline text-cyan-400">app.welltegra.network</a>
-  </footer>
+    <section id="performer" class="p-8 bg-blue-50">
+        <h2 class="text-2xl font-semibold mb-4">⚙️ Performer</h2>
+        <p>Execute well interventions with digital procedures, real-time tool tracking, and slickline, wireline, CT data integrations.</p>
+    </section>
 
+    <section id="analyzer" class="p-8 bg-white shadow-inner">
+        <h2 class="text-2xl font-semibold mb-4">📊 Analyzer</h2>
+        <p>Visualize job performance, track lessons learned, and generate digital end-of-well reports with embedded analytics.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-auto p-6 bg-gray-800 text-white text-center">
+        <p>&copy; 2025 WellTegra | <a href="mailto:contact@welltegra.network" class="underline">Contact Us</a></p>
+    </footer>
 </body>
 </html>
