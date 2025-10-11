@@ -6,6 +6,7 @@
   <title>WellTegra - Smart Well Engineering</title>
   <meta name="description" content="AI-driven planning, performance, and analysis for efficient well interventions.">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -44,19 +45,116 @@
     <img src="assets/images/watermark.jpg" alt="Watermark" class="mx-auto opacity-10 w-48 md:w-64">
   </main>
 
-  <section id="planner" class="py-10 px-4 bg-white border-t">
-    <h2 class="text-2xl font-semibold mb-3">🗺️ Planner</h2>
-    <p class="max-w-2xl mx-auto text-gray-700">Plan operations using integrated schematics, AI risk matrices, and smart job planning tools.</p>
+  <!-- Planner Module -->
+  <section id="planner" class="py-12 px-6 bg-white border-t">
+    <h2 class="text-2xl font-bold mb-4">🗺️ Planner</h2>
+    <div class="max-w-2xl mx-auto text-left space-y-6">
+      <div>
+        <label class="block font-medium mb-1">Select Well:</label>
+        <select class="w-full border rounded px-3 py-2">
+          <option>Well A - HPHT</option>
+          <option>Well B - Shallow Gas</option>
+          <option>Well C - Horizontal</option>
+        </select>
+      </div>
+      <div>
+        <label class="block font-medium mb-1">Tools Required:</label>
+        <div class="grid grid-cols-2 gap-2">
+          <label><input type="checkbox" class="mr-2"> Wireline Unit</label>
+          <label><input type="checkbox" class="mr-2"> Memory Gauge</label>
+          <label><input type="checkbox" class="mr-2"> Coiled Tubing</label>
+          <label><input type="checkbox" class="mr-2"> Tractor Tool</label>
+        </div>
+      </div>
+      <div>
+        <label class="block font-medium mb-1">Risk Level:</label>
+        <p class="px-3 py-2 border rounded bg-yellow-100 text-yellow-800 font-semibold">Medium</p>
+      </div>
+      <button class="mt-4 px-5 py-2 bg-primary text-white rounded hover:bg-indigo-700">Download Plan Summary</button>
+    </div>
   </section>
 
-  <section id="performer" class="py-10 px-4 bg-blue-50 border-t">
-    <h2 class="text-2xl font-semibold mb-3">⚙️ Performer</h2>
-    <p class="max-w-2xl mx-auto text-gray-700">Digitally execute interventions with real-time tracking, slickline, wireline, and CT tool integrations.</p>
+  <!-- Performer Module -->
+  <section id="performer" class="py-12 px-6 bg-blue-50 border-t">
+    <h2 class="text-2xl font-bold mb-4">⚙️ Performer</h2>
+    <div class="max-w-2xl mx-auto space-y-4 text-left">
+      <label class="block font-medium">Select Operation Type:</label>
+      <select id="operationType" class="w-full border rounded px-3 py-2">
+        <option value="slickline">Slickline</option>
+        <option value="wireline">Wireline</option>
+        <option value="ct">Coiled Tubing</option>
+      </select>
+      <button id="startJob" class="px-4 py-2 bg-primary text-white rounded">Start Job</button>
+      <div id="jobSteps" class="mt-6 hidden">
+        <h3 class="text-lg font-semibold mb-2">Current Step:</h3>
+        <p id="currentStep" class="p-3 bg-white border rounded text-primary font-semibold"></p>
+        <button id="nextStep" class="mt-4 px-4 py-2 bg-secondary text-white rounded">Next Step</button>
+      </div>
+    </div>
+    <script>
+      const operations = {
+        slickline: ["Pressure test toolstring", "Run sinker bars", "Set plug", "Retrieve toolstring"],
+        wireline: ["Rig up WL unit", "Run logging tool", "Record data", "Pull out tool"],
+        ct: ["Pressure test CT", "Pump fluid", "Deploy BHA", "Circulate & clean out"]
+      };
+      document.getElementById('startJob').addEventListener('click', () => {
+        const type = document.getElementById('operationType').value;
+        const steps = operations[type];
+        let stepIndex = 0;
+        document.getElementById('jobSteps').classList.remove('hidden');
+        document.getElementById('currentStep').textContent = steps[stepIndex];
+        document.getElementById('nextStep').onclick = () => {
+          stepIndex++;
+          if (stepIndex < steps.length) {
+            document.getElementById('currentStep').textContent = steps[stepIndex];
+          } else {
+            document.getElementById('currentStep').textContent = "✅ Job Completed";
+            document.getElementById('nextStep').disabled = true;
+          }
+        };
+      });
+    </script>
   </section>
 
-  <section id="analyzer" class="py-10 px-4 bg-white border-t">
-    <h2 class="text-2xl font-semibold mb-3">📊 Analyzer</h2>
-    <p class="max-w-2xl mx-auto text-gray-700">Analyze jobs, track learnings, and create powerful digital reports with AI-enhanced insights.</p>
+  <!-- Analyzer Module -->
+  <section id="analyzer" class="py-12 px-6 bg-white border-t">
+    <h2 class="text-2xl font-bold mb-4">📊 Analyzer</h2>
+    <div class="max-w-3xl mx-auto">
+      <canvas id="jobChart" class="mb-8"></canvas>
+      <script>
+        const ctx = document.getElementById('jobChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Well A', 'Well B', 'Well C'],
+            datasets: [{
+              label: 'Job Duration (hrs)',
+              data: [5, 3, 7],
+              backgroundColor: '#4F46E5'
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: { mode: 'index', intersect: false }
+            },
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      </script>
+      <div class="bg-gray-100 p-4 rounded shadow-sm">
+        <h3 class="text-lg font-semibold mb-2">🧠 Lessons Learned</h3>
+        <ul class="list-disc list-inside text-gray-700">
+          <li>Memory gauge failed at 4,000ft in Well B — replace with high-temp variant.</li>
+          <li>CT cleanout improved flow by 25% in Well C.</li>
+          <li>Logging run in Well A delayed by 2 hrs due to rig-up issues.</li>
+        </ul>
+        <button class="mt-4 px-5 py-2 bg-primary text-white rounded">Export Report</button>
+      </div>
+    </div>
   </section>
 
   <footer class="text-sm text-center text-gray-500 py-6 border-t mt-10">
