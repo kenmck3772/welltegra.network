@@ -1,0 +1,13 @@
+%% figures/architecture-mermaid.mmd
+flowchart LR
+    A[Sources\nWellView/CSV, WITSML, PDFs, Reports] --> B[Ingestion & QC\nParse, Map, Normalize, Validate]
+    B --> C[Feature Store\nTimelines, Features, Baselines]
+    C --> D[Models\nRecommendations, Anomaly Detection, Outcome Estimators]
+    D --> E[UX: Planner]
+    D --> F[UX: Performer]
+    D --> G[UX: Analyzer]
+    E --> H[Explainability Overlay\nConfidence, Drivers, Evidence]
+    F --> H
+    G --> H
+    G --> I[Lessons Learned\nPlaybooks]
+    I --> C
