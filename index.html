@@ -1,89 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>WellTegra — Plan • Perform • Analyze</title>
+<head><title>WellTegra Data Solutions</title>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="WellTegra: integrated Planner • Performer • Analyzer for well interventions. Visual alpha."/>
-  <link rel="icon" href="/assets/welltegra-logo.svg" type="image/svg+xml">
-  <meta property="og:title" content="WellTegra — Planner • Performer • Analyzer"/>
-  <meta property="og:image" content="https://welltegra.network/assets/hero.jpg"/>
+  <meta name="description" content="WellTegra Data Solutions — Plan • Perform • Analyze"/>
+  <link rel="icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+  <style>
+    :root{
+      --brand-navy:#0f1a2c;
+      --brand-mid:#214874;
+      --brand-blue:#2c68b0;
+      --brand-cyan:#21b5f0;
+    }
+    html,body{font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";}
+    .brand-gradient{background: radial-gradient(1200px 600px at 20% 10%, rgba(33,181,240,.15), transparent), linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-mid) 60%, var(--brand-blue) 100%);}
+    .btn{padding:.5rem 1rem; border-radius:.75rem; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.06);}
+    .btn:hover{background:rgba(255,255,255,.12)}
+  </style>
 </head>
 <body class="bg-slate-950 text-slate-100 antialiased">
 
 <header class="sticky top-0 bg-slate-950/80 backdrop-blur border-b border-white/10 z-50">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
-    <img src="/assets/welltegra-logo.svg" class="h-8 w-auto" alt="WellTegra"/>
+    <img src="/assets/logo-square.png" class="h-8 w-8 rounded bg-white" alt="WellTegra"/>
+    <span class="font-semibold">WellTegra Data Solutions</span>
     <nav class="ml-auto flex flex-wrap gap-5 text-sm">
       <a href="/" class="hover:underline">Home</a>
-      <a href="/planner.html" class="hover:underline">Planner</a>
-      <a href="/performer.html" class="hover:underline">Performer</a>
-      <a href="/analyzer.html" class="hover:underline">Analyzer</a>
+      <a href="/app.html" class="hover:underline">Web App</a>
+      <a href="/visuals.html" class="hover:underline">Visuals</a>
       <a href="/process.html" class="hover:underline">Process</a>
       <a href="/compare.html" class="hover:underline">Compare</a>
       <a href="/roi.html" class="hover:underline">ROI</a>
       <a href="/privacy.html" class="hover:underline">Privacy</a>
-      <a href="/visuals.html" class="hover:underline">Visuals</a>
     </nav>
   </div>
 </header>
 
 <main>
-  <section class="relative">
-    <img src="/assets/hero.jpg" class="w-full h-[58vh] object-cover opacity-70" alt=""/>
-    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+  <section class="relative brand-gradient">
+    <img src="/assets/hero.jpg" class="w-full h-[58vh] object-contain mix-blend-lighten opacity-90" alt="WellTegra"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
     <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-full max-w-7xl px-4">
-      <h1 class="text-4xl md:text-6xl font-bold">One loop, fewer regrets.</h1>
-      <p class="mt-3 text-slate-300 max-w-2xl">Planner → Performer → Analyzer. We integrate with your existing stack and make each job inform the next.</p>
+      <h1 class="text-4xl md:text-6xl font-bold">WellTegra Data Solutions</h1>
+      <p class="mt-3 text-slate-200 max-w-2xl">Plan • Perform • Analyze — integrated, honest alpha.</p>
       <div class="mt-6 flex flex-wrap gap-3">
-        <a href="/visuals.html" class="px-4 py-2 rounded-lg border border-white/20 hover:bg-white/5">Explore visuals</a>
-        <a href="/planner.html" class="px-4 py-2 rounded-lg border border-emerald-400/40 bg-emerald-400/10 hover:bg-emerald-400/20">Planner</a>
-        <a href="/performer.html" class="px-4 py-2 rounded-lg border border-cyan-400/40 bg-cyan-400/10 hover:bg-cyan-400/20">Performer</a>
-        <a href="/analyzer.html" class="px-4 py-2 rounded-lg border border-indigo-400/40 bg-indigo-400/10 hover:bg-indigo-400/20">Analyzer</a>
-      </div>
-      <div class="mt-6 flex flex-wrap gap-3 text-xs opacity-90">
-        <span class="px-2 py-1 rounded border border-white/10 bg-white/5">Read-only bridges</span>
-        <span class="px-2 py-1 rounded border border-white/10 bg-white/5">Per-client model isolation</span>
-        <span class="px-2 py-1 rounded border border-white/10 bg-white/5">Mistake-mining</span>
-        <span class="px-2 py-1 rounded border border-white/10 bg-white/5">Offline-first UX</span>
+        <a href="/app.html" class="btn">Launch the Web App</a>
+        <a href="/visuals.html" class="btn">See Visuals</a>
+        <a href="/roi.html" class="btn">Estimate ROI</a>
       </div>
     </div>
   </section>
 
   <section class="max-w-7xl mx-auto px-4 py-16">
-    <h2 class="text-2xl font-semibold">Modules</h2>
-    <div class="mt-6 grid md:grid-cols-3 gap-6">
-      <a href="/planner.html" class="group rounded-xl border border-white/10 p-6 hover:border-emerald-400/40">
-        <h3 class="font-semibold">Planner</h3>
-        <p class="text-slate-300 text-sm mt-2">Scope, risk, WBS, budget. Import WellView/Sapphire extracts to prefill.</p>
-        <div class="mt-4">
-          <img src="/assets/planner-ui.png" class="rounded-lg ring-1 ring-white/10" alt="Planner UI"/>
+    <h2 class="text-2xl font-semibold">Brand at a glance</h2>
+    <div class="mt-6 grid md:grid-cols-2 gap-6">
+      <img src="/assets/brand-card.png" class="rounded-2xl ring-1 ring-white/10 bg-white" alt="Brand card"/>
+      <div class="rounded-2xl border border-white/10 p-6">
+        <h3 class="font-semibold">Palette</h3>
+        <div class="mt-3 grid grid-cols-3 gap-3 text-center text-sm">
+          <div class="rounded-lg p-6" style="background:#0f1a2c">#0F1A2C</div>
+          <div class="rounded-lg p-6" style="background:#214874">#214874</div>
+          <div class="rounded-lg p-6" style="background:#2c68b0">#2C68B0</div>
         </div>
-      </a>
-      <a href="/performer.html" class="group rounded-xl border border-white/10 p-6 hover:border-cyan-400/40">
-        <h3 class="font-semibold">Performer</h3>
-        <p class="text-slate-300 text-sm mt-2">Runbook, simulated live feed, deviation capture, shift reports.</p>
-        <div class="mt-4">
-          <img src="/assets/performer-ui.png" class="rounded-lg ring-1 ring-white/10" alt="Performer UI"/>
-        </div>
-      </a>
-      <a href="/analyzer.html" class="group rounded-xl border border-white/10 p-6 hover:border-indigo-400/40">
-        <h3 class="font-semibold">Analyzer</h3>
-        <p class="text-slate-300 text-sm mt-2">Mistake-mining, KPI trends, benchmarks, ROI summaries.</p>
-        <div class="mt-4">
-          <img src="/assets/analyzer-ui.png" class="rounded-lg ring-1 ring-white/10" alt="Analyzer UI"/>
-        </div>
-      </a>
+        <p class="text-slate-300 mt-4 text-sm">Typography: Inter. Swap later if needed.</p>
+      </div>
     </div>
   </section>
 </main>
 
 <footer class="mt-20 border-t border-white/10">
   <div class="max-w-7xl mx-auto px-4 py-8 text-sm text-slate-300 flex flex-col sm:flex-row items-center justify-between gap-4">
-    <div>© WellTegra — Visual alpha</div>
+    <div>© WellTegra Data Solutions</div>
     <div>Contact:
       <a class="underline" href="mailto:info@welltegra.network">info@welltegra.network</a> ·
       <a class="underline" href="mailto:kenmckenzie@welltegra.network">kenmckenzie@welltegra.network</a>
@@ -91,5 +80,4 @@
   </div>
 </footer>
 
-</body>
-</html>
+</body></html>
