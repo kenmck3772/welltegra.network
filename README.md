@@ -1,12 +1,23 @@
-# Well‑Tegra White Paper v1.1 Package
-This package includes:
-- `WellTegra-WhitePaper-v1_1.md` — revised white paper (ready to export to PDF)
-- `PoC-OnePager.md` — 6‑week PoC one‑pager for execs
-- `figures/architecture-mermaid.mmd` — Mermaid diagram source
+# WellTegra — Alpha Demo (Static, No Live Integrations)
 
-### Export to PDF
-- Use any Markdown → PDF tool (e.g., VS Code Markdown PDF extension) or share the Markdown directly.
-- Mermaid diagram can be rendered in platforms that support Mermaid (GitHub, Obsidian, etc.).
+**What this is**
+- A self-contained static site to demo layout and copy for Planner, Performer, and Analyzer.
+- Honest alpha: no live vendor integrations; no real well data.
+- Includes sections for **How it Works** and **Per-client Isolation**.
 
-### Next
-- I can convert this to a branded PDF (cover, headers/footers, color scheme) or DOCX on request.
+**Files**
+- `index.html` — landing with modules, How it Works, Data Isolation, FAQ.
+- `planner-demo.html`, `performer-demo.html`, `analyzer-demo.html` — static mock screens.
+- `assets/logo.svg`, `assets/watermark.svg` — local assets.
+
+**Deploy**
+- **GitHub Pages**: push these files to a repo (e.g., `welltegra-prototype`) and enable Pages (root).
+- **Porkbun + Pages**: point your subdomain `proto.welltegra.network` (or similar) CNAME to your GitHub Pages URL.
+- **Plain hosting**: upload the folder contents to your web root; ensure `index.html` is at the root.
+
+**Edits you might want next**
+- Replace `assets/logo.svg` with your real logo.
+- Swap watermark for branding or remove it.
+- Add redacted sample CSV/PDFs if you want to show realistic copy (still offline/simulated).
+
+© 2025 WellTegra — Alpha demo. No vendor affiliations. No live integrations.

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>WellTegra — Analyzer (Static Demo)</title>
+  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Alpha-stage demo. Static screens and simulated ETL to illustrate workflow ideas. No live vendor integrations or real data."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; font-weight: 500; }
+    .glass { backdrop-filter: blur(10px); background: rgba(255,255,255,0.04); }
+    .contact-fixed { position: fixed; left: 12px; bottom: 12px; font-size: 12px; opacity: .85; line-height: 1.2; }
+    .badge { border:1px solid rgba(255,255,255,.2); padding:.15rem .5rem; border-radius:.5rem; font-size:.75rem; }
+    .placeholder { background: repeating-linear-gradient(45deg, rgba(255,255,255,.06), rgba(255,255,255,.06) 10px, rgba(255,255,255,.09) 10px, rgba(255,255,255,.09) 20px); }
+    /* Watermark background */
+    #main-content { position: relative; z-index: 1; }
+    #main-content::before {
+      content:''; position:absolute; inset:0;
+      background-image:url('./assets/watermark.svg');
+      background-repeat:repeat; background-size:420px;
+      opacity:.05; pointer-events:none; z-index:-1;
+    }
+  </style>
+
+</head>
+<body class="bg-slate-950 text-slate-100">
+  <header class="sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-white/5">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="./index.html" class="flex items-center gap-3">
+        <img src="./assets/logo.svg" alt="WellTegra" class="h-9 w-auto"/>
+        <span class="sr-only">WellTegra</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a href="./index.html" class="hover:text-white/80">Home</a>
+        <span class="text-white/50">Alpha Demo</span>
+      </nav>
+    </div>
+  </header>
+  <main class="max-w-6xl mx-auto px-4 py-10">
+    <p class="uppercase tracking-widest text-xs text-white/60 mb-3">Alpha Preview • Static • No live integrations</p>
+    <h1 class="text-3xl md:text-4xl font-bold">Analyzer — Static Demo</h1>
+    <p class="mt-2 text-white/80">This page is a <strong>non-functional mock</strong> for concept review.</p>
+    
+<section class="grid md:grid-cols-3 gap-6 mt-8">
+  <aside class="glass rounded-2xl p-5">
+    <h2 class="font-semibold mb-2">Summary (Static)</h2>
+    <ul class="text-sm text-white/80 space-y-1">
+      <li>• Objective outcome: Illustrative</li>
+      <li>• Non-productive time (NPT): Placeholder</li>
+      <li>• Lessons logged: 3 (mock)</li>
+    </ul>
+  </aside>
+  <article class="md:col-span-2 glass rounded-2xl p-5">
+    <h3 class="font-semibold mb-2">Teachable Moments (“Mistake-Mining”)</h3>
+    <ul class="text-sm text-white/80 list-disc pl-5 space-y-1">
+      <li>Delayed decision escalations increase variance exposure</li>
+      <li>Confirm restriction early to avoid repeated runs</li>
+      <li>Pre-stage contingency tooling for known field risks</li>
+    </ul>
+    <p class="text-xs text-white/60 mt-3">All items are hypothetical and for illustration only.</p>
+  </article>
+</section>
+
+<section class="mt-6">
+  <div class="rounded-2xl p-5 border border-white/10 placeholder h-64 grid place-items-center text-white/60">
+    Placeholder for report layout / export preview
+  </div>
+</section>
+
+<div class="mt-8 flex gap-3">
+  <a href="./index.html" class="px-4 py-2 rounded-xl bg-white text-slate-900 font-medium">Back to Home</a>
+  <a href="mailto:info@welltegra.network?subject=Analyzer%20Demo%20Feedback" class="px-4 py-2 rounded-xl border border-white/20 hover:bg-white/5">Send feedback</a>
+</div>
+
+  </main>
+  <div class="contact-fixed text-white/80" id="contact">
+    <div>Contact</div>
+    <div>info@welltegra.network</div>
+    <div>kenmckenzie@welltegra.network</div>
+  </div>
+  <footer class="mt-10 mb-16">
+    <div class="max-w-6xl mx-auto px-4 text-xs text-white/50">
+      <hr class="border-white/10 mb-3"/>
+      <p>© 2025 WellTegra • Alpha demo • No vendor affiliations • No live integrations</p>
+    </div>
+  </footer>
+</body>
+</html>
