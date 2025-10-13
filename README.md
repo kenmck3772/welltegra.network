@@ -1,23 +1,16 @@
-# WellTegra — Alpha Demo (Static, No Live Integrations)
+# WellTegra — v5 polished alpha (visual-heavy)
+Pages
+- `/` hero + modules with screenshots
+- `/planner.html`, `/performer.html`, `/analyzer.html` with images (Analyzer includes sample chart)
+- `/process.html` architecture + loop
+- `/compare.html` high-level comparison (illustrative)
+- `/privacy.html` data & model isolation
+- `/roi.html` quick ROI calculator
+- `/visuals.html` gallery
 
-**What this is**
-- A self-contained static site to demo layout and copy for Planner, Performer, and Analyzer.
-- Honest alpha: no live vendor integrations; no real well data.
-- Includes sections for **How it Works** and **Per-client Isolation**.
+Assets
+- `assets/welltegra-logo.svg`, `assets/hero.jpg`, `assets/planner-ui.png`, `assets/performer-ui.png`, `assets/analyzer-ui.png`, `assets/architecture.svg`
 
-**Files**
-- `index.html` — landing with modules, How it Works, Data Isolation, FAQ.
-- `planner-demo.html`, `performer-demo.html`, `analyzer-demo.html` — static mock screens.
-- `assets/logo.svg`, `assets/watermark.svg` — local assets.
-
-**Deploy**
-- **GitHub Pages**: push these files to a repo (e.g., `welltegra-prototype`) and enable Pages (root).
-- **Porkbun + Pages**: point your subdomain `proto.welltegra.network` (or similar) CNAME to your GitHub Pages URL.
-- **Plain hosting**: upload the folder contents to your web root; ensure `index.html` is at the root.
-
-**Edits you might want next**
-- Replace `assets/logo.svg` with your real logo.
-- Swap watermark for branding or remove it.
-- Add redacted sample CSV/PDFs if you want to show realistic copy (still offline/simulated).
-
-© 2025 WellTegra — Alpha demo. No vendor affiliations. No live integrations.
+Deploy
+1) Upload everything to `kenmck3772/welltegra.network` (root) and push to `main`.
+2) Ensure Pages deploys from `main`/root, HTTPS on.

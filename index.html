@@ -1,174 +1,95 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <title>WellTegra — Alpha Demo (No Live Integrations)</title>
-  
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Alpha-stage demo. Static screens and simulated ETL to illustrate workflow ideas. No live vendor integrations or real data."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>WellTegra — Plan • Perform • Analyze</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="WellTegra: integrated Planner • Performer • Analyzer for well interventions. Visual alpha."/>
+  <link rel="icon" href="/assets/welltegra-logo.svg" type="image/svg+xml">
+  <meta property="og:title" content="WellTegra — Planner • Performer • Analyzer"/>
+  <meta property="og:image" content="https://welltegra.network/assets/hero.jpg"/>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { font-family: 'Inter', sans-serif; font-weight: 500; }
-    .glass { backdrop-filter: blur(10px); background: rgba(255,255,255,0.04); }
-    .contact-fixed { position: fixed; left: 12px; bottom: 12px; font-size: 12px; opacity: .85; line-height: 1.2; }
-    .badge { border:1px solid rgba(255,255,255,.2); padding:.15rem .5rem; border-radius:.5rem; font-size:.75rem; }
-    .placeholder { background: repeating-linear-gradient(45deg, rgba(255,255,255,.06), rgba(255,255,255,.06) 10px, rgba(255,255,255,.09) 10px, rgba(255,255,255,.09) 20px); }
-    /* Watermark background */
-    #main-content { position: relative; z-index: 1; }
-    #main-content::before {
-      content:''; position:absolute; inset:0;
-      background-image:url('./assets/watermark.svg');
-      background-repeat:repeat; background-size:420px;
-      opacity:.05; pointer-events:none; z-index:-1;
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
-<body class="bg-slate-950 text-slate-100">
-  <header class="sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-white/5">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="#" class="flex items-center gap-3">
-        <img src="./assets/logo.svg" alt="WellTegra" class="h-9 w-auto"/>
-        <span class="sr-only">WellTegra</span>
-      </a>
-      <nav class="hidden md:flex items-center gap-6 text-sm">
-        <a href="#modules" class="hover:text-white/80">Modules</a>
-        <a href="#how" class="hover:text-white/80">How it Works</a>
-        <a href="#isolation" class="hover:text-white/80">Data Isolation</a>
-        <a href="#faq" class="hover:text-white/80">FAQ</a>
-      </nav>
-    </div>
-  </header>
+<body class="bg-slate-950 text-slate-100 antialiased">
 
-  <main id="main-content" class="flex-1">
-    <section class="max-w-7xl mx-auto px-4 pt-10 pb-6">
-      <p class="uppercase text-xs text-white/60 mb-3">Alpha Preview • Demo Only • No Live Integrations</p>
-      <h1 class="text-4xl md:text-5xl font-semibold leading-tight">Planning • Operations Capture • Analysis—<span class="text-white/80">visualised simply.</span></h1>
-      <p class="mt-4 text-white/80 max-w-3xl">This is an honest alpha: static screens and simulated flows. <strong>No live vendor integrations</strong> and no real operational data.</p>
-      <div class="mt-6 flex flex-wrap gap-2">
-        <span class="badge">Alpha</span><span class="badge">No live data</span><span class="badge">No vendor affiliation</span><span class="badge">Prototype UX</span>
-      </div>
-    </section>
-
-    <section id="modules" class="max-w-7xl mx-auto px-4 pb-10">
-      <h2 class="text-2xl font-semibold mb-5">Modules (Static Demos)</h2>
-      <div class="grid md:grid-cols-3 gap-6">
-        <a href="./planner-demo.html" class="glass rounded-2xl p-5 block hover:bg-white/5">
-          <h3 class="font-semibold text-lg">Planner</h3>
-          <p class="text-sm opacity-80 mt-2">Plan outline, risks, and time/cost framing (static).</p>
-        </a>
-        <a href="./performer-demo.html" class="glass rounded-2xl p-5 block hover:bg-white/5">
-          <h3 class="font-semibold text-lg">Performer</h3>
-          <p class="text-sm opacity-80 mt-2">Shift log, variance notes, simple timeline (static).</p>
-        </a>
-        <a href="./analyzer-demo.html" class="glass rounded-2xl p-5 block hover:bg-white/5">
-          <h3 class="font-semibold text-lg">Analyzer</h3>
-          <p class="text-sm opacity-80 mt-2">Post-job review with “mistake-mining” concept (static).</p>
-        </a>
-      </div>
-    </section>
-
-    <section id="how" class="max-w-7xl mx-auto px-4 pb-4">
-      <h2 class="text-2xl font-semibold mb-3">How it works (Upload → Result)</h2>
-      <p class="text-white/80 max-w-3xl mb-4"><span class="text-white/60">Scope reminder:</span> Alpha demo. Read-only, simulated processing. No live vendor integrations.</p>
-
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="glass rounded-2xl p-5">
-          <ol class="list-decimal pl-5 space-y-3 text-sm text-white/80">
-            <li><strong>Upload (user-initiated):</strong> Choose a file or paste text (CSV, PDF, XLS export, email). Client-side checks; nothing moves without your explicit action.</li>
-            <li><strong>Secure intake (per-client workspace):</strong> Stored inside your tenant. Access is limited to users you authorize; actions are logged.</li>
-            <li><strong>Normalize & parse (schema on read):</strong> Detect entities (dates, depths, units, activities, NPT phrases) and build structured JSON alongside the original.</li>
-            <li><strong>Units & terms standardization:</strong> Normalize depth/pressure/volumes to your standards; align synonyms (e.g., “POOH”, “pull out of hole”).</li>
-            <li><strong>Quality checks & provenance:</strong> Flag outliers, attach source line/page to every extracted field for auditability.</li>
-            <li><strong>Client-only “mistake-mining”:</strong> Patterns are suggested from <em>your own</em> history only, with supporting excerpts.</li>
-            <li><strong>Human-in-the-loop review:</strong> Supervisors adjust labels/units; edits enrich your private guidance library.</li>
-            <li><strong>Outcome views (static in alpha):</strong> Planner, Performer, Analyzer show the journey; all illustrative.</li>
-            <li><strong>Export:</strong> Clean JSON, PDFs, or CSV. Originals remain unaltered; derivatives carry full lineage.</li>
-          </ol>
-        </div>
-        <div class="glass rounded-2xl p-5">
-          <svg class="w-full" viewBox="0 0 820 280" role="img" aria-label="Upload to Result flow">
-            <defs>
-              <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-                <path d="M0,0 L10,4 L0,8 z" fill="rgba(255,255,255,.5)"/>
-              </marker>
-            </defs>
-            <g fill="none" stroke="rgba(255,255,255,.5)">
-              <rect x="20" y="40" width="150" height="60" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.2)"/>
-              <text x="95" y="75" text-anchor="middle" fill="#e5e7eb">Upload</text>
-              <path d="M170,70 L230,70" marker-end="url(#arrow)"/>
-              <rect x="230" y="40" width="170" height="60" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.2)"/>
-              <text x="315" y="75" text-anchor="middle" fill="#e5e7eb">Per-client Intake</text>
-              <path d="M400,70 L460,70" marker-end="url(#arrow)"/>
-              <rect x="460" y="20" width="160" height="60" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.2)"/>
-              <text x="540" y="55" text-anchor="middle" fill="#e5e7eb">Parse & Normalise</text>
-              <path d="M540,80 L540,120" marker-end="url(#arrow)"/>
-              <rect x="480" y="120" width="120" height="50" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.2)"/>
-              <text x="540" y="150" text-anchor="middle" fill="#e5e7eb">Provenance</text>
-              <path d="M540,170 L540,210" marker-end="url(#arrow)"/>
-              <rect x="470" y="210" width="140" height="50" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.2)"/>
-              <text x="540" y="240" text-anchor="middle" fill="#e5e7eb">Human Review</text>
-              <path d="M600,240 L680,240" marker-end="url(#arrow)"/>
-              <rect x="680" y="210" width="120" height="50" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.2)"/>
-              <text x="740" y="240" text-anchor="middle" fill="#e5e7eb">Export</text>
-            </g>
-          </svg>
-          <p class="text-xs text-white/60 mt-3">Diagram is conceptual. Demo uses simulated data; no real uploads are processed.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="isolation" class="max-w-7xl mx-auto px-4 py-8">
-      <h2 class="text-2xl font-semibold mb-3">Per-client isolation (boundaries that hold)</h2>
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="glass rounded-2xl p-5">
-          <ul class="text-sm text-white/80 space-y-2">
-            <li>• <strong>Separate workspaces (tenancy):</strong> Data, configs, users, and guidance library are logically isolated by client.</li>
-            <li>• <strong>No cross-client learning by default:</strong> No shared fine-tuning/embeddings; no pooled hints.</li>
-            <li>• <strong>Transparent guidance:</strong> Suggestions include the exact lines/pages they came from.</li>
-            <li>• <strong>Optional collaboration (future, opt-in):</strong> Federated patterns (generic, non-sensitive), or air-gapped/on-prem as needed.</li>
-          </ul>
-        </div>
-        <div class="glass rounded-2xl p-5">
-          <blockquote class="text-white/80">
-            <strong>Why “client data only” matters:</strong><br/>
-            Your fields, completions, and vendors create unique failure patterns. Teams trust suggestions grounded in their own history—and it’s easier to show that no third-party data influenced a recommendation.
-          </blockquote>
-          <pre class="mt-4 text-xs bg-slate-900 text-slate-300 p-3 rounded overflow-auto"><code>Example (illustrative):
-{
-  "source": {"name":"Morning Report - Well A-43","type":"email"},
-  "entities": {"depth_from_ft":9500,"depth_to_ft":10200,"losses_bbl":300,"npt_hours":6},
-  "flags": [{"kind":"npt","hours":6,"reason":"mud losses"}],
-  "provenance": [{"entity":"losses_bbl","from":"line 6"}]
-}</code></pre>
-        </div>
-      </div>
-    </section>
-
-    <section id="faq" class="max-w-7xl mx-auto px-4 py-8">
-      <h2 class="text-2xl font-semibold mb-3">FAQ (Alpha)</h2>
-      <ul class="text-white/80 text-sm space-y-2">
-        <li>• No live integrations or data ingestion.</li>
-        <li>• All pages are non-functional and illustrative.</li>
-        <li>• Feedback is welcome to shape priorities.</li>
-      </ul>
-    </section>
-  </main>
-
-  <div class="contact-fixed text-white/80" id="contact">
-    <div>Contact</div>
-    <div>info@welltegra.network</div>
-    <div>kenmckenzie@welltegra.network</div>
+<header class="sticky top-0 bg-slate-950/80 backdrop-blur border-b border-white/10 z-50">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
+    <img src="/assets/welltegra-logo.svg" class="h-8 w-auto" alt="WellTegra"/>
+    <nav class="ml-auto flex flex-wrap gap-5 text-sm">
+      <a href="/" class="hover:underline">Home</a>
+      <a href="/planner.html" class="hover:underline">Planner</a>
+      <a href="/performer.html" class="hover:underline">Performer</a>
+      <a href="/analyzer.html" class="hover:underline">Analyzer</a>
+      <a href="/process.html" class="hover:underline">Process</a>
+      <a href="/compare.html" class="hover:underline">Compare</a>
+      <a href="/roi.html" class="hover:underline">ROI</a>
+      <a href="/privacy.html" class="hover:underline">Privacy</a>
+      <a href="/visuals.html" class="hover:underline">Visuals</a>
+    </nav>
   </div>
+</header>
 
-  <footer class="mt-10 mb-16">
-    <div class="max-w-7xl mx-auto px-4 text-xs text-white/50">
-      <hr class="border-white/10 mb-3"/>
-      <p>© 2025 WellTegra • Alpha demo • No vendor affiliations • No live integrations</p>
+<main>
+  <section class="relative">
+    <img src="/assets/hero.jpg" class="w-full h-[58vh] object-cover opacity-70" alt=""/>
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-full max-w-7xl px-4">
+      <h1 class="text-4xl md:text-6xl font-bold">One loop, fewer regrets.</h1>
+      <p class="mt-3 text-slate-300 max-w-2xl">Planner → Performer → Analyzer. We integrate with your existing stack and make each job inform the next.</p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="/visuals.html" class="px-4 py-2 rounded-lg border border-white/20 hover:bg-white/5">Explore visuals</a>
+        <a href="/planner.html" class="px-4 py-2 rounded-lg border border-emerald-400/40 bg-emerald-400/10 hover:bg-emerald-400/20">Planner</a>
+        <a href="/performer.html" class="px-4 py-2 rounded-lg border border-cyan-400/40 bg-cyan-400/10 hover:bg-cyan-400/20">Performer</a>
+        <a href="/analyzer.html" class="px-4 py-2 rounded-lg border border-indigo-400/40 bg-indigo-400/10 hover:bg-indigo-400/20">Analyzer</a>
+      </div>
+      <div class="mt-6 flex flex-wrap gap-3 text-xs opacity-90">
+        <span class="px-2 py-1 rounded border border-white/10 bg-white/5">Read-only bridges</span>
+        <span class="px-2 py-1 rounded border border-white/10 bg-white/5">Per-client model isolation</span>
+        <span class="px-2 py-1 rounded border border-white/10 bg-white/5">Mistake-mining</span>
+        <span class="px-2 py-1 rounded border border-white/10 bg-white/5">Offline-first UX</span>
+      </div>
     </div>
-  </footer>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-4 py-16">
+    <h2 class="text-2xl font-semibold">Modules</h2>
+    <div class="mt-6 grid md:grid-cols-3 gap-6">
+      <a href="/planner.html" class="group rounded-xl border border-white/10 p-6 hover:border-emerald-400/40">
+        <h3 class="font-semibold">Planner</h3>
+        <p class="text-slate-300 text-sm mt-2">Scope, risk, WBS, budget. Import WellView/Sapphire extracts to prefill.</p>
+        <div class="mt-4">
+          <img src="/assets/planner-ui.png" class="rounded-lg ring-1 ring-white/10" alt="Planner UI"/>
+        </div>
+      </a>
+      <a href="/performer.html" class="group rounded-xl border border-white/10 p-6 hover:border-cyan-400/40">
+        <h3 class="font-semibold">Performer</h3>
+        <p class="text-slate-300 text-sm mt-2">Runbook, simulated live feed, deviation capture, shift reports.</p>
+        <div class="mt-4">
+          <img src="/assets/performer-ui.png" class="rounded-lg ring-1 ring-white/10" alt="Performer UI"/>
+        </div>
+      </a>
+      <a href="/analyzer.html" class="group rounded-xl border border-white/10 p-6 hover:border-indigo-400/40">
+        <h3 class="font-semibold">Analyzer</h3>
+        <p class="text-slate-300 text-sm mt-2">Mistake-mining, KPI trends, benchmarks, ROI summaries.</p>
+        <div class="mt-4">
+          <img src="/assets/analyzer-ui.png" class="rounded-lg ring-1 ring-white/10" alt="Analyzer UI"/>
+        </div>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer class="mt-20 border-t border-white/10">
+  <div class="max-w-7xl mx-auto px-4 py-8 text-sm text-slate-300 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div>© WellTegra — Visual alpha</div>
+    <div>Contact:
+      <a class="underline" href="mailto:info@welltegra.network">info@welltegra.network</a> ·
+      <a class="underline" href="mailto:kenmckenzie@welltegra.network">kenmckenzie@welltegra.network</a>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
