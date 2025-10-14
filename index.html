@@ -22,21 +22,35 @@ footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--m
 .container{max-width:1100px;margin:0 auto;padding:28px 20px}
 h1{font-size:clamp(28px,3.2vw,44px);line-height:1.1;margin:.2em 0 .4em}
 h2{font-size:clamp(22px,2.6vw,28px);margin:.5em 0 .3em}
+h3{margin:.4em 0 .2em}
 .lead{color:var(--muted);max-width:70ch}
 .badge{display:inline-block;background:rgba(33,181,240,.12);color:#9be6ff;border:1px solid rgba(33,181,240,.35);padding:4px 8px;border-radius:999px;font-size:12px;margin-right:6px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .card{background:var(--panel);border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:16px}
-.card h3{margin:0 0 6px;font-size:18px}
+.card p{color:var(--muted)}
 .video{aspect-ratio:16/9;width:100%;border:0;border-radius:10px}
 .media-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.hero{min-height:70vh;display:grid;place-items:center;background: radial-gradient(1200px 600px at 10% 10%, rgba(44,104,176,.25), transparent),
-linear-gradient(160deg,#0f172a 0%,#12213a 60%,#0f172a 100%)}
+.hero{min-height:70vh;display:grid;place-items:center;background: radial-gradient(1200px 600px at 10% 10%, rgba(44,104,176,.25), transparent), linear-gradient(160deg,#0f172a 0%,#12213a 60%,#0f172a 100%)}
 .hero-inner{max-width:1100px;margin:0 auto;padding: clamp(28px, 6vw, 72px) 20px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
 .metric{background:var(--panel);border:1px solid rgba(188,211,246,.16);border-radius:14px;padding:16px;text-align:center}
 .metric .num{font-weight:800;font-size:clamp(18px,2.2vw,24px);color:var(--ok)}
 .metric .label{color:var(--muted);font-size:13px;margin-top:4px}
-@media (max-width:980px){ .hero-inner{grid-template-columns:1fr} .media-grid{grid-template-columns:1fr} .metrics{grid-template-columns:repeat(2,1fr)} .grid-3{grid-template-columns:1fr 1fr}}
+.flow{display:grid;grid-template-columns:1fr;gap:12px}
+.flow svg{width:100%;height:auto;background:#0b1629;border:1px solid rgba(188,211,246,.12);border-radius:12px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.kpi{background:#0f2036;border:1px solid rgba(188,211,246,.16);border-radius:14px;padding:16px}
+.kpi .big{font-weight:800;font-size:26px;color:#62ead4}
+details{background:#0f2036;border:1px solid rgba(188,211,246,.12);border-radius:12px;padding:12px;margin:10px 0}
+summary{cursor:pointer;font-weight:700}
+.table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid rgba(188,211,246,.16);border-radius:12px;overflow:hidden}
+.table th,.table td{padding:10px;border-bottom:1px solid rgba(188,211,246,.12);text-align:left}
+.table th{background:#0b1c30}
+form .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(188,211,246,.2);background:#0c1a2e;color:var(--ink)}
+@media (max-width:980px){ .hero-inner{grid-template-columns:1fr} .media-grid{grid-template-columns:1fr} .metrics{grid-template-columns:repeat(2,1fr)} .grid-4{grid-template-columns:1fr 1fr} .grid-3{grid-template-columns:1fr 1fr} .kpis{grid-template-columns:1fr} form .row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -46,7 +60,9 @@ linear-gradient(160deg,#0f172a 0%,#12213a 60%,#0f172a 100%)}
     <nav><ul>
       <li><a class="active" href="#">Home</a></li>
       <li><a href="#solutions">Solutions</a></li>
-      <li><a href="#media">Media</a></li>
+      <li><a href="#loop">Loop</a></li>
+      <li><a href="#roi">ROI</a></li>
+      <li><a href="#faq">FAQ</a></li>
       <li><a href="mailto:info@welltegra.network" class="nav-cta">Book intake</a></li>
     </ul></nav>
   </div>
@@ -84,6 +100,69 @@ linear-gradient(160deg,#0f172a 0%,#12213a 60%,#0f172a 100%)}
   </div>
 </section>
 
+<section id="loop" class="container">
+  <h2>The WellTegra Loop</h2>
+  <p class="lead">Plan → Perform → Analyze → Repeat. Each cycle gets faster and smarter.</p>
+  <div class="flow">
+    <svg viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="20" width="200" height="80" rx="12" fill="#0f2036" stroke="#2C68B0" />
+      <text x="110" y="65" fill="#bcd3f6" font-size="14" text-anchor="middle">Sources</text>
+      <text x="110" y="90" fill="#9be6ff" font-size="12" text-anchor="middle">WellView • Sapphire • ERP/PO • Sensors</text>
+      <path d="M210,60 L290,60" stroke="#21B5F0" stroke-width="2"/>
+      <rect x="290" y="35" width="140" height="50" rx="10" fill="#0f2036" stroke="#21B5F0"/>
+      <text x="360" y="65" fill="#bcd3f6" font-size="14" text-anchor="middle">LAND</text>
+      <path d="M430,60 L510,60" stroke="#21B5F0" stroke-width="2"/>
+      <rect x="510" y="35" width="160" height="50" rx="10" fill="#0f2036" stroke="#21B5F0"/>
+      <text x="590" y="65" fill="#bcd3f6" font-size="14" text-anchor="middle">VALIDATE & SCRUB</text>
+      <path d="M670,60 L750,60" stroke="#21B5F0" stroke-width="2"/>
+      <rect x="750" y="35" width="140" height="50" rx="10" fill="#0f2036" stroke="#21B5F0"/>
+      <text x="820" y="65" fill="#bcd3f6" font-size="14" text-anchor="middle">CATALOG</text>
+      <path d="M130,160 C250,200 650,200 780,160" stroke="#62EAD4" stroke-width="2" fill="none"/>
+      <text x="450" y="220" fill="#9be6ff" font-size="12" text-anchor="middle">Common schema • Lineage • RBAC • Region</text>
+    </svg>
+  </div>
+  <div class="kpis" style="margin-top:10px">
+    <div class="kpi"><div class="big">Planner</div><p>Auto-suggest WBS, risk candidates, and budget lines from similar wells.</p></div>
+    <div class="kpi"><div class="big">Performer</div><p>Field runbook, deviation tags, and standardized shift reports (offline-capable).</p></div>
+    <div class="kpi"><div class="big">Analyzer</div><p>Pattern mining across wells, KPI benchmarks, and ROI with editable assumptions.</p></div>
+  </div>
+</section>
+
+<section id="roi" class="container">
+  <h2>ROI Calculator</h2>
+  <p class="lead">Adjust assumptions to estimate annual savings.</p>
+  <div class="grid-3">
+    <div class="card">
+      <h3>Inputs</h3>
+      <label>Wells per year</label><input id="wells" type="number" value="20" min="1"/>
+      <label>Avg. cost per day (USD)</label><input id="cpd" type="number" value="250000" min="1"/>
+      <label>Baseline NPT (days/well)</label><input id="npt" type="number" value="3" min="0" step="0.1"/>
+      <label>NPT reduction with WellTegra</label><input id="reduction" type="number" value="20" min="0" max="100"/>%
+      <label>Rework savings per well (USD)</label><input id="rework" type="number" value="15000" min="0"/>
+      <p style="margin-top:10px"><button class="btn-primary" id="calcBtn" type="button">Calculate</button> <a class="btn-ghost" href="mailto:info@welltegra.network?subject=ROI%20Deep%20Dive">Validate with us</a></p>
+    </div>
+    <div class="card">
+      <h3>Results</h3>
+      <table class="table">
+        <tr><th>Annual NPT savings</th><td id="npt_sav">$0</td></tr>
+        <tr><th>Annual rework savings</th><td id="rw_sav">$0</td></tr>
+        <tr><th><strong>Total annual benefits</strong></th><td id="total_sav"><strong>$0</strong></td></tr>
+      </table>
+      <p class="lead" id="assump">Using your inputs above.</p>
+    </div>
+    <div class="card">
+      <h3>Pilot → Scale</h3>
+      <ul>
+        <li>2-week pilot on last 10 wells</li>
+        <li>Connectors, QC rules, catalog</li>
+        <li>Runbook + deviation capture</li>
+        <li>KPI/ROI review and scale plan</li>
+      </ul>
+      <p><a class="btn-primary" href="mailto:info@welltegra.network?subject=Start%20Pilot">Start pilot</a></p>
+    </div>
+  </div>
+</section>
+
 <section id="media" class="container">
   <h2>Media</h2>
   <div class="media-grid">
@@ -98,8 +177,44 @@ linear-gradient(160deg,#0f172a 0%,#12213a 60%,#0f172a 100%)}
   </div>
 </section>
 
+<section id="faq" class="container">
+  <h2>FAQ</h2>
+  <details><summary>Do we need to replace our current tools?</summary><p>No. We read from your existing stack and keep your systems of record as the source of truth.</p></details>
+  <details><summary>What happens if our data is messy?</summary><p>That’s normal. QC rules highlight gaps; we track “data debt” so you can fix the few things that matter.</p></details>
+  <details><summary>Can the crew use this offline?</summary><p>Yes. Runbooks and deviation tags work offline and sync when connectivity returns.</p></details>
+  <details><summary>How do you calculate ROI?</summary><p>We multiply baseline NPT cost by reduction achieved and add optional rework savings. All assumptions are editable.</p></details>
+</section>
+
+<section id="contact" class="container">
+  <h2>Contact</h2>
+  <p class="lead">Email <a href="mailto:info@welltegra.network">info@welltegra.network</a> to book a data intake.</p>
+</section>
+
 <footer><div class="foot">
   <div>© WellTegra — All rights reserved.</div>
   <div><a href="mailto:info@welltegra.network">info@welltegra.network</a></div>
 </div></footer>
+
+<script>
+(function(){
+  function fmtUSD(n){return n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});}
+  function calc(){
+    const wells = +document.getElementById('wells').value||0;
+    const cpd = +document.getElementById('cpd').value||0;
+    const npt = +document.getElementById('npt').value||0;
+    const reduction = (+document.getElementById('reduction').value||0)/100;
+    const rework = +document.getElementById('rework').value||0;
+    const nptSavings = wells * cpd * npt * reduction;
+    const reworkSavings = wells * rework;
+    const total = nptSavings + reworkSavings;
+    document.getElementById('npt_sav').textContent = fmtUSD(nptSavings);
+    document.getElementById('rw_sav').textContent = fmtUSD(reworkSavings);
+    document.getElementById('total_sav').textContent = fmtUSD(total);
+    document.getElementById('assump').textContent = `Assumes ${wells} wells/year, ${npt} baseline NPT days/well, ${Math.round(reduction*100)}% NPT reduction, and ${fmtUSD(rework)} rework savings per well.`;
+  }
+  document.getElementById('calcBtn').addEventListener('click', calc);
+  calc(); // initial
+})();
+</script>
+
 </body></html>
