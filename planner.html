@@ -1,3 +1,166 @@
-<!doctype html><html lang='en'><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Planner — WellTegra</title><style>:root{--bg:#0f172a;--ink:#e6f3ff;--muted:#bcd3f6;--panel:#0f2036;--brand:#2c68b0;--accent:#21b5f0}*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Inter,Arial,sans-serif}a{color:inherit;text-decoration:none} header{position:sticky;top:0;z-index:40;background:rgba(15,23,42,.78);backdrop-filter:blur(10px);border-bottom:1px solid rgba(188,211,246,.1)}.nav{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px} .brand{font-weight:800}nav ul{list-style:none;margin:0;padding:0;display:flex;gap:12px;flex-wrap:wrap} nav a{opacity:.9;padding:8px 10px;border-radius:10px} nav a:hover,nav a.active{opacity:1;background:rgba(188,211,246,.12)}.btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 14px;font-weight:650;cursor:pointer} .btn.primary{background:linear-gradient(135deg,var(--brand),var(--accent));color:#091524} .btn.ghost{border:1px solid rgba(188,211,246,.25)}.container{max-width:1100px;margin:0 auto;padding:28px 20px} h1{font-size:clamp(28px,3.2vw,44px)} .lead{color:var(--muted)} .card{background:var(--panel);border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px} .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.wt-yt-hero{position:relative;min-height:76vh;display:grid;place-items:center;overflow:hidden} .wt-yt-hero .bg{position:absolute;inset:0} .wt-yt-hero .bg iframe{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);filter:brightness(.6);border:0}.wt-yt-overlay{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:48px 20px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px}.video{aspect-ratio:16/9;width:100%;border:0;border-radius:10px} footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--muted)} .foot{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}@media (max-width:900px){.wt-yt-overlay{grid-template-columns:1fr}.grid-3{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}}.logo-video{display:inline-block;}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-</style></head><body><header><div class="nav"><div class="brand"><a href="index.html" aria-label="WellTegra home"><video class="logo-video" src="assets/logoblue.mp4" autoplay muted loop playsinline style="width:130px;height:auto;vertical-align:middle"></video><span class="sr-only">WellTegra</span></a><noscript><a href="index.html">WellTegra</a></noscript></div><nav><ul><li><a class="active" href="index.html">Home</a></li><li><a class="" href="solutions.html">Solutions</a></li><li><a class="" href="about.html">About</a></li><li><a class="" href="roi.html">ROI</a></li><li><a class="" href="blog.html">Blog</a></li><li><a class="" href="careers.html">Careers</a></li><li><a class="" href="pricing.html">Pricing</a></li><li><a class="" href="contact.html">Contact</a></li><li><a href="planner.html">Planner</a></li><li><a href="performer.html">Performer</a></li><li><a href="analyzer.html">Analyzer</a></li></ul></nav><div><a class="btn primary" href="https://calendly.com/welltegra/intake">Book intake</a></div></div></header><main class='container'><h1>Planner</h1><p class='lead'>Start ~70% done. Select a similar well to prefill WBS, risks, and budget lines. Edit the few things that are unique.</p><div class='card'><h3>Select reference well</h3><div class='grid-3'><div><label>Basin</label><select id='basin'><option>Permian</option><option>Eagle Ford</option><option>North Sea</option></select></div><div><label>Well type</label><select id='type'><option>Horizontal</option><option>Vertical</option><option>Workover</option></select></div><div><label>Target MD (ft)</label><input id='md' type='number' value='15000'></div></div><p><a class='btn primary' id='prefill'>Prefill plan (~70%)</a> <a class='btn ghost' id='resetPlan'>Reset</a></p></div><div class='grid-2' style='margin-top:12px'><div class='card'><h3>WBS</h3><ul id='wbs'></ul></div><div class='card'><h3>Risks & mitigations</h3><ul id='risks'></ul></div></div><div class='card' style='margin-top:12px'><h3>Budget lines</h3><table class='table' id='budget'><tr><th>Category</th><th>Amount (USD)</th></tr></table><p><strong>Total: </strong><span id='total'>$0</span></p></div><script>const WBS_TEMPLATES={'Horizontal':['Spud','Surface casing','Intermediate casing','Lateral','Frac & flowback','Hand-over'],'Vertical':['Spud','Conductor','Casing','Drill to TD','Log & evaluate','Hand-over'],'Workover':['Rig up','Pull tubing','Remedial ops','Run back','Test & hand-over']};const RISK_TEMPLATES={'Permian':['Lost circulation — add LCM pill','H2S pockets — monitor & PPE','Motor stalls — torque/drag watch'],'Eagle Ford':['Tight window — MWD monitoring','Frac hits — offset comms','Stick-slip — RSS settings'],'North Sea':['Weather downtime — buffer','Logistics delay — pre-stage','Regulatory checks — early reviews']} ;const BUDGET_BASE=[['Rig day-rate',250000],['Cement & casing',180000],['Mud & chemicals',120000],['Directional tools',90000],['Services',110000]];function fmt(n){return n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});}function render(arr,el){el.innerHTML='';arr.forEach(t=>{const li=document.createElement('li');li.textContent=t;el.appendChild(li);});}function renderBudget(lines){const t=document.getElementById('budget');t.innerHTML='<tr><th>Category</th><th>Amount (USD)</th></tr>';let sum=0;lines.forEach(([k,v],i)=>{sum+=v;const tr=document.createElement('tr');tr.innerHTML='<td>'+k+'</td><td contenteditable="true" data-i="'+i+'">'+v.toLocaleString()+'</td>';t.appendChild(tr);});document.getElementById('total').textContent=fmt(sum);}function toLines(base){return base.map(x=>[x[0],x[1]]);}document.getElementById('budget').addEventListener('input',e=>{if(e.target && e.target.dataset.i){const i=+e.target.dataset.i;const val=+e.target.textContent.replace(/[^0-9.]/g,'')||0;window._budget[i][1]=val;renderBudget(window._budget);save();}});function save(){localStorage.setItem('WT_PLAN',JSON.stringify({wbs:window._wbs,risks:window._risks,budget:window._budget}));}function load(){try{const s=JSON.parse(localStorage.getItem('WT_PLAN')||'{}');if(s.wbs){window._wbs=s.wbs;window._risks=s.risks;window._budget=s.budget;render(window._wbs,document.getElementById('wbs'));render(window._risks,document.getElementById('risks'));renderBudget(window._budget);}}catch(e){}}document.getElementById('prefill').addEventListener('click',()=>{const t=document.getElementById('type').value;const b=document.getElementById('basin').value;window._wbs=WBS_TEMPLATES[t];window._risks=RISK_TEMPLATES[b];window._budget=toLines(BUDGET_BASE);render(window._wbs,document.getElementById('wbs'));render(window._risks,document.getElementById('risks'));renderBudget(window._budget);save();});document.getElementById('resetPlan').addEventListener('click',()=>{localStorage.removeItem('WT_PLAN');window._wbs=[];window._risks=[];window._budget=[];render([],document.getElementById('wbs'));render([],document.getElementById('risks'));renderBudget([]);document.getElementById('total').textContent='$0';});load();</script></main><footer><div class="foot"><div>© WellTegra</div><div><a href="mailto:info@welltegra.network">info@welltegra.network</a></div></div></footer></body></html>
+<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/><title>Planner — WellTegra</title><style>
+:root{--bg:#0f172a;--ink:#e6f3ff;--muted:#bcd3f6;--panel:#0f2036;--accent:#21b5f0}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Inter,Arial,sans-serif}
+a{color:inherit;text-decoration:none}
+header{position:sticky;top:0;z-index:40;background:rgba(15,23,42,.78);backdrop-filter:blur(10px);border-bottom:1px solid rgba(188,211,246,.1)}
+.nav{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand video{width:140px;height:auto;vertical-align:middle;border-radius:6px}
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:12px;flex-wrap:wrap}
+nav a{opacity:.9;padding:8px 10px;border-radius:10px}
+nav a:hover,nav a.active{opacity:1;background:rgba(188,211,246,.12)}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 14px;font-weight:650;cursor:pointer}
+.btn.primary{background:linear-gradient(135deg,#2c68b0,var(--accent));color:#07101f}
+.btn.ghost{border:1px solid rgba(188,211,246,.25)}
+.container{max-width:1100px;margin:0 auto;padding:28px 20px}
+h1{font-size:clamp(28px,3.2vw,44px)}
+.lead{color:var(--muted)}
+.card{background:var(--panel);border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.video{aspect-ratio:16/9;width:100%;border:0;border-radius:10px}
+footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--muted)}
+.foot{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media (max-width:900px){.grid-3{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:1000}
+.modal{width:min(1000px,92vw);max-height:90vh;background:#0b1c30;border:1px solid rgba(188,211,246,.3);border-radius:12px;overflow:auto}
+.modal header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(188,211,246,.2)}
+.table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid rgba(188,211,246,.16);border-radius:12px;overflow:hidden}
+.table th,.table td{padding:10px;border-bottom:1px solid rgba(188,211,246,.12);text-align:left}
+.table th{background:#0b1c30}
+</style></head><body>
+<header>
+  <div class="nav">
+    <div class="brand">
+      <a href="index.html" aria-label="WellTegra home">
+        <video src="assets/logohome.mp4" autoplay muted loop playsinline></video>
+        <span class="sr-only">WellTegra</span>
+      </a>
+    </div>
+    <nav><ul>
+      <li><a class="" href="index.html">Home</a></li>
+      <li><a class="active" href="planner.html">Planner</a></li>
+      <li><a class="" href="performer.html">Performer</a></li>
+      <li><a class="" href="analyzer.html">Analyzer</a></li>
+    </ul></nav>
+    <div><a class="btn primary" href="mailto:info@welltegra.network">Contact</a></div>
+  </div>
+</header>
+<main class='container'>
+<h1>Planner</h1>
+<div class="card">
+  <h3>Pick a well</h3>
+  <div class="grid-3">
+    <div><label>Well</label><select id="wellPicker"></select></div>
+    <div><label>Field</label><input id="wellField" readonly></div>
+    <div><label>Region</label><input id="wellRegion" readonly></div>
+  </div>
+  <p style="margin-top:10px">
+    <a class="btn primary" id="loadWell">Load well details</a>
+    <a class="btn ghost" id="viewDocs">View documents</a>
+  </p>
+</div>
+
+<div class="card" style="margin-top:12px">
+  <h3>Reference parameters</h3>
+  <div class="grid-3">
+    <div><label>Basin</label><select id="basin"><option>Permian</option><option>Eagle Ford</option><option>North Sea</option></select></div>
+    <div><label>Well type</label><select id="type"><option>Horizontal</option><option>Vertical</option><option>Workover</option></select></div>
+    <div><label>Target MD (ft)</label><input id="md" type="number" value="15000"></div>
+  </div>
+  <p style="margin-top:10px"><a class="btn primary" id="prefill">Prefill plan (~70%)</a> <a class="btn ghost" id="resetPlan">Reset</a></p>
+</div>
+
+<div class="grid-2" style="margin-top:12px">
+  <div class="card"><h3>WBS</h3><ul id="wbs"></ul></div>
+  <div class="card"><h3>Risks & mitigations</h3><ul id="risks"></ul></div>
+</div>
+
+<div class="card" style="margin-top:12px"><h3>Budget lines</h3>
+  <table class="table" id="budget"><tr><th>Category</th><th>Amount (USD)</th></tr></table>
+  <p><strong>Total: </strong><span id="total">$0</span></p>
+</div>
+
+<div class="modal-backdrop" id="docModal">
+  <div class="modal">
+    <header><strong>Documents</strong><a id="closeDocs" class="btn ghost">Close</a></header>
+    <div id="docBody" style="padding:14px"></div>
+  </div>
+</div>
+
+<script>
+let WT_WELLS=[], WT_SELECTED=null;
+const WBS_TEMPLATES={
+  "Horizontal":["Spud","Surface casing","Intermediate casing","Lateral","Frac & flowback","Hand-over"],
+  "Vertical":["Spud","Conductor","Casing","Drill to TD","Log & evaluate","Hand-over"],
+  "Workover":["Rig up","Pull tubing","Remedial ops","Run back","Test & hand-over"]
+};
+const RISK_TEMPLATES={
+  "Permian":["Lost circulation — add LCM pill","H2S pockets — monitor & PPE","Motor stalls — torque/drag watch"],
+  "Eagle Ford":["Tight window — MWD monitoring","Frac hits — offset comms","Stick-slip — RSS settings"],
+  "North Sea":["Weather downtime — buffer","Logistics delay — pre-stage","Regulatory checks — early reviews"]
+};
+const BUDGET_BASE=[["Rig day-rate",250000],["Cement & casing",180000],["Mud & chemicals",120000],["Directional tools",90000],["Services",110000]];
+
+function fmt(n){return n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});}
+function render(arr,el){el.innerHTML='';arr.forEach(t=>{const li=document.createElement('li');li.textContent=t;el.appendChild(li);});}
+function renderBudget(lines){const t=document.getElementById('budget');t.innerHTML='<tr><th>Category</th><th>Amount (USD)</th></tr>';let sum=0;lines.forEach(([k,v],i)=>{sum+=v;const tr=document.createElement('tr');tr.innerHTML='<td>'+k+'</td><td contenteditable="true" data-i="'+i+'">'+v.toLocaleString()+'</td>';t.appendChild(tr);});document.getElementById('total').textContent=fmt(sum);}
+function toLines(base){return base.map(x=>[x[0],x[1]]);}
+
+document.getElementById('budget').addEventListener('input',e=>{
+  if(e.target && e.target.dataset.i){const i=+e.target.dataset.i;const val=+e.target.textContent.replace(/[^0-9.]/g,'')||0;window._budget[i][1]=val;renderBudget(window._budget);save();}
+});
+
+function save(){localStorage.setItem('WT_PLAN',JSON.stringify({wbs:window._wbs,risks:window._risks,budget:window._budget,selected:WT_SELECTED}));}
+function loadSaved(){try{const s=JSON.parse(localStorage.getItem('WT_PLAN')||'{}');if(s.wbs){window._wbs=s.wbs;window._risks=s.risks;window._budget=s.budget;WT_SELECTED=s.selected||null;render(window._wbs,document.getElementById('wbs'));render(window._risks,document.getElementById('risks'));renderBudget(window._budget);} }catch(e){}}
+
+async function loadWells(){
+  try{const r=await fetch('data/wells.json',{cache:'no-store'});const j=await r.json();WT_WELLS=j.wells||[];
+    const sel=document.getElementById('wellPicker');sel.innerHTML=WT_WELLS.map(w=>`<option value="${w.id}">${w.name} (${w.id})</option>`).join('');
+    if(WT_WELLS.length){WT_SELECTED=WT_WELLS[0];document.getElementById('wellField').value=WT_SELECTED.field||'';document.getElementById('wellRegion').value=WT_SELECTED.region||'';}
+  }catch(e){console.error('wells.json load failed',e);}
+}
+
+document.addEventListener('DOMContentLoaded',()=>{loadWells();loadSaved();});
+
+document.addEventListener('click', (e)=>{
+  if(e.target && e.target.id==='prefill'){
+    const t=document.getElementById('type').value;const b=document.getElementById('basin').value;
+    window._wbs=WBS_TEMPLATES[t];window._risks=RISK_TEMPLATES[b];window._budget=toLines(BUDGET_BASE);
+    render(window._wbs,document.getElementById('wbs'));render(window._risks,document.getElementById('risks'));renderBudget(window._budget);save();
+  }
+  if(e.target && e.target.id==='resetPlan'){
+    localStorage.removeItem('WT_PLAN');window._wbs=[];window._risks=[];window._budget=[];render([],document.getElementById('wbs'));render([],document.getElementById('risks'));renderBudget([]);document.getElementById('total').textContent='$0';
+  }
+  if(e.target && e.target.id==='loadWell'){
+    const id=document.getElementById('wellPicker').value;const w=WT_WELLS.find(x=>x.id===id);if(!w)return;
+    WT_SELECTED=w;document.getElementById('wellField').value=w.field||'';document.getElementById('wellRegion').value=w.region||'';
+    // Use well's type and MD to drive prefill
+    const typeSel=document.getElementById('type'); if(typeSel){ typeSel.value=(w.type && w.type.includes('Gas'))?'Vertical':'Horizontal'; }
+    const md=document.getElementById('md'); if(md){ md.value=w.target_md_ft||md.value; }
+    document.getElementById('prefill').click();
+  }
+  if(e.target && e.target.id==='viewDocs'){ renderDocs(); }
+  if(e.target && e.target.id==='closeDocs'){ document.getElementById('docModal').style.display='none'; }
+});
+
+function renderDocs(){
+  if(!WT_SELECTED){ alert('Pick a well first'); return; }
+  const docs=(WT_SELECTED.documents||[]);
+  const body=document.getElementById('docBody');
+  if(!docs.length){ body.innerHTML='<p class="lead">No documents listed for this well.</p>'; }
+  else {
+    body.innerHTML = docs.map(doc=>{
+      if(doc.type==='pdf'){
+        return `<div class="card" style="margin-bottom:12px"><p><strong>${doc.label}</strong></p><embed src="${doc.path}" type="application/pdf" style="width:100%;height:460px"/><p><a class="btn ghost" target="_blank" href="${doc.path}">Open in new tab</a></p></div>`;
+      } else if(doc.type==='image'){
+        return `<div class="card" style="margin-bottom:12px"><p><strong>${doc.label}</strong></p><img src="${doc.path}" alt="${doc.label}" style="max-width:100%;border-radius:8px;border:1px solid rgba(188,211,246,.2)"/></div>`;
+      } else {
+        return `<div class="card" style="margin-bottom:12px"><p><strong>${doc.label}</strong></p><a class="btn ghost" target="_blank" href="${doc.path}">Download</a></div>`;
+      }
+    }).join('');
+  }
+  document.getElementById('docModal').style.display='flex';
+}
+</script>
+</main><footer><div class="foot"><div>© WellTegra</div><div><a href="mailto:info@welltegra.network">info@welltegra.network</a></div></div></footer></body></html>

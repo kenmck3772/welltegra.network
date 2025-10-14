@@ -1,3 +1,66 @@
-<!doctype html><html lang='en'><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Analyzer — WellTegra</title><style>:root{--bg:#0f172a;--ink:#e6f3ff;--muted:#bcd3f6;--panel:#0f2036;--brand:#2c68b0;--accent:#21b5f0}*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Inter,Arial,sans-serif}a{color:inherit;text-decoration:none} header{position:sticky;top:0;z-index:40;background:rgba(15,23,42,.78);backdrop-filter:blur(10px);border-bottom:1px solid rgba(188,211,246,.1)}.nav{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px} .brand{font-weight:800}nav ul{list-style:none;margin:0;padding:0;display:flex;gap:12px;flex-wrap:wrap} nav a{opacity:.9;padding:8px 10px;border-radius:10px} nav a:hover,nav a.active{opacity:1;background:rgba(188,211,246,.12)}.btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 14px;font-weight:650;cursor:pointer} .btn.primary{background:linear-gradient(135deg,var(--brand),var(--accent));color:#091524} .btn.ghost{border:1px solid rgba(188,211,246,.25)}.container{max-width:1100px;margin:0 auto;padding:28px 20px} h1{font-size:clamp(28px,3.2vw,44px)} .lead{color:var(--muted)} .card{background:var(--panel);border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px} .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.wt-yt-hero{position:relative;min-height:76vh;display:grid;place-items:center;overflow:hidden} .wt-yt-hero .bg{position:absolute;inset:0} .wt-yt-hero .bg iframe{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);filter:brightness(.6);border:0}.wt-yt-overlay{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:48px 20px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px}.video{aspect-ratio:16/9;width:100%;border:0;border-radius:10px} footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--muted)} .foot{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}@media (max-width:900px){.wt-yt-overlay{grid-template-columns:1fr}.grid-3{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}}.logo-video{display:inline-block;}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-</style></head><body><header><div class="nav"><div class="brand"><a href="index.html" aria-label="WellTegra home"><video class="logo-video" src="assets/logoblue.mp4" autoplay muted loop playsinline style="width:130px;height:auto;vertical-align:middle"></video><span class="sr-only">WellTegra</span></a><noscript><a href="index.html">WellTegra</a></noscript></div><nav><ul><li><a class="active" href="index.html">Home</a></li><li><a class="" href="solutions.html">Solutions</a></li><li><a class="" href="about.html">About</a></li><li><a class="" href="roi.html">ROI</a></li><li><a class="" href="blog.html">Blog</a></li><li><a class="" href="careers.html">Careers</a></li><li><a class="" href="pricing.html">Pricing</a></li><li><a class="" href="contact.html">Contact</a></li><li><a href="planner.html">Planner</a></li><li><a href="performer.html">Performer</a></li><li><a href="analyzer.html">Analyzer</a></li></ul></nav><div><a class="btn primary" href="https://calendly.com/welltegra/intake">Book intake</a></div></div></header><main class='container'><h1>Analyzer</h1><p class='lead'>Track KPIs and find repeating patterns across wells. Uses your local demo data from Planner and Performer.</p><div class='grid-3'><div class='card'><h3>KPIs</h3><table class='table'><tr><th>Deviation count</th><td id='k_devs'>0</td></tr><tr><th>Top deviation type</th><td id='k_top'>—</td></tr><tr><th>Estimated NPT days saved</th><td id='k_npt'>0.0</td></tr></table></div><div class='card'><h3>Repeat issues</h3><ul id='issues'></ul></div><div class='card'><h3>ROI snapshot</h3><p id='roi'>—</p></div></div><script>function getPlan(){try{return JSON.parse(localStorage.getItem('WT_PLAN')||'{}')}catch(e){return {}}}function getDev(){try{return JSON.parse(localStorage.getItem('WT_DEV')||'[]')}catch(e){return []}}function analyze(){const dev=getDev();document.getElementById('k_devs').textContent=dev.length;const types={};dev.forEach(d=>{types[d.type]=(types[d.type]||0)+1});let top='—',max=0;for(const k in types){if(types[k]>max){max=types[k];top=k}};document.getElementById('k_top').textContent=top;const nptSaved=(dev.filter(d=>d.type==='NPT').length*0.2).toFixed(1);document.getElementById('k_npt').textContent=nptSaved;const issuesEl=document.getElementById('issues');issuesEl.innerHTML='';Object.keys(types).sort((a,b)=>types[b]-types[a]).forEach(k=>{const li=document.createElement('li');li.textContent=k+' × '+types[k];issuesEl.appendChild(li);});const plan=getPlan();const wells=10;const costPerDay=250000;const baselineNPT=3;const reduction=0.2;const rework=15000;const nptSavings=wells*costPerDay*baselineNPT*reduction;const reworkSavings=wells*rework;const total=nptSavings+reworkSavings;document.getElementById('roi').textContent='Illustrative: '+total.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});}analyze();</script></main><footer><div class="foot"><div>© WellTegra</div><div><a href="mailto:info@welltegra.network">info@welltegra.network</a></div></div></footer></body></html>
+<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/><title>Analyzer — WellTegra</title><style>
+:root{--bg:#0f172a;--ink:#e6f3ff;--muted:#bcd3f6;--panel:#0f2036;--accent:#21b5f0}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Inter,Arial,sans-serif}
+a{color:inherit;text-decoration:none}
+header{position:sticky;top:0;z-index:40;background:rgba(15,23,42,.78);backdrop-filter:blur(10px);border-bottom:1px solid rgba(188,211,246,.1)}
+.nav{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand video{width:140px;height:auto;vertical-align:middle;border-radius:6px}
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:12px;flex-wrap:wrap}
+nav a{opacity:.9;padding:8px 10px;border-radius:10px}
+nav a:hover,nav a.active{opacity:1;background:rgba(188,211,246,.12)}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 14px;font-weight:650;cursor:pointer}
+.btn.primary{background:linear-gradient(135deg,#2c68b0,var(--accent));color:#07101f}
+.btn.ghost{border:1px solid rgba(188,211,246,.25)}
+.container{max-width:1100px;margin:0 auto;padding:28px 20px}
+h1{font-size:clamp(28px,3.2vw,44px)}
+.lead{color:var(--muted)}
+.card{background:var(--panel);border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.video{aspect-ratio:16/9;width:100%;border:0;border-radius:10px}
+footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--muted)}
+.foot{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media (max-width:900px){.grid-3{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:1000}
+.modal{width:min(1000px,92vw);max-height:90vh;background:#0b1c30;border:1px solid rgba(188,211,246,.3);border-radius:12px;overflow:auto}
+.modal header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(188,211,246,.2)}
+.table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid rgba(188,211,246,.16);border-radius:12px;overflow:hidden}
+.table th,.table td{padding:10px;border-bottom:1px solid rgba(188,211,246,.12);text-align:left}
+.table th{background:#0b1c30}
+</style></head><body>
+<header>
+  <div class="nav">
+    <div class="brand">
+      <a href="index.html" aria-label="WellTegra home">
+        <video src="assets/logohome.mp4" autoplay muted loop playsinline></video>
+        <span class="sr-only">WellTegra</span>
+      </a>
+    </div>
+    <nav><ul>
+      <li><a class="" href="index.html">Home</a></li>
+      <li><a class="" href="planner.html">Planner</a></li>
+      <li><a class="" href="performer.html">Performer</a></li>
+      <li><a class="active" href="analyzer.html">Analyzer</a></li>
+    </ul></nav>
+    <div><a class="btn primary" href="mailto:info@welltegra.network">Contact</a></div>
+  </div>
+</header>
+<main class='container'>
+<h1>Analyzer</h1>
+<p class="lead">Quick KPIs from your demo plan & deviations. (Front-end only.)</p>
+<div class="grid-3">
+  <div class="card"><h3>KPIs</h3><table class="table">
+    <tr><th>Deviation count</th><td id="k_devs">0</td></tr>
+    <tr><th>Top deviation type</th><td id="k_top">—</td></tr>
+    <tr><th>Estimated NPT days saved</th><td id="k_npt">0.0</td></tr>
+  </table></div>
+  <div class="card"><h3>Repeat issues</h3><ul id="issues"></ul></div>
+  <div class="card"><h3>ROI snapshot</h3><p id="roi">—</p></div>
+</div>
+<script>
+function getDev(){try{return JSON.parse(localStorage.getItem('WT_DEV')||'[]')}catch(e){return []}}
+function analyze(){const dev=getDev();document.getElementById('k_devs').textContent=dev.length;const types={};dev.forEach(d=>{types[d.type]=(types[d.type]||0)+1});let top='—',max=0;for(const k in types){if(types[k]>max){max=types[k];top=k}};document.getElementById('k_top').textContent=top;const nptSaved=(dev.filter(d=>d.type==='NPT').length*0.2).toFixed(1);document.getElementById('k_npt').textContent=nptSaved;const issuesEl=document.getElementById('issues');issuesEl.innerHTML='';Object.keys(types).sort((a,b)=>types[b]-types[a]).forEach(k=>{const li=document.createElement('li');li.textContent=k+' × '+types[k];issuesEl.appendChild(li);});const wells=10,costPerDay=250000,baselineNPT=3,reduction=0.2,rework=15000;const nptSavings=wells*costPerDay*baselineNPT*reduction;const reworkSavings=wells*rework;const total=nptSavings+reworkSavings;document.getElementById('roi').textContent='Illustrative: '+total.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});}
+analyze();
+</script>
+</main><footer><div class="foot"><div>© WellTegra</div><div><a href="mailto:info@welltegra.network">info@welltegra.network</a></div></div></footer></body></html>
