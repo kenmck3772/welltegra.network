@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>404 — WellTegra</title>
+  <title>Contact — WellTegra</title>
   <meta name="theme-color" content="#0f172a"/>
   <link rel="stylesheet" href="assets/css/site.css"/>
 </head>
@@ -21,7 +21,7 @@
         <li><a href="case-studies.html" class="">Case Studies</a></li>
         <li><a href="pricing.html" class="">Pricing</a></li>
         <li><a href="careers.html" class="">Careers</a></li>
-        <li><a href="contact.html" class="">Contact</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
       </ul>
     </nav>
     <a class="nav-cta" href="mailto:info@welltegra.network?subject=Data%20Intake">Book intake</a>
@@ -30,8 +30,27 @@
 
 
 <section class="container">
-  <h1>Page not found</h1>
-  <p class="lead">The page you’re looking for doesn’t exist. Try the <a href="index.html">home page</a>.</p>
+  <h1>Contact</h1>
+  <p class="lead">Book a data intake or ask us anything. We’ll reply within one business day.</p>
+  <form action="https://formspree.io/f/xjkvwxyz" method="POST">
+    <div class="row">
+      <div>
+        <label for="name">Name</label>
+        <input id="name" name="name" required/>
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input id="email" name="_replyto" type="email" required/>
+      </div>
+    </div>
+    <label for="company">Company</label>
+    <input id="company" name="company"/>
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="6" placeholder="We’d like to start a two‑week pilot. Our systems include: …"></textarea>
+    <p style="margin-top:12px"><button class="btn btn-primary" type="submit">Send</button> <a class="btn btn-ghost" href="mailto:info@welltegra.network">Email instead</a></p>
+    <input type="hidden" name="_subject" value="Website Contact — WellTegra"/>
+  </form>
+  <p class="lead">Prefer email? <a href="mailto:info@welltegra.network">info@welltegra.network</a></p>
 </section>
 
 
