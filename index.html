@@ -1,153 +1,129 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Well-Tegra Data Solutions</title>
-  <meta name="description" content="Well-Tegra integrates with Petrel, WellView, Sapphire, and JewelSuite to unlock trapped value through mistake-mining AI and data unification.">
-  <link rel="icon" href="assets/images/welltegra-logo2.png" type="image/png" />
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WellTegra — From Data to Value</title>
+<meta name="description" content="WellTegra brings your well data into one secure pool and runs a simple loop: Plan • Perform • Analyze."/>
+<meta name="theme-color" content="#0f172a"/>
+<style>
+:root{--bg:#0f172a;--ink:#e6f3ff;--muted:#bcd3f6;--brand:#2c68b0;--accent:#21b5f0;--ok:#62ead4}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Inter,Arial,sans-serif}
+header{position:sticky;top:0;z-index:40;background:rgba(15,23,42,.72);backdrop-filter:blur(10px);border-bottom:1px solid rgba(188,211,246,.1)}
+.wrap{max-width:1100px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+nav a{color:var(--ink);opacity:.9;text-decoration:none;margin:0 10px} nav a:hover{opacity:1}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 14px;font-weight:650;text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,var(--brand),var(--accent));color:#091524;box-shadow:0 8px 24px rgba(33,181,240,.22)}
+.btn-ghost{border:1px solid rgba(188,211,246,.25);color:var(--ink)}
+.hero{position:relative;min-height:76vh;display:grid;place-items:center;overflow:hidden}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.6)}
+.hero .overlay{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding: clamp(28px, 6vw, 72px) 20px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+h1{font-size:clamp(28px,3.2vw,44px);line-height:1.1;margin:.2em 0 .4em} h1 em{color:#62ead4;font-style:normal}
+.sub{color:var(--muted);max-width:70ch}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+.pills{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+.pill{background:#0f2036;border:1px solid rgba(188,211,246,.18);color:var(--muted);padding:6px 10px;border-radius:999px;font-size:13px}
+.hero .thumb{border-radius:16px;box-shadow:0 14px 34px rgba(0,0,0,.35);aspect-ratio:16/9;width:100%;background:rgba(255,255,255,.06);display:grid;place-items:center;border:1px solid rgba(188,211,246,.12)}
+.play-btn{position:absolute;z-index:3;bottom:20px;left:20px;background:rgba(0,0,0,.55);border:1px solid rgba(188,211,246,.3);color:#fff;border-radius:999px;padding:10px 14px;display:none}
+.hero.blocked .play-btn{display:inline-flex}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1100px;margin:18px auto 0;padding:0 20px}
+.metric{background:#0f2036;border:1px solid rgba(188,211,246,.16);border-radius:14px;padding:16px;text-align:center}
+.metric .num{font-weight:800;font-size:clamp(18px,2.2vw,24px);color:#62ead4}
+.metric .label{color:var(--muted);font-size:13px;margin-top:4px}
+section{padding:32px 20px} .section-inner{max-width:1100px;margin:0 auto}
+h2.section-title{margin:0 0 12px;font-size:clamp(22px,2.6vw,28px)} .lead{color:var(--muted);max-width:70ch}
+.media-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.video-card{background:#0f2036;border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:12px}
+.video{aspect-ratio:16/9;width:100%;border:0;border-radius:10px}
+footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--muted)}
+.foot-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+@media (prefers-reduced-motion: reduce){ .hero video{display:none} .hero{background: linear-gradient(160deg,#0f172a 0%,#12213a 60%,#0f172a 100%)} }
+@media (max-width:900px){ .hero .overlay{grid-template-columns:1fr} .media-grid{grid-template-columns:1fr} .metrics{grid-template-columns:repeat(2,1fr)} }
+</style>
 </head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand"><strong>WellTegra</strong></div>
+    <nav>
+      <a href="#media">Media</a>
+      <a href="mailto:info@welltegra.network" class="btn btn-ghost">Contact</a>
+      <a href="#pilot" class="btn btn-primary">Start a pilot</a>
+    </nav>
+  </div>
+</header>
 
-<body class="bg-gray-900 text-white font-sans">
-
-  <!-- HERO -->
-  <section class="relative h-screen flex flex-col justify-center items-center text-center bg-gradient-to-b from-gray-800 to-gray-900 px-6">
-    <!-- Optional video background -->
-    <!-- <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-40">
-      <source src="assets/videos/opening.mp4" type="video/mp4">
-    </video> -->
-    <img src="assets/images/welltegra-logo2.png" alt="Well-Tegra Logo" class="w-28 mb-6 opacity-90 z-10">
-    <h1 class="text-4xl md:text-6xl font-bold z-10 mb-3">Well-Tegra Data Solutions</h1>
-    <p class="text-lg md:text-2xl italic text-indigo-300 z-10 mb-8">Your software works. We make it work smarter.</p>
-    <a href="#planner" class="z-10 bg-indigo-600 hover:bg-indigo-700 px-8 py-3 rounded-lg text-lg font-semibold shadow-lg transition">Explore Platform</a>
-  </section>
-
-  <!-- OVERVIEW -->
-  <section id="overview" class="bg-gray-100 text-gray-900 py-20 px-6">
-    <div class="max-w-6xl mx-auto text-center">
-      <h2 class="text-3xl font-bold mb-6">Liberating Trapped Intelligence</h2>
-      <p class="text-lg leading-relaxed max-w-3xl mx-auto">
-        Well-Tegra bridges the gap between your existing E&P systems — Petrel, WellView, Sapphire, and JewelSuite — without replacing them.
-        Our AI unlocks patterns hidden in years of operational data, transforming historical mistakes into predictive insights.
-      </p>
-    </div>
-  </section>
-
-  <!-- PLANNER -->
-  <section id="planner" class="bg-white text-gray-900 py-20 px-6">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold text-center mb-12">Planner Module</h2>
-      <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <h3 class="text-xl font-semibold mb-4 text-indigo-700">Smarter Well Planning</h3>
-          <p class="mb-4">
-            The Planner connects to existing databases like WellView and SAP, scanning historical data for similar wells,
-            identifying risk triggers, and generating pre-populated programs that incorporate lessons learned.
-          </p>
-          <ul class="list-disc ml-5 space-y-2">
-            <li>Imports planning data from legacy formats (CSV, PDF, WellView XML)</li>
-            <li>Highlights recurring risks using mistake-mining AI</li>
-            <li>Suggests design optimizations based on historic outcomes</li>
-          </ul>
-        </div>
-        <div class="bg-gray-100 p-6 rounded-xl shadow text-center">
-          <h4 class="text-lg font-semibold mb-3">Sample Output</h4>
-          <pre class="bg-black text-green-400 p-4 rounded-lg text-sm overflow-auto">
-{
-  "formation": "Brent Group",
-  "risk_flag": "Stuck Pipe (78% match)",
-  "recommendation": "Adjust pump speed by -10%, review prior BHA."
-}
-          </pre>
-        </div>
+<section class="hero" id="home-hero">
+  <video id="bgvid" autoplay muted playsinline loop preload="auto" poster="" aria-hidden="true">
+    <source src="assets/hero.mp4" type="video/mp4">
+  </video>
+  <button class="play-btn" id="playBtn">Play video</button>
+  <div class="overlay">
+    <div class="copy">
+      <h1>Make your well data work — from <em>plan</em> to <em>payoff</em>.</h1>
+      <p class="sub">One secure pool. <strong>Plan</strong> faster, <strong>Perform</strong> with a clear runbook (even offline), and <strong>Analyze</strong> for patterns & ROI.</p>
+      <div class="cta-row">
+        <a href="#pilot" class="btn btn-primary">Start a 2-week pilot</a>
+        <a href="#media" class="btn btn-ghost">Watch overview</a>
+      </div>
+      <div class="pills">
+        <span class="pill">WellView</span><span class="pill">Sapphire</span><span class="pill">ERP/PO</span><span class="pill">Sensors</span>
       </div>
     </div>
-  </section>
+    <div class="thumb"><span style="opacity:.7">Opening reel</span></div>
+  </div>
+  <div class="metrics">
+    <div class="metric"><div class="num">~70%</div><div class="label">plan pre-filled</div></div>
+    <div class="metric"><div class="num">↓ NPT</div><div class="label">measurable reduction</div></div>
+    <div class="metric"><div class="num">2 weeks</div><div class="label">pilot to impact</div></div>
+    <div class="metric"><div class="num">0</div><div class="label">rip-and-replace</div></div>
+  </div>
+</section>
 
-  <!-- PERFORMER -->
-  <section id="performer" class="bg-gray-50 text-gray-900 py-20 px-6">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold text-center mb-12">Performer Module</h2>
-      <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <h3 class="text-xl font-semibold mb-4 text-indigo-700">Live Operational Intelligence</h3>
-          <p class="mb-4">
-            The Performer connects to WITSML feeds, analyzing live operational data in real-time. It transforms chaotic sensor data into meaningful
-            visual metrics, alerting field teams to anomalies before they escalate.
-          </p>
-          <ul class="list-disc ml-5 space-y-2">
-            <li>Simulated live data feed from rig sensors</li>
-            <li>Instant KPI visualization and deviation alerts</li>
-            <li>Supports remote operations and mobile interfaces</li>
-          </ul>
-        </div>
-        <div class="bg-black text-green-400 p-6 rounded-xl shadow text-sm font-mono">
-          <p>> Connecting to WITSML feed...</p>
-          <p>> Depth: 3250m | Torque: 11.2kNm | Flow: 420lpm</p>
-          <p>> ⚠️ Torque deviation detected (+14%)</p>
-          <p>> Alert dispatched to field engineer.</p>
-        </div>
+<section id="media">
+  <div class="section-inner">
+    <h2 class="section-title">Media</h2>
+    <div class="media-grid">
+      <div class="video-card">
+        <iframe class="video" src="https://www.youtube.com/embed/1acPY-6uzAA" title="Architecture Explained" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+        <h3>WellTegra Architecture Explained</h3>
+      </div>
+      <div class="video-card">
+        <iframe class="video" src="https://www.youtube.com/embed/?listType=user_uploads&list=WellTegra" title="Latest from WellTegra Channel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+        <h3>Latest from our YouTube Channel</h3>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ANALYZER -->
-  <section id="analyzer" class="bg-white text-gray-900 py-20 px-6">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold text-center mb-12">Analyzer Module</h2>
-      <div class="grid md:grid-cols-2 gap-10 items-center">
-        <div>
-          <h3 class="text-xl font-semibold mb-4 text-indigo-700">Mistake-Mining & Benchmarking</h3>
-          <p class="mb-4">
-            Analyzer learns from thousands of past interventions. It detects repeatable mistakes,
-            benchmarks asset performance anonymously, and surfaces predictive insights that drive safer, smarter operations.
-          </p>
-          <ul class="list-disc ml-5 space-y-2">
-            <li>Cross-asset benchmarking and KPI normalization</li>
-            <li>Dynamic HSE risk heatmaps (likelihood × consequence)</li>
-            <li>Predictive insight engine for proactive learning</li>
-          </ul>
-        </div>
-        <div class="bg-gray-100 p-6 rounded-xl shadow">
-          <img src="assets/images/heatmap-placeholder.png" alt="Risk Heatmap" class="rounded-lg w-full">
-          <p class="text-sm text-gray-500 mt-3 text-center">Interactive Risk Matrix (demo placeholder)</p>
-        </div>
-      </div>
-    </div>
-  </section>
+<section id="pilot">
+  <div class="section-inner">
+    <h2 class="section-title">Two-week pilot</h2>
+    <p class="lead">Week 1: connect & QC. Week 2: run the loop on a small set of wells, review KPIs, decide.</p>
+    <p><a class="btn btn-primary" href="mailto:info@welltegra.network?subject=Data%20Intake%20Session&body=We%27d%20like%20to%20start%20a%20two-week%20pilot.%20Our%20systems%20include%3A%20...">Book a data intake</a></p>
+  </div>
+</section>
 
-  <!-- WHITE PAPER CTA -->
-  <section class="bg-indigo-700 text-white text-center py-20 px-6">
-    <h2 class="text-3xl font-bold mb-4">Download the Well-Tegra White Paper</h2>
-    <p class="max-w-2xl mx-auto mb-6 text-indigo-100">
-      Learn how we unify your data, amplify your team, and accelerate performance across every phase of well engineering.
-    </p>
-    <a href="assets/docs/welltegra-whitepaper.pdf" class="bg-white text-indigo-700 font-semibold px-6 py-3 rounded-lg shadow hover:bg-indigo-50 transition">
-      Download PDF
-    </a>
-  </section>
+<footer>
+  <div class="foot-inner">
+    <div>© WellTegra — All rights reserved.</div>
+    <div>Contact: <a href="mailto:info@welltegra.network">info@welltegra.network</a></div>
+  </div>
+</footer>
 
-  <!-- PARTNERS -->
-  <section class="bg-gray-100 text-gray-900 py-20 px-6">
-    <div class="max-w-6xl mx-auto text-center">
-      <h2 class="text-3xl font-bold mb-10">Industry Integration Partners</h2>
-      <div class="flex flex-wrap justify-center gap-10 opacity-80">
-        <img src="assets/images/peloton-logo.png" alt="Peloton" class="h-10">
-        <img src="assets/images/slb-logo.png" alt="SLB" class="h-10">
-        <img src="assets/images/halliburton-logo.png" alt="Halliburton" class="h-10">
-        <img src="assets/images/bakerhughes-logo.png" alt="Baker Hughes" class="h-10">
-        <img src="assets/images/cognite-logo.png" alt="Cognite" class="h-10">
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="bg-gray-900 text-gray-400 text-center py-8">
-    <p class="text-lg text-indigo-400 font-semibold mb-2">Well-Tegra Data Solutions</p>
-    <p>📧 info@welltegra.network | 📧 kenmckenzie@welltegra.network</p>
-    <p class="text-sm mt-4 text-gray-500">© 2025 Well-Tegra | www.welltegra.network</p>
-  </footer>
+<script>
+(function(){{
+  const v = document.getElementById('bgvid');
+  const hero = document.getElementById('home-hero');
+  const btn = document.getElementById('playBtn');
+  if(!v) return;
+  const tryPlay = () => v.play().catch(() => hero.classList.add('blocked'));
+  tryPlay();
+  btn.addEventListener('click', () => {{ v.muted = true; v.play(); hero.classList.remove('blocked'); }});
+  document.addEventListener('visibilitychange', () => {{ if(document.hidden) v.pause(); else tryPlay(); }});
+}})();
+</script>
 
 </body>
 </html>
