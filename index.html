@@ -29,15 +29,14 @@ h2{font-size:clamp(22px,2.6vw,28px);margin:.5em 0 .3em}
 .card h3{margin:0 0 6px;font-size:18px}
 .video{aspect-ratio:16/9;width:100%;border:0;border-radius:10px}
 .media-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.hero-video{position:relative;min-height:70vh;display:grid;place-items:center;overflow:hidden}
-.hero-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.6)}
-.hero-overlay{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding: clamp(28px, 6vw, 72px) 20px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+.hero{min-height:70vh;display:grid;place-items:center;background: radial-gradient(1200px 600px at 10% 10%, rgba(44,104,176,.25), transparent),
+linear-gradient(160deg,#0f172a 0%,#12213a 60%,#0f172a 100%)}
+.hero-inner{max-width:1100px;margin:0 auto;padding: clamp(28px, 6vw, 72px) 20px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
 .metric{background:var(--panel);border:1px solid rgba(188,211,246,.16);border-radius:14px;padding:16px;text-align:center}
 .metric .num{font-weight:800;font-size:clamp(18px,2.2vw,24px);color:var(--ok)}
 .metric .label{color:var(--muted);font-size:13px;margin-top:4px}
-@media (prefers-reduced-motion: reduce){ .hero-video video{display:none} .hero-video{background:linear-gradient(160deg,#0f172a 0%,#12213a 60%,#0f172a 100%)}}
-@media (max-width:980px){ .hero-overlay{grid-template-columns:1fr} .media-grid{grid-template-columns:1fr} .metrics{grid-template-columns:repeat(2,1fr)} .grid-3{grid-template-columns:1fr 1fr}}
+@media (max-width:980px){ .hero-inner{grid-template-columns:1fr} .media-grid{grid-template-columns:1fr} .metrics{grid-template-columns:repeat(2,1fr)} .grid-3{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -53,10 +52,8 @@ h2{font-size:clamp(22px,2.6vw,28px);margin:.5em 0 .3em}
   </div>
 </header>
 
-<!-- HERO: plays if assets/hero.mp4 exists; otherwise shows a nice gradient -->
-<section class="hero-video">
-  <video id="heroVid" autoplay muted playsinline loop preload="auto" poster=""><source src="assets/hero.mp4" type="video/mp4"></video>
-  <div class="hero-overlay">
+<section class="hero">
+  <div class="hero-inner">
     <div>
       <h1>Make your well data work — from <em>plan</em> to <em>payoff</em>.</h1>
       <p class="lead">One secure pool. <strong>Plan</strong> faster, <strong>Perform</strong> with a clear runbook (even offline), and <strong>Analyze</strong> for patterns & ROI.</p>
@@ -64,7 +61,9 @@ h2{font-size:clamp(22px,2.6vw,28px);margin:.5em 0 .3em}
          <a class="btn-ghost" href="#media">Watch overview</a></p>
       <p><span class="badge">WellView</span> <span class="badge">Sapphire</span> <span class="badge">ERP/PO</span> <span class="badge">Sensors</span></p>
     </div>
-    <div></div>
+    <div>
+      <iframe class="video" src="https://www.youtube.com/embed/1acPY-6uzAA" title="Architecture Explained" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+    </div>
   </div>
   <div class="container" style="margin-top:-10px">
     <div class="metrics">
@@ -103,16 +102,4 @@ h2{font-size:clamp(22px,2.6vw,28px);margin:.5em 0 .3em}
   <div>© WellTegra — All rights reserved.</div>
   <div><a href="mailto:info@welltegra.network">info@welltegra.network</a></div>
 </div></footer>
-
-<script>
-// If the MP4 is missing or blocked, hide the <video> to avoid a blank box.
-(function(){
-  const v = document.getElementById('heroVid');
-  if(!v) return;
-  const hideIfError = () => { document.querySelector('.hero-video').classList.add('no-video'); v.style.display='none'; };
-  v.addEventListener('error', hideIfError, {once:true});
-  // Try to play; if it throws (autoplay blocked), we still keep the poster/gradient.
-  v.play().catch(()=>{ /* ignore */ });
-})();
-</script>
 </body></html>
