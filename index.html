@@ -1,43 +1,67 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>WellTegra — From Data to Value</title>
-  <meta name="theme-color" content="#0f172a"/>
-  <link rel="stylesheet" href="assets/css/site.css"/>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WellTegra — From Data to Value</title>
+<meta name="theme-color" content="#0f172a"/>
+<style>
+:root{--bg:#0f172a;--ink:#e6f3ff;--muted:#bcd3f6;--brand:#2c68b0;--accent:#21b5f0;--ok:#62ead4;--panel:#0f2036}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Inter,Arial,sans-serif}
+a{color:inherit}
+header{position:sticky;top:0;z-index:40;background:rgba(15,23,42,.78);backdrop-filter:blur(10px);border-bottom:1px solid rgba(188,211,246,.1)}
+.nav{max-width:1200px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800}
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:14px;flex-wrap:wrap}
+nav a{text-decoration:none;opacity:.85;padding:8px 10px;border-radius:10px}
+nav a:hover,nav a.active{opacity:1;background:rgba(188,211,246,.12)}
+.nav-cta,.btn-primary{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 14px;font-weight:650;text-decoration:none;background:linear-gradient(135deg,var(--brand),var(--accent));color:#091524;box-shadow:0 8px 24px rgba(33,181,240,.22)}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 14px;border:1px solid rgba(188,211,246,.25);color:var(--ink);text-decoration:none}
+footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--muted)}
+.foot{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.container{max-width:1100px;margin:0 auto;padding:28px 20px}
+h1{font-size:clamp(28px,3.2vw,44px);line-height:1.1;margin:.2em 0 .4em}
+h2{font-size:clamp(22px,2.6vw,28px);margin:.5em 0 .3em}
+.lead{color:var(--muted);max-width:70ch}
+.badge{display:inline-block;background:rgba(33,181,240,.12);color:#9be6ff;border:1px solid rgba(33,181,240,.35);padding:4px 8px;border-radius:999px;font-size:12px;margin-right:6px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--panel);border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:16px}
+.card h3{margin:0 0 6px;font-size:18px}
+.video{aspect-ratio:16/9;width:100%;border:0;border-radius:10px}
+.media-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hero-video{position:relative;min-height:70vh;display:grid;place-items:center;overflow:hidden}
+.hero-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.6)}
+.hero-overlay{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding: clamp(28px, 6vw, 72px) 20px;display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+.metric{background:var(--panel);border:1px solid rgba(188,211,246,.16);border-radius:14px;padding:16px;text-align:center}
+.metric .num{font-weight:800;font-size:clamp(18px,2.2vw,24px);color:var(--ok)}
+.metric .label{color:var(--muted);font-size:13px;margin-top:4px}
+@media (prefers-reduced-motion: reduce){ .hero-video video{display:none} .hero-video{background:linear-gradient(160deg,#0f172a 0%,#12213a 60%,#0f172a 100%)}}
+@media (max-width:980px){ .hero-overlay{grid-template-columns:1fr} .media-grid{grid-template-columns:1fr} .metrics{grid-template-columns:repeat(2,1fr)} .grid-3{grid-template-columns:1fr 1fr}}
+</style>
 </head>
 <body>
-
 <header>
   <div class="nav">
-    <div class="brand"><a href="index.html">WellTegra</a></div>
-    <nav>
-      <ul>
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="about.html" class="">About</a></li>
-        <li><a href="solutions.html" class="">Solutions</a></li>
-        <li><a href="partners.html" class="">Partners</a></li>
-        <li><a href="case-studies.html" class="">Case Studies</a></li>
-        <li><a href="pricing.html" class="">Pricing</a></li>
-        <li><a href="careers.html" class="">Careers</a></li>
-        <li><a href="contact.html" class="">Contact</a></li>
-      </ul>
-    </nav>
-    <a class="nav-cta" href="mailto:info@welltegra.network?subject=Data%20Intake">Book intake</a>
+    <div class="brand"><a href="#">WellTegra</a></div>
+    <nav><ul>
+      <li><a class="active" href="#">Home</a></li>
+      <li><a href="#solutions">Solutions</a></li>
+      <li><a href="#media">Media</a></li>
+      <li><a href="mailto:info@welltegra.network" class="nav-cta">Book intake</a></li>
+    </ul></nav>
   </div>
 </header>
 
-
+<!-- HERO: plays if assets/hero.mp4 exists; otherwise shows a nice gradient -->
 <section class="hero-video">
-  <video autoplay muted playsinline loop preload="auto" poster="">
-    <source src="assets/hero.mp4" type="video/mp4">
-  </video>
+  <video id="heroVid" autoplay muted playsinline loop preload="auto" poster=""><source src="assets/hero.mp4" type="video/mp4"></video>
   <div class="hero-overlay">
     <div>
       <h1>Make your well data work — from <em>plan</em> to <em>payoff</em>.</h1>
       <p class="lead">One secure pool. <strong>Plan</strong> faster, <strong>Perform</strong> with a clear runbook (even offline), and <strong>Analyze</strong> for patterns & ROI.</p>
-      <p><a class="btn btn-primary" href="contact.html">Start a 2‑week pilot</a> <a class="btn btn-ghost" href="#media">Watch overview</a></p>
+      <p><a class="btn-primary" href="mailto:info@welltegra.network?subject=Data%20Intake">Start a 2-week pilot</a>
+         <a class="btn-ghost" href="#media">Watch overview</a></p>
       <p><span class="badge">WellView</span> <span class="badge">Sapphire</span> <span class="badge">ERP/PO</span> <span class="badge">Sensors</span></p>
     </div>
     <div></div>
@@ -52,28 +76,43 @@
   </div>
 </section>
 
-<section class="container" id="media">
+<section id="solutions" class="container">
+  <h2>Solutions</h2>
+  <div class="grid-3">
+    <div class="card"><span class="badge">Planner</span><h3>Start ~70% done</h3><p>Prefill WBS, risks, and budget lines from similar wells.</p></div>
+    <div class="card"><span class="badge">Performer</span><h3>Clear runbook, offline</h3><p>Deviations captured in-line; shift reports standardized.</p></div>
+    <div class="card"><span class="badge">Analyzer</span><h3>Patterns, KPIs, ROI</h3><p>Find repeating issues, track NPT & cost variance, quantify ROI.</p></div>
+  </div>
+</section>
+
+<section id="media" class="container">
   <h2>Media</h2>
   <div class="media-grid">
-    <div class="video-card">
-      <iframe class="video" src="https://www.youtube.com/embed/1acPY-6uzAA" title="Architecture Explained" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" loading="lazy" allowfullscreen></iframe>
+    <div class="card">
+      <iframe class="video" src="https://www.youtube.com/embed/1acPY-6uzAA" title="Architecture Explained" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
       <p class="lead">How data flows into a secure pool and powers the Plan → Perform → Analyze loop.</p>
     </div>
-    <div class="video-card">
-      <iframe class="video" src="https://www.youtube.com/embed/?listType=user_uploads&list=WellTegra" title="Latest from WellTegra Channel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" loading="lazy" allowfullscreen></iframe>
+    <div class="card">
+      <iframe class="video" src="https://www.youtube.com/embed/?listType=user_uploads&list=WellTegra" title="Latest from WellTegra Channel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
       <p class="lead">Auto feed of channel uploads. Replace with specific video IDs anytime.</p>
     </div>
   </div>
 </section>
 
+<footer><div class="foot">
+  <div>© WellTegra — All rights reserved.</div>
+  <div><a href="mailto:info@welltegra.network">info@welltegra.network</a></div>
+</div></footer>
 
-<footer>
-  <div class="foot">
-    <div>© WellTegra — All rights reserved.</div>
-    <div>
-      <a href="privacy.html">Privacy</a> • <a href="terms.html">Terms</a> • <a href="sitemap.xml">Sitemap</a>
-    </div>
-  </div>
-</footer>
-
+<script>
+// If the MP4 is missing or blocked, hide the <video> to avoid a blank box.
+(function(){
+  const v = document.getElementById('heroVid');
+  if(!v) return;
+  const hideIfError = () => { document.querySelector('.hero-video').classList.add('no-video'); v.style.display='none'; };
+  v.addEventListener('error', hideIfError, {once:true});
+  // Try to play; if it throws (autoplay blocked), we still keep the poster/gradient.
+  v.play().catch(()=>{ /* ignore */ });
+})();
+</script>
 </body></html>
