@@ -1,1 +1,123 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1'/><title>ROI — WellTegra</title><style>:root{--bg:#0f172a;--ink:#e6f3ff;--muted:#bcd3f6;--panel:#0f2036;--accent:#21b5f0}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Inter,Arial}a{color:inherit;text-decoration:none}header{position:sticky;top:0;z-index:40;background:rgba(15,23,42,.78);backdrop-filter:blur(10px);border-bottom:1px solid rgba(188,211,246,.1)}.nav{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand video,.brand img{width:140px;height:auto;border-radius:6px}nav ul{list-style:none;margin:0;padding:0;display:flex;gap:12px;flex-wrap:wrap}nav a{opacity:.9;padding:8px 10px;border-radius:10px}nav a:hover,nav a.active{opacity:1;background:rgba(188,211,246,.12)}.btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 14px;font-weight:650;cursor:pointer}.btn.primary{background:linear-gradient(135deg,#2c68b0,var(--accent));color:#07101f}.btn.ghost{border:1px solid rgba(188,211,246,.25)}.container{max-width:1100px;margin:0 auto;padding:28px 20px}.card{background:#0f2036;border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.video{aspect-ratio:16/9;width:100%;border:0;border-radius:10px}footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--muted)}.foot{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}</style></head><body><header><div class='nav'><div class='brand'><a href='index.html'><video src='assets/logohome.mp4' autoplay muted loop playsinline></video></a></div><nav><ul><li><a class= href='index.html'>Home</a></li><li><a class= href='planner.html'>Planner</a></li><li><a class= href='performer.html'>Performer</a></li><li><a class= href='analyzer.html'>Analyzer</a></li><li><a class= href='videos.html'>Videos</a></li><li><a class=active href='roi.html'>ROI</a></li><li><a class= href='cases.html'>Cases</a></li><li><a class= href='whitepaper.html'>White Paper</a></li></ul></nav><div><a class='btn primary' href='mailto:info@welltegra.network'>Contact</a></div></div></header><main class='container'><h1>ROI Calculator</h1><div class='card'><p class='lead'>Coming from prior build: calculator can be re-added on request.</p></div></main><footer><div class='foot'><div>© WellTegra</div><div><a href='mailto:info@welltegra.network'>info@welltegra.network</a></div></div></footer></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WellTegra — ROI Calculator</title>
+<style>
+  :root{--bg:#0f172a;--ink:#e6f3ff;--muted:#bcd3f6;--panel:#0f2036;--accent:#21b5f0}
+  *{box-sizing:border-box} html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Inter,Arial,sans-serif}
+  a{color:inherit;text-decoration:none}
+  header{position:sticky;top:0;z-index:40;background:rgba(15,23,42,.78);backdrop-filter:blur(10px);border-bottom:1px solid rgba(188,211,246,.1)}
+  .nav{max-width:1200px;margin:0 auto;padding:8px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .brand video{width:140px;height:auto;border-radius:6px}
+  nav ul{list-style:none;margin:0;padding:0;display:flex;gap:10px;flex-wrap:wrap}
+  nav a{opacity:.9;padding:8px 10px;border-radius:10px}
+  nav a:hover,nav a.active{opacity:1;background:rgba(188,211,246,.12)}
+  .btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 14px;font-weight:650;cursor:pointer}
+  .btn.primary{background:linear-gradient(135deg,#2c68b0,var(--accent));color:#07101f}
+  .btn.ghost{border:1px solid rgba(188,211,246,.25)}
+  .container{max-width:1200px;margin:0 auto;padding:28px 18px}
+  h1{font-size:clamp(28px,3.2vw,44px)} .lead{color:var(--muted)}
+  .card{background:var(--panel);border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:16px}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid rgba(188,211,246,.16);border-radius:12px;overflow:hidden}
+  .table th,.table td{padding:10px;border-bottom:1px solid rgba(188,211,246,.12);text-align:left}
+  .table th{background:#0b1c30}
+  input{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(188,211,246,.25);background:#0b1c30;color:#e6f3ff}
+  footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--muted)}
+  .foot{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  :focus-visible{outline:3px solid #21b5f0;outline-offset:2px}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="brand"><a href="index.html"><video src="assets/logohome.mp4" autoplay muted loop playsinline></video></a></div>
+    <nav><ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="planner.html">Planner</a></li>
+      <li><a href="analyzer.html">Analyzer</a></li>
+      <li><a class="active" href="roi.html">ROI</a></li>
+    </ul></nav>
+    <div><a class="btn primary" href="mailto:info@welltegra.network">Contact</a></div>
+  </div>
+</header>
+
+<main class="container">
+  <!-- Accessibility toolbar -->
+  <nav aria-label="Accessibility controls" class="card" style="display:flex;gap:10px;align-items:center;margin-bottom:16px">
+    <button type="button" class="btn ghost" data-night-toggle aria-pressed="false">Night mode</button>
+    <button type="button" class="btn ghost" data-shader-toggle aria-pressed="false">Screen shader</button>
+    <label style="display:inline-flex;align-items:center;gap:8px">
+      <span>Shader level</span><input type="range" min="0" max="100" value="0" data-shader-range>
+    </label>
+  </nav>
+
+  <h1>ROI Calculator</h1>
+  <p class="lead">Adjust assumptions to quantify illustrative savings.</p>
+
+  <div class="card">
+    <div class="grid-3">
+      <div><label>Wells per year</label><input id="wells" type="number" value="10"></div>
+      <div><label>Rig day-rate (USD)</label><input id="rate" type="number" value="250000"></div>
+      <div><label>Baseline NPT (days/well)</label><input id="npt" type="number" step="0.1" value="3"></div>
+    </div>
+    <div class="grid-3" style="margin-top:10px">
+      <div><label>NPT reduction (%)</label><input id="reduction" type="number" step="0.1" value="20"></div>
+      <div><label>Rework savings/well (USD)</label><input id="rework" type="number" value="15000"></div>
+      <div><label>Pilot cost (USD)</label><input id="pilot" type="number" value="60000"></div>
+    </div>
+    <p style="margin-top:10px"><a class="btn primary" id="calc">Calculate</a> <a class="btn ghost" id="reset">Reset</a></p>
+  </div>
+
+  <div class="grid-3" style="margin-top:12px">
+    <div class="card">
+      <h3>Results</h3>
+      <table class="table">
+        <tr><th>NPT savings</th><td id="npt_s">$0</td></tr>
+        <tr><th>Rework savings</th><td id="rw_s">$0</td></tr>
+        <tr><th>Total savings</th><td id="tot_s">$0</td></tr>
+        <tr><th>Net (after pilot)</th><td id="net_s">$0</td></tr>
+      </table>
+    </div>
+    <div class="card"><h3>Assumptions</h3><ul id="assump"></ul></div>
+    <div class="card"><h3>Notes</h3><p>Numbers are illustrative; adjust inputs for your operation.</p></div>
+  </div>
+</main>
+
+<footer>
+  <div class="foot"><div>© WellTegra</div><div><a href="mailto:info@welltegra.network">info@welltegra.network</a></div></div>
+</footer>
+
+<script>
+  function fmt(n){return n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});}
+  function calc(){
+    const wells=+document.getElementById('wells').value||0;
+    const rate=+document.getElementById('rate').value||0;
+    const npt=+document.getElementById('npt').value||0;
+    const reduction=(+document.getElementById('reduction').value||0)/100;
+    const rework=+document.getElementById('rework').value||0;
+    const pilot=+document.getElementById('pilot').value||0;
+    const nptSavings=wells*rate*npt*reduction;
+    const reworkSavings=wells*rework;
+    const total=nptSavings+reworkSavings;
+    const net=total-pilot;
+    document.getElementById('npt_s').textContent=fmt(nptSavings);
+    document.getElementById('rw_s').textContent=fmt(reworkSavings);
+    document.getElementById('tot_s').textContent=fmt(total);
+    document.getElementById('net_s').textContent=fmt(net);
+    document.getElementById('assump').innerHTML=`<li>Wells/year: ${wells}</li><li>Rig day-rate: ${fmt(rate)}</li><li>Baseline NPT: ${npt} days</li><li>NPT reduction: ${(reduction*100).toFixed(1)}%</li><li>Rework/well: ${fmt(rework)}</li><li>Pilot cost: ${fmt(pilot)}</li>`;
+  }
+  document.getElementById('calc').addEventListener('click', calc);
+  document.getElementById('reset').addEventListener('click', ()=>{
+    ['wells','rate','npt','reduction','rework','pilot'].forEach(id=>document.getElementById(id).value=document.getElementById(id).defaultValue);
+    calc();
+  });
+  calc();
+</script>
+
+<script src="assets/js/night-mode.js" defer></script>
+<script src="assets/js/screen-shader.js" defer></script>
+</body>
+</html>
