@@ -1,260 +1,963 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>WellTegra — From Plan to Payoff</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Well-Tegra v22 — From Data Chaos to Predictive Clarity</title>
 
-  <!-- SEO / Sharing -->
-  <meta name="description" content="WellTegra helps small and mid-size operators plan faster, perform with clarity, and analyze for ROI — without ripping and replacing existing systems."/>
-  <meta property="og:title" content="WellTegra — From Plan to Payoff"/>
-  <meta property="og:description" content="Plan → Perform → Analyze in one secure loop. No rip-and-replace."/>
-  <meta property="og:type" content="website"/>
-  <meta name="theme-color" content="#21b5f0"/>
+  <!-- Tailwind & Chart.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Performance hints -->
-  <link rel="preconnect" href="https://www.youtube.com">
-  <link rel="preconnect" href="https://i.ytimg.com">
-  <link rel="dns-prefetch" href="https://www.youtube.com">
+  <!-- Fonts (optional) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono&display=swap" rel="stylesheet"/>
+
   <style>
-    :root{--bg:#0f172a;--ink:#e6f3ff;--muted:#bcd3f6;--panel:#0f2036;--accent:#21b5f0}
-    *{box-sizing:border-box} html{scroll-behavior:smooth}
-    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Inter,Arial,sans-serif}
-    a{color:inherit;text-decoration:none}
-    header{position:sticky;top:0;z-index:40;background:rgba(15,23,42,.78);backdrop-filter:blur(10px);border-bottom:1px solid rgba(188,211,246,.1)}
-    .nav{max-width:1200px;margin:0 auto;padding:8px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-    .brand{display:flex;align-items:center;gap:10px}
-    .brand video{width:140px;height:auto;border-radius:6px}
-    nav ul{list-style:none;margin:0;padding:0;display:flex;gap:10px;flex-wrap:wrap}
-    nav a{opacity:.9;padding:8px 10px;border-radius:10px}
-    nav a:hover,nav a.active{opacity:1;background:rgba(188,211,246,.12)}
-    .btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 14px;font-weight:650;cursor:pointer}
-    .btn.primary{background:linear-gradient(135deg,#2c68b0,var(--accent));color:#07101f}
-    .btn.ghost{border:1px solid rgba(188,211,246,.25)}
-    .container{max-width:1200px;margin:0 auto;padding:28px 18px}
-    h1{font-size:clamp(28px,3.2vw,44px)} .lead{color:var(--muted)}
-    .card{background:var(--panel);border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:16px}
-    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-    .video{aspect-ratio:16/9;width:100%;border:0;border-radius:10px}
-    footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--muted)}
-    .foot{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    /* Focus for keyboard users */
-    :focus-visible{outline:3px solid #21b5f0;outline-offset:2px}
-    /* Respect reduced motion */
-    @media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important} }
+    :root { --brand:#0ea5e9; --brand-2:#14b8a6; }
+    body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; }
+    .gradient-text{background:linear-gradient(90deg,var(--brand),var(--brand-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    /* Hero background overlay */
+    .hero-overlay{background:linear-gradient( to bottom, rgba(2,6,23,.75), rgba(2,6,23,.55) 30%, rgba(2,6,23,.85));}
+    /* Watermark */
+    .wm:before{
+      content:""; position:absolute; inset:0; pointer-events:none; opacity:.03;
+      background-image:url('/assets/watermark.png'); background-size:320px; background-repeat:repeat;
+    }
+    /* Gauges */
+    .gauge-bg{stroke:#334155}
+    .gauge-fg{transform:rotate(-90deg); transform-origin:50% 50%; transition:stroke-dashoffset .3s;}
+    .schem-lbl{font:10px/1 "Roboto Mono",monospace; fill:#475569}
+    .depth-txt{font:10px/1 "Roboto Mono",monospace; fill:#1d4ed8}
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .animate-pulse,.transition,*{animation:none!important;transition:none!important}
+      video[autoplay]{animation:none}
+    }
+    /* Focus visibility */
+    :focus-visible{outline:3px solid var(--brand); outline-offset:2px}
   </style>
 </head>
-<body>
-  <a href="#main" class="btn ghost" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"
-     onfocus="this.style.cssText='position:fixed;left:10px;top:10px;z-index:9999'">Skip to content</a>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100">
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white dark:bg-slate-800 px-3 py-2 rounded">Skip to content</a>
 
-  <header role="banner">
-    <div class="nav">
-      <div class="brand">
-        <!-- Optional: replace src with your animated logo video path -->
-        <a href="#"><video src="assets/logohome.mp4" autoplay muted loop playsinline aria-label="WellTegra logo"></video></a>
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-200 dark:bg-slate-900/70 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
+      <!-- MP4 logo with fallback -->
+      <div class="shrink-0">
+        <video class="h-10 w-auto hidden sm:block rounded" autoplay muted loop playsinline aria-label="Well-Tegra Logo Animation" onerror="this.classList.add('hidden')">
+          <source src="/assets/logohome.mp4" type="video/mp4" />
+        </video>
+        <img src="/assets/logo.png" alt="Well-Tegra" class="h-10 w-auto sm:hidden" onerror="this.src='https://placehold.co/140x40?text=WellTegra'"/>
       </div>
-      <nav aria-label="Primary">
-        <ul>
-          <li><a class="active" href="#">Home</a></li>
-          <li><a href="#loop">Loop</a></li>
-          <li><a href="#roi">ROI</a></li>
-          <li><a href="#videos">Videos</a></li>
-        </ul>
+
+      <nav class="flex-1 flex items-center justify-center gap-2 sm:gap-4 text-sm">
+        <button data-nav="home" class="px-3 py-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800 aria-[current=page]:bg-sky-100/60 aria-[current=page]:text-sky-700" aria-current="page">Home</button>
+        <button data-nav="planner" class="px-3 py-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800">Planner</button>
+        <button data-nav="performer" class="px-3 py-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800" disabled aria-disabled="true">Performer</button>
+        <button data-nav="analyzer" class="px-3 py-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800" disabled aria-disabled="true">Analyzer</button>
+        <button data-nav="faq" class="px-3 py-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800">FAQ</button>
+        <button data-nav="about" class="px-3 py-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800">About</button>
       </nav>
-      <div><a class="btn primary" href="mailto:info@welltegra.network">Contact</a></div>
+
+      <div class="flex items-center gap-2">
+        <a href="https://www.youtube.com/@WellTegra" target="_blank" rel="noopener" class="px-3 py-2 rounded bg-rose-600 text-white hover:bg-rose-500">YouTube</a>
+        <button id="themeBtn" class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800" aria-pressed="false" aria-label="Toggle dark mode">
+          <svg id="sun" class="h-5 w-5 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M5 19l1.5-1.5"/></svg>
+          <svg id="moon" class="h-5 w-5 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main id="main" class="container">
-    <!-- Accessibility toolbar -->
-    <nav aria-label="Accessibility controls" class="card" style="display:flex;gap:10px;align-items:center;margin-bottom:16px">
-      <button type="button" class="btn ghost" data-night-toggle aria-pressed="false">Night mode</button>
-      <button type="button" class="btn ghost" data-shader-toggle aria-pressed="false">Screen shader</button>
-      <label style="display:inline-flex;align-items:center;gap:8px">
-        <span>Shader level</span><input type="range" min="0" max="100" value="0" data-shader-range>
-      </label>
-    </nav>
+  <main id="main">
+    <!-- HOME -->
+    <section id="view-home" class="relative">
+      <!-- Hero -->
+      <div class="relative h-[58vh] sm:h-[70vh] overflow-hidden bg-black">
+        <div class="absolute inset-0 hero-overlay"></div>
+        <!-- YouTube embed (privacy) -->
+        <div id="hero-embed" class="w-full h-full"
+             data-yt="2Se4f2hJ7JA"
+             role="img" aria-label="Well-Tegra hero video background"></div>
 
-    <!-- HERO: your channel uploads playlist as the main video -->
-    <section class="card" style="display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:center" aria-labelledby="heroTitle">
-      <div>
-        <h1 id="heroTitle">Make your well data work — from <em>plan</em> to <em>payoff</em>.</h1>
-        <p class="lead">One secure pool. <strong>Plan</strong> faster with context, <strong>Perform</strong> with a clear runbook, and <strong>Analyze</strong> for patterns & ROI. No rip-and-replace.</p>
-        <p style="margin-top:12px">
-          <a class="btn primary" href="#loop">See the Loop</a>
-          <a class="btn ghost" href="#roi" style="margin-left:8px">Estimate ROI</a>
-        </p>
-        <ul style="margin:12px 0 0;opacity:.9;display:grid;grid-template-columns:repeat(2,auto);gap:6px 18px">
-          <li>≈70% plan pre-filled</li>
-          <li>↓ NPT & rework</li>
-          <li>2 weeks pilot → impact</li>
-          <li>0 rip-and-replace</li>
-        </ul>
+        <div class="absolute inset-0 flex items-center">
+          <div class="max-w-5xl mx-auto px-6">
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white drop-shadow">
+              From Data Chaos to <span class="gradient-text">Predictive Clarity</span>
+            </h1>
+            <p class="mt-4 text-white/90 text-base sm:text-lg max-w-2xl">
+              A practical loop for well delivery—plan with context, perform with clarity, analyze for patterns—without ripping and replacing your systems.
+            </p>
+            <div class="mt-6 flex gap-3">
+              <a href="#view-planner" class="px-5 py-3 rounded bg-sky-600 text-white hover:bg-sky-500">Try the Planner</a>
+              <a href="#videos" class="px-5 py-3 rounded bg-white/10 ring-1 ring-white/20 text-white hover:bg-white/20">Watch Demos</a>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card" style="background:#081426">
-        <!-- CHANGED HERO: uploads playlist from your channel ID -->
-        <!-- Channel ID: UCedD5TAvyQgV1LRFfjoNRww  | Uploads playlist is typically UU + channelId sans 'UC' -->
-        <iframe
-          class="video"
-          src="https://www.youtube.com/embed?listType=user_uploads&list=UCedD5TAvyQgV1LRFfjoNRww"
-          title="WellTegra — Channel Uploads"
-          loading="lazy" allowfullscreen
-          referrerpolicy="strict-origin-when-cross-origin"></iframe>
+
+      <!-- Platform Overview -->
+      <div class="py-16 px-6 bg-white dark:bg-slate-950 wm relative">
+        <div class="max-w-7xl mx-auto">
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-center">The WellTegra Loop</h2>
+          <p class="text-center text-slate-600 dark:text-slate-300 mt-2">
+            Plan → Perform → Analyze → Repeat. Focused AI, complete security, no rip-and-replace.
+          </p>
+          <div class="grid md:grid-cols-3 gap-6 mt-10">
+            <div class="rounded-lg border border-slate-200 dark:border-slate-800 p-6 bg-white/70 dark:bg-slate-900/50">
+              <h3 class="font-bold text-lg">📅 Planner</h3>
+              <ul class="mt-3 space-y-2 text-sm">
+                <li>Prefilled WBS, risk candidates, budget lines</li>
+                <li>Objective-based interventions</li>
+                <li>Draw from similar wells and lessons</li>
+              </ul>
+            </div>
+            <div class="rounded-lg border border-slate-200 dark:border-slate-800 p-6 bg-white/70 dark:bg-slate-900/50">
+              <h3 class="font-bold text-lg">⚙️ Performer</h3>
+              <ul class="mt-3 space-y-2 text-sm">
+                <li>Clean, offline-capable runbooks</li>
+                <li>Deviation capture & standardized shifts</li>
+                <li>Live KPIs with envelopes & alerts</li>
+              </ul>
+            </div>
+            <div class="rounded-lg border border-slate-200 dark:border-slate-800 p-6 bg-white/70 dark:bg-slate-900/50">
+              <h3 class="font-bold text-lg">📊 Analyzer</h3>
+              <ul class="mt-3 space-y-2 text-sm">
+                <li>NPT & cost variance tracking</li>
+                <li>Pattern detection across wells</li>
+                <li>Transparent ROI calculations</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROI Calculator -->
+      <div class="py-16 px-6 bg-sky-50 dark:bg-slate-900">
+        <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
+          <div class="rounded-lg bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6">
+            <h3 class="text-xl font-bold">The Platform That Pays for Itself</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-300 mt-1">Estimate your annual savings.</p>
+            <div class="mt-6 space-y-6">
+              <div>
+                <label for="engineers" class="block text-sm font-semibold">Number of Well Engineers</label>
+                <div class="flex gap-4 items-center">
+                  <input id="engineers" type="range" min="5" max="100" value="20" class="w-full"/>
+                  <output id="engineersOut" class="w-12 text-right font-bold">20</output>
+                </div>
+              </div>
+              <div>
+                <label for="npt" class="block text-sm font-semibold">Projected NPT Reduction</label>
+                <div class="flex gap-4 items-center">
+                  <input id="npt" type="range" min="5" max="40" value="20" class="w-full"/>
+                  <output id="nptOut" class="w-16 text-right font-bold">20%</output>
+                </div>
+              </div>
+              <div>
+                <label for="time" class="block text-sm font-semibold">Engineering Time Reclaimed</label>
+                <div class="flex gap-4 items-center">
+                  <input id="time" type="range" min="10" max="50" value="40" class="w-full"/>
+                  <output id="timeOut" class="w-16 text-right font-bold">40%</output>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 text-center">
+              <p class="text-lg">Total Estimated Annual Savings</p>
+              <p id="savingsTotal" class="text-4xl font-extrabold gradient-text">$0</p>
+            </div>
+          </div>
+          <div class="rounded-lg bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6">
+            <h4 class="font-semibold">Savings Mix</h4>
+            <div class="h-72 mt-4"><canvas id="savingsChart" aria-label="Savings bar chart" role="img"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Videos -->
+      <div id="videos" class="py-16 px-6 bg-white dark:bg-slate-950">
+        <div class="max-w-7xl mx-auto">
+          <h3 class="text-2xl font-extrabold text-center">Video Walkthroughs</h3>
+          <p class="text-center text-slate-600 dark:text-slate-300 mt-2">Hosted on our YouTube channel.</p>
+          <div class="grid md:grid-cols-2 gap-6 mt-8">
+            <!-- Replace IDs as needed -->
+            <div class="aspect-video rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800">
+              <iframe class="w-full h-full" loading="lazy" src="https://www.youtube-nocookie.com/embed/2Se4f2hJ7JA" title="WellTegra Overview" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="aspect-video rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800">
+              <iframe class="w-full h-full" loading="lazy" src="https://www.youtube-nocookie.com/embed/aRiewahzTLE" title="Planner/Performer Demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- The Loop -->
-    <section id="loop" class="card" style="margin-top:16px">
-      <h2>Plan → Perform → Analyze</h2>
-      <div class="grid-3">
-        <div>
-          <h3>Plan</h3>
-          <p>Prefill WBS, risks, and budget using context from similar wells. Edit only what’s unique.</p>
+    <!-- PLANNER -->
+    <section id="view-planner" class="py-16 px-6 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center">
+          <h2 class="text-2xl sm:text-3xl font-extrabold">Planner — Select a Well & Objective</h2>
+          <p class="text-slate-600 dark:text-slate-300 mt-2">Seed data mirrors your case studies, including the “Well From Hell”.</p>
         </div>
-        <div>
-          <h3>Perform</h3>
-          <p>Field teams get a clean, offline-capable runbook. Deviations are captured in one tap.</p>
+
+        <!-- Stepper -->
+        <div class="flex items-center justify-center gap-3 mt-8">
+          <div id="s1" class="w-8 h-8 rounded-full flex items-center justify-center bg-sky-600 text-white font-bold">1</div>
+          <div class="h-0.5 w-24 bg-slate-300 dark:bg-slate-700"></div>
+          <div id="s2" class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold">2</div>
+          <div class="h-0.5 w-24 bg-slate-300 dark:bg-slate-700"></div>
+          <div id="s3" class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold">3</div>
         </div>
-        <div>
-          <h3>Analyze</h3>
-          <p>Spot repeat issues fast, track NPT & cost variance, and quantify ROI with transparent math.</p>
+
+        <!-- Step 1: Well cards -->
+        <div id="step1" class="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <!-- Step 2: Objectives / AI -->
+        <div id="step2" class="mt-10 hidden">
+          <div class="max-w-3xl mx-auto">
+            <div class="flex items-center justify-center gap-3">
+              <span class="text-sm">Manual</span>
+              <label class="inline-flex relative items-center cursor-pointer">
+                <input id="aiToggle" type="checkbox" class="sr-only peer" />
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700
+                            peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                            after:bg-white after:h-5 after:w-5 after:rounded-full after:transition-all"></div>
+              </label>
+              <span class="text-sm">AI Advisor</span>
+            </div>
+
+            <div id="manualBox" class="mt-6">
+              <fieldset id="objectiveField" class="space-y-3"></fieldset>
+              <button id="genPlanManual" class="mt-6 px-5 py-3 rounded bg-emerald-600 text-white disabled:opacity-40" disabled>Generate Plan</button>
+            </div>
+
+            <div id="aiBox" class="mt-6 hidden">
+              <fieldset id="problemField" class="space-y-3"></fieldset>
+              <div id="aiRecs" class="mt-6 hidden"></div>
+              <button id="genPlanAI" class="mt-6 px-5 py-3 rounded bg-emerald-600 text-white disabled:opacity-40" disabled>Generate Plan from AI</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Plan -->
+        <div id="step3" class="mt-10 hidden">
+          <div id="planOut" class="rounded-lg border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-900"></div>
+          <div class="mt-6 flex gap-3 justify-center">
+            <button id="resetBtn" class="px-5 py-3 rounded bg-slate-600 text-white">Start Over</button>
+            <button id="goPerformer" class="px-5 py-3 rounded bg-sky-600 text-white">Begin Live Operation</button>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ROI calc (lite) -->
-    <section id="roi" class="card" style="margin-top:16px">
-      <h2>ROI Snapshot</h2>
-      <div class="grid-3">
-        <div><label>Wells per year</label><input id="wells" type="number" value="10"></div>
-        <div><label>Rig day-rate (USD)</label><input id="rate" type="number" value="250000"></div>
-        <div><label>Baseline NPT (days/well)</label><input id="npt" type="number" step="0.1" value="3"></div>
-      </div>
-      <div class="grid-3" style="margin-top:10px">
-        <div><label>NPT reduction (%)</label><input id="reduction" type="number" step="0.1" value="20"></div>
-        <div><label>Rework savings/well (USD)</label><input id="rework" type="number" value="15000"></div>
-        <div><label>Pilot cost (USD)</label><input id="pilot" type="number" value="60000"></div>
-      </div>
-      <p style="margin-top:10px"><a class="btn primary" id="calc">Calculate</a> <a class="btn ghost" id="reset">Reset</a></p>
+    <!-- PERFORMER -->
+    <section id="view-performer" class="py-16 px-6 bg-slate-50 dark:bg-slate-950 hidden">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl sm:text-3xl font-extrabold">Performer — Live KPIs & Procedure</h2>
+          <span id="jobStatus" class="text-emerald-400 font-semibold">● LIVE</span>
+        </div>
 
-      <div class="grid-3" style="margin-top:12px">
-        <div class="card" style="min-height:120px">
-          <h3>Results</h3>
-          <p><strong>NPT savings:</strong> <span id="npt_s">$0</span></p>
-          <p><strong>Rework savings:</strong> <span id="rw_s">$0</span></p>
-          <p><strong>Total savings:</strong> <span id="tot_s">$0</span></p>
-          <p><strong>Net (after pilot):</strong> <span id="net_s">$0</span></p>
+        <div class="grid lg:grid-cols-3 gap-6 mt-8">
+          <!-- KPIs -->
+          <div class="rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4">
+            <h3 class="font-bold">KPIs</h3>
+            <div class="grid grid-cols-2 gap-4 mt-4">
+              <div id="kpiHook"></div>
+              <div id="kpiTubing"></div>
+              <div id="kpiAnnulus"></div>
+              <div id="kpiSpeed"></div>
+            </div>
+          </div>
+          <!-- Chart -->
+          <div class="rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 lg:col-span-2">
+            <h3 class="font-bold">Tubing Force Analysis (Plan vs Actual)</h3>
+            <div class="h-72 mt-3"><canvas id="tfaChart" role="img" aria-label="Hookload vs Depth"></canvas></div>
+          </div>
         </div>
-        <div class="card">
-          <h3>Assumptions</h3>
-          <ul id="assump" style="margin:0"></ul>
-        </div>
-        <div class="card">
-          <h3>Notes</h3>
-          <p>Numbers are illustrative; adjust inputs for your operation.</p>
+
+        <div class="grid lg:grid-cols-3 gap-6 mt-6">
+          <!-- Procedure -->
+          <div class="rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4">
+            <h3 class="font-bold">Procedure</h3>
+            <div id="procSteps" class="max-h-80 overflow-auto mt-3 space-y-2"></div>
+            <button id="toAnalyzer" class="w-full mt-4 px-4 py-2 rounded bg-indigo-600 text-white hidden">View Post-Job Analysis</button>
+          </div>
+          <!-- Log -->
+          <div class="rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 lg:col-span-2">
+            <h3 class="font-bold">Operations Log</h3>
+            <div id="log" class="max-h-80 overflow-auto mt-3 space-y-2"></div>
+            <div class="mt-3 flex gap-2">
+              <input id="logInput" class="flex-1 px-3 py-2 rounded bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" placeholder="Add log entry…" />
+              <button id="logAdd" class="px-4 py-2 rounded bg-emerald-600 text-white">Add</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Videos section (channel uploads and 3 feature slots) -->
-    <section id="videos" class="card" style="margin-top:16px">
-      <h2>Video Library</h2>
-      <p class="lead">Latest uploads from our channel.</p>
-      <div class="card" style="background:#081426;margin-bottom:12px">
-        <iframe
-          class="video"
-          src="https://www.youtube.com/embed?listType=user_uploads&list=UCedD5TAvyQgV1LRFfjoNRww"
-          title="WellTegra — Channel Uploads"
-          loading="lazy" allowfullscreen
-          referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <!-- ANALYZER -->
+    <section id="view-analyzer" class="py-16 px-6 bg-white dark:bg-slate-950 hidden">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-extrabold">Analyzer — Post-Job Summary</h2>
+        <p id="anSub" class="text-slate-600 dark:text-slate-300 mt-1"></p>
+
+        <div class="grid md:grid-cols-2 gap-6 mt-8">
+          <div class="rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6">
+            <h3 class="font-bold">Performance Summary</h3>
+            <div id="sumKPIs" class="grid sm:grid-cols-2 gap-4 mt-3"></div>
+          </div>
+          <div class="rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6">
+            <h3 class="font-bold">NPT Breakdown</h3>
+            <div class="h-64 mt-3"><canvas id="nptChart" role="img" aria-label="NPT chart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 mt-6">
+          <h3 class="font-bold">Lessons Learned</h3>
+          <div id="lessons" class="mt-3 space-y-2"></div>
+          <div class="mt-3 flex gap-2">
+            <input id="lessonInput" class="flex-1 px-3 py-2 rounded bg-white/70 dark:bg-slate-800 border border-slate-200 dark:border-slate-700" placeholder="Add a lesson…" />
+            <button id="lessonAdd" class="px-4 py-2 rounded bg-sky-600 text-white">Add</button>
+          </div>
+          <div class="mt-6 text-center">
+            <a href="#view-planner" id="planNew" class="px-5 py-3 rounded bg-slate-600 text-white inline-block">Plan New Job</a>
+          </div>
+        </div>
       </div>
-      <div class="grid-3">
-        <!-- Optional featured singles — replace edD5TAvyQgV1LRFfjoNRww below with a specific video ID if you like -->
-        <div class="card"><iframe class="video" src="https://www.youtube.com/embed/edD5TAvyQgV1LRFfjoNRww?rel=0&modestbranding=1&playsinline=1" title="Featured" loading="lazy" allowfullscreen></iframe></div>
-        <div class="card"><iframe class="video" src="https://www.youtube.com/embed/aRiewahzTLE?rel=0&modestbranding=1&playsinline=1" title="Website Analysis — Short" loading="lazy" allowfullscreen></iframe></div>
-        <div class="card"><iframe class="video" src="https://www.youtube.com/embed/2Se4f2hJ7JA?rel=0&modestbranding=1&playsinline=1" title="Architecture (Short)" loading="lazy" allowfullscreen></iframe></div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="view-faq" class="py-16 px-6 bg-slate-50 dark:bg-slate-950 hidden">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-center">FAQ</h2>
+        <div id="faq" class="mt-8 divide-y divide-slate-200 dark:divide-slate-800 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="view-about" class="py-16 px-6 bg-white dark:bg-slate-950 hidden">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-center">About the Founder</h2>
+        <div class="mt-8 space-y-4 text-slate-700 dark:text-slate-300">
+          <p><strong>Kenneth McKenzie</strong> built Well-Tegra after years on both sides of the fence—service and operator. The platform connects planning to performance and turns operational noise into predictive clarity.</p>
+          <p>We’re seeking early-access partners to co-develop AI recommendations with anonymized data. Your data stays yours—per-client model isolation, RBAC, SSO, encryption, full audit trails.</p>
+          <div class="mt-6">
+            <a href="mailto:info@welltegra.network" class="px-5 py-3 rounded bg-emerald-600 text-white inline-block">Book a Data Intake Session</a>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer role="contentinfo">
-    <div class="foot">
-      <div>© WellTegra</div>
-      <div><a href="mailto:info@welltegra.network">info@welltegra.network</a></div>
+  <!-- Well History Modal -->
+  <div id="wellModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4">
+    <div class="max-w-5xl w-full bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-800">
+        <h3 id="modalTitle" class="text-xl font-bold">Well</h3>
+        <button id="modalClose" class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Close modal">✕</button>
+      </div>
+      <div class="p-4 grid md:grid-cols-3 gap-6">
+        <div class="md:col-span-2">
+          <h4 class="font-bold">Operational History</h4>
+          <div id="hist" class="mt-2 max-h-80 overflow-auto space-y-3"></div>
+        </div>
+        <div>
+          <h4 class="font-bold">Wellbore Schematic</h4>
+          <div id="schem" class="mt-2 bg-slate-50 dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700 p-2"></div>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <footer class="border-t border-slate-200 dark:border-slate-800 py-8 text-center text-sm text-slate-600 dark:text-slate-400">
+    © 2025 Well-Tegra Data Solutions · <a class="text-sky-600 hover:underline" href="mailto:info@welltegra.network">info@welltegra.network</a> · <a class="text-sky-600 hover:underline" href="https://welltegra.network" target="_blank" rel="noopener">welltegra.network</a>
   </footer>
 
-  <!-- Inline, duplicate-safe accessibility scripts -->
   <script>
-  /* night-mode.js (inline, idempotent) */
-  (function () {
-    if (window.__WT_NIGHT_MODE_INIT__) return;
-    window.__WT_NIGHT_MODE_INIT__ = true;
-    function sr(msg){let live=document.getElementById('wt-live');if(!live){live=document.createElement('div');live.id='wt-live';live.setAttribute('aria-live','polite');live.setAttribute('aria-atomic','true');Object.assign(live.style,{position:'absolute',clip:'rect(1px,1px,1px,1px)',clipPath:'inset(50%)',height:'1px',width:'1px',overflow:'hidden',whiteSpace:'nowrap'});document.body.appendChild(live);} live.textContent=msg;}
-    const KEY='wt-night', html=document.documentElement;
-    const prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const stored=localStorage.getItem(KEY); const initOn = stored===null ? prefersDark : stored==='1';
-    function apply(on){ html.classList.toggle('night',!!on); const btn=document.querySelector('[data-night-toggle]'); if(btn){ btn.setAttribute('aria-pressed', on?'true':'false'); btn.setAttribute('aria-label', on?'Switch to day mode':'Switch to night mode'); } }
-    function toggle(){ const now=!html.classList.contains('night'); localStorage.setItem(KEY, now?'1':'0'); apply(now); sr(now?'Night mode on':'Night mode off'); }
-    function bind(){ apply(initOn); const btn=document.querySelector('[data-night-toggle]'); if(!btn) return; btn.addEventListener('click',toggle); btn.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();} }); }
-    if (document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind,{once:true}); else bind();
-  })();
-  </script>
+    // ---------- Theme ----------
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('themeBtn');
+    const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.body.classList.toggle('dark', savedTheme === 'dark');
+    themeBtn?.setAttribute('aria-pressed', savedTheme === 'dark');
 
-  <script>
-  /* screen-shader.js (inline, idempotent) */
-  (function () {
-    if (window.__WT_SCREEN_SHADER_INIT__) return;
-    window.__WT_SCREEN_SHADER_INIT__ = true;
-    const KEY='wt-shader', overlayId='wt-screen-shader';
-    function ov(){let o=document.getElementById(overlayId); if(!o){o=document.createElement('div');o.id=overlayId;Object.assign(o.style,{position:'fixed',inset:'0',pointerEvents:'none',background:'transparent',mixBlendMode:'multiply',zIndex:'2147483646'});document.body.appendChild(o);} return o;}
-    function set(n){n=Math.max(0,Math.min(100,Number(n)||0)); const o=ov(); o.style.background=n?`rgba(255,140,0,${0.0025*n})`:'transparent'; const r=document.querySelector('[data-shader-range]'); if(r) r.value=String(n); const t=document.querySelector('[data-shader-toggle]'); if(t) t.setAttribute('aria-pressed', n>0?'true':'false'); localStorage.setItem(KEY,String(n)); let live=document.getElementById('wt-live'); if(live) live.textContent='';}
-    function sr(msg){let live=document.getElementById('wt-live'); if(!live){live=document.createElement('div');live.id='wt-live';live.setAttribute('aria-live','polite');live.setAttribute('aria-atomic','true');Object.assign(live.style,{position:'absolute',clip:'rect(1px,1px,1px,1px)',clipPath:'inset(50%)',height:'1px',width:'1px',overflow:'hidden',whiteSpace:'nowrap'});document.body.appendChild(live);} live.textContent=msg;}
-    function bind(){ const stored=Number(localStorage.getItem(KEY)||'0'); set(stored);
-      const btn=document.querySelector('[data-shader-toggle]'); const rng=document.querySelector('[data-shader-range]');
-      if(btn){ btn.addEventListener('click',()=>{ const cur=Number(localStorage.getItem(KEY)||'0'); const next=cur>0?0:40; set(next); sr(next>0?`Screen shader set to ${next} percent`:'Screen shader off'); }); btn.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();btn.click();} }); btn.setAttribute('aria-label','Toggle screen shader'); btn.setAttribute('aria-pressed', stored>0?'true':'false'); }
-      if(rng){ rng.addEventListener('input',e=>set(Number(e.target.value||0))); rng.setAttribute('aria-label','Adjust screen shader intensity'); }
-    }
-    if (document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind,{once:true}); else bind();
-  })();
-  </script>
-
-  <!-- ROI logic -->
-  <script>
-    function fmt(n){return n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});}
-    function calc(){
-      const wells=+document.getElementById('wells').value||0;
-      const rate=+document.getElementById('rate').value||0;
-      const npt=+document.getElementById('npt').value||0;
-      const reduction=(+document.getElementById('reduction').value||0)/100;
-      const rework=+document.getElementById('rework').value||0;
-      const pilot=+document.getElementById('pilot').value||0;
-      const nptSavings=wells*rate*npt*reduction;
-      const reworkSavings=wells*rework;
-      const total=nptSavings+reworkSavings;
-      const net=total-pilot;
-      document.getElementById('npt_s').textContent=fmt(nptSavings);
-      document.getElementById('rw_s').textContent=fmt(reworkSavings);
-      document.getElementById('tot_s').textContent=fmt(total);
-      document.getElementById('net_s').textContent=fmt(net);
-      document.getElementById('assump').innerHTML = `
-        <li>Wells/year: ${wells}</li>
-        <li>Rig day-rate: ${fmt(rate)}</li>
-        <li>Baseline NPT: ${npt} days</li>
-        <li>NPT reduction: ${(reduction*100).toFixed(1)}%</li>
-        <li>Rework/well: ${fmt(rework)}</li>
-        <li>Pilot cost: ${fmt(pilot)}</li>`;
-    }
-    document.getElementById('calc').addEventListener('click', calc);
-    document.getElementById('reset').addEventListener('click', ()=>{
-      ['wells','rate','npt','reduction','rework','pilot'].forEach(id=>{
-        const el=document.getElementById(id); el.value=el.defaultValue;
-      });
-      calc();
+    themeBtn?.addEventListener('click', () => {
+      const isDark = document.body.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      themeBtn.setAttribute('aria-pressed', isDark);
+      updateChartsTheme();
     });
-    calc();
+
+    // ---------- Simple Router ----------
+    const views = {
+      home: document.getElementById('view-home'),
+      planner: document.getElementById('view-planner'),
+      performer: document.getElementById('view-performer'),
+      analyzer: document.getElementById('view-analyzer'),
+      faq: document.getElementById('view-faq'),
+      about: document.getElementById('view-about')
+    };
+    const navBtns = [...document.querySelectorAll('nav [data-nav]')];
+    function show(view){
+      Object.values(views).forEach(v=>v.classList.add('hidden'));
+      views[view].classList.remove('hidden');
+      navBtns.forEach(b=>b.removeAttribute('aria-current'));
+      const btn = navBtns.find(b=>b.dataset.nav===view);
+      if(btn) btn.setAttribute('aria-current','page');
+    }
+    navBtns.forEach(b=>b.addEventListener('click', ()=>{
+      const v = b.dataset.nav;
+      if (b.disabled) return;
+      show(v);
+      if (v==='performer') initPerformer();
+      if (v==='analyzer') initAnalyzer();
+      if (v==='faq') renderFAQ();
+    }));
+
+    // ---------- YouTube Hero (lightweight embed) ----------
+    (function mountHero(){
+      const host = document.getElementById('hero-embed');
+      if(!host) return;
+      const id = host.dataset.yt;
+      host.innerHTML = `
+        <iframe class="w-full h-full opacity-70" title="Hero" loading="lazy"
+          src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${id}&modestbranding=1&playsinline=1&rel=0&showinfo=0"
+          allow="autoplay; encrypted-media; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+      `;
+    })();
+
+    // ---------- ROI Calculator ----------
+    const eng = document.getElementById('engineers');
+    const npt = document.getElementById('npt');
+    const tim = document.getElementById('time');
+    const engO = document.getElementById('engineersOut');
+    const nptO = document.getElementById('nptOut');
+    const timO = document.getElementById('timeOut');
+    const savT = document.getElementById('savingsTotal');
+    const savCtx = document.getElementById('savingsChart').getContext('2d');
+    let savChart;
+
+    function calcROI(){
+      const engineers = +eng.value, nptR = +npt.value/100, timeR = +tim.value/100;
+      engO.textContent = engineers;
+      nptO.textContent = (nptR*100).toFixed(0)+'%';
+      timO.textContent = (timeR*100).toFixed(0)+'%';
+      const avgSalary=120000, avgNPT=250000, nptDays=15;
+      const engineerSavings = engineers*avgSalary*timeR;
+      const nptSavings = avgNPT*nptDays*nptR;
+      const total = engineerSavings+nptSavings;
+      savT.textContent = '$'+Math.round(total).toLocaleString();
+      if(savChart){
+        savChart.data.datasets[0].data=[engineerSavings,nptSavings];
+        savChart.update();
+      }
+    }
+    function chartColors(){
+      const dark = document.body.classList.contains('dark');
+      return {
+        grid: dark?'rgba(255,255,255,.1)':'#e5e7eb',
+        text: dark?'#d1d5db':'#334155',
+        border: dark?'#0f172a':'#fff'
+      }
+    }
+    function initSavings(){
+      const c = chartColors();
+      savChart = new Chart(savCtx, {
+        type:'bar',
+        data:{ labels:['Engineering Time','NPT Reduction'], datasets:[{ label:'Annual Savings', data:[0,0], backgroundColor:['#14b8a6','#0ea5e9'], borderRadius:6 }]},
+        options:{
+          responsive:true, maintainAspectRatio:false, indexAxis:'y',
+          scales:{ x:{ grid:{color:c.grid}, ticks:{color:c.text, callback:v=>'$'+(v/1000).toLocaleString()+'k'}}, y:{ grid:{display:false}, ticks:{color:c.text}}},
+          plugins:{ legend:{display:false}}
+        }
+      });
+      calcROI();
+      [eng,npt,tim].forEach(el=>el.addEventListener('input', calcROI));
+    }
+    function updateChartsTheme(){
+      if(!savChart) return;
+      const c = chartColors();
+      savChart.options.scales.x.grid.color=c.grid;
+      savChart.options.scales.x.ticks.color=c.text;
+      savChart.options.scales.y.ticks.color=c.text;
+      savChart.update();
+      if(nptChart){
+        nptChart.options.plugins.legend.labels.color=c.text;
+        nptChart.update();
+      }
+      if(tfaChart){
+        tfaChart.options.scales.x.ticks.color=c.text;
+        tfaChart.options.scales.x.grid.color=c.grid;
+        tfaChart.options.scales.y.ticks.color=c.text;
+        tfaChart.options.scales.y.grid.color=c.grid;
+        tfaChart.update();
+      }
+    }
+
+    // ---------- Demo Data ----------
+    const wells = [
+      { id:'W666', name:'The Perfect Storm', field:'Montrose', type:'HPHT Gas Condensate', depth:18500, status:'Shut-in — Integrity', issue:'Casing deformation + BaSO4 scale + failed TRSSV.', history:[
+        {date:'2024-03-15', op:'Slickline Surveillance', problem:'Hard tag @ 8,500ft', lesson:'Ovalization; access compromised.'},
+        {date:'2024-04-01', op:'Production Test', problem:'Died post short flow', lesson:'Deep blockage suspected.'},
+        {date:'2024-04-10', op:'DHSV Test', problem:'TRSSV failed to close', lesson:'Critical barrier compromised.'},
+      ], completion:{ casing:[{top:0,bottom:18500, size:'9-5/8', problem:true}], tubing:[{top:0,bottom:18300,size:'4-1/2'}],
+        equipment:[{item:'SSSV',top:2500, problem:true},{item:'Casing Deformation',top:8500, problem:true},{item:'BaSO4 Scale Bridge',top:14200, problem:true},{item:'Packer', top:18250}],
+        perfs:[{top:18350,bottom:18450}] } },
+      { id:'S-15', name:'CASE: The Scale Trap', field:'Montrose', type:'HPHT Gas Condensate', depth:11000, status:'Active — Restored', issue:'Severe BaSO4 scale removed (chem + jet).', history:[
+        {date:'2024-01-05', op:'PLT', problem:'Block @ 9,200ft', lesson:'DTPA + rotating jet effective.'},
+        {date:'2024-02-12', op:'CT Jetting', problem:'Cleared blockage', lesson:'Lower stuck-pipe risk vs milling.'},
+      ], completion:{ casing:[{top:0,bottom:11000,size:'9-5/8'}], tubing:[{top:0,bottom:10800,size:'4-1/2'}], equipment:[{item:'SSSV', top:1800},{item:'Packer', top:10750}], perfs:[{top:10850,bottom:10950}] } },
+      { id:'F-11', name:'CASE: The Broken Barrier', field:'Montrose', type:'HPHT Gas Condensate', depth:9800, status:'Active — Restored', issue:'TRSSV lock-open + insert valve.', history:[
+        {date:'2024-02-18', op:'Routine DHSV Test', problem:'Fail to close', lesson:'Use mechanical lock-open.'},
+        {date:'2024-03-20', op:'Slickline Insert Valve', problem:'WRSV installed', lesson:'Standard, cost-effective.'},
+      ], completion:{ casing:[{top:0,bottom:9800,size:'9-5/8'}], tubing:[{top:0,bottom:9600,size:'4-1/2'}], equipment:[{item:'SSSV',top:1500},{item:'Packer',top:9550}], perfs:[{top:9650,bottom:9750}] } }
+    ];
+    const objectives = [
+      {id:'obj1', name:'Remediate Casing Deformation', desc:'Install expandable steel patch.'},
+      {id:'obj2', name:'Remove BaSO4 Scale', desc:'Chemical + mechanical jetting.'},
+      {id:'obj3', name:'Restore DHSV', desc:'Lock-open TRSSV + insert valve.'},
+    ];
+    const problems = [
+      {id:'p1', name:'Loss of Access (Deformation)', link:['obj1']},
+      {id:'p2', name:'Severe Scale Blockage', link:['obj2']},
+      {id:'p3', name:'Failed Safety Barrier (DHSV)', link:['obj3']},
+    ];
+    const procedures = {
+      obj1:{ name:'Expandable Patch Install', duration:8, cost:1200000,
+        steps:['Cleanout & gauge run','RIH with patch','Position & set across deformed zone','Pressure test','POOH & handover'],
+        risks:{Operational:4, Geological:2, Equipment:4, HSE:3, Financial:3},
+        tfa:{ pickUp:[[0,0],[18500,60]], slackOff:[[0,0],[18500,-60]], alarmU:[[0,8],[18500,70]], alarmL:[[0,-8],[18500,-70]] },
+        roles:['Wellsite Engineer','HWU Supervisor']
+      },
+      obj2:{ name:'CT Chem + Jet Scale Removal', duration:6, cost:950000,
+        steps:['Spot DTPA','Soak 36h','High-pressure rotating jet','Circulate clean','Return to prod'],
+        risks:{Operational:5, Geological:2, Equipment:4, HSE:4, Financial:3},
+        tfa:{ pickUp:[[0,0],[14500,35]], slackOff:[[0,0],[14500,-35]], alarmU:[[0,2],[14500,37]], alarmL:[[0,-2],[14500,-37]] },
+        roles:['CT Supervisor','Pump Operator']
+      },
+      obj3:{ name:'Slickline Insert Valve Install', duration:3, cost:350000,
+        steps:['Lock-open failed TRSSV','Run & set WRSV','Function & inflow test','Certify barrier','Return to prod'],
+        risks:{Operational:3, Geological:1, Equipment:4, HSE:3, Financial:2},
+        tfa:{ pickUp:[[0,100],[9800,160]], slackOff:[[0,100],[9800,40]], alarmU:[[0,110],[9800,170]], alarmL:[[0,90],[9800,30]] },
+        roles:['Slickline Supervisor']
+      }
+    };
+
+    // ---------- Planner UI ----------
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+    const s1 = document.getElementById('s1'), s2=document.getElementById('s2'), s3=document.getElementById('s3');
+    const objectiveField = document.getElementById('objectiveField');
+    const problemField = document.getElementById('problemField');
+    const genPlanManual = document.getElementById('genPlanManual');
+    const genPlanAI = document.getElementById('genPlanAI');
+    const aiToggle = document.getElementById('aiToggle');
+    const manualBox = document.getElementById('manualBox');
+    const aiBox = document.getElementById('aiBox');
+    const aiRecs = document.getElementById('aiRecs');
+    const planOut = document.getElementById('planOut');
+    const resetBtn = document.getElementById('resetBtn');
+    const goPerformer = document.getElementById('goPerformer');
+
+    let selWell=null, selObj=null, plan=null;
+
+    function renderWells(){
+      step1.innerHTML = wells.map(w=>`
+        <article class="rounded-lg border border-slate-200 dark:border-slate-800 p-4 bg-white dark:bg-slate-900">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h4 class="font-bold">${w.name}</h4>
+              <p class="text-sm text-slate-600 dark:text-slate-300">${w.field} · ${w.type}</p>
+            </div>
+            <button class="text-sky-600 hover:underline" data-view="${w.id}">View Details</button>
+          </div>
+          <p class="text-sm mt-3">${w.issue}</p>
+          <button class="mt-4 px-4 py-2 rounded bg-emerald-600 text-white w-full" data-select="${w.id}">Use this well</button>
+        </article>
+      `).join('');
+      step1.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>openModal(b.dataset.view)));
+      step1.querySelectorAll('[data-select]').forEach(b=>b.addEventListener('click',()=>{
+        selWell = wells.find(x=>x.id===b.dataset.select);
+        s1.className="w-8 h-8 rounded-full flex items-center justify-center bg-sky-700 text-white font-bold";
+        s2.className="w-8 h-8 rounded-full flex items-center justify-center bg-sky-600 text-white font-bold";
+        step2.classList.remove('hidden');
+        renderObjectives();
+        renderProblems();
+        window.location.hash = '#view-planner';
+      }));
+    }
+    function renderObjectives(){
+      objectiveField.innerHTML = objectives.map(o=>`
+        <label class="flex items-start gap-3 p-3 rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+          <input type="radio" name="obj" value="${o.id}" class="mt-1">
+          <div><div class="font-semibold">${o.name}</div><div class="text-sm text-slate-600 dark:text-slate-300">${o.desc}</div></div>
+        </label>
+      `).join('');
+      objectiveField.querySelectorAll('input').forEach(i=>i.addEventListener('change',()=>{
+        selObj = objectives.find(o=>o.id===i.value);
+        genPlanManual.disabled = !selObj;
+      }));
+    }
+    function renderProblems(){
+      problemField.innerHTML = problems.map(p=>`
+        <label class="flex items-start gap-3 p-3 rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+          <input type="radio" name="prob" value="${p.id}" class="mt-1">
+          <div><div class="font-semibold">${p.name}</div><div class="text-sm text-slate-600 dark:text-slate-300">Suggested: ${p.link.map(x=>objectives.find(o=>o.id===x).name).join(', ')}</div></div>
+        </label>
+      `).join('');
+      problemField.querySelectorAll('input').forEach(i=>i.addEventListener('change',()=>{
+        const p = problems.find(x=>x.id===i.value);
+        const recs = p.link.map(x=>{
+          const o = objectives.find(z=>z.id===x);
+          // lightweight “confidence”
+          const conf = o.id==='obj3'?99:o.id==='obj1'?95:92;
+          return {id:o.id, name:o.name, conf, outcome: o.id==='obj1'?'Full-bore access restored':o.id==='obj2'?'Blockage cleared':'Barrier restored'};
+        });
+        aiRecs.classList.remove('hidden');
+        aiRecs.innerHTML = `<h4 class="font-bold mb-2">AI Recommendations</h4>` + recs.map((r,idx)=>`
+          <div class="p-3 rounded border border-slate-200 dark:border-slate-700 mb-2 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800" data-rec="${r.id}">
+            <div class="flex items-center justify-between"><div class="font-semibold">${r.name}</div><div class="text-sm">${r.conf}%</div></div>
+            <div class="text-sm text-slate-600 dark:text-slate-300">Projected: ${r.outcome}</div>
+          </div>
+        `).join('');
+        aiRecs.querySelectorAll('[data-rec]').forEach(card=>card.addEventListener('click',()=>{
+          selObj = objectives.find(o=>o.id===card.dataset.rec);
+          aiRecs.querySelectorAll('[data-rec]').forEach(c=>c.classList.remove('ring','ring-sky-400'));
+          card.classList.add('ring','ring-sky-400');
+          genPlanAI.disabled = !selObj;
+        }));
+      }));
+    }
+    aiToggle.addEventListener('change', ()=>{
+      const on = aiToggle.checked;
+      manualBox.classList.toggle('hidden', on);
+      aiBox.classList.toggle('hidden', !on);
+    });
+
+    function riskTag(n){ return n<=2?'Low':(n<=3?'Medium':'High'); }
+
+    function renderPlan(){
+      const proc = procedures[selObj.id];
+      plan = proc;
+      // enable nav to performer/analyzer
+      navBtns.find(b=>b.dataset.nav==='performer').disabled=false;
+      navBtns.find(b=>b.dataset.nav==='performer').removeAttribute('aria-disabled');
+      navBtns.find(b=>b.dataset.nav==='analyzer').disabled=false;
+      navBtns.find(b=>b.dataset.nav==='analyzer').removeAttribute('aria-disabled');
+
+      const riskRows = Object.entries(proc.risks).map(([k,v])=>`
+        <div class="flex items-center justify-between p-2 rounded bg-slate-50 dark:bg-slate-800">
+          <span>${k}</span><span class="${v>=4?'text-red-500':v>=3?'text-amber-500':'text-emerald-500'} font-semibold">${riskTag(v)}</span>
+        </div>
+      `).join('');
+
+      planOut.innerHTML = `
+        <div class="grid sm:grid-cols-3 gap-4 text-center">
+          <div class="p-3 rounded bg-slate-50 dark:bg-slate-800"><div class="text-sm">Selected Well</div><div class="font-bold">${selWell.name}</div></div>
+          <div class="p-3 rounded bg-slate-50 dark:bg-slate-800"><div class="text-sm">Est. Duration</div><div class="font-bold">${proc.duration} days</div></div>
+          <div class="p-3 rounded bg-slate-50 dark:bg-slate-800"><div class="text-sm">AFE</div><div class="font-bold">$${proc.cost.toLocaleString()}</div></div>
+        </div>
+        <h4 class="font-bold mt-6">${proc.name}</h4>
+        <ol class="list-decimal ml-6 mt-2 space-y-1">${proc.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
+        <h4 class="font-bold mt-6">Initial Risk Assessment</h4>
+        <div class="grid sm:grid-cols-2 gap-3 mt-2">${riskRows}</div>
+      `;
+      s3.className="w-8 h-8 rounded-full flex items-center justify-center bg-sky-600 text-white font-bold";
+      step3.classList.remove('hidden');
+      window.location.hash = '#view-planner';
+    }
+
+    genPlanManual.addEventListener('click', ()=>{ if(selWell && selObj){ renderPlan(); }});
+    genPlanAI.addEventListener('click', ()=>{ if(selWell && selObj){ renderPlan(); }});
+    resetBtn.addEventListener('click', ()=>{
+      selWell=null; selObj=null; plan=null;
+      step2.classList.add('hidden'); step3.classList.add('hidden');
+      s2.className="w-8 h-8 rounded-full flex items-center justify-center bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold";
+      s3.className="w-8 h-8 rounded-full flex items-center justify-center bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold";
+      renderWells();
+      window.location.hash = '#view-planner';
+    });
+    goPerformer.addEventListener('click', ()=>{ show('performer'); initPerformer(); });
+
+    // ---------- Modal (Well Details) ----------
+    const wellModal = document.getElementById('wellModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalClose = document.getElementById('modalClose');
+    const histBox = document.getElementById('hist');
+    const schemBox = document.getElementById('schem');
+    function openModal(id){
+      const w = wells.find(x=>x.id===id); if(!w) return;
+      modalTitle.textContent = `History & Schematic — ${w.name}`;
+      histBox.innerHTML = w.history.map(h=>`
+        <div class="p-3 rounded border border-slate-200 dark:border-slate-700">
+          <div class="font-semibold">${h.op} <span class="text-xs text-slate-500">— ${h.date}</span></div>
+          <div class="text-sm mt-1"><span class="font-semibold text-red-500">Problem:</span> ${h.problem}</div>
+          <div class="text-sm"><span class="font-semibold text-emerald-500">Lesson:</span> ${h.lesson}</div>
+        </div>`).join('');
+      schemBox.innerHTML = renderSchematic(w);
+      wellModal.classList.remove('hidden');
+      wellModal.classList.add('flex');
+      modalClose.focus();
+    }
+    modalClose.addEventListener('click', ()=>wellModal.classList.add('hidden'));
+    wellModal.addEventListener('click', (e)=>{ if(e.target===wellModal) wellModal.classList.add('hidden'); });
+
+    function renderSchematic(w){
+      const max = Math.max(...w.completion.casing.map(c=>c.bottom), w.depth);
+      const scale = 600/max;
+      let svg = `<svg viewBox="0 0 150 600" class="w-full h-auto" role="img" aria-label="Schematic for ${w.name}">`;
+      // depth ticks
+      for(let d=0; d<=max; d+=5000){
+        const y=d*scale;
+        svg += `<text class="depth-txt" x="25" y="${y+3}">${(d/1000)}k</text><line x1="30" y1="${y}" x2="36" y2="${y}" stroke="#cbd5e1" stroke-width="1"/>`;
+      }
+      // wellbore bg
+      svg += `<rect x="45" y="0" width="90" height="600" fill="#eaddc7"/><rect x="55" y="0" width="70" height="600" fill="#d2b48c"/>`;
+      // casing
+      w.completion.casing?.forEach(c=>{
+        const y=c.top*scale, h=(c.bottom-c.top)*scale;
+        svg+=`<rect x="60" y="${y}" width="60" height="${h}" fill="none" stroke="${c.problem?'#ef4444':'#6b7280'}" stroke-width="2"/>`;
+      });
+      // tubing
+      w.completion.tubing?.forEach(t=>{
+        const y=t.top*scale, h=(t.bottom-t.top)*scale;
+        svg+=`<rect x="85" y="${y}" width="10" height="${h}" fill="#cbd5e1" stroke="#94a3b8" stroke-width=".6"/>`;
+      });
+      // equipment
+      (w.completion.equipment||[]).forEach(e=>{
+        const y=e.top*scale;
+        if(e.item.includes('Packer')) svg+=`<polygon points="75,${y-10} 105,${y-10} 110,${y} 70,${y}" fill="#64748b"/>`;
+        if(e.item.includes('SSSV')) svg+=`<rect x="82" y="${y}" width="16" height="20" fill="${e.problem?'#fecaca':'#cbd5e1'}" stroke="${e.problem?'#ef4444':'#6b7280'}" stroke-width="1"/>`;
+        if(e.item.includes('Scale')) svg+=`<path d="M85 ${y-10} C 80 ${y}, 80 ${y+10}, 85 ${y+20}" stroke="#c2410c" stroke-width="2" fill="none"/><path d="M95 ${y-10} C 100 ${y}, 100 ${y+10}, 95 ${y+20}" stroke="#c2410c" stroke-width="2" fill="none"/>`;
+        if(e.item.includes('Casing Deformation')) svg+=`<path d="M60 ${y} C 50 ${y+12}, 70 ${y+24}, 60 ${y+36}" stroke="#ef4444" stroke-width="1.5" fill="none"/><path d="M120 ${y} C 130 ${y+12}, 110 ${y+24}, 120 ${y+36}" stroke="#ef4444" stroke-width="1.5" fill="none"/>`;
+      });
+      // perforations
+      (w.completion.perfs||w.completion.perforations||[]).forEach(p=>{
+        const y1=p.top*scale, y2=p.bottom*scale;
+        for(let y=y1; y<=y2; y+=10) svg+=`<path d="M 60 ${y} L 45 ${y}" stroke="#2563eb" stroke-width="1.3"/>`;
+      });
+      svg += `</svg>`;
+      return svg;
+    }
+
+    // ---------- Performer ----------
+    const kpiHook = document.getElementById('kpiHook');
+    const kpiTubing = document.getElementById('kpiTubing');
+    const kpiAnnulus = document.getElementById('kpiAnnulus');
+    const kpiSpeed = document.getElementById('kpiSpeed');
+    const procSteps = document.getElementById('procSteps');
+    const logBox = document.getElementById('log');
+    const logInput = document.getElementById('logInput');
+    const logAdd = document.getElementById('logAdd');
+    const jobStatus = document.getElementById('jobStatus');
+    const toAnalyzer = document.getElementById('toAnalyzer');
+
+    let tfaChart, nptChart, live=null, tfaCtx=document.getElementById('tfaChart').getContext('2d');
+
+    function radial(containerId, label, units, max){
+      const el = document.getElementById(containerId);
+      if(!el) return;
+    }
+    function gauge(container,label,units,max){
+      const size=120, sw=10, r=(size/2)-(sw*2), circ=r*2*Math.PI;
+      container.innerHTML = `
+        <div class="relative" style="width:${size}px;height:${size}px">
+          <svg viewBox="0 0 ${size} ${size}">
+            <circle class="gauge-bg" cx="${size/2}" cy="${size/2}" r="${r}" stroke-width="${sw}" fill="none"></circle>
+            <circle class="gauge-fg" cx="${size/2}" cy="${size/2}" r="${r}" stroke="#14b8a6" stroke-width="${sw}" fill="none" stroke-dasharray="${circ}" stroke-dashoffset="${circ}"></circle>
+          </svg>
+          <div class="absolute inset-0 grid place-items-center">
+            <div class="text-2xl font-bold" data-val>0</div>
+            <div class="text-xs text-slate-500">${units}</div>
+          </div>
+        </div>
+        <div class="mt-1 text-center text-sm">${label}</div>
+      `;
+      return { r, circ, max, fg:container.querySelector('.gauge-fg'), val:container.querySelector('[data-val]') }
+    }
+    let gHook,gTub,gAnn,gSpd;
+
+    function initPerformer(){
+      if(!plan){ show('planner'); return; }
+      // Gauges
+      gHook = gauge(kpiHook,'Hookload','klbf',100);
+      gTub  = gauge(kpiTubing,'Tubing Pressure','psi',5000);
+      gAnn  = gauge(kpiAnnulus,'Annulus Pressure','psi',3000);
+      gSpd  = gauge(kpiSpeed,'Line Speed','ft/min',150);
+
+      // Chart
+      if(tfaChart) tfaChart.destroy();
+      const dark = document.body.classList.contains('dark');
+      const grid = dark?'rgba(255,255,255,.1)':'#e5e7eb';
+      const text = dark?'#d1d5db':'#334155';
+      tfaChart = new Chart(tfaCtx,{
+        type:'line',
+        data:{ datasets:[
+          {label:'Planned Pickup', data:plan.tfa.pickUp.map(p=>({x:p[0],y:p[1]})), borderColor:'rgba(20,184,166,.9)', tension:.15, borderWidth:2, pointRadius:0},
+          {label:'Planned Slackoff', data:plan.tfa.slackOff.map(p=>({x:p[0],y:p[1]})), borderColor:'rgba(14,165,233,.9)', tension:.15, borderWidth:2, pointRadius:0},
+          {label:'Upper Alarm', data:plan.tfa.alarmU.map(p=>({x:p[0],y:p[1]})), borderColor:'rgba(239,68,68,.5)', borderDash:[6,6], pointRadius:0},
+          {label:'Lower Alarm', data:plan.tfa.alarmL.map(p=>({x:p[0],y:p[1]})), borderColor:'rgba(239,68,68,.5)', borderDash:[6,6], pointRadius:0},
+          {label:'Actual', data:[], borderColor:'#f59e0b', borderWidth:3, tension:.15, pointRadius:0}
+        ]},
+        options:{ responsive:true, maintainAspectRatio:false,
+          scales:{ x:{ type:'linear', title:{display:true, text:'Depth (ft)', color:text}, ticks:{color:text}, grid:{color:grid}},
+                   y:{ title:{display:true, text:'Hookload (klbf)', color:text}, ticks:{color:text}, grid:{color:grid}} },
+          plugins:{ legend:{ labels:{ color:text } } }
+        }
+      });
+
+      // Procedure
+      procSteps.innerHTML = plan.steps.map((s,i)=>`
+        <div class="p-2 rounded border border-slate-200 dark:border-slate-700" data-step="${i+1}">
+          <span class="text-xs text-slate-500">Step ${i+1}</span>
+          <div class="font-medium">${s}</div>
+        </div>
+      `).join('');
+
+      // Live state
+      live = { depth:0, hook:0, tub:0, ann:1500, spd:0, step:1, moving:true, job:true, npt:{weather:0,equip:0,ops:0} };
+      logBox.innerHTML = logRow('System','Job initiated.');
+      if(timer) clearInterval(timer);
+      timer = setInterval(tick, 1000);
+    }
+
+    function logRow(user,text){
+      const t = new Date().toLocaleTimeString();
+      return `<div class="text-sm"><span class="text-slate-500">${t} — ${user}:</span> ${text}</div>`;
+    }
+    let timer=null;
+    function interp(points,x){
+      for(let i=0;i<points.length-1;i++){
+        if(x>=points[i][0] && x<=points[i+1][0]){
+          const [x1,y1]=points[i], [x2,y2]=points[i+1];
+          return y1 + (y2-y1)*((x-x1)/(x2-x1));
+        }
+      }
+      return points[points.length-1][1];
+    }
+    function setGauge(g,v){
+      const pct = Math.max(0, Math.min(1, v/g.max));
+      const off = g.circ - g.circ*pct;
+      g.fg.style.strokeDashoffset = off;
+      g.val.textContent = (v|0);
+    }
+    function tick(){
+      if(!plan || !live.job){ clearInterval(timer); return; }
+      const target = (plan.tfa.pickUp.at(-1)?.[0]) || 18500;
+      const currentStep = plan.steps[live.step-1]?.toLowerCase()||'';
+      // simple motion
+      if(currentStep.includes('rih')){ live.spd = 100; live.depth = Math.min(target, live.depth + 100*2/60); }
+      else if(currentStep.includes('pooh')){ live.spd = 100; live.depth = Math.max(0, live.depth - 100*2/60); }
+      else { live.spd = 0; }
+      // signals
+      const env = live.spd>0 ? plan.tfa.slackOff : plan.tfa.pickUp;
+      live.hook = (interp(env, live.depth) + (Math.random()*2-1));
+      live.tub  = Math.max(0, live.tub + (live.spd>0?120:-80));
+      live.ann  = Math.max(1500, live.ann + (live.spd>0?30:-20));
+
+      // update gauges
+      setGauge(gHook, live.hook);
+      setGauge(gTub,  live.tub);
+      setGauge(gAnn,  live.ann);
+      setGauge(gSpd,  live.spd);
+
+      // chart actual
+      const act = tfaChart.data.datasets[4].data;
+      act.push({x:live.depth, y:live.hook});
+      if(act.length>400) act.shift();
+      tfaChart.update('none');
+
+      // step auto-advance (toy timing)
+      if(live.spd===0){ // pause steps advance
+        stepAdvance();
+      }
+    }
+    function stepAdvance(){
+      const card = procSteps.querySelector(`[data-step="${live.step}"]`);
+      if(card) card.classList.add('bg-sky-50','dark:bg-slate-800');
+      logBox.insertAdjacentHTML('afterbegin', logRow('System', `Starting step ${live.step}: ${plan.steps[live.step-1]}`));
+      live.step++;
+      if(live.step>plan.steps.length){
+        live.job=false; clearInterval(timer);
+        logBox.insertAdjacentHTML('afterbegin', logRow('System', 'Job complete.'));
+        jobStatus.textContent='● COMPLETE'; jobStatus.classList.remove('text-emerald-400'); jobStatus.classList.add('text-slate-400');
+        toAnalyzer.classList.remove('hidden');
+      }
+    }
+    logAdd.addEventListener('click', ()=>{
+      if(!logInput.value.trim()) return;
+      logBox.insertAdjacentHTML('afterbegin', logRow('Operator', logInput.value.trim()));
+      logInput.value='';
+    });
+    document.getElementById('toAnalyzer').addEventListener('click', ()=>{ show('analyzer'); initAnalyzer(); });
+
+    // ---------- Analyzer ----------
+    const anSub = document.getElementById('anSub');
+    const sumKPIs = document.getElementById('sumKPIs');
+    const lessons = document.getElementById('lessons');
+    const lessonInput = document.getElementById('lessonInput');
+    const lessonAdd = document.getElementById('lessonAdd');
+    const nptCtx = document.getElementById('nptChart').getContext('2d');
+
+    function initAnalyzer(){
+      if(!plan){ show('planner'); return; }
+      anSub.textContent = `Analysis for ${plan.name} on ${selWell?.name||''}`;
+      sumKPIs.innerHTML = `
+        <div class="p-3 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <div class="text-sm">Duration (Days)</div><div class="font-bold">${plan.duration.toFixed(1)}</div>
+        </div>
+        <div class="p-3 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <div class="text-sm">AFE</div><div class="font-bold">$${plan.cost.toLocaleString()}</div>
+        </div>
+      `;
+      if(nptChart) nptChart.destroy();
+      const dark = document.body.classList.contains('dark');
+      nptChart = new Chart(nptCtx,{
+        type:'doughnut',
+        data:{ labels:['Weather','Equipment','Operational'], datasets:[{ data:[1,1,1], backgroundColor:['#0ea5e9','#f97316','#ef4444'], borderColor: dark?'#0f172a':'#fff', borderWidth:4 }]},
+        options:{ plugins:{ legend:{ position:'bottom', labels:{ color:dark?'#d1d5db':'#334155' }}}}
+      });
+      lessons.innerHTML = `<div class="text-sm text-slate-500">No lessons added yet.</div>`;
+    }
+    lessonAdd.addEventListener('click', ()=>{
+      if(!lessonInput.value.trim()) return;
+      if(lessons.firstElementChild && lessons.firstElementChild.classList.contains('text-slate-500')) lessons.innerHTML='';
+      lessons.insertAdjacentHTML('afterbegin', `<div class="p-2 rounded bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">${lessonInput.value.trim()}</div>`);
+      lessonInput.value='';
+    });
+
+    // ---------- FAQ ----------
+    const faqData = [
+      {q:'What is Well-Tegra?', a:'A practical loop for well delivery—plan, perform, analyze—powered by focused AI and secure data pooling.'},
+      {q:'Do we replace existing systems?', a:'No. We aggregate into a governed pool and push insights back—no rip-and-replace.'},
+      {q:'How is data secured?', a:'Per-client model isolation, SSO, RBAC, encryption, audit trails; anonymization pathways for pooled learning.'}
+    ];
+    function renderFAQ(){
+      const box = document.getElementById('faq');
+      if(box.dataset.ready) return;
+      box.dataset.ready = '1';
+      box.innerHTML = faqData.map((f,i)=>`
+        <details class="p-4" ${i===0?'open':''}>
+          <summary class="cursor-pointer font-semibold">${f.q}</summary>
+          <div class="mt-2 text-sm text-slate-700 dark:text-slate-300">${f.a}</div>
+        </details>
+      `).join('');
+    }
+
+    // ---------- Init ----------
+    function boot(){
+      renderWells();
+      initSavings();
+      show('home');
+    }
+    window.addEventListener('DOMContentLoaded', boot);
   </script>
 </body>
 </html>
