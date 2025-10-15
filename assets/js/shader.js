@@ -12,12 +12,9 @@
       ov = document.createElement('div');
       ov.id = overlayId;
       Object.assign(ov.style, {
-        position: 'fixed',
-        inset: '0',
-        pointerEvents: 'none',
-        background: 'transparent',
-        mixBlendMode: 'multiply',
-        zIndex: '2147483646' // just below modals/tooltips
+        position: 'fixed', inset: '0', pointerEvents: 'none',
+        background: 'transparent', mixBlendMode: 'multiply',
+        zIndex: '2147483646'
       });
       document.body.appendChild(ov);
     }
@@ -25,7 +22,6 @@
   }
 
   function setStrength(val) {
-    // val: 0..100
     const ov = ensureOverlay();
     const n = Math.max(0, Math.min(100, Number(val) || 0));
     ov.style.background = n ? `rgba(255, 140, 0, ${0.0025 * n})` : 'transparent';
@@ -36,7 +32,6 @@
     localStorage.setItem(STORAGE_KEY, String(n));
   }
 
-  // Screen reader announcement
   function srAnnounce(msg) {
     let live = document.getElementById('wt-live');
     if (!live) {
@@ -44,13 +39,11 @@
       live.id = 'wt-live';
       live.setAttribute('aria-live', 'polite');
       live.setAttribute('aria-atomic', 'true');
-      live.style.position = 'absolute';
-      live.style.clip = 'rect(1px, 1px, 1px, 1px)';
-      live.style.clipPath = 'inset(50%)';
-      live.style.height = '1px';
-      live.style.width = '1px';
-      live.style.overflow = 'hidden';
-      live.style.whiteSpace = 'nowrap';
+      Object.assign(live.style, {
+        position: 'absolute', clip: 'rect(1px,1px,1px,1px)',
+        clipPath: 'inset(50%)', height: '1px', width: '1px',
+        overflow: 'hidden', whiteSpace: 'nowrap'
+      });
       document.body.appendChild(live);
     }
     live.textContent = msg;
@@ -66,7 +59,7 @@
     if (toggleBtn) {
       toggleBtn.addEventListener('click', () => {
         const current = Number(localStorage.getItem(STORAGE_KEY) || '0');
-        const next = current > 0 ? 0 : 40; // default to a comfy value
+        const next = current > 0 ? 0 : 40; // comfy default
         setStrength(next);
         srAnnounce(next > 0 ? `Screen shader set to ${next} percent` : 'Screen shader off');
       });
@@ -78,10 +71,7 @@
     }
 
     if (range) {
-      range.addEventListener('input', (e) => {
-        const v = Number(e.target.value || 0);
-        setStrength(v);
-      });
+      range.addEventListener('input', (e) => setStrength(Number(e.target.value || 0)));
       range.setAttribute('aria-label', 'Adjust screen shader intensity');
     }
   }
