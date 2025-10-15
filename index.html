@@ -2,8 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>WellTegra — Home</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>WellTegra — From Plan to Payoff</title>
+  <meta name="description" content="WellTegra unifies planning, field execution, and analysis for well delivery. One secure data pool. Plan faster, perform with clarity, analyze ROI."/>
+  <!-- Performance hints for YouTube -->
+  <link rel="preconnect" href="https://www.youtube.com">
+  <link rel="preconnect" href="https://i.ytimg.com">
+  <link rel="preconnect" href="https://www.google.com">
+  <meta property="og:title" content="WellTegra — From Plan to Payoff">
+  <meta property="og:description" content="Plan faster with context, perform with a clear runbook, analyze ROI. No rip-and-replace."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://welltegra.network/"/>
   <style>
     :root{--bg:#0f172a;--ink:#e6f3ff;--muted:#bcd3f6;--panel:#0f2036;--accent:#21b5f0}
     *{box-sizing:border-box} html{scroll-behavior:smooth}
@@ -11,8 +20,9 @@
     a{color:inherit;text-decoration:none}
     header{position:sticky;top:0;z-index:40;background:rgba(15,23,42,.78);backdrop-filter:blur(10px);border-bottom:1px solid rgba(188,211,246,.1)}
     .nav{max-width:1200px;margin:0 auto;padding:8px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-    .brand {display:flex;align-items:center;gap:10px}
+    .brand{display:flex;align-items:center;gap:10px}
     .brand video{width:140px;height:auto;border-radius:6px}
+    .brand .txt{font-weight:800;letter-spacing:.3px}
     nav ul{list-style:none;margin:0;padding:0;display:flex;gap:10px;flex-wrap:wrap}
     nav a{opacity:.9;padding:8px 10px;border-radius:10px}
     nav a:hover,nav a.active{opacity:1;background:rgba(188,211,246,.12)}
@@ -28,36 +38,47 @@
     footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--muted)}
     .foot{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
     /* accessibility focus */
-    :focus-visible { outline: 3px solid #21b5f0; outline-offset: 2px; }
-    /* night mode palette tweak */
-    .night body{background:#070d1a}
+    :focus-visible{outline:3px solid #21b5f0;outline-offset:2px}
+    /* reduce motion */
+    @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto} .brand video{display:none}}
   </style>
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"WellTegra",
+    "url":"https://welltegra.network/",
+    "sameAs":["https://www.youtube.com/channel/UCedD5TAvyQgV1LRFfjoNRww"],
+    "logo":"https://welltegra.network/favicon.ico"
+  }
+  </script>
 </head>
 <body>
+  <a href="#main" class="btn ghost" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">Skip to main</a>
+
   <header>
     <div class="nav">
       <div class="brand">
-        <!-- If you have a logo MP4, put it in assets/logohome.mp4 -->
-        <a href="index.html"><video src="assets/logohome.mp4" autoplay muted loop playsinline></video></a>
+        <!-- If you have an animated logo video, name it /assets/logohome.mp4; otherwise the text appears -->
+        <a href="#top" aria-label="WellTegra Home">
+          <video src="assets/logohome.mp4" autoplay muted loop playsinline></video>
+          <span class="txt">WellTegra</span>
+        </a>
       </div>
       <nav>
         <ul>
-          <li><a class="active" href="index.html">Home</a></li>
-          <li><a href="planner.html">Planner</a></li>
-          <li><a href="performer.html">Performer</a></li>
-          <li><a href="analyzer.html">Analyzer</a></li>
-          <li><a href="videos.html">Videos</a></li>
-          <li><a href="roi.html">ROI</a></li>
-          <li><a href="cases.html">Cases</a></li>
-          <li><a href="whitepaper.html">White&nbsp;Paper</a></li>
+          <li><a class="active" href="#top">Home</a></li>
+          <li><a href="#loop">Loop</a></li>
+          <li><a href="#videos">Videos</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
       <div><a class="btn primary" href="mailto:info@welltegra.network">Contact</a></div>
     </div>
   </header>
 
-  <main class="container">
-    <!-- Accessibility toolbar -->
+  <main id="main" class="container">
+    <!-- Accessibility / Comfort toolbar -->
     <nav aria-label="Accessibility controls" class="card" style="display:flex;gap:10px;align-items:center;margin-bottom:16px">
       <button type="button" class="btn ghost" data-night-toggle aria-pressed="false">Night mode</button>
       <button type="button" class="btn ghost" data-shader-toggle aria-pressed="false">Screen shader</button>
@@ -68,25 +89,67 @@
     </nav>
 
     <!-- HERO -->
-    <section class="card" style="display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:center">
+    <section class="card" style="display:grid;grid-template-columns:1.2fr 1fr;gap:18px;align-items:center" id="top">
       <div>
         <h1>Make your well data work — from <em>plan</em> to <em>payoff</em>.</h1>
-        <p class="lead">One secure pool. <strong>Plan</strong> faster with context, <strong>Perform</strong> with a clear runbook, and <strong>Analyze</strong> for patterns & ROI. No rip-and-replace.</p>
+        <p class="lead">One secure pool. <strong>Plan</strong> faster with context, <strong>Perform</strong> with a clean runbook, and <strong>Analyze</strong> ROI. No rip-and-replace.</p>
         <p style="margin-top:12px">
-          <a class="btn primary" href="planner.html">Start a 2-week pilot</a>
-          <a class="btn ghost" href="whitepaper.html" style="margin-left:8px">Read White Paper</a>
+          <a class="btn primary" href="#loop">See the Loop</a>
+          <a class="btn ghost" href="#videos" style="margin-left:8px">Watch Videos</a>
         </p>
         <ul style="margin:12px 0 0;opacity:.9;display:grid;grid-template-columns:repeat(2,auto);gap:6px 18px">
           <li>≈70% plan pre-filled</li>
           <li>↓ NPT & rework</li>
-          <li>2 weeks pilot → impact</li>
-          <li>0 rip-and-replace</li>
+          <li>2-week pilot → impact</li>
+          <li>Your data, your control</li>
         </ul>
       </div>
       <div class="card" style="background:#081426">
-        <!-- Replace with the YouTube video you want -->
-        <iframe class="video" src="https://www.youtube.com/embed/aRiewahzTLE?rel=0&modestbranding=1&playsinline=1" allowfullscreen title="WellTegra Overview"></iframe>
+        <!-- HERO VIDEO: auto-detects channel ID (UC...) or direct video ID -->
+        <iframe id="heroFrame" class="video" allowfullscreen title="WellTegra Hero"></iframe>
       </div>
+    </section>
+
+    <!-- LOOP -->
+    <section class="card" id="loop" style="margin-top:16px">
+      <h2>The WellTegra Loop</h2>
+      <div class="grid-3">
+        <div>
+          <h3>Plan</h3>
+          <p>Planner starts you ~70% done by prefilling WBS items, risk candidates, and budget lines from similar wells.</p>
+        </div>
+        <div>
+          <h3>Perform</h3>
+          <p>Clean, offline-capable runbooks and simple deviation capture. Shift reports are standardized and pre-populated.</p>
+        </div>
+        <div>
+          <h3>Analyze</h3>
+          <p>Spot repeating issues, track NPT & cost variance, and quantify ROI with transparent assumptions.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LATEST UPLOADS (channel feed) + Secondary vid -->
+    <section class="grid-2" id="videos" style="margin-top:16px">
+      <div class="card">
+        <h2>Latest uploads</h2>
+        <iframe id="uploadsFrame" class="video" allowfullscreen title="Channel uploads"></iframe>
+        <p class="lead" style="opacity:.8;margin-top:8px">Powered by your channel’s uploads playlist.</p>
+      </div>
+      <div class="card">
+        <h2>Website Analysis — Short</h2>
+        <iframe class="video" src="https://www.youtube.com/embed/aRiewahzTLE?rel=0&modestbranding=1&playsinline=1" allowfullscreen title="Website Analysis — Short"></iframe>
+        <p class="lead" style="opacity:.8;margin-top:8px">This was previously your hero video; we’ve tucked it here for reference.</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="card" id="contact" style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div>
+        <h2>Ready to turn well data into compounding advantage?</h2>
+        <p class="lead">Book a data intake session to start your two-week pilot.</p>
+      </div>
+      <p><a class="btn primary" href="mailto:info@welltegra.network">Book a Data Intake Session</a></p>
     </section>
   </main>
 
@@ -97,8 +160,107 @@
     </div>
   </footer>
 
-  <!-- Include scripts once; use defer -->
-  <script src="assets/js/night-mode.js" defer></script>
-  <script src="assets/js/screen-shader.js" defer></script>
-</body>
-</html>
+  <!-- ===== Inline scripts (no external files needed) ===== -->
+  <script>
+    // --- Config: set your hero source below ---
+    // Accepts either:
+    //  - Channel ID starting with "UC..." (e.g. UCedD5TAvyQgV1LRFfjoNRww)
+    //  - OR a direct video ID (11 chars)
+    // You gave: "UCedD5TAvyQgV1LRFfjoNRww" and "edD5TAvyQgV1LRFfjoNRww".
+    const WT_HERO_SOURCE = "UCedD5TAvyQgV1LRFfjoNRww";
+
+    // Optional: if you ever want to drive the uploads section from a different channel, change this:
+    const WT_CHANNEL_ID = "UCedD5TAvyQgV1LRFfjoNRww";
+
+    // Fallback video if we can’t interpret the hero source
+    const WT_FALLBACK_VIDEO = "aRiewahzTLE";
+
+    function heroEmbedUrl(src){
+      if(!src) return `https://www.youtube.com/embed/${WT_FALLBACK_VIDEO}?rel=0&modestbranding=1&playsinline=1`;
+      // Channel ID -> uploads playlist "UU" + remainder
+      if(/^UC[A-Za-z0-9_-]{22}$/.test(src)){
+        const uploads = "UU" + src.slice(2);
+        return `https://www.youtube.com/embed/videoseries?list=${uploads}`;
+      }
+      // If they pasted just the remainder (edD5…):
+      if(/^[A-Za-z0-9_-]{22}$/.test(src)){
+        const uploads = "UU" + src;
+        return `https://www.youtube.com/embed/videoseries?list=${uploads}`;
+      }
+      // 11-char video id
+      if(/^[A-Za-z0-9_-]{11}$/.test(src)){
+        return `https://www.youtube.com/embed/${src}?rel=0&modestbranding=1&playsinline=1`;
+      }
+      return `https://www.youtube.com/embed/${WT_FALLBACK_VIDEO}?rel=0&modestbranding=1&playsinline=1`;
+    }
+
+    function uploadsEmbedUrl(channelId){
+      if(/^UC[A-Za-z0-9_-]{22}$/.test(channelId)){
+        const uploads = "UU" + channelId.slice(2);
+        return `https://www.youtube.com/embed/videoseries?list=${uploads}`;
+      }
+      return `https://www.youtube.com/embed?listType=user_uploads&list=WellTegra`;
+    }
+
+    // Set iframes
+    (function initYouTube(){
+      const hero = document.getElementById('heroFrame');
+      hero.src = heroEmbedUrl(WT_HERO_SOURCE);
+      const uploads = document.getElementById('uploadsFrame');
+      uploads.src = uploadsEmbedUrl(WT_CHANNEL_ID);
+    })();
+  </script>
+
+  <script>
+    // ===== Night mode (idempotent + accessible) =====
+    (function () {
+      if (window.__WT_NIGHT_MODE_INIT__) return; window.__WT_NIGHT_MODE_INIT__ = true;
+      function srAnnounce(msg){
+        let live=document.getElementById('wt-live');
+        if(!live){ live=document.createElement('div'); live.id='wt-live'; live.setAttribute('aria-live','polite'); live.setAttribute('aria-atomic','true');
+          Object.assign(live.style,{position:'absolute',clip:'rect(1px,1px,1px,1px)',clipPath:'inset(50%)',height:'1px',width:'1px',overflow:'hidden',whiteSpace:'nowrap'}); document.body.appendChild(live); }
+        live.textContent=msg;
+      }
+      const KEY='wt-night', html=document.documentElement;
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const stored = localStorage.getItem(KEY);
+      const initialOn = stored === null ? prefersDark : stored === '1';
+      function apply(on){
+        html.classList.toggle('night', !!on);
+        const btn=document.querySelector('[data-night-toggle]');
+        if(btn){ btn.setAttribute('aria-pressed', on?'true':'false'); btn.setAttribute('aria-label', on?'Switch to day mode':'Switch to night mode'); }
+      }
+      function toggle(){
+        const now = !html.classList.contains('night');
+        localStorage.setItem(KEY, now?'1':'0'); apply(now); srAnnounce(now?'Night mode on':'Night mode off');
+      }
+      function bind(){
+        apply(initialOn);
+        const btn=document.querySelector('[data-night-toggle]'); if(!btn) return;
+        btn.addEventListener('click', toggle);
+        btn.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); }});
+      }
+      if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', bind, {once:true}); } else { bind(); }
+    })();
+
+    // ===== Screen shader (idempotent + accessible) =====
+    (function () {
+      if (window.__WT_SCREEN_SHADER_INIT__) return; window.__WT_SCREEN_SHADER_INIT__ = true;
+      const KEY='wt-shader', overlayId='wt-screen-shader';
+      function ensureOverlay(){
+        let ov=document.getElementById(overlayId);
+        if(!ov){ ov=document.createElement('div'); ov.id=overlayId;
+          Object.assign(ov.style,{position:'fixed',inset:'0',pointerEvents:'none',background:'transparent',mixBlendMode:'multiply',zIndex:'2147483646'}); document.body.appendChild(ov); }
+        return ov;
+      }
+      function setStrength(val){
+        const ov=ensureOverlay(); const n=Math.max(0,Math.min(100,Number(val)||0));
+        ov.style.background = n ? `rgba(255,140,0, ${0.0025 * n})` : 'transparent';
+        const ctrl=document.querySelector('[data-shader-range]'); if(ctrl) ctrl.value=String(n);
+        const t=document.querySelector('[data-shader-toggle]'); if(t) t.setAttribute('aria-pressed', n>0?'true':'false');
+        localStorage.setItem(KEY, String(n));
+      }
+      function srAnnounce(msg){
+        let live=document.getElementById('wt-live');
+        if(!live){ live=document.createElement('div'); live.id='wt-live'; live.setAttribute('aria-live','polite'); live.setAttribute('aria-atomic','true');
+          Object.assign(live.style,{position:'absolute',clip:'rect(1px,1px,1px,1px)',clipPath:'inset(50%)',
