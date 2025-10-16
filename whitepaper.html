@@ -1,92 +1,76 @@
-<!doctype html>
-<html lang="en">
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>WellTegra — White Paper</title>
-<style>
-  :root{--bg:#0f172a;--ink:#e6f3ff;--muted:#bcd3f6;--panel:#0f2036;--accent:#21b5f0}
-  *{box-sizing:border-box} html{scroll-behavior:smooth}
-  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Inter,Arial,sans-serif}
-  a{color:inherit;text-decoration:none}
-  header{position:sticky;top:0;z-index:40;background:rgba(15,23,42,.78);backdrop-filter:blur(10px);border-bottom:1px solid rgba(188,211,246,.1)}
-  .nav{max-width:1200px;margin:0 auto;padding:8px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-  .brand video{width:140px;height:auto;border-radius:6px}
-  nav ul{list-style:none;margin:0;padding:0;display:flex;gap:10px;flex-wrap:wrap}
-  nav a{opacity:.9;padding:8px 10px;border-radius:10px}
-  nav a:hover,nav a.active{opacity:1;background:rgba(188,211,246,.12)}
-  .btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 14px;font-weight:650;cursor:pointer}
-  .btn.primary{background:linear-gradient(135deg,#2c68b0,var(--accent));color:#07101f}
-  .container{max-width:900px;margin:0 auto;padding:28px 18px}
-  h1{font-size:clamp(28px,3.2vw,42px)} .lead{color:var(--muted)}
-  .card{background:var(--panel);border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:16px}
-  svg{max-width:100%}
-  footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--muted)}
-  .foot{max-width:900px;margin:0 auto;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-  :focus-visible{outline:3px solid #21b5f0;outline-offset:2px}
-  @media print {.btn{display:none}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WellTegra v23</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{ --ink:#0f172a; --sky:#0ea5e9; --sea:#0369a1; --mint:#14b8a6; }
+    body{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans"; }
+    .brand-gradient{ background: radial-gradient(80% 120% at 20% 10%, rgba(14,165,233,.25), transparent 50%), linear-gradient(120deg, rgba(20,184,166,.12), transparent 60%); }
+    .hero-overlay{ background: linear-gradient(to bottom, rgba(15,23,42,.65), rgba(15,23,42,.4)); }
+    .wm:before{ content:""; position:absolute; inset:0; background-image:url('assets/watermark.jpg'); background-size:400px; opacity:.03; pointer-events:none; }
+    .btn{ display:inline-flex; align-items:center; gap:.5rem; padding:.5rem 1rem; border-radius:.75rem; background:#0284c7; color:#fff; text-decoration:none; }
+    .btn:hover{ background:#0ea5e9; }
+    .link{ color:#0284c7; text-decoration:none; }
+    .link:hover{ color:#0ea5e9; }
+  </style>
 </head>
-<body>
-<header>
-  <div class="nav">
-    <div class="brand"><a href="index.html"><video src="assets/logohome.mp4" autoplay muted loop playsinline></video></a></div>
-    <nav><ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="planner.html">Planner</a></li>
-      <li><a href="performer.html">Performer</a></li>
-      <li><a href="analyzer.html">Analyzer</a></li>
-      <li><a class="active" href="whitepaper.html">White Paper</a></li>
-    </ul></nav>
-    <div><a class="btn primary" href="mailto:info@welltegra.network">Contact</a></div>
-  </div>
-</header>
+<body class="bg-white text-slate-800">
+  <header class="sticky top-0 z-30 bg-white/90 backdrop-blur border-b">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/logo.jpg" alt="WellTegra logo" class="h-10 w-auto rounded-sm" onerror="this.style.display='none'">
+        <span class="font-extrabold tracking-tight">WellTegra</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
+        <a class="hover:text-sky-600" href="planner.html">Planner</a>
+        <a class="hover:text-sky-600" href="performer.html">Performer</a>
+        <a class="hover:text-sky-600" href="analyzer.html">Analyzer</a>
+        <a class="hover:text-sky-600" href="videos.html">Videos</a>
+        <a class="hover:text-sky-600" href="whitepaper.html">White Paper</a>
+        <a class="hover:text-sky-600" href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-<main class="container">
-  <h1>WellTegra White Paper — Comprehensive Edition</h1>
-  <p class="lead"><em>Updated today</em> — A practical loop for well delivery: Plan → Perform → Analyze.</p>
+  <main class="max-w-3xl mx-auto px-4 py-16">
+    <h1 class="text-3xl font-extrabold">White Paper</h1>
+    <p class="mt-2 text-slate-600">Architecture, privacy model, and ROI math behind WellTegra.</p>
+    <div class="mt-6 p-6 rounded-xl ring-1 ring-slate-200">
+      <p>Read the latest version online or download for offline reading.</p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <a class="btn" href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener">Open Google Doc</a>
+        <a class="btn" href="assets/presentation.pdf" target="_blank" rel="noopener">Slides (PDF)</a>
+      </div>
+    </div>
+  </main>
 
-  <div class="card">
-    <h2>Executive Summary</h2>
-    <p>WellTegra aligns planning, field execution, and analysis around one secure data pool. We reuse your existing systems and apply focused AI where it pays off. Your data remains yours — with SSO, RBAC, encryption, and audit trails.</p>
-
-    <h2>The WellTegra Loop</h2>
-    <svg viewBox="0 0 720 240" width="100%" height="240" role="img" aria-label="WellTegra Loop Diagram">
-      <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2c68b0"/><stop offset="1" stop-color="#21b5f0"/></linearGradient></defs>
-      <g fill="none" stroke="url(#g1)" stroke-width="2">
-        <circle cx="120" cy="120" r="72"/><circle cx="360" cy="120" r="72"/><circle cx="600" cy="120" r="72"/>
-        <path d="M192 120h72"/><path d="M432 120h72"/>
-      </g>
-      <g fill="#cfe8ff" font-family="system-ui,Arial" font-size="16" text-anchor="middle">
-        <text x="120" y="118">Plan</text><text x="360" y="118">Perform</text><text x="600" y="118">Analyze</text>
-      </g>
-    </svg>
-
-    <h2>Data Pool & Integration</h2>
-    <svg viewBox="0 0 720 260" width="100%" height="260" role="img" aria-label="Data Pool Architecture">
-      <defs><linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#154177"/><stop offset="1" stop-color="#21b5f0"/></linearGradient></defs>
-      <rect x="40" y="40" width="640" height="180" rx="12" fill="rgba(33,181,240,.1)" stroke="#21b5f0"/>
-      <text x="60" y="64" fill="#cfe8ff" font-family="system-ui,Arial" font-size="14">Secure Data Pool</text>
-      <g font-family="system-ui,Arial" font-size="12" fill="#cfe8ff">
-        <rect x="80" y="90" width="140" height="40" rx="8" fill="url(#b)"/><text x="150" y="115" text-anchor="middle">WellView</text>
-        <rect x="240" y="90" width="140" height="40" rx="8" fill="url(#b)"/><text x="310" y="115" text-anchor="middle">Sapphire</text>
-        <rect x="400" y="90" width="140" height="40" rx="8" fill="url(#b)"/><text x="470" y="115" text-anchor="middle">ERP/PO</text>
-        <rect x="560" y="90" width="100" height="40" rx="8" fill="url(#b)"/><text x="610" y="115" text-anchor="middle">Files</text>
-        <rect x="160" y="160" width="180" height="40" rx="8" fill="rgba(255,255,255,.08)"/><text x="250" y="185" text-anchor="middle">Catalog • Quality • Lineage</text>
-        <rect x="360" y="160" width="180" height="40" rx="8" fill="rgba(255,255,255,.08)"/><text x="450" y="185" text-anchor="middle">Access • RBAC • Audit</text>
-      </g>
-    </svg>
-
-    <h2>Implementation & ROI</h2>
-    <p>Two-week pilot designed to demonstrate reductions in NPT and rework with transparent assumptions.</p>
-    <p><a class="btn primary" onclick="window.print()">Download as PDF</a> <a class="btn" href="roi.html">Open ROI Calculator</a></p>
-  </div>
-</main>
-
-<footer>
-  <div class="foot"><div>© WellTegra</div><div><a href="mailto:info@welltegra.network">info@welltegra.network</a></div></div>
-</footer>
-
-<script src="assets/js/night-mode.js" defer></script>
-<script src="assets/js/screen-shader.js" defer></script>
+  <footer class="mt-20 border-t">
+    <div class="max-w-7xl mx-auto px-4 py-10 text-sm text-slate-500 flex flex-wrap items-center justify-between gap-4">
+      <p>© 2025 WellTegra Data Solutions</p>
+      <div class="flex items-center gap-4">
+        <a class="link" href="mailto:info@welltegra.network">info@welltegra.network</a>
+        <a class="link" href="https://welltegra.network">welltegra.network</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    window.WT = {
+      selectWell: (id) => { localStorage.setItem('wt:selectedWell', id); },
+      getWell: async () => {
+        const resp = await fetch('data/wells.json');
+        const data = await resp.json();
+        const id = localStorage.getItem('wt:selectedWell');
+        const wells = data.wells || data || [];
+        return { id, well: wells.find(w => (w.id || w.name) === id) || null, wells };
+      }
+    };
+  </script>
 </body>
 </html>

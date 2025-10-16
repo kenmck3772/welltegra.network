@@ -1,438 +1,117 @@
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Clan Hearth - Ultimate Scottish Heritage Platform</title>
-    <meta name="description" content="Discover your Scottish heritage through interactive clan exploration, premium heritage tours, spiritual clan finding, Ogham readings, and authentic cultural experiences.">
-    
-    <!-- Favicons and Touch Icons -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" href="apple-touch-icon.jpg">
-
-    <!-- External Libraries & Fonts -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Scripts -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
-
-    <style>
-        :root {
-            --clan-gold: #d4af37;
-            --clan-burgundy: #800020;
-            --clan-forest: #2d5016;
-            --clan-stone: #8b7355;
-            --parchment: #f4f1e8;
-            --aged-paper: #f0ead6;
-        }
-        
-        /* Light Mode Default */
-        body { font-family: 'Inter', sans-serif; background: var(--parchment); color: #374151; }
-        .font-title { font-family: 'Cinzel', serif; }
-
-        /* Dark Mode Styles */
-        html.dark body { background: #111827; color: #d1d5db; }
-        html.dark .content-card, html.dark .bg-white\/80, html.dark .bg-white\/90, html.dark .bg-white { background: rgba(31, 41, 55, 0.9); }
-        html.dark .bg-stone-100, html.dark .bg-stone-50 { background: #374151; }
-        html.dark .text-stone-800, html.dark .text-gray-900, html.dark .text-stone-900 { color: #e5e7eb; }
-        html.dark .text-stone-600, html.dark .text-gray-600, html.dark .text-gray-700, html.dark .text-stone-500 { color: #9ca3af; }
-        html.dark .text-yellow-800 { color: var(--clan-gold); }
-        html.dark .border-stone-200, html.dark .border-gray-200, html.dark .border-gray-300 { border-color: #4b5563; }
-        html.dark .header-bg { background: rgba(17, 24, 39, 0.8); }
-        html.dark .leaflet-tile { filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7); }
-        html.dark .dropdown-menu { background: rgba(31, 41, 55, 0.95); }
-        html.dark .mobile-menu-bg { background: rgba(31, 41, 55, 0.95); }
-        html.dark .spiritual-journey { background: #1f2937; }
-        html.dark .element-card { background: #374151; }
-        html.dark .ritual-step h4, html.dark .ritual-step p, html.dark .tree li a { color: #d1d5db; }
-        html.dark .tree li a { background-color: #374151; border-color: #6b7280;}
-
-        .nav-link.active { color: var(--clan-gold); border-bottom: 2px solid var(--clan-gold); background: rgba(212, 175, 55, 0.1); }
-        html.dark .nav-link.active { background: rgba(212, 175, 55, 0.2); }
-        
-        .page-section { display: none; }
-        .page-section.active { display: block; }
-        
-        .btn-primary { background: linear-gradient(45deg, var(--clan-burgundy), var(--clan-forest)); color: white; border: 2px solid var(--clan-gold); transition: all 0.3s ease; }
-        .btn-primary:hover { background: linear-gradient(45deg, var(--clan-forest), var(--clan-burgundy)); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
-        
-        .dropdown .dropdown-menu { display: none; }
-        .dropdown:hover .dropdown-menu { display: block; }
-
-        .tab-button.active { border-color: var(--clan-gold); color: var(--clan-gold); font-weight: 600; background-color: var(--aged-paper); }
-        html.dark .tab-button.active { background-color: #374151; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        #clanMap, #tourismMap { min-height: 60vh; border-radius: 0.5rem; }
-
-        /* Slideshow Styles */
-        .slide { display: none; animation: fade 1.5s ease-in-out; background-size: cover; background-position: center; }
-        .slide.active { display: block; }
-        @keyframes fade { from { opacity: .4 } to { opacity: 1 } }
-        
-        /* Spiritual Journey Styles */
-        .spiritual-journey { background: linear-gradient(135deg, #fef9e7 0%, #fdf2e9 100%); }
-        .mystical-stone { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .mystical-stone:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
-        .stone-selected { transform: scale(1.15) !important; box-shadow: 0 0 20px rgba(161, 98, 7, 0.5) !important; border: 3px solid #a16207; }
-        .element-card { transition: transform 0.2s ease, box-shadow 0.2s ease; border: 2px solid transparent; }
-        .element-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); }
-        .element-card.selected { border-color: #a16207; background: #fef9e7; }
-        html.dark .element-card.selected { background: #4b5563; }
-        .mystical-glow { animation: mysticalGlow 3s ease-in-out infinite alternate; }
-        @keyframes mysticalGlow { from { box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); } to { box-shadow: 0 0 25px rgba(212, 175, 55, 0.6); } }
-        
-        /* Family Tree Styles */
-        .tree ul { padding-top: 20px; position: relative; transition: all 0.5s; display: flex; justify-content: center;}
-        .tree li { float: left; text-align: center; list-style-type: none; position: relative; padding: 20px 5px 0 5px; transition: all 0.5s; }
-        .tree li::before, .tree li::after{ content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid var(--clan-stone); width: 50%; height: 20px; }
-        .tree li::after{ right: auto; left: 50%; border-left: 2px solid var(--clan-stone); }
-        .tree li:only-child::after, .tree li:only-child::before { display: none; }
-        .tree li:only-child{ padding-top: 0;}
-        .tree li:first-child::before, .tree li:last-child::after{ border: 0 none; }
-        .tree li:last-child::before{ border-right: 2px solid var(--clan-stone); border-radius: 0 5px 0 0; }
-        .tree li:first-child::after{ border-radius: 5px 0 0 0; }
-        .tree ul ul::before{ content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid var(--clan-stone); width: 0; height: 20px; }
-        .tree li a{ border: 2px solid var(--clan-stone); padding: 10px; text-decoration: none; color: #333; background-color: var(--parchment); font-family: 'Cinzel', serif; display: inline-block; border-radius: 5px; transition: all 0.5s; min-width: 100px; }
-        .tree li a.selected { border-color: var(--clan-gold); box-shadow: 0 0 10px var(--clan-gold); }
-
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WellTegra v23</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{ --ink:#0f172a; --sky:#0ea5e9; --sea:#0369a1; --mint:#14b8a6; }
+    body{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans"; }
+    .brand-gradient{ background: radial-gradient(80% 120% at 20% 10%, rgba(14,165,233,.25), transparent 50%), linear-gradient(120deg, rgba(20,184,166,.12), transparent 60%); }
+    .hero-overlay{ background: linear-gradient(to bottom, rgba(15,23,42,.65), rgba(15,23,42,.4)); }
+    .wm:before{ content:""; position:absolute; inset:0; background-image:url('assets/watermark.jpg'); background-size:400px; opacity:.03; pointer-events:none; }
+    .btn{ display:inline-flex; align-items:center; gap:.5rem; padding:.5rem 1rem; border-radius:.75rem; background:#0284c7; color:#fff; text-decoration:none; }
+    .btn:hover{ background:#0ea5e9; }
+    .link{ color:#0284c7; text-decoration:none; }
+    .link:hover{ color:#0ea5e9; }
+  </style>
 </head>
-<body class="text-stone-800">
-    <header class="bg-white/80 backdrop-blur-sm shadow-lg sticky top-0 z-40 header-bg">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-                 <img src="icon.jpg" alt="The Clan Hearth Emblem" class="w-14 h-14 rounded-full border-2 border-yellow-800">
-                <h1 class="text-2xl md:text-3xl font-title font-bold text-yellow-800">The Clan Hearth</h1>
-            </div>
-            <nav id="main-nav" class="hidden md:flex items-center space-x-1">
-                <!-- Desktop Nav Links Populated by JS -->
-            </nav>
-            <div class="flex items-center space-x-4">
-                <button id="dark-mode-toggle" class="text-stone-600 hover:text-yellow-800 transition-colors text-lg"><i class="fas fa-moon"></i></button>
-                <button id="mobile-menu-btn" class="md:hidden text-stone-700"><i class="fas fa-bars text-xl"></i></button>
-            </div>
+<body class="bg-white text-slate-800">
+  <header class="sticky top-0 z-30 bg-white/90 backdrop-blur border-b">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/logo.jpg" alt="WellTegra logo" class="h-10 w-auto rounded-sm" onerror="this.style.display='none'">
+        <span class="font-extrabold tracking-tight">WellTegra</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
+        <a class="hover:text-sky-600" href="planner.html">Planner</a>
+        <a class="hover:text-sky-600" href="performer.html">Performer</a>
+        <a class="hover:text-sky-600" href="analyzer.html">Analyzer</a>
+        <a class="hover:text-sky-600" href="videos.html">Videos</a>
+        <a class="hover:text-sky-600" href="whitepaper.html">White Paper</a>
+        <a class="hover:text-sky-600" href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="relative brand-gradient">
+      <div class="absolute inset-0 hero-overlay"></div>
+      <div class="relative max-w-7xl mx-auto px-4 py-24 text-white">
+        <div class="max-w-3xl">
+          <h1 class="text-4xl sm:text-6xl font-extrabold leading-tight">From Data Chaos to Predictive Clarity.</h1>
+          <p class="mt-5 text-lg sm:text-xl text-slate-200">Unify your well data, standardize execution, and learn faster—without ripping and replacing what already works.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a class="btn" href="planner.html">Open Planner</a>
+            <a class="inline-flex items-center gap-2 px-4 py-2 rounded-lg ring-1 ring-white/40 hover:bg-white/10" href="videos.html">Watch Demos</a>
+          </div>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-white/95 mobile-menu-bg"></div>
-    </header>
+      </div>
+    </section>
+    <section class="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-3 gap-6">
+      <div class="p-6 rounded-xl ring-1 ring-slate-200">
+        <h3 class="font-extrabold text-lg">Planner</h3>
+        <p class="mt-2 text-sm">AI‑assisted plans prefilling WBS, risks and budgets from similar wells.</p>
+        <a class="link mt-3 inline-block" href="planner.html">Plan a job →</a>
+      </div>
+      <div class="p-6 rounded-xl ring-1 ring-slate-200">
+        <h3 class="font-extrabold text-lg">Performer</h3>
+        <p class="mt-2 text-sm">Clean runbooks, deviation capture, and simple live KPIs.</p>
+        <a class="link mt-3 inline-block" href="performer.html">Run the job →</a>
+      </div>
+      <div class="p-6 rounded-xl ring-1 ring-slate-200">
+        <h3 class="font-extrabold text-lg">Analyzer</h3>
+        <p class="mt-2 text-sm">Rapid post‑job patterns, NPT breakdowns, and ROI.</p>
+        <a class="link mt-3 inline-block" href="analyzer.html">Review performance →</a>
+      </div>
+    </section>
+    <section class="max-w-7xl mx-auto px-4 py-10">
+      <h2 class="text-2xl font-extrabold">Latest Videos</h2>
+      <div id="video-strip" class="mt-6 grid sm:grid-cols-3 gap-6"></div>
+      <script>
+        (async () => {
+          const resp = await fetch('data/videos.json'); const vids = await resp.json();
+          const host = 'https://www.youtube-nocookie.com/embed/';
+          const ctn = document.getElementById('video-strip');
+          vids.forEach(v => {
+            const a = document.createElement('a'); a.href = 'videos.html#'+v.id; a.className='block group';
+            a.innerHTML = `
+              <div class="aspect-video rounded-lg overflow-hidden ring-1 ring-slate-200 bg-black">
+                <iframe class="w-full h-full" src="${host}${v.id}?rel=0" title="${v.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              </div>
+              <div class="mt-2 text-sm font-semibold group-hover:text-sky-600">${v.title}</div>`;
+            ctn.appendChild(a);
+          });
+        })();
+      </script>
+    </section>
+  </main>
 
-    <main id="main-content">
-        <!-- Sections will be injected here by JS -->
-    </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const mainContent = document.getElementById('main-content');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mainNav = document.getElementById('main-nav');
-            let maps = {};
-            const githubBaseUrl = 'https://raw.githubusercontent.com/kenmck3772/theclanhearth.com/main/';
-
-            const pages = {
-                home: { title: "Home", icon: "fa-home", inDropdown: false },
-                clans: { title: "Clans", icon: "fa-shield-alt", inDropdown: false },
-                genealogy: { title: "Genealogy", icon: "fa-sitemap", inDropdown: false },
-                tourism: { title: "Trip Planner", icon: "fa-map-marked-alt", inDropdown: true },
-                finder: { title: "Spiritual Clan", icon: "fa-magic", inDropdown: true },
-                legends: { title: "Legends", icon: "fa-scroll", inDropdown: true },
-                'tartan-designer': { title: "Tartan Designer", icon: "fa-palette", inDropdown: true },
-                recipes: { title: "Recipes", icon: "fa-utensils", inDropdown: true },
-                'ai-assistant': { title: "Och-I Assistant", icon: "fa-robot", inDropdown: true },
-                '3d-heritage': { title: "3D Heritage", icon: "fa-cube", inDropdown: true }
-            };
-
-            // Dynamic Nav and Section creation
-            let mobileMenuHTML = '';
-            let mainNavHTML = '';
-            let dropdownHTML = '';
-            for (const [key, value] of Object.entries(pages)) {
-                const section = document.createElement('section');
-                section.id = `${key}-section`;
-                section.className = 'page-section';
-                mainContent.appendChild(section);
-                
-                const linkHTML = `<button class="nav-link font-semibold text-stone-600 hover:text-yellow-800 px-3 py-2 rounded-md" data-target="${key}">${value.title}</button>`;
-                const mobileLinkHTML = `<button class="nav-link block w-full text-left font-semibold text-stone-600 hover:text-yellow-800 p-4 border-t dark:border-gray-700" data-target="${key}"><i class="fas ${value.icon} mr-3 w-5 text-center"></i>${value.title}</button>`;
-
-                mobileMenuHTML += mobileLinkHTML;
-                if (value.inDropdown) {
-                    dropdownHTML += linkHTML.replace('px-3 py-2 rounded-md', 'block w-full text-left p-3');
-                } else {
-                    mainNavHTML += linkHTML;
-                }
-            }
-            mainNavHTML += `<div class="relative dropdown">
-                    <button class="font-semibold text-stone-600 hover:text-yellow-800 px-3 py-2 rounded-md">More <i class="fas fa-chevron-down text-xs"></i></button>
-                    <div class="dropdown-menu absolute right-0 mt-2 w-52 bg-white/95 backdrop-blur-lg rounded-xl shadow-lg z-10 dark:bg-gray-800/95">${dropdownHTML}</div>
-                </div>`;
-            
-            mainNav.innerHTML = mainNavHTML;
-            mobileMenu.innerHTML = mobileMenuHTML;
-            
-            const clanData = [
-                { id: "armstrong", name: "Clan Armstrong", motto: "Invictus Maneo", lore: "A powerful and feared Border Reiver clan.", seat: { lat: 55.175, lng: -2.863 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/armstrong-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/armstrong-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/armstrong-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/armstrong.jpg`} },
-                { id: "cameron", name: "Clan Cameron", motto: "Aonaibh ri Chéile", lore: "A fierce Lochaber clan, loyal Jacobites.", seat: { lat: 56.879, lng: -5.074 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/cameron-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/cameron-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/cameron-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/cameron.jpg`} },
-                { id: "campbell", name: "Clan Campbell", motto: "Ne Obliviscaris", lore: "One of the largest and most powerful Highland clans.", seat: { lat: 56.234, lng: -5.072 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/campbell-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/campbell-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/campbell-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/campbell.jpg`} },
-                { id: "carnegie", name: "Clan Carnegie", motto: "Tache Sans Tache", lore: "A noble family who held the Dukedom of Fife.", seat: { lat: 56.716, lng: -2.578 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/carnegie-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/carnegie-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/carnegie-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/carnegie.jpg`} },
-                { id: "chattan", name: "Clan Chattan", motto: "Touch not the cat bot a glove", lore: "A powerful confederation of Highland clans.", seat: { lat: 57.135, lng: -4.054 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/chattan-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/chattan-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/chattan-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/chattan.jpg`} },
-                { id: "cunningham", name: "Clan Cunningham", motto: "Over Fork Over", lore: "An Ayrshire clan with a long and storied history.", seat: { lat: 55.637, lng: -4.753 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/cunningham-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/cunningham-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/cunningham-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/cunningham.jpg`} },
-                { id: "donald", name: "Clan Donald", motto: "Per Mare Per Terras", lore: "The Lords of the Isles, a great and powerful clan.", seat: { lat: 57.412, lng: -6.707 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/donald-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/donald-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/donald-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/donald.jpg`} },
-                { id: "douglas", name: "Clan Douglas", motto: "Jamais Arrière", lore: "A powerful Lowland family, often rivals to the throne.", seat: { lat: 55.776, lng: -3.883 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/douglas-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/douglas-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/douglas-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/douglas.jpg`} },
-                { id: "eliott", name: "Clan Eliott", motto: "Fortiter Et Recte", lore: "A Border Reiver clan known for their strength.", seat: { lat: 55.267, lng: -2.812 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/eliott-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/eliott-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/eliott-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/eliott.jpg`} },
-                { id: "erskine", name: "Clan Erskine", motto: "Je Pense Plus", lore: "Guardians of Scottish kings and queens.", seat: { lat: 56.115, lng: -3.793 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/erskine-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/erskine-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/erskine-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/erskine.jpg`} },
-                { id: "fraser", name: "Clan Fraser", motto: "Je Suis Prest", lore: "A powerful Highland clan of Norman origin.", seat: { lat: 57.383, lng: -4.483 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/fraser-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/fraser-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/fraser-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/fraser.jpg`} },
-                { id: "gordon", name: "Clan Gordon", motto: "Bydand", lore: "The 'Cock o' the North', powerful in the northeast.", seat: { lat: 57.449, lng: -2.859 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/gordon-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/gordon-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/gordon-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/gordon.jpg`} },
-                { id: "graham", name: "Clan Graham", motto: "Ne Oublie", lore: "A clan known for its great military leaders.", seat: { lat: 56.095, lng: -4.316 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/graham-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/graham-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/graham-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/graham.jpg`} },
-                { id: "grant", name: "Clan Grant", motto: "Stand Fast", lore: "A prominent Highland clan.", seat: { lat: 57.320, lng: -3.593 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/grant-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/grant-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/grant-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/grant.jpg`} },
-                { id: "guthrie", name: "Clan Guthrie", motto: "Sto Pro Veritate", lore: "An Angus clan with a history of royal service.", seat: { lat: 56.666, lng: -2.574 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/guthrie-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/guthrie-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/guthrie-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/guthrie.jpg`} },
-                { id: "leslie", name: "Clan Leslie", motto: "Grip Fast", lore: "A noble family with origins in Hungary.", seat: { lat: 57.320, lng: -2.850 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/leslie-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/leslie-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/leslie-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/leslie.jpg`} },
-                { id: "lindsay", name: "Clan Lindsay", motto: "Endure Fort", lore: "A noble family of Norman origin.", seat: { lat: 56.840, lng: -2.610 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/lindsay-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/lindsay-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/lindsay-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/lindsay.jpg`} },
-                { id: "macdougall", name: "Clan MacDougall", motto: "Buaidh No Bas", lore: "Descendants of Somerled, Lords of Lorn.", seat: { lat: 56.417, lng: -5.474 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/macdougall-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/macdougall-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/macdougall-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/macdougall.jpg`} },
-                { id: "macgregor", name: "Clan MacGregor", motto: "'S Rioghal Mo Dhream", lore: "The Children of the Mist, a proscribed clan.", seat: { lat: 56.376, lng: -4.482 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/macgregor-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/macgregor-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/macgregor-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/macgregor.jpg`} },
-                { id: "mackenzie", name: "Clan MacKenzie", motto: "Luceo Non Uro", lore: "A powerful Highland clan.", seat: { lat: 57.273, lng: -5.516 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/mackenzie-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/mackenzie-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/mackenzie-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/mackenzie.jpg`} },
-                { id: "mackintosh", name: "Clan Mackintosh", motto: "Touch not the cat bot a glove", lore: "Leaders of the Clan Chattan confederation.", seat: { lat: 57.433, lng: -4.050 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/mackintosh-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/mackintosh-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/mackintosh-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/mackintosh.jpg`} },
-                { id: "macleod", name: "Clan MacLeod", motto: "Hold Fast", lore: "A powerful clan of the Hebrides.", seat: { lat: 57.412, lng: -6.707 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/macleod-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/macleod-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/macleod-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/macleod.jpg`} },
-                { id: "macpherson", name: "Clan Macpherson", motto: "Touch not the cat bot a glove", lore: "A prominent member of the Clan Chattan.", seat: { lat: 57.068, lng: -4.032 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/macpherson-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/macpherson-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/macpherson-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/macpherson.jpg`} },
-                { id: "murray", name: "Clan Murray", motto: "Tout Prest", lore: "A powerful family, Dukes of Atholl.", seat: { lat: 56.772, lng: -3.738 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/murray-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/murray-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/murray-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/murray.jpg`} },
-                { id: "ogilvy", name: "Clan Ogilvy", motto: "A Fin", lore: "A noble Angus clan.", seat: { lat: 56.671, lng: -3.008 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/ogilvy-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/ogilvy-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/ogilvy-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/ogilvy.jpg`} },
-                { id: "ramsay", name: "Clan Ramsay", motto: "Ora Et Labora", seat: { lat: 56.002, lng: -3.076 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/ramsay-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/ramsay-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/ramsay-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/ramsay.jpg`} },
-                { id: "sinclair", name: "Clan Sinclair", motto: "Commit Thy Work to God", lore: "Earls of Orkney and Caithness.", seat: { lat: 58.587, lng: -3.064 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/sinclair-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/sinclair-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/sinclair-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/sinclair.jpg`} },
-                { id: "stewart", name: "Clan Stewart", motto: "Virescit Vulnere Virtus", lore: "The Royal House of Scotland.", seat: { lat: 56.123, lng: -3.948 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/stewart-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/stewart-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/stewart-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/stewart.jpg`} },
-                { id: "wallace", name: "Clan Wallace", motto: "Pro Libertate", lore: "The clan of Scotland's national hero.", seat: { lat: 55.883, lng: -4.433 }, emblems: { traditional: `${githubBaseUrl}emblems/traditional/wallace-emblem.jpg`, modern: `${githubBaseUrl}emblems/modern/wallace-emblem.jpg`, celtic: `${githubBaseUrl}emblems/celtic/wallace-emblem.jpg` }, tartan: { image: `${githubBaseUrl}tartans/wallace.jpg`} }
-            ];
-            
-            const slideData = [
-                 { "img": "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?q=80&w=1935", "title": "Highland Lochs", "desc": "Mirror-like waters reflecting majestic mountains" },
-                { "img": "https://images.unsplash.com/photo-1506373295124-73a729b47031?q=80&w=1932", "title": "Lakeside Castles", "desc": "Medieval fortresses nestled in pristine landscapes" },
-                { "img": "https://images.unsplash.com/photo-1547772635-e6de7417042a?q=80&w=1974", "title": "Glacial Valleys", "desc": "Carved by ancient ice, bathed in sunlight" },
-                { "img": "https://images.unsplash.com/photo-1552522432-043c7d3c33d8?q=80&w=1935", "title": "Historic Landmarks", "desc": "Ancient monuments standing guard over the waters" }
-            ];
-            
-            // --- ALL TEMPLATE AND FEATURE FUNCTIONS ARE NOW DEFINED ---
-
-            function getHomePageHTML() {
-                 let slides = slideData.map((slide, index) => `
-                    <div class="slide ${index === 0 ? 'active' : ''} absolute inset-0" style="background-image:url('${slide.img}')">
-                        <div class="absolute inset-0 bg-black/50"></div>
-                        <div class="relative h-full flex items-center justify-center text-center p-8">
-                            <div>
-                                <h2 class="text-5xl md:text-7xl font-bold font-title text-white drop-shadow-lg">${slide.title}</h2>
-                                <p class="text-xl md:text-2xl mt-4 italic text-white/90 drop-shadow-md">${slide.desc}</p>
-                            </div>
-                        </div>
-                    </div>`).join('');
-                let dots = slideData.map((_, index) => `<span class="dot cursor-pointer h-3 w-3 mx-1 bg-white/50 rounded-full inline-block transition-colors duration-600 ease-in-out ${index === 0 ? 'active' : ''}" data-slide="${index}"></span>`).join('');
-                return `<div class="relative h-[70vh] min-h-[400px] text-white shadow-2xl overflow-hidden -mt-8">${slides}<div class="absolute bottom-5 z-30 w-full flex justify-center">${dots}</div></div>`;
-            }
-
-            function getClansPageHTML() { 
-                return `<div class="content-card flex flex-col md:flex-row min-h-screen rounded-2xl shadow-xl overflow-hidden">
-                    <aside class="w-full md:w-64 lg:w-72 bg-stone-100 p-4 flex flex-col">
-                        <h2 class="text-xl font-bold text-stone-800 font-title mb-4">Scottish Clans</h2>
-                        <div id="clan-sidebar-list" class="flex-grow overflow-y-auto"></div>
-                    </aside>
-                    <main id="clans-main-content" class="flex-1 p-4 sm:p-6 lg:p-8">
-                         <div class="text-stone-500 text-center py-20">Select a clan from the list to begin your journey.</div>
-                    </main>
-                </div>`;
-            }
-            function getGenealogyPageHTML() { return `<div class="content-card p-8 rounded-xl">Genealogy Tree Builder Coming Soon</div>`; }
-            function getTourismPageHTML() { return `<div class="content-card p-8 rounded-xl">Trip Planner Coming Soon</div>`; }
-            function getNameGeneratorPageHTML() { return `<div class="content-card p-8 rounded-xl">Name Generator Coming Soon</div>`; }
-            function getSagaPageHTML() { return `<div class="content-card p-8 rounded-xl">Highland Saga Coming Soon</div>`; }
-            function getGuidesPageHTML() { return `<div class="content-card p-8 rounded-xl">Heritage Guides coming soon.</div>`; }
-            function get3DPageHTML() { return `<div class="content-card p-8 rounded-xl">3D Heritage Explorer Coming Soon</div>`; }
-            function getFinderPageHTML() { return `<div class="content-card p-8 rounded-xl">Clan Finder Coming Soon</div>`; }
-            function getLegendsPageHTML() { return `<div class="content-card p-8 rounded-xl">Legends Coming Soon</div>`; }
-            function getTartanDesignerPageHTML() { return `<div class="content-card p-8 rounded-xl">Tartan Designer Coming Soon</div>`; }
-            function getRecipesPageHTML() { return `<div class="content-card p-8 rounded-xl">Recipes Coming Soon</div>`; }
-            function getAIAssistantPageHTML() { return `<div class="content-card p-8 rounded-xl">Och-I Assistant Coming Soon</div>`; }
-
-            function initNav() {
-                const navLinks = document.querySelectorAll('.nav-link');
-                const pageSections = document.querySelectorAll('.page-section');
-                const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-                const mobileMenu = document.getElementById('mobile-menu');
-
-                navLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        const targetId = link.dataset.target;
-                        
-                        if(targetId === 'home') {
-                            mainContent.className = '';
-                        } else {
-                            mainContent.className = 'max-w-7xl mx-auto px-4 py-8';
-                        }
-
-                        pageSections.forEach(section => section.classList.toggle('active', section.id === `${targetId}-section`));
-                        navLinks.forEach(nav => nav.classList.remove('active'));
-                        document.querySelectorAll(`.nav-link[data-target="${targetId}"]`).forEach(l => l.classList.add('active'));
-                        
-                        if (targetId === 'clans' && !maps.clans) initClansMap();
-                        
-                        setTimeout(() => {
-                           if (targetId === 'clans' && maps.clans) maps.clans.invalidateSize();
-                        }, 10);
-
-                        mobileMenu.classList.add('hidden');
-                    });
-                });
-                mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-            }
-
-            function setupDarkMode() {
-                const toggle = document.getElementById('dark-mode-toggle');
-                const icon = toggle.querySelector('i');
-                const htmlEl = document.documentElement;
-
-                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                    htmlEl.classList.add('dark');
-                    icon.className = 'fas fa-sun';
-                } else {
-                    htmlEl.classList.remove('dark');
-                    icon.className = 'fas fa-moon';
-                }
-
-                toggle.addEventListener('click', () => {
-                    if (htmlEl.classList.toggle('dark')) {
-                        localStorage.theme = 'dark';
-                        icon.className = 'fas fa-sun';
-                    } else {
-                        localStorage.theme = 'light';
-                        icon.className = 'fas fa-moon';
-                    }
-                });
-            }
-
-            function initClansMap() { 
-                if (maps.clans) return;
-                const clansMain = document.getElementById('clans-main-content');
-                if(!clansMain) return;
-                
-                clansMain.innerHTML = `<div id="clanMap" class="w-full h-full rounded-lg shadow-lg"></div>`;
-                maps.clans = L.map('clanMap').setView([57.0, -4.5], 7);
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' }).addTo(maps.clans);
-                
-                const sidebar = document.getElementById('clan-sidebar-list');
-                sidebar.innerHTML = clanData.map(clan => `<button class="block w-full text-left px-4 py-2 rounded-md hover:bg-stone-200" data-clan-id="${clan.id}">${clan.name}</button>`).join('');
-                sidebar.addEventListener('click', e => {
-                    const button = e.target.closest('[data-clan-id]');
-                    if (button) {
-                        showClanDetails(button.dataset.clanId);
-                        document.querySelectorAll('#clan-sidebar-list button').forEach(btn => btn.classList.remove('active-item'));
-                        button.classList.add('active-item');
-                    }
-                });
-            }
-
-            function showClanDetails(clanId) { 
-                const clan = clanData.find(c => c.id === clanId);
-                const mainContent = document.getElementById('clans-main-content');
-                mainContent.innerHTML = `
-                    <div class="animate-fade-in grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div class="lg:col-span-2">
-                             <div id="clanMap" class="w-full h-96 lg:h-full rounded-lg shadow-lg"></div>
-                        </div>
-                        <div id="clan-dossier" class="lg:col-span-1">
-                            <h3 class="text-3xl font-bold font-title">${clan.name}</h3>
-                            <p class="font-semibold text-stone-600 italic mb-4">${clan.motto}</p>
-                            <div class="mt-4 border-b border-stone-200">
-                                <nav class="-mb-px flex space-x-2" aria-label="Tabs">
-                                    <button class="tab-button whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm active" data-tab="lore">Lore</button>
-                                    <button class="tab-button whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm" data-tab="emblems">Emblems</button>
-                                    <button class="tab-button whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm" data-tab="tartan">Tartan</button>
-                                </nav>
-                            </div>
-                            <div class="mt-4">
-                                <div id="lore-tab" class="tab-content active space-y-2 text-sm">${clan.lore || 'Details coming soon.'}</div>
-                                <div id="emblems-tab" class="tab-content">
-                                    <div class="grid grid-cols-3 gap-2">
-                                        <div><img src="${clan.emblems.traditional}" alt="Traditional Emblem" class="w-full rounded-md"><p class="text-xs text-center mt-1">Traditional</p></div>
-                                        <div><img src="${clan.emblems.modern}" alt="Modern Emblem" class="w-full rounded-md"><p class="text-xs text-center mt-1">Modern</p></div>
-                                        <div><img src="${clan.emblems.celtic}" alt="Celtic Emblem" class="w-full rounded-md"><p class="text-xs text-center mt-1">Celtic</p></div>
-                                    </div>
-                                </div>
-                                <div id="tartan-tab" class="tab-content">
-                                    <img src="${clan.tartan.image}" alt="${clan.name} Tartan" class="w-full rounded-md mb-2">
-                                    <p class="text-sm">${clan.tartan.description || ''}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                mainContent.querySelectorAll('.tab-button').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        const tabId = e.currentTarget.dataset.tab;
-                        mainContent.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                        mainContent.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-                        e.currentTarget.classList.add('active');
-                        mainContent.querySelector(`#${tabId}-tab`).classList.add('active');
-                    });
-                });
-                
-                maps.clans = L.map('clanMap').setView([clan.seat.lat, clan.seat.lng], 9);
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' }).addTo(maps.clans);
-                L.marker([clan.seat.lat, clan.seat.lng]).addTo(maps.clans);
-            }
-            
-            function setupSlideshow() { 
-                let slideIndex = 0;
-                const slides = document.querySelectorAll(".slide");
-                const dots = document.querySelectorAll(".dot");
-                if (slides.length === 0) return;
-
-                function showSlides() {
-                    slides.forEach(s => s.classList.remove('active'));
-                    dots.forEach(d => d.classList.remove('active'));
-                    slideIndex++;
-                    if (slideIndex > slides.length) {slideIndex = 1}    
-                    slides[slideIndex-1].classList.add('active');
-                    dots[slideIndex-1].classList.add('active');
-                    setTimeout(showSlides, 5000); 
-                }
-                showSlides();
-            }
-
-            function initAllFeatures() {
-                Object.keys(pages).forEach(pageKey => {
-                    const pageElement = document.getElementById(`${pageKey}-section`);
-                    const templateFunc = window[`get${pageKey.charAt(0).toUpperCase() + pageKey.slice(1).replace(/-/g, '')}PageHTML`];
-                    if (templateFunc) {
-                        pageElement.innerHTML = templateFunc();
-                    }
-                });
-                if(document.querySelector('.slide')) setupSlideshow();
-            }
-            
-            window.getHomePageHTML = getHomePageHTML;
-            window.getClansPageHTML = getClansPageHTML;
-            window.getGenealogyPageHTML = getGenealogyPageHTML;
-            window.getTourismPageHTML = getTourismPageHTML;
-            window.getNameGeneratorPageHTML = getNameGeneratorPageHTML;
-            window.getSagaPageHTML = getSagaPageHTML;
-            window.getGuidesPageHTML = getGuidesPageHTML;
-            window.get3DPageHTML = get3DPageHTML;
-            window.getFinderPageHTML = getFinderPageHTML;
-            window.getLegendsPageHTML = getLegendsPageHTML;
-            window.getTartanDesignerPageHTML = getTartanDesignerPageHTML;
-            window.getRecipesPageHTML = getRecipesPageHTML;
-            window.getAIAssistantPageHTML = getAIAssistantPageHTML;
-            
-            initNav();
-            initAllFeatures();
-            setupDarkMode();
-            
-            document.querySelector('.nav-link[data-target="home"]').click();
-        });
-    </script>
+  <footer class="mt-20 border-t">
+    <div class="max-w-7xl mx-auto px-4 py-10 text-sm text-slate-500 flex flex-wrap items-center justify-between gap-4">
+      <p>© 2025 WellTegra Data Solutions</p>
+      <div class="flex items-center gap-4">
+        <a class="link" href="mailto:info@welltegra.network">info@welltegra.network</a>
+        <a class="link" href="https://welltegra.network">welltegra.network</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    window.WT = {
+      selectWell: (id) => { localStorage.setItem('wt:selectedWell', id); },
+      getWell: async () => {
+        const resp = await fetch('data/wells.json');
+        const data = await resp.json();
+        const id = localStorage.getItem('wt:selectedWell');
+        const wells = data.wells || data || [];
+        return { id, well: wells.find(w => (w.id || w.name) === id) || null, wells };
+      }
+    };
+  </script>
 </body>
 </html>
-

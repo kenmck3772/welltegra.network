@@ -1,105 +1,90 @@
-<!doctype html>
-<html lang="en">
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>WellTegra — Videos</title>
-<style>
-  :root{--bg:#0f172a;--ink:#e6f3ff;--muted:#bcd3f6;--panel:#0f2036;--accent:#21b5f0}
-  *{box-sizing:border-box} html{scroll-behavior:smooth}
-  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Inter,Arial,sans-serif}
-  a{color:inherit;text-decoration:none}
-  header{position:sticky;top:0;z-index:40;background:rgba(15,23,42,.78);backdrop-filter:blur(10px);border-bottom:1px solid rgba(188,211,246,.1)}
-  .nav{max-width:1200px;margin:0 auto;padding:8px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-  .brand video{width:140px;height:auto;border-radius:6px}
-  nav ul{list-style:none;margin:0;padding:0;display:flex;gap:10px;flex-wrap:wrap}
-  nav a{opacity:.9;padding:8px 10px;border-radius:10px}
-  nav a:hover,nav a.active{opacity:1;background:rgba(188,211,246,.12)}
-  .btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 14px;font-weight:650;cursor:pointer}
-  .container{max-width:1200px;margin:0 auto;padding:28px 18px}
-  h1{font-size:clamp(28px,3.2vw,44px)} .lead{color:var(--muted)}
-  .card{background:var(--panel);border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:16px}
-  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .video{aspect-ratio:16/9;width:100%;border:0;border-radius:10px}
-  footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--muted)}
-  .foot{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-  :focus-visible{outline:3px solid #21b5f0;outline-offset:2px}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WellTegra v23</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{ --ink:#0f172a; --sky:#0ea5e9; --sea:#0369a1; --mint:#14b8a6; }
+    body{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans"; }
+    .brand-gradient{ background: radial-gradient(80% 120% at 20% 10%, rgba(14,165,233,.25), transparent 50%), linear-gradient(120deg, rgba(20,184,166,.12), transparent 60%); }
+    .hero-overlay{ background: linear-gradient(to bottom, rgba(15,23,42,.65), rgba(15,23,42,.4)); }
+    .wm:before{ content:""; position:absolute; inset:0; background-image:url('assets/watermark.jpg'); background-size:400px; opacity:.03; pointer-events:none; }
+    .btn{ display:inline-flex; align-items:center; gap:.5rem; padding:.5rem 1rem; border-radius:.75rem; background:#0284c7; color:#fff; text-decoration:none; }
+    .btn:hover{ background:#0ea5e9; }
+    .link{ color:#0284c7; text-decoration:none; }
+    .link:hover{ color:#0ea5e9; }
+  </style>
 </head>
-<body>
-<header>
-  <div class="nav">
-    <div class="brand"><a href="index.html"><video src="assets/logohome.mp4" autoplay muted loop playsinline></video></a></div>
-    <nav><ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="planner.html">Planner</a></li>
-      <li><a href="performer.html">Performer</a></li>
-      <li><a href="analyzer.html">Analyzer</a></li>
-      <li><a class="active" href="videos.html">Videos</a></li>
-    </ul></nav>
-    <div><a class="btn" href="mailto:info@welltegra.network">Contact</a></div>
-  </div>
-</header>
+<body class="bg-white text-slate-800">
+  <header class="sticky top-0 z-30 bg-white/90 backdrop-blur border-b">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/logo.jpg" alt="WellTegra logo" class="h-10 w-auto rounded-sm" onerror="this.style.display='none'">
+        <span class="font-extrabold tracking-tight">WellTegra</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
+        <a class="hover:text-sky-600" href="planner.html">Planner</a>
+        <a class="hover:text-sky-600" href="performer.html">Performer</a>
+        <a class="hover:text-sky-600" href="analyzer.html">Analyzer</a>
+        <a class="hover:text-sky-600" href="videos.html">Videos</a>
+        <a class="hover:text-sky-600" href="whitepaper.html">White Paper</a>
+        <a class="hover:text-sky-600" href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-<main class="container">
-  <!-- Accessibility toolbar -->
-  <nav aria-label="Accessibility controls" class="card" style="display:flex;gap:10px;align-items:center;margin-bottom:16px">
-    <button type="button" class="btn ghost" data-night-toggle aria-pressed="false">Night mode</button>
-    <button type="button" class="btn ghost" data-shader-toggle aria-pressed="false">Screen shader</button>
-    <label style="display:inline-flex;align-items:center;gap:8px">
-      <span>Shader level</span><input type="range" min="0" max="100" value="0" data-shader-range>
-    </label>
-  </nav>
+  <main class="max-w-7xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-extrabold">Videos</h1>
+    <p class="mt-2 text-slate-600">Short demos and explainers hosted on YouTube.</p>
 
-  <h1>Video Library</h1>
-  <p class="lead">Featured explainer plus the latest uploads from our channel.</p>
+    <div id="vids" class="mt-8 grid md:grid-cols-3 gap-6"></div>
+  </main>
+  <script>
+    (async () => {
+      const host = 'https://www.youtube-nocookie.com/embed/';
+      const resp = await fetch('data/videos.json'); const vids = await resp.json();
+      const c = document.getElementById('vids');
+      const hash = location.hash.slice(1);
+      vids.forEach(v => {
+        const selected = v.id === hash;
+        const card = document.createElement('div');
+        card.className = 'p-3 rounded-xl ring-1 ring-slate-200' + (selected ? ' ring-sky-400' : '');
+        card.innerHTML = `
+          <div class="aspect-video rounded-lg overflow-hidden bg-black">
+            <iframe class="w-full h-full" src="${host}${v.id}?rel=0${selected ? '&autoplay=1' : ''}" title="${v.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="mt-2 font-semibold">${v.title}</div>`;
+        c.appendChild(card);
+      });
+    })();
+  </script>
 
-  <section class="card">
-    <h2>Featured</h2>
-    <div id="featured"></div>
-  </section>
-
-  <section style="margin-top:16px" class="card">
-    <h2>Latest uploads</h2>
-    <div id="autoFeed"></div>
-    <p class="lead" style="opacity:.8;margin-top:8px">Auto feed uses your YouTube handle — no API key required.</p>
-  </section>
-
-  <section style="margin-top:16px">
-    <h2>All curated videos</h2>
-    <div class="grid-3" id="vidGrid"></div>
-  </section>
-</main>
-
-<footer>
-  <div class="foot"><div>© WellTegra</div><div><a href="mailto:info@welltegra.network">info@welltegra.network</a></div></div>
-</footer>
-
-<script>
-  async function init(){
-    try{
-      const res = await fetch('data/videos.json', {cache:'no-store'});
-      const d = await res.json();
-      const f = document.getElementById('featured');
-      const g = document.getElementById('vidGrid');
-      const auto = document.getElementById('autoFeed');
-      const fid = d.featured || (d.videos && d.videos[0] && d.videos[0].id);
-      if(fid) f.innerHTML = `<iframe class="video" src="https://www.youtube.com/embed/${fid}?rel=0&modestbranding=1&playsinline=1" allowfullscreen title="Featured video"></iframe>`;
-      const listSrc = 'https://www.youtube.com/embed?listType=user_uploads&list='+(d.channel_handle||'WellTegra');
-      auto.innerHTML = `<iframe class="video" src="${listSrc}" allowfullscreen title="Channel uploads"></iframe>`;
-      if(d.videos) g.innerHTML = d.videos.map(v => `
-        <div class="card">
-          <iframe class="video" src="https://www.youtube.com/embed/${v.id}?rel=0&modestbranding=1&playsinline=1" title="${v.title||''}" allowfullscreen></iframe>
-          <h4 style="margin:.6rem 0 0">${v.title||''}</h4>
-          <p style="opacity:.8;margin:.2rem 0 0">${v.desc||''}</p>
-        </div>`).join('');
-    }catch(e){
-      document.getElementById('featured').innerHTML='<p class="lead">Could not load videos.json</p>';
-    }
-  }
-  init();
-</script>
-
-<script src="assets/js/night-mode.js" defer></script>
-<script src="assets/js/screen-shader.js" defer></script>
+  <footer class="mt-20 border-t">
+    <div class="max-w-7xl mx-auto px-4 py-10 text-sm text-slate-500 flex flex-wrap items-center justify-between gap-4">
+      <p>© 2025 WellTegra Data Solutions</p>
+      <div class="flex items-center gap-4">
+        <a class="link" href="mailto:info@welltegra.network">info@welltegra.network</a>
+        <a class="link" href="https://welltegra.network">welltegra.network</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    window.WT = {
+      selectWell: (id) => { localStorage.setItem('wt:selectedWell', id); },
+      getWell: async () => {
+        const resp = await fetch('data/wells.json');
+        const data = await resp.json();
+        const id = localStorage.getItem('wt:selectedWell');
+        const wells = data.wells || data || [];
+        return { id, well: wells.find(w => (w.id || w.name) === id) || null, wells };
+      }
+    };
+  </script>
 </body>
 </html>

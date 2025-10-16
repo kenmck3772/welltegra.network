@@ -1,372 +1,130 @@
-<!doctype html>
-<html lang="en">
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>WellTegra — Planner</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WellTegra v23</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root{--bg:#0f172a;--ink:#e6f3ff;--muted:#bcd3f6;--panel:#0f2036;--accent:#21b5f0}
-    *{box-sizing:border-box} html{scroll-behavior:smooth}
-    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,Inter,Arial,sans-serif}
-    a{color:inherit;text-decoration:none}
-    header{position:sticky;top:0;z-index:40;background:rgba(15,23,42,.78);backdrop-filter:blur(10px);border-bottom:1px solid rgba(188,211,246,.1)}
-    .nav{max-width:1200px;margin:0 auto;padding:8px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-    .brand video{width:140px;height:auto;border-radius:6px}
-    nav ul{list-style:none;margin:0;padding:0;display:flex;gap:10px;flex-wrap:wrap}
-    nav a{opacity:.9;padding:8px 10px;border-radius:10px}
-    nav a:hover,nav a.active{opacity:1;background:rgba(188,211,246,.12)}
-    .btn{display:inline-flex;align-items:center;gap:8px;border-radius:12px;padding:10px 14px;font-weight:650;cursor:pointer}
-    .btn.primary{background:linear-gradient(135deg,#2c68b0,var(--accent));color:#07101f}
-    .btn.ghost{border:1px solid rgba(188,211,246,.25)}
-    .container{max-width:1200px;margin:0 auto;padding:28px 18px}
-    h1{font-size:clamp(28px,3.2vw,44px)} .lead{color:var(--muted)}
-    .card{background:var(--panel);border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:16px}
-    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-    .table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid rgba(188,211,246,.16);border-radius:12px;overflow:hidden}
-    .table th,.table td{padding:10px;border-bottom:1px solid rgba(188,211,246,.12);text-align:left}
-    .table th{background:#0b1c30}
-    footer{border-top:1px solid rgba(188,211,246,.1);padding:18px 20px;color:var(--muted)}
-    .foot{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    :focus-visible { outline: 3px solid #21b5f0; outline-offset: 2px; }
-
-    /* Modal */
-    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:1000}
-    .modal{width:min(1000px,92vw);max-height:90vh;background:#0b1c30;border:1px solid rgba(188,211,246,.3);border-radius:12px;overflow:auto}
-    .modal header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(188,211,246,.2)}
-
-    /* Spotlight */
-    .wt-pill{display:inline-block;padding:4px 10px;border:1px solid rgba(188,211,246,.25);border-radius:999px;margin:2px 6px 2px 0;font-size:12px;color:#cfe8ff;background:rgba(33,181,240,.06)}
-    .wt-highlight{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    @media (max-width: 980px){.wt-highlight{grid-template-columns:1fr}}
-    .wt-metrics{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0}
-    .wt-metric{background:#0b1c30;border:1px solid rgba(188,211,246,.16);border-radius:10px;padding:10px 12px;min-width:120px}
-    .wt-metric .num{font-size:20px;font-weight:800}
-    .wt-metric .lbl{color:#bcd3f6}
-    .wt-card{background:#0f2036;border:1px solid rgba(188,211,246,.12);border-radius:14px;padding:14px}
-    .wt-section{margin-top:14px}
-    .wt-skeleton{background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.12),rgba(255,255,255,.06));background-size:200% 100%;animation:wtShine 1.2s infinite}
-    @keyframes wtShine{0%{background-position:200% 0}100%{background-position:-200% 0}}
-    .wt-reports{list-style:none;padding:0;margin:0}
-    .wt-reports li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(188,211,246,.1);padding:8px 0}
-    .wt-reports time{color:#bcd3f6;font-size:12px}
-    .wt-link{color:#21b5f0;text-decoration:none}
-    .wt-link:hover{text-decoration:underline}
-    .wt-modal-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}
-    @media (max-width: 1100px){.wt-modal-grid{grid-template-columns:1fr}}
+    :root{ --ink:#0f172a; --sky:#0ea5e9; --sea:#0369a1; --mint:#14b8a6; }
+    body{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans"; }
+    .brand-gradient{ background: radial-gradient(80% 120% at 20% 10%, rgba(14,165,233,.25), transparent 50%), linear-gradient(120deg, rgba(20,184,166,.12), transparent 60%); }
+    .hero-overlay{ background: linear-gradient(to bottom, rgba(15,23,42,.65), rgba(15,23,42,.4)); }
+    .wm:before{ content:""; position:absolute; inset:0; background-image:url('assets/watermark.jpg'); background-size:400px; opacity:.03; pointer-events:none; }
+    .btn{ display:inline-flex; align-items:center; gap:.5rem; padding:.5rem 1rem; border-radius:.75rem; background:#0284c7; color:#fff; text-decoration:none; }
+    .btn:hover{ background:#0ea5e9; }
+    .link{ color:#0284c7; text-decoration:none; }
+    .link:hover{ color:#0ea5e9; }
   </style>
 </head>
-<body>
-  <header>
-    <div class="nav">
-      <div class="brand"><a href="index.html"><video src="assets/logohome.mp4" autoplay muted loop playsinline></video></a></div>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a class="active" href="planner.html">Planner</a></li>
-          <li><a href="performer.html">Performer</a></li>
-          <li><a href="analyzer.html">Analyzer</a></li>
-        </ul>
+<body class="bg-white text-slate-800">
+  <header class="sticky top-0 z-30 bg-white/90 backdrop-blur border-b">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/logo.jpg" alt="WellTegra logo" class="h-10 w-auto rounded-sm" onerror="this.style.display='none'">
+        <span class="font-extrabold tracking-tight">WellTegra</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
+        <a class="hover:text-sky-600" href="planner.html">Planner</a>
+        <a class="hover:text-sky-600" href="performer.html">Performer</a>
+        <a class="hover:text-sky-600" href="analyzer.html">Analyzer</a>
+        <a class="hover:text-sky-600" href="videos.html">Videos</a>
+        <a class="hover:text-sky-600" href="whitepaper.html">White Paper</a>
+        <a class="hover:text-sky-600" href="contact.html">Contact</a>
       </nav>
-      <div><a class="btn primary" href="mailto:info@welltegra.network">Contact</a></div>
     </div>
   </header>
 
-  <main class="container">
-    <!-- Accessibility toolbar -->
-    <nav aria-label="Accessibility controls" class="card" style="display:flex;gap:10px;align-items:center;margin-bottom:16px">
-      <button type="button" class="btn ghost" data-night-toggle aria-pressed="false">Night mode</button>
-      <button type="button" class="btn ghost" data-shader-toggle aria-pressed="false">Screen shader</button>
-      <label style="display:inline-flex;align-items:center;gap:8px">
-        <span>Shader level</span>
-        <input type="range" min="0" max="100" value="0" data-shader-range>
-      </label>
-    </nav>
-
-    <h1>Planner</h1>
-    <div class="card">
-      <h3>Pick a well</h3>
-      <p class="lead" style="margin:6px 0">Loaded from <code>data/wells.json</code></p>
-      <div class="grid-3">
-        <div><label>Well</label><select id="wellPicker"></select></div>
-        <div><label>Field</label><input id="wellField" readonly></div>
-        <div><label>Region</label><input id="wellRegion" readonly></div>
+  <main class="max-w-7xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-extrabold">Planner</h1>
+    <p class="mt-2 text-slate-600">Select a well from your <code>wells.json</code>, choose an objective, and generate a baseline plan.</p>
+    <div class="mt-8 grid md:grid-cols-3 gap-8">
+      <div class="md:col-span-2">
+        <div id="wells" class="grid sm:grid-cols-2 gap-4"></div>
       </div>
-      <p style="margin-top:10px">
-        <a class="btn primary" id="loadWell">Load well details</a>
-        <a class="btn ghost" id="viewDocs">View documents</a>
-        <a class="btn ghost" id="viewWell">View well</a>
-      </p>
-    </div>
-
-    <div class="card" style="margin-top:12px">
-      <h3>Reference & Prefill</h3>
-      <div class="grid-3">
-        <div><label>Basin</label><select id="basin"><option>Permian</option><option>Eagle Ford</option><option>North Sea</option></select></div>
-        <div><label>Well type</label><select id="type"><option>Horizontal</option><option>Vertical</option><option>Workover</option></select></div>
-        <div><label>Target MD (ft)</label><input id="md" type="number" value="15000"></div>
-      </div>
-      <p style="margin-top:10px"><a class="btn primary" id="prefill">Prefill plan (~70%)</a></p>
-    </div>
-
-    <div class="grid-2" style="margin-top:12px">
-      <div class="card"><h3>WBS</h3><ul id="wbs"></ul></div>
-      <div class="card"><h3>Risks & mitigations</h3><ul id="risks"></ul></div>
-    </div>
-
-    <div class="card" style="margin-top:12px">
-      <h3>Budget</h3>
-      <table class="table" id="budget"><tr><th>Category</th><th>Amount (USD)</th></tr></table>
-      <p><strong>Total: </strong><span id="total">$0</span></p>
+      <aside class="space-y-5">
+        <div class="p-4 rounded-lg ring-1 ring-slate-200">
+          <h2 class="font-bold">Objective</h2>
+          <select id="objective" class="mt-2 w-full rounded-md border px-3 py-2">
+            <option value="">Choose…</option>
+            <option value="patch">Remediate casing deformation</option>
+            <option value="scale">Remove BaSO4 scale</option>
+            <option value="dhsv">Restore DHSV / Insert valve</option>
+            <option value="sand">Repair sand control</option>
+            <option value="wax">Clear wax blockage</option>
+          </select>
+          <button id="make-plan" class="btn mt-4 w-full" disabled>Generate Plan</button>
+        </div>
+        <div id="plan-ctn" class="hidden p-4 rounded-lg ring-1 ring-slate-200"></div>
+      </aside>
     </div>
   </main>
-
-  <!-- Documents modal -->
-  <div class="modal-backdrop" id="docModal">
-    <div class="modal">
-      <header><strong>Documents</strong><a id="closeDocs" class="btn ghost">Close</a></header>
-      <div id="docBody" style="padding:14px"></div>
-    </div>
-  </div>
-
-  <!-- Spotlight modal -->
-  <div class="modal-backdrop" id="wtModal" style="display:none">
-    <div class="modal">
-      <header><strong id="wtTitle">Well</strong><a id="wtClose" class="btn ghost">Close</a></header>
-      <div id="wtBody" style="padding:14px"></div>
-    </div>
-  </div>
-
-  <footer>
-    <div class="foot">
-      <div>© WellTegra</div>
-      <div><a href="mailto:info@welltegra.network">info@welltegra.network</a></div>
-    </div>
-  </footer>
-
-  <!-- Site scripts -->
   <script>
-    let WT_WELLS=[], WT_SELECTED=null;
-    const WBS_TEMPLATES={"Horizontal":["Spud","Surface casing","Intermediate casing","Lateral","Frac & flowback","Hand-over"],"Vertical":["Spud","Conductor","Casing","Drill to TD","Log & evaluate","Hand-over"],"Workover":["Rig up","Pull tubing","Remedial ops","Run back","Test & hand-over"]};
-    const RISK_TEMPLATES={"Permian":["Lost circulation — add LCM pill","H2S pockets — monitor & PPE","Motor stalls — torque/drag watch"],"Eagle Ford":["Tight window — MWD monitoring","Frac hits — offset comms","Stick-slip — RSS settings"],"North Sea":["Weather downtime — buffer","Logistics delay — pre-stage","Regulatory checks — early reviews"]};
-    const BUDGET_BASE=[["Rig day-rate",250000],["Cement & casing",180000],["Mud & chemicals",120000],["Directional tools",90000],["Services",110000]];
-
-    function fmt(n){return n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});}
-    function render(arr,el){el.innerHTML='';arr.forEach(t=>{const li=document.createElement('li');li.textContent=t;el.appendChild(li);});}
-    function renderBudget(lines){const t=document.getElementById('budget');t.innerHTML='<tr><th>Category</th><th>Amount (USD)</th></tr>';let sum=0;lines.forEach(([k,v],i)=>{sum+=v;const tr=document.createElement('tr');tr.innerHTML='<td>'+k+'</td><td contenteditable="true" data-i="'+i+'">'+v.toLocaleString()+'</td>';t.appendChild(tr);});document.getElementById('total').textContent=fmt(sum);}
-
-    document.getElementById('budget').addEventListener('input',e=>{
-      if(e.target && e.target.dataset.i){
-        const i=+e.target.dataset.i;
-        const val=+e.target.textContent.replace(/[^0-9.]/g,'')||0;
-        window._budget[i][1]=val; renderBudget(window._budget);
-      }
-    });
-
-    async function loadWells(){
-      try{
-        const r=await fetch('data/wells.json',{cache:'no-store'});
-        const j=await r.json();
-        WT_WELLS=j.wells||[];
-        const sel=document.getElementById('wellPicker');
-        sel.innerHTML=WT_WELLS.map(w=>`<option value="${w.id}">${w.name||w.id} (${w.id})</option>`).join('');
-        if(WT_WELLS.length){
-          WT_SELECTED=WT_WELLS[0];
-          document.getElementById('wellField').value=WT_SELECTED.field||'';
-          document.getElementById('wellRegion').value=WT_SELECTED.region||'';
-        }
-      }catch(e){ console.error('wells.json load failed',e); }
-    }
-
-    document.addEventListener('DOMContentLoaded',()=>{ loadWells(); });
-
-    function toLines(base){return base.map(x=>[x[0],x[1]]);}
-
-    document.addEventListener('click',(e)=>{
-      if(e.target && e.target.id==='prefill'){
-        const t=document.getElementById('type').value;
-        const b=document.getElementById('basin').value;
-        window._wbs=WBS_TEMPLATES[t];
-        window._risks=RISK_TEMPLATES[b];
-        window._budget=toLines(BUDGET_BASE);
-        render(window._wbs,document.getElementById('wbs'));
-        render(window._risks,document.getElementById('risks'));
-        renderBudget(window._budget);
-        localStorage.setItem('WT_PLAN', JSON.stringify({wbs: window._wbs}));
-      }
-      if(e.target && e.target.id==='loadWell'){
-        const id=document.getElementById('wellPicker').value;
-        const w=WT_WELLS.find(x=>String(x.id)===String(id));
-        if(!w) return;
-        WT_SELECTED=w;
-        document.getElementById('wellField').value=w.field||'';
-        document.getElementById('wellRegion').value=w.region||'';
-        const typeSel=document.getElementById('type'); if(typeSel){ typeSel.value=(w.type && w.type.toLowerCase().includes('gas'))?'Vertical':'Horizontal'; }
-        const md=document.getElementById('md'); if(md){ md.value=w.depth||w.target_md_ft||md.value; }
-        document.getElementById('prefill').click();
-      }
-      if(e.target && e.target.id==='viewDocs'){ renderDocs(); }
-      if(e.target && e.target.id==='closeDocs'){ document.getElementById('docModal').style.display='none'; }
-      if(e.target && e.target.id==='viewWell'){ openSpotlight(); }
-    });
-
-    function renderDocs(){
-      if(!WT_SELECTED){ alert('Pick a well first'); return; }
-      const docs=(WT_SELECTED.documents||[]);
-      const body=document.getElementById('docBody');
-      if(!docs.length){
-        body.innerHTML = '<p class="lead">No documents listed. Add files under /docs/'+(WT_SELECTED.id||'WELL')+'/ and update wells.json → documents[].</p>';
-      } else {
-        body.innerHTML = docs.map(doc=>{
-          if(doc.type==='pdf'){
-            return `<div class='card' style='margin-bottom:12px'><p><strong>${doc.label}</strong></p><embed src='${doc.path}' type='application/pdf' style='width:100%;height:460px'/><p><a class='btn ghost' href='${doc.path}' target='_blank' rel='noopener'>Open in new tab</a></p></div>`;
-          } else if(doc.type==='image'){
-            return `<div class='card' style='margin-bottom:12px'><p><strong>${doc.label}</strong></p><img src='${doc.path}' alt='${doc.label}' style='max-width:100%;border-radius:8px;border:1px solid rgba(188,211,246,.2)'/></div>`;
-          } else {
-            return `<div class='card' style='margin-bottom:12px'><p><strong>${doc.label}</strong></p><a class='btn ghost' href='${doc.path}' target='_blank' rel='noopener'>Download</a></div>`;
-          }
-        }).join('');
-      }
-      document.getElementById('docModal').style.display='flex';
-    }
-
-    /* ===== Spotlight helpers ===== */
-    function renderWellSchematicMinimal(well){
-      const width=600, height=420, pad=40;
-      const casing = (well.completion && well.completion.casing) || [];
-      const perfs = (well.completion && well.completion.perforations) || [];
-      const maxDepth = Math.max(
-        well.target_md_ft||well.depth||0,
-        ...casing.map(c=>+c.depth_ft||0),
-        ...perfs.map(p=>+p.depth_ft||0),
-        1000
-      );
-      const y = (d)=> pad + (d/maxDepth)*(height - pad*2);
-      let svg = `<svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}" role="img" aria-label="Well schematic">`;
-      svg += `<path d="M ${pad} ${pad} L ${pad} ${height-pad}" stroke="rgba(188,211,246,.6)" />`;
-      for(let ft=0; ft<=maxDepth; ft+=Math.max(500, Math.round(maxDepth/6/100)*100)){
-        const yy = y(ft);
-        svg += `<text x="${pad-8}" y="${yy+4}" fill="#bcd3f6" font-size="10" text-anchor="end">${ft} ft</text>`;
-        svg += `<path d="M ${pad} ${yy} L ${width-pad} ${yy}" stroke="rgba(188,211,246,.1)" />`;
-      }
-      const cx = (i)=> pad + 80 + i*22;
-      casing.forEach((c,i)=>{
-        const d = +c.depth_ft || (maxDepth*0.7);
-        svg += `<rect x="${cx(i)}" y="${pad}" width="14" height="${y(d)-pad}" fill="#154177" stroke="#21b5f0"/>`;
-        svg += `<text x="${cx(i)+7}" y="${pad-8}" fill="#cfe8ff" font-size="10" text-anchor="middle">${c.size || c.od || ''}</text>`;
+    const planLib = {
+      patch:{name:'Expandable Casing Patch', days:8, cost:1200000, roles:['Wellsite Engineer','HWU Supervisor']},
+      scale:{name:'CT Chemical & Jetting', days:6, cost:950000, roles:['CT Supervisor','Pump Operator']},
+      dhsv:{name:'Slickline Insert Safety Valve', days:3, cost:350000, roles:['Slickline Supervisor']},
+      sand:{name:'Through‑Tubing ESS Patch', days:10, cost:1500000, roles:['Wellsite Engineer','HWU Supervisor']},
+      wax:{name:'CT Wax Removal', days:4, cost:650000, roles:['CT Supervisor','Pump Operator']},
+    };
+    (async () => {
+      const { wells } = await (await fetch('data/wells.json')).json();
+      const grid = document.getElementById('wells');
+      wells.forEach(w => {
+        const card = document.createElement('button');
+        card.className = 'text-left p-4 rounded-lg ring-1 ring-slate-200 hover:ring-sky-400 transition';
+        card.innerHTML = `<div class="text-sm text-slate-500">${w.field || ''}</div><div class="font-bold">${w.name || w.id}</div><div class="text-xs mt-1">${w.status || ''}</div>`;
+        card.onclick = () => { WT.selectWell(w.id || w.name); document.querySelectorAll('#wells button').forEach(b => b.classList.remove('ring-sky-500')); card.classList.add('ring-sky-500'); checkEnable(); };
+        grid.appendChild(card);
       });
-      perfs.forEach((p,idx)=>{
-        const d = +p.depth_ft || (maxDepth*0.6);
-        const yy = y(d);
-        svg += `<circle cx="${width - pad - 40 - (idx%5)*16}" cy="${yy}" r="4" fill="#21b5f0"/>`;
+      function checkEnable(){ makeBtn.disabled = !(localStorage.getItem('wt:selectedWell') && objSel.value); }
+      const objSel = document.getElementById('objective');
+      const makeBtn = document.getElementById('make-plan');
+      objSel.addEventListener('change', checkEnable);
+      makeBtn.addEventListener('click', () => {
+        const key = objSel.value; if(!key) return;
+        const p = planLib[key];
+        localStorage.setItem('wt:plan', JSON.stringify({key, ...p}));
+        const box = document.getElementById('plan-ctn');
+        box.classList.remove('hidden');
+        box.innerHTML = `
+          <div class="text-xs text-slate-500">Generated</div>
+          <div class="font-extrabold">${p.name}</div>
+          <div class="mt-2 grid grid-cols-3 gap-3 text-sm">
+            <div><div class="text-slate-500">Days</div><div class="font-bold">${p.days}</div></div>
+            <div><div class="text-slate-500">AFE</div><div class="font-bold">$${p.cost.toLocaleString()}</div></div>
+            <div><div class="text-slate-500">Crew</div><div class="font-bold">${p.roles.join(', ')}</div></div>
+          </div>
+          <a class="btn mt-4 inline-flex" href="performer.html">Begin Operation</a>
+        `;
       });
-      svg += `<path d="M ${width/2} ${pad} L ${width/2} ${height-pad}" stroke="#21b5f0" stroke-width="2"/>`;
-      svg += `</svg>`;
-      return svg;
-    }
-    function comma(n){return (n==null || isNaN(n)?'—':Number(n).toLocaleString());}
-    function last(arr){return (arr && arr.length)?arr[arr.length-1]:null;}
-    function byDateDesc(a,b){return (new Date(b.date||b.ts||0))-(new Date(a.date||a.ts||0));}
-    function buildSpotlightShell(){
-      return `
-      <div class="wt-modal-grid">
-        <div class="wt-card">
-          <h3 style="margin-top:0">Wellbore Schematic</h3>
-          <div id="wt-schematic" class="wt-skeleton" style="min-height:420px;border-radius:10px"></div>
-          <div class="wt-section">
-            <span class="wt-pill">Interactive</span>
-            <span class="wt-pill">Depth scale</span>
-            <span class="wt-pill">Casing & perfs</span>
-          </div>
-        </div>
-        <div>
-          <div class="wt-card">
-            <h3 style="margin-top:0">Highlights</h3>
-            <div class="wt-metrics" id="wt-metrics"></div>
-            <div class="wt-highlight">
-              <div>
-                <h4 style="margin:.6rem 0 .2rem">Casing strings</h4>
-                <div id="wt-casing"></div>
-              </div>
-              <div>
-                <h4 style="margin:.6rem 0 .2rem">Completion</h4>
-                <div id="wt-completion"></div>
-              </div>
-            </div>
-          </div>
-          <div class="wt-card wt-section">
-            <h3 style="margin-top:0">Recent Reports</h3>
-            <ul class="wt-reports" id="wt-reports"></ul>
-            <p style="margin:8px 0 0"><a href="#" id="wt-more" class="wt-link">See more reports</a></p>
-          </div>
-        </div>
-      </div>`;
-    }
-    function renderSpotlight(well){
-      const body = document.getElementById('wtBody');
-      body.innerHTML = buildSpotlightShell();
-      document.getElementById('wtTitle').textContent = well.name || well.id || 'Well';
-      const sc = document.getElementById('wt-schematic');
-      sc.classList.remove('wt-skeleton');
-      sc.innerHTML = renderWellSchematicMinimal(well);
-      const perfCount = (well.completion && well.completion.perforations || []).length;
-      const casingCount = (well.completion && well.completion.casing || []).length;
-      const lastHist = last((well.history||[]).slice().sort(byDateDesc));
-      const metrics = [
-        {lbl:'Target MD (ft)', val: comma(well.target_md_ft || well.depth)},
-        {lbl:'TVD (ft)',       val: comma(well.tvd_ft)},
-        {lbl:'Casing strings', val: comma(casingCount)},
-        {lbl:'Perforations',   val: comma(perfCount)},
-        {lbl:'Last activity',  val: lastHist? new Date(lastHist.date).toLocaleDateString(): '—'},
-      ];
-      document.getElementById('wt-metrics').innerHTML =
-        metrics.map(m=>`<div class="wt-metric"><div class="num">${m.val}</div><div class="lbl">${m.lbl}</div></div>`).join('');
-      const casing = (well.completion && well.completion.casing || []).map(c=>
-        `<span class="wt-pill">${(c.size||c.od||'?')} ${(c.depth_ft? '• '+comma(c.depth_ft)+' ft':'')}</span>`
-      ).join('') || '<span class="wt-pill">No casing data</span>';
-      document.getElementById('wt-casing').innerHTML = casing;
-      const completion = (well.completion && well.completion.equipment || []).map(e=>
-        `<span class="wt-pill">${e.name || e.type}</span>`
-      ).join('') || '<span class="wt-pill">No equipment data</span>';
-      document.getElementById('wt-completion').innerHTML = completion;
-      const reports = (well.dailyReports || []).slice().sort(byDateDesc);
-      const first = reports.slice(0,3);
-      const list = (items)=> items.map(r=>`
-        <li>
-          <div><strong>${r.title || r.type || 'Report'}</strong><br><small>${r.summary || ''}</small></div>
-          <div style="text-align:right"><time>${r.date? new Date(r.date).toLocaleDateString(): '—'}</time></div>
-        </li>`).join('');
-      const el = document.getElementById('wt-reports');
-      el.innerHTML = first.length ? list(first) : '<li><em>No reports available</em></li>';
-      const more = document.getElementById('wt-more');
-      more.style.display = reports.length>3 ? 'inline' : 'none';
-      more.onclick = (e)=>{ e.preventDefault(); el.innerHTML = list(reports); more.style.display='none'; };
-    }
-    function openSpotlight(){
-      if(!WT_WELLS.length){ alert('Load wells first'); return; }
-      const id = document.getElementById('wellPicker').value;
-      const well = WT_WELLS.find(x=>String(x.id)===String(id)) || WT_WELLS[0];
-      renderSpotlight(well);
-      document.getElementById('wtModal').style.display='flex';
-    }
-
-    // Wire buttons
-    document.getElementById('wtClose').addEventListener('click', ()=>{ document.getElementById('wtModal').style.display='none'; });
-    document.addEventListener('click',(e)=>{
-      if(e.target && e.target.id==='wtClose'){ document.getElementById('wtModal').style.display='none'; }
-    });
-
-    // Docs viewer
-    document.getElementById('docBody').innerHTML='';
-
-    // Load plan / wells
-    document.getElementById('budget')._lines = [];
-
-    // Start empty state
+    })();
   </script>
 
-  <!-- Accessibility helpers -->
-  <script src="assets/js/night-mode.js" defer></script>
-  <script src="assets/js/screen-shader.js" defer></script>
+  <footer class="mt-20 border-t">
+    <div class="max-w-7xl mx-auto px-4 py-10 text-sm text-slate-500 flex flex-wrap items-center justify-between gap-4">
+      <p>© 2025 WellTegra Data Solutions</p>
+      <div class="flex items-center gap-4">
+        <a class="link" href="mailto:info@welltegra.network">info@welltegra.network</a>
+        <a class="link" href="https://welltegra.network">welltegra.network</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    window.WT = {
+      selectWell: (id) => { localStorage.setItem('wt:selectedWell', id); },
+      getWell: async () => {
+        const resp = await fetch('data/wells.json');
+        const data = await resp.json();
+        const id = localStorage.getItem('wt:selectedWell');
+        const wells = data.wells || data || [];
+        return { id, well: wells.find(w => (w.id || w.name) === id) || null, wells };
+      }
+    };
+  </script>
 </body>
 </html>
