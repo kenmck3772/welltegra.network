@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>404 · WellTegra</title>
+<title>Docs · WellTegra</title>
 <link rel="icon" href="/favicon.ico"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,5 +18,24 @@
     <a href="./docs.html">Docs</a>
   </div>
 </div>
-<div class='card'><h1>Not Found</h1></div><footer class="muted">© WellTegra · Static demo bundle (v22+)</footer>
+
+<div class="card">
+  <h1>Data Schema</h1>
+  <p class="muted">Place a JSON array at <code>/data/wells.json</code>. Each row represents a well-month.</p>
+  <pre class="code">[{
+  "well_name": "ST12-03A",
+  "field": "Stromness",
+  "operator": "WellTegra",
+  "month": "2024-05-01",
+  "oil_bbl": 18765,
+  "water_bbl": 6240,
+  "gas_mcf": 312,
+  "lat": 57.095, "lon": -2.241
+}]</pre>
+  <p class="muted">Optional fields are acceptable; missing values are treated as 0. Add <code>lat</code>/<code>lon</code> to enable map cards in future.</p>
+  <hr/>
+  <h2>PDF</h2>
+  <p><a href="./docs/From-Bytes-to-Barrels.pdf" target="_blank">From Bytes to Barrels — Slides</a></p>
+</div>
+<footer class="muted">© WellTegra · Static demo bundle (v22+)</footer>
 </div></body></html>

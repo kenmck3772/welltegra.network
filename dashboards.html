@@ -1,0 +1,105 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dashboards · WellTegra</title>
+<link rel="icon" href="/favicon.ico"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/styles.css">
+</head><body>
+<div class="container">
+<div class="nav">
+  <div class="brand">WellTegra</div>
+  <div style="display:flex;gap:12px">
+    <a href="./index.html">Home</a>
+    <a href="./dashboards.html">Dashboards</a>
+    <a href="./videos.html">Videos</a>
+    <a href="./docs.html">Docs</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+<div class="card">
+  <h1>Well Dashboards</h1>
+  <p class="muted">Auto-build charts from <code>data/wells.json</code>. Search filters update tables and charts instantly.</p>
+  <input id="q" type="search" placeholder="Search by field, well, operator…" oninput="render()"/>
+</div>
+
+<div class="grid cols-3">
+  <div class="card"><h2>Production by Month</h2><canvas id="byMonth" height="170"></canvas></div>
+  <div class="card"><h2>Top Fields (Total bbl)</h2><canvas id="byField" height="170"></canvas></div>
+  <div class="card"><h2>Water Cut vs Oil Rate</h2><canvas id="scatter" height="170"></canvas></div>
+</div>
+
+<div class="card">
+  <h2>Wells (filtered)</h2>
+  <table class="table" id="tbl"><thead>
+    <tr><th>Well</th><th>Field</th><th>Operator</th><th>Month</th><th>Oil (bbl)</th><th>Water (bbl)</th><th>Gas (mcf)</th></tr>
+  </thead><tbody></tbody></table>
+</div>
+
+<script>
+let raw=[];
+async function load(){
+  try{
+    const r = await fetch('./data/wells.json?cache='+Date.now());
+    raw = await r.json();
+  }catch(e){
+    console.error(e);
+    raw = [];
+  }
+  render();
+}
+function groupBy(arr,key){return arr.reduce((a,x)=>((a[x[key]]=(a[x[key]]||[])).push(x),a),{})}
+function sum(arr,k){return arr.reduce((t,x)=>t+(+x[k]||0),0)}
+function monthKey(x){return (x.month||'').slice(0,7)}
+function render(){
+  const q = (document.getElementById('q').value||'').toLowerCase();
+  const rows = raw.filter(x=>{
+    const s = [x.well_name,x.field,x.operator,monthKey(x)].join(' ').toLowerCase();
+    return !q || s.includes(q);
+  });
+
+  const tb = document.querySelector('#tbl tbody');
+  tb.innerHTML = rows.slice(0,500).map(x=>`<tr>
+    <td>${x.well_name||''}</td><td>${x.field||''}</td><td>${x.operator||''}</td>
+    <td>${monthKey(x)||''}</td><td>${(+x.oil_bbl||0).toLocaleString()}</td>
+    <td>${(+x.water_bbl||0).toLocaleString()}</td><td>${(+x.gas_mcf||0).toLocaleString()}</td>
+  </tr>`).join('');
+
+  const byM = groupBy(rows.map(x=>({...x, m: monthKey(x)})).filter(x=>x.m), 'm');
+  const mLabels = Object.keys(byM).sort();
+  const oilByMonth = mLabels.map(m=>sum(byM[m],'oil_bbl'));
+  const waterByMonth = mLabels.map(m=>sum(byM[m],'water_bbl'));
+  upsertBar('byMonth', mLabels, [
+    {label:'Oil (bbl)', data:oilByMonth},
+    {label:'Water (bbl)', data:waterByMonth},
+  ]);
+
+  const byFld = Object.entries(groupBy(rows,'field'))
+    .map(([k,v])=>({field:k, oil:sum(v,'oil_bbl')}))
+    .sort((a,b)=>b.oil-a.oil).slice(0,10);
+  upsertBar('byField', byFld.map(x=>x.field||'—'), [{label:'Oil (bbl)', data:byFld.map(x=>x.oil)}]);
+
+  const scatterPts = rows.map(x=>({x:+x.oil_bbl||0, y:(+x.water_bbl||0)/(+x.oil_bbl||1)*100}));
+  upsertScatter('scatter', scatterPts, 'Water cut %');
+}
+const charts = {};
+function upsertBar(id, labels, datasets){
+  const ctx = document.getElementById(id);
+  if(charts[id]) charts[id].destroy();
+  charts[id] = new Chart(ctx, {type:'bar', data:{labels, datasets},
+    options:{responsive:true, plugins:{legend:{display:true}}, scales:{x:{ticks:{maxRotation:0,minRotation:0}}}}});
+}
+function upsertScatter(id, points, yLabel){
+  const ctx = document.getElementById(id);
+  if(charts[id]) charts[id].destroy();
+  charts[id] = new Chart(ctx, {type:'scatter', data:{datasets:[{label:yLabel, data:points}]},
+    options:{responsive:true, plugins:{legend:{display:false}}, scales:{x:{title:{display:true,text:'Oil (bbl)'}}, y:{title:{display:true,text:yLabel}}}}});
+}
+
+load();
+</script>
+<footer class="muted">© WellTegra · Static demo bundle (v22+)</footer>
+</div></body></html>

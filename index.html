@@ -1,117 +1,42 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Home · WellTegra</title>
+<link rel="icon" href="/favicon.ico"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/styles.css">
+</head><body>
+<div class="container">
+<div class="nav">
+  <div class="brand">WellTegra</div>
+  <div style="display:flex;gap:12px">
+    <a href="./index.html">Home</a>
+    <a href="./dashboards.html">Dashboards</a>
+    <a href="./videos.html">Videos</a>
+    <a href="./docs.html">Docs</a>
+  </div>
+</div>
 
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WellTegra v23</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root{ --ink:#0f172a; --sky:#0ea5e9; --sea:#0369a1; --mint:#14b8a6; }
-    body{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans"; }
-    .brand-gradient{ background: radial-gradient(80% 120% at 20% 10%, rgba(14,165,233,.25), transparent 50%), linear-gradient(120deg, rgba(20,184,166,.12), transparent 60%); }
-    .hero-overlay{ background: linear-gradient(to bottom, rgba(15,23,42,.65), rgba(15,23,42,.4)); }
-    .wm:before{ content:""; position:absolute; inset:0; background-image:url('assets/watermark.jpg'); background-size:400px; opacity:.03; pointer-events:none; }
-    .btn{ display:inline-flex; align-items:center; gap:.5rem; padding:.5rem 1rem; border-radius:.75rem; background:#0284c7; color:#fff; text-decoration:none; }
-    .btn:hover{ background:#0ea5e9; }
-    .link{ color:#0284c7; text-decoration:none; }
-    .link:hover{ color:#0ea5e9; }
-  </style>
-</head>
-<body class="bg-white text-slate-800">
-  <header class="sticky top-0 z-30 bg-white/90 backdrop-blur border-b">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-3">
-        <img src="assets/logo.jpg" alt="WellTegra logo" class="h-10 w-auto rounded-sm" onerror="this.style.display='none'">
-        <span class="font-extrabold tracking-tight">WellTegra</span>
-      </a>
-      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
-        <a class="hover:text-sky-600" href="planner.html">Planner</a>
-        <a class="hover:text-sky-600" href="performer.html">Performer</a>
-        <a class="hover:text-sky-600" href="analyzer.html">Analyzer</a>
-        <a class="hover:text-sky-600" href="videos.html">Videos</a>
-        <a class="hover:text-sky-600" href="whitepaper.html">White Paper</a>
-        <a class="hover:text-sky-600" href="contact.html">Contact</a>
-      </nav>
+<div class="grid" style="grid-template-columns:1.3fr .7fr;gap:22px">
+  <div class="card">
+    <span class="badge">From Bytes → Barrels</span>
+    <h1>Operational Intelligence for Wells</h1>
+    <p class="muted">This static bundle fetches <code>/data/wells.json</code> and <code>/data/videos.json</code> to render dashboards, lists, and embeds — no server required.</p>
+    <div style="display:flex;gap:10px;margin-top:10px">
+      <a href="./dashboards.html"><button>Open Dashboards</button></a>
+      <a href="./videos.html"><button>Open Videos</button></a>
     </div>
-  </header>
-
-  <main>
-    <section class="relative brand-gradient">
-      <div class="absolute inset-0 hero-overlay"></div>
-      <div class="relative max-w-7xl mx-auto px-4 py-24 text-white">
-        <div class="max-w-3xl">
-          <h1 class="text-4xl sm:text-6xl font-extrabold leading-tight">From Data Chaos to Predictive Clarity.</h1>
-          <p class="mt-5 text-lg sm:text-xl text-slate-200">Unify your well data, standardize execution, and learn faster—without ripping and replacing what already works.</p>
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a class="btn" href="planner.html">Open Planner</a>
-            <a class="inline-flex items-center gap-2 px-4 py-2 rounded-lg ring-1 ring-white/40 hover:bg-white/10" href="videos.html">Watch Demos</a>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="max-w-7xl mx-auto px-4 py-16 grid md:grid-cols-3 gap-6">
-      <div class="p-6 rounded-xl ring-1 ring-slate-200">
-        <h3 class="font-extrabold text-lg">Planner</h3>
-        <p class="mt-2 text-sm">AI‑assisted plans prefilling WBS, risks and budgets from similar wells.</p>
-        <a class="link mt-3 inline-block" href="planner.html">Plan a job →</a>
-      </div>
-      <div class="p-6 rounded-xl ring-1 ring-slate-200">
-        <h3 class="font-extrabold text-lg">Performer</h3>
-        <p class="mt-2 text-sm">Clean runbooks, deviation capture, and simple live KPIs.</p>
-        <a class="link mt-3 inline-block" href="performer.html">Run the job →</a>
-      </div>
-      <div class="p-6 rounded-xl ring-1 ring-slate-200">
-        <h3 class="font-extrabold text-lg">Analyzer</h3>
-        <p class="mt-2 text-sm">Rapid post‑job patterns, NPT breakdowns, and ROI.</p>
-        <a class="link mt-3 inline-block" href="analyzer.html">Review performance →</a>
-      </div>
-    </section>
-    <section class="max-w-7xl mx-auto px-4 py-10">
-      <h2 class="text-2xl font-extrabold">Latest Videos</h2>
-      <div id="video-strip" class="mt-6 grid sm:grid-cols-3 gap-6"></div>
-      <script>
-        (async () => {
-          const resp = await fetch('data/videos.json'); const vids = await resp.json();
-          const host = 'https://www.youtube-nocookie.com/embed/';
-          const ctn = document.getElementById('video-strip');
-          vids.forEach(v => {
-            const a = document.createElement('a'); a.href = 'videos.html#'+v.id; a.className='block group';
-            a.innerHTML = `
-              <div class="aspect-video rounded-lg overflow-hidden ring-1 ring-slate-200 bg-black">
-                <iframe class="w-full h-full" src="${host}${v.id}?rel=0" title="${v.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              </div>
-              <div class="mt-2 text-sm font-semibold group-hover:text-sky-600">${v.title}</div>`;
-            ctn.appendChild(a);
-          });
-        })();
-      </script>
-    </section>
-  </main>
-
-  <footer class="mt-20 border-t">
-    <div class="max-w-7xl mx-auto px-4 py-10 text-sm text-slate-500 flex flex-wrap items-center justify-between gap-4">
-      <p>© 2025 WellTegra Data Solutions</p>
-      <div class="flex items-center gap-4">
-        <a class="link" href="mailto:info@welltegra.network">info@welltegra.network</a>
-        <a class="link" href="https://welltegra.network">welltegra.network</a>
-      </div>
-    </div>
-  </footer>
-  <script>
-    window.WT = {
-      selectWell: (id) => { localStorage.setItem('wt:selectedWell', id); },
-      getWell: async () => {
-        const resp = await fetch('data/wells.json');
-        const data = await resp.json();
-        const id = localStorage.getItem('wt:selectedWell');
-        const wells = data.wells || data || [];
-        return { id, well: wells.find(w => (w.id || w.name) === id) || null, wells };
-      }
-    };
-  </script>
-</body>
-</html>
+  </div>
+  <div class="card">
+    <h2>How to use</h2>
+    <ol>
+      <li>Replace <span class="code">/data/wells.json</span> with your real export.</li>
+      <li>Keep field names the same (see schema in <a href="./docs.html">Docs</a>).</li>
+      <li>Open <b>Dashboards</b> — charts will update automatically.</li>
+    </ol>
+  </div>
+</div>
+<footer class="muted">© WellTegra · Static demo bundle (v22+)</footer>
+</div></body></html>
