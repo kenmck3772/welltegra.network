@@ -1,390 +1,56 @@
-{
-  "wells": [
-    {
-      "id": "W666",
-      "name": "The Perfect Storm",
-      "field": "Montrose",
-      "region": "UKCS",
-      "type": "HPHT Gas Condensate",
-      "depth": "18,500ft",
-      "status": "Shut-in - Well Integrity Issues",
-      "issue": "A nightmare well with multiple, compounding failures: severe casing deformation, a hard scale blockage, and a failed primary safety valve. Requires a complex, multi-stage intervention plan.",
-      "history": [
-        {
-          "date": "2024-03-15",
-          "operation": "Slickline Surveillance",
-          "problem": "Unable to pass 8,500ft due to casing restriction.",
-          "lesson": "This well combines multiple known failure modes from this field into a single asset."
-        },
-        {
-          "date": "2024-04-01",
-          "operation": "Production Test",
-          "problem": "Well died after brief flow period. Pressure analysis suggests deep blockage.",
-          "lesson": "Suspect combination of scale and integrity issues."
-        },
-        {
-          "date": "2024-04-10",
-          "operation": "DHSV Test",
-          "problem": "TRSSV failed to close on command. Well shut-in on annulus valves.",
-          "lesson": "Well integrity is critically compromised."
-        }
-      ],
-      "dailyReports": [],
-      "completion": {
-        "casing": [
-          {
-            "type": "Production",
-            "size": "9 5/8",
-            "top": 0,
-            "bottom": 18500,
-            "isProblem": true
-          }
-        ],
-        "tubing": [
-          {
-            "type": "Production",
-            "size": "4 1/2",
-            "top": 0,
-            "bottom": 18300
-          }
-        ],
-        "equipment": [
-          {
-            "item": "SSSV",
-            "top": 2500,
-            "comments": "Failed test",
-            "isProblem": true
-          },
-          {
-            "item": "Casing Deformation",
-            "top": 8500,
-            "comments": "Severe Ovalization",
-            "isProblem": true
-          },
-          {
-            "item": "BaSO4 Scale Bridge",
-            "top": 14200,
-            "comments": "Solid blockage",
-            "isProblem": true
-          },
-          {
-            "item": "Packer",
-            "top": 18250
-          }
-        ],
-        "perforations": [
-          {
-            "top": 18350,
-            "bottom": 18450
-          }
-        ]
-      }
-    },
-    {
-      "id": "M-21",
-      "name": "CASE STUDY: The Montrose Squeeze",
-      "field": "Montrose",
-      "region": "UKCS",
-      "type": "HPHT Gas Condensate",
-      "depth": "9,000ft",
-      "status": "Active - Restored Production",
-      "issue": "SOLUTION: Casing deformation was successfully remediated with an expandable patch.",
-      "history": [
-        {
-          "date": "2023-11-10",
-          "operation": "Slickline Surveillance",
-          "problem": "Standard 2.313\" OD toolstring unable to pass 8,500ft, encountering a hard stop.",
-          "lesson": "Significant reservoir depletion in this area is causing geomechanical stresses leading to casing deformation, a known regional risk. MFC log confirms this is ovalization, not collapse."
-        },
-        {
-          "date": "2023-12-05",
-          "operation": "Expandable Casing Patch",
-          "problem": "Successfully installed a 60ft expandable steel patch across the deformed section.",
-          "lesson": "This operation proves that an expandable patch is a viable, rigless solution for restoring full-bore access in this field, restoring production and well access."
-        }
-      ],
-      "dailyReports": [],
-      "completion": {
-        "casing": [
-          {
-            "type": "Production",
-            "size": "9 5/8",
-            "top": 0,
-            "bottom": 9000
-          }
-        ],
-        "tubing": [
-          {
-            "type": "Production",
-            "size": "4 1/2",
-            "top": 0,
-            "bottom": 8800
-          }
-        ],
-        "equipment": [
-          {
-            "item": "SSSV",
-            "top": 1500
-          },
-          {
-            "item": "Tubing Patch",
-            "top": 8500,
-            "comments": "Restored ID"
-          },
-          {
-            "item": "Packer",
-            "top": 8750
-          }
-        ],
-        "perforations": [
-          {
-            "top": 8850,
-            "bottom": 8950
-          }
-        ]
-      }
-    },
-    {
-      "id": "S-15",
-      "name": "CASE STUDY: The Scale Trap",
-      "field": "Montrose",
-      "region": "UKCS",
-      "type": "HPHT Gas Condensate",
-      "depth": "11,000ft",
-      "status": "Active - Restored Production",
-      "issue": "SOLUTION: Severe BaSO4 scale was successfully removed with a chemical/jetting treatment.",
-      "history": [
-        {
-          "date": "2024-01-05",
-          "operation": "Production Logging",
-          "problem": "PLT toolstring unable to pass 9,200ft due to a hard obstruction. Produced water analysis confirmed high Barium and Sulfate content.",
-          "lesson": "Commingling of injected seawater and formation water is causing severe, insoluble scale deposition. A previous attempt to mill scale on a nearby well resulted in stuck pipe."
-        },
-        {
-          "date": "2024-02-12",
-          "operation": "CT Chemical/Jetting",
-          "problem": "A 48hr soak with DTPA dissolver followed by a run with a high-pressure rotating jetting tool successfully cleared the blockage.",
-          "lesson": "This two-stage approach is a proven, lower-risk method for removing hard scale compared to aggressive milling."
-        }
-      ],
-      "dailyReports": [],
-      "completion": {
-        "casing": [
-          {
-            "type": "Production",
-            "size": "9 5/8",
-            "top": 0,
-            "bottom": 11000
-          }
-        ],
-        "tubing": [
-          {
-            "type": "Production",
-            "size": "4 1/2",
-            "top": 0,
-            "bottom": 10800
-          }
-        ],
-        "equipment": [
-          {
-            "item": "SSSV",
-            "top": 1800
-          },
-          {
-            "item": "Packer",
-            "top": 10750
-          }
-        ],
-        "perforations": [
-          {
-            "top": 10850,
-            "bottom": 10950
-          }
-        ]
-      }
-    },
-    {
-      "id": "F-11",
-      "name": "CASE STUDY: The Broken Barrier",
-      "field": "Montrose",
-      "region": "UKCS",
-      "type": "HPHT Gas Condensate",
-      "depth": "9,800ft",
-      "status": "Active - Restored Production",
-      "issue": "SOLUTION: Failed TRSSV was locked open and replaced with a slickline-retrievable insert valve.",
-      "history": [
-        {
-          "date": "2024-02-18",
-          "operation": "Routine DHSV Test",
-          "problem": "Valve failed to close reliably during routine 6-month test. Well was mandatorily shut-in by regulatory authority.",
-          "lesson": "An attempted repair on a similar well with a hydraulic tool failed; a mechanical lock-open tool is more reliable."
-        },
-        {
-          "date": "2024-03-20",
-          "operation": "Slickline Insert Valve Job",
-          "problem": "Successfully locked open the failed valve with a mechanical tool and installed a new wireline-retrievable insert valve.",
-          "lesson": "This standard slickline operation is a proven, cost-effective method for restoring the primary safety barrier without a rig."
-        }
-      ],
-      "dailyReports": [],
-      "completion": {
-        "casing": [
-          {
-            "type": "Production",
-            "size": "9 5/8",
-            "top": 0,
-            "bottom": 9800
-          }
-        ],
-        "tubing": [
-          {
-            "type": "Production",
-            "size": "4 1/2",
-            "top": 0,
-            "bottom": 9600
-          }
-        ],
-        "equipment": [
-          {
-            "item": "SSSV",
-            "top": 1500,
-            "comments": "New Insert Valve"
-          },
-          {
-            "item": "Packer",
-            "top": 9550
-          }
-        ],
-        "perforations": [
-          {
-            "top": 9650,
-            "bottom": 9750
-          }
-        ]
-      }
-    },
-    {
-      "id": "C-08",
-      "name": "CASE STUDY: The Sandstorm",
-      "field": "Montrose",
-      "region": "UKCS",
-      "type": "HPHT Gas Condensate",
-      "depth": "10,000ft",
-      "status": "Active - Restored Production",
-      "issue": "SOLUTION: Failed sand screen was repaired with a through-tubing patch.",
-      "history": [
-        {
-          "date": "2023-08-15",
-          "operation": "Surface Choke Replacement",
-          "problem": "Replaced choke for the 3rd time in 6 months due to severe erosional wear from high sand content.",
-          "lesson": "Choking back the well is a temporary fix; the root cause of sand control failure must be addressed. Downhole video confirmed screen erosion."
-        },
-        {
-          "date": "2023-09-10",
-          "operation": "Through-Tubing Patch",
-          "problem": "Successfully installed an expandable patch across the failed sand screen, restoring sand control.",
-          "lesson": "This confirms that a through-tubing patch is a viable rigless repair for this failure mode in this field."
-        }
-      ],
-      "dailyReports": [],
-      "completion": {
-        "casing": [
-          {
-            "type": "Production",
-            "size": "9 5/8",
-            "top": 0,
-            "bottom": 10000
-          }
-        ],
-        "tubing": [
-          {
-            "type": "Production",
-            "size": "4 1/2",
-            "top": 0,
-            "bottom": 9800
-          }
-        ],
-        "equipment": [
-          {
-            "item": "SSSV",
-            "top": 1600
-          },
-          {
-            "item": "Packer",
-            "top": 9750
-          },
-          {
-            "item": "Standalone Sand Screen",
-            "top": 9850,
-            "comments": "Patched"
-          }
-        ],
-        "perforations": [
-          {
-            "top": 9850,
-            "bottom": 9950
-          }
-        ]
-      }
-    },
-    {
-      "id": "P-12",
-      "name": "CASE STUDY: The Wax Plug",
-      "field": "Piper",
-      "region": "UKCS",
-      "type": "Oil Producer",
-      "depth": "7,500ft",
-      "status": "Active - Restored Production",
-      "issue": "SOLUTION: Severe paraffin wax blockage was cleared using CT with a chemical/mechanical approach.",
-      "history": [
-        {
-          "date": "2024-01-15",
-          "operation": "Slickline Gauge Ring Run",
-          "problem": "Gauge ring tagged a soft, waxy obstruction at 6,000ft. Unable to pass.",
-          "lesson": "A previous attempt on another well with only chemicals was slow and ineffective; a combined approach is needed."
-        },
-        {
-          "date": "2024-02-01",
-          "operation": "CT Wax Cleanout",
-          "problem": "Successfully removed wax blockage using a combination of heated chemical dissolvers and a mechanical scraper tool on Coiled Tubing.",
-          "lesson": "The dual chemical/mechanical approach is highly effective for severe paraffin blockages."
-        }
-      ],
-      "dailyReports": [],
-      "completion": {
-        "casing": [
-          {
-            "type": "Production",
-            "size": "7",
-            "top": 0,
-            "bottom": 7500
-          }
-        ],
-        "tubing": [
-          {
-            "type": "Production",
-            "size": "3 1/2",
-            "top": 0,
-            "bottom": 7300
-          }
-        ],
-        "equipment": [
-          {
-            "item": "SSSV",
-            "top": 1200
-          },
-          {
-            "item": "Packer",
-            "top": 7250
-          }
-        ],
-        "perforations": [
-          {
-            "top": 7350,
-            "bottom": 7450
-          }
-        ]
-      }
-    }
-  ]
-}
+[
+  {
+    "well_name": "WT-01",
+    "field": "Alpha",
+    "operator": "WellTegra",
+    "month": "2024-01-01",
+    "oil_bbl": 12000,
+    "water_bbl": 3000,
+    "gas_mcf": 500
+  },
+  {
+    "well_name": "WT-01",
+    "field": "Alpha",
+    "operator": "WellTegra",
+    "month": "2024-02-01",
+    "oil_bbl": 13800,
+    "water_bbl": 3600,
+    "gas_mcf": 520
+  },
+  {
+    "well_name": "WT-02",
+    "field": "Bravo",
+    "operator": "WellTegra",
+    "month": "2024-01-01",
+    "oil_bbl": 9000,
+    "water_bbl": 4200,
+    "gas_mcf": 400
+  },
+  {
+    "well_name": "WT-02",
+    "field": "Bravo",
+    "operator": "WellTegra",
+    "month": "2024-02-01",
+    "oil_bbl": 9800,
+    "water_bbl": 4300,
+    "gas_mcf": 410
+  },
+  {
+    "well_name": "WT-03",
+    "field": "Alpha",
+    "operator": "WellTegra",
+    "month": "2024-01-01",
+    "oil_bbl": 15000,
+    "water_bbl": 5000,
+    "gas_mcf": 700
+  },
+  {
+    "well_name": "WT-03",
+    "field": "Alpha",
+    "operator": "WellTegra",
+    "month": "2024-02-01",
+    "oil_bbl": 14350,
+    "water_bbl": 5200,
+    "gas_mcf": 690
+  }
+]
