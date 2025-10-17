@@ -7,37 +7,35 @@
   <meta name="description" content="Product teasers, walkthroughs, and demos." />
   <link rel="icon" href="assets/favicon.png" />
   <link rel="manifest" href="./manifest.json" />
-  <link rel="stylesheet" href="./assets/tailwind.css" />
+  <link rel="stylesheet" href="./assets/tailwind.css?v=3" />
 </head>
 <body class="bg-white text-slate-900">
-  <header class="border-b bg-white/70 backdrop-blur">
-    <div class="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
+  <header class="border-b bg-white/80 backdrop-blur sticky top-0 z-40">
+    <div class="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
       <a href="./index.html" class="font-extrabold text-xl">Well-Tegra</a>
-      <nav class="flex gap-6 text-sm">
+      <nav class="hidden md:flex gap-6 text-sm">
         <a href="./planner.html" class="hover:text-sky-600">Planner</a>
         <a href="./performer.html" class="hover:text-sky-600">Performer</a>
         <a href="./analyzer.html" class="hover:text-sky-600">Analyzer</a>
         <a href="./videos.html" class="text-sky-600 font-semibold">Videos</a>
         <a href="./whitepaper.html" class="hover:text-sky-600">White Paper</a>
       </nav>
+      <div></div>
     </div>
   </header>
 
-  <main class="mx-auto max-w-6xl px-6 py-10">
+  <main class="mx-auto max-w-7xl px-6 py-10">
     <h1 class="text-3xl font-extrabold">Videos</h1>
     <p class="mt-2 text-slate-600">Embedded YouTube content. Replace the IDs with your own.</p>
 
     <div class="mt-8 grid gap-6 md:grid-cols-2">
-      <!-- Example embed (privacy-enhanced) -->
       <div class="aspect-video rounded-2xl overflow-hidden border">
         <iframe class="w-full h-full"
           src="https://www.youtube-nocookie.com/embed/1acPY-6uzAA"
-          title="Well-Tegra Intro"
-          frameborder="0"
+          title="Well-Tegra Intro" frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen></iframe>
       </div>
-      <!-- Add more embeds as needed -->
       <div class="aspect-video rounded-2xl overflow-hidden border grid place-content-center text-slate-400">
         Add another video…
       </div>
@@ -45,7 +43,7 @@
   </main>
 
   <footer class="border-t">
-    <div class="mx-auto max-w-6xl px-6 py-8 text-sm text-slate-500">© Well-Tegra</div>
+    <div class="mx-auto max-w-7xl px-6 py-8 text-sm text-slate-500">© Well-Tegra</div>
   </footer>
 </body>
 </html>

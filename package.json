@@ -1,14 +1,13 @@
 {
-  "name": "welltegra-v21",
+  "name": "welltegra",
   "private": true,
-  "version": "1.0.0",
   "scripts": {
-    "dev": "tailwindcss -i ./input.css -o ./assets/tailwind.css --watch",
-    "build": "tailwindcss -i ./input.css -o ./assets/tailwind.css --minify"
+    "build": "tailwindcss -c tailwind.config.js -i input.css -o assets/tailwind.css --minify",
+    "build:css": "tailwindcss -c tailwind.config.js -i input.css -o assets/tailwind.css --minify"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.10",
+    "autoprefixer": "^10.4.20",
     "postcss": "^8.4.47",
-    "autoprefixer": "^10.4.20"
+    "tailwindcss": "^3.4.13"
   }
 }
