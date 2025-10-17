@@ -1,0 +1,109 @@
+diff --git a/package.json b/package.json
+index 1111111..2222222 100644
+--- a/package.json
++++ b/package.json
+@@ -1,11 +1,17 @@
+ {
+   "name": "welltegra",
+   "private": true,
+   "version": "2.0.0",
+-  "scripts": {},
++  "scripts": {
++    "build:css": "tailwindcss -i ./src/input.css -o ./assets/tailwind.css --minify",
++    "watch:css": "tailwindcss -i ./src/input.css -o ./assets/tailwind.css --watch"
++  },
+   "devDependencies": {
+-    "autoprefixer": "^10.4.21",
+-    "postcss": "^8.5.6",
+-    "tailwindcss": "^3.4.18"
++    "autoprefixer": "^10.4.20",
++    "postcss": "^8.4.47",
++    "tailwindcss": "^3.4.10"
+   }
+ }
+diff --git a/tailwind.config.js b/tailwind.config.js
+index 3333333..4444444 100644
+--- a/tailwind.config.js
++++ b/tailwind.config.js
+@@ -1,13 +1,14 @@
+-module.exports = {
+-  content: ["./**/*.html", "./**/*.{js,ts}"],
+-  theme: { extend: {} },
+-  plugins: [],
+-}
+-/** @type {import('tailwindcss').Config} */
+-module.exports = {
+-  content: ["./**/*.html", "./src/**/*.{js,ts}"],
+-  theme: { extend: {} },
+-  plugins: [],
+-};
++/** @type {import('tailwindcss').Config} */
++module.exports = {
++  content: [
++    "./index.html",
++    "./**/*.{html,js,ts}"
++  ],
++  theme: {
++    extend: {},
++  },
++  plugins: [],
++};
+diff --git a/src/input.css b/src/input.css
+new file mode 100644
+index 0000000..5555555
+--- /dev/null
++++ b/src/input.css
+@@ -0,0 +1,120 @@
++@tailwind base;
++@tailwind components;
++@tailwind utilities;
++
++/* Root font scaling for the big “A+” button */
++:root { --wt-scale: 1; }
++html { font-size: calc(16px * var(--wt-scale)); }
++
++/* Focus visibility */
++*:focus-visible {
++  outline: 3px solid theme(colors.sky.400);
++  outline-offset: 2px;
++}
++
++/* Light/Dark helpers */
++.theme-dark .light-card { @apply bg-slate-800 border border-slate-700; }
++.theme-light .light-card { @apply bg-white; }
++
++/* Status tags (kept from your inline styles, now as components) */
++.status-available,
++.status-active-underperforming,
++.status-active-lowinjectivity,
++.status-approved,
++.status-mustered,
++.status-passed,
++.status-active-restoredproduction,
++.status-pa-successful { @apply bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 rounded-full px-2 py-0.5; }
++
++.status-maintenance,
++.status-pending,
++.status-intransit,
++.status-standby { @apply bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 rounded-full px-2 py-0.5; }
++
++.status-unavailable,
++.status-onjob,
++.status-expired,
++.status-unaccounted,
++.status-failed,
++.status-drilling-criticalsection,
++.status-shut-in,
++.status-shut-in-wellintegrityissues,
++.status-pacandidate { @apply bg-rose-100 text-rose-800 dark:bg-rose-900/30 dark:text-rose-300 rounded-full px-2 py-0.5; }
++
++.status-onboard { @apply bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300 rounded-full px-2 py-0.5; }
++
++/* Risk tags */
++.risk-low { @apply bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 rounded-full px-2 py-0.5; }
++.risk-medium { @apply bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 rounded-full px-2 py-0.5; }
++.risk-high { @apply bg-rose-100 text-rose-800 dark:bg-rose-900/30 dark:text-rose-300 rounded-full px-2 py-0.5; }
++
++/* Subtle card hover */
++.planner-card { @apply transition-transform; }
++.planner-card:hover { transform: translateY(-4px); }
