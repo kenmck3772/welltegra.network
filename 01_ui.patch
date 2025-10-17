@@ -1,0 +1,60 @@
+diff --git a/index.html b/index.html
+index 6666666..7777777 100644
+--- a/index.html
++++ b/index.html
+@@ -8,10 +8,10 @@
+-    <script src="https://cdn.tailwindcss.com"></script>
++    <link rel="stylesheet" href="./assets/tailwind.css">
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@@ -48,7 +48,7 @@
+-            background-image: url('https://welltegra.network/assets/watermark.png');
++            background-image: url('./assets/watermark.svg');
+@@ -66,7 +66,7 @@
+-            background-image: url('https://welltegra.network/assets/watermark.png');
++            background-image: url('./assets/watermark.svg');
+@@ -140,7 +140,7 @@
+-                    <img src="https://welltegra.network/assets/logo.png" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" onerror="this.onerror=null;this.src='https://placehold.co/100x100/0f172a/ffffff?text=Logo';">
++                    <img src="./assets/logo.svg" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" onerror="this.onerror=null;this.src='https://placehold.co/100x100/0f172a/ffffff?text=Logo';">
+@@ -187,6 +187,14 @@
+                     <a id="about-nav-link" title="About the Founder" class="nav-link flex items-center space-x-2">
+                         <svg ...></svg>
+                         <span>About</span>
+                     </a>
++                    <a id="videos-nav-link" title="Videos" class="nav-link flex items-center space-x-2" href="https://www.youtube.com/@WellTegra" target="_blank" rel="noopener">
++                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M2 8a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4Z"/><path d="m10 9 5 3-5 3V9Z"/></svg>
++                        <span>Videos</span>
++                    </a>
+@@ -236,7 +244,7 @@
+-                <video autoplay loop muted playsinline id="hero-video" poster="https://welltegra.network/assets/thumbnail.png">
+-                    <source src="https://welltegra.network/assets/thumbnail.mp4" type="video/mp4">
++                <video autoplay loop muted playsinline id="hero-video" poster="./assets/thumbnail.png">
++                    <source src="./assets/thumbnail.mp4" type="video/mp4">
+                 </video>
+@@ -1180,6 +1188,35 @@
+ </script>
++<!-- Floating “A+” zoom control -->
++<button id="zoom-btn" aria-label="Increase text size"
++  class="fixed bottom-4 right-4 z-[60] rounded-full px-4 py-3 shadow-lg bg-blue-600 text-white font-bold hover:bg-blue-500 focus:outline-none">
++  A+
++  <span class="sr-only">Increase text size</span>
++</button>
++<script>
++  (function () {
++    const btn = document.getElementById('zoom-btn');
++    if (!btn) return;
++    const apply = (n) => {
++      const clamped = Math.max(1, Math.min(n, 1.6)); // 100%..160%
++      document.documentElement.style.setProperty('--wt-scale', clamped);
++      localStorage.setItem('wt-scale', String(clamped));
++    };
++    const saved = parseFloat(localStorage.getItem('wt-scale'));
++    if (!isNaN(saved)) apply(saved);
++    btn.addEventListener('click', () => {
++      const current = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--wt-scale')) || 1;
++      const next = current >= 1.6 ? 1 : (current + 0.1);
++      apply(parseFloat(next.toFixed(2)));
++    });
++  })();
++</script>
+ </body>
+ </html>
