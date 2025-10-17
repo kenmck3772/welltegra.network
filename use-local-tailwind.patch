@@ -1,8 +1,85 @@
-*** a/index.html
---- b/index.html
-@@
+cat > use-local-tailwind.patch <<'PATCH'
+diff --git a/index.html b/index.html
+--- a/index.html
++++ b/index.html
+@@ -1,20 +1,21 @@
+ <!DOCTYPE html>
+ <html lang="en" class="scroll-smooth">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>v21 - Well-Tegra | The Well From Hell Case Study</title>
 -    <script src="https://cdn.tailwindcss.com"></script>
 +    <!-- Compiled Tailwind for production -->
 +    <link rel="stylesheet" href="./assets/tailwind.css">
-@@
- </head>
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
+     <style>
+diff --git a/src/input.css b/src/input.css
+new file mode 100644
+--- /dev/null
++++ b/src/input.css
+@@ -0,0 +1,9 @@
++@tailwind base;
++@tailwind components;
++@tailwind utilities;
++
++/* Accessibility: slightly larger base text and clearer focus ring */
++:root { --wt-base-font: 18px; }
++html { font-size: var(--wt-base-font); }
++:focus-visible { outline: 3px solid #06b6d4; outline-offset: 2px; }
++
+diff --git a/tailwind.config.js b/tailwind.config.js
+new file mode 100644
+--- /dev/null
++++ b/tailwind.config.js
+@@ -0,0 +1,8 @@
++/** @type {import('tailwindcss').Config} */
++module.exports = {
++  content: ["./**/*.html", "./src/**/*.{js,ts}"],
++  theme: {
++    extend: {},
++  },
++  plugins: [],
++};
+diff --git a/postcss.config.js b/postcss.config.js
+new file mode 100644
+--- /dev/null
++++ b/postcss.config.js
+@@ -0,0 +1,6 @@
++module.exports = {
++  plugins: {
++    tailwindcss: {},
++    autoprefixer: {},
++  },
++};
+diff --git a/package.json b/package.json
+new file mode 100644
+--- /dev/null
++++ b/package.json
+@@ -0,0 +1,16 @@
++{
++  "name": "welltegra",
++  "private": true,
++  "version": "1.0.0",
++  "scripts": {
++    "build:css": "tailwindcss -i ./src/input.css -o ./assets/tailwind.css --minify",
++    "watch:css": "tailwindcss -i ./src/input.css -o ./assets/tailwind.css --watch"
++  },
++  "devDependencies": {
++    "autoprefixer": "^10.4.20",
++    "postcss": "^8.4.47",
++    "tailwindcss": "^3.4.10"
++  }
++}
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,3 @@
++node_modules/
++*.log
++.DS_Store
+PATCH
