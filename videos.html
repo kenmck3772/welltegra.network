@@ -1,49 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Videos • Well-Tegra</title>
-  <meta name="description" content="Product teasers, walkthroughs, and demos." />
-  <link rel="icon" href="assets/favicon.png" />
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="stylesheet" href="./assets/tailwind.css?v=3" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Well-Tegra • Videos</title>
+  <link rel="stylesheet" href="./assets/tailwind.css">
+  <script>
+    (function(){var p=document.createElement('div');p.className='hidden';document.head.appendChild(p);
+      var ok=getComputedStyle(p).display==='none';p.remove();
+      if(!ok){var s=document.createElement('script');s.src='https://cdn.tailwindcss.com';document.head.appendChild(s);}})();
+  </script>
 </head>
-<body class="bg-white text-slate-900">
-  <header class="border-b bg-white/80 backdrop-blur sticky top-0 z-40">
-    <div class="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
-      <a href="./index.html" class="font-extrabold text-xl">Well-Tegra</a>
-      <nav class="hidden md:flex gap-6 text-sm">
-        <a href="./planner.html" class="hover:text-sky-600">Planner</a>
-        <a href="./performer.html" class="hover:text-sky-600">Performer</a>
-        <a href="./analyzer.html" class="hover:text-sky-600">Analyzer</a>
-        <a href="./videos.html" class="text-sky-600 font-semibold">Videos</a>
-        <a href="./whitepaper.html" class="hover:text-sky-600">White Paper</a>
-      </nav>
-      <div></div>
-    </div>
-  </header>
-
-  <main class="mx-auto max-w-7xl px-6 py-10">
-    <h1 class="text-3xl font-extrabold">Videos</h1>
-    <p class="mt-2 text-slate-600">Embedded YouTube content. Replace the IDs with your own.</p>
-
-    <div class="mt-8 grid gap-6 md:grid-cols-2">
-      <div class="aspect-video rounded-2xl overflow-hidden border">
-        <iframe class="w-full h-full"
-          src="https://www.youtube-nocookie.com/embed/1acPY-6uzAA"
-          title="Well-Tegra Intro" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen></iframe>
-      </div>
-      <div class="aspect-video rounded-2xl overflow-hidden border grid place-content-center text-slate-400">
-        Add another video…
-      </div>
-    </div>
-  </main>
-
-  <footer class="border-t">
-    <div class="mx-auto max-w-7xl px-6 py-8 text-sm text-slate-500">© Well-Tegra</div>
-  </footer>
+<body class="bg-slate-900 text-slate-100">
+<header class="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
+  <a href="index.html" class="text-lg font-bold">← Back</a>
+  <img src="./assets/logo.svg" class="h-10" alt="WT">
+</header>
+<main class="max-w-5xl mx-auto px-4 pb-10">
+  <h1 class="text-3xl font-extrabold mb-4">Well-Tegra YouTube</h1>
+  <div class="aspect-video w-full rounded-xl overflow-hidden shadow ring-1 ring-slate-700">
+    <iframe class="w-full h-full"
+      src="https://www.youtube.com/embed?listType=playlist&list=UUedD5TAvyQgV1LRFfjoNRww"
+      title="Well-Tegra uploads" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+  <div class="mt-8 grid sm:grid-cols-2 gap-4">
+    <a class="bg-slate-800 rounded-lg p-4 hover:bg-slate-700 transition" target="_blank" rel="noopener"
+       href="https://www.youtube.com/channel/UCedD5TAvyQgV1LRFfjoNRww?sub_confirmation=1">Subscribe</a>
+    <a class="bg-slate-800 rounded-lg p-4 hover:bg-slate-700 transition" target="_blank" rel="noopener"
+       href="https://www.youtube.com/@WellTegra/playlists">Playlists</a>
+  </div>
+</main>
 </body>
 </html>
