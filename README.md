@@ -1,21 +1,28 @@
-# Fixes
-- Replaced remote logo URL with local `./assets/logo.svg` to stop 404s.
-- Added `onerror` fallback to the welcome logo.
+# Production Tailwind Setup (No Console Warning)
 
-## Tailwind production
-The Play CDN is fine for demos; to remove the console warning, build Tailwind:
+## Quick commands
 ```bash
-npm init -y
-npm i -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-# tailwind.config.js: content: ["./*.html"]
-# input.css:
-#   @tailwind base;
-#   @tailwind components;
-#   @tailwind utilities;
-npx tailwindcss -i ./input.css -o ./assets/tailwind.css --minify
+npm install
+npm run build  # creates ./assets/tailwind.css (minified)
 ```
-Then replace the script tag with:
+
+Link it in your HTML:
 ```html
 <link rel="stylesheet" href="./assets/tailwind.css">
+```
+
+### Optional: keep Play CDN for localhost only
+Snippet (already in index.html):
+```html
+<script>
+  (function () {
+    var isLocal = location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.search.includes("dev");
+    if (isLocal) { var s=document.createElement("script"); s.src="https://cdn.tailwindcss.com"; document.head.appendChild(s); }
+  })();
+</script>
+```
+
+## Docker (no Node install on host)
+```bash
+docker run --rm -v "$PWD":/app -w /app node:20-alpine sh -lc "npm i && npm run build && ls -lh assets/tailwind.css"
 ```
