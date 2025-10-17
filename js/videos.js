@@ -1,0 +1,1 @@
+loadJSON('data/videos.json').then(function(v){var el=document.getElementById('yt'); el.innerHTML=v.map(function(o){return '<div class="card"><div style="opacity:.8">'+(o.title||'')+'</div><iframe width="100%" height="315" src="https://www.youtube.com/embed/'+o.id+'" frameborder="0" allowfullscreen></iframe><p>'+(o.note||'')+'</p></div>'}).join('')})
