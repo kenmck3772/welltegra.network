@@ -1,9 +1,96 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>WellTegra — Huntsman</title><link rel="stylesheet" href="css/styles.css"/><link rel="stylesheet" href="css/hero.css"/></head><body>
-<header class="site"><div class="wrap"><div class="brand"><span class="dot"></span><strong>WellTegra</strong></div><nav><a href="index.html">Home</a><a href="videos.html">Videos</a></nav><button class="button" onclick="location.href='#contact'">Get a demo</button></div></header>
-<section class="hero"><video autoplay muted playsinline data-poster="assets/hero-poster.svg"></video><div class="overlay"></div>
-<div class="content"><h1>From subsurface data to surface value</h1><p>Harmonize wells data, predict performance, and plan the next best action — in one cinematic workspace.</p>
-<div class="controls"><button id="btn-mute" class="toggle">Mute</button><button id="btn-amb" class="toggle">Ambience</button></div>
-<div class="kpis"><div class="kpi"><div class="val" data-kpi="1284">0</div><div class="label">Active Wells</div></div><div class="kpi"><div class="val" data-kpi="19">0</div><div class="label">% Uptime Lift</div></div><div class="kpi"><div class="val" data-kpi="7">0</div><div class="label">Days to Value</div></div></div></div></section>
-<main class="container"><div class="card"><h2>Dashboards</h2><p class="muted">Place <code>assets/hero1.mp4</code> and optional <code>assets/hero1-720.mp4</code>. The hero will auto-select by network speed and screen size.</p></div></main>
-<footer class="site"><div class="container foot"><img src="assets/huntsman-stag.svg" alt="Huntsman"/><small class="muted">© WellTegra v23.2 — “Huntsman”.</small></div></footer>
-<script type="module" src="js/hero.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WellTegra — Energy Data Orchestration</title>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" as="style" />
+  <script defer src="js/main.js"></script>
+</head>
+<body>
+  
+<nav>
+  <div class="inner">
+    <div class="brand">WellTegra</div>
+    <a href="index.html">Home</a>
+    <a href="analyzer.html">Analyzer</a>
+    <a href="planner.html">Planner</a>
+    <a href="performer.html">Performer</a>
+    <a href="videos.html">Videos</a>
+    <span class="spacer"></span>
+    <a href="whitepaper.html">Whitepaper</a>
+  </div>
+</nav>
+
+  <div class="container">
+    <div class="hero card">
+      <video src='assets/Global_Data_Integration_Visualization (2).mp4' autoplay muted loop playsinline></video>
+      <div class="overlay"></div>
+      <div class="content">
+        <div class="tag">Huntsman Field</div>
+        <div class="tag">v23</div>
+        <h1 class="h1">From Bytes to Barrels</h1>
+        <p>Real-time surveillance, planning, and optimization for wells — unified in one clean stack.</p>
+        <a class="btn" href="analyzer.html">Open Analyzer</a>
+      </div>
+    </div>
+
+    <div class="grid grid-3" style="margin-top:16px">
+      <div class="card kpi">
+        <div>
+          <div class="mono">Active Wells</div>
+          <div id="kpi-wells" style="font-size:26px;font-weight:700">—</div>
+          <small>from data/wells.json</small>
+        </div>
+        <div>⛽</div>
+      </div>
+      <div class="card kpi">
+        <div>
+          <div class="mono">Total Production (bopd)</div>
+          <div id="kpi-prod" style="font-size:26px;font-weight:700">—</div>
+          <small>producing status only</small>
+        </div>
+        <div>📈</div>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div class="mono">Ambience</div>
+            <small>Optional audio bed</small>
+          </div>
+          <button id="ambBtn" class="btn">Play</button>
+        </div>
+        <audio id="amb" loop>
+          <source src="https://cdn.pixabay.com/download/audio/2021/10/26/audio_5f6c9d1fb5.mp3?filename=ambient-106028.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2025 WellTegra</footer>
+
+<script>
+(async()=>{
+  try {
+    const d = await getJSON('data/wells.json');
+    const wells = d.wells || [];
+    document.getElementById('kpi-wells').textContent = fmt(wells.length);
+    const total = wells.filter(w=>/prod/i.test(w.status||'')).reduce((a,w)=>a+(+w.production_bopd||0),0);
+    document.getElementById('kpi-prod').textContent = fmt(total);
+  } catch(e) {
+    console.error(e);
+  }
+  const amb = document.getElementById('amb');
+  const btn = document.getElementById('ambBtn');
+  let playing = false;
+  btn.addEventListener('click', async()=>{
+    if(!playing) { await amb.play(); btn.textContent='Pause'; }
+    else { amb.pause(); btn.textContent='Play'; }
+    playing = !playing;
+  });
+})();
+</script>
+</body>
+</html>

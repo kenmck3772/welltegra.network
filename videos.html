@@ -1,7 +1,44 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>WellTegra — Videos</title><link rel="stylesheet" href="css/styles.css"/><link rel="stylesheet" href="css/hero.css"/></head><body>
-<header class="site"><div class="wrap"><div class="brand"><span class="dot"></span><strong>WellTegra</strong></div><nav><a href="index.html">Home</a><a href="videos.html">Videos</a></nav></div></header>
-<section class="hero"><video autoplay muted playsinline data-poster="assets/hero-poster.svg"></video><div class="overlay"></div>
-<div class="content"><h1>Video Library</h1><p>Drop in your reels & explainers.</p><div class="controls"><button id="btn-mute" class="toggle">Mute</button><button id="btn-amb" class="toggle">Ambience</button></div></div></section>
-<main class="container"><div class="card"><ul><li>assets/hero1.mp4 — primary</li><li>assets/hero1-720.mp4 — mobile fallback</li></ul></div></main>
-<footer class="site"><div class="container foot"><img src="assets/huntsman-stag.svg" alt="Huntsman"/><small class="muted">WellTegra v23.2</small></div></footer>
-<script type="module" src="js/hero.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Videos — WellTegra</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <script defer src="js/main.js"></script>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="brand">WellTegra</div>
+    <a href="index.html">Home</a>
+    <a href="analyzer.html">Analyzer</a>
+    <a href="planner.html">Planner</a>
+    <a href="performer.html">Performer</a>
+    <a href="videos.html">Videos</a>
+    <span class="spacer"></span>
+    <a href="whitepaper.html">Whitepaper</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="grid grid-2" id="vidGrid"></div>
+</div>
+<script>
+(async()=>{
+  const d = await getJSON('data/videos.json');
+  const vids = d.videos || [];
+  const grid = document.getElementById('vidGrid');
+  vids.forEach(v=>{
+    const idMatch = (v.url||'').match(/[?&]v=([^&]+)/);
+    const id = idMatch ? idMatch[1] : null;
+    const card = document.createElement('div');
+    card.className='card';
+    card.innerHTML = '<div class="mono">'+(v.title||'Video')+'</div>' + (id ? `<iframe width="100%" height="260" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>` : '<div>Invalid URL</div>');
+    grid.appendChild(card);
+  });
+})();
+</script>
+</body>
+</html>

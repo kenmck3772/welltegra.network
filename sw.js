@@ -1,1 +1,9 @@
-const CACHE='welltegra-v23-2';const ASSETS=['/','/index.html','/css/styles.css','/css/hero.css','/js/common.js','/js/hero.js','/assets/huntsman-stag.svg','/assets/hero-poster.svg','/manifest.json'];self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))))});self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(u.origin===location.origin){e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));}});
+
+self.addEventListener('install', (e)=>{
+  e.waitUntil(caches.open('wt-cache-v1').then(c=>c.addAll([
+    '/', '/index.html','/css/styles.css','/js/main.js','/data/wells.json','/data/videos.json'
+  ])));
+});
+self.addEventListener('fetch', (e)=>{
+  e.respondWith(caches.match(e.request).then(r=> r || fetch(e.request)));
+});

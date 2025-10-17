@@ -1,1 +1,72 @@
-<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Performer — WellTegra</title><link rel='stylesheet' href='css/styles.css'></head><body><div class='nav'><div><b>WellTegra</b> <span style='opacity:.7'>v23</span></div><div class='links'><a href='index.html'>Home</a><a href='dashboards.html'>Dashboards</a><a href='analyzer.html'>Analyzer</a><a href='performer.html'>Performer</a><a href='planner.html'>Planner</a><a href='map.html'>Map</a><a href='videos.html'>Videos</a></div></div><div class='container'><div class='card'><h2>Performer</h2><input id='q' placeholder='Search...'><div style='overflow:auto'><table class='table' id='t'><thead><tr><th>Well</th><th>Field</th><th>Operator</th><th>Status</th><th>Oil</th><th>Water Cut</th></tr></thead><tbody></tbody></table></div></div></div><script src='js/performer.js'></script><div class='container' style='opacity:.7;font-size:12px'>© WellTegra — Replace data/wells.json with your real file.</div><script src='js/common.js'></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Performer — WellTegra</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <script defer src="js/main.js"></script>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <div class="brand">WellTegra</div>
+    <a href="index.html">Home</a>
+    <a href="analyzer.html">Analyzer</a>
+    <a href="planner.html">Planner</a>
+    <a href="performer.html">Performer</a>
+    <a href="videos.html">Videos</a>
+    <span class="spacer"></span>
+    <a href="whitepaper.html">Whitepaper</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="card">
+    <h2 style="margin-top:0">Performer — Shift Log</h2>
+    <p>Quick checklist for field ops. Stored locally in your browser.</p>
+    <div class="grid grid-2">
+      <label>Well<select id="pl-well"></select></label>
+      <label>Condition<select id="pl-cond"><option>Normal</option><option>Watch</option><option>Alert</option></select></label>
+      <label>Notes<textarea id="pl-notes" style="width:100%;height:120px"></textarea></label>
+    </div>
+    <button id="pl-save" class="btn" style="margin-top:10px">Save Entry</button>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>Last 10 Entries</h3>
+    <div id="pl-rows"></div>
+  </div>
+</div>
+<script>
+const key='wt_performer';
+function load(){ try{return JSON.parse(localStorage.getItem(key)||'[]')}catch(e){return[]} }
+function save(items){ localStorage.setItem(key, JSON.stringify(items)); }
+(async()=>{
+  const d=await getJSON('data/wells.json'); const wells=d.wells||[];
+  const sel=document.getElementById('pl-well');
+  wells.forEach(w=>{ const o=document.createElement('option'); o.value=w.well_id||w.name; o.textContent=w.name||w.well_id; sel.appendChild(o); });
+  document.getElementById('pl-save').onclick=()=>{
+    const items=load();
+    items.unshift({ts:Date.now(),well:sel.value,cond:qs('#pl-cond').value,notes:qs('#pl-notes').value});
+    save(items.slice(0,50));
+    redraw();
+    qs('#pl-notes').value='';
+  };
+  redraw();
+})();
+function redraw(){
+  const rows=load().slice(0,10);
+  const wrap=document.getElementById('pl-rows');
+  wrap.innerHTML='';
+  rows.forEach(r=>{
+    const div=document.createElement('div');
+    div.className='card'; div.style.margin='8px 0';
+    const when=new Date(r.ts).toLocaleString();
+    div.innerHTML='<div class="mono">'+(r.well||'—')+' • '+(r.cond||'—')+' • '+when+'</div><div>'+ (r.notes||'') +'</div>';
+    wrap.appendChild(div);
+  });
+}
+</script>
+</body>
+</html>

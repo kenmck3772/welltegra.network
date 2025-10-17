@@ -1,1 +1,74 @@
-<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Planner — WellTegra</title><link rel='stylesheet' href='css/styles.css'></head><body><div class='nav'><div><b>WellTegra</b> <span style='opacity:.7'>v23</span></div><div class='links'><a href='index.html'>Home</a><a href='dashboards.html'>Dashboards</a><a href='analyzer.html'>Analyzer</a><a href='performer.html'>Performer</a><a href='planner.html'>Planner</a><a href='map.html'>Map</a><a href='videos.html'>Videos</a></div></div><div class='container'><div class='card'><h2>Planner</h2><div class='row'><input id='task' placeholder='Task'><input id='well' placeholder='Well'><input id='due' type='date'></div><button class='btn' id='add'>Add</button></div><div class='card'><h3>Backlog</h3><div id='list'></div></div></div><script src='js/planner.js'></script><div class='container' style='opacity:.7;font-size:12px'>© WellTegra — Replace data/wells.json with your real file.</div><script src='js/common.js'></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Planner — WellTegra</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <script defer src="js/main.js"></script>
+</head>
+<body>
+  
+<nav>
+  <div class="inner">
+    <div class="brand">WellTegra</div>
+    <a href="index.html">Home</a>
+    <a href="analyzer.html">Analyzer</a>
+    <a href="planner.html">Planner</a>
+    <a href="performer.html">Performer</a>
+    <a href="videos.html">Videos</a>
+    <span class="spacer"></span>
+    <a href="whitepaper.html">Whitepaper</a>
+  </div>
+</nav>
+
+  <div class="container">
+    <div class="card">
+      <h2 style="margin-top:0">Work Planner</h2>
+      <p>Draft, assign, and track tasks. Data saves to your browser (local only) so you can experiment safely.</p>
+      <div class="grid">
+        <label>Title <input id="t" style="width:100%"/></label>
+        <label>Well ID <input id="w" style="width:100%"/></label>
+        <label>Priority 
+          <select id="p" style="width:100%">
+            <option>Low</option><option>Medium</option><option>High</option>
+          </select>
+        </label>
+        <label>Due <input id="d" type="date" style="width:100%"/></label>
+      </div>
+      <div style="margin-top:12px"><button id="add" class="btn">Add Task</button></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Backlog</h3>
+      <div id="list"></div>
+    </div>
+  </div>
+<script>
+const key='wt_planner';
+function load(){ try{return JSON.parse(localStorage.getItem(key)||'[]')}catch(e){return[]} }
+function save(items){ localStorage.setItem(key, JSON.stringify(items)); }
+function redraw(){
+  const items = load();
+  const wrap = document.getElementById('list');
+  wrap.innerHTML='';
+  items.forEach((it,i)=>{
+    const row = document.createElement('div');
+    row.className='card'; row.style.margin='8px 0';
+    row.innerHTML = '<div class="kpi"><div><div class="mono">'+it.title+'</div><small>'+it.well+' • '+it.priority+' • Due '+(it.due||'—')+'</small></div><button data-i="'+i+'" class="btn">Done</button></div>';
+    wrap.appendChild(row);
+  });
+  wrap.querySelectorAll('button.btn').forEach(b=>b.onclick=()=>{
+    const items = load(); items.splice(+b.dataset.i,1); save(items); redraw();
+  });
+}
+document.getElementById('add').onclick = ()=>{
+  const title=qs('#t').value.trim(); if(!title) return;
+  const well=qs('#w').value.trim(); const priority=qs('#p').value; const due=qs('#d').value;
+  const items=load(); items.unshift({title,well,priority,due,ts:Date.now()}); save(items); redraw();
+  qs('#t').value=''; qs('#w').value=''; qs('#p').value='Low'; qs('#d').value='';
+};
+redraw();
+</script>
+</body>
+</html>

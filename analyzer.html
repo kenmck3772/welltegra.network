@@ -1,1 +1,92 @@
-<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Analyzer — WellTegra</title><link rel='stylesheet' href='css/styles.css'></head><body><div class='nav'><div><b>WellTegra</b> <span style='opacity:.7'>v23</span></div><div class='links'><a href='index.html'>Home</a><a href='dashboards.html'>Dashboards</a><a href='analyzer.html'>Analyzer</a><a href='performer.html'>Performer</a><a href='planner.html'>Planner</a><a href='map.html'>Map</a><a href='videos.html'>Videos</a></div></div><div class='container'><div class='card'><h2>Analyzer</h2><div class='row'><select id='x'><option value='oil_daily'>Oil</option><option value='water_daily'>Water</option><option value='gas_daily'>Gas</option></select><select id='y'><option value='water_daily'>Water</option><option value='oil_daily'>Oil</option><option value='gas_daily'>Gas</option></select><select id='g'><option value='field'>Field</option><option value='operator'>Operator</option><option value='status'>Status</option></select></div><canvas id='scatter' height='220'></canvas><div id='insight' style='margin-top:8px;opacity:.9'></div></div></div><script src='https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js'></script><script src='js/analyzer.js'></script><div class='container' style='opacity:.7;font-size:12px'>© WellTegra — Replace data/wells.json with your real file.</div><script src='js/common.js'></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Analyzer — WellTegra</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script defer src="js/main.js"></script>
+</head>
+<body>
+  
+<nav>
+  <div class="inner">
+    <div class="brand">WellTegra</div>
+    <a href="index.html">Home</a>
+    <a href="analyzer.html">Analyzer</a>
+    <a href="planner.html">Planner</a>
+    <a href="performer.html">Performer</a>
+    <a href="videos.html">Videos</a>
+    <span class="spacer"></span>
+    <a href="whitepaper.html">Whitepaper</a>
+  </div>
+</nav>
+
+  <div class="container">
+    <div class="grid grid-2">
+      <div class="card">
+        <h2 style="margin-top:0">Production by Well (bopd)</h2>
+        <canvas id="prodChart" height="140"></canvas>
+      </div>
+      <div class="card">
+        <h2 style="margin-top:0">Pressures (psi)</h2>
+        <canvas id="pressChart" height="140"></canvas>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h2 style="margin-top:0">Wells Table</h2>
+      <div id="tableWrap"></div>
+    </div>
+  </div>
+  <footer>© 2025 WellTegra</footer>
+
+<script>
+(async()=>{
+  const d = await getJSON('data/wells.json');
+  const wells = d.wells || [];
+
+  // Table
+  const wrap = document.getElementById('tableWrap');
+  const headers = ['well_id','name','status','production_bopd','tubing_pressure_psi','casing_pressure_psi','water_cut_pct','gas_oil_ratio_scfstb','last_update'];
+  const table = document.createElement('table');
+  const thead = document.createElement('thead');
+  thead.innerHTML = '<tr>'+headers.map(h=>'<th>'+h.replace(/_/g,' ')+'</th>').join('')+'</tr>';
+  table.appendChild(thead);
+  const tbody = document.createElement('tbody');
+  wells.forEach(w=>{
+    const tr = document.createElement('tr');
+    headers.forEach(h=>{
+      const td = document.createElement('td');
+      td.textContent = w[h]!==undefined ? w[h] : '';
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+
+  // Charts
+  const labels = wells.map(w=> w.name || w.well_id);
+  const prod = wells.map(w=> Number(w.production_bopd||0));
+  const tub = wells.map(w=> Number(w.tubing_pressure_psi||0));
+  const cas = wells.map(w=> Number(w.casing_pressure_psi||0));
+
+  new Chart(document.getElementById('prodChart').getContext('2d'), {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'bopd', data: prod }] },
+    options: { responsive: true, plugins: { legend: { display: true } } }
+  });
+
+  new Chart(document.getElementById('pressChart').getContext('2d'), {
+    type: 'line',
+    data: { labels, datasets: [
+      { label: 'Tubing', data: tub },
+      { label: 'Casing', data: cas }
+    ]},
+    options: { responsive: true, plugins: { legend: { display: true } } }
+  });
+})();
+</script>
+</body>
+</html>
