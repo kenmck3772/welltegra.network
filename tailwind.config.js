@@ -1,11 +1,12 @@
-module.exports = {
-  content: ["./**/*.html", "./**/*.{js,ts}"],
-  theme: { extend: {} },
-  plugins: [],
-}
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./**/*.html", "./src/**/*.{js,ts}"],
-  theme: { extend: {} },
+  content: [
+    "./index.html",          // your main page
+    "./**/*.{html,js,ts}",   // any other html/js/ts in the repo
+    // If you keep components/pages under src/, this already covers them.
+  ],
+  theme: {
+    extend: {},
+  },
   plugins: [],
 };
