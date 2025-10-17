@@ -1,0 +1,119 @@
+*** a/index.html
+--- b/index.html
+@@
+-    <script src="https://cdn.tailwindcss.com"></script>
++    <!-- Production Tailwind (compiled) -->
++    <link rel="stylesheet" href="./assets/tailwind.css">
+@@
+-                    <img src="https://welltegra.network/assets/logo.png" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" onerror="this.onerror=null;this.src='https://placehold.co/100x100/0f172a/ffffff?text=Logo';">
++                    <img src="./assets/logo.svg" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" onerror="this.onerror=null;this.src='https://placehold.co/100x100/0f172a/ffffff?text=WT';">
+*** /dev/null
+--- b/assets/logo.svg
+@@
++<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
++  <rect width="256" height="256" fill="#0f172a"/>
++  <circle cx="128" cy="128" r="110" fill="#0ea5e9"/>
++  <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle"
++        font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto" font-size="88" font-weight="800"
++        fill="white">WT</text>
++</svg>
+*** /dev/null
+--- b/src/input.css
+@@
++@tailwind base;
++@tailwind components;
++@tailwind utilities;
+*** /dev/null
+--- b/tailwind.config.js
+@@
++/** @type {import('tailwindcss').Config} */
++module.exports = {
++  content: ["./**/*.html", "./src/**/*.{js,ts}"],
++  theme: { extend: {} },
++  plugins: [],
++};
+*** /dev/null
+--- b/postcss.config.js
+@@
++module.exports = {
++  plugins: {
++    tailwindcss: {},
++    autoprefixer: {},
++  },
++};
+*** /dev/null
+--- b/package.json
+@@
++{
++  "name": "welltegra",
++  "private": true,
++  "version": "1.0.0",
++  "scripts": {
++    "build:css": "tailwindcss -i ./src/input.css -o ./assets/tailwind.css --minify",
++    "watch:css": "tailwindcss -i ./src/input.css -o ./assets/tailwind.css --watch"
++  },
++  "devDependencies": {
++    "autoprefixer": "^10.4.20",
++    "postcss": "^8.4.47",
++    "tailwindcss": "^3.4.10"
++  }
++}
+*** /dev/null
+--- b/.github/workflows/tailwind-build.yml
+@@
++name: Build Tailwind CSS
++on:
++  push:
++    branches: [ main, master ]
++  workflow_dispatch:
++jobs:
++  build:
++    runs-on: ubuntu-latest
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-node@v4
++        with:
++          node-version: '20'
++      - run: npm ci || npm i
++      - run: npm run build:css
++      - name: Commit built CSS
++        uses: EndBug/add-and-commit@v9
++        with:
++          add: "assets/tailwind.css"
++          message: "chore(ci): build tailwind.css"
++        env:
++          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+*** /dev/null
+--- b/videos.html
+@@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++  <meta charset="utf-8">
++  <meta name="viewport" content="width=device-width,initial-scale=1">
++  <title>Well-Tegra • Videos</title>
++  <link rel="stylesheet" href="./assets/tailwind.css">
++</head>
++<body class="bg-slate-900 text-slate-100">
++  <header class="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
++    <a href="index.html" class="text-lg font-bold">← Back</a>
++    <img src="./assets/logo.svg" class="h-10" alt="WT">
++  </header>
++  <main class="max-w-5xl mx-auto px-4 pb-10">
++    <h1 class="text-3xl font-extrabold mb-4">Well-Tegra YouTube</h1>
++    <div class="aspect-video w-full rounded-xl overflow-hidden shadow ring-1 ring-slate-700">
++      <iframe class="w-full h-full"
++        src="https://www.youtube.com/embed?listType=playlist&list=UUedD5TAvyQgV1LRFfjoNRww"
++        title="Well-Tegra uploads" frameborder="0"
++        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
++        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
++    </div>
++    <div class="mt-8 grid sm:grid-cols-2 gap-4">
++      <a class="bg-slate-800 rounded-lg p-4 hover:bg-slate-700 transition" target="_blank" rel="noopener"
++         href="https://www.youtube.com/channel/UCedD5TAvyQgV1LRFfjoNRww?sub_confirmation=1">Subscribe</a>
++      <a class="bg-slate-800 rounded-lg p-4 hover:bg-slate-700 transition" target="_blank" rel="noopener"
++         href="https://www.youtube.com/@WellTegra/playlists">Playlists</a>
++    </div>
++  </main>
++</body>
++</html>
