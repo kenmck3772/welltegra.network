@@ -7,18 +7,15 @@
   <meta name="description" content="Through data, fewer mistakes. Through insight, faster wells. Planner → Performer → Analyzer." />
   <link rel="icon" href="assets/favicon.png" />
   <link rel="manifest" href="./manifest.json" />
-  <link rel="stylesheet" href="./assets/tailwind.css?v=2" />
-
-  <!-- Social cards (update image when you have one) -->
+  <link rel="stylesheet" href="./assets/tailwind.css?v=3" />
   <meta property="og:title" content="Well-Tegra" />
-  <meta property="og:description" content="Planner → Performer → Analyzer. Unify live well data without replacing your stack." />
-  <meta property="og:image" content="https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=1600&auto=format&fit=crop" />
+  <meta property="og:description" content="Unify well data without replacing your stack. Mistake-mining AI that cuts NPT." />
+  <meta property="og:image" content="assets/og.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
 </head>
 <body class="bg-white text-slate-900">
-
-  <!-- Top Nav -->
-  <header class="border-b bg-white/70 backdrop-blur sticky top-0 z-40">
+  <!-- Header -->
+  <header class="border-b bg-white/80 backdrop-blur sticky top-0 z-40">
     <div class="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
       <a href="./index.html" class="font-extrabold text-xl tracking-tight">Well-Tegra</a>
       <nav class="hidden md:flex gap-6 text-sm">
@@ -31,7 +28,6 @@
       <a href="./analyzer.html" class="hidden md:inline-flex items-center rounded-xl px-4 py-2 font-semibold bg-sky-600 text-white hover:bg-sky-500 transition">Try Analyzer</a>
       <button class="md:hidden inline-flex items-center rounded-lg border px-3 py-2" aria-label="Open menu" onclick="document.getElementById('mnav').classList.toggle('hidden')">Menu</button>
     </div>
-    <!-- Mobile nav -->
     <div id="mnav" class="md:hidden hidden border-t">
       <nav class="mx-auto max-w-7xl px-6 py-3 flex flex-col gap-3 text-sm">
         <a href="./planner.html" class="hover:text-sky-600">Planner</a>
@@ -45,7 +41,7 @@
 
   <!-- Hero -->
   <section class="relative overflow-hidden bg-slate-950">
-    <div class="absolute inset-0 opacity-20" style="background-image:url('https://images.unsplash.com/photo-1567787803579-5be4d27b5f86?q=80&w=1600&auto=format&fit=crop');background-size:cover;background-position:center;"></div>
+    <div class="absolute inset-0 opacity-25" style="background-image:url('assets/hero.jpg');background-size:cover;background-position:center;"></div>
     <div class="relative mx-auto max-w-7xl px-6 py-20 text-white">
       <p class="text-xs uppercase tracking-[0.2em] text-sky-300">Well-Tegra</p>
       <h1 class="mt-2 text-4xl md:text-6xl font-extrabold leading-tight">
@@ -53,15 +49,13 @@
       </h1>
       <p class="mt-4 max-w-2xl text-slate-300">
         Planner → Performer → Analyzer. Unify live well intervention data with your existing stack
-        (WellView, Sapphire, SAP…) and surface mistake-mining patterns that cut NPT and cost.
+        and surface mistake-mining patterns that cut NPT and cost.
       </p>
       <div class="mt-6 flex flex-wrap gap-3">
         <a href="./planner.html" class="inline-flex items-center rounded-xl px-5 py-3 font-semibold bg-sky-600 hover:bg-sky-500 transition">Launch Planner</a>
         <a href="./analyzer.html" class="inline-flex items-center rounded-xl px-5 py-3 font-semibold border border-slate-700 hover:bg-slate-900/60 transition">Explore Analyzer</a>
       </div>
     </div>
-
-    <!-- KPI strip -->
     <div class="relative border-t border-white/10">
       <div class="mx-auto max-w-7xl px-6 py-6 grid gap-6 sm:grid-cols-3 text-white/90">
         <div><div class="text-3xl font-extrabold">↓ 15–30%</div><div class="text-sm text-slate-300">Non-productive time (pilot targets)</div></div>
@@ -71,7 +65,7 @@
     </div>
   </section>
 
-  <!-- Integration badges -->
+  <!-- Integrations -->
   <section class="mx-auto max-w-7xl px-6 py-10">
     <p class="text-xs uppercase tracking-widest text-slate-500">Works with your tools</p>
     <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -82,26 +76,22 @@
     </div>
   </section>
 
-  <!-- Three product cards -->
+  <!-- Product cards -->
   <main class="mx-auto max-w-7xl px-6 py-6">
     <section class="grid gap-6 md:grid-cols-3">
       <article class="rounded-2xl border p-6 shadow-sm">
         <h3 class="text-xl font-semibold">Planner</h3>
         <p class="mt-2 text-slate-600">Procedures, risks, barriers, lessons-learned. Export packages for WellView/Sapphire.</p>
         <ul class="mt-3 text-sm list-disc pl-5 text-slate-600 space-y-1">
-          <li>Template library and approvals</li>
-          <li>Barrier verification steps</li>
-          <li>Pre-job risk snapshots</li>
+          <li>Template library & approvals</li><li>Barrier verification steps</li><li>Pre-job risk snapshots</li>
         </ul>
         <a href="./planner.html" class="mt-4 inline-block text-sky-600 hover:underline">Open Planner →</a>
       </article>
       <article class="rounded-2xl border p-6 shadow-sm">
         <h3 class="text-xl font-semibold">Performer</h3>
-        <p class="mt-2 text-slate-600">Structured event capture during operations. No vendor lock-in, export JSON/CSV.</p>
+        <p class="mt-2 text-slate-600">Structured event capture during operations. No vendor lock-in; export JSON/CSV.</p>
         <ul class="mt-3 text-sm list-disc pl-5 text-slate-600 space-y-1">
-          <li>Live checks & alarms</li>
-          <li>Offline-first notes</li>
-          <li>Operator-friendly UI</li>
+          <li>Live checks & alarms</li><li>Offline-first notes</li><li>Operator-friendly UI</li>
         </ul>
         <a href="./performer.html" class="mt-4 inline-block text-sky-600 hover:underline">Open Performer →</a>
       </article>
@@ -109,16 +99,14 @@
         <h3 class="text-xl font-semibold">Analyzer</h3>
         <p class="mt-2 text-slate-600">Mistake-mining AI to surface patterns that drive NPT. Benchmark across wells.</p>
         <ul class="mt-3 text-sm list-disc pl-5 text-slate-600 space-y-1">
-          <li>Pattern detection & scoring</li>
-          <li>Cross-well benchmarking</li>
-          <li>Actionable recommendations</li>
+          <li>Pattern detection & scoring</li><li>Cross-well benchmarking</li><li>Actionable recommendations</li>
         </ul>
         <a href="./analyzer.html" class="mt-4 inline-block text-sky-600 hover:underline">Open Analyzer →</a>
       </article>
     </section>
   </main>
 
-  <!-- Roadmap / proof of progress -->
+  <!-- Roadmap -->
   <section class="mx-auto max-w-7xl px-6 py-12">
     <h2 class="text-2xl font-extrabold">Roadmap</h2>
     <div class="mt-6 grid gap-6 md:grid-cols-3">
@@ -168,6 +156,5 @@
       © Well-Tegra • Through data, fewer mistakes.
     </div>
   </footer>
-
 </body>
 </html>
