@@ -1,17 +1,71 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Well‑Tegra v21 • Production Tailwind</title>
-  <link rel="stylesheet" href="./assets/tailwind.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Well-Tegra</title>
+  <meta name="description" content="Planner → Performer → Analyzer. Unify well intervention data, reduce mistakes, accelerate wells." />
+  <link rel="icon" href="assets/favicon.png" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="stylesheet" href="./assets/tailwind.css" />
 </head>
-<body class="bg-slate-900 text-slate-100">
-  <div class="p-6 max-w-3xl mx-auto">
-    <h1 class="text-3xl font-extrabold">Well‑Tegra</h1>
-    <p class="mt-2">This page is wired for production Tailwind. Run <code>npm run build</code> to generate <code>assets/tailwind.css</code>.</p>
-    <p class="mt-4 text-sm opacity-75">Tip: add <code>?dev</code> to the URL or run on <code>localhost</code> to use the Play CDN for quick tweaks without warnings in prod.</p>
-  </div>
+<body class="bg-white text-slate-900">
+  <!-- Top Nav -->
+  <header class="border-b bg-white/70 backdrop-blur">
+    <div class="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
+      <a href="./index.html" class="font-extrabold text-xl tracking-tight">Well-Tegra</a>
+      <nav class="flex gap-6 text-sm">
+        <a href="./planner.html" class="hover:text-sky-600">Planner</a>
+        <a href="./performer.html" class="hover:text-sky-600">Performer</a>
+        <a href="./analyzer.html" class="hover:text-sky-600">Analyzer</a>
+        <a href="./videos.html" class="hover:text-sky-600">Videos</a>
+        <a href="./whitepaper.html" class="hover:text-sky-600">White Paper</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-slate-900 text-white">
+    <div class="mx-auto max-w-6xl px-6 py-16">
+      <p class="text-sm uppercase tracking-widest text-sky-300 mb-2">Through data, fewer mistakes</p>
+      <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+        Planner → Performer → Analyzer
+      </h1>
+      <p class="mt-4 text-slate-300 max-w-2xl">
+        Unify live well intervention data without replacing your stack. Get mistake-mining insights that cut NPT and cost.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="./planner.html" class="inline-flex items-center rounded-xl px-5 py-3 font-semibold bg-sky-500 hover:bg-sky-400 transition">Launch Planner</a>
+        <a href="./analyzer.html" class="inline-flex items-center rounded-xl px-5 py-3 font-semibold border border-slate-700 hover:bg-slate-800 transition">Explore Analyzer</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three Cards -->
+  <main class="mx-auto max-w-6xl px-6 py-12">
+    <section class="grid gap-6 md:grid-cols-3">
+      <article class="rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <h3 class="text-xl font-semibold">Planner</h3>
+        <p class="mt-2 text-slate-600">Procedures, risks, lessons-learned — aligned and exportable to WellView/Sapphire.</p>
+        <a href="./planner.html" class="mt-4 inline-block text-sky-600 hover:underline">Open Planner →</a>
+      </article>
+      <article class="rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <h3 class="text-xl font-semibold">Performer</h3>
+        <p class="mt-2 text-slate-600">Structured event capture during operations with zero vendor lock-in.</p>
+        <a href="./performer.html" class="mt-4 inline-block text-sky-600 hover:underline">Open Performer →</a>
+      </article>
+      <article class="rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <h3 class="text-xl font-semibold">Analyzer</h3>
+        <p class="mt-2 text-slate-600">Mistake-mining AI to surface patterns that drive NPT, benchmark across wells.</p>
+        <a href="./analyzer.html" class="mt-4 inline-block text-sky-600 hover:underline">Open Analyzer →</a>
+      </article>
+    </section>
+  </main>
+
+  <footer class="border-t">
+    <div class="mx-auto max-w-6xl px-6 py-8 text-sm text-slate-500">
+      © Well-Tegra • Through data, fewer mistakes.
+    </div>
+  </footer>
 </body>
 </html>
-
