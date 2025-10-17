@@ -1,0 +1,27 @@
+diff --git a/tailwind.config.js b/tailwind.config.js
+index 0000000..0000001 100644
+--- a/tailwind.config.js
++++ b/tailwind.config.js
+@@ -1,13 +1,15 @@
+-module.exports = {
+-  content: ["./**/*.html", "./**/*.{js,ts}"],
+-  theme: { extend: {} },
+-  plugins: [],
+-}
+-/** @type {import('tailwindcss').Config} */
+-module.exports = {
+-  content: ["./**/*.html", "./src/**/*.{js,ts}"],
+-  theme: { extend: {} },
+-  plugins: [],
+-};
++/** @type {import('tailwindcss').Config} */
++module.exports = {
++  content: [
++    "./index.html",
++    "./**/*.{html,js,ts}",   // covers any other templates/scripts
++  ],
++  theme: {
++    extend: {},
++  },
++  plugins: [],
++};
