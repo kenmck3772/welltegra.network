@@ -1,44 +1,23 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Videos — WellTegra</title>
-  <link rel="stylesheet" href="css/styles.css"/>
-  <script defer src="js/main.js"></script>
-</head>
-<body>
-
-<nav>
-  <div class="inner">
-    <div class="brand">WellTegra</div>
-    <a href="index.html">Home</a>
-    <a href="analyzer.html">Analyzer</a>
-    <a href="planner.html">Planner</a>
-    <a href="performer.html">Performer</a>
-    <a href="videos.html">Videos</a>
-    <span class="spacer"></span>
-    <a href="whitepaper.html">Whitepaper</a>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Well‑Tegra • Videos</title><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-slate-900 text-slate-100">
+<header class="max-w-5xl mx-auto px-4 py-6 flex items-center justify-between">
+  <a href="index.html" class="text-lg font-bold">← Back</a>
+  <img src="./assets/logo.svg" class="h-10" alt="WT">
+</header>
+<main class="max-w-5xl mx-auto px-4 pb-10">
+  <h1 class="text-3xl font-extrabold mb-4">Well‑Tegra YouTube</h1>
+  <div class="aspect-video w-full rounded-xl overflow-hidden shadow ring-1 ring-slate-700">
+    <iframe class="w-full h-full" src="https://www.youtube.com/embed?listType=playlist&list=UUedD5TAvyQgV1LRFfjoNRww"
+      title="Well‑Tegra uploads" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   </div>
-</nav>
-
-<div class="container">
-  <div class="grid grid-2" id="vidGrid"></div>
-</div>
-<script>
-(async()=>{
-  const d = await getJSON('data/videos.json');
-  const vids = d.videos || [];
-  const grid = document.getElementById('vidGrid');
-  vids.forEach(v=>{
-    const idMatch = (v.url||'').match(/[?&]v=([^&]+)/);
-    const id = idMatch ? idMatch[1] : null;
-    const card = document.createElement('div');
-    card.className='card';
-    card.innerHTML = '<div class="mono">'+(v.title||'Video')+'</div>' + (id ? `<iframe width="100%" height="260" src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>` : '<div>Invalid URL</div>');
-    grid.appendChild(card);
-  });
-})();
-</script>
-</body>
-</html>
+  <div class="mt-8 grid sm:grid-cols-2 gap-4">
+    <a class="bg-slate-800 rounded-lg p-4 hover:bg-slate-700 transition" target="_blank" rel="noopener"
+       href="https://www.youtube.com/channel/UCedD5TAvyQgV1LRFfjoNRww?sub_confirmation=1">Subscribe</a>
+    <a class="bg-slate-800 rounded-lg p-4 hover:bg-slate-700 transition" target="_blank" rel="noopener"
+       href="https://www.youtube.com/@WellTegra/playlists">Playlists</a>
+  </div>
+</main>
+</body></html>
