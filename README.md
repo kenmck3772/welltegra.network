@@ -1,4 +1,3 @@
-# WellTegra v6.2 — Complete, themed
-- Brand-styled SPA (`/app.html`) with Inter font & color variables
-- Full site pages with unified nav
-- Favicon, hero, brand assets
+# WellTegra v23.2 — Huntsman
+
+Place your video at **assets/hero1.mp4** (optionally **assets/hero1-720.mp4**).
