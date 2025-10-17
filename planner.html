@@ -1,74 +1,70 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Planner — WellTegra</title>
-  <link rel="stylesheet" href="css/styles.css"/>
-  <script defer src="js/main.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Planner • Well-Tegra</title>
+  <meta name="description" content="Plan well interventions with procedures, risks, and lessons-learned." />
+  <link rel="icon" href="assets/favicon.png" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="stylesheet" href="./assets/tailwind.css" />
 </head>
-<body>
-  
-<nav>
-  <div class="inner">
-    <div class="brand">WellTegra</div>
-    <a href="index.html">Home</a>
-    <a href="analyzer.html">Analyzer</a>
-    <a href="planner.html">Planner</a>
-    <a href="performer.html">Performer</a>
-    <a href="videos.html">Videos</a>
-    <span class="spacer"></span>
-    <a href="whitepaper.html">Whitepaper</a>
-  </div>
-</nav>
+<body class="bg-white text-slate-900">
+  <header class="border-b bg-white/70 backdrop-blur">
+    <div class="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
+      <a href="./index.html" class="font-extrabold text-xl">Well-Tegra</a>
+      <nav class="flex gap-6 text-sm">
+        <a href="./planner.html" class="text-sky-600 font-semibold">Planner</a>
+        <a href="./performer.html" class="hover:text-sky-600">Performer</a>
+        <a href="./analyzer.html" class="hover:text-sky-600">Analyzer</a>
+        <a href="./videos.html" class="hover:text-sky-600">Videos</a>
+        <a href="./whitepaper.html" class="hover:text-sky-600">White Paper</a>
+      </nav>
+    </div>
+  </header>
 
-  <div class="container">
-    <div class="card">
-      <h2 style="margin-top:0">Work Planner</h2>
-      <p>Draft, assign, and track tasks. Data saves to your browser (local only) so you can experiment safely.</p>
-      <div class="grid">
-        <label>Title <input id="t" style="width:100%"/></label>
-        <label>Well ID <input id="w" style="width:100%"/></label>
-        <label>Priority 
-          <select id="p" style="width:100%">
-            <option>Low</option><option>Medium</option><option>High</option>
-          </select>
+  <main class="mx-auto max-w-6xl px-6 py-10">
+    <h1 class="text-3xl font-extrabold">Planner</h1>
+    <p class="mt-2 text-slate-600">Draft procedures, hazards, barriers, and export packages.</p>
+
+    <!-- Simple form stack -->
+    <section class="mt-8 grid gap-6 md:grid-cols-2">
+      <form class="rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">New Procedure</h2>
+        <label class="block mt-4 text-sm">Well Name
+          <input class="mt-1 w-full rounded-lg border px-3 py-2" placeholder="e.g., 22/05b-A1" />
         </label>
-        <label>Due <input id="d" type="date" style="width:100%"/></label>
-      </div>
-      <div style="margin-top:12px"><button id="add" class="btn">Add Task</button></div>
-    </div>
+        <label class="block mt-4 text-sm">Objective
+          <input class="mt-1 w-full rounded-lg border px-3 py-2" placeholder="Clean out to depth / set plug / etc." />
+        </label>
+        <label class="block mt-4 text-sm">Steps
+          <textarea class="mt-1 w-full rounded-lg border px-3 py-2 h-32" placeholder="Step 1…"></textarea>
+        </label>
+        <div class="mt-4 flex gap-3">
+          <button type="button" class="rounded-xl bg-sky-600 text-white px-4 py-2">Save</button>
+          <button type="button" class="rounded-xl border px-4 py-2">Export</button>
+        </div>
+      </form>
 
-    <div class="card" style="margin-top:16px">
-      <h3>Backlog</h3>
-      <div id="list"></div>
-    </div>
-  </div>
-<script>
-const key='wt_planner';
-function load(){ try{return JSON.parse(localStorage.getItem(key)||'[]')}catch(e){return[]} }
-function save(items){ localStorage.setItem(key, JSON.stringify(items)); }
-function redraw(){
-  const items = load();
-  const wrap = document.getElementById('list');
-  wrap.innerHTML='';
-  items.forEach((it,i)=>{
-    const row = document.createElement('div');
-    row.className='card'; row.style.margin='8px 0';
-    row.innerHTML = '<div class="kpi"><div><div class="mono">'+it.title+'</div><small>'+it.well+' • '+it.priority+' • Due '+(it.due||'—')+'</small></div><button data-i="'+i+'" class="btn">Done</button></div>';
-    wrap.appendChild(row);
-  });
-  wrap.querySelectorAll('button.btn').forEach(b=>b.onclick=()=>{
-    const items = load(); items.splice(+b.dataset.i,1); save(items); redraw();
-  });
-}
-document.getElementById('add').onclick = ()=>{
-  const title=qs('#t').value.trim(); if(!title) return;
-  const well=qs('#w').value.trim(); const priority=qs('#p').value; const due=qs('#d').value;
-  const items=load(); items.unshift({title,well,priority,due,ts:Date.now()}); save(items); redraw();
-  qs('#t').value=''; qs('#w').value=''; qs('#p').value='Low'; qs('#d').value='';
-};
-redraw();
-</script>
+      <div class="rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">Risks & Barriers</h2>
+        <ul class="mt-4 space-y-3 text-sm">
+          <li class="flex justify-between">
+            <span>Loss of returns</span><span class="rounded-full bg-amber-100 text-amber-700 px-2 py-0.5">Med</span>
+          </li>
+          <li class="flex justify-between">
+            <span>Pressure spike on pull</span><span class="rounded-full bg-red-100 text-red-700 px-2 py-0.5">High</span>
+          </li>
+          <li class="flex justify-between">
+            <span>Toolstring stuck</span><span class="rounded-full bg-emerald-100 text-emerald-700 px-2 py-0.5">Low</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t">
+    <div class="mx-auto max-w-6xl px-6 py-8 text-sm text-slate-500">© Well-Tegra</div>
+  </footer>
 </body>
 </html>
