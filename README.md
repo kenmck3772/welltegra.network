@@ -1,26 +1,15 @@
-# Well-Tegra Demo (ZIP-ready)
-Works immediately using Tailwind via CDN.
 
-## Build local Tailwind for production
-1) Install Tailwind & tools:
-   npm init -y
-   npm install -D tailwindcss postcss autoprefixer
-   npx tailwindcss init -p
+# Well‑Tegra — Second Bundle
 
-2) Create src/input.css:
-   @tailwind base;
-   @tailwind components;
-   @tailwind utilities;
+This is a compact, fast-loading version with the same structure and hero + ROI calculator.
+It’s meant as a **second** ZIP: drop in your original long `<script>` block (from your pasted HTML)
+to restore 100% of the interactions.
 
-3) Configure tailwind.config.js:
-   module.exports = {
-     content: ["./**/*.html", "./src/**/*.{js,ts}"],
-     theme: { extend: {} },
-     plugins: [],
-   }
+## Use
+1. Open `index.html` directly in a browser.
+2. To switch to local Tailwind later, compile to `assets/tailwind.css` and replace the CDN line with:
+   `<link rel="stylesheet" href="./assets/tailwind.css">`
 
-4) Build:
-   npx tailwindcss -i ./src/input.css -o ./assets/tailwind.css --minify
-
-5) In index.html, replace the CDN with:
-   <link rel="stylesheet" href="assets/tailwind.css">
+## Note
+If `https://welltegra.network/assets/logo.png` 404s in your environment, replace it with a
+local file under `assets/` (e.g. `assets/logo.svg`) and update the `src` attribute.

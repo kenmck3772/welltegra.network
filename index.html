@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>v21 - Well-Tegra | The Well From Hell Case Study</title>
-  <!-- Tailwind CDN for instant preview in this ZIP -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Well‑Tegra — Second Bundle</title>
+  <!-- CDN Tailwind for quick preview -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,36 +12,221 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; font-weight: 500; }
-    h1, h2, h3, h4, h5, h6 { font-weight: 800; }
     .theme-light { background-color: #f8fafc; }
-    .theme-dark { background-color: #0f172a; color: #e2e8f0; }
-    #main-content { position: relative; z-index: 1; }
-    .theme-light #main-content::before { content: ''; position: absolute; inset: 0; background-image: url('https://welltegra.network/assets/watermark.png'); background-repeat: repeat; background-position: center; background-size: 350px; opacity: 0.02; z-index: -1; pointer-events: none; }
-    .theme-dark #main-content::before { content: ''; position: absolute; inset: 0; background-image: url('https://welltegra.network/assets/watermark.png'); background-repeat: repeat; background-position: center; background-size: 350px; opacity: 0.04; filter: invert(1); z-index: -1; pointer-events: none; }
-    .light-card { background-color: white; }
-    .theme-dark .light-card { background-color: #1e293b; border: 1px solid #334155; }
+    .theme-dark { background-color: #0f172a; color:#e2e8f0; }
+    .header { background: #0f172a; border-bottom: 1px solid #1e293b; }
+    .nav-link { color:#94a3b8; }
+    .nav-link.active { color:#60a5fa; border-bottom:2px solid #60a5fa; }
+    .hero-section { position:relative; overflow:hidden; }
+    .hero-overlay { position:absolute; inset:0; background:rgba(15,23,42,.8); z-index:-1; }
+    .section-title { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.025em; }
   </style>
 </head>
 <body class="theme-dark">
-  <header class="p-4 text-center">
-    <img src="https://welltegra.network/assets/logo.png" alt="Well-Tegra Data Solutions Logo" class="h-16 w-auto mx-auto mb-4" onerror="this.onerror=null;this.src='https://placehold.co/100x100/0f172a/ffffff?text=Logo';">
-    <h1 class="text-2xl font-bold">Well‑Tegra Demo Bundle</h1>
-    <p class="opacity-80">This ZIP loads instantly. Replace the CDN with a local Tailwind build when you’re ready for production.</p>
-  </header>
-  <main id="main-content" class="max-w-4xl mx-auto p-6">
-    <div class="light-card rounded-lg p-6">
-      <h2 class="text-xl font-bold mb-2">How to use</h2>
-      <ol class="list-decimal list-inside space-y-1">
-        <li>Open <code>index.html</code> in a browser.</li>
-        <li>When ready for production, build <code>assets/tailwind.css</code> and swap the CDN script for a stylesheet link.</li>
-        <li>Copy your existing images/videos into <code>/assets</code> and change URLs to <code>assets/…</code> if you want full offline mode.</li>
-      </ol>
+  <!-- Minimal, fast-loading version. You can paste your full script block into this file to restore all interactivity. -->
+  <div id="welcome-screen" class="fixed inset-0 bg-slate-900 flex items-center justify-center z-50 transition-opacity duration-500">
+    <div class="text-center">
+      <img src="https://welltegra.network/assets/logo.png" alt="Well‑Tegra Logo" class="h-24 w-auto mx-auto mb-8 animate-pulse">
+      <div class="bg-slate-800 p-8 rounded-lg shadow-2xl w-80">
+        <h2 class="text-2xl font-bold text-white mb-6">Platform Login</h2>
+        <div class="space-y-4">
+          <input id="username" value="demo@welltegra.com" class="w-full p-3 rounded-md bg-slate-700 border border-slate-600 text-white placeholder-slate-400" placeholder="Username">
+          <input id="password" type="password" value="password" class="w-full p-3 rounded-md bg-slate-700 border border-slate-600 text-white placeholder-slate-400" placeholder="Password">
+        </div>
+        <button id="login-btn" class="mt-6 w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-3 px-4 rounded-md">Login</button>
+      </div>
     </div>
-  </main>
+  </div>
+
+  <div id="app-container" class="min-h-screen flex-col hidden">
+    <header class="header sticky top-0 z-30">
+      <div class="max-w-full mx-auto py-3 px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <img src="https://welltegra.network/assets/logo.png" alt="Well‑Tegra Logo" class="h-12 w-auto mr-3" onerror="this.onerror=null;this.src='https://placehold.co/100x100/0f172a/ffffff?text=Logo';">
+            <h1 id="header-title" class="text-xl font-bold hidden md:block">Well‑Tegra Data Solutions</h1>
+          </div>
+          <nav id="header-nav" class="flex-1 flex items-center justify-center space-x-2 md:space-x-4">
+            <a id="home-nav-link" class="nav-link active flex items-center space-x-2"><span>Home</span></a>
+            <a id="planner-nav-link" class="nav-link flex items-center space-x-2"><span>Planner</span></a>
+            <a id="logistics-nav-link" class="nav-link flex items-center space-x-2"><span>Logistics</span></a>
+            <a id="commercial-nav-link" class="nav-link flex items-center space-x-2"><span>Commercial</span></a>
+            <a id="hse-nav-link" class="nav-link flex items-center space-x-2"><span>HSE & Risk</span></a>
+            <a id="pob-nav-link" class="nav-link flex items-center space-x-2"><span>POB & ER</span></a>
+            <a id="whitepaper-nav-link" class="nav-link flex items-center space-x-2"><span>White Paper</span></a>
+            <a id="faq-nav-link" class="nav-link flex items-center space-x-2"><span>FAQ</span></a>
+            <a id="about-nav-link" class="nav-link flex items-center space-x-2"><span>About</span></a>
+          </nav>
+          <div class="flex items-center space-x-4">
+            <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700">
+              <span class="text-sm">Toggle Theme</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="flex-1">
+      <div id="home-view" class="view-container">
+        <section class="hero-section py-20 px-4 relative">
+          <video autoplay loop muted playsinline id="hero-video" poster="https://welltegra.network/assets/thumbnail.png">
+            <source src="https://welltegra.network/assets/thumbnail.mp4" type="video/mp4">
+          </video>
+          <div class="hero-overlay"></div>
+          <div class="max-w-4xl mx-auto text-center relative z-10">
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">From Data Chaos to Predictive Clarity.</h1>
+            <p class="mt-6 text-lg md:text-xl text-slate-100">Fast-load demo shell for your full page.</p>
+            <p class="mt-2 text-slate-300">Paste your original <code>&lt;script&gt;</code> block here to restore all features.</p>
+          </div>
+        </section>
+
+        <section class="py-16 px-4">
+          <div class="max-w-5xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white/5 border border-slate-700 rounded-lg p-5">
+              <h3 class="text-lg font-bold">The Data Wrangling Tax</h3>
+              <p class="text-sm mt-2 opacity-80">Unlock your data and free engineers from clerical tasks.</p>
+            </div>
+            <div class="bg-white/5 border border-slate-700 rounded-lg p-5">
+              <h3 class="text-lg font-bold">The NPT Tax</h3>
+              <p class="text-sm mt-2 opacity-80">Reduce downtime with better plans and live analytics.</p>
+            </div>
+            <div class="bg-white/5 border border-slate-700 rounded-lg p-5">
+              <h3 class="text-lg font-bold">The Collaboration Tax</h3>
+              <p class="text-sm mt-2 opacity-80">Move beyond static PDFs to real-time, structured handoffs.</p>
+            </div>
+            <div class="bg-white/5 border border-slate-700 rounded-lg p-5">
+              <h3 class="text-lg font-bold">Energy & Emissions</h3>
+              <p class="text-sm mt-2 opacity-80">Reduce energy waste with streamlined operations.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="py-16 px-4">
+          <div class="max-w-6xl mx-auto">
+            <h2 class="section-title text-center">The Platform That Pays for Itself</h2>
+            <p class="text-center opacity-80 mt-2">Interactive calculator stub—ready for your full logic.</p>
+            <div class="grid lg:grid-cols-2 gap-10 mt-10 items-center">
+              <div class="bg-white/5 border border-slate-700 rounded-lg p-6">
+                <div class="space-y-6">
+                  <div>
+                    <label class="font-semibold">Number of Well Engineers</label>
+                    <div class="flex items-center space-x-4">
+                      <input type="range" id="engineerCount" min="5" max="100" value="20" class="w-full">
+                      <span id="engineerCountValue" class="font-bold text-lg w-12 text-center">20</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="font-semibold">Projected NPT Reduction</label>
+                    <div class="flex items-center space-x-4">
+                      <input type="range" id="nptReduction" min="5" max="40" value="20" class="w-full">
+                      <span id="nptReductionValue" class="font-bold text-lg w-12 text-center">20%</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="font-semibold">Engineering Time Reclaimed</label>
+                    <div class="flex items-center space-x-4">
+                      <input type="range" id="timeSavings" min="10" max="50" value="40" class="w-full">
+                      <span id="timeSavingsValue" class="font-bold text-lg w-12 text-center">40%</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-8 pt-6 border-t border-slate-600 text-center">
+                  <p class="text-xl font-semibold">Total Estimated Annual Savings:</p>
+                  <p id="totalSavings" class="text-5xl font-extrabold text-blue-400 mt-2">$2,168,000</p>
+                </div>
+              </div>
+              <div class="relative h-[350px] md:h-[400px]">
+                <canvas id="savingsChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
   <script>
-    const body = document.body;
-    function setTheme(theme){ body.className = 'theme-' + theme; localStorage.setItem('theme', theme); }
-    (function(){ setTheme(localStorage.getItem('theme') || 'dark'); })();
+    // Simple interactions (login, theme, and ROI calculator)
+    const $ = (s, r=document)=>r.querySelector(s);
+    const $$ = (s, r=document)=>[...r.querySelectorAll(s)];
+    const loginBtn = $("#login-btn");
+    const welcome = $("#welcome-screen");
+    const app = $("#app-container");
+    const themeBtn = $("#theme-toggle-btn");
+
+    loginBtn?.addEventListener("click", () => {
+      welcome.style.opacity = "0";
+      setTimeout(() => {
+        welcome.classList.add("hidden");
+        app.classList.remove("hidden");
+        app.classList.add("flex");
+      }, 300);
+    });
+
+    themeBtn?.addEventListener("click", () => {
+      const b = document.body;
+      const dark = b.classList.contains("theme-dark");
+      b.classList.toggle("theme-dark", !dark);
+      b.classList.toggle("theme-light", dark);
+    });
+
+    // ROI calculator (lightweight)
+    const ec = $("#engineerCount");
+    const nr = $("#nptReduction");
+    const ts = $("#timeSavings");
+    const ecV = $("#engineerCountValue");
+    const nrV = $("#nptReductionValue");
+    const tsV = $("#timeSavingsValue");
+    const totalV = $("#totalSavings");
+
+    function calc() {
+      const engineers = parseInt(ec.value||20);
+      const nptReduction = (parseInt(nr.value||20))/100;
+      const timeSavings = (parseInt(ts.value||40))/100;
+      const avgSalary = 120000;
+      const nptPerDay = 250000;
+      const nptDays = 15;
+      const engineerSavings = engineers * avgSalary * timeSavings;
+      const nptSavings = nptPerDay * nptDays * nptReduction;
+      const total = engineerSavings + nptSavings;
+      ecV.textContent = engineers;
+      nrV.textContent = (nptReduction*100).toFixed(0) + "%";
+      tsV.textContent = (timeSavings*100).toFixed(0) + "%";
+      totalV.textContent = "$" + Math.round(total).toLocaleString();
+      if (window.savingsChart) {
+        window.savingsChart.data.datasets[0].data = [engineerSavings, nptSavings];
+        window.savingsChart.update();
+      }
+    }
+    [ec, nr, ts].forEach(el => el?.addEventListener("input", calc));
+
+    // Chart
+    document.addEventListener("DOMContentLoaded", () => {
+      const ctx = document.getElementById("savingsChart");
+      if (!ctx) return;
+      window.savingsChart = new Chart(ctx.getContext("2d"), {
+        type: "bar",
+        data: {
+          labels: ["Engineering Time", "NPT Reduction"],
+          datasets: [{
+            label: "Annual Savings",
+            data: [0, 0],
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: "y",
+          scales: {
+            x: { ticks: { callback: v => "$" + (v/1000).toLocaleString() + "k" } },
+            y: { grid: { display: false } }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+      calc();
+    });
   </script>
 </body>
 </html>
