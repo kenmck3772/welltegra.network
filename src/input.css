@@ -2,12 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Accessibility defaults */
-:root { --wt-base-font: 18px; }
-html { font-size: var(--wt-base-font); }
-:focus-visible { outline: 3px solid #06b6d4; outline-offset: 2px; }
-
-@media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+/* Custom utilities (optional) */
+@layer utilities {
+  .text-gradient { @apply bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-teal-300; }
 }
