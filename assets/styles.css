@@ -1,7 +1,3 @@
-
-/* Small theme helpers and fallback styles (keep minimal to avoid fighting Tailwind) */
-:root { --bg-dark:#0f172a; --ink:#0b1323; }
-html { scroll-behavior: smooth; }
-.theme-dark .hero-overlay { background-color: rgba(15,23,42,0.8); }
-.gradient-text { background: linear-gradient(90deg,#60a5fa,#5eead4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-body { font-feature-settings: "cv02","cv03","cv04","cv11"; }
+:root{--wt-bg: #0f172a;}
+/* High-contrast focus ring helpers */
+*[data-focus] { outline: var(--ring) solid rgba(14,165,233,.7); outline-offset: 2px; }
