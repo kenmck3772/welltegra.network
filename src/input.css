@@ -2,7 +2,5 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom utilities (optional) */
-@layer utilities {
-  .text-gradient { @apply bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-teal-300; }
-}
+/* Small extras you can keep outside Tailwind */
+:root { --ring: 2px; }
