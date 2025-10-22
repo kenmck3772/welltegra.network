@@ -812,7 +812,12 @@
                     
                     <div id="manual-planning-view">
                         <h4 class="text-lg font-semibold mb-4 text-center">Select Intervention Objective</h4>
-                        <div id="objectives-fieldset" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div id="objectives-fieldset" class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                            <div id="cost-summary-panel" class="lg:col-span-1">
+                                <!-- Cost estimate will appear here when objective is selected -->
+                            </div>
+                        </div>
                         <div class="mt-8 flex justify-center">
                             <button id="generate-plan-btn-manual" class="rounded-md bg-teal-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-teal-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Generate Plan</button>
                         </div>
@@ -1654,15 +1659,18 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     const resetApp = (switchToHome = false) => {
-        appState.selectedWell = null; 
-        appState.selectedObjective = null; 
-        appState.generatedPlan = null; 
+        appState.selectedWell = null;
+        appState.selectedObjective = null;
+        appState.generatedPlan = null;
         appState.lessonsLearned = [];
         appState.commercial = { afe: 0, actualCost: 0, serviceTickets: [] };
         appState.ai = { selectedProblemId: null, selectedRecommendation: null };
-        
+
         // Reset well selection
         document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
+
+        // Clear cost summary
+        updateCostSummary();
         
         // Reset objective selection
         const checkedObjective = document.querySelector('input[name="objective"]:checked');
@@ -3289,8 +3297,9 @@ document.addEventListener('DOMContentLoaded', function() {
             selectedCard.classList.add('selected');
         }
         
-        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value); 
-        generatePlanBtnManual.disabled = !appState.selectedObjective; 
+        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value);
+        generatePlanBtnManual.disabled = !appState.selectedObjective;
+        updateCostSummary(); // Update cost estimate display
     });
 
     // Problem selection event listener
@@ -3636,6 +3645,173 @@ document.addEventListener('DOMContentLoaded', function() {
     // Replace the function globally
     window.initializeAnalyzer = initializeAnalyzerWithVendor;
 
+    /* ========================================
+       COST & RESOURCE TRACKING
+       ======================================== */
+
+    // Cost data storage
+    let costData = {
+        equipment: [],
+        personnel: [],
+        activities: []
+    };
+
+    // Parse CSV data handling quoted fields properly
+    function parseCSV(csvText) {
+        const lines = csvText.trim().split('\n');
+
+        // Parse a CSV line respecting quotes
+        function parseLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.trim());
+            return result;
+        }
+
+        const headers = parseLine(lines[0]);
+        return lines.slice(1).filter(line => line.trim()).map(line => {
+            const values = parseLine(line);
+            const obj = {};
+            headers.forEach((header, i) => {
+                obj[header] = values[i] || '';
+            });
+            return obj;
+        });
+    }
+
+    // Load cost data from CSV files
+    async function loadCostData() {
+        try {
+            const [equipResp, persResp, actResp] = await Promise.all([
+                fetch('data-equipment-tools.csv'),
+                fetch('data-personnel-rates.csv'),
+                fetch('data-activity-cost-rates.csv')
+            ]);
+
+            if (equipResp.ok) {
+                const equipText = await equipResp.text();
+                costData.equipment = parseCSV(equipText);
+            }
+
+            if (persResp.ok) {
+                const persText = await persResp.text();
+                costData.personnel = parseCSV(persText);
+            }
+
+            if (actResp.ok) {
+                const actText = await actResp.text();
+                costData.activities = parseCSV(actText);
+            }
+
+            console.log('Cost data loaded:', {
+                equipment: costData.equipment.length,
+                personnel: costData.personnel.length,
+                activities: costData.activities.length
+            });
+
+            // Update UI if cost data is loaded
+            if (document.getElementById('cost-summary-panel')) {
+                updateCostSummary();
+            }
+        } catch (error) {
+            console.warn('Could not load cost data files:', error);
+            // Graceful degradation - app works without cost data
+        }
+    }
+
+    // Calculate job cost estimate
+    function calculateJobCost(objective) {
+        let totalCost = 0;
+        let breakdown = {
+            equipment: 0,
+            personnel: 0,
+            tools: 0,
+            consumables: 0
+        };
+
+        // Use existing proceduresData cost if available
+        if (proceduresData[objective.id]) {
+            totalCost = proceduresData[objective.id].cost || 0;
+        }
+
+        // If we have loaded cost data, use it for more detailed breakdown
+        if (costData.activities.length > 0) {
+            const activity = costData.activities.find(a =>
+                a.Activity_Name && a.Activity_Name.toLowerCase().includes(objective.name.toLowerCase().split(' ')[0])
+            );
+
+            if (activity) {
+                totalCost = parseFloat(activity.Base_Cost_USD) || totalCost;
+            }
+        }
+
+        // Simple breakdown estimate (can be enhanced)
+        breakdown.equipment = Math.floor(totalCost * 0.40);
+        breakdown.personnel = Math.floor(totalCost * 0.30);
+        breakdown.tools = Math.floor(totalCost * 0.20);
+        breakdown.consumables = Math.floor(totalCost * 0.10);
+
+        return { totalCost, breakdown };
+    }
+
+    // Update cost summary display
+    function updateCostSummary() {
+        const panel = document.getElementById('cost-summary-panel');
+        if (!panel) return;
+
+        if (!appState.selectedObjective) {
+            panel.innerHTML = '';
+            return;
+        }
+
+        const { totalCost, breakdown } = calculateJobCost(appState.selectedObjective);
+
+        panel.innerHTML = `
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-bold mb-4">💰 Cost Estimate</h3>
+                <div class="text-center mb-4">
+                    <div class="text-4xl font-bold">$${(totalCost / 1000).toFixed(0)}K</div>
+                    <div class="text-sm opacity-90 mt-1">Total Job Cost</div>
+                </div>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between items-center bg-white/20 p-2 rounded">
+                        <span>Equipment</span>
+                        <span class="font-bold">$${(breakdown.equipment / 1000).toFixed(0)}K</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white/20 p-2 rounded">
+                        <span>Personnel</span>
+                        <span class="font-bold">$${(breakdown.personnel / 1000).toFixed(0)}K</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white/20 p-2 rounded">
+                        <span>Tools</span>
+                        <span class="font-bold">$${(breakdown.tools / 1000).toFixed(0)}K</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white/20 p-2 rounded">
+                        <span>Consumables</span>
+                        <span class="font-bold">$${(breakdown.consumables / 1000).toFixed(0)}K</span>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-white/30 text-xs opacity-75">
+                    Based on industry standard rates • Actual costs may vary
+                </div>
+            </div>
+        `;
+    }
+
     // --- INITIALIZATION ---
 
     const init = () => {
@@ -3644,6 +3820,7 @@ document.addEventListener('DOMContentLoaded', function() {
         renderProblems();
         initSavingsChart();
         updateNavLinks();
+        loadCostData(); // Load cost data from CSV files
     };
 
     init();
