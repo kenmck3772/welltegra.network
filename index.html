@@ -1119,6 +1119,35 @@
                         <div id="performer-budget-percent" class="text-2xl font-bold text-white">0%</div>
                     </div>
                 </div>
+
+                <!-- NPT Tracking Section -->
+                <div class="mt-4 bg-red-900/30 rounded-lg p-4 border border-red-700/50">
+                    <h4 class="text-lg font-bold text-red-400 mb-3">⚠️ Non-Productive Time (NPT) Tracking</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                        <select id="npt-type-select" class="bg-gray-800 border-gray-700 rounded-md px-3 py-2 text-white text-sm">
+                            <option value="">Select NPT Type...</option>
+                            <option value="stuck-pipe">Stuck Pipe</option>
+                            <option value="equipment-failure">Equipment Failure</option>
+                            <option value="weather-delay">Weather Delay</option>
+                            <option value="well-control">Well Control Event</option>
+                            <option value="fishing">Fishing Operations</option>
+                            <option value="wait-on-weather">Wait on Weather</option>
+                            <option value="wait-on-equipment">Wait on Equipment</option>
+                            <option value="leak-repair">Leak/Seal Repair</option>
+                            <option value="bop-test">Unplanned BOP Test</option>
+                            <option value="fluid-loss">Fluid Loss/Kill</option>
+                        </select>
+                        <input type="number" id="npt-duration-input" placeholder="Duration (hours)" min="0.5" step="0.5" class="bg-gray-800 border-gray-700 rounded-md px-3 py-2 text-white text-sm">
+                        <button onclick="addNPTEventFromUI()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-4 py-2 rounded-md text-sm">Add NPT Event</button>
+                    </div>
+                    <div id="npt-events-list" class="max-h-48 overflow-y-auto">
+                        <p class="text-gray-500 text-center py-4">No NPT events recorded</p>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-red-700/50 flex justify-between items-center">
+                        <span class="text-sm font-semibold">Total NPT Cost:</span>
+                        <span id="performer-npt-cost" class="text-xl font-bold text-red-400">$0</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1226,6 +1255,24 @@
                     <div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
                         <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Consumables</div>
                         <div id="analyzer-consumables-cost" class="text-xl font-bold">$0</div>
+                    </div>
+                </div>
+
+                <!-- NPT Breakdown -->
+                <div id="analyzer-npt-section" class="mt-6 bg-red-50 dark:bg-red-900/20 rounded-lg p-6 border-2 border-red-300 dark:border-red-700">
+                    <h4 class="text-xl font-bold text-red-700 dark:text-red-400 mb-4">⚠️ NPT Impact Analysis</h4>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="bg-white dark:bg-slate-800 rounded-lg p-4">
+                            <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Total NPT Cost</div>
+                            <div id="analyzer-npt-cost" class="text-2xl font-bold text-red-600 dark:text-red-400">$0</div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 rounded-lg p-4">
+                            <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">NPT % of Total</div>
+                            <div id="analyzer-npt-percent" class="text-2xl font-bold text-red-600 dark:text-red-400">0%</div>
+                        </div>
+                    </div>
+                    <div id="analyzer-npt-events-list" class="space-y-2">
+                        <!-- NPT events will be rendered here -->
                     </div>
                 </div>
             </div>
@@ -1702,21 +1749,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- GLOBAL STATE ---
 
     let appState = {
-        currentView: 'home', 
-        selectedWell: null, 
-        selectedObjective: null, 
-        generatedPlan: null, 
-        liveData: null, 
-        logEntries: [], 
-        lessonsLearned: [], 
-        tfaChartInstance: null, 
-        nptChartInstance: null, 
-        savingsChartInstance: null, 
+        currentView: 'home',
+        selectedWell: null,
+        selectedObjective: null,
+        generatedPlan: null,
+        liveData: null,
+        logEntries: [],
+        lessonsLearned: [],
+        tfaChartInstance: null,
+        nptChartInstance: null,
+        savingsChartInstance: null,
         liveDataInterval: null,
-        commercial: { afe: 0, actualCost: 0, serviceTickets: [] },
+        commercial: { afe: 0, actualCost: 0, serviceTickets: [], nptEvents: [] },
         ai: { selectedProblemId: null, selectedRecommendation: null },
         hse: { permits: [], riskRegister: [] },
-        pob: { musterActive: false, musterInterval: null, personnel: [] }
+        pob: { musterActive: false, musterInterval: null, personnel: [] },
+        // Well-specific cost tracking
+        wellCosts: {}  // { wellId: { jobSteps: [], totalCost: 0, nptCost: 0 } }
     };
 
     // --- DOM ELEMENTS ---
@@ -4096,6 +4145,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
+    // NPT Event Types and Costs
+    const nptEventTypes = [
+        { id: 'stuck-pipe', name: 'Stuck Pipe', description: 'Tools or pipe stuck downhole', avgDuration: 12, severity: 'high' },
+        { id: 'equipment-failure', name: 'Equipment Failure', description: 'Primary equipment breakdown', avgDuration: 8, severity: 'high' },
+        { id: 'weather-delay', name: 'Weather Delay', description: 'Adverse weather conditions', avgDuration: 24, severity: 'medium' },
+        { id: 'well-control', name: 'Well Control Event', description: 'Pressure control issues', avgDuration: 6, severity: 'critical' },
+        { id: 'fishing', name: 'Fishing Operations', description: 'Retrieve lost tools/equipment', avgDuration: 16, severity: 'high' },
+        { id: 'wait-on-weather', name: 'Wait on Weather', description: 'Waiting for weather window', avgDuration: 48, severity: 'low' },
+        { id: 'wait-on-equipment', name: 'Wait on Equipment', description: 'Waiting for equipment delivery', avgDuration: 24, severity: 'medium' },
+        { id: 'leak-repair', name: 'Leak/Seal Repair', description: 'Pressure equipment leak', avgDuration: 4, severity: 'medium' },
+        { id: 'bop-test', name: 'Unplanned BOP Test', description: 'Additional BOP pressure test', avgDuration: 3, severity: 'low' },
+        { id: 'fluid-loss', name: 'Fluid Loss/Kill', description: 'Lost circulation or well kill', avgDuration: 8, severity: 'high' }
+    ];
+
     // Job costing state
     let jobCostingState = {
         steps: [],
@@ -4108,7 +4171,8 @@ document.addEventListener('DOMContentLoaded', function() {
             els: 'personnel',
             slk: 'personnel',
             whm: 'personnel'
-        }
+        },
+        currentWellId: null  // Track which well these costs are for
     };
 
     // Initialize job costing tool
@@ -4123,12 +4187,160 @@ document.addEventListener('DOMContentLoaded', function() {
             if (jobCostingState.isToolExpanded) {
                 toolContent.classList.remove('hidden');
                 toggleBtn.textContent = 'Collapse Tool';
+                loadWellCosts();  // Load costs for selected well
                 renderJobCostingTool();
             } else {
                 toolContent.classList.add('hidden');
                 toggleBtn.textContent = 'Expand Tool';
             }
         });
+    }
+
+    // Load costs for the currently selected well
+    function loadWellCosts() {
+        if (!appState.selectedWell) return;
+
+        const wellId = appState.selectedWell.id;
+        jobCostingState.currentWellId = wellId;
+
+        // Load saved costs for this well if they exist
+        if (appState.wellCosts[wellId]) {
+            jobCostingState.steps = appState.wellCosts[wellId].jobSteps || [];
+            if (jobCostingState.steps.length > 0) {
+                jobCostingState.activeStepId = jobCostingState.steps[jobCostingState.steps.length - 1].id;
+            }
+        } else {
+            // Initialize empty cost tracking for this well
+            appState.wellCosts[wellId] = {
+                jobSteps: [],
+                totalCost: 0,
+                nptCost: 0,
+                nptEvents: []
+            };
+        }
+    }
+
+    // Save costs for the currently selected well
+    function saveWellCosts() {
+        if (!jobCostingState.currentWellId) return;
+
+        const totalCost = calculateTotalJobCost();
+        const nptCost = calculateTotalNPTCost();
+
+        appState.wellCosts[jobCostingState.currentWellId] = {
+            jobSteps: [...jobCostingState.steps],
+            totalCost: totalCost,
+            nptCost: nptCost,
+            nptEvents: appState.commercial.nptEvents
+        };
+    }
+
+    // Calculate total job cost from steps
+    function calculateTotalJobCost() {
+        let total = 0;
+        jobCostingState.steps.forEach(step => {
+            step.items.forEach(item => {
+                if (item.unit === 'Day') {
+                    total += item.baseRate * jobCostingState.jobDuration;
+                } else {
+                    total += item.baseRate;
+                }
+            });
+        });
+        return total;
+    }
+
+    // Calculate total NPT cost
+    function calculateTotalNPTCost() {
+        let total = 0;
+        appState.commercial.nptEvents.forEach(event => {
+            total += event.cost || 0;
+        });
+        return total;
+    }
+
+    // Add NPT event
+    function addNPTEvent(eventTypeId, actualDuration, description) {
+        const eventType = nptEventTypes.find(et => et.id === eventTypeId);
+        if (!eventType) return;
+
+        // Calculate NPT cost based on day rates of active personnel and equipment
+        const dailyCost = calculateDailySpreadRate();
+        const nptCost = (actualDuration / 24) * dailyCost;
+
+        const nptEvent = {
+            id: `npt-${Date.now()}`,
+            type: eventType.name,
+            typeId: eventTypeId,
+            description: description || eventType.description,
+            duration: actualDuration,
+            cost: nptCost,
+            severity: eventType.severity,
+            timestamp: new Date().toISOString()
+        };
+
+        appState.commercial.nptEvents.push(nptEvent);
+        saveWellCosts();
+        renderNPTList();
+        updatePerformerCostDisplay(calculateTotalJobCost() + calculateTotalNPTCost());
+    }
+
+    // Calculate daily spread rate from job costing items
+    function calculateDailySpreadRate() {
+        let dailyRate = 0;
+        jobCostingState.steps.forEach(step => {
+            step.items.forEach(item => {
+                if (item.unit === 'Day') {
+                    dailyRate += item.baseRate;
+                }
+            });
+        });
+        return dailyRate;
+    }
+
+    // Render NPT event list
+    function renderNPTList() {
+        const container = document.getElementById('npt-events-list');
+        if (!container) return;
+
+        if (appState.commercial.nptEvents.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center py-4">No NPT events recorded</p>';
+            return;
+        }
+
+        container.innerHTML = appState.commercial.nptEvents.map(event => {
+            const severityColors = {
+                low: 'bg-yellow-500/20 border-yellow-500',
+                medium: 'bg-orange-500/20 border-orange-500',
+                high: 'bg-red-500/20 border-red-500',
+                critical: 'bg-purple-500/20 border-purple-500'
+            };
+            const colorClass = severityColors[event.severity] || 'bg-gray-500/20 border-gray-500';
+
+            return `
+                <div class="p-3 rounded-lg border-l-4 ${colorClass} mb-2">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="font-bold">${event.type}</div>
+                            <div class="text-sm text-gray-400">${event.description}</div>
+                            <div class="text-xs text-gray-500 mt-1">${event.duration}hrs</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold text-red-400">£${(event.cost / 1000).toFixed(0)}K</div>
+                            <button class="text-xs text-red-500 hover:text-red-400 mt-1" onclick="removeNPTEvent('${event.id}')">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Remove NPT event
+    function removeNPTEvent(eventId) {
+        appState.commercial.nptEvents = appState.commercial.nptEvents.filter(e => e.id !== eventId);
+        saveWellCosts();
+        renderNPTList();
+        updatePerformerCostDisplay(calculateTotalJobCost() + calculateTotalNPTCost());
     }
 
     // Render the complete job costing tool
@@ -4155,6 +4367,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="light-card rounded-lg shadow-xl">
                         <div class="p-4 border-b border-gray-700">
                             <h3 class="text-xl font-bold">Job Procedure & Cost</h3>
+                            ${appState.selectedWell ? `<p class="text-sm text-cyan-400 mt-1">📍 Well: ${appState.selectedWell.id} - ${appState.selectedWell.name}</p>` : ''}
                         </div>
 
                         <div class="p-4 border-b border-gray-700">
@@ -4276,6 +4489,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Expose job costing state to window for global functions
         window.jobCostingState = jobCostingState;
         window.appState = appState;
+        // Expose NPT functions
+        window.addNPTEvent = addNPTEvent;
+        window.removeNPTEvent = removeNPTEvent;
+        window.calculateTotalNPTCost = calculateTotalNPTCost;
+        window.calculateTotalJobCost = calculateTotalJobCost;
+        window.saveWellCosts = saveWellCosts;
+        window.renderNPTList = renderNPTList;
     };
 
     init();
@@ -4613,9 +4833,15 @@ function renderProcedureList() {
         totalDisplay.textContent = `£${globalTotal.toFixed(2)}`;
     }
 
-    // Update cost displays in Performer and Analyzer views
-    updatePerformerCostDisplay(globalTotal);
-    updateAnalyzerCostDisplay(globalTotal);
+    // Save costs for the current well
+    if (window.saveWellCosts) {
+        window.saveWellCosts();
+    }
+
+    // Update cost displays in Performer and Analyzer views (include NPT)
+    const nptCost = window.calculateTotalNPTCost ? window.calculateTotalNPTCost() : 0;
+    updatePerformerCostDisplay(globalTotal + nptCost);
+    updateAnalyzerCostDisplay(globalTotal + nptCost);
 }
 
 function updatePerformerCostDisplay(totalCost) {
@@ -4623,6 +4849,7 @@ function updatePerformerCostDisplay(totalCost) {
     const actualDisplay = document.getElementById('performer-actual-cost');
     const varianceDisplay = document.getElementById('performer-variance');
     const percentDisplay = document.getElementById('performer-budget-percent');
+    const nptCostDisplay = document.getElementById('performer-npt-cost');
 
     if (!afeDisplay) return;
 
@@ -4636,6 +4863,12 @@ function updatePerformerCostDisplay(totalCost) {
     actualDisplay.textContent = `$${(actualCost / 1000).toFixed(0)}K`;
     varianceDisplay.textContent = `$${(variance / 1000).toFixed(0)}K`;
     percentDisplay.textContent = `${percent.toFixed(0)}%`;
+
+    // Update NPT cost display
+    const nptCost = window.calculateTotalNPTCost ? window.calculateTotalNPTCost() : 0;
+    if (nptCostDisplay) {
+        nptCostDisplay.textContent = `$${(nptCost / 1000).toFixed(0)}K`;
+    }
 
     // Color coding
     if (variance < 0) {
@@ -4654,16 +4887,22 @@ function updateAnalyzerCostDisplay(totalCost) {
     const personnelDisplay = document.getElementById('analyzer-personnel-cost');
     const toolsDisplay = document.getElementById('analyzer-tools-cost');
     const consumablesDisplay = document.getElementById('analyzer-consumables-cost');
+    const nptCostDisplay = document.getElementById('analyzer-npt-cost');
+    const nptPercentDisplay = document.getElementById('analyzer-npt-percent');
+    const nptEventsListDisplay = document.getElementById('analyzer-npt-events-list');
 
     if (!afeDisplay) return;
 
     // Calculate breakdown
-    const equipment = Math.floor(totalCost * 0.40);
-    const personnel = Math.floor(totalCost * 0.30);
-    const tools = Math.floor(totalCost * 0.20);
-    const consumables = Math.floor(totalCost * 0.10);
+    const nptCost = window.calculateTotalNPTCost ? window.calculateTotalNPTCost() : 0;
+    const baseCost = totalCost - nptCost;
+    const equipment = Math.floor(baseCost * 0.40);
+    const personnel = Math.floor(baseCost * 0.30);
+    const tools = Math.floor(baseCost * 0.20);
+    const consumables = Math.floor(baseCost * 0.10);
 
     const afeBudget = window.appState && window.appState.commercial ? window.appState.commercial.afe : totalCost;
+    const nptPercent = totalCost > 0 ? (nptCost / totalCost * 100) : 0;
 
     afeDisplay.textContent = `$${(afeBudget / 1000).toFixed(0)}K`;
     actualDisplay.textContent = `$${(totalCost / 1000).toFixed(0)}K`;
@@ -4671,6 +4910,78 @@ function updateAnalyzerCostDisplay(totalCost) {
     personnelDisplay.textContent = `$${(personnel / 1000).toFixed(0)}K`;
     toolsDisplay.textContent = `$${(tools / 1000).toFixed(0)}K`;
     consumablesDisplay.textContent = `$${(consumables / 1000).toFixed(0)}K`;
+
+    // Update NPT displays
+    if (nptCostDisplay) {
+        nptCostDisplay.textContent = `$${(nptCost / 1000).toFixed(0)}K`;
+    }
+    if (nptPercentDisplay) {
+        nptPercentDisplay.textContent = `${nptPercent.toFixed(1)}%`;
+    }
+
+    // Render NPT events list
+    if (nptEventsListDisplay && window.appState && window.appState.commercial) {
+        const events = window.appState.commercial.nptEvents || [];
+        if (events.length === 0) {
+            nptEventsListDisplay.innerHTML = '<p class="text-gray-500 text-center py-4">No NPT events recorded for this operation.</p>';
+        } else {
+            nptEventsListDisplay.innerHTML = events.map(event => {
+                const severityColors = {
+                    low: 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-400',
+                    medium: 'bg-orange-100 dark:bg-orange-900/30 border-orange-400',
+                    high: 'bg-red-100 dark:bg-red-900/30 border-red-400',
+                    critical: 'bg-purple-100 dark:bg-purple-900/30 border-purple-400'
+                };
+                const colorClass = severityColors[event.severity] || 'bg-gray-100 dark:bg-gray-900/30 border-gray-400';
+
+                return `
+                    <div class="p-3 rounded-lg border-l-4 ${colorClass}">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <div class="font-bold text-sm">${event.type}</div>
+                                <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">${event.description}</div>
+                                <div class="text-xs text-gray-500 mt-1">${event.duration} hours</div>
+                            </div>
+                            <div class="text-right ml-4">
+                                <div class="font-bold text-red-600 dark:text-red-400">$${(event.cost / 1000).toFixed(0)}K</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+}
+
+// Add NPT event from UI
+function addNPTEventFromUI() {
+    const typeSelect = document.getElementById('npt-type-select');
+    const durationInput = document.getElementById('npt-duration-input');
+
+    if (!typeSelect || !durationInput) return;
+
+    const eventTypeId = typeSelect.value;
+    const duration = parseFloat(durationInput.value);
+
+    if (!eventTypeId || !duration || duration <= 0) {
+        alert('Please select an NPT type and enter a valid duration.');
+        return;
+    }
+
+    if (window.addNPTEvent) {
+        window.addNPTEvent(eventTypeId, duration);
+        // Clear inputs
+        typeSelect.value = '';
+        durationInput.value = '';
+    }
+}
+
+// Expose functions to window for global access
+if (typeof window !== 'undefined') {
+    window.addNPTEvent = window.addNPTEvent;
+    window.removeNPTEvent = window.removeNPTEvent;
+    window.calculateTotalNPTCost = window.calculateTotalNPTCost;
+    window.saveWellCosts = window.saveWellCosts;
 }
 
 </script>
