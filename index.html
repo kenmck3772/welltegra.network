@@ -3371,9 +3371,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    viewAnalysisBtn.addEventListener('click', () => { 
-        switchView('analyzer'); 
-        initializeAnalyzer(); 
+    viewAnalysisBtn.addEventListener('click', () => {
+        switchView('analyzer');
+        if (window.initializeAnalyzer) {
+            window.initializeAnalyzer();
+        } else {
+            initializeAnalyzer();
+            initializeVendorScorecard();
+        }
     });
 
     addLessonBtn.addEventListener('click', () => { 
@@ -3592,12 +3597,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Initialize vendor scorecard when analyzer view is shown
+    // Store the original initializeAnalyzer function
     const originalInitializeAnalyzer = initializeAnalyzer;
-    window.initializeAnalyzer = initializeAnalyzer = function() {
+
+    // Create wrapper function for vendor scorecard initialization
+    const initializeAnalyzerWithVendor = function() {
         originalInitializeAnalyzer();
         initializeVendorScorecard();
     };
+
+    // Replace the function globally
+    window.initializeAnalyzer = initializeAnalyzerWithVendor;
 
     // --- INITIALIZATION ---
 
