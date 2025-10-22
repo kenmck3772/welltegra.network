@@ -1150,19 +1150,87 @@
                 </div>
             </div>
 
-            <!-- Wellbore Deviation Visualization -->
+            <!-- Wellbore Deviation Visualization with CSV Survey Import -->
             <div id="performer-wellbore" class="mt-6 bg-slate-800/50 rounded-lg p-6 border border-slate-700">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Left: Animated deviation path -->
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <!-- Left: CSV Upload & Controls -->
+                    <div class="bg-slate-900/40 border border-slate-700 rounded-lg p-4">
+                        <div class="mb-4">
+                            <strong class="text-lg block mb-2">📊 Survey Data</strong>
+                            <p class="text-xs text-slate-400 mb-4">Upload CSV with MD, INC, AZ columns (degrees)</p>
+                        </div>
+
+                        <!-- File drop zone -->
+                        <div id="survey-drop-zone" class="border-2 border-dashed border-slate-600 hover:border-cyan-500 rounded-lg p-6 text-center cursor-pointer transition mb-4">
+                            <div class="text-slate-400">
+                                <svg class="mx-auto h-12 w-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                </svg>
+                                <p class="text-sm font-semibold">Drop CSV here or click</p>
+                                <p class="text-xs mt-1">or paste below</p>
+                            </div>
+                            <input id="survey-file-input" type="file" accept=".csv,.txt" class="hidden">
+                        </div>
+
+                        <!-- Paste area -->
+                        <textarea id="survey-paste-area" placeholder="Or paste CSV text here..."
+                                  class="w-full h-24 bg-slate-800 border border-slate-700 rounded-md p-2 text-sm text-slate-300 font-mono resize-none mb-3"></textarea>
+
+                        <!-- Column mapping -->
+                        <div id="survey-column-map" class="hidden mb-4 p-3 bg-slate-800/60 border border-slate-600 rounded-lg">
+                            <p class="text-xs font-semibold text-slate-300 mb-2">Map Columns:</p>
+                            <div class="space-y-2 text-xs">
+                                <div class="flex items-center gap-2">
+                                    <label class="w-12 text-slate-400">MD:</label>
+                                    <select id="col-md" class="flex-1 bg-slate-900 border-slate-700 rounded px-2 py-1 text-slate-300"></select>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <label class="w-12 text-slate-400">INC:</label>
+                                    <select id="col-inc" class="flex-1 bg-slate-900 border-slate-700 rounded px-2 py-1 text-slate-300"></select>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <label class="w-12 text-slate-400">AZ:</label>
+                                    <select id="col-azi" class="flex-1 bg-slate-900 border-slate-700 rounded px-2 py-1 text-slate-300"></select>
+                                </div>
+                            </div>
+                            <button onclick="applySurveyMapping()" class="mt-3 w-full px-3 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-semibold rounded-md transition">
+                                Apply Mapping
+                            </button>
+                        </div>
+
+                        <!-- View toggle -->
+                        <div class="mb-4">
+                            <p class="text-xs text-slate-400 mb-2">View Mode:</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button id="view-profile-btn" onclick="switchSurveyView('profile')"
+                                        class="px-3 py-2 bg-cyan-600 text-white text-sm font-semibold rounded-md transition">
+                                    Profile
+                                </button>
+                                <button id="view-plan-btn" onclick="switchSurveyView('plan')"
+                                        class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-md transition">
+                                    Plan
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Sample data button -->
+                        <button onclick="loadSampleSurvey()" class="w-full px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-md transition">
+                            Load Sample Data
+                        </button>
+
+                        <!-- Status -->
+                        <div id="survey-status" class="mt-4 text-xs text-slate-400"></div>
+                    </div>
+
+                    <!-- Center: Animated deviation path -->
                     <div class="lg:col-span-2 bg-slate-900/40 border border-slate-700 rounded-lg overflow-hidden">
                         <div class="flex items-center justify-between px-4 py-3 border-b border-slate-700 bg-slate-800/50">
-                            <strong class="text-lg">📐 Wellbore Deviation</strong>
-                            <span class="text-sm text-slate-400">Real-Time Position Tracking</span>
+                            <strong class="text-lg">📐 Wellbore Trajectory</strong>
+                            <span id="survey-view-label" class="text-sm text-slate-400">Profile View (Departure vs TVD)</span>
                         </div>
 
                         <!-- SVG canvas -->
                         <svg id="wbSvg" viewBox="0 0 800 520" preserveAspectRatio="xMidYMid meet" class="w-full h-auto block" style="background:linear-gradient(180deg,rgba(15,23,42,.45),rgba(2,6,23,.35))">
-                            <!-- grid -->
                             <defs>
                                 <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
                                     <path d="M80 0H0V80" fill="none" stroke="#334155" stroke-opacity=".4" stroke-width="1"/>
@@ -1176,33 +1244,24 @@
                             </defs>
                             <rect x="0" y="0" width="800" height="520" fill="url(#grid)"/>
 
-                            <!-- depth ticks -->
-                            <g id="ticks" fill="none" stroke="#475569" stroke-width="1"></g>
-
-                            <!-- formation bands -->
-                            <g opacity=".35">
-                                <rect x="0" y="60" width="800" height="80" fill="#7c3aed"/>
-                                <rect x="0" y="180" width="800" height="80" fill="#0891b2"/>
-                                <rect x="0" y="300" width="800" height="80" fill="#0d9488"/>
-                                <rect x="0" y="420" width="800" height="80" fill="#b45309"/>
+                            <!-- Axes -->
+                            <g id="survey-axes">
+                                <text x="400" y="515" fill="#94a3b8" font-size="11" text-anchor="middle">Departure (m)</text>
+                                <text x="10" y="260" fill="#94a3b8" font-size="11" transform="rotate(-90 10 260)" text-anchor="middle">TVD (m)</text>
                             </g>
 
-                            <!-- casing & cement -->
-                            <g>
-                                <path d="M80 20 v480" stroke="#cbd5e1" stroke-width="18" opacity=".18"/>
-                                <path d="M80 20 v480" stroke="#94a3b8" stroke-width="8" opacity=".35" stroke-dasharray="8 6"/>
-                            </g>
+                            <!-- Survey path will be drawn here -->
+                            <path id="wbPath" d="" fill="none" stroke="url(#dlsGrad)" stroke-width="4" filter="url(#glow)"/>
 
-                            <!-- deviation trajectory -->
-                            <path id="wbPath" d="M80,40 C140,80 200,130 260,180 S380,300 460,320 620,360 740,500"
-                                  fill="none" stroke="url(#dlsGrad)" stroke-width="6" filter="url(#glow)"/>
+                            <!-- Survey stations (dots) -->
+                            <g id="survey-stations"></g>
 
-                            <!-- current toolstring position -->
+                            <!-- Current tool position -->
                             <circle id="toolDot" r="8" fill="#14b8a6" stroke="#0b1220" stroke-width="2"/>
-                            <text id="mdBadge" x="0" y="0" font-size="12" fill="#e2e8f0" stroke="#0b1220" stroke-width="0.6" paint-order="stroke" style="font-weight:700">MD 0000 m</text>
+                            <text id="mdBadge" x="0" y="0" font-size="12" fill="#e2e8f0" stroke="#0b1220" stroke-width="0.6" paint-order="stroke" style="font-weight:700">MD 0 m</text>
                         </svg>
 
-                        <!-- controls -->
+                        <!-- Animation controls -->
                         <div class="flex gap-3 items-center px-4 py-3 border-t border-slate-700 bg-slate-900/30">
                             <button id="wbPlay" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">▶ Play</button>
                             <button id="wbPause" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition">⏸ Pause</button>
@@ -1218,46 +1277,66 @@
                         </div>
                     </div>
 
-                    <!-- Right: KPI & legend -->
+                    <!-- Right: KPI & Stats -->
                     <div class="grid gap-4 content-start">
                         <div class="bg-slate-900/40 border border-slate-700 rounded-lg p-4">
                             <div class="flex items-center justify-between mb-3">
-                                <strong class="text-base">Live Survey Data</strong>
-                                <span class="text-xs text-slate-400">Demo</span>
+                                <strong class="text-base">Live Survey</strong>
+                                <span id="survey-data-badge" class="text-xs text-slate-400">No Data</span>
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <div class="bg-slate-800/60 border border-slate-700 rounded-lg p-3">
-                                    <div class="text-xs text-slate-400">Depth (MD)</div>
+                                    <div class="text-xs text-slate-400">MD</div>
                                     <div id="kpiMD" class="text-2xl font-bold text-cyan-400">0 m</div>
                                 </div>
                                 <div class="bg-slate-800/60 border border-slate-700 rounded-lg p-3">
-                                    <div class="text-xs text-slate-400">TVD (≈)</div>
+                                    <div class="text-xs text-slate-400">TVD</div>
                                     <div id="kpiTVD" class="text-2xl font-bold text-cyan-400">0 m</div>
                                 </div>
                                 <div class="bg-slate-800/60 border border-slate-700 rounded-lg p-3">
-                                    <div class="text-xs text-slate-400">Inclination</div>
+                                    <div class="text-xs text-slate-400">Incl</div>
                                     <div id="kpiIncl" class="text-2xl font-bold text-emerald-400">—°</div>
                                 </div>
                                 <div class="bg-slate-800/60 border border-slate-700 rounded-lg p-3">
-                                    <div class="text-xs text-slate-400">Azimuth</div>
+                                    <div class="text-xs text-slate-400">Az</div>
                                     <div id="kpiAz" class="text-2xl font-bold text-amber-400">—°</div>
                                 </div>
                             </div>
-                            <p class="mt-3 text-xs text-slate-400">Drag the Depth slider or hit Play to animate tool movement.</p>
                         </div>
 
                         <div class="bg-slate-900/40 border border-slate-700 rounded-lg p-4">
-                            <strong class="text-base block mb-3">Legend</strong>
-                            <div class="flex flex-wrap gap-3 text-sm">
-                                <span class="flex items-center gap-2">
-                                    <i class="inline-block w-6 h-1.5 rounded-full" style="background:linear-gradient(90deg,#22d3ee,#14b8a6,#f59e0b)"></i> Trajectory
-                                </span>
-                                <span class="flex items-center gap-2">
-                                    <i class="inline-block w-6 h-1.5 bg-slate-400 rounded-full opacity-70"></i> Casing
-                                </span>
-                                <span class="flex items-center gap-2">
-                                    <i class="inline-block w-3 h-3 bg-cyan-500 rounded-full"></i> Tool Position
-                                </span>
+                            <strong class="text-base block mb-3">Coordinates</strong>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">North:</span>
+                                    <span id="kpiNorth" class="text-slate-200 font-mono">0.0 m</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">East:</span>
+                                    <span id="kpiEast" class="text-slate-200 font-mono">0.0 m</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Departure:</span>
+                                    <span id="kpiDep" class="text-slate-200 font-mono">0.0 m</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/40 border border-slate-700 rounded-lg p-4">
+                            <strong class="text-base block mb-3">Survey Stats</strong>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Stations:</span>
+                                    <span id="survey-count" class="text-slate-200">0</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Max Inc:</span>
+                                    <span id="survey-max-inc" class="text-slate-200">—°</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Total MD:</span>
+                                    <span id="survey-total-md" class="text-slate-200">0 m</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -4615,13 +4694,29 @@ document.addEventListener('DOMContentLoaded', function() {
     init();
 });
 
-// --- WELLBORE DEVIATION ANIMATION ---
+// --- WELLBORE SURVEY CSV TOOL WITH MINIMUM CURVATURE ---
 (function() {
+    // Survey data state
+    let surveyData = [];
+    let currentView = 'profile'; // or 'plan'
+    let running = false, tNorm = 0, speed = 1, last = 0;
+    let pathLength = 0;
+
+    // DOM elements
     const svg = document.getElementById('wbSvg');
     const path = document.getElementById('wbPath');
     const dot = document.getElementById('toolDot');
     const mdBadge = document.getElementById('mdBadge');
-    const ticks = document.getElementById('ticks');
+    const stationsG = document.getElementById('survey-stations');
+    const axesG = document.getElementById('survey-axes');
+
+    const dropZone = document.getElementById('survey-drop-zone');
+    const fileInput = document.getElementById('survey-file-input');
+    const pasteArea = document.getElementById('survey-paste-area');
+    const columnMap = document.getElementById('survey-column-map');
+    const statusEl = document.getElementById('survey-status');
+    const viewLabel = document.getElementById('survey-view-label');
+    const dataBadge = document.getElementById('survey-data-badge');
 
     const playBtn = document.getElementById('wbPlay');
     const pauseBtn = document.getElementById('wbPause');
@@ -4633,113 +4728,523 @@ document.addEventListener('DOMContentLoaded', function() {
     const kTVD = document.getElementById('kpiTVD');
     const kInc = document.getElementById('kpiIncl');
     const kAz = document.getElementById('kpiAz');
+    const kNorth = document.getElementById('kpiNorth');
+    const kEast = document.getElementById('kpiEast');
+    const kDep = document.getElementById('kpiDep');
 
-    if (!svg || !path) return; // Exit if elements don't exist
+    const surveyCount = document.getElementById('survey-count');
+    const surveyMaxInc = document.getElementById('survey-max-inc');
+    const surveyTotalMD = document.getElementById('survey-total-md');
 
-    // Demo scaling: treat total path length as MD_end
-    const L = path.getTotalLength();
-    const MD_END = 3500; // metres (demo)
-    const TVD_EST = 2800; // example final TVD for demo scaling
+    if (!svg || !path) return;
 
-    // Draw depth ticks every 100 m
-    for (let md = 0; md <= MD_END; md += 100) {
-        const t = md / MD_END;
-        const len = t * L;
-        const p = path.getPointAtLength(len);
-        // A short perpendicular tick
-        const prev = path.getPointAtLength(Math.max(0, len - 1));
-        const dx = p.x - prev.x, dy = p.y - prev.y;
-        const mag = Math.hypot(dx, dy) || 1;
-        const nx = -dy / mag, ny = dx / mag;
-        const x1 = p.x + nx * 6, y1 = p.y + ny * 6;
-        const x2 = p.x - nx * 6, y2 = p.y - ny * 6;
+    // CSV Parsing with delimiter detection
+    function sniffDelimiter(text) {
+        const first = text.split('\n')[0];
+        const delims = [',', ';', '\t', '|'];
+        let best = ',', maxCount = 0;
+        for (const d of delims) {
+            const count = (first.match(new RegExp('\\' + d, 'g')) || []).length;
+            if (count > maxCount) {
+                maxCount = count;
+                best = d;
+            }
+        }
+        return best;
+    }
 
-        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('x1', x1);
-        line.setAttribute('y1', y1);
-        line.setAttribute('x2', x2);
-        line.setAttribute('y2', y2);
-        ticks.appendChild(line);
+    function parseCSV(text) {
+        const delim = sniffDelimiter(text);
+        const lines = text.trim().split('\n');
+        const rows = [];
+        for (const line of lines) {
+            const row = [];
+            let current = '', inQuote = false;
+            for (let i = 0; i < line.length; i++) {
+                const c = line[i];
+                if (c === '"') inQuote = !inQuote;
+                else if (c === delim && !inQuote) {
+                    row.push(current.trim());
+                    current = '';
+                } else {
+                    current += c;
+                }
+            }
+            row.push(current.trim());
+            rows.push(row);
+        }
+        return { rows, delim };
+    }
 
-        if (md % 500 === 0) {
-            const tx = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            tx.setAttribute('x', x2 + nx * 16);
-            tx.setAttribute('y', y2 + ny * 16);
-            tx.setAttribute('fill', '#94a3b8');
-            tx.setAttribute('font-size', '12');
-            tx.setAttribute('text-anchor', 'middle');
-            tx.textContent = md + ' m';
-            ticks.appendChild(tx);
+    // Auto-detect MD, INC, AZ columns
+    function autoDetectColumns(headers) {
+        const map = { md: -1, inc: -1, azi: -1, tvd: -1, north: -1, east: -1 };
+        headers.forEach((h, i) => {
+            const hl = h.toLowerCase().replace(/[^a-z]/g, '');
+            if (hl.includes('md') || hl === 'depth') map.md = i;
+            else if (hl.includes('inc') || hl.includes('incl')) map.inc = i;
+            else if (hl.includes('az') || hl.includes('azi')) map.azi = i;
+            else if (hl.includes('tvd')) map.tvd = i;
+            else if (hl.includes('north') || hl === 'n') map.north = i;
+            else if (hl.includes('east') || hl === 'e') map.east = i;
+        });
+        return map;
+    }
+
+    // Minimum Curvature calculation
+    function computeCoordinates(stations) {
+        if (stations.length === 0) return;
+
+        // Initialize first station
+        stations[0].tvd = stations[0].tvd || 0;
+        stations[0].north = stations[0].north || 0;
+        stations[0].east = stations[0].east || 0;
+
+        for (let i = 1; i < stations.length; i++) {
+            const a = stations[i - 1];
+            const b = stations[i];
+
+            const md1 = a.md, md2 = b.md;
+            const inc1 = (a.inc || 0) * Math.PI / 180;
+            const inc2 = (b.inc || 0) * Math.PI / 180;
+            const az1 = (a.azi || 0) * Math.PI / 180;
+            const az2 = (b.azi || 0) * Math.PI / 180;
+
+            const dMD = md2 - md1;
+
+            // Minimum curvature method
+            const cosDL = Math.sin(inc1) * Math.sin(inc2) * Math.cos(az2 - az1) + Math.cos(inc1) * Math.cos(inc2);
+            const DL = Math.acos(Math.min(1, Math.max(-1, cosDL)));
+            const RF = (DL > 1e-6) ? (2 / DL) * Math.tan(DL / 2) : 1;
+
+            const dN = 0.5 * dMD * RF * (Math.sin(inc1) * Math.cos(az1) + Math.sin(inc2) * Math.cos(az2));
+            const dE = 0.5 * dMD * RF * (Math.sin(inc1) * Math.sin(az1) + Math.sin(inc2) * Math.sin(az2));
+            const dV = 0.5 * dMD * RF * (Math.cos(inc1) + Math.cos(inc2));
+
+            b.tvd = (a.tvd || 0) + dV;
+            b.north = (a.north || 0) + dN;
+            b.east = (a.east || 0) + dE;
+        }
+
+        // Calculate departure
+        stations.forEach(s => {
+            s.departure = Math.sqrt(s.north * s.north + s.east * s.east);
+        });
+    }
+
+    // Process CSV and extract survey data
+    function processSurveyData(text) {
+        try {
+            const { rows } = parseCSV(text);
+            if (rows.length < 2) {
+                throw new Error('Not enough data rows');
+            }
+
+            const headers = rows[0];
+            const colMap = autoDetectColumns(headers);
+
+            // Check if manual mapping needed
+            if (colMap.md === -1 || colMap.inc === -1 || colMap.azi === -1) {
+                showColumnMapper(headers);
+                return null;
+            }
+
+            return extractStations(rows.slice(1), colMap);
+        } catch (err) {
+            statusEl.textContent = '❌ Error: ' + err.message;
+            statusEl.className = 'mt-4 text-xs text-red-400';
+            return null;
         }
     }
 
-    let running = false, tNorm = 0, speed = 1, last = 0;
+    function extractStations(dataRows, colMap) {
+        const stations = [];
+        for (const row of dataRows) {
+            const md = parseFloat(row[colMap.md]);
+            const inc = parseFloat(row[colMap.inc]);
+            const azi = parseFloat(row[colMap.azi]);
 
-    function updateByT(norm) {
+            if (isNaN(md) || isNaN(inc) || isNaN(azi)) continue;
+
+            const station = { md, inc, azi };
+
+            // Optional coordinates
+            if (colMap.tvd >= 0) station.tvd = parseFloat(row[colMap.tvd]) || 0;
+            if (colMap.north >= 0) station.north = parseFloat(row[colMap.north]) || 0;
+            if (colMap.east >= 0) station.east = parseFloat(row[colMap.east]) || 0;
+
+            stations.push(station);
+        }
+
+        // Sort by MD
+        stations.sort((a, b) => a.md - b.md);
+
+        // Compute missing coordinates
+        computeCoordinates(stations);
+
+        return stations;
+    }
+
+    function showColumnMapper(headers) {
+        const selects = ['col-md', 'col-inc', 'col-azi'];
+        selects.forEach(id => {
+            const sel = document.getElementById(id);
+            sel.innerHTML = '<option value="">-- Select --</option>';
+            headers.forEach((h, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = h;
+                sel.appendChild(opt);
+            });
+        });
+        columnMap.classList.remove('hidden');
+        statusEl.textContent = '⚠️ Please map columns manually';
+        statusEl.className = 'mt-4 text-xs text-amber-400';
+    }
+
+    window.applySurveyMapping = function() {
+        const colMap = {
+            md: parseInt(document.getElementById('col-md').value),
+            inc: parseInt(document.getElementById('col-inc').value),
+            azi: parseInt(document.getElementById('col-azi').value),
+            tvd: -1, north: -1, east: -1
+        };
+
+        if (isNaN(colMap.md) || isNaN(colMap.inc) || isNaN(colMap.azi)) {
+            alert('Please select all required columns (MD, INC, AZ)');
+            return;
+        }
+
+        const text = pasteArea.value.trim();
+        if (!text) return;
+
+        const { rows } = parseCSV(text);
+        const stations = extractStations(rows.slice(1), colMap);
+
+        if (stations && stations.length > 0) {
+            surveyData = stations;
+            columnMap.classList.add('hidden');
+            renderSurvey();
+        }
+    };
+
+    // Render survey visualization
+    function renderSurvey() {
+        if (surveyData.length === 0) return;
+
+        // Update stats
+        surveyCount.textContent = surveyData.length;
+        surveyMaxInc.textContent = Math.max(...surveyData.map(s => s.inc)).toFixed(1) + '°';
+        surveyTotalMD.textContent = surveyData[surveyData.length - 1].md.toFixed(1) + ' m';
+        dataBadge.textContent = surveyData.length + ' stations';
+        dataBadge.className = 'text-xs text-cyan-400';
+
+        statusEl.textContent = '✓ ' + surveyData.length + ' survey stations loaded';
+        statusEl.className = 'mt-4 text-xs text-emerald-400';
+
+        // Render current view
+        if (currentView === 'profile') {
+            renderProfileView();
+        } else {
+            renderPlanView();
+        }
+
+        // Reset animation
+        tNorm = 0;
+        updateAnimation(0);
+    }
+
+    function renderProfileView() {
+        viewLabel.textContent = 'Profile View (Departure vs TVD)';
+
+        // Find bounds
+        const maxDep = Math.max(...surveyData.map(s => s.departure));
+        const maxTVD = Math.max(...surveyData.map(s => s.tvd));
+
+        // SVG dimensions
+        const margin = 60, width = 800 - 2 * margin, height = 520 - 2 * margin;
+        const scaleX = width / (maxDep * 1.1);
+        const scaleY = height / (maxTVD * 1.1);
+
+        // Build path
+        let pathD = '';
+        surveyData.forEach((s, i) => {
+            const x = margin + s.departure * scaleX;
+            const y = margin + s.tvd * scaleY;
+            pathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
+        });
+
+        path.setAttribute('d', pathD);
+        pathLength = path.getTotalLength();
+
+        // Draw station dots
+        stationsG.innerHTML = '';
+        surveyData.forEach(s => {
+            const x = margin + s.departure * scaleX;
+            const y = margin + s.tvd * scaleY;
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', x);
+            circle.setAttribute('cy', y);
+            circle.setAttribute('r', '3');
+            circle.setAttribute('fill', '#22d3ee');
+            circle.setAttribute('opacity', '0.6');
+            stationsG.appendChild(circle);
+        });
+
+        // Update axes labels
+        axesG.innerHTML = `
+            <text x="400" y="515" fill="#94a3b8" font-size="11" text-anchor="middle">Departure (m)</text>
+            <text x="10" y="260" fill="#94a3b8" font-size="11" transform="rotate(-90 10 260)" text-anchor="middle">TVD (m)</text>
+        `;
+    }
+
+    function renderPlanView() {
+        viewLabel.textContent = 'Plan View (East vs North)';
+
+        // Find bounds
+        const minN = Math.min(...surveyData.map(s => s.north));
+        const maxN = Math.max(...surveyData.map(s => s.north));
+        const minE = Math.min(...surveyData.map(s => s.east));
+        const maxE = Math.max(...surveyData.map(s => s.east));
+
+        const rangeN = maxN - minN;
+        const rangeE = maxE - minE;
+
+        const margin = 60, width = 800 - 2 * margin, height = 520 - 2 * margin;
+        const scale = Math.min(width / (rangeE * 1.1 || 1), height / (rangeN * 1.1 || 1));
+
+        // Build path
+        let pathD = '';
+        surveyData.forEach((s, i) => {
+            const x = margin + width / 2 + (s.east - (minE + maxE) / 2) * scale;
+            const y = margin + height / 2 - (s.north - (minN + maxN) / 2) * scale;
+            pathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
+        });
+
+        path.setAttribute('d', pathD);
+        pathLength = path.getTotalLength();
+
+        // Draw station dots
+        stationsG.innerHTML = '';
+        surveyData.forEach(s => {
+            const x = margin + width / 2 + (s.east - (minE + maxE) / 2) * scale;
+            const y = margin + height / 2 - (s.north - (minN + maxN) / 2) * scale;
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', x);
+            circle.setAttribute('cy', y);
+            circle.setAttribute('r', '3');
+            circle.setAttribute('fill', '#22d3ee');
+            circle.setAttribute('opacity', '0.6');
+            stationsG.appendChild(circle);
+        });
+
+        // Update axes labels
+        axesG.innerHTML = `
+            <text x="400" y="515" fill="#94a3b8" font-size="11" text-anchor="middle">East (m)</text>
+            <text x="10" y="260" fill="#94a3b8" font-size="11" transform="rotate(-90 10 260)" text-anchor="middle">North (m)</text>
+        `;
+    }
+
+    // Animation system
+    function updateAnimation(norm) {
+        if (surveyData.length === 0 || pathLength === 0) return;
+
         norm = Math.max(0, Math.min(1, norm));
-        const len = norm * L;
+        const len = norm * pathLength;
         const p = path.getPointAtLength(len);
+
+        // Update tool position
         dot.setAttribute('cx', p.x);
         dot.setAttribute('cy', p.y);
-
-        // badge offset
         mdBadge.setAttribute('x', p.x + 12);
         mdBadge.setAttribute('y', p.y - 12);
 
-        // derive direction (for inclination/azimuth rough demo)
-        const prev = path.getPointAtLength(Math.max(0, len - 0.5));
-        const dx = p.x - prev.x, dy = p.y - prev.y;
-        const incDeg = Math.round(Math.min(90, Math.max(0, Math.atan2(Math.abs(dx), Math.abs(dy)) * 180 / Math.PI)));
-        const azDeg = Math.round((Math.atan2(dy, dx) * 180 / Math.PI + 360) % 360);
+        // Find current survey station by interpolation
+        const totalMD = surveyData[surveyData.length - 1].md;
+        const currentMD = norm * totalMD;
 
-        const mdVal = Math.round(norm * MD_END);
-        const tvdVal = Math.round(norm * TVD_EST);
+        // Find surrounding stations
+        let idx = 0;
+        for (let i = 0; i < surveyData.length - 1; i++) {
+            if (currentMD >= surveyData[i].md && currentMD <= surveyData[i + 1].md) {
+                idx = i;
+                break;
+            }
+        }
 
-        mdBadge.textContent = 'MD ' + mdVal + ' m';
-        infoEl.textContent = 'Incl: ' + incDeg + '° | Az: ' + azDeg + '°';
-        kMD.textContent = mdVal + ' m';
-        kTVD.textContent = tvdVal + ' m';
-        kInc.textContent = incDeg + '°';
-        kAz.textContent = azDeg + '°';
+        const s1 = surveyData[idx];
+        const s2 = surveyData[Math.min(idx + 1, surveyData.length - 1)];
+        const ratio = s2.md > s1.md ? (currentMD - s1.md) / (s2.md - s1.md) : 0;
+
+        // Interpolate values
+        const md = s1.md + ratio * (s2.md - s1.md);
+        const tvd = s1.tvd + ratio * (s2.tvd - s1.tvd);
+        const inc = s1.inc + ratio * (s2.inc - s1.inc);
+        const azi = s1.azi + ratio * (s2.azi - s1.azi);
+        const north = s1.north + ratio * (s2.north - s1.north);
+        const east = s1.east + ratio * (s2.east - s1.east);
+        const dep = Math.sqrt(north * north + east * east);
+
+        // Update KPIs
+        mdBadge.textContent = 'MD ' + md.toFixed(1) + ' m';
+        kMD.textContent = md.toFixed(1) + ' m';
+        kTVD.textContent = tvd.toFixed(1) + ' m';
+        kInc.textContent = inc.toFixed(1) + '°';
+        kAz.textContent = azi.toFixed(1) + '°';
+        kNorth.textContent = north.toFixed(1) + ' m';
+        kEast.textContent = east.toFixed(1) + ' m';
+        kDep.textContent = dep.toFixed(1) + ' m';
+
+        infoEl.textContent = 'Incl: ' + inc.toFixed(1) + '° | Az: ' + azi.toFixed(1) + '°';
         scrubEl.value = Math.round(norm * 1000);
         tNorm = norm;
     }
 
-    function raf(ts) {
+    function animationLoop(ts) {
         if (!running) {
             last = ts;
             return;
         }
-        const dt = (ts - last) / 1000; // seconds
+        const dt = (ts - last) / 1000;
         last = ts;
-        const advance = dt * 0.06 * speed; // tune base speed
+        const advance = dt * 0.08 * speed;
         let next = tNorm + advance;
         if (next >= 1) {
             next = 1;
             running = false;
         }
-        updateByT(next);
-        requestAnimationFrame(raf);
+        updateAnimation(next);
+        requestAnimationFrame(animationLoop);
     }
 
+    // Event handlers
     playBtn.addEventListener('click', () => {
+        if (surveyData.length === 0) {
+            statusEl.textContent = '⚠️ Please load survey data first';
+            statusEl.className = 'mt-4 text-xs text-amber-400';
+            return;
+        }
         running = true;
         requestAnimationFrame((ts) => {
             last = ts;
-            requestAnimationFrame(raf);
+            requestAnimationFrame(animationLoop);
         });
     });
-    pauseBtn.addEventListener('click', () => running = false);
+
+    pauseBtn.addEventListener('click', () => {
+        running = false;
+    });
+
     speedEl.addEventListener('input', e => {
         speed = parseFloat(e.target.value);
     });
+
     scrubEl.addEventListener('input', e => {
         running = false;
-        updateByT(e.target.value / 1000);
+        updateAnimation(e.target.value / 1000);
     });
 
-    // init
-    updateByT(0);
+    // File upload handlers
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#22d3ee';
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.style.borderColor = '#475569';
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#475569';
+        const file = e.dataTransfer.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const text = evt.target.result;
+                pasteArea.value = text;
+                const stations = processSurveyData(text);
+                if (stations) {
+                    surveyData = stations;
+                    renderSurvey();
+                }
+            };
+            reader.readAsText(file);
+        }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const text = evt.target.result;
+                pasteArea.value = text;
+                const stations = processSurveyData(text);
+                if (stations) {
+                    surveyData = stations;
+                    renderSurvey();
+                }
+            };
+            reader.readAsText(file);
+        }
+    });
+
+    pasteArea.addEventListener('input', () => {
+        const text = pasteArea.value.trim();
+        if (text) {
+            const stations = processSurveyData(text);
+            if (stations) {
+                surveyData = stations;
+                renderSurvey();
+            }
+        }
+    });
+
+    // View switching
+    window.switchSurveyView = function(view) {
+        currentView = view;
+
+        const profileBtn = document.getElementById('view-profile-btn');
+        const planBtn = document.getElementById('view-plan-btn');
+
+        if (view === 'profile') {
+            profileBtn.className = 'px-3 py-2 bg-cyan-600 text-white text-sm font-semibold rounded-md transition';
+            planBtn.className = 'px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-md transition';
+        } else {
+            profileBtn.className = 'px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-md transition';
+            planBtn.className = 'px-3 py-2 bg-cyan-600 text-white text-sm font-semibold rounded-md transition';
+        }
+
+        if (surveyData.length > 0) {
+            renderSurvey();
+        }
+    };
+
+    // Sample data loader
+    window.loadSampleSurvey = function() {
+        const sample = `MD,INC,AZ
+0,0,0
+500,5,45
+1000,15,90
+1500,30,120
+2000,45,135
+2500,60,150
+3000,75,165
+3500,85,180`;
+
+        pasteArea.value = sample;
+        const stations = processSurveyData(sample);
+        if (stations) {
+            surveyData = stations;
+            renderSurvey();
+        }
+    };
+
+    // Initialize with empty state
+    updateAnimation(0);
 })();
 
 // --- PDF EXPORT SYSTEM (Global scope for onclick) ---
