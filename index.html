@@ -650,6 +650,141 @@
             border: 1px solid rgba(71, 85, 105, 0.3);
         }
 
+        /* --- Job Costing Tool Styles --- */
+        .cost-main-tab.active {
+            background-color: #22d3ee;
+            color: #1f2937;
+            border-color: #22d3ee;
+        }
+        .cost-main-tab { transition: all 0.2s ease-in-out; }
+        .cost-sub-tab.active {
+            border-bottom-color: #22d3ee;
+            color: #22d3ee;
+        }
+        .cost-sub-tab { transition: all 0.2s ease-in-out; }
+        .cost-add-btn {
+            padding: 0.25rem 0.75rem;
+            background-color: #0891b2;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            transition: all 0.2s;
+        }
+        .cost-add-btn:hover {
+            background-color: #06b6d4;
+        }
+
+        .step-card {
+            background-color: #1e293b;
+            border: 2px solid #475569;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            transition: all 0.2s;
+        }
+        .step-card.active {
+            border-color: #22d3ee;
+            box-shadow: 0 20px 25px -5px rgb(34 211 238 / 0.3);
+        }
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #334155;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            border-bottom: 1px solid #475569;
+            cursor: pointer;
+        }
+        .step-header h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #22d3ee;
+        }
+        .remove-step-btn {
+            color: #6b7280;
+            font-weight: 700;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+        .remove-step-btn:hover {
+            color: #ef4444;
+        }
+        .step-item-list {
+            border-top: 1px solid #475569;
+        }
+        .step-item-list > li {
+            border-bottom: 1px solid #475569;
+        }
+        .step-item-list > li:last-child {
+            border-bottom: none;
+        }
+        .step-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+        }
+        .step-item-name {
+            font-size: 0.875rem;
+            color: #e5e7eb;
+        }
+        .step-item-cost {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: white;
+        }
+        .remove-item-btn {
+            color: #ef4444;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 1rem;
+            transition: color 0.2s;
+        }
+        .remove-item-btn:hover {
+            color: #dc2626;
+        }
+        .step-footer {
+            padding: 0.75rem;
+            background-color: #334155;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+            text-align: right;
+        }
+        .step-footer strong {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #22d3ee;
+        }
+
+        .theme-light .step-card {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+        }
+        .theme-light .step-card.active {
+            border-color: #0891b2;
+            box-shadow: 0 20px 25px -5px rgb(8 145 178 / 0.2);
+        }
+        .theme-light .step-header {
+            background-color: #e2e8f0;
+            border-bottom-color: #cbd5e1;
+        }
+        .theme-light .step-header h3 {
+            color: #0891b2;
+        }
+        .theme-light .step-footer {
+            background-color: #e2e8f0;
+        }
+        .theme-light .step-footer strong {
+            color: #0891b2;
+        }
+        .theme-light .step-item-list > li {
+            border-color: #cbd5e1;
+        }
+
     </style>
 </head>
 
@@ -812,7 +947,12 @@
                     
                     <div id="manual-planning-view">
                         <h4 class="text-lg font-semibold mb-4 text-center">Select Intervention Objective</h4>
-                        <div id="objectives-fieldset" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div id="objectives-fieldset" class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                            <div id="cost-summary-panel" class="lg:col-span-1">
+                                <!-- Cost estimate will appear here when objective is selected -->
+                            </div>
+                        </div>
                         <div class="mt-8 flex justify-center">
                             <button id="generate-plan-btn-manual" class="rounded-md bg-teal-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-teal-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Generate Plan</button>
                         </div>
@@ -844,7 +984,23 @@
                 </div>
                 
                 <div id="plan-output" class="mt-10 space-y-8"></div>
-                
+
+                <!-- Job Costing Tool -->
+                <div id="job-costing-section" class="mt-12 max-w-7xl mx-auto">
+                    <div class="light-card rounded-lg p-6 shadow-xl border-2 border-cyan-500/30">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-2xl font-bold">💰 Detailed Job Costing & Resource Planning</h3>
+                            <button id="toggle-costing-tool" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-md transition">
+                                Expand Tool
+                            </button>
+                        </div>
+
+                        <div id="costing-tool-content" class="hidden">
+                            <div id="job-costing-tool-container" class="grid grid-cols-1 gap-6"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="mt-8 flex justify-center space-x-4">
                     <button id="start-over-btn" class="rounded-md bg-gray-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-500 transition-colors">Start Over</button>
                     <button id="begin-op-btn" class="rounded-md bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 transition-colors">Begin Live Operation</button>
@@ -941,6 +1097,305 @@
                 </div>
                 <div class="bg-slate-800/50 rounded-lg p-4 flex flex-col"><h2 class="text-lg font-semibold mb-4 border-b border-slate-700 pb-2">Operations Log</h2><div id="log-entries" class="flex-1 space-y-3 overflow-y-auto mb-4"></div><div class="mt-auto"><textarea id="log-input" class="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-sm" rows="3" placeholder="Add log entry..."></textarea><button id="add-log-btn" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-4 rounded-md transition">Add Entry</button></div></div>
             </div>
+
+            <!-- Live Cost Tracker -->
+            <div id="performer-cost-tracker" class="mt-6 bg-gradient-to-r from-green-900/50 to-emerald-900/50 rounded-lg p-6 border border-green-700/50">
+                <h3 class="text-xl font-bold text-green-400 mb-4">💰 Live Cost Tracking</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-black/30 rounded-lg p-4 text-center">
+                        <div class="text-sm text-gray-400 mb-1">AFE Budget</div>
+                        <div id="performer-afe-budget" class="text-2xl font-bold text-white">$0</div>
+                    </div>
+                    <div class="bg-black/30 rounded-lg p-4 text-center">
+                        <div class="text-sm text-gray-400 mb-1">Actual Cost</div>
+                        <div id="performer-actual-cost" class="text-2xl font-bold text-white">$0</div>
+                    </div>
+                    <div class="bg-black/30 rounded-lg p-4 text-center">
+                        <div class="text-sm text-gray-400 mb-1">Variance</div>
+                        <div id="performer-variance" class="text-2xl font-bold text-white">$0</div>
+                    </div>
+                    <div class="bg-black/30 rounded-lg p-4 text-center">
+                        <div class="text-sm text-gray-400 mb-1">% of Budget</div>
+                        <div id="performer-budget-percent" class="text-2xl font-bold text-white">0%</div>
+                    </div>
+                </div>
+
+                <!-- NPT Tracking Section -->
+                <div class="mt-4 bg-red-900/30 rounded-lg p-4 border border-red-700/50">
+                    <h4 class="text-lg font-bold text-red-400 mb-3">⚠️ Non-Productive Time (NPT) Tracking</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                        <select id="npt-type-select" class="bg-gray-800 border-gray-700 rounded-md px-3 py-2 text-white text-sm">
+                            <option value="">Select NPT Type...</option>
+                            <option value="stuck-pipe">Stuck Pipe</option>
+                            <option value="equipment-failure">Equipment Failure</option>
+                            <option value="weather-delay">Weather Delay</option>
+                            <option value="well-control">Well Control Event</option>
+                            <option value="fishing">Fishing Operations</option>
+                            <option value="wait-on-weather">Wait on Weather</option>
+                            <option value="wait-on-equipment">Wait on Equipment</option>
+                            <option value="leak-repair">Leak/Seal Repair</option>
+                            <option value="bop-test">Unplanned BOP Test</option>
+                            <option value="fluid-loss">Fluid Loss/Kill</option>
+                        </select>
+                        <input type="number" id="npt-duration-input" placeholder="Duration (hours)" min="0.5" step="0.5" class="bg-gray-800 border-gray-700 rounded-md px-3 py-2 text-white text-sm">
+                        <button onclick="addNPTEventFromUI()" class="bg-red-600 hover:bg-red-500 text-white font-bold px-4 py-2 rounded-md text-sm">Add NPT Event</button>
+                    </div>
+                    <div id="npt-events-list" class="max-h-48 overflow-y-auto">
+                        <p class="text-gray-500 text-center py-4">No NPT events recorded</p>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-red-700/50 flex justify-between items-center">
+                        <span class="text-sm font-semibold">Total NPT Cost:</span>
+                        <span id="performer-npt-cost" class="text-xl font-bold text-red-400">$0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wellbore Deviation Visualization with CSV Survey Import -->
+            <div id="performer-wellbore" class="mt-6 bg-slate-800/50 rounded-lg p-6 border border-slate-700">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <!-- Left: CSV Upload & Controls -->
+                    <div class="bg-slate-900/40 border border-slate-700 rounded-lg p-4">
+                        <div class="mb-4">
+                            <strong class="text-lg block mb-2">📊 Survey Data</strong>
+                            <p class="text-xs text-slate-400 mb-4">Upload CSV with MD, INC, AZ columns (degrees)</p>
+                        </div>
+
+                        <!-- File drop zone -->
+                        <div id="survey-drop-zone" class="border-2 border-dashed border-slate-600 hover:border-cyan-500 rounded-lg p-6 text-center cursor-pointer transition mb-4">
+                            <div class="text-slate-400">
+                                <svg class="mx-auto h-12 w-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                </svg>
+                                <p class="text-sm font-semibold">Drop CSV here or click</p>
+                                <p class="text-xs mt-1">or paste below</p>
+                            </div>
+                            <input id="survey-file-input" type="file" accept=".csv,.txt" class="hidden">
+                        </div>
+
+                        <!-- Paste area -->
+                        <textarea id="survey-paste-area" placeholder="Or paste CSV text here..."
+                                  class="w-full h-24 bg-slate-800 border border-slate-700 rounded-md p-2 text-sm text-slate-300 font-mono resize-none mb-3"></textarea>
+
+                        <!-- Column mapping -->
+                        <div id="survey-column-map" class="hidden mb-4 p-3 bg-slate-800/60 border border-slate-600 rounded-lg">
+                            <p class="text-xs font-semibold text-slate-300 mb-2">Map Columns:</p>
+                            <div class="space-y-2 text-xs">
+                                <div class="flex items-center gap-2">
+                                    <label class="w-12 text-slate-400">MD:</label>
+                                    <select id="col-md" class="flex-1 bg-slate-900 border-slate-700 rounded px-2 py-1 text-slate-300"></select>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <label class="w-12 text-slate-400">INC:</label>
+                                    <select id="col-inc" class="flex-1 bg-slate-900 border-slate-700 rounded px-2 py-1 text-slate-300"></select>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <label class="w-12 text-slate-400">AZ:</label>
+                                    <select id="col-azi" class="flex-1 bg-slate-900 border-slate-700 rounded px-2 py-1 text-slate-300"></select>
+                                </div>
+                            </div>
+                            <button onclick="applySurveyMapping()" class="mt-3 w-full px-3 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-semibold rounded-md transition">
+                                Apply Mapping
+                            </button>
+                        </div>
+
+                        <!-- View toggle -->
+                        <div class="mb-4">
+                            <p class="text-xs text-slate-400 mb-2">View Mode:</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button id="view-profile-btn" onclick="switchSurveyView('profile')"
+                                        class="px-3 py-2 bg-cyan-600 text-white text-sm font-semibold rounded-md transition">
+                                    Profile
+                                </button>
+                                <button id="view-plan-btn" onclick="switchSurveyView('plan')"
+                                        class="px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-md transition">
+                                    Plan
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Sample data button -->
+                        <button onclick="loadSampleSurvey()" class="w-full px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-md transition mb-3">
+                            Load Sample Data
+                        </button>
+
+                        <!-- Plan overlay loader -->
+                        <div class="mt-4 p-3 bg-slate-800/60 border border-slate-600 rounded-lg">
+                            <p class="text-xs font-semibold text-slate-300 mb-2">📋 Plan Overlay (Optional)</p>
+                            <button onclick="loadPlanCSV()" class="w-full px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-md transition">
+                                Load Plan CSV
+                            </button>
+                            <p class="mt-2 text-xs text-slate-400">Load a separate plan to compare actual vs planned trajectory</p>
+                        </div>
+
+                        <!-- DLS & Display Controls -->
+                        <div class="mt-4 p-3 bg-slate-800/60 border border-slate-600 rounded-lg">
+                            <p class="text-xs font-semibold text-slate-300 mb-3">Display Options</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <label class="text-xs text-slate-400">DLS Threshold (°/30m)</label>
+                                    <input id="dls-threshold" type="range" min="3" max="12" step="0.5" value="6" class="w-24">
+                                    <span id="dls-threshold-val" class="text-xs text-slate-300 w-8">6.0</span>
+                                </div>
+                                <label class="flex items-center gap-2 text-xs">
+                                    <input id="toggle-plan" type="checkbox" checked class="rounded">
+                                    <span class="text-slate-300">Show plan overlay</span>
+                                </label>
+                                <label class="flex items-center gap-2 text-xs">
+                                    <input id="toggle-hotspots" type="checkbox" checked class="rounded">
+                                    <span class="text-slate-300">Show DLS hotspots</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Status -->
+                        <div id="survey-status" class="mt-4 text-xs text-slate-400"></div>
+                    </div>
+
+                    <!-- Center: Animated deviation path -->
+                    <div class="lg:col-span-2 bg-slate-900/40 border border-slate-700 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 border-b border-slate-700 bg-slate-800/50">
+                            <strong class="text-lg">📐 Wellbore Trajectory</strong>
+                            <span id="survey-view-label" class="text-sm text-slate-400">Profile View (Departure vs TVD)</span>
+                        </div>
+
+                        <!-- SVG canvas -->
+                        <svg id="wbSvg" viewBox="0 0 800 520" preserveAspectRatio="xMidYMid meet" class="w-full h-auto block" style="background:linear-gradient(180deg,rgba(15,23,42,.45),rgba(2,6,23,.35))">
+                            <defs>
+                                <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+                                    <path d="M80 0H0V80" fill="none" stroke="#334155" stroke-opacity=".4" stroke-width="1"/>
+                                </pattern>
+                                <linearGradient id="dlsGrad" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#22d3ee"/>
+                                    <stop offset="50%" stop-color="#14b8a6"/>
+                                    <stop offset="100%" stop-color="#f59e0b"/>
+                                </linearGradient>
+                                <filter id="glow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                            </defs>
+                            <rect x="0" y="0" width="800" height="520" fill="url(#grid)"/>
+
+                            <!-- Axes -->
+                            <g id="survey-axes">
+                                <text x="400" y="515" fill="#94a3b8" font-size="11" text-anchor="middle">Departure (m)</text>
+                                <text x="10" y="260" fill="#94a3b8" font-size="11" transform="rotate(-90 10 260)" text-anchor="middle">TVD (m)</text>
+                            </g>
+
+                            <!-- Survey path will be drawn here -->
+                            <path id="wbPath" d="" fill="none" stroke="url(#dlsGrad)" stroke-width="4" filter="url(#glow)"/>
+
+                            <!-- Survey stations (dots) -->
+                            <g id="survey-stations"></g>
+
+                            <!-- Current tool position -->
+                            <circle id="toolDot" r="8" fill="#14b8a6" stroke="#0b1220" stroke-width="2"/>
+                            <text id="mdBadge" x="0" y="0" font-size="12" fill="#e2e8f0" stroke="#0b1220" stroke-width="0.6" paint-order="stroke" style="font-weight:700">MD 0 m</text>
+                        </svg>
+
+                        <!-- Animation controls -->
+                        <div class="flex flex-wrap gap-2 items-center px-4 py-3 border-t border-slate-700 bg-slate-900/30">
+                            <button id="wbPlay" class="px-3 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition text-sm">▶ Play</button>
+                            <button id="wbPause" class="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition text-sm">⏸ Pause</button>
+                            <button id="wbSavePNG" onclick="saveSurveyPNG()" class="px-3 py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition text-sm">💾 PNG</button>
+                            <button id="wbExportCSV" onclick="exportSurveyCSV()" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition text-sm">📄 CSV</button>
+                            <button id="wbShareLink" onclick="shareSurveyLink()" class="px-3 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-lg transition text-sm">🔗 Share</button>
+                            <label class="flex items-center gap-2">
+                                <span class="text-xs text-slate-400">Speed</span>
+                                <input id="wbSpeed" type="range" min="0.25" max="3" step="0.25" value="1" class="w-20">
+                            </label>
+                            <label class="flex items-center gap-2 flex-1">
+                                <span class="text-xs text-slate-400">Depth</span>
+                                <input id="wbScrub" type="range" min="0" max="1000" step="1" value="0" class="flex-1 min-w-[120px]">
+                            </label>
+                            <span id="wbInfo" class="text-xs text-slate-400">Incl: —° | Az: —°</span>
+                        </div>
+
+                        <!-- Delta statistics (shown when plan is loaded) -->
+                        <div id="delta-stats" class="hidden px-4 py-3 border-t border-slate-700 bg-gradient-to-r from-cyan-900/20 to-blue-900/20">
+                            <div class="flex flex-wrap gap-3 items-center text-xs">
+                                <span class="font-semibold text-slate-300">Plan Deviation:</span>
+                                <span class="px-2 py-1 bg-cyan-500/20 border border-cyan-500/30 rounded-full">
+                                    Max: <strong id="delta-max" class="text-cyan-300">—</strong>
+                                </span>
+                                <span class="px-2 py-1 bg-blue-500/20 border border-blue-500/30 rounded-full">
+                                    Avg: <strong id="delta-avg" class="text-blue-300">—</strong>
+                                </span>
+                                <span class="px-2 py-1 bg-purple-500/20 border border-purple-500/30 rounded-full">
+                                    End: <strong id="delta-end" class="text-purple-300">—</strong>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- DLS hotspots panel -->
+                        <div id="dls-panel" class="hidden px-4 py-3 border-t border-slate-700 bg-red-900/10">
+                            <div class="mb-2 font-semibold text-xs text-red-400">DLS Hotspots (click to jump)</div>
+                            <div id="dls-list" class="grid grid-cols-2 gap-2 text-xs"></div>
+                        </div>
+                    </div>
+
+                    <!-- Right: KPI & Stats -->
+                    <div class="grid gap-4 content-start">
+                        <div class="bg-slate-900/40 border border-slate-700 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <strong class="text-base">Live Survey</strong>
+                                <span id="survey-data-badge" class="text-xs text-slate-400">No Data</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-slate-800/60 border border-slate-700 rounded-lg p-3">
+                                    <div class="text-xs text-slate-400">MD</div>
+                                    <div id="kpiMD" class="text-2xl font-bold text-cyan-400">0 m</div>
+                                </div>
+                                <div class="bg-slate-800/60 border border-slate-700 rounded-lg p-3">
+                                    <div class="text-xs text-slate-400">TVD</div>
+                                    <div id="kpiTVD" class="text-2xl font-bold text-cyan-400">0 m</div>
+                                </div>
+                                <div class="bg-slate-800/60 border border-slate-700 rounded-lg p-3">
+                                    <div class="text-xs text-slate-400">Incl</div>
+                                    <div id="kpiIncl" class="text-2xl font-bold text-emerald-400">—°</div>
+                                </div>
+                                <div class="bg-slate-800/60 border border-slate-700 rounded-lg p-3">
+                                    <div class="text-xs text-slate-400">Az</div>
+                                    <div id="kpiAz" class="text-2xl font-bold text-amber-400">—°</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/40 border border-slate-700 rounded-lg p-4">
+                            <strong class="text-base block mb-3">Coordinates</strong>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">North:</span>
+                                    <span id="kpiNorth" class="text-slate-200 font-mono">0.0 m</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">East:</span>
+                                    <span id="kpiEast" class="text-slate-200 font-mono">0.0 m</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Departure:</span>
+                                    <span id="kpiDep" class="text-slate-200 font-mono">0.0 m</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/40 border border-slate-700 rounded-lg p-4">
+                            <strong class="text-base block mb-3">Survey Stats</strong>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Stations:</span>
+                                    <span id="survey-count" class="text-slate-200">0</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Max Inc:</span>
+                                    <span id="survey-max-inc" class="text-slate-200">—°</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Total MD:</span>
+                                    <span id="survey-total-md" class="text-slate-200">0 m</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="analyzer-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -1015,6 +1470,57 @@
 
                 <div class="mt-6 text-sm opacity-90">
                     <strong>Recommendation:</strong> Excellent overall performance. Continue partnership and consider for additional wells.
+                </div>
+            </div>
+
+            <!-- Detailed Cost Breakdown -->
+            <div id="analyzer-cost-breakdown" class="mt-8 light-card p-6 md:p-8 rounded-lg">
+                <h3 class="text-2xl font-bold mb-6">💰 Final Cost Analysis & Breakdown</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg p-6">
+                        <div class="text-sm opacity-90 mb-2">AFE Budget</div>
+                        <div id="analyzer-afe-budget" class="text-4xl font-bold">$0</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg p-6">
+                        <div class="text-sm opacity-90 mb-2">Actual Cost</div>
+                        <div id="analyzer-actual-cost" class="text-4xl font-bold">$0</div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Equipment</div>
+                        <div id="analyzer-equipment-cost" class="text-xl font-bold">$0</div>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Personnel</div>
+                        <div id="analyzer-personnel-cost" class="text-xl font-bold">$0</div>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Tools</div>
+                        <div id="analyzer-tools-cost" class="text-xl font-bold">$0</div>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Consumables</div>
+                        <div id="analyzer-consumables-cost" class="text-xl font-bold">$0</div>
+                    </div>
+                </div>
+
+                <!-- NPT Breakdown -->
+                <div id="analyzer-npt-section" class="mt-6 bg-red-50 dark:bg-red-900/20 rounded-lg p-6 border-2 border-red-300 dark:border-red-700">
+                    <h4 class="text-xl font-bold text-red-700 dark:text-red-400 mb-4">⚠️ NPT Impact Analysis</h4>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="bg-white dark:bg-slate-800 rounded-lg p-4">
+                            <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Total NPT Cost</div>
+                            <div id="analyzer-npt-cost" class="text-2xl font-bold text-red-600 dark:text-red-400">$0</div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 rounded-lg p-4">
+                            <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">NPT % of Total</div>
+                            <div id="analyzer-npt-percent" class="text-2xl font-bold text-red-600 dark:text-red-400">0%</div>
+                        </div>
+                    </div>
+                    <div id="analyzer-npt-events-list" class="space-y-2">
+                        <!-- NPT events will be rendered here -->
+                    </div>
                 </div>
             </div>
 
@@ -1269,26 +1775,53 @@ document.addEventListener('DOMContentLoaded', function() {
                 perforations: [{top: 9850, bottom: 9950}] 
             } 
         },
-        { 
-            id: 'P-12', 
-            name: 'CASE STUDY: The Wax Plug', 
-            field: 'Piper', 
-            region: 'UKCS', 
-            type: 'Oil Producer', 
-            depth: '7,500ft', 
-            status: 'Active - Restored Production', 
-            issue: 'SOLUTION: Severe paraffin wax blockage was cleared using CT with a chemical/mechanical approach.', 
-            history: [ 
+        {
+            id: 'P-12',
+            name: 'CASE STUDY: The Wax Plug',
+            field: 'Piper',
+            region: 'UKCS',
+            type: 'Oil Producer',
+            depth: '7,500ft',
+            status: 'Active - Restored Production',
+            issue: 'SOLUTION: Severe paraffin wax blockage was cleared using CT with a chemical/mechanical approach.',
+            history: [
                 { date: '2024-01-15', operation: 'Slickline Gauge Ring Run', problem: 'Gauge ring tagged a soft, waxy obstruction at 6,000ft. Unable to pass.', lesson: 'A previous attempt on another well with only chemicals was slow and ineffective; a combined approach is needed.' },
                 { date: '2024-02-01', operation: 'CT Wax Cleanout', problem: 'Successfully removed wax blockage using a combination of heated chemical dissolvers and a mechanical scraper tool on Coiled Tubing.', lesson: 'The dual chemical/mechanical approach is highly effective for severe paraffin blockages.' }
-            ], 
-            dailyReports: [], 
-            completion: { 
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 7500}], 
-                tubing: [{type: 'Production', size: '3 1/2', top: 0, bottom: 7300}], 
-                equipment: [{item: 'SSSV', top: 1200}, {item: 'Packer', top: 7250}], 
-                perforations: [{top: 7350, bottom: 7450}] 
-            } 
+            ],
+            dailyReports: [],
+            completion: {
+                casing: [{type: 'Production', size: '7', top: 0, bottom: 7500}],
+                tubing: [{type: 'Production', size: '3 1/2', top: 0, bottom: 7300}],
+                equipment: [{item: 'SSSV', top: 1200}, {item: 'Packer', top: 7250}],
+                perforations: [{top: 7350, bottom: 7450}]
+            }
+        },
+        {
+            id: 'S-77',
+            name: 'CASE STUDY: Field of Dreams',
+            field: 'Schiehallion',
+            region: 'UKCS',
+            type: 'HPHT Oil Producer',
+            depth: '19,200ft',
+            status: 'Active - Peak Performance',
+            issue: 'SOLUTION: Multi-barrier failure resolution - Combined lessons from all interventions delivered exceptional results.',
+            history: [
+                { date: '2023-08-20', operation: 'Complex Multi-Stage Intervention', problem: 'Well experiencing compound failures: partial casing restriction, minor scale buildup, aging safety systems, and intermittent sand production.', lesson: 'This well demonstrated that multiple smaller issues, if left unaddressed, compound into major operational challenges requiring comprehensive intervention planning.' },
+                { date: '2023-09-15', operation: 'Integrated Solution Deployment', problem: 'Successfully executed a staged intervention combining expandable patch technology, chemical scale treatment, safety valve replacement, and sand control installation - all in a single campaign.', lesson: 'Integrated multi-discipline approach saved 45 days vs. sequential interventions. This became the blueprint for tackling W666.' },
+                { date: '2023-10-01', operation: 'Post-Intervention Performance', problem: 'Well exceeded pre-intervention production by 180%, with zero NPT and full barrier integrity restored.', lesson: 'Proves that comprehensive planning and execution of multiple remediation strategies simultaneously is not only feasible but highly effective. This success story directly informed the W666 intervention strategy.' }
+            ],
+            dailyReports: [],
+            completion: {
+                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 19200}],
+                tubing: [{type: 'Production', size: '5 1/2', top: 0, bottom: 19000}],
+                equipment: [
+                    {item: 'SSSV', top: 2800, comments: 'Replaced - Now Operational'},
+                    {item: 'Expandable Patch', top: 9200, comments: 'Successfully Installed'},
+                    {item: 'Sand Screen', top: 17500, comments: 'Through-Tubing Installation'},
+                    {item: 'Packer', top: 18950}
+                ],
+                perforations: [{top: 19050, bottom: 19150}]
+            }
         },
     ];
     const objectivesData = [ 
@@ -1463,21 +1996,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- GLOBAL STATE ---
 
     let appState = {
-        currentView: 'home', 
-        selectedWell: null, 
-        selectedObjective: null, 
-        generatedPlan: null, 
-        liveData: null, 
-        logEntries: [], 
-        lessonsLearned: [], 
-        tfaChartInstance: null, 
-        nptChartInstance: null, 
-        savingsChartInstance: null, 
+        currentView: 'home',
+        selectedWell: null,
+        selectedObjective: null,
+        generatedPlan: null,
+        liveData: null,
+        logEntries: [],
+        lessonsLearned: [],
+        tfaChartInstance: null,
+        nptChartInstance: null,
+        savingsChartInstance: null,
         liveDataInterval: null,
-        commercial: { afe: 0, actualCost: 0, serviceTickets: [] },
+        commercial: { afe: 0, actualCost: 0, serviceTickets: [], nptEvents: [] },
         ai: { selectedProblemId: null, selectedRecommendation: null },
         hse: { permits: [], riskRegister: [] },
-        pob: { musterActive: false, musterInterval: null, personnel: [] }
+        pob: { musterActive: false, musterInterval: null, personnel: [] },
+        // Well-specific cost tracking
+        wellCosts: {}  // { wellId: { jobSteps: [], totalCost: 0, nptCost: 0 } }
     };
 
     // --- DOM ELEMENTS ---
@@ -1627,15 +2162,18 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     const resetApp = (switchToHome = false) => {
-        appState.selectedWell = null; 
-        appState.selectedObjective = null; 
-        appState.generatedPlan = null; 
+        appState.selectedWell = null;
+        appState.selectedObjective = null;
+        appState.generatedPlan = null;
         appState.lessonsLearned = [];
         appState.commercial = { afe: 0, actualCost: 0, serviceTickets: [] };
         appState.ai = { selectedProblemId: null, selectedRecommendation: null };
-        
+
         // Reset well selection
         document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
+
+        // Clear cost summary
+        updateCostSummary();
         
         // Reset objective selection
         const checkedObjective = document.querySelector('input[name="objective"]:checked');
@@ -3262,8 +3800,9 @@ document.addEventListener('DOMContentLoaded', function() {
             selectedCard.classList.add('selected');
         }
         
-        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value); 
-        generatePlanBtnManual.disabled = !appState.selectedObjective; 
+        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value);
+        generatePlanBtnManual.disabled = !appState.selectedObjective;
+        updateCostSummary(); // Update cost estimate display
     });
 
     // Problem selection event listener
@@ -3371,9 +3910,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    viewAnalysisBtn.addEventListener('click', () => { 
-        switchView('analyzer'); 
-        initializeAnalyzer(); 
+    viewAnalysisBtn.addEventListener('click', () => {
+        switchView('analyzer');
+        if (window.initializeAnalyzer) {
+            window.initializeAnalyzer();
+        } else {
+            initializeAnalyzer();
+            initializeVendorScorecard();
+        }
     });
 
     addLessonBtn.addEventListener('click', () => { 
@@ -3592,12 +4136,592 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Initialize vendor scorecard when analyzer view is shown
+    // Store the original initializeAnalyzer function
     const originalInitializeAnalyzer = initializeAnalyzer;
-    window.initializeAnalyzer = initializeAnalyzer = function() {
+
+    // Create wrapper function for vendor scorecard initialization
+    const initializeAnalyzerWithVendor = function() {
         originalInitializeAnalyzer();
         initializeVendorScorecard();
     };
+
+    // Replace the function globally
+    window.initializeAnalyzer = initializeAnalyzerWithVendor;
+
+    /* ========================================
+       COST & RESOURCE TRACKING
+       ======================================== */
+
+    // Cost data storage
+    let costData = {
+        equipment: [],
+        personnel: [],
+        activities: []
+    };
+
+    // Parse CSV data handling quoted fields properly
+    function parseCSV(csvText) {
+        const lines = csvText.trim().split('\n');
+
+        // Parse a CSV line respecting quotes
+        function parseLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.trim());
+            return result;
+        }
+
+        const headers = parseLine(lines[0]);
+        return lines.slice(1).filter(line => line.trim()).map(line => {
+            const values = parseLine(line);
+            const obj = {};
+            headers.forEach((header, i) => {
+                obj[header] = values[i] || '';
+            });
+            return obj;
+        });
+    }
+
+    // Load cost data from CSV files
+    async function loadCostData() {
+        try {
+            const [equipResp, persResp, actResp] = await Promise.all([
+                fetch('data-equipment-tools.csv'),
+                fetch('data-personnel-rates.csv'),
+                fetch('data-activity-cost-rates.csv')
+            ]);
+
+            if (equipResp.ok) {
+                const equipText = await equipResp.text();
+                costData.equipment = parseCSV(equipText);
+            }
+
+            if (persResp.ok) {
+                const persText = await persResp.text();
+                costData.personnel = parseCSV(persText);
+            }
+
+            if (actResp.ok) {
+                const actText = await actResp.text();
+                costData.activities = parseCSV(actText);
+            }
+
+            console.log('Cost data loaded:', {
+                equipment: costData.equipment.length,
+                personnel: costData.personnel.length,
+                activities: costData.activities.length
+            });
+
+            // Update UI if cost data is loaded
+            if (document.getElementById('cost-summary-panel')) {
+                updateCostSummary();
+            }
+        } catch (error) {
+            console.warn('Could not load cost data files:', error);
+            // Graceful degradation - app works without cost data
+        }
+    }
+
+    // Calculate job cost estimate
+    function calculateJobCost(objective) {
+        let totalCost = 0;
+        let breakdown = {
+            equipment: 0,
+            personnel: 0,
+            tools: 0,
+            consumables: 0
+        };
+
+        // Use existing proceduresData cost if available
+        if (proceduresData[objective.id]) {
+            totalCost = proceduresData[objective.id].cost || 0;
+        }
+
+        // If we have loaded cost data, use it for more detailed breakdown
+        if (costData.activities.length > 0) {
+            const activity = costData.activities.find(a =>
+                a.Activity_Name && a.Activity_Name.toLowerCase().includes(objective.name.toLowerCase().split(' ')[0])
+            );
+
+            if (activity) {
+                totalCost = parseFloat(activity.Base_Cost_USD) || totalCost;
+            }
+        }
+
+        // Simple breakdown estimate (can be enhanced)
+        breakdown.equipment = Math.floor(totalCost * 0.40);
+        breakdown.personnel = Math.floor(totalCost * 0.30);
+        breakdown.tools = Math.floor(totalCost * 0.20);
+        breakdown.consumables = Math.floor(totalCost * 0.10);
+
+        return { totalCost, breakdown };
+    }
+
+    // Update cost summary display
+    function updateCostSummary() {
+        const panel = document.getElementById('cost-summary-panel');
+        if (!panel) return;
+
+        if (!appState.selectedObjective) {
+            panel.innerHTML = '';
+            return;
+        }
+
+        const { totalCost, breakdown } = calculateJobCost(appState.selectedObjective);
+
+        panel.innerHTML = `
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-bold mb-4">💰 Cost Estimate</h3>
+                <div class="text-center mb-4">
+                    <div class="text-4xl font-bold">$${(totalCost / 1000).toFixed(0)}K</div>
+                    <div class="text-sm opacity-90 mt-1">Total Job Cost</div>
+                </div>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between items-center bg-white/20 p-2 rounded">
+                        <span>Equipment</span>
+                        <span class="font-bold">$${(breakdown.equipment / 1000).toFixed(0)}K</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white/20 p-2 rounded">
+                        <span>Personnel</span>
+                        <span class="font-bold">$${(breakdown.personnel / 1000).toFixed(0)}K</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white/20 p-2 rounded">
+                        <span>Tools</span>
+                        <span class="font-bold">$${(breakdown.tools / 1000).toFixed(0)}K</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-white/20 p-2 rounded">
+                        <span>Consumables</span>
+                        <span class="font-bold">$${(breakdown.consumables / 1000).toFixed(0)}K</span>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-white/30 text-xs opacity-75">
+                    Based on industry standard rates • Actual costs may vary
+                </div>
+            </div>
+        `;
+    }
+
+    /* ========================================
+       JOB COSTING TOOL
+       ======================================== */
+
+    // Service catalogue database
+    const serviceCatalogue = {
+        ct: {
+            personnel: [
+                { code: 'CT-CREW-SUP', name: 'Supervisor (Crew Lead)', baseRate: 1400, unit: 'Day' },
+                { code: 'CT-CREW-SOP', name: 'Senior Operator (Control Cabin)', baseRate: 1100, unit: 'Day' },
+                { code: 'CT-CREW-PUMP', name: 'Pumping Operator (Fluids/N2)', baseRate: 900, unit: 'Day' },
+                { code: 'CT-CREW-OP', name: 'Operator (Rig-Up/Tools)', baseRate: 800, unit: 'Day' },
+            ],
+            equipment: [
+                { code: 'CT-EQP-UNIT', name: 'CT Unit (Reel, Injector, Cabin)', baseRate: 18000, unit: 'Day' },
+                { code: 'CT-EQP-PCE', name: 'Pressure Control (Stripper, BOPs)', baseRate: 5000, unit: 'Day' },
+                { code: 'CT-EQP-PUMP', name: 'High-Pressure Pump Unit (15k)', baseRate: 4500, unit: 'Day' },
+                { code: 'CT-EQP-N2', name: 'Nitrogen Unit (Pumper & Tank)', baseRate: 4000, unit: 'Day' },
+            ],
+            tools: [
+                { code: 'CT-EQP-BHA', name: 'Basic BHA (Connector, Check Valves)', baseRate: 800, unit: 'Day' },
+                { code: 'CT-EQP-MOTOR', name: 'Downhole Motor (Milling)', baseRate: 2500, unit: 'Day' },
+                { code: 'CT-EQP-JAR', name: 'Hydraulic Jars', baseRate: 1000, unit: 'Day' },
+                { code: 'CT-EQP-NOZZLE', name: 'Jetting Nozzle (Wash)', baseRate: 700, unit: 'Day' },
+            ]
+        },
+        els: {
+            personnel: [
+                { code: 'ELS-CREW-SUP', name: 'Supervisor (Crew Lead)', baseRate: 1300, unit: 'Day' },
+                { code: 'ELS-CREW-SOP', name: 'Senior Operator (Logging Unit)', baseRate: 1000, unit: 'Day' },
+                { code: 'ELS-CREW-OP', name: 'Operator (Winch/Tools)', baseRate: 750, unit: 'Day' },
+            ],
+            equipment: [
+                { code: 'ELS-EQP-UNIT', name: 'E-Line Unit (Winch & Cabin)', baseRate: 6000, unit: 'Day' },
+                { code: 'ELS-EQP-PCE', name: 'Pressure Control (BOP, Lubricator)', baseRate: 2000, unit: 'Day' },
+            ],
+            tools: [
+                { code: 'ELS-EQP-TOOL-CCL', name: 'CCL / Gamma Ray Tool', baseRate: 1200, unit: 'Job' },
+                { code: 'ELS-EQP-TOOL-PLT', name: 'Production Logging Tool (PLT)', baseRate: 4000, unit: 'Job' },
+                { code: 'ELS-EQP-TOOL-CBL', name: 'Cement Bond Log (CBL)', baseRate: 3500, unit: 'Job' },
+                { code: 'ELS-EQP-TOOL-PERF', name: 'Perforating Guns (Base Charge)', baseRate: 2500, unit: 'Job' },
+            ]
+        },
+        slk: {
+            personnel: [
+                { code: 'SLK-CREW-SUP', name: 'Supervisor (Crew Lead)', baseRate: 1200, unit: 'Day' },
+                { code: 'SLK-CREW-SOP', name: 'Senior Operator (Winch)', baseRate: 950, unit: 'Day' },
+                { code: 'SLK-CREW-OP', name: 'Operator (Tools)', baseRate: 700, unit: 'Day' },
+            ],
+            equipment: [
+                { code: 'SLK-EQP-UNIT', name: 'Slickline Unit (Winch & Powerpack)', baseRate: 3000, unit: 'Day' },
+                { code: 'SLK-EQP-PCE', name: 'Pressure Control (BOP, Lubricator)', baseRate: 1500, unit: 'Day' },
+            ],
+            tools: [
+                { code: 'SLK-EQP-TOOLS', name: 'Standard Toolstring (Jars, Stem)', baseRate: 500, unit: 'Day' },
+                { code: 'SLK-EQP-PULL', name: 'Pulling/Running Tool (e.g., GS)', baseRate: 300, unit: 'Day' },
+                { code: 'SLK-EQP-BAILER', name: 'Bailer (Sand/Debris)', baseRate: 400, unit: 'Day' },
+            ]
+        },
+        whm: {
+            personnel: [
+                { code: 'WHM-CREW-SUP', name: 'Supervisor (Lead Technician)', baseRate: 1200, unit: 'Day' },
+                { code: 'WHM-CREW-TECH', name: 'Wellhead Technician', baseRate: 900, unit: 'Day' },
+            ],
+            equipment: [
+                { code: 'WHM-EQP-GREASE', name: 'Grease/Sealant Injection Pump (15k)', baseRate: 1200, unit: 'Day' },
+                { code: 'WHM-EQP-TEST', name: 'Test Pump & Chart Recorder', baseRate: 1000, unit: 'Day' },
+                { code: 'WHM-EQP-FLUSH', name: 'Wellhead Flushing Unit', baseRate: 900, unit: 'Day' },
+            ],
+            consumables: [
+                { code: 'WHM-MAT-SEAL', name: 'Valve Sealant (Stick/Bulk)', baseRate: 500, unit: 'Job' },
+                { code: 'WHM-MAT-GREASE', name: 'Valve Grease (Bulk)', baseRate: 400, unit: 'Job' },
+                { code: 'WHM-MAT-RING', name: 'Ring Gasket (e.g., R, RX)', baseRate: 250, unit: 'Item' },
+            ]
+        }
+    };
+
+    // NPT Event Types and Costs
+    const nptEventTypes = [
+        { id: 'stuck-pipe', name: 'Stuck Pipe', description: 'Tools or pipe stuck downhole', avgDuration: 12, severity: 'high' },
+        { id: 'equipment-failure', name: 'Equipment Failure', description: 'Primary equipment breakdown', avgDuration: 8, severity: 'high' },
+        { id: 'weather-delay', name: 'Weather Delay', description: 'Adverse weather conditions', avgDuration: 24, severity: 'medium' },
+        { id: 'well-control', name: 'Well Control Event', description: 'Pressure control issues', avgDuration: 6, severity: 'critical' },
+        { id: 'fishing', name: 'Fishing Operations', description: 'Retrieve lost tools/equipment', avgDuration: 16, severity: 'high' },
+        { id: 'wait-on-weather', name: 'Wait on Weather', description: 'Waiting for weather window', avgDuration: 48, severity: 'low' },
+        { id: 'wait-on-equipment', name: 'Wait on Equipment', description: 'Waiting for equipment delivery', avgDuration: 24, severity: 'medium' },
+        { id: 'leak-repair', name: 'Leak/Seal Repair', description: 'Pressure equipment leak', avgDuration: 4, severity: 'medium' },
+        { id: 'bop-test', name: 'Unplanned BOP Test', description: 'Additional BOP pressure test', avgDuration: 3, severity: 'low' },
+        { id: 'fluid-loss', name: 'Fluid Loss/Kill', description: 'Lost circulation or well kill', avgDuration: 8, severity: 'high' }
+    ];
+
+    // Job costing state
+    let jobCostingState = {
+        steps: [],
+        activeStepId: null,
+        jobDuration: 1,
+        isToolExpanded: false,
+        currentDiscipline: 'ct',
+        currentCategories: {
+            ct: 'personnel',
+            els: 'personnel',
+            slk: 'personnel',
+            whm: 'personnel'
+        },
+        currentWellId: null  // Track which well these costs are for
+    };
+
+    // Initialize job costing tool
+    function initJobCostingTool() {
+        const toggleBtn = document.getElementById('toggle-costing-tool');
+        const toolContent = document.getElementById('costing-tool-content');
+
+        if (!toggleBtn || !toolContent) return;
+
+        toggleBtn.addEventListener('click', () => {
+            jobCostingState.isToolExpanded = !jobCostingState.isToolExpanded;
+            if (jobCostingState.isToolExpanded) {
+                toolContent.classList.remove('hidden');
+                toggleBtn.textContent = 'Collapse Tool';
+                loadWellCosts();  // Load costs for selected well
+                renderJobCostingTool();
+            } else {
+                toolContent.classList.add('hidden');
+                toggleBtn.textContent = 'Expand Tool';
+            }
+        });
+    }
+
+    // Load costs for the currently selected well
+    function loadWellCosts() {
+        if (!appState.selectedWell) return;
+
+        const wellId = appState.selectedWell.id;
+        jobCostingState.currentWellId = wellId;
+
+        // Load saved costs for this well if they exist
+        if (appState.wellCosts[wellId]) {
+            jobCostingState.steps = appState.wellCosts[wellId].jobSteps || [];
+            if (jobCostingState.steps.length > 0) {
+                jobCostingState.activeStepId = jobCostingState.steps[jobCostingState.steps.length - 1].id;
+            }
+        } else {
+            // Initialize empty cost tracking for this well
+            appState.wellCosts[wellId] = {
+                jobSteps: [],
+                totalCost: 0,
+                nptCost: 0,
+                nptEvents: []
+            };
+        }
+    }
+
+    // Save costs for the currently selected well
+    function saveWellCosts() {
+        if (!jobCostingState.currentWellId) return;
+
+        const totalCost = calculateTotalJobCost();
+        const nptCost = calculateTotalNPTCost();
+
+        appState.wellCosts[jobCostingState.currentWellId] = {
+            jobSteps: [...jobCostingState.steps],
+            totalCost: totalCost,
+            nptCost: nptCost,
+            nptEvents: appState.commercial.nptEvents
+        };
+    }
+
+    // Calculate total job cost from steps
+    function calculateTotalJobCost() {
+        let total = 0;
+        jobCostingState.steps.forEach(step => {
+            step.items.forEach(item => {
+                if (item.unit === 'Day') {
+                    total += item.baseRate * jobCostingState.jobDuration;
+                } else {
+                    total += item.baseRate;
+                }
+            });
+        });
+        return total;
+    }
+
+    // Calculate total NPT cost
+    function calculateTotalNPTCost() {
+        let total = 0;
+        appState.commercial.nptEvents.forEach(event => {
+            total += event.cost || 0;
+        });
+        return total;
+    }
+
+    // Add NPT event
+    function addNPTEvent(eventTypeId, actualDuration, description) {
+        const eventType = nptEventTypes.find(et => et.id === eventTypeId);
+        if (!eventType) return;
+
+        // Calculate NPT cost based on day rates of active personnel and equipment
+        const dailyCost = calculateDailySpreadRate();
+        const nptCost = (actualDuration / 24) * dailyCost;
+
+        const nptEvent = {
+            id: `npt-${Date.now()}`,
+            type: eventType.name,
+            typeId: eventTypeId,
+            description: description || eventType.description,
+            duration: actualDuration,
+            cost: nptCost,
+            severity: eventType.severity,
+            timestamp: new Date().toISOString()
+        };
+
+        appState.commercial.nptEvents.push(nptEvent);
+        saveWellCosts();
+        renderNPTList();
+        updatePerformerCostDisplay(calculateTotalJobCost() + calculateTotalNPTCost());
+    }
+
+    // Calculate daily spread rate from job costing items
+    function calculateDailySpreadRate() {
+        let dailyRate = 0;
+        jobCostingState.steps.forEach(step => {
+            step.items.forEach(item => {
+                if (item.unit === 'Day') {
+                    dailyRate += item.baseRate;
+                }
+            });
+        });
+        return dailyRate;
+    }
+
+    // Render NPT event list
+    function renderNPTList() {
+        const container = document.getElementById('npt-events-list');
+        if (!container) return;
+
+        if (appState.commercial.nptEvents.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center py-4">No NPT events recorded</p>';
+            return;
+        }
+
+        container.innerHTML = appState.commercial.nptEvents.map(event => {
+            const severityColors = {
+                low: 'bg-yellow-500/20 border-yellow-500',
+                medium: 'bg-orange-500/20 border-orange-500',
+                high: 'bg-red-500/20 border-red-500',
+                critical: 'bg-purple-500/20 border-purple-500'
+            };
+            const colorClass = severityColors[event.severity] || 'bg-gray-500/20 border-gray-500';
+
+            return `
+                <div class="p-3 rounded-lg border-l-4 ${colorClass} mb-2">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="font-bold">${event.type}</div>
+                            <div class="text-sm text-gray-400">${event.description}</div>
+                            <div class="text-xs text-gray-500 mt-1">${event.duration}hrs</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold text-red-400">£${(event.cost / 1000).toFixed(0)}K</div>
+                            <button class="text-xs text-red-500 hover:text-red-400 mt-1" onclick="removeNPTEvent('${event.id}')">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Remove NPT event
+    function removeNPTEvent(eventId) {
+        appState.commercial.nptEvents = appState.commercial.nptEvents.filter(e => e.id !== eventId);
+        saveWellCosts();
+        renderNPTList();
+        updatePerformerCostDisplay(calculateTotalJobCost() + calculateTotalNPTCost());
+    }
+
+    // Render the complete job costing tool
+    function renderJobCostingTool() {
+        const container = document.getElementById('job-costing-tool-container');
+        if (!container) return;
+
+        container.innerHTML = `
+            <div class="lg:grid lg:grid-cols-2 lg:gap-10">
+                <!-- Service Catalogue -->
+                <div class="lg:col-span-1">
+                    <h3 class="text-xl font-bold mb-4">Service Catalogue</h3>
+                    <div id="cost-main-tabs" class="flex flex-wrap border-b border-gray-700 mb-4">
+                        <button class="cost-main-tab text-sm font-bold py-2 px-4 border-b-2 border-transparent hover:text-cyan-400" onclick="showCostMainTab('ct')">CT</button>
+                        <button class="cost-main-tab text-sm font-bold py-2 px-4 border-b-2 border-transparent hover:text-cyan-400" onclick="showCostMainTab('els')">ELS</button>
+                        <button class="cost-main-tab text-sm font-bold py-2 px-4 border-b-2 border-transparent hover:text-cyan-400" onclick="showCostMainTab('slk')">SLK</button>
+                        <button class="cost-main-tab text-sm font-bold py-2 px-4 border-b-2 border-transparent hover:text-cyan-400" onclick="showCostMainTab('whm')">WHM</button>
+                    </div>
+                    <div id="cost-main-content-panels"></div>
+                </div>
+
+                <!-- Job Procedure Builder -->
+                <div class="lg:col-span-1 mt-8 lg:mt-0">
+                    <div class="light-card rounded-lg shadow-xl">
+                        <div class="p-4 border-b border-gray-700">
+                            <h3 class="text-xl font-bold">Job Procedure & Cost</h3>
+                            ${appState.selectedWell ? `<p class="text-sm text-cyan-400 mt-1">📍 Well: ${appState.selectedWell.id} - ${appState.selectedWell.name}</p>` : ''}
+                        </div>
+
+                        <div class="p-4 border-b border-gray-700">
+                            <label class="block text-sm font-semibold text-cyan-400 mb-2">Job Duration (Days)</label>
+                            <input type="number" id="job-duration-input" value="1" min="1"
+                                class="w-1/2 bg-gray-800 border-gray-700 rounded-md px-3 py-2 text-white font-bold"
+                                onchange="updateJobDuration(this.value)">
+                            <p class="text-xs text-gray-400 mt-2">Costs for "/Day" items will be multiplied by this value.</p>
+                        </div>
+
+                        <div class="p-4 border-b border-gray-700">
+                            <h4 class="text-sm font-semibold text-cyan-400 mb-3">Add Job Step</h4>
+                            <div class="flex gap-2">
+                                <input type="text" id="step-title-input" placeholder="e.g., Step 1: Rig Up"
+                                    class="flex-grow bg-gray-800 border-gray-700 rounded-md px-3 py-2 text-white">
+                                <button onclick="addJobStep()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-md">Add</button>
+                            </div>
+                        </div>
+
+                        <div id="procedure-list-container" class="max-h-96 overflow-y-auto p-4">
+                            <ul id="procedure-list">
+                                <li class="py-6 text-center text-gray-500">Add a job step to begin building your procedure.</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 bg-gray-800 rounded-b-lg flex justify-between items-center">
+                            <span class="text-lg font-bold uppercase">Total Cost</span>
+                            <span id="job-total" class="text-3xl font-black text-cyan-400">£0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Render the service catalogue
+        renderServiceCatalogue();
+
+        // Activate first tab
+        document.querySelector('.cost-main-tab').classList.add('active');
+    }
+
+    // Render service catalogue panels
+    function renderServiceCatalogue() {
+        const panels = document.getElementById('cost-main-content-panels');
+        if (!panels) return;
+
+        let html = '';
+        for (const discipline in serviceCatalogue) {
+            html += `
+                <div id="cost-content-${discipline}" class="cost-main-content" style="display:none;">
+                    <div class="flex flex-wrap border-b border-gray-600 mb-4">
+            `;
+
+            const categories = Object.keys(serviceCatalogue[discipline]);
+            categories.forEach(category => {
+                html += `
+                    <button class="cost-sub-tab text-sm font-semibold py-2 px-3 border-b-2 border-transparent text-gray-400 hover:text-cyan-300"
+                            onclick="showCostSubTab('${discipline}', '${category}')">${category.charAt(0).toUpperCase() + category.slice(1)}</button>
+                `;
+            });
+
+            html += `</div><div class="catalogue-table-container">`;
+
+            categories.forEach(category => {
+                html += `
+                    <div class="cost-sub-content-${discipline}" id="cost-content-${discipline}-${category}" style="display:none;">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-700 text-cyan-400 text-xs">
+                                <tr>
+                                    <th class="p-2 text-left">Description</th>
+                                    <th class="p-2 text-left">Code</th>
+                                    <th class="p-2 text-left">Rate/Unit</th>
+                                    <th class="p-2"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                serviceCatalogue[discipline][category].forEach(item => {
+                    const itemJSON = JSON.stringify(item).replace(/"/g, '&quot;');
+                    html += `
+                        <tr class="border-b border-gray-700 hover:bg-gray-800">
+                            <td class="p-2">${item.name}</td>
+                            <td class="p-2 font-mono text-xs text-gray-400">${item.code}</td>
+                            <td class="p-2 font-bold">£${item.baseRate}<span class="text-xs font-normal text-gray-400">/${item.unit}</span></td>
+                            <td class="p-2 text-right">
+                                <button class="cost-add-btn" onclick='addItemToActiveStep(${itemJSON})'>Add</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            });
+
+            html += `</div></div>`;
+        }
+
+        panels.innerHTML = html;
+
+        // Show first discipline and first category
+        showCostMainTab('ct');
+    }
 
     // --- INITIALIZATION ---
 
@@ -3607,10 +4731,990 @@ document.addEventListener('DOMContentLoaded', function() {
         renderProblems();
         initSavingsChart();
         updateNavLinks();
+        loadCostData(); // Load cost data from CSV files
+        initJobCostingTool(); // Initialize job costing tool
+        // Expose job costing state to window for global functions
+        window.jobCostingState = jobCostingState;
+        window.appState = appState;
+        // Expose NPT functions
+        window.addNPTEvent = addNPTEvent;
+        window.removeNPTEvent = removeNPTEvent;
+        window.calculateTotalNPTCost = calculateTotalNPTCost;
+        window.calculateTotalJobCost = calculateTotalJobCost;
+        window.saveWellCosts = saveWellCosts;
+        window.renderNPTList = renderNPTList;
     };
 
     init();
 });
+
+// --- WELLBORE SURVEY CSV TOOL WITH MINIMUM CURVATURE ---
+(function() {
+    // Survey data state
+    let surveyData = [];
+    let currentView = 'profile'; // or 'plan'
+    let running = false, tNorm = 0, speed = 1, last = 0;
+    let pathLength = 0;
+
+    // DOM elements
+    const svg = document.getElementById('wbSvg');
+    const path = document.getElementById('wbPath');
+    const dot = document.getElementById('toolDot');
+    const mdBadge = document.getElementById('mdBadge');
+    const stationsG = document.getElementById('survey-stations');
+    const axesG = document.getElementById('survey-axes');
+
+    const dropZone = document.getElementById('survey-drop-zone');
+    const fileInput = document.getElementById('survey-file-input');
+    const pasteArea = document.getElementById('survey-paste-area');
+    const columnMap = document.getElementById('survey-column-map');
+    const statusEl = document.getElementById('survey-status');
+    const viewLabel = document.getElementById('survey-view-label');
+    const dataBadge = document.getElementById('survey-data-badge');
+
+    const playBtn = document.getElementById('wbPlay');
+    const pauseBtn = document.getElementById('wbPause');
+    const speedEl = document.getElementById('wbSpeed');
+    const scrubEl = document.getElementById('wbScrub');
+    const infoEl = document.getElementById('wbInfo');
+
+    const kMD = document.getElementById('kpiMD');
+    const kTVD = document.getElementById('kpiTVD');
+    const kInc = document.getElementById('kpiIncl');
+    const kAz = document.getElementById('kpiAz');
+    const kNorth = document.getElementById('kpiNorth');
+    const kEast = document.getElementById('kpiEast');
+    const kDep = document.getElementById('kpiDep');
+
+    const surveyCount = document.getElementById('survey-count');
+    const surveyMaxInc = document.getElementById('survey-max-inc');
+    const surveyTotalMD = document.getElementById('survey-total-md');
+
+    if (!svg || !path) return;
+
+    // CSV Parsing with delimiter detection
+    function sniffDelimiter(text) {
+        const first = text.split('\n')[0];
+        const delims = [',', ';', '\t', '|'];
+        let best = ',', maxCount = 0;
+        for (const d of delims) {
+            const count = (first.match(new RegExp('\\' + d, 'g')) || []).length;
+            if (count > maxCount) {
+                maxCount = count;
+                best = d;
+            }
+        }
+        return best;
+    }
+
+    function parseCSV(text) {
+        const delim = sniffDelimiter(text);
+        const lines = text.trim().split('\n');
+        const rows = [];
+        for (const line of lines) {
+            const row = [];
+            let current = '', inQuote = false;
+            for (let i = 0; i < line.length; i++) {
+                const c = line[i];
+                if (c === '"') inQuote = !inQuote;
+                else if (c === delim && !inQuote) {
+                    row.push(current.trim());
+                    current = '';
+                } else {
+                    current += c;
+                }
+            }
+            row.push(current.trim());
+            rows.push(row);
+        }
+        return { rows, delim };
+    }
+
+    // Auto-detect MD, INC, AZ columns with enhanced synonym support
+    function autoDetectColumns(headers) {
+        const lower = headers.map(h=> (h||'').toString().trim().toLowerCase());
+
+        function findOne(candidates){
+            for(const c of candidates){
+                const idx = lower.indexOf(c);
+                if(idx!==-1) return idx;
+            }
+            // Try partial match
+            for(const c of candidates){
+                const idx = lower.findIndex(h => h.includes(c));
+                if(idx!==-1) return idx;
+            }
+            return -1;
+        }
+
+        // Broader synonym support for BOEM/NSTA/NLOG/FORGE/Volve datasets
+        const md = findOne(['md','measured depth','measured_depth','measureddepth','md (m)','mdm','depth md','depth (md)','depth (m)','depth']);
+        const inc = findOne(['inc','incl','inclination','inclination (deg)','inc (deg)','angle']);
+        const azi = findOne(['azi','azimuth','az','az (deg)','azimuth (deg)','azm','bearing']);
+        const tvd = findOne(['tvd','tvd (m)','tvdss','true vertical depth']);
+        const north = findOne(['n','north','northing','y','y (m)','northing (m)','deviation north']);
+        const east = findOne(['e','east','easting','x','x (m)','easting (m)','deviation east']);
+
+        return {md, inc, azi, tvd, north, east};
+    }
+
+    // Minimum Curvature calculation
+    function computeCoordinates(stations) {
+        if (stations.length === 0) return;
+
+        // Initialize first station
+        stations[0].tvd = stations[0].tvd || 0;
+        stations[0].north = stations[0].north || 0;
+        stations[0].east = stations[0].east || 0;
+
+        for (let i = 1; i < stations.length; i++) {
+            const a = stations[i - 1];
+            const b = stations[i];
+
+            const md1 = a.md, md2 = b.md;
+            const inc1 = (a.inc || 0) * Math.PI / 180;
+            const inc2 = (b.inc || 0) * Math.PI / 180;
+            const az1 = (a.azi || 0) * Math.PI / 180;
+            const az2 = (b.azi || 0) * Math.PI / 180;
+
+            const dMD = md2 - md1;
+
+            // Minimum curvature method
+            const cosDL = Math.sin(inc1) * Math.sin(inc2) * Math.cos(az2 - az1) + Math.cos(inc1) * Math.cos(inc2);
+            const DL = Math.acos(Math.min(1, Math.max(-1, cosDL)));
+            const RF = (DL > 1e-6) ? (2 / DL) * Math.tan(DL / 2) : 1;
+
+            const dN = 0.5 * dMD * RF * (Math.sin(inc1) * Math.cos(az1) + Math.sin(inc2) * Math.cos(az2));
+            const dE = 0.5 * dMD * RF * (Math.sin(inc1) * Math.sin(az1) + Math.sin(inc2) * Math.sin(az2));
+            const dV = 0.5 * dMD * RF * (Math.cos(inc1) + Math.cos(inc2));
+
+            b.tvd = (a.tvd || 0) + dV;
+            b.north = (a.north || 0) + dN;
+            b.east = (a.east || 0) + dE;
+        }
+
+        // Calculate departure
+        stations.forEach(s => {
+            s.departure = Math.sqrt(s.north * s.north + s.east * s.east);
+        });
+    }
+
+    // Process CSV and extract survey data
+    function processSurveyData(text) {
+        try {
+            const { rows } = parseCSV(text);
+            if (rows.length < 2) {
+                throw new Error('Not enough data rows');
+            }
+
+            const headers = rows[0];
+            const colMap = autoDetectColumns(headers);
+
+            // Check if manual mapping needed
+            if (colMap.md === -1 || colMap.inc === -1 || colMap.azi === -1) {
+                showColumnMapper(headers);
+                return null;
+            }
+
+            return extractStations(rows.slice(1), colMap);
+        } catch (err) {
+            statusEl.textContent = '❌ Error: ' + err.message;
+            statusEl.className = 'mt-4 text-xs text-red-400';
+            return null;
+        }
+    }
+
+    function extractStations(dataRows, colMap) {
+        const stations = [];
+        for (const row of dataRows) {
+            const md = parseFloat(row[colMap.md]);
+            const inc = parseFloat(row[colMap.inc]);
+            const azi = parseFloat(row[colMap.azi]);
+
+            if (isNaN(md) || isNaN(inc) || isNaN(azi)) continue;
+
+            const station = { md, inc, azi };
+
+            // Optional coordinates
+            if (colMap.tvd >= 0) station.tvd = parseFloat(row[colMap.tvd]) || 0;
+            if (colMap.north >= 0) station.north = parseFloat(row[colMap.north]) || 0;
+            if (colMap.east >= 0) station.east = parseFloat(row[colMap.east]) || 0;
+
+            stations.push(station);
+        }
+
+        // Sort by MD
+        stations.sort((a, b) => a.md - b.md);
+
+        // Compute missing coordinates
+        computeCoordinates(stations);
+
+        return stations;
+    }
+
+    function showColumnMapper(headers) {
+        const selects = ['col-md', 'col-inc', 'col-azi'];
+        selects.forEach(id => {
+            const sel = document.getElementById(id);
+            sel.innerHTML = '<option value="">-- Select --</option>';
+            headers.forEach((h, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = h;
+                sel.appendChild(opt);
+            });
+        });
+        columnMap.classList.remove('hidden');
+        statusEl.textContent = '⚠️ Please map columns manually';
+        statusEl.className = 'mt-4 text-xs text-amber-400';
+    }
+
+    window.applySurveyMapping = function() {
+        const colMap = {
+            md: parseInt(document.getElementById('col-md').value),
+            inc: parseInt(document.getElementById('col-inc').value),
+            azi: parseInt(document.getElementById('col-azi').value),
+            tvd: -1, north: -1, east: -1
+        };
+
+        if (isNaN(colMap.md) || isNaN(colMap.inc) || isNaN(colMap.azi)) {
+            alert('Please select all required columns (MD, INC, AZ)');
+            return;
+        }
+
+        const text = pasteArea.value.trim();
+        if (!text) return;
+
+        const { rows } = parseCSV(text);
+        const stations = extractStations(rows.slice(1), colMap);
+
+        if (stations && stations.length > 0) {
+            surveyData = stations;
+            columnMap.classList.add('hidden');
+            renderSurvey();
+        }
+    };
+
+    // Render survey visualization
+    function renderSurvey() {
+        if (surveyData.length === 0) return;
+
+        // Update stats
+        surveyCount.textContent = surveyData.length;
+        surveyMaxInc.textContent = Math.max(...surveyData.map(s => s.inc)).toFixed(1) + '°';
+        surveyTotalMD.textContent = surveyData[surveyData.length - 1].md.toFixed(1) + ' m';
+        dataBadge.textContent = surveyData.length + ' stations';
+        dataBadge.className = 'text-xs text-cyan-400';
+
+        statusEl.textContent = '✓ ' + surveyData.length + ' survey stations loaded';
+        statusEl.className = 'mt-4 text-xs text-emerald-400';
+
+        // Compute DLS for actual survey
+        if (computed && computed.length > 1) {
+            dlsData = computeDLS(computed);
+        }
+
+        // Render current view
+        if (currentView === 'profile') {
+            renderProfileView();
+        } else {
+            renderPlanView();
+        }
+
+        // Render DLS hotspots and panel
+        renderDLSHotspots();
+        renderDLSPanel();
+
+        // Reset animation
+        tNorm = 0;
+        updateAnimation(0);
+    }
+
+    function renderProfileView() {
+        viewLabel.textContent = 'Profile View (Departure vs TVD)';
+
+        if (!computed || computed.length === 0) return;
+
+        // Find bounds
+        const maxDep = Math.max(...computed.map(s => s.departure));
+        const maxTVD = Math.max(...computed.map(s => s.tvd));
+
+        // SVG dimensions
+        const margin = 60, width = 800 - 2 * margin, height = 520 - 2 * margin;
+        const scaleX = width / (maxDep * 1.1 || 1);
+        const scaleY = height / (maxTVD * 1.1 || 1);
+
+        // Build actual path
+        let pathD = '';
+        computed.forEach((s, i) => {
+            const dep = Math.sqrt(s.north * s.north + s.east * s.east);
+            const x = margin + dep * scaleX;
+            const y = margin + s.tvd * scaleY;
+            pathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
+        });
+
+        path.setAttribute('d', pathD);
+        pathLength = path.getTotalLength();
+
+        // Draw station dots
+        stationsG.innerHTML = '';
+        computed.forEach(s => {
+            const dep = Math.sqrt(s.north * s.north + s.east * s.east);
+            const x = margin + dep * scaleX;
+            const y = margin + s.tvd * scaleY;
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', x);
+            circle.setAttribute('cy', y);
+            circle.setAttribute('r', '3');
+            circle.setAttribute('fill', '#22d3ee');
+            circle.setAttribute('opacity', '0.6');
+            stationsG.appendChild(circle);
+        });
+
+        // Render plan overlay if available
+        if (planSurvey.length > 0 && togglePlan && togglePlan.checked) {
+            let planPathD = '';
+            planSurvey.forEach((s, i) => {
+                const dep = Math.sqrt(s.north * s.north + s.east * s.east);
+                const x = margin + dep * scaleX;
+                const y = margin + s.tvd * scaleY;
+                planPathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
+            });
+
+            // Remove existing plan path
+            const existingPlan = svg.querySelector('#plan-overlay-path');
+            if (existingPlan) existingPlan.remove();
+
+            // Add plan path
+            const planPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            planPath.setAttribute('id', 'plan-overlay-path');
+            planPath.setAttribute('d', planPathD);
+            planPath.setAttribute('fill', 'none');
+            planPath.setAttribute('stroke', '#94a3b8');
+            planPath.setAttribute('stroke-width', '3');
+            planPath.setAttribute('stroke-dasharray', '8 6');
+            planPath.setAttribute('opacity', '0.7');
+            svg.insertBefore(planPath, path);
+        } else {
+            const existingPlan = svg.querySelector('#plan-overlay-path');
+            if (existingPlan) existingPlan.remove();
+        }
+
+        // Update axes labels
+        axesG.innerHTML = `
+            <text x="400" y="515" fill="#94a3b8" font-size="11" text-anchor="middle">Departure (m)</text>
+            <text x="10" y="260" fill="#94a3b8" font-size="11" transform="rotate(-90 10 260)" text-anchor="middle">TVD (m)</text>
+        `;
+    }
+
+    function renderPlanView() {
+        viewLabel.textContent = 'Plan View (East vs North)';
+
+        if (!computed || computed.length === 0) return;
+
+        // Find bounds
+        const minN = Math.min(...computed.map(s => s.north || 0));
+        const maxN = Math.max(...computed.map(s => s.north || 0));
+        const minE = Math.min(...computed.map(s => s.east || 0));
+        const maxE = Math.max(...computed.map(s => s.east || 0));
+
+        const rangeN = maxN - minN || 1;
+        const rangeE = maxE - minE || 1;
+
+        const margin = 60, width = 800 - 2 * margin, height = 520 - 2 * margin;
+        const scale = Math.min(width / (rangeE * 1.1), height / (rangeN * 1.1));
+
+        // Build actual path
+        let pathD = '';
+        computed.forEach((s, i) => {
+            const x = margin + width / 2 + (s.east - (minE + maxE) / 2) * scale;
+            const y = margin + height / 2 - (s.north - (minN + maxN) / 2) * scale;
+            pathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
+        });
+
+        path.setAttribute('d', pathD);
+        pathLength = path.getTotalLength();
+
+        // Draw station dots
+        stationsG.innerHTML = '';
+        computed.forEach(s => {
+            const x = margin + width / 2 + (s.east - (minE + maxE) / 2) * scale;
+            const y = margin + height / 2 - (s.north - (minN + maxN) / 2) * scale;
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', x);
+            circle.setAttribute('cy', y);
+            circle.setAttribute('r', '3');
+            circle.setAttribute('fill', '#22d3ee');
+            circle.setAttribute('opacity', '0.6');
+            stationsG.appendChild(circle);
+        });
+
+        // Render plan overlay if available
+        if (planSurvey.length > 0 && togglePlan && togglePlan.checked) {
+            let planPathD = '';
+            planSurvey.forEach((s, i) => {
+                const x = margin + width / 2 + (s.east - (minE + maxE) / 2) * scale;
+                const y = margin + height / 2 - (s.north - (minN + maxN) / 2) * scale;
+                planPathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
+            });
+
+            // Remove existing plan path
+            const existingPlan = svg.querySelector('#plan-overlay-path');
+            if (existingPlan) existingPlan.remove();
+
+            // Add plan path
+            const planPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            planPath.setAttribute('id', 'plan-overlay-path');
+            planPath.setAttribute('d', planPathD);
+            planPath.setAttribute('fill', 'none');
+            planPath.setAttribute('stroke', '#94a3b8');
+            planPath.setAttribute('stroke-width', '3');
+            planPath.setAttribute('stroke-dasharray', '8 6');
+            planPath.setAttribute('opacity', '0.7');
+            svg.insertBefore(planPath, path);
+        } else {
+            const existingPlan = svg.querySelector('#plan-overlay-path');
+            if (existingPlan) existingPlan.remove();
+        }
+
+        // Update axes labels
+        axesG.innerHTML = `
+            <text x="400" y="515" fill="#94a3b8" font-size="11" text-anchor="middle">East (m)</text>
+            <text x="10" y="260" fill="#94a3b8" font-size="11" transform="rotate(-90 10 260)" text-anchor="middle">North (m)</text>
+        `;
+    }
+
+    // Animation system
+    function updateAnimation(norm) {
+        if (surveyData.length === 0 || pathLength === 0) return;
+
+        norm = Math.max(0, Math.min(1, norm));
+        const len = norm * pathLength;
+        const p = path.getPointAtLength(len);
+
+        // Update tool position
+        dot.setAttribute('cx', p.x);
+        dot.setAttribute('cy', p.y);
+        mdBadge.setAttribute('x', p.x + 12);
+        mdBadge.setAttribute('y', p.y - 12);
+
+        // Find current survey station by interpolation
+        const totalMD = surveyData[surveyData.length - 1].md;
+        const currentMD = norm * totalMD;
+
+        // Find surrounding stations
+        let idx = 0;
+        for (let i = 0; i < surveyData.length - 1; i++) {
+            if (currentMD >= surveyData[i].md && currentMD <= surveyData[i + 1].md) {
+                idx = i;
+                break;
+            }
+        }
+
+        const s1 = surveyData[idx];
+        const s2 = surveyData[Math.min(idx + 1, surveyData.length - 1)];
+        const ratio = s2.md > s1.md ? (currentMD - s1.md) / (s2.md - s1.md) : 0;
+
+        // Interpolate values
+        const md = s1.md + ratio * (s2.md - s1.md);
+        const tvd = s1.tvd + ratio * (s2.tvd - s1.tvd);
+        const inc = s1.inc + ratio * (s2.inc - s1.inc);
+        const azi = s1.azi + ratio * (s2.azi - s1.azi);
+        const north = s1.north + ratio * (s2.north - s1.north);
+        const east = s1.east + ratio * (s2.east - s1.east);
+        const dep = Math.sqrt(north * north + east * east);
+
+        // Update KPIs
+        mdBadge.textContent = 'MD ' + md.toFixed(1) + ' m';
+        kMD.textContent = md.toFixed(1) + ' m';
+        kTVD.textContent = tvd.toFixed(1) + ' m';
+        kInc.textContent = inc.toFixed(1) + '°';
+        kAz.textContent = azi.toFixed(1) + '°';
+        kNorth.textContent = north.toFixed(1) + ' m';
+        kEast.textContent = east.toFixed(1) + ' m';
+        kDep.textContent = dep.toFixed(1) + ' m';
+
+        infoEl.textContent = 'Incl: ' + inc.toFixed(1) + '° | Az: ' + azi.toFixed(1) + '°';
+        scrubEl.value = Math.round(norm * 1000);
+        tNorm = norm;
+    }
+
+    function animationLoop(ts) {
+        if (!running) {
+            last = ts;
+            return;
+        }
+        const dt = (ts - last) / 1000;
+        last = ts;
+        const advance = dt * 0.08 * speed;
+        let next = tNorm + advance;
+        if (next >= 1) {
+            next = 1;
+            running = false;
+        }
+        updateAnimation(next);
+        requestAnimationFrame(animationLoop);
+    }
+
+    // Event handlers
+    playBtn.addEventListener('click', () => {
+        if (surveyData.length === 0) {
+            statusEl.textContent = '⚠️ Please load survey data first';
+            statusEl.className = 'mt-4 text-xs text-amber-400';
+            return;
+        }
+        running = true;
+        requestAnimationFrame((ts) => {
+            last = ts;
+            requestAnimationFrame(animationLoop);
+        });
+    });
+
+    pauseBtn.addEventListener('click', () => {
+        running = false;
+    });
+
+    speedEl.addEventListener('input', e => {
+        speed = parseFloat(e.target.value);
+    });
+
+    scrubEl.addEventListener('input', e => {
+        running = false;
+        updateAnimation(e.target.value / 1000);
+    });
+
+    // File upload handlers
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#22d3ee';
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.style.borderColor = '#475569';
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#475569';
+        const file = e.dataTransfer.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const text = evt.target.result;
+                pasteArea.value = text;
+                const stations = processSurveyData(text);
+                if (stations) {
+                    surveyData = stations;
+                    renderSurvey();
+                }
+            };
+            reader.readAsText(file);
+        }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const text = evt.target.result;
+                pasteArea.value = text;
+                const stations = processSurveyData(text);
+                if (stations) {
+                    surveyData = stations;
+                    renderSurvey();
+                }
+            };
+            reader.readAsText(file);
+        }
+    });
+
+    pasteArea.addEventListener('input', () => {
+        const text = pasteArea.value.trim();
+        if (text) {
+            const stations = processSurveyData(text);
+            if (stations) {
+                surveyData = stations;
+                renderSurvey();
+            }
+        }
+    });
+
+    // View switching
+    window.switchSurveyView = function(view) {
+        currentView = view;
+
+        const profileBtn = document.getElementById('view-profile-btn');
+        const planBtn = document.getElementById('view-plan-btn');
+
+        if (view === 'profile') {
+            profileBtn.className = 'px-3 py-2 bg-cyan-600 text-white text-sm font-semibold rounded-md transition';
+            planBtn.className = 'px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-md transition';
+        } else {
+            profileBtn.className = 'px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-md transition';
+            planBtn.className = 'px-3 py-2 bg-cyan-600 text-white text-sm font-semibold rounded-md transition';
+        }
+
+        if (surveyData.length > 0) {
+            renderSurvey();
+        }
+    };
+
+    // Sample data loader
+    window.loadSampleSurvey = function() {
+        const sample = `MD,INC,AZ
+0,0,0
+500,5,45
+1000,15,90
+1500,30,120
+2000,45,135
+2500,60,150
+3000,75,165
+3500,85,180`;
+
+        pasteArea.value = sample;
+        const stations = processSurveyData(sample);
+        if (stations) {
+            surveyData = stations;
+            renderSurvey();
+        }
+    };
+
+    // ========= PLAN OVERLAY & DLS ENHANCEMENTS =========
+
+    let planSurvey = [];  // Separate plan data
+    let dlsData = [];     // DLS calculations for actual survey
+    let deltaStats = null; // Delta statistics when plan is loaded
+
+    const dlsThreshold = document.getElementById('dls-threshold');
+    const dlsThresholdVal = document.getElementById('dls-threshold-val');
+    const togglePlan = document.getElementById('toggle-plan');
+    const toggleHotspots = document.getElementById('toggle-hotspots');
+    const deltaStatsDiv = document.getElementById('delta-stats');
+    const dlsPanel = document.getElementById('dls-panel');
+    const dlsList = document.getElementById('dls-list');
+
+    // Update DLS threshold display
+    if (dlsThreshold && dlsThresholdVal) {
+        dlsThreshold.addEventListener('input', (e) => {
+            dlsThresholdVal.textContent = parseFloat(e.target.value).toFixed(1);
+            if (dlsData.length > 0) {
+                renderDLSHotspots();
+                renderDLSPanel();
+            }
+        });
+    }
+
+    // Toggle event listeners
+    if (togglePlan) {
+        togglePlan.addEventListener('change', () => {
+            if (surveyData.length > 0) renderSurvey();
+        });
+    }
+
+    if (toggleHotspots) {
+        toggleHotspots.addEventListener('change', () => {
+            renderDLSHotspots();
+            renderDLSPanel();
+        });
+    }
+
+    // Compute DLS (Dogleg Severity) for survey
+    function computeDLS(stations) {
+        const dls = [];
+        if (stations.length < 2) return dls;
+
+        for (let i = 1; i < stations.length; i++) {
+            const a = stations[i - 1];
+            const b = stations[i];
+
+            const inc1 = (a.inc || 0) * Math.PI / 180;
+            const inc2 = (b.inc || 0) * Math.PI / 180;
+            const az1 = (a.azi || 0) * Math.PI / 180;
+            const az2 = (b.azi || 0) * Math.PI / 180;
+
+            const cosDL = Math.sin(inc1) * Math.sin(inc2) * Math.cos(az2 - az1) + Math.cos(inc1) * Math.cos(inc2);
+            const DL = Math.acos(Math.min(1, Math.max(-1, cosDL)));
+            const dmd = (b.md - a.md) || 1;
+            const dlsDeg = (DL * 180 / Math.PI) / (dmd / 30); // degrees per 30m
+
+            dls.push({ md: b.md, dls: dlsDeg, tvd: b.tvd, north: b.north, east: b.east });
+        }
+
+        return dls;
+    }
+
+    // Render DLS hotspots on SVG
+    function renderDLSHotspots() {
+        // Remove existing hotspots
+        const existing = svg.querySelectorAll('.dls-hotspot');
+        existing.forEach(el => el.remove());
+
+        if (!toggleHotspots || !toggleHotspots.checked || dlsData.length === 0) return;
+
+        const threshold = dlsThreshold ? parseFloat(dlsThreshold.value) : 6;
+        const pathEl = document.getElementById('wbPath');
+        if (!pathEl) return;
+
+        const L = pathEl.getTotalLength();
+        if (L === 0) return;
+
+        dlsData.forEach(item => {
+            if (item.dls < threshold) return;
+
+            const t = (item.md - mdMin) / ((mdMax - mdMin) || 1);
+            const p = pathEl.getPointAtLength(t * L);
+
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('class', 'dls-hotspot');
+            circle.setAttribute('cx', p.x);
+            circle.setAttribute('cy', p.y);
+            circle.setAttribute('r', '5');
+            circle.setAttribute('fill', '#ef4444');
+            circle.setAttribute('stroke', '#0b1220');
+            circle.setAttribute('stroke-width', '2');
+            circle.setAttribute('opacity', '0.9');
+
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+            title.textContent = `MD ${Math.round(item.md)} m · ${item.dls.toFixed(1)}°/30m`;
+            circle.appendChild(title);
+
+            svg.appendChild(circle);
+        });
+    }
+
+    // Render DLS panel with top hotspots
+    function renderDLSPanel() {
+        if (!dlsData.length || !toggleHotspots || !toggleHotspots.checked) {
+            if (dlsPanel) dlsPanel.classList.add('hidden');
+            return;
+        }
+
+        const threshold = dlsThreshold ? parseFloat(dlsThreshold.value) : 6;
+        const hotspots = dlsData.filter(d => d.dls >= threshold).sort((a, b) => b.dls - a.dls).slice(0, 6);
+
+        if (hotspots.length === 0) {
+            if (dlsPanel) dlsPanel.classList.add('hidden');
+            return;
+        }
+
+        if (dlsPanel) {
+            dlsPanel.classList.remove('hidden');
+            if (dlsList) {
+                dlsList.innerHTML = hotspots.map(h => `
+                    <button onclick="jumpToMD(${h.md})" class="px-2 py-1 bg-red-900/30 hover:bg-red-900/50 border border-red-700/50 rounded text-left transition">
+                        MD ${Math.round(h.md)} m
+                    </button>
+                    <div class="px-2 py-1 bg-red-900/20 border border-red-700/30 rounded text-right">
+                        ${h.dls.toFixed(1)}°/30m
+                    </div>
+                `).join('');
+            }
+        }
+    }
+
+    // Jump to specific MD on animation
+    window.jumpToMD = function(md) {
+        const t = (md - mdMin) / ((mdMax - mdMin) || 1);
+        running = false;
+        updateAnimation(t);
+    };
+
+    // Compute delta statistics between actual and plan
+    function computeDeltaStats(actual, plan) {
+        if (!actual.length || !plan.length) return null;
+
+        const deltas = actual.map(a => {
+            // Find or interpolate plan point at same MD
+            const pIdx = plan.findIndex(p => p.md >= a.md);
+            if (pIdx === -1) return { md: a.md, deltaLat: 0 };
+            if (pIdx === 0) {
+                const dN = a.north - plan[0].north;
+                const dE = a.east - plan[0].east;
+                return { md: a.md, deltaLat: Math.sqrt(dN * dN + dE * dE) };
+            }
+
+            const p1 = plan[pIdx - 1];
+            const p2 = plan[pIdx];
+            const ratio = (a.md - p1.md) / ((p2.md - p1.md) || 1);
+            const pN = p1.north + ratio * (p2.north - p1.north);
+            const pE = p1.east + ratio * (p2.east - p1.east);
+
+            const dN = a.north - pN;
+            const dE = a.east - pE;
+            return { md: a.md, deltaLat: Math.sqrt(dN * dN + dE * dE) };
+        });
+
+        const maxDelta = Math.max(...deltas.map(d => d.deltaLat));
+        const avgDelta = deltas.reduce((sum, d) => sum + d.deltaLat, 0) / deltas.length;
+        const endDelta = deltas[deltas.length - 1].deltaLat;
+
+        return { maxDelta, avgDelta, endDelta };
+    }
+
+    // Update delta stats display
+    function updateDeltaStats() {
+        if (!deltaStats || !deltaStatsDiv) {
+            if (deltaStatsDiv) deltaStatsDiv.classList.add('hidden');
+            return;
+        }
+
+        deltaStatsDiv.classList.remove('hidden');
+        document.getElementById('delta-max').textContent = Math.round(deltaStats.maxDelta) + ' m';
+        document.getElementById('delta-avg').textContent = Math.round(deltaStats.avgDelta) + ' m';
+        document.getElementById('delta-end').textContent = Math.round(deltaStats.endDelta) + ' m';
+    }
+
+    // Load plan CSV
+    window.loadPlanCSV = function() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.csv,.txt';
+        input.onchange = async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const text = await file.text();
+            const res = tryBuildStations(text);
+            if (res.needsMap) {
+                statusEl.textContent = '⚠️ Plan CSV needs MD, INC, AZ columns';
+                statusEl.className = 'mt-4 text-xs text-amber-400';
+                return;
+            }
+
+            planSurvey = res.stations;
+            computeCoordinates.call({ length: planSurvey.length }, planSurvey); // Compute coordinates for plan
+
+            statusEl.textContent = '✓ Plan loaded (' + planSurvey.length + ' stations)';
+            statusEl.className = 'mt-4 text-xs text-emerald-400';
+
+            if (surveyData.length > 0) {
+                renderSurvey();
+                deltaStats = computeDeltaStats(computed, planSurvey);
+                updateDeltaStats();
+            }
+        };
+        input.click();
+    };
+
+    function tryBuildStations(text) {
+        const { rows } = parseCSV(text);
+        if (!rows.length) return { needsMap: true };
+
+        const headers = rows[0];
+        const colMap = autoDetectColumns(headers);
+
+        if (colMap.md === -1 || colMap.inc === -1 || colMap.azi === -1) {
+            return { needsMap: true, headers, rows };
+        }
+
+        const dataRows = rows.slice(1).filter(r => r.some(x => (x || '').toString().trim() !== ''));
+        const stations = dataRows.map(r => ({
+            md: parseFloat(r[colMap.md]),
+            inc: parseFloat(r[colMap.inc]),
+            azi: parseFloat(r[colMap.azi]),
+            tvd: colMap.tvd >= 0 ? parseFloat(r[colMap.tvd]) : undefined,
+            north: colMap.north >= 0 ? parseFloat(r[colMap.north]) : undefined,
+            east: colMap.east >= 0 ? parseFloat(r[colMap.east]) : undefined,
+        })).filter(s => Number.isFinite(s.md) && Number.isFinite(s.inc) && Number.isFinite(s.azi));
+
+        return { needsMap: false, stations };
+    }
+
+    // ========= EXPORT FUNCTIONS =========
+
+    // Export to PNG
+    window.saveSurveyPNG = function() {
+        if (!svg) return;
+
+        const serializer = new XMLSerializer();
+        const source = serializer.serializeToString(svg);
+        const blob = new Blob([source], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1600;
+            canvas.height = 1040;
+            const ctx = canvas.getContext('2d');
+
+            // Dark background
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            canvas.toBlob(b => {
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(b);
+                a.download = 'welltegra-survey-' + Date.now() + '.png';
+                a.click();
+                URL.revokeObjectURL(a.href);
+            });
+
+            URL.revokeObjectURL(url);
+        };
+        img.src = url;
+    };
+
+    // Export to CSV
+    window.exportSurveyCSV = function() {
+        if (!computed.length) {
+            alert('Load a survey first');
+            return;
+        }
+
+        const header = ['MD', 'TVD', 'NORTH', 'EAST', 'INC', 'AZ'];
+        let rows = computed.map(p => [
+            p.md.toFixed(3),
+            p.tvd.toFixed(3),
+            p.north.toFixed(3),
+            p.east.toFixed(3),
+            p.inc.toFixed(3),
+            p.azi.toFixed(3)
+        ].join(','));
+
+        const csv = header.join(',') + '\n' + rows.join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'welltegra-survey-export-' + Date.now() + '.csv';
+        a.click();
+        URL.revokeObjectURL(a.href);
+    };
+
+    // Share link (base64 encode survey data in URL hash)
+    window.shareSurveyLink = async function() {
+        if (!surveyData.length) {
+            alert('Load a survey first');
+            return;
+        }
+
+        const data = { survey: surveyData.slice(0, 100) }; // Limit to 100 stations to avoid huge URLs
+        const json = JSON.stringify(data);
+        const b64 = btoa(unescape(encodeURIComponent(json)));
+
+        const url = new URL(window.location.href);
+        url.hash = '#survey=' + b64;
+
+        try {
+            await navigator.clipboard.writeText(url.toString());
+            statusEl.textContent = '✓ Link copied to clipboard!';
+            statusEl.className = 'mt-4 text-xs text-emerald-400';
+            setTimeout(() => {
+                statusEl.textContent = '';
+            }, 3000);
+        } catch (err) {
+            prompt('Copy this link:', url.toString());
+        }
+    };
+
+    // Initialize with empty state
+    updateAnimation(0);
+})();
 
 // --- PDF EXPORT SYSTEM (Global scope for onclick) ---
 
@@ -3789,6 +5893,310 @@ async function generatePDFReport() {
         button.innerHTML = originalText;
         button.classList.remove('pdf-generating');
     }
+}
+
+// ---Global Job Costing Functions (for onclick handlers) ---
+function showCostMainTab(discipline) {
+    if (!window.jobCostingState) return;
+
+    window.jobCostingState.currentDiscipline = discipline;
+    document.querySelectorAll('.cost-main-content').forEach(panel => panel.style.display = 'none');
+    document.getElementById(`cost-content-${discipline}`).style.display = 'block';
+    document.querySelectorAll('#cost-main-tabs .cost-main-tab').forEach(tab => tab.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    showCostSubTab(discipline, window.jobCostingState.currentCategories[discipline]);
+}
+
+function showCostSubTab(discipline, category) {
+    if (!window.jobCostingState) return;
+
+    window.jobCostingState.currentCategories[discipline] = category;
+    document.querySelectorAll(`.cost-sub-content-${discipline}`).forEach(panel => panel.style.display = 'none');
+    const targetPanel = document.getElementById(`cost-content-${discipline}-${category}`);
+    if (targetPanel) targetPanel.style.display = 'block';
+    document.querySelectorAll(`#cost-content-${discipline} .cost-sub-tab`).forEach(tab => tab.classList.remove('active'));
+    if (event && event.currentTarget) event.currentTarget.classList.add('active');
+}
+
+function addJobStep() {
+    if (!window.jobCostingState) return;
+
+    const input = document.getElementById('step-title-input');
+    const title = input.value.trim();
+    if (!title) {
+        alert('Please enter a title for the job step.');
+        return;
+    }
+    const newStep = {
+        id: `step-${Date.now()}`,
+        title: title,
+        items: []
+    };
+    window.jobCostingState.steps.push(newStep);
+    window.jobCostingState.activeStepId = newStep.id;
+    input.value = '';
+    renderProcedureList();
+}
+
+function addItemToActiveStep(item) {
+    if (!window.jobCostingState || !window.jobCostingState.activeStepId) {
+        alert('Please add or select a job step first.');
+        return;
+    }
+    const step = window.jobCostingState.steps.find(s => s.id === window.jobCostingState.activeStepId);
+    if (step) {
+        step.items.push(item);
+        renderProcedureList();
+    }
+}
+
+function removeJobStep(stepId) {
+    if (!window.jobCostingState) return;
+
+    window.jobCostingState.steps = window.jobCostingState.steps.filter(s => s.id !== stepId);
+    if (window.jobCostingState.activeStepId === stepId) {
+        window.jobCostingState.activeStepId = window.jobCostingState.steps.length > 0 ? window.jobCostingState.steps[window.jobCostingState.steps.length - 1].id : null;
+    }
+    renderProcedureList();
+}
+
+function removeItemFromStep(stepId, itemIndex) {
+    if (!window.jobCostingState) return;
+
+    const step = window.jobCostingState.steps.find(s => s.id === stepId);
+    if (step) {
+        step.items.splice(itemIndex, 1);
+        renderProcedureList();
+    }
+}
+
+function setActiveJobStep(stepId) {
+    if (!window.jobCostingState) return;
+
+    window.jobCostingState.activeStepId = stepId;
+    renderProcedureList();
+}
+
+function updateJobDuration(value) {
+    if (!window.jobCostingState) return;
+
+    window.jobCostingState.jobDuration = parseFloat(value) || 1;
+    if (window.jobCostingState.jobDuration < 1) window.jobCostingState.jobDuration = 1;
+    document.getElementById('job-duration-input').value = window.jobCostingState.jobDuration;
+    renderProcedureList();
+}
+
+function renderProcedureList() {
+    const list = document.getElementById('procedure-list');
+    if (!list || !window.jobCostingState) return;
+
+    list.innerHTML = '';
+    let globalTotal = 0;
+
+    if (window.jobCostingState.steps.length === 0) {
+        list.innerHTML = '<li class="py-6 text-center text-gray-500">Add a job step to begin building your procedure.</li>';
+    } else {
+        window.jobCostingState.steps.forEach(step => {
+            let stepSubtotal = 0;
+            const stepCard = document.createElement('li');
+            stepCard.className = 'step-card';
+            if (step.id === window.jobCostingState.activeStepId) {
+                stepCard.classList.add('active');
+            }
+
+            let itemsHTML = '<ul class="step-item-list">';
+            step.items.forEach((item, index) => {
+                let itemCost = 0;
+                if (item.unit === 'Day') {
+                    itemCost = item.baseRate * window.jobCostingState.jobDuration;
+                } else {
+                    itemCost = item.baseRate;
+                }
+                stepSubtotal += itemCost;
+
+                itemsHTML += `
+                    <li class="step-item">
+                        <div class="flex-1 pr-4">
+                            <span class="step-item-name">${item.name}</span>
+                            <span class="block text-xs text-gray-400 font-mono">${item.code} / ${item.unit}</span>
+                        </div>
+                        <span class="step-item-cost">£${itemCost.toFixed(2)}</span>
+                        <button class="remove-item-btn" onclick="event.stopPropagation(); removeItemFromStep('${step.id}', ${index})">remove</button>
+                    </li>
+                `;
+            });
+            itemsHTML += '</ul>';
+
+            globalTotal += stepSubtotal;
+
+            stepCard.innerHTML = `
+                <div class="step-header" onclick="setActiveJobStep('${step.id}')">
+                    <h3 class="flex-1">${step.title}</h3>
+                    <button class="remove-step-btn" onclick="event.stopPropagation(); removeJobStep('${step.id}')">REMOVE</button>
+                </div>
+                ${itemsHTML}
+                <div class="step-footer">
+                    <strong>Step Subtotal: £${stepSubtotal.toFixed(2)}</strong>
+                </div>
+            `;
+            list.appendChild(stepCard);
+        });
+    }
+
+    const totalDisplay = document.getElementById('job-total');
+    if (totalDisplay) {
+        totalDisplay.textContent = `£${globalTotal.toFixed(2)}`;
+    }
+
+    // Save costs for the current well
+    if (window.saveWellCosts) {
+        window.saveWellCosts();
+    }
+
+    // Update cost displays in Performer and Analyzer views (include NPT)
+    const nptCost = window.calculateTotalNPTCost ? window.calculateTotalNPTCost() : 0;
+    updatePerformerCostDisplay(globalTotal + nptCost);
+    updateAnalyzerCostDisplay(globalTotal + nptCost);
+}
+
+function updatePerformerCostDisplay(totalCost) {
+    const afeDisplay = document.getElementById('performer-afe-budget');
+    const actualDisplay = document.getElementById('performer-actual-cost');
+    const varianceDisplay = document.getElementById('performer-variance');
+    const percentDisplay = document.getElementById('performer-budget-percent');
+    const nptCostDisplay = document.getElementById('performer-npt-cost');
+
+    if (!afeDisplay) return;
+
+    // Use the existing AFE from app state or the job costing total
+    const afeBudget = window.appState && window.appState.commercial ? window.appState.commercial.afe : totalCost;
+    const actualCost = totalCost;
+    const variance = afeBudget - actualCost;
+    const percent = afeBudget > 0 ? (actualCost / afeBudget * 100) : 0;
+
+    afeDisplay.textContent = `$${(afeBudget / 1000).toFixed(0)}K`;
+    actualDisplay.textContent = `$${(actualCost / 1000).toFixed(0)}K`;
+    varianceDisplay.textContent = `$${(variance / 1000).toFixed(0)}K`;
+    percentDisplay.textContent = `${percent.toFixed(0)}%`;
+
+    // Update NPT cost display
+    const nptCost = window.calculateTotalNPTCost ? window.calculateTotalNPTCost() : 0;
+    if (nptCostDisplay) {
+        nptCostDisplay.textContent = `$${(nptCost / 1000).toFixed(0)}K`;
+    }
+
+    // Color coding
+    if (variance < 0) {
+        varianceDisplay.classList.add('text-red-400');
+        varianceDisplay.classList.remove('text-green-400');
+    } else {
+        varianceDisplay.classList.add('text-green-400');
+        varianceDisplay.classList.remove('text-red-400');
+    }
+}
+
+function updateAnalyzerCostDisplay(totalCost) {
+    const afeDisplay = document.getElementById('analyzer-afe-budget');
+    const actualDisplay = document.getElementById('analyzer-actual-cost');
+    const equipmentDisplay = document.getElementById('analyzer-equipment-cost');
+    const personnelDisplay = document.getElementById('analyzer-personnel-cost');
+    const toolsDisplay = document.getElementById('analyzer-tools-cost');
+    const consumablesDisplay = document.getElementById('analyzer-consumables-cost');
+    const nptCostDisplay = document.getElementById('analyzer-npt-cost');
+    const nptPercentDisplay = document.getElementById('analyzer-npt-percent');
+    const nptEventsListDisplay = document.getElementById('analyzer-npt-events-list');
+
+    if (!afeDisplay) return;
+
+    // Calculate breakdown
+    const nptCost = window.calculateTotalNPTCost ? window.calculateTotalNPTCost() : 0;
+    const baseCost = totalCost - nptCost;
+    const equipment = Math.floor(baseCost * 0.40);
+    const personnel = Math.floor(baseCost * 0.30);
+    const tools = Math.floor(baseCost * 0.20);
+    const consumables = Math.floor(baseCost * 0.10);
+
+    const afeBudget = window.appState && window.appState.commercial ? window.appState.commercial.afe : totalCost;
+    const nptPercent = totalCost > 0 ? (nptCost / totalCost * 100) : 0;
+
+    afeDisplay.textContent = `$${(afeBudget / 1000).toFixed(0)}K`;
+    actualDisplay.textContent = `$${(totalCost / 1000).toFixed(0)}K`;
+    equipmentDisplay.textContent = `$${(equipment / 1000).toFixed(0)}K`;
+    personnelDisplay.textContent = `$${(personnel / 1000).toFixed(0)}K`;
+    toolsDisplay.textContent = `$${(tools / 1000).toFixed(0)}K`;
+    consumablesDisplay.textContent = `$${(consumables / 1000).toFixed(0)}K`;
+
+    // Update NPT displays
+    if (nptCostDisplay) {
+        nptCostDisplay.textContent = `$${(nptCost / 1000).toFixed(0)}K`;
+    }
+    if (nptPercentDisplay) {
+        nptPercentDisplay.textContent = `${nptPercent.toFixed(1)}%`;
+    }
+
+    // Render NPT events list
+    if (nptEventsListDisplay && window.appState && window.appState.commercial) {
+        const events = window.appState.commercial.nptEvents || [];
+        if (events.length === 0) {
+            nptEventsListDisplay.innerHTML = '<p class="text-gray-500 text-center py-4">No NPT events recorded for this operation.</p>';
+        } else {
+            nptEventsListDisplay.innerHTML = events.map(event => {
+                const severityColors = {
+                    low: 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-400',
+                    medium: 'bg-orange-100 dark:bg-orange-900/30 border-orange-400',
+                    high: 'bg-red-100 dark:bg-red-900/30 border-red-400',
+                    critical: 'bg-purple-100 dark:bg-purple-900/30 border-purple-400'
+                };
+                const colorClass = severityColors[event.severity] || 'bg-gray-100 dark:bg-gray-900/30 border-gray-400';
+
+                return `
+                    <div class="p-3 rounded-lg border-l-4 ${colorClass}">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <div class="font-bold text-sm">${event.type}</div>
+                                <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">${event.description}</div>
+                                <div class="text-xs text-gray-500 mt-1">${event.duration} hours</div>
+                            </div>
+                            <div class="text-right ml-4">
+                                <div class="font-bold text-red-600 dark:text-red-400">$${(event.cost / 1000).toFixed(0)}K</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    }
+}
+
+// Add NPT event from UI
+function addNPTEventFromUI() {
+    const typeSelect = document.getElementById('npt-type-select');
+    const durationInput = document.getElementById('npt-duration-input');
+
+    if (!typeSelect || !durationInput) return;
+
+    const eventTypeId = typeSelect.value;
+    const duration = parseFloat(durationInput.value);
+
+    if (!eventTypeId || !duration || duration <= 0) {
+        alert('Please select an NPT type and enter a valid duration.');
+        return;
+    }
+
+    if (window.addNPTEvent) {
+        window.addNPTEvent(eventTypeId, duration);
+        // Clear inputs
+        typeSelect.value = '';
+        durationInput.value = '';
+    }
+}
+
+// Expose functions to window for global access
+if (typeof window !== 'undefined') {
+    window.addNPTEvent = window.addNPTEvent;
+    window.removeNPTEvent = window.removeNPTEvent;
+    window.calculateTotalNPTCost = window.calculateTotalNPTCost;
+    window.saveWellCosts = window.saveWellCosts;
 }
 
 </script>
