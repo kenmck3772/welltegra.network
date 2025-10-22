@@ -119,7 +119,7 @@
             overflow: hidden;
         }
         .planner-card[data-well-id="W666"]::before {
-            content: "âš ï¸ WELL FROM HELL";
+            content: "⚠ WELL FROM HELL";
             position: absolute;
             top: 10px;
             right: -30px;
@@ -1372,18 +1372,18 @@ document.addEventListener('DOMContentLoaded', function() {
         },
     ];
     const objectivesData = [ 
-        { id: 'obj1', name: 'Remediate Casing Deformation', description: 'Install an expandable steel patch to restore wellbore access.', icon: 'ðŸ”§' }, 
-        { id: 'obj2', name: 'Remove BaSO4 Scale', description: 'Use a chemical and mechanical method to clear tubing blockage.', icon: 'ðŸ§ª' }, 
-        { id: 'obj3', name: 'Restore Downhole Safety Valve', description: 'Lock open the failed TRSSV and install a new insert valve.', icon: 'ðŸ”’' }, 
-        { id: 'obj4', name: 'Repair Sand Control', description: 'Install a through-tubing expandable sand screen patch.', icon: 'ðŸ–ï¸' }, 
-        { id: 'obj5', name: 'Paraffin Wax Removal', description: 'Use CT with chemicals and tools to remove wax blockage.', icon: 'ðŸ•¯ï¸' } 
+        { id: 'obj1', name: 'Remediate Casing Deformation', description: 'Install an expandable steel patch to restore wellbore access.', icon: 'wrench' }, 
+        { id: 'obj2', name: 'Remove BaSO4 Scale', description: 'Use a chemical and mechanical method to clear tubing blockage.', icon: 'beaker' }, 
+        { id: 'obj3', name: 'Restore Downhole Safety Valve', description: 'Lock open the failed TRSSV and install a new insert valve.', icon: 'lock' }, 
+        { id: 'obj4', name: 'Repair Sand Control', description: 'Install a through-tubing expandable sand screen patch.', icon: 'filter' }, 
+        { id: 'obj5', name: 'Paraffin Wax Removal', description: 'Use CT with chemicals and tools to remove wax blockage.', icon: 'flame' } 
     ];
     const problemsData = [ 
-        { id: 'prob1', name: 'Loss of Well Access (Casing Deformation)', description: 'Wellbore is restricted due to geomechanical forces.', linked_objectives: ['obj1'], icon: 'ðŸš«' }, 
-        { id: 'prob2', name: 'Severe Scale Blockage', description: 'Production is blocked by hard, insoluble scale.', linked_objectives: ['obj2'], icon: 'ðŸš°' }, 
-        { id: 'prob3', name: 'Failed Primary Safety Barrier (DHSV)', description: 'Well is legally shut-in due to a failed safety valve.', linked_objectives: ['obj3'], icon: 'âš ï¸' }, 
-        { id: 'prob4', name: 'Sand Control Failure', description: 'Excessive sand production is damaging equipment and limiting rates.', linked_objectives: ['obj4'], icon: 'ðŸœï¸' }, 
-        { id: 'prob5', name: 'Flow Assurance Blockage (Wax)', description: 'Production is severely restricted by paraffin deposits.', linked_objectives: ['obj5'], icon: 'ðŸ•¯ï¸' } 
+        { id: 'prob1', name: 'Loss of Well Access (Casing Deformation)', description: 'Wellbore is restricted due to geomechanical forces.', linked_objectives: ['obj1'], icon: 'ban' }, 
+        { id: 'prob2', name: 'Severe Scale Blockage', description: 'Production is blocked by hard, insoluble scale.', linked_objectives: ['obj2'], icon: 'droplet' }, 
+        { id: 'prob3', name: 'Failed Primary Safety Barrier (DHSV)', description: 'Well is legally shut-in due to a failed safety valve.', linked_objectives: ['obj3'], icon: 'alert-triangle' }, 
+        { id: 'prob4', name: 'Sand Control Failure', description: 'Excessive sand production is damaging equipment and limiting rates.', linked_objectives: ['obj4'], icon: 'layers' }, 
+        { id: 'prob5', name: 'Flow Assurance Blockage (Wax)', description: 'Production is severely restricted by paraffin deposits.', linked_objectives: ['obj5'], icon: 'flame' } 
     ];
     const aiRecommendations = {
         prob1: [ 
@@ -1402,6 +1402,34 @@ document.addEventListener('DOMContentLoaded', function() {
             { objectiveId: 'obj5', confidence: 90, outcome: 'Wax blockage removed, production increased by >400%', reason: 'The case study from <strong>P-12 (The Wax Plug)</strong> shows that a Coiled Tubing intervention with both heated chemical dissolvers and a mechanical scraper tool is the most effective procedure.' } 
         ]
     };
+
+    // Icon system - Maps icon names to SVG markup
+    const getIcon = (iconName, className = 'w-6 h-6') => {
+        const icons = {
+            'wrench': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
+            'beaker': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8M9 2v7.9a2 2 0 0 1-.709 1.528l-4.927 4.295A2 2 0 0 0 3 17.25V18a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-.75a2 2 0 0 0-.364-.527l-4.927-4.295A2 2 0 0 1 15 9.9V2"/></svg>`,
+            'lock': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+            'filter': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>`,
+            'flame': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`,
+            'ban': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>`,
+            'droplet': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>`,
+            'alert-triangle': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>`,
+            'layers': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
+            'alert-circle': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+            'chart': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+            'database': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
+            'clock': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+            'users': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+            'leaf': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>`,
+            'check': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+            'download': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
+            'play': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>`,
+            'refresh': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>`,
+            'file': `<svg xmlns="http://www.w3.org/2000/svg" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`
+        };
+        return icons[iconName] || icons['alert-circle'];
+    };
+
     const proceduresData = {
         obj1: { 
             name: "Expandable Casing Patch Installation", 
@@ -1796,7 +1824,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <input type="radio" name="objective" id="${obj.id}" value="${obj.id}" class="sr-only">
                 <label for="${obj.id}" class="cursor-pointer h-full">
                     <div class="flex items-start">
-                        <span class="text-2xl mr-3">${obj.icon}</span>
+                        <div class="mr-3">${getIcon(obj.icon, "w-8 h-8 text-blue-600")}</div>
                         <div>
                             <span class="font-semibold text-lg">${obj.name}</span>
                             <p class="text-sm mt-1">${obj.description}</p>
@@ -1815,7 +1843,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <input type="radio" name="problem" id="${prob.id}" value="${prob.id}" class="sr-only">
                     <label for="${prob.id}" class="cursor-pointer h-full">
                         <div class="flex items-start">
-                            <span class="text-2xl mr-3">${prob.icon}</span>
+                            <div class="mr-3">${getIcon(prob.icon, "w-8 h-8 text-orange-600")}</div>
                             <div>
                                 <span class="font-semibold text-lg">${prob.name}</span>
                                 <p class="text-sm mt-1">${prob.description}</p>
@@ -3370,7 +3398,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="ai-recommendation-enhanced" data-rec-index="${i}">
                             <div class="confidence-badge">${rec.confidence}% Confidence</div>
                             <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-bold text-lg text-teal-700 dark:text-teal-400">${objective.icon} ${objective.name}</h4>
+                                <h4 class="font-bold text-lg text-teal-700 dark:text-teal-400"><span class="flex items-center gap-2">${getIcon(objective.icon, "w-5 h-5")} ${objective.name}</span></h4>
                             </div>
                             <p class="text-sm mb-1"><strong>Projected Outcome:</strong> ${rec.outcome}</p>
                             <p class="text-xs"><strong>Reasoning:</strong> ${rec.reason}</p>
@@ -3568,7 +3596,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         alertDiv.innerHTML = `
             <div class="flex items-start gap-3">
-                <div class="text-2xl anomaly-icon-${anomaly.type}">${anomaly.icon}</div>
+                <div class="anomaly-icon-${anomaly.type}">${getIcon("alert-triangle", "w-8 h-8")}</div>
                 <div class="flex-1">
                     <div class="flex justify-between items-start mb-2">
                         <h4 class="font-bold text-lg">${anomaly.message}</h4>
