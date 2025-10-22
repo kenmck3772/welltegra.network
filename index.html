@@ -1214,9 +1214,38 @@
                         </div>
 
                         <!-- Sample data button -->
-                        <button onclick="loadSampleSurvey()" class="w-full px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-md transition">
+                        <button onclick="loadSampleSurvey()" class="w-full px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-md transition mb-3">
                             Load Sample Data
                         </button>
+
+                        <!-- Plan overlay loader -->
+                        <div class="mt-4 p-3 bg-slate-800/60 border border-slate-600 rounded-lg">
+                            <p class="text-xs font-semibold text-slate-300 mb-2">📋 Plan Overlay (Optional)</p>
+                            <button onclick="loadPlanCSV()" class="w-full px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-md transition">
+                                Load Plan CSV
+                            </button>
+                            <p class="mt-2 text-xs text-slate-400">Load a separate plan to compare actual vs planned trajectory</p>
+                        </div>
+
+                        <!-- DLS & Display Controls -->
+                        <div class="mt-4 p-3 bg-slate-800/60 border border-slate-600 rounded-lg">
+                            <p class="text-xs font-semibold text-slate-300 mb-3">Display Options</p>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <label class="text-xs text-slate-400">DLS Threshold (°/30m)</label>
+                                    <input id="dls-threshold" type="range" min="3" max="12" step="0.5" value="6" class="w-24">
+                                    <span id="dls-threshold-val" class="text-xs text-slate-300 w-8">6.0</span>
+                                </div>
+                                <label class="flex items-center gap-2 text-xs">
+                                    <input id="toggle-plan" type="checkbox" checked class="rounded">
+                                    <span class="text-slate-300">Show plan overlay</span>
+                                </label>
+                                <label class="flex items-center gap-2 text-xs">
+                                    <input id="toggle-hotspots" type="checkbox" checked class="rounded">
+                                    <span class="text-slate-300">Show DLS hotspots</span>
+                                </label>
+                            </div>
+                        </div>
 
                         <!-- Status -->
                         <div id="survey-status" class="mt-4 text-xs text-slate-400"></div>
@@ -1262,18 +1291,43 @@
                         </svg>
 
                         <!-- Animation controls -->
-                        <div class="flex gap-3 items-center px-4 py-3 border-t border-slate-700 bg-slate-900/30">
-                            <button id="wbPlay" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">▶ Play</button>
-                            <button id="wbPause" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition">⏸ Pause</button>
-                            <label class="flex items-center gap-2 ml-2">
-                                <span class="text-sm text-slate-400">Speed</span>
-                                <input id="wbSpeed" type="range" min="0.25" max="3" step="0.25" value="1" class="w-24">
+                        <div class="flex flex-wrap gap-2 items-center px-4 py-3 border-t border-slate-700 bg-slate-900/30">
+                            <button id="wbPlay" class="px-3 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition text-sm">▶ Play</button>
+                            <button id="wbPause" class="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition text-sm">⏸ Pause</button>
+                            <button id="wbSavePNG" onclick="saveSurveyPNG()" class="px-3 py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition text-sm">💾 PNG</button>
+                            <button id="wbExportCSV" onclick="exportSurveyCSV()" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition text-sm">📄 CSV</button>
+                            <button id="wbShareLink" onclick="shareSurveyLink()" class="px-3 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-lg transition text-sm">🔗 Share</button>
+                            <label class="flex items-center gap-2">
+                                <span class="text-xs text-slate-400">Speed</span>
+                                <input id="wbSpeed" type="range" min="0.25" max="3" step="0.25" value="1" class="w-20">
                             </label>
-                            <label class="flex items-center gap-2 ml-2 flex-1">
-                                <span class="text-sm text-slate-400">Depth</span>
-                                <input id="wbScrub" type="range" min="0" max="1000" step="1" value="0" class="flex-1">
+                            <label class="flex items-center gap-2 flex-1">
+                                <span class="text-xs text-slate-400">Depth</span>
+                                <input id="wbScrub" type="range" min="0" max="1000" step="1" value="0" class="flex-1 min-w-[120px]">
                             </label>
-                            <span id="wbInfo" class="text-sm text-slate-400">Incl: —° | Az: —°</span>
+                            <span id="wbInfo" class="text-xs text-slate-400">Incl: —° | Az: —°</span>
+                        </div>
+
+                        <!-- Delta statistics (shown when plan is loaded) -->
+                        <div id="delta-stats" class="hidden px-4 py-3 border-t border-slate-700 bg-gradient-to-r from-cyan-900/20 to-blue-900/20">
+                            <div class="flex flex-wrap gap-3 items-center text-xs">
+                                <span class="font-semibold text-slate-300">Plan Deviation:</span>
+                                <span class="px-2 py-1 bg-cyan-500/20 border border-cyan-500/30 rounded-full">
+                                    Max: <strong id="delta-max" class="text-cyan-300">—</strong>
+                                </span>
+                                <span class="px-2 py-1 bg-blue-500/20 border border-blue-500/30 rounded-full">
+                                    Avg: <strong id="delta-avg" class="text-blue-300">—</strong>
+                                </span>
+                                <span class="px-2 py-1 bg-purple-500/20 border border-purple-500/30 rounded-full">
+                                    End: <strong id="delta-end" class="text-purple-300">—</strong>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- DLS hotspots panel -->
+                        <div id="dls-panel" class="hidden px-4 py-3 border-t border-slate-700 bg-red-900/10">
+                            <div class="mb-2 font-semibold text-xs text-red-400">DLS Hotspots (click to jump)</div>
+                            <div id="dls-list" class="grid grid-cols-2 gap-2 text-xs"></div>
                         </div>
                     </div>
 
@@ -4776,19 +4830,32 @@ document.addEventListener('DOMContentLoaded', function() {
         return { rows, delim };
     }
 
-    // Auto-detect MD, INC, AZ columns
+    // Auto-detect MD, INC, AZ columns with enhanced synonym support
     function autoDetectColumns(headers) {
-        const map = { md: -1, inc: -1, azi: -1, tvd: -1, north: -1, east: -1 };
-        headers.forEach((h, i) => {
-            const hl = h.toLowerCase().replace(/[^a-z]/g, '');
-            if (hl.includes('md') || hl === 'depth') map.md = i;
-            else if (hl.includes('inc') || hl.includes('incl')) map.inc = i;
-            else if (hl.includes('az') || hl.includes('azi')) map.azi = i;
-            else if (hl.includes('tvd')) map.tvd = i;
-            else if (hl.includes('north') || hl === 'n') map.north = i;
-            else if (hl.includes('east') || hl === 'e') map.east = i;
-        });
-        return map;
+        const lower = headers.map(h=> (h||'').toString().trim().toLowerCase());
+
+        function findOne(candidates){
+            for(const c of candidates){
+                const idx = lower.indexOf(c);
+                if(idx!==-1) return idx;
+            }
+            // Try partial match
+            for(const c of candidates){
+                const idx = lower.findIndex(h => h.includes(c));
+                if(idx!==-1) return idx;
+            }
+            return -1;
+        }
+
+        // Broader synonym support for BOEM/NSTA/NLOG/FORGE/Volve datasets
+        const md = findOne(['md','measured depth','measured_depth','measureddepth','md (m)','mdm','depth md','depth (md)','depth (m)','depth']);
+        const inc = findOne(['inc','incl','inclination','inclination (deg)','inc (deg)','angle']);
+        const azi = findOne(['azi','azimuth','az','az (deg)','azimuth (deg)','azm','bearing']);
+        const tvd = findOne(['tvd','tvd (m)','tvdss','true vertical depth']);
+        const north = findOne(['n','north','northing','y','y (m)','northing (m)','deviation north']);
+        const east = findOne(['e','east','easting','x','x (m)','easting (m)','deviation east']);
+
+        return {md, inc, azi, tvd, north, east};
     }
 
     // Minimum Curvature calculation
@@ -4942,12 +5009,21 @@ document.addEventListener('DOMContentLoaded', function() {
         statusEl.textContent = '✓ ' + surveyData.length + ' survey stations loaded';
         statusEl.className = 'mt-4 text-xs text-emerald-400';
 
+        // Compute DLS for actual survey
+        if (computed && computed.length > 1) {
+            dlsData = computeDLS(computed);
+        }
+
         // Render current view
         if (currentView === 'profile') {
             renderProfileView();
         } else {
             renderPlanView();
         }
+
+        // Render DLS hotspots and panel
+        renderDLSHotspots();
+        renderDLSPanel();
 
         // Reset animation
         tNorm = 0;
@@ -4957,19 +5033,22 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderProfileView() {
         viewLabel.textContent = 'Profile View (Departure vs TVD)';
 
+        if (!computed || computed.length === 0) return;
+
         // Find bounds
-        const maxDep = Math.max(...surveyData.map(s => s.departure));
-        const maxTVD = Math.max(...surveyData.map(s => s.tvd));
+        const maxDep = Math.max(...computed.map(s => s.departure));
+        const maxTVD = Math.max(...computed.map(s => s.tvd));
 
         // SVG dimensions
         const margin = 60, width = 800 - 2 * margin, height = 520 - 2 * margin;
-        const scaleX = width / (maxDep * 1.1);
-        const scaleY = height / (maxTVD * 1.1);
+        const scaleX = width / (maxDep * 1.1 || 1);
+        const scaleY = height / (maxTVD * 1.1 || 1);
 
-        // Build path
+        // Build actual path
         let pathD = '';
-        surveyData.forEach((s, i) => {
-            const x = margin + s.departure * scaleX;
+        computed.forEach((s, i) => {
+            const dep = Math.sqrt(s.north * s.north + s.east * s.east);
+            const x = margin + dep * scaleX;
             const y = margin + s.tvd * scaleY;
             pathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
         });
@@ -4979,8 +5058,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Draw station dots
         stationsG.innerHTML = '';
-        surveyData.forEach(s => {
-            const x = margin + s.departure * scaleX;
+        computed.forEach(s => {
+            const dep = Math.sqrt(s.north * s.north + s.east * s.east);
+            const x = margin + dep * scaleX;
             const y = margin + s.tvd * scaleY;
             const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             circle.setAttribute('cx', x);
@@ -4990,6 +5070,35 @@ document.addEventListener('DOMContentLoaded', function() {
             circle.setAttribute('opacity', '0.6');
             stationsG.appendChild(circle);
         });
+
+        // Render plan overlay if available
+        if (planSurvey.length > 0 && togglePlan && togglePlan.checked) {
+            let planPathD = '';
+            planSurvey.forEach((s, i) => {
+                const dep = Math.sqrt(s.north * s.north + s.east * s.east);
+                const x = margin + dep * scaleX;
+                const y = margin + s.tvd * scaleY;
+                planPathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
+            });
+
+            // Remove existing plan path
+            const existingPlan = svg.querySelector('#plan-overlay-path');
+            if (existingPlan) existingPlan.remove();
+
+            // Add plan path
+            const planPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            planPath.setAttribute('id', 'plan-overlay-path');
+            planPath.setAttribute('d', planPathD);
+            planPath.setAttribute('fill', 'none');
+            planPath.setAttribute('stroke', '#94a3b8');
+            planPath.setAttribute('stroke-width', '3');
+            planPath.setAttribute('stroke-dasharray', '8 6');
+            planPath.setAttribute('opacity', '0.7');
+            svg.insertBefore(planPath, path);
+        } else {
+            const existingPlan = svg.querySelector('#plan-overlay-path');
+            if (existingPlan) existingPlan.remove();
+        }
 
         // Update axes labels
         axesG.innerHTML = `
@@ -5001,21 +5110,23 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderPlanView() {
         viewLabel.textContent = 'Plan View (East vs North)';
 
-        // Find bounds
-        const minN = Math.min(...surveyData.map(s => s.north));
-        const maxN = Math.max(...surveyData.map(s => s.north));
-        const minE = Math.min(...surveyData.map(s => s.east));
-        const maxE = Math.max(...surveyData.map(s => s.east));
+        if (!computed || computed.length === 0) return;
 
-        const rangeN = maxN - minN;
-        const rangeE = maxE - minE;
+        // Find bounds
+        const minN = Math.min(...computed.map(s => s.north || 0));
+        const maxN = Math.max(...computed.map(s => s.north || 0));
+        const minE = Math.min(...computed.map(s => s.east || 0));
+        const maxE = Math.max(...computed.map(s => s.east || 0));
+
+        const rangeN = maxN - minN || 1;
+        const rangeE = maxE - minE || 1;
 
         const margin = 60, width = 800 - 2 * margin, height = 520 - 2 * margin;
-        const scale = Math.min(width / (rangeE * 1.1 || 1), height / (rangeN * 1.1 || 1));
+        const scale = Math.min(width / (rangeE * 1.1), height / (rangeN * 1.1));
 
-        // Build path
+        // Build actual path
         let pathD = '';
-        surveyData.forEach((s, i) => {
+        computed.forEach((s, i) => {
             const x = margin + width / 2 + (s.east - (minE + maxE) / 2) * scale;
             const y = margin + height / 2 - (s.north - (minN + maxN) / 2) * scale;
             pathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
@@ -5026,7 +5137,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Draw station dots
         stationsG.innerHTML = '';
-        surveyData.forEach(s => {
+        computed.forEach(s => {
             const x = margin + width / 2 + (s.east - (minE + maxE) / 2) * scale;
             const y = margin + height / 2 - (s.north - (minN + maxN) / 2) * scale;
             const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -5037,6 +5148,34 @@ document.addEventListener('DOMContentLoaded', function() {
             circle.setAttribute('opacity', '0.6');
             stationsG.appendChild(circle);
         });
+
+        // Render plan overlay if available
+        if (planSurvey.length > 0 && togglePlan && togglePlan.checked) {
+            let planPathD = '';
+            planSurvey.forEach((s, i) => {
+                const x = margin + width / 2 + (s.east - (minE + maxE) / 2) * scale;
+                const y = margin + height / 2 - (s.north - (minN + maxN) / 2) * scale;
+                planPathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
+            });
+
+            // Remove existing plan path
+            const existingPlan = svg.querySelector('#plan-overlay-path');
+            if (existingPlan) existingPlan.remove();
+
+            // Add plan path
+            const planPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            planPath.setAttribute('id', 'plan-overlay-path');
+            planPath.setAttribute('d', planPathD);
+            planPath.setAttribute('fill', 'none');
+            planPath.setAttribute('stroke', '#94a3b8');
+            planPath.setAttribute('stroke-width', '3');
+            planPath.setAttribute('stroke-dasharray', '8 6');
+            planPath.setAttribute('opacity', '0.7');
+            svg.insertBefore(planPath, path);
+        } else {
+            const existingPlan = svg.querySelector('#plan-overlay-path');
+            if (existingPlan) existingPlan.remove();
+        }
 
         // Update axes labels
         axesG.innerHTML = `
@@ -5240,6 +5379,336 @@ document.addEventListener('DOMContentLoaded', function() {
         if (stations) {
             surveyData = stations;
             renderSurvey();
+        }
+    };
+
+    // ========= PLAN OVERLAY & DLS ENHANCEMENTS =========
+
+    let planSurvey = [];  // Separate plan data
+    let dlsData = [];     // DLS calculations for actual survey
+    let deltaStats = null; // Delta statistics when plan is loaded
+
+    const dlsThreshold = document.getElementById('dls-threshold');
+    const dlsThresholdVal = document.getElementById('dls-threshold-val');
+    const togglePlan = document.getElementById('toggle-plan');
+    const toggleHotspots = document.getElementById('toggle-hotspots');
+    const deltaStatsDiv = document.getElementById('delta-stats');
+    const dlsPanel = document.getElementById('dls-panel');
+    const dlsList = document.getElementById('dls-list');
+
+    // Update DLS threshold display
+    if (dlsThreshold && dlsThresholdVal) {
+        dlsThreshold.addEventListener('input', (e) => {
+            dlsThresholdVal.textContent = parseFloat(e.target.value).toFixed(1);
+            if (dlsData.length > 0) {
+                renderDLSHotspots();
+                renderDLSPanel();
+            }
+        });
+    }
+
+    // Toggle event listeners
+    if (togglePlan) {
+        togglePlan.addEventListener('change', () => {
+            if (surveyData.length > 0) renderSurvey();
+        });
+    }
+
+    if (toggleHotspots) {
+        toggleHotspots.addEventListener('change', () => {
+            renderDLSHotspots();
+            renderDLSPanel();
+        });
+    }
+
+    // Compute DLS (Dogleg Severity) for survey
+    function computeDLS(stations) {
+        const dls = [];
+        if (stations.length < 2) return dls;
+
+        for (let i = 1; i < stations.length; i++) {
+            const a = stations[i - 1];
+            const b = stations[i];
+
+            const inc1 = (a.inc || 0) * Math.PI / 180;
+            const inc2 = (b.inc || 0) * Math.PI / 180;
+            const az1 = (a.azi || 0) * Math.PI / 180;
+            const az2 = (b.azi || 0) * Math.PI / 180;
+
+            const cosDL = Math.sin(inc1) * Math.sin(inc2) * Math.cos(az2 - az1) + Math.cos(inc1) * Math.cos(inc2);
+            const DL = Math.acos(Math.min(1, Math.max(-1, cosDL)));
+            const dmd = (b.md - a.md) || 1;
+            const dlsDeg = (DL * 180 / Math.PI) / (dmd / 30); // degrees per 30m
+
+            dls.push({ md: b.md, dls: dlsDeg, tvd: b.tvd, north: b.north, east: b.east });
+        }
+
+        return dls;
+    }
+
+    // Render DLS hotspots on SVG
+    function renderDLSHotspots() {
+        // Remove existing hotspots
+        const existing = svg.querySelectorAll('.dls-hotspot');
+        existing.forEach(el => el.remove());
+
+        if (!toggleHotspots || !toggleHotspots.checked || dlsData.length === 0) return;
+
+        const threshold = dlsThreshold ? parseFloat(dlsThreshold.value) : 6;
+        const pathEl = document.getElementById('wbPath');
+        if (!pathEl) return;
+
+        const L = pathEl.getTotalLength();
+        if (L === 0) return;
+
+        dlsData.forEach(item => {
+            if (item.dls < threshold) return;
+
+            const t = (item.md - mdMin) / ((mdMax - mdMin) || 1);
+            const p = pathEl.getPointAtLength(t * L);
+
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('class', 'dls-hotspot');
+            circle.setAttribute('cx', p.x);
+            circle.setAttribute('cy', p.y);
+            circle.setAttribute('r', '5');
+            circle.setAttribute('fill', '#ef4444');
+            circle.setAttribute('stroke', '#0b1220');
+            circle.setAttribute('stroke-width', '2');
+            circle.setAttribute('opacity', '0.9');
+
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+            title.textContent = `MD ${Math.round(item.md)} m · ${item.dls.toFixed(1)}°/30m`;
+            circle.appendChild(title);
+
+            svg.appendChild(circle);
+        });
+    }
+
+    // Render DLS panel with top hotspots
+    function renderDLSPanel() {
+        if (!dlsData.length || !toggleHotspots || !toggleHotspots.checked) {
+            if (dlsPanel) dlsPanel.classList.add('hidden');
+            return;
+        }
+
+        const threshold = dlsThreshold ? parseFloat(dlsThreshold.value) : 6;
+        const hotspots = dlsData.filter(d => d.dls >= threshold).sort((a, b) => b.dls - a.dls).slice(0, 6);
+
+        if (hotspots.length === 0) {
+            if (dlsPanel) dlsPanel.classList.add('hidden');
+            return;
+        }
+
+        if (dlsPanel) {
+            dlsPanel.classList.remove('hidden');
+            if (dlsList) {
+                dlsList.innerHTML = hotspots.map(h => `
+                    <button onclick="jumpToMD(${h.md})" class="px-2 py-1 bg-red-900/30 hover:bg-red-900/50 border border-red-700/50 rounded text-left transition">
+                        MD ${Math.round(h.md)} m
+                    </button>
+                    <div class="px-2 py-1 bg-red-900/20 border border-red-700/30 rounded text-right">
+                        ${h.dls.toFixed(1)}°/30m
+                    </div>
+                `).join('');
+            }
+        }
+    }
+
+    // Jump to specific MD on animation
+    window.jumpToMD = function(md) {
+        const t = (md - mdMin) / ((mdMax - mdMin) || 1);
+        running = false;
+        updateAnimation(t);
+    };
+
+    // Compute delta statistics between actual and plan
+    function computeDeltaStats(actual, plan) {
+        if (!actual.length || !plan.length) return null;
+
+        const deltas = actual.map(a => {
+            // Find or interpolate plan point at same MD
+            const pIdx = plan.findIndex(p => p.md >= a.md);
+            if (pIdx === -1) return { md: a.md, deltaLat: 0 };
+            if (pIdx === 0) {
+                const dN = a.north - plan[0].north;
+                const dE = a.east - plan[0].east;
+                return { md: a.md, deltaLat: Math.sqrt(dN * dN + dE * dE) };
+            }
+
+            const p1 = plan[pIdx - 1];
+            const p2 = plan[pIdx];
+            const ratio = (a.md - p1.md) / ((p2.md - p1.md) || 1);
+            const pN = p1.north + ratio * (p2.north - p1.north);
+            const pE = p1.east + ratio * (p2.east - p1.east);
+
+            const dN = a.north - pN;
+            const dE = a.east - pE;
+            return { md: a.md, deltaLat: Math.sqrt(dN * dN + dE * dE) };
+        });
+
+        const maxDelta = Math.max(...deltas.map(d => d.deltaLat));
+        const avgDelta = deltas.reduce((sum, d) => sum + d.deltaLat, 0) / deltas.length;
+        const endDelta = deltas[deltas.length - 1].deltaLat;
+
+        return { maxDelta, avgDelta, endDelta };
+    }
+
+    // Update delta stats display
+    function updateDeltaStats() {
+        if (!deltaStats || !deltaStatsDiv) {
+            if (deltaStatsDiv) deltaStatsDiv.classList.add('hidden');
+            return;
+        }
+
+        deltaStatsDiv.classList.remove('hidden');
+        document.getElementById('delta-max').textContent = Math.round(deltaStats.maxDelta) + ' m';
+        document.getElementById('delta-avg').textContent = Math.round(deltaStats.avgDelta) + ' m';
+        document.getElementById('delta-end').textContent = Math.round(deltaStats.endDelta) + ' m';
+    }
+
+    // Load plan CSV
+    window.loadPlanCSV = function() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.csv,.txt';
+        input.onchange = async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const text = await file.text();
+            const res = tryBuildStations(text);
+            if (res.needsMap) {
+                statusEl.textContent = '⚠️ Plan CSV needs MD, INC, AZ columns';
+                statusEl.className = 'mt-4 text-xs text-amber-400';
+                return;
+            }
+
+            planSurvey = res.stations;
+            computeCoordinates.call({ length: planSurvey.length }, planSurvey); // Compute coordinates for plan
+
+            statusEl.textContent = '✓ Plan loaded (' + planSurvey.length + ' stations)';
+            statusEl.className = 'mt-4 text-xs text-emerald-400';
+
+            if (surveyData.length > 0) {
+                renderSurvey();
+                deltaStats = computeDeltaStats(computed, planSurvey);
+                updateDeltaStats();
+            }
+        };
+        input.click();
+    };
+
+    function tryBuildStations(text) {
+        const { rows } = parseCSV(text);
+        if (!rows.length) return { needsMap: true };
+
+        const headers = rows[0];
+        const colMap = autoDetectColumns(headers);
+
+        if (colMap.md === -1 || colMap.inc === -1 || colMap.azi === -1) {
+            return { needsMap: true, headers, rows };
+        }
+
+        const dataRows = rows.slice(1).filter(r => r.some(x => (x || '').toString().trim() !== ''));
+        const stations = dataRows.map(r => ({
+            md: parseFloat(r[colMap.md]),
+            inc: parseFloat(r[colMap.inc]),
+            azi: parseFloat(r[colMap.azi]),
+            tvd: colMap.tvd >= 0 ? parseFloat(r[colMap.tvd]) : undefined,
+            north: colMap.north >= 0 ? parseFloat(r[colMap.north]) : undefined,
+            east: colMap.east >= 0 ? parseFloat(r[colMap.east]) : undefined,
+        })).filter(s => Number.isFinite(s.md) && Number.isFinite(s.inc) && Number.isFinite(s.azi));
+
+        return { needsMap: false, stations };
+    }
+
+    // ========= EXPORT FUNCTIONS =========
+
+    // Export to PNG
+    window.saveSurveyPNG = function() {
+        if (!svg) return;
+
+        const serializer = new XMLSerializer();
+        const source = serializer.serializeToString(svg);
+        const blob = new Blob([source], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1600;
+            canvas.height = 1040;
+            const ctx = canvas.getContext('2d');
+
+            // Dark background
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            canvas.toBlob(b => {
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(b);
+                a.download = 'welltegra-survey-' + Date.now() + '.png';
+                a.click();
+                URL.revokeObjectURL(a.href);
+            });
+
+            URL.revokeObjectURL(url);
+        };
+        img.src = url;
+    };
+
+    // Export to CSV
+    window.exportSurveyCSV = function() {
+        if (!computed.length) {
+            alert('Load a survey first');
+            return;
+        }
+
+        const header = ['MD', 'TVD', 'NORTH', 'EAST', 'INC', 'AZ'];
+        let rows = computed.map(p => [
+            p.md.toFixed(3),
+            p.tvd.toFixed(3),
+            p.north.toFixed(3),
+            p.east.toFixed(3),
+            p.inc.toFixed(3),
+            p.azi.toFixed(3)
+        ].join(','));
+
+        const csv = header.join(',') + '\n' + rows.join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'welltegra-survey-export-' + Date.now() + '.csv';
+        a.click();
+        URL.revokeObjectURL(a.href);
+    };
+
+    // Share link (base64 encode survey data in URL hash)
+    window.shareSurveyLink = async function() {
+        if (!surveyData.length) {
+            alert('Load a survey first');
+            return;
+        }
+
+        const data = { survey: surveyData.slice(0, 100) }; // Limit to 100 stations to avoid huge URLs
+        const json = JSON.stringify(data);
+        const b64 = btoa(unescape(encodeURIComponent(json)));
+
+        const url = new URL(window.location.href);
+        url.hash = '#survey=' + b64;
+
+        try {
+            await navigator.clipboard.writeText(url.toString());
+            statusEl.textContent = '✓ Link copied to clipboard!';
+            statusEl.className = 'mt-4 text-xs text-emerald-400';
+            setTimeout(() => {
+                statusEl.textContent = '';
+            }, 3000);
+        } catch (err) {
+            prompt('Copy this link:', url.toString());
         }
     };
 
