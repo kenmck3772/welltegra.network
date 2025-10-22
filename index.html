@@ -1149,6 +1149,120 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Wellbore Deviation Visualization -->
+            <div id="performer-wellbore" class="mt-6 bg-slate-800/50 rounded-lg p-6 border border-slate-700">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left: Animated deviation path -->
+                    <div class="lg:col-span-2 bg-slate-900/40 border border-slate-700 rounded-lg overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 border-b border-slate-700 bg-slate-800/50">
+                            <strong class="text-lg">📐 Wellbore Deviation</strong>
+                            <span class="text-sm text-slate-400">Real-Time Position Tracking</span>
+                        </div>
+
+                        <!-- SVG canvas -->
+                        <svg id="wbSvg" viewBox="0 0 800 520" preserveAspectRatio="xMidYMid meet" class="w-full h-auto block" style="background:linear-gradient(180deg,rgba(15,23,42,.45),rgba(2,6,23,.35))">
+                            <!-- grid -->
+                            <defs>
+                                <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+                                    <path d="M80 0H0V80" fill="none" stroke="#334155" stroke-opacity=".4" stroke-width="1"/>
+                                </pattern>
+                                <linearGradient id="dlsGrad" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#22d3ee"/>
+                                    <stop offset="50%" stop-color="#14b8a6"/>
+                                    <stop offset="100%" stop-color="#f59e0b"/>
+                                </linearGradient>
+                                <filter id="glow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                            </defs>
+                            <rect x="0" y="0" width="800" height="520" fill="url(#grid)"/>
+
+                            <!-- depth ticks -->
+                            <g id="ticks" fill="none" stroke="#475569" stroke-width="1"></g>
+
+                            <!-- formation bands -->
+                            <g opacity=".35">
+                                <rect x="0" y="60" width="800" height="80" fill="#7c3aed"/>
+                                <rect x="0" y="180" width="800" height="80" fill="#0891b2"/>
+                                <rect x="0" y="300" width="800" height="80" fill="#0d9488"/>
+                                <rect x="0" y="420" width="800" height="80" fill="#b45309"/>
+                            </g>
+
+                            <!-- casing & cement -->
+                            <g>
+                                <path d="M80 20 v480" stroke="#cbd5e1" stroke-width="18" opacity=".18"/>
+                                <path d="M80 20 v480" stroke="#94a3b8" stroke-width="8" opacity=".35" stroke-dasharray="8 6"/>
+                            </g>
+
+                            <!-- deviation trajectory -->
+                            <path id="wbPath" d="M80,40 C140,80 200,130 260,180 S380,300 460,320 620,360 740,500"
+                                  fill="none" stroke="url(#dlsGrad)" stroke-width="6" filter="url(#glow)"/>
+
+                            <!-- current toolstring position -->
+                            <circle id="toolDot" r="8" fill="#14b8a6" stroke="#0b1220" stroke-width="2"/>
+                            <text id="mdBadge" x="0" y="0" font-size="12" fill="#e2e8f0" stroke="#0b1220" stroke-width="0.6" paint-order="stroke" style="font-weight:700">MD 0000 m</text>
+                        </svg>
+
+                        <!-- controls -->
+                        <div class="flex gap-3 items-center px-4 py-3 border-t border-slate-700 bg-slate-900/30">
+                            <button id="wbPlay" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">▶ Play</button>
+                            <button id="wbPause" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition">⏸ Pause</button>
+                            <label class="flex items-center gap-2 ml-2">
+                                <span class="text-sm text-slate-400">Speed</span>
+                                <input id="wbSpeed" type="range" min="0.25" max="3" step="0.25" value="1" class="w-24">
+                            </label>
+                            <label class="flex items-center gap-2 ml-2 flex-1">
+                                <span class="text-sm text-slate-400">Depth</span>
+                                <input id="wbScrub" type="range" min="0" max="1000" step="1" value="0" class="flex-1">
+                            </label>
+                            <span id="wbInfo" class="text-sm text-slate-400">Incl: —° | Az: —°</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: KPI & legend -->
+                    <div class="grid gap-4 content-start">
+                        <div class="bg-slate-900/40 border border-slate-700 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <strong class="text-base">Live Survey Data</strong>
+                                <span class="text-xs text-slate-400">Demo</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="bg-slate-800/60 border border-slate-700 rounded-lg p-3">
+                                    <div class="text-xs text-slate-400">Depth (MD)</div>
+                                    <div id="kpiMD" class="text-2xl font-bold text-cyan-400">0 m</div>
+                                </div>
+                                <div class="bg-slate-800/60 border border-slate-700 rounded-lg p-3">
+                                    <div class="text-xs text-slate-400">TVD (≈)</div>
+                                    <div id="kpiTVD" class="text-2xl font-bold text-cyan-400">0 m</div>
+                                </div>
+                                <div class="bg-slate-800/60 border border-slate-700 rounded-lg p-3">
+                                    <div class="text-xs text-slate-400">Inclination</div>
+                                    <div id="kpiIncl" class="text-2xl font-bold text-emerald-400">—°</div>
+                                </div>
+                                <div class="bg-slate-800/60 border border-slate-700 rounded-lg p-3">
+                                    <div class="text-xs text-slate-400">Azimuth</div>
+                                    <div id="kpiAz" class="text-2xl font-bold text-amber-400">—°</div>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-xs text-slate-400">Drag the Depth slider or hit Play to animate tool movement.</p>
+                        </div>
+
+                        <div class="bg-slate-900/40 border border-slate-700 rounded-lg p-4">
+                            <strong class="text-base block mb-3">Legend</strong>
+                            <div class="flex flex-wrap gap-3 text-sm">
+                                <span class="flex items-center gap-2">
+                                    <i class="inline-block w-6 h-1.5 rounded-full" style="background:linear-gradient(90deg,#22d3ee,#14b8a6,#f59e0b)"></i> Trajectory
+                                </span>
+                                <span class="flex items-center gap-2">
+                                    <i class="inline-block w-6 h-1.5 bg-slate-400 rounded-full opacity-70"></i> Casing
+                                </span>
+                                <span class="flex items-center gap-2">
+                                    <i class="inline-block w-3 h-3 bg-cyan-500 rounded-full"></i> Tool Position
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="analyzer-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -4500,6 +4614,133 @@ document.addEventListener('DOMContentLoaded', function() {
 
     init();
 });
+
+// --- WELLBORE DEVIATION ANIMATION ---
+(function() {
+    const svg = document.getElementById('wbSvg');
+    const path = document.getElementById('wbPath');
+    const dot = document.getElementById('toolDot');
+    const mdBadge = document.getElementById('mdBadge');
+    const ticks = document.getElementById('ticks');
+
+    const playBtn = document.getElementById('wbPlay');
+    const pauseBtn = document.getElementById('wbPause');
+    const speedEl = document.getElementById('wbSpeed');
+    const scrubEl = document.getElementById('wbScrub');
+    const infoEl = document.getElementById('wbInfo');
+
+    const kMD = document.getElementById('kpiMD');
+    const kTVD = document.getElementById('kpiTVD');
+    const kInc = document.getElementById('kpiIncl');
+    const kAz = document.getElementById('kpiAz');
+
+    if (!svg || !path) return; // Exit if elements don't exist
+
+    // Demo scaling: treat total path length as MD_end
+    const L = path.getTotalLength();
+    const MD_END = 3500; // metres (demo)
+    const TVD_EST = 2800; // example final TVD for demo scaling
+
+    // Draw depth ticks every 100 m
+    for (let md = 0; md <= MD_END; md += 100) {
+        const t = md / MD_END;
+        const len = t * L;
+        const p = path.getPointAtLength(len);
+        // A short perpendicular tick
+        const prev = path.getPointAtLength(Math.max(0, len - 1));
+        const dx = p.x - prev.x, dy = p.y - prev.y;
+        const mag = Math.hypot(dx, dy) || 1;
+        const nx = -dy / mag, ny = dx / mag;
+        const x1 = p.x + nx * 6, y1 = p.y + ny * 6;
+        const x2 = p.x - nx * 6, y2 = p.y - ny * 6;
+
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', x1);
+        line.setAttribute('y1', y1);
+        line.setAttribute('x2', x2);
+        line.setAttribute('y2', y2);
+        ticks.appendChild(line);
+
+        if (md % 500 === 0) {
+            const tx = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            tx.setAttribute('x', x2 + nx * 16);
+            tx.setAttribute('y', y2 + ny * 16);
+            tx.setAttribute('fill', '#94a3b8');
+            tx.setAttribute('font-size', '12');
+            tx.setAttribute('text-anchor', 'middle');
+            tx.textContent = md + ' m';
+            ticks.appendChild(tx);
+        }
+    }
+
+    let running = false, tNorm = 0, speed = 1, last = 0;
+
+    function updateByT(norm) {
+        norm = Math.max(0, Math.min(1, norm));
+        const len = norm * L;
+        const p = path.getPointAtLength(len);
+        dot.setAttribute('cx', p.x);
+        dot.setAttribute('cy', p.y);
+
+        // badge offset
+        mdBadge.setAttribute('x', p.x + 12);
+        mdBadge.setAttribute('y', p.y - 12);
+
+        // derive direction (for inclination/azimuth rough demo)
+        const prev = path.getPointAtLength(Math.max(0, len - 0.5));
+        const dx = p.x - prev.x, dy = p.y - prev.y;
+        const incDeg = Math.round(Math.min(90, Math.max(0, Math.atan2(Math.abs(dx), Math.abs(dy)) * 180 / Math.PI)));
+        const azDeg = Math.round((Math.atan2(dy, dx) * 180 / Math.PI + 360) % 360);
+
+        const mdVal = Math.round(norm * MD_END);
+        const tvdVal = Math.round(norm * TVD_EST);
+
+        mdBadge.textContent = 'MD ' + mdVal + ' m';
+        infoEl.textContent = 'Incl: ' + incDeg + '° | Az: ' + azDeg + '°';
+        kMD.textContent = mdVal + ' m';
+        kTVD.textContent = tvdVal + ' m';
+        kInc.textContent = incDeg + '°';
+        kAz.textContent = azDeg + '°';
+        scrubEl.value = Math.round(norm * 1000);
+        tNorm = norm;
+    }
+
+    function raf(ts) {
+        if (!running) {
+            last = ts;
+            return;
+        }
+        const dt = (ts - last) / 1000; // seconds
+        last = ts;
+        const advance = dt * 0.06 * speed; // tune base speed
+        let next = tNorm + advance;
+        if (next >= 1) {
+            next = 1;
+            running = false;
+        }
+        updateByT(next);
+        requestAnimationFrame(raf);
+    }
+
+    playBtn.addEventListener('click', () => {
+        running = true;
+        requestAnimationFrame((ts) => {
+            last = ts;
+            requestAnimationFrame(raf);
+        });
+    });
+    pauseBtn.addEventListener('click', () => running = false);
+    speedEl.addEventListener('input', e => {
+        speed = parseFloat(e.target.value);
+    });
+    scrubEl.addEventListener('input', e => {
+        running = false;
+        updateByT(e.target.value / 1000);
+    });
+
+    // init
+    updateByT(0);
+})();
 
 // --- PDF EXPORT SYSTEM (Global scope for onclick) ---
 
