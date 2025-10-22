@@ -650,6 +650,141 @@
             border: 1px solid rgba(71, 85, 105, 0.3);
         }
 
+        /* --- Job Costing Tool Styles --- */
+        .cost-main-tab.active {
+            background-color: #22d3ee;
+            color: #1f2937;
+            border-color: #22d3ee;
+        }
+        .cost-main-tab { transition: all 0.2s ease-in-out; }
+        .cost-sub-tab.active {
+            border-bottom-color: #22d3ee;
+            color: #22d3ee;
+        }
+        .cost-sub-tab { transition: all 0.2s ease-in-out; }
+        .cost-add-btn {
+            padding: 0.25rem 0.75rem;
+            background-color: #0891b2;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            transition: all 0.2s;
+        }
+        .cost-add-btn:hover {
+            background-color: #06b6d4;
+        }
+
+        .step-card {
+            background-color: #1e293b;
+            border: 2px solid #475569;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            transition: all 0.2s;
+        }
+        .step-card.active {
+            border-color: #22d3ee;
+            box-shadow: 0 20px 25px -5px rgb(34 211 238 / 0.3);
+        }
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #334155;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            border-bottom: 1px solid #475569;
+            cursor: pointer;
+        }
+        .step-header h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #22d3ee;
+        }
+        .remove-step-btn {
+            color: #6b7280;
+            font-weight: 700;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+        .remove-step-btn:hover {
+            color: #ef4444;
+        }
+        .step-item-list {
+            border-top: 1px solid #475569;
+        }
+        .step-item-list > li {
+            border-bottom: 1px solid #475569;
+        }
+        .step-item-list > li:last-child {
+            border-bottom: none;
+        }
+        .step-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+        }
+        .step-item-name {
+            font-size: 0.875rem;
+            color: #e5e7eb;
+        }
+        .step-item-cost {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: white;
+        }
+        .remove-item-btn {
+            color: #ef4444;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 1rem;
+            transition: color 0.2s;
+        }
+        .remove-item-btn:hover {
+            color: #dc2626;
+        }
+        .step-footer {
+            padding: 0.75rem;
+            background-color: #334155;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+            text-align: right;
+        }
+        .step-footer strong {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #22d3ee;
+        }
+
+        .theme-light .step-card {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+        }
+        .theme-light .step-card.active {
+            border-color: #0891b2;
+            box-shadow: 0 20px 25px -5px rgb(8 145 178 / 0.2);
+        }
+        .theme-light .step-header {
+            background-color: #e2e8f0;
+            border-bottom-color: #cbd5e1;
+        }
+        .theme-light .step-header h3 {
+            color: #0891b2;
+        }
+        .theme-light .step-footer {
+            background-color: #e2e8f0;
+        }
+        .theme-light .step-footer strong {
+            color: #0891b2;
+        }
+        .theme-light .step-item-list > li {
+            border-color: #cbd5e1;
+        }
+
     </style>
 </head>
 
@@ -849,7 +984,23 @@
                 </div>
                 
                 <div id="plan-output" class="mt-10 space-y-8"></div>
-                
+
+                <!-- Job Costing Tool -->
+                <div id="job-costing-section" class="mt-12 max-w-7xl mx-auto">
+                    <div class="light-card rounded-lg p-6 shadow-xl border-2 border-cyan-500/30">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-2xl font-bold">💰 Detailed Job Costing & Resource Planning</h3>
+                            <button id="toggle-costing-tool" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-md transition">
+                                Expand Tool
+                            </button>
+                        </div>
+
+                        <div id="costing-tool-content" class="hidden">
+                            <div id="job-costing-tool-container" class="grid grid-cols-1 gap-6"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="mt-8 flex justify-center space-x-4">
                     <button id="start-over-btn" class="rounded-md bg-gray-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-500 transition-colors">Start Over</button>
                     <button id="begin-op-btn" class="rounded-md bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 transition-colors">Begin Live Operation</button>
@@ -946,6 +1097,29 @@
                 </div>
                 <div class="bg-slate-800/50 rounded-lg p-4 flex flex-col"><h2 class="text-lg font-semibold mb-4 border-b border-slate-700 pb-2">Operations Log</h2><div id="log-entries" class="flex-1 space-y-3 overflow-y-auto mb-4"></div><div class="mt-auto"><textarea id="log-input" class="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-sm" rows="3" placeholder="Add log entry..."></textarea><button id="add-log-btn" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-4 rounded-md transition">Add Entry</button></div></div>
             </div>
+
+            <!-- Live Cost Tracker -->
+            <div id="performer-cost-tracker" class="mt-6 bg-gradient-to-r from-green-900/50 to-emerald-900/50 rounded-lg p-6 border border-green-700/50">
+                <h3 class="text-xl font-bold text-green-400 mb-4">💰 Live Cost Tracking</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-black/30 rounded-lg p-4 text-center">
+                        <div class="text-sm text-gray-400 mb-1">AFE Budget</div>
+                        <div id="performer-afe-budget" class="text-2xl font-bold text-white">$0</div>
+                    </div>
+                    <div class="bg-black/30 rounded-lg p-4 text-center">
+                        <div class="text-sm text-gray-400 mb-1">Actual Cost</div>
+                        <div id="performer-actual-cost" class="text-2xl font-bold text-white">$0</div>
+                    </div>
+                    <div class="bg-black/30 rounded-lg p-4 text-center">
+                        <div class="text-sm text-gray-400 mb-1">Variance</div>
+                        <div id="performer-variance" class="text-2xl font-bold text-white">$0</div>
+                    </div>
+                    <div class="bg-black/30 rounded-lg p-4 text-center">
+                        <div class="text-sm text-gray-400 mb-1">% of Budget</div>
+                        <div id="performer-budget-percent" class="text-2xl font-bold text-white">0%</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="analyzer-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -1020,6 +1194,39 @@
 
                 <div class="mt-6 text-sm opacity-90">
                     <strong>Recommendation:</strong> Excellent overall performance. Continue partnership and consider for additional wells.
+                </div>
+            </div>
+
+            <!-- Detailed Cost Breakdown -->
+            <div id="analyzer-cost-breakdown" class="mt-8 light-card p-6 md:p-8 rounded-lg">
+                <h3 class="text-2xl font-bold mb-6">💰 Final Cost Analysis & Breakdown</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg p-6">
+                        <div class="text-sm opacity-90 mb-2">AFE Budget</div>
+                        <div id="analyzer-afe-budget" class="text-4xl font-bold">$0</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg p-6">
+                        <div class="text-sm opacity-90 mb-2">Actual Cost</div>
+                        <div id="analyzer-actual-cost" class="text-4xl font-bold">$0</div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Equipment</div>
+                        <div id="analyzer-equipment-cost" class="text-xl font-bold">$0</div>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Personnel</div>
+                        <div id="analyzer-personnel-cost" class="text-xl font-bold">$0</div>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Tools</div>
+                        <div id="analyzer-tools-cost" class="text-xl font-bold">$0</div>
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4">
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Consumables</div>
+                        <div id="analyzer-consumables-cost" class="text-xl font-bold">$0</div>
+                    </div>
                 </div>
             </div>
 
@@ -3812,6 +4019,250 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 
+    /* ========================================
+       JOB COSTING TOOL
+       ======================================== */
+
+    // Service catalogue database
+    const serviceCatalogue = {
+        ct: {
+            personnel: [
+                { code: 'CT-CREW-SUP', name: 'Supervisor (Crew Lead)', baseRate: 1400, unit: 'Day' },
+                { code: 'CT-CREW-SOP', name: 'Senior Operator (Control Cabin)', baseRate: 1100, unit: 'Day' },
+                { code: 'CT-CREW-PUMP', name: 'Pumping Operator (Fluids/N2)', baseRate: 900, unit: 'Day' },
+                { code: 'CT-CREW-OP', name: 'Operator (Rig-Up/Tools)', baseRate: 800, unit: 'Day' },
+            ],
+            equipment: [
+                { code: 'CT-EQP-UNIT', name: 'CT Unit (Reel, Injector, Cabin)', baseRate: 18000, unit: 'Day' },
+                { code: 'CT-EQP-PCE', name: 'Pressure Control (Stripper, BOPs)', baseRate: 5000, unit: 'Day' },
+                { code: 'CT-EQP-PUMP', name: 'High-Pressure Pump Unit (15k)', baseRate: 4500, unit: 'Day' },
+                { code: 'CT-EQP-N2', name: 'Nitrogen Unit (Pumper & Tank)', baseRate: 4000, unit: 'Day' },
+            ],
+            tools: [
+                { code: 'CT-EQP-BHA', name: 'Basic BHA (Connector, Check Valves)', baseRate: 800, unit: 'Day' },
+                { code: 'CT-EQP-MOTOR', name: 'Downhole Motor (Milling)', baseRate: 2500, unit: 'Day' },
+                { code: 'CT-EQP-JAR', name: 'Hydraulic Jars', baseRate: 1000, unit: 'Day' },
+                { code: 'CT-EQP-NOZZLE', name: 'Jetting Nozzle (Wash)', baseRate: 700, unit: 'Day' },
+            ]
+        },
+        els: {
+            personnel: [
+                { code: 'ELS-CREW-SUP', name: 'Supervisor (Crew Lead)', baseRate: 1300, unit: 'Day' },
+                { code: 'ELS-CREW-SOP', name: 'Senior Operator (Logging Unit)', baseRate: 1000, unit: 'Day' },
+                { code: 'ELS-CREW-OP', name: 'Operator (Winch/Tools)', baseRate: 750, unit: 'Day' },
+            ],
+            equipment: [
+                { code: 'ELS-EQP-UNIT', name: 'E-Line Unit (Winch & Cabin)', baseRate: 6000, unit: 'Day' },
+                { code: 'ELS-EQP-PCE', name: 'Pressure Control (BOP, Lubricator)', baseRate: 2000, unit: 'Day' },
+            ],
+            tools: [
+                { code: 'ELS-EQP-TOOL-CCL', name: 'CCL / Gamma Ray Tool', baseRate: 1200, unit: 'Job' },
+                { code: 'ELS-EQP-TOOL-PLT', name: 'Production Logging Tool (PLT)', baseRate: 4000, unit: 'Job' },
+                { code: 'ELS-EQP-TOOL-CBL', name: 'Cement Bond Log (CBL)', baseRate: 3500, unit: 'Job' },
+                { code: 'ELS-EQP-TOOL-PERF', name: 'Perforating Guns (Base Charge)', baseRate: 2500, unit: 'Job' },
+            ]
+        },
+        slk: {
+            personnel: [
+                { code: 'SLK-CREW-SUP', name: 'Supervisor (Crew Lead)', baseRate: 1200, unit: 'Day' },
+                { code: 'SLK-CREW-SOP', name: 'Senior Operator (Winch)', baseRate: 950, unit: 'Day' },
+                { code: 'SLK-CREW-OP', name: 'Operator (Tools)', baseRate: 700, unit: 'Day' },
+            ],
+            equipment: [
+                { code: 'SLK-EQP-UNIT', name: 'Slickline Unit (Winch & Powerpack)', baseRate: 3000, unit: 'Day' },
+                { code: 'SLK-EQP-PCE', name: 'Pressure Control (BOP, Lubricator)', baseRate: 1500, unit: 'Day' },
+            ],
+            tools: [
+                { code: 'SLK-EQP-TOOLS', name: 'Standard Toolstring (Jars, Stem)', baseRate: 500, unit: 'Day' },
+                { code: 'SLK-EQP-PULL', name: 'Pulling/Running Tool (e.g., GS)', baseRate: 300, unit: 'Day' },
+                { code: 'SLK-EQP-BAILER', name: 'Bailer (Sand/Debris)', baseRate: 400, unit: 'Day' },
+            ]
+        },
+        whm: {
+            personnel: [
+                { code: 'WHM-CREW-SUP', name: 'Supervisor (Lead Technician)', baseRate: 1200, unit: 'Day' },
+                { code: 'WHM-CREW-TECH', name: 'Wellhead Technician', baseRate: 900, unit: 'Day' },
+            ],
+            equipment: [
+                { code: 'WHM-EQP-GREASE', name: 'Grease/Sealant Injection Pump (15k)', baseRate: 1200, unit: 'Day' },
+                { code: 'WHM-EQP-TEST', name: 'Test Pump & Chart Recorder', baseRate: 1000, unit: 'Day' },
+                { code: 'WHM-EQP-FLUSH', name: 'Wellhead Flushing Unit', baseRate: 900, unit: 'Day' },
+            ],
+            consumables: [
+                { code: 'WHM-MAT-SEAL', name: 'Valve Sealant (Stick/Bulk)', baseRate: 500, unit: 'Job' },
+                { code: 'WHM-MAT-GREASE', name: 'Valve Grease (Bulk)', baseRate: 400, unit: 'Job' },
+                { code: 'WHM-MAT-RING', name: 'Ring Gasket (e.g., R, RX)', baseRate: 250, unit: 'Item' },
+            ]
+        }
+    };
+
+    // Job costing state
+    let jobCostingState = {
+        steps: [],
+        activeStepId: null,
+        jobDuration: 1,
+        isToolExpanded: false,
+        currentDiscipline: 'ct',
+        currentCategories: {
+            ct: 'personnel',
+            els: 'personnel',
+            slk: 'personnel',
+            whm: 'personnel'
+        }
+    };
+
+    // Initialize job costing tool
+    function initJobCostingTool() {
+        const toggleBtn = document.getElementById('toggle-costing-tool');
+        const toolContent = document.getElementById('costing-tool-content');
+
+        if (!toggleBtn || !toolContent) return;
+
+        toggleBtn.addEventListener('click', () => {
+            jobCostingState.isToolExpanded = !jobCostingState.isToolExpanded;
+            if (jobCostingState.isToolExpanded) {
+                toolContent.classList.remove('hidden');
+                toggleBtn.textContent = 'Collapse Tool';
+                renderJobCostingTool();
+            } else {
+                toolContent.classList.add('hidden');
+                toggleBtn.textContent = 'Expand Tool';
+            }
+        });
+    }
+
+    // Render the complete job costing tool
+    function renderJobCostingTool() {
+        const container = document.getElementById('job-costing-tool-container');
+        if (!container) return;
+
+        container.innerHTML = `
+            <div class="lg:grid lg:grid-cols-2 lg:gap-10">
+                <!-- Service Catalogue -->
+                <div class="lg:col-span-1">
+                    <h3 class="text-xl font-bold mb-4">Service Catalogue</h3>
+                    <div id="cost-main-tabs" class="flex flex-wrap border-b border-gray-700 mb-4">
+                        <button class="cost-main-tab text-sm font-bold py-2 px-4 border-b-2 border-transparent hover:text-cyan-400" onclick="showCostMainTab('ct')">CT</button>
+                        <button class="cost-main-tab text-sm font-bold py-2 px-4 border-b-2 border-transparent hover:text-cyan-400" onclick="showCostMainTab('els')">ELS</button>
+                        <button class="cost-main-tab text-sm font-bold py-2 px-4 border-b-2 border-transparent hover:text-cyan-400" onclick="showCostMainTab('slk')">SLK</button>
+                        <button class="cost-main-tab text-sm font-bold py-2 px-4 border-b-2 border-transparent hover:text-cyan-400" onclick="showCostMainTab('whm')">WHM</button>
+                    </div>
+                    <div id="cost-main-content-panels"></div>
+                </div>
+
+                <!-- Job Procedure Builder -->
+                <div class="lg:col-span-1 mt-8 lg:mt-0">
+                    <div class="light-card rounded-lg shadow-xl">
+                        <div class="p-4 border-b border-gray-700">
+                            <h3 class="text-xl font-bold">Job Procedure & Cost</h3>
+                        </div>
+
+                        <div class="p-4 border-b border-gray-700">
+                            <label class="block text-sm font-semibold text-cyan-400 mb-2">Job Duration (Days)</label>
+                            <input type="number" id="job-duration-input" value="1" min="1"
+                                class="w-1/2 bg-gray-800 border-gray-700 rounded-md px-3 py-2 text-white font-bold"
+                                onchange="updateJobDuration(this.value)">
+                            <p class="text-xs text-gray-400 mt-2">Costs for "/Day" items will be multiplied by this value.</p>
+                        </div>
+
+                        <div class="p-4 border-b border-gray-700">
+                            <h4 class="text-sm font-semibold text-cyan-400 mb-3">Add Job Step</h4>
+                            <div class="flex gap-2">
+                                <input type="text" id="step-title-input" placeholder="e.g., Step 1: Rig Up"
+                                    class="flex-grow bg-gray-800 border-gray-700 rounded-md px-3 py-2 text-white">
+                                <button onclick="addJobStep()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-md">Add</button>
+                            </div>
+                        </div>
+
+                        <div id="procedure-list-container" class="max-h-96 overflow-y-auto p-4">
+                            <ul id="procedure-list">
+                                <li class="py-6 text-center text-gray-500">Add a job step to begin building your procedure.</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 bg-gray-800 rounded-b-lg flex justify-between items-center">
+                            <span class="text-lg font-bold uppercase">Total Cost</span>
+                            <span id="job-total" class="text-3xl font-black text-cyan-400">£0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Render the service catalogue
+        renderServiceCatalogue();
+
+        // Activate first tab
+        document.querySelector('.cost-main-tab').classList.add('active');
+    }
+
+    // Render service catalogue panels
+    function renderServiceCatalogue() {
+        const panels = document.getElementById('cost-main-content-panels');
+        if (!panels) return;
+
+        let html = '';
+        for (const discipline in serviceCatalogue) {
+            html += `
+                <div id="cost-content-${discipline}" class="cost-main-content" style="display:none;">
+                    <div class="flex flex-wrap border-b border-gray-600 mb-4">
+            `;
+
+            const categories = Object.keys(serviceCatalogue[discipline]);
+            categories.forEach(category => {
+                html += `
+                    <button class="cost-sub-tab text-sm font-semibold py-2 px-3 border-b-2 border-transparent text-gray-400 hover:text-cyan-300"
+                            onclick="showCostSubTab('${discipline}', '${category}')">${category.charAt(0).toUpperCase() + category.slice(1)}</button>
+                `;
+            });
+
+            html += `</div><div class="catalogue-table-container">`;
+
+            categories.forEach(category => {
+                html += `
+                    <div class="cost-sub-content-${discipline}" id="cost-content-${discipline}-${category}" style="display:none;">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-700 text-cyan-400 text-xs">
+                                <tr>
+                                    <th class="p-2 text-left">Description</th>
+                                    <th class="p-2 text-left">Code</th>
+                                    <th class="p-2 text-left">Rate/Unit</th>
+                                    <th class="p-2"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                serviceCatalogue[discipline][category].forEach(item => {
+                    const itemJSON = JSON.stringify(item).replace(/"/g, '&quot;');
+                    html += `
+                        <tr class="border-b border-gray-700 hover:bg-gray-800">
+                            <td class="p-2">${item.name}</td>
+                            <td class="p-2 font-mono text-xs text-gray-400">${item.code}</td>
+                            <td class="p-2 font-bold">£${item.baseRate}<span class="text-xs font-normal text-gray-400">/${item.unit}</span></td>
+                            <td class="p-2 text-right">
+                                <button class="cost-add-btn" onclick='addItemToActiveStep(${itemJSON})'>Add</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            });
+
+            html += `</div></div>`;
+        }
+
+        panels.innerHTML = html;
+
+        // Show first discipline and first category
+        showCostMainTab('ct');
+    }
+
     // --- INITIALIZATION ---
 
     const init = () => {
@@ -3821,6 +4272,10 @@ document.addEventListener('DOMContentLoaded', function() {
         initSavingsChart();
         updateNavLinks();
         loadCostData(); // Load cost data from CSV files
+        initJobCostingTool(); // Initialize job costing tool
+        // Expose job costing state to window for global functions
+        window.jobCostingState = jobCostingState;
+        window.appState = appState;
     };
 
     init();
@@ -4003,6 +4458,219 @@ async function generatePDFReport() {
         button.innerHTML = originalText;
         button.classList.remove('pdf-generating');
     }
+}
+
+// ---Global Job Costing Functions (for onclick handlers) ---
+function showCostMainTab(discipline) {
+    if (!window.jobCostingState) return;
+
+    window.jobCostingState.currentDiscipline = discipline;
+    document.querySelectorAll('.cost-main-content').forEach(panel => panel.style.display = 'none');
+    document.getElementById(`cost-content-${discipline}`).style.display = 'block';
+    document.querySelectorAll('#cost-main-tabs .cost-main-tab').forEach(tab => tab.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    showCostSubTab(discipline, window.jobCostingState.currentCategories[discipline]);
+}
+
+function showCostSubTab(discipline, category) {
+    if (!window.jobCostingState) return;
+
+    window.jobCostingState.currentCategories[discipline] = category;
+    document.querySelectorAll(`.cost-sub-content-${discipline}`).forEach(panel => panel.style.display = 'none');
+    const targetPanel = document.getElementById(`cost-content-${discipline}-${category}`);
+    if (targetPanel) targetPanel.style.display = 'block';
+    document.querySelectorAll(`#cost-content-${discipline} .cost-sub-tab`).forEach(tab => tab.classList.remove('active'));
+    if (event && event.currentTarget) event.currentTarget.classList.add('active');
+}
+
+function addJobStep() {
+    if (!window.jobCostingState) return;
+
+    const input = document.getElementById('step-title-input');
+    const title = input.value.trim();
+    if (!title) {
+        alert('Please enter a title for the job step.');
+        return;
+    }
+    const newStep = {
+        id: `step-${Date.now()}`,
+        title: title,
+        items: []
+    };
+    window.jobCostingState.steps.push(newStep);
+    window.jobCostingState.activeStepId = newStep.id;
+    input.value = '';
+    renderProcedureList();
+}
+
+function addItemToActiveStep(item) {
+    if (!window.jobCostingState || !window.jobCostingState.activeStepId) {
+        alert('Please add or select a job step first.');
+        return;
+    }
+    const step = window.jobCostingState.steps.find(s => s.id === window.jobCostingState.activeStepId);
+    if (step) {
+        step.items.push(item);
+        renderProcedureList();
+    }
+}
+
+function removeJobStep(stepId) {
+    if (!window.jobCostingState) return;
+
+    window.jobCostingState.steps = window.jobCostingState.steps.filter(s => s.id !== stepId);
+    if (window.jobCostingState.activeStepId === stepId) {
+        window.jobCostingState.activeStepId = window.jobCostingState.steps.length > 0 ? window.jobCostingState.steps[window.jobCostingState.steps.length - 1].id : null;
+    }
+    renderProcedureList();
+}
+
+function removeItemFromStep(stepId, itemIndex) {
+    if (!window.jobCostingState) return;
+
+    const step = window.jobCostingState.steps.find(s => s.id === stepId);
+    if (step) {
+        step.items.splice(itemIndex, 1);
+        renderProcedureList();
+    }
+}
+
+function setActiveJobStep(stepId) {
+    if (!window.jobCostingState) return;
+
+    window.jobCostingState.activeStepId = stepId;
+    renderProcedureList();
+}
+
+function updateJobDuration(value) {
+    if (!window.jobCostingState) return;
+
+    window.jobCostingState.jobDuration = parseFloat(value) || 1;
+    if (window.jobCostingState.jobDuration < 1) window.jobCostingState.jobDuration = 1;
+    document.getElementById('job-duration-input').value = window.jobCostingState.jobDuration;
+    renderProcedureList();
+}
+
+function renderProcedureList() {
+    const list = document.getElementById('procedure-list');
+    if (!list || !window.jobCostingState) return;
+
+    list.innerHTML = '';
+    let globalTotal = 0;
+
+    if (window.jobCostingState.steps.length === 0) {
+        list.innerHTML = '<li class="py-6 text-center text-gray-500">Add a job step to begin building your procedure.</li>';
+    } else {
+        window.jobCostingState.steps.forEach(step => {
+            let stepSubtotal = 0;
+            const stepCard = document.createElement('li');
+            stepCard.className = 'step-card';
+            if (step.id === window.jobCostingState.activeStepId) {
+                stepCard.classList.add('active');
+            }
+
+            let itemsHTML = '<ul class="step-item-list">';
+            step.items.forEach((item, index) => {
+                let itemCost = 0;
+                if (item.unit === 'Day') {
+                    itemCost = item.baseRate * window.jobCostingState.jobDuration;
+                } else {
+                    itemCost = item.baseRate;
+                }
+                stepSubtotal += itemCost;
+
+                itemsHTML += `
+                    <li class="step-item">
+                        <div class="flex-1 pr-4">
+                            <span class="step-item-name">${item.name}</span>
+                            <span class="block text-xs text-gray-400 font-mono">${item.code} / ${item.unit}</span>
+                        </div>
+                        <span class="step-item-cost">£${itemCost.toFixed(2)}</span>
+                        <button class="remove-item-btn" onclick="event.stopPropagation(); removeItemFromStep('${step.id}', ${index})">remove</button>
+                    </li>
+                `;
+            });
+            itemsHTML += '</ul>';
+
+            globalTotal += stepSubtotal;
+
+            stepCard.innerHTML = `
+                <div class="step-header" onclick="setActiveJobStep('${step.id}')">
+                    <h3 class="flex-1">${step.title}</h3>
+                    <button class="remove-step-btn" onclick="event.stopPropagation(); removeJobStep('${step.id}')">REMOVE</button>
+                </div>
+                ${itemsHTML}
+                <div class="step-footer">
+                    <strong>Step Subtotal: £${stepSubtotal.toFixed(2)}</strong>
+                </div>
+            `;
+            list.appendChild(stepCard);
+        });
+    }
+
+    const totalDisplay = document.getElementById('job-total');
+    if (totalDisplay) {
+        totalDisplay.textContent = `£${globalTotal.toFixed(2)}`;
+    }
+
+    // Update cost displays in Performer and Analyzer views
+    updatePerformerCostDisplay(globalTotal);
+    updateAnalyzerCostDisplay(globalTotal);
+}
+
+function updatePerformerCostDisplay(totalCost) {
+    const afeDisplay = document.getElementById('performer-afe-budget');
+    const actualDisplay = document.getElementById('performer-actual-cost');
+    const varianceDisplay = document.getElementById('performer-variance');
+    const percentDisplay = document.getElementById('performer-budget-percent');
+
+    if (!afeDisplay) return;
+
+    // Use the existing AFE from app state or the job costing total
+    const afeBudget = window.appState && window.appState.commercial ? window.appState.commercial.afe : totalCost;
+    const actualCost = totalCost;
+    const variance = afeBudget - actualCost;
+    const percent = afeBudget > 0 ? (actualCost / afeBudget * 100) : 0;
+
+    afeDisplay.textContent = `$${(afeBudget / 1000).toFixed(0)}K`;
+    actualDisplay.textContent = `$${(actualCost / 1000).toFixed(0)}K`;
+    varianceDisplay.textContent = `$${(variance / 1000).toFixed(0)}K`;
+    percentDisplay.textContent = `${percent.toFixed(0)}%`;
+
+    // Color coding
+    if (variance < 0) {
+        varianceDisplay.classList.add('text-red-400');
+        varianceDisplay.classList.remove('text-green-400');
+    } else {
+        varianceDisplay.classList.add('text-green-400');
+        varianceDisplay.classList.remove('text-red-400');
+    }
+}
+
+function updateAnalyzerCostDisplay(totalCost) {
+    const afeDisplay = document.getElementById('analyzer-afe-budget');
+    const actualDisplay = document.getElementById('analyzer-actual-cost');
+    const equipmentDisplay = document.getElementById('analyzer-equipment-cost');
+    const personnelDisplay = document.getElementById('analyzer-personnel-cost');
+    const toolsDisplay = document.getElementById('analyzer-tools-cost');
+    const consumablesDisplay = document.getElementById('analyzer-consumables-cost');
+
+    if (!afeDisplay) return;
+
+    // Calculate breakdown
+    const equipment = Math.floor(totalCost * 0.40);
+    const personnel = Math.floor(totalCost * 0.30);
+    const tools = Math.floor(totalCost * 0.20);
+    const consumables = Math.floor(totalCost * 0.10);
+
+    const afeBudget = window.appState && window.appState.commercial ? window.appState.commercial.afe : totalCost;
+
+    afeDisplay.textContent = `$${(afeBudget / 1000).toFixed(0)}K`;
+    actualDisplay.textContent = `$${(totalCost / 1000).toFixed(0)}K`;
+    equipmentDisplay.textContent = `$${(equipment / 1000).toFixed(0)}K`;
+    personnelDisplay.textContent = `$${(personnel / 1000).toFixed(0)}K`;
+    toolsDisplay.textContent = `$${(tools / 1000).toFixed(0)}K`;
+    consumablesDisplay.textContent = `$${(consumables / 1000).toFixed(0)}K`;
 }
 
 </script>
