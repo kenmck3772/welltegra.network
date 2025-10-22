@@ -1269,26 +1269,53 @@ document.addEventListener('DOMContentLoaded', function() {
                 perforations: [{top: 9850, bottom: 9950}] 
             } 
         },
-        { 
-            id: 'P-12', 
-            name: 'CASE STUDY: The Wax Plug', 
-            field: 'Piper', 
-            region: 'UKCS', 
-            type: 'Oil Producer', 
-            depth: '7,500ft', 
-            status: 'Active - Restored Production', 
-            issue: 'SOLUTION: Severe paraffin wax blockage was cleared using CT with a chemical/mechanical approach.', 
-            history: [ 
+        {
+            id: 'P-12',
+            name: 'CASE STUDY: The Wax Plug',
+            field: 'Piper',
+            region: 'UKCS',
+            type: 'Oil Producer',
+            depth: '7,500ft',
+            status: 'Active - Restored Production',
+            issue: 'SOLUTION: Severe paraffin wax blockage was cleared using CT with a chemical/mechanical approach.',
+            history: [
                 { date: '2024-01-15', operation: 'Slickline Gauge Ring Run', problem: 'Gauge ring tagged a soft, waxy obstruction at 6,000ft. Unable to pass.', lesson: 'A previous attempt on another well with only chemicals was slow and ineffective; a combined approach is needed.' },
                 { date: '2024-02-01', operation: 'CT Wax Cleanout', problem: 'Successfully removed wax blockage using a combination of heated chemical dissolvers and a mechanical scraper tool on Coiled Tubing.', lesson: 'The dual chemical/mechanical approach is highly effective for severe paraffin blockages.' }
-            ], 
-            dailyReports: [], 
-            completion: { 
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 7500}], 
-                tubing: [{type: 'Production', size: '3 1/2', top: 0, bottom: 7300}], 
-                equipment: [{item: 'SSSV', top: 1200}, {item: 'Packer', top: 7250}], 
-                perforations: [{top: 7350, bottom: 7450}] 
-            } 
+            ],
+            dailyReports: [],
+            completion: {
+                casing: [{type: 'Production', size: '7', top: 0, bottom: 7500}],
+                tubing: [{type: 'Production', size: '3 1/2', top: 0, bottom: 7300}],
+                equipment: [{item: 'SSSV', top: 1200}, {item: 'Packer', top: 7250}],
+                perforations: [{top: 7350, bottom: 7450}]
+            }
+        },
+        {
+            id: 'S-77',
+            name: 'CASE STUDY: Field of Dreams',
+            field: 'Schiehallion',
+            region: 'UKCS',
+            type: 'HPHT Oil Producer',
+            depth: '19,200ft',
+            status: 'Active - Peak Performance',
+            issue: 'SOLUTION: Multi-barrier failure resolution - Combined lessons from all interventions delivered exceptional results.',
+            history: [
+                { date: '2023-08-20', operation: 'Complex Multi-Stage Intervention', problem: 'Well experiencing compound failures: partial casing restriction, minor scale buildup, aging safety systems, and intermittent sand production.', lesson: 'This well demonstrated that multiple smaller issues, if left unaddressed, compound into major operational challenges requiring comprehensive intervention planning.' },
+                { date: '2023-09-15', operation: 'Integrated Solution Deployment', problem: 'Successfully executed a staged intervention combining expandable patch technology, chemical scale treatment, safety valve replacement, and sand control installation - all in a single campaign.', lesson: 'Integrated multi-discipline approach saved 45 days vs. sequential interventions. This became the blueprint for tackling W666.' },
+                { date: '2023-10-01', operation: 'Post-Intervention Performance', problem: 'Well exceeded pre-intervention production by 180%, with zero NPT and full barrier integrity restored.', lesson: 'Proves that comprehensive planning and execution of multiple remediation strategies simultaneously is not only feasible but highly effective. This success story directly informed the W666 intervention strategy.' }
+            ],
+            dailyReports: [],
+            completion: {
+                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 19200}],
+                tubing: [{type: 'Production', size: '5 1/2', top: 0, bottom: 19000}],
+                equipment: [
+                    {item: 'SSSV', top: 2800, comments: 'Replaced - Now Operational'},
+                    {item: 'Expandable Patch', top: 9200, comments: 'Successfully Installed'},
+                    {item: 'Sand Screen', top: 17500, comments: 'Through-Tubing Installation'},
+                    {item: 'Packer', top: 18950}
+                ],
+                perforations: [{top: 19050, bottom: 19150}]
+            }
         },
     ];
     const objectivesData = [ 
