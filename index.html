@@ -908,6 +908,10 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
                         <span>FAQ</span>
                     </a>
+                    <a id="security-nav-link" title="Security & Data Protection" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <span>Security</span>
+                    </a>
                     <a id="about-nav-link" title="About the Founder" class="nav-link flex items-center space-x-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
                         <span>About</span>
@@ -981,6 +985,55 @@
                                class="block w-full text-center px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
                                 Run Your Numbers →
                             </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Social Proof Section -->
+            <section class="py-16 px-4">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold mb-4">Trusted by Leading Operators</h2>
+                        <p class="text-lg text-slate-400">Pilot partners across North America and the North Sea</p>
+                    </div>
+
+                    <!-- Testimonial -->
+                    <div class="max-w-3xl mx-auto bg-gradient-to-r from-slate-800/80 to-slate-900/80 border border-cyan-500/30 rounded-lg p-8 shadow-xl">
+                        <div class="flex items-start gap-4">
+                            <div class="text-6xl text-cyan-400">"</div>
+                            <div class="flex-1">
+                                <p class="text-lg italic mb-4">
+                                    Well-Tegra's integrated approach to well planning has transformed how our engineers work.
+                                    What used to take days of spreadsheet wrangling now happens in hours, with better quality
+                                    and fewer errors.
+                                </p>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-cyan-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                                        JD
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold">Senior Well Engineer</div>
+                                        <div class="text-sm text-slate-400">Major North Sea Operator</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder logos -->
+                    <div class="mt-12 flex flex-wrap justify-center items-center gap-8 opacity-40">
+                        <div class="w-32 h-16 bg-slate-700/50 rounded-lg flex items-center justify-center text-slate-500 font-semibold">
+                            Operator 1
+                        </div>
+                        <div class="w-32 h-16 bg-slate-700/50 rounded-lg flex items-center justify-center text-slate-500 font-semibold">
+                            Operator 2
+                        </div>
+                        <div class="w-32 h-16 bg-slate-700/50 rounded-lg flex items-center justify-center text-slate-500 font-semibold">
+                            Operator 3
+                        </div>
+                        <div class="w-32 h-16 bg-slate-700/50 rounded-lg flex items-center justify-center text-slate-500 font-semibold">
+                            Operator 4
                         </div>
                     </div>
                 </div>
@@ -1695,7 +1748,145 @@
             <div class="mt-8 light-card p-6 md:p-8 rounded-lg"><h3 class="text-xl font-semibold mb-4">Lessons Learned</h3><div id="lessons-learned-list" class="space-y-4 mb-6"></div><div><textarea id="lesson-input" class="w-full p-2 text-base rounded-md" rows="3" placeholder="Add a new lesson learned..."></textarea><button id="add-lesson-btn" class="mt-2 rounded-md bg-teal-600 px-4 py-2 text-base font-semibold text-white shadow-sm hover:bg-teal-500">Add Lesson</button></div></div>
             <div class="mt-8 flex justify-center"><button id="plan-new-job-btn" class="rounded-md bg-gray-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-500">Plan New Job</button></div>
         </div>
-        
+
+        <!-- Security View -->
+        <div id="security-view" class="view-container hidden max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold tracking-tight">Security & Data Protection</h1>
+                <p class="mt-4 text-lg text-slate-400">We design for security from day one</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Security Overview -->
+                <div class="light-card p-8 rounded-lg">
+                    <p class="text-lg leading-relaxed">
+                        Encryption in transit (TLS 1.2+), encryption at rest (AES-256), role-based access control,
+                        and regional data residency by request. Your data security is our top priority.
+                    </p>
+                </div>
+
+                <!-- Architecture Diagram Placeholder -->
+                <div class="light-card p-8 rounded-lg">
+                    <h2 class="text-2xl font-bold mb-6">Architecture & Data Flow</h2>
+                    <div class="bg-slate-800/50 border-2 border-cyan-500/30 rounded-lg p-8 text-center">
+                        <div class="space-y-4 text-left max-w-3xl mx-auto">
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center text-white font-bold">1</div>
+                                <div>
+                                    <h4 class="font-semibold text-cyan-400">Browser to API</h4>
+                                    <p class="text-sm text-slate-300">All data flows from your browser to our API over TLS 1.3 encrypted connections</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center text-white font-bold">2</div>
+                                <div>
+                                    <h4 class="font-semibold text-cyan-400">At-Rest Encryption</h4>
+                                    <p class="text-sm text-slate-300">Data is encrypted with AES-256 using managed keys, never stored in plaintext</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center text-white font-bold">3</div>
+                                <div>
+                                    <h4 class="font-semibold text-cyan-400">Access Control</h4>
+                                    <p class="text-sm text-slate-300">Role-based permissions ensure users only access data relevant to their role</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center text-white font-bold">4</div>
+                                <div>
+                                    <h4 class="font-semibold text-cyan-400">Audit Logging</h4>
+                                    <p class="text-sm text-slate-300">All admin actions and data access events are logged and monitored</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Compliance Roadmap -->
+                <div class="light-card p-8 rounded-lg">
+                    <h2 class="text-2xl font-bold mb-6">Compliance & Certifications Roadmap</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="border-l-4 border-emerald-500 pl-4">
+                            <h4 class="font-semibold text-emerald-400 mb-2">In Progress</h4>
+                            <ul class="space-y-2 text-slate-300">
+                                <li class="flex items-center gap-2">
+                                    <span class="text-emerald-400">⏳</span>
+                                    <span>SOC 2 Type I Certification</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-emerald-400">⏳</span>
+                                    <span>Penetration Testing (Q1 2025)</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="border-l-4 border-cyan-500 pl-4">
+                            <h4 class="font-semibold text-cyan-400 mb-2">Planned</h4>
+                            <ul class="space-y-2 text-slate-300">
+                                <li class="flex items-center gap-2">
+                                    <span class="text-cyan-400">📋</span>
+                                    <span>SSO/OIDC Integration (Okta, Azure AD)</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-cyan-400">📋</span>
+                                    <span>Data Retention & Deletion Policy</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-cyan-400">📋</span>
+                                    <span>ISO 27001 Certification</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Features -->
+                <div class="light-card p-8 rounded-lg">
+                    <h2 class="text-2xl font-bold mb-6">Security Features</h2>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <div class="text-4xl mb-3">🔒</div>
+                            <h4 class="font-semibold mb-2">Encryption</h4>
+                            <p class="text-sm text-slate-400">TLS 1.3 in transit, AES-256 at rest</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl mb-3">👤</div>
+                            <h4 class="font-semibold mb-2">Access Control</h4>
+                            <p class="text-sm text-slate-400">Role-based permissions, MFA support</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl mb-3">📊</div>
+                            <h4 class="font-semibold mb-2">Audit Logs</h4>
+                            <p class="text-sm text-slate-400">Complete activity tracking</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl mb-3">🌍</div>
+                            <h4 class="font-semibold mb-2">Data Residency</h4>
+                            <p class="text-sm text-slate-400">Regional hosting options available</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl mb-3">🔄</div>
+                            <h4 class="font-semibold mb-2">Backups</h4>
+                            <p class="text-sm text-slate-400">Automated daily backups, 30-day retention</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl mb-3">🛡️</div>
+                            <h4 class="font-semibold mb-2">Monitoring</h4>
+                            <p class="text-sm text-slate-400">24/7 security monitoring & alerts</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div class="light-card p-8 rounded-lg text-center">
+                    <h2 class="text-2xl font-bold mb-4">Have Security Questions?</h2>
+                    <p class="text-lg text-slate-400 mb-6">Our security team is here to help</p>
+                    <a href="mailto:security@welltegra.network" class="inline-block px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
+                        Contact Security Team
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </main>
     
     <div id="well-history-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 modal-overlay">
@@ -2415,7 +2606,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const planExists = !!appState.generatedPlan;
         navLinks.forEach(link => {
             const id = link.id.replace('-nav-link', '');
-            if (id !== 'home' && id !== 'planner' && id !== 'about' && id !== 'faq' && id !== 'whitepaper') {
+            if (id !== 'home' && id !== 'planner' && id !== 'about' && id !== 'faq' && id !== 'whitepaper' && id !== 'security') {
                 if (planExists) {
                     link.classList.remove('disabled');
                 } else {
