@@ -1,0 +1,23 @@
+{
+  "name": "welltegra.network",
+  "version": "1.0.0",
+  "description": "A comprehensive web-based application for well engineering analysis, real-time drilling data monitoring, and problem-solving in complex well operations.",
+  "main": "module-loader.js",
+  "scripts": {
+    "build:css": "tailwindcss -c tailwind.config.js -i styles/tailwind.css -o assets/css/tailwind.css --minify",
+    "format": "prettier --write CHECKLIST.md RELEASE_NOTES.md",
+    "lint:links": "linkinator http://127.0.0.1:8000 --silent --skip 'mailto:*' --timeout 3000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "linkinator": "^4.0.2",
+    "playwright": "^1.56.1",
+    "postcss": "^8.4.38",
+    "prettier": "^3.3.2",
+    "tailwindcss": "^3.4.11"
+  }
+}
