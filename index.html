@@ -934,8 +934,58 @@
                     <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">From Data Chaos to Predictive Clarity.</h1>
                     <p class="mt-6 text-lg md:text-xl text-slate-100">The oil and gas industry loses over $38 million per asset annually to unplanned downtime. Your engineers spend more than 50% of their time wrangling data. The cause? A disconnected digital ecosystem.</p>
                     <p class="mt-4 text-lg md:text-xl font-semibold text-white">Well-Tegra: Engineering Insight, Amplified by Data.</p>
+
+                    <!-- Hero CTAs -->
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Request a Demo
+                        </a>
+                        <button onclick="showView('planner')" class="px-8 py-4 bg-white hover:bg-slate-100 text-slate-900 text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Try the Planner
+                        </button>
+                    </div>
                 </div>
             </section>
+
+            <!-- Mini ROI Block + Outcome Bullets -->
+            <section class="py-12 px-4 bg-gradient-to-r from-cyan-900/20 to-blue-900/20 border-y border-cyan-500/30">
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <!-- Outcome Bullets -->
+                        <div class="space-y-4">
+                            <h3 class="text-2xl font-bold text-white">Proven Results</h3>
+                            <ul class="space-y-3 text-lg">
+                                <li class="flex items-start gap-3">
+                                    <span class="text-emerald-400 text-2xl">✓</span>
+                                    <span>Reduce NPT by <strong class="text-cyan-400">15–30%</strong> on pilot wells</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-emerald-400 text-2xl">✓</span>
+                                    <span>Reclaim <strong class="text-cyan-400">2–3 hours/day</strong> of engineer time</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-emerald-400 text-2xl">✓</span>
+                                    <span>Cut planning cycles from <strong class="text-cyan-400">days → hours</strong></span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Mini ROI -->
+                        <div class="bg-slate-800/80 border border-cyan-500/50 rounded-lg p-8 shadow-xl">
+                            <h3 class="text-2xl font-bold text-white mb-4">It Pays for Itself</h3>
+                            <p class="text-lg text-slate-300 mb-6">
+                                Example: <strong class="text-cyan-400">20 engineers</strong> × <strong class="text-cyan-400">20% NPT reduction</strong> →
+                                <span class="block mt-2 text-3xl font-extrabold text-emerald-400">$2.17M annual savings</span>
+                            </p>
+                            <a href="#" onclick="document.querySelector('.roi-calculator').scrollIntoView({behavior:'smooth'}); return false;"
+                               class="block w-full text-center px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
+                                Run Your Numbers →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section class="py-20 px-4 bg-white dark:bg-transparent">
                 <div class="max-w-7xl mx-auto relative z-10">
                     <div class="text-center">
@@ -943,10 +993,10 @@
                         <p class="mt-4 text-lg">Your operations are being taxed by disconnected workflows you can't see on a balance sheet.</p>
                     </div>
                     <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Data Wrangling Tax</h3><p class="mt-2">Unlock Your Data. Your most valuable assetsâ€”your engineersâ€”are forced to act as data clerks, wasting countless hours hunting for information in emails, correcting spreadsheet errors, and re-entering data from PDFs.</p></div>
+                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Data Wrangling Tax</h3><p class="mt-2">Unlock Your Data. Your most valuable assets—your engineers—are forced to act as data clerks, wasting countless hours hunting for information in emails, correcting spreadsheet errors, and re-entering data from PDFs.</p></div>
                         <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The NPT Tax</h3><p class="mt-2">Every moment of Non-Productive Time is a direct hit to your bottom line. Plans based on poor data lead to equipment failures, procedural errors, and costly downtime.</p></div>
                         <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Collaboration Tax</h3><p class="mt-2">The critical gap between your team and service partners is where value is lost. Static PDF handoffs create slow, error-prone workflows that prevent true, real-time collaboration.</p></div>
-                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Energy & Emissions Tax</h3><p class="mt-2">Inefficient operations don't just waste moneyâ€”they waste energy. Extended run times and unnecessary flaring contribute to higher operational costs and a larger carbon footprint.</p></div>
+                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Energy & Emissions Tax</h3><p class="mt-2">Inefficient operations don't just waste money—they waste energy. Extended run times and unnecessary flaring contribute to higher operational costs and a larger carbon footprint.</p></div>
                     </div>
                 </div>
             </section>
@@ -6656,6 +6706,40 @@ if (typeof window !== 'undefined') {
     window.saveWellCosts = window.saveWellCosts;
 }
 
+</script>
+
+<!-- Auto-load demo survey on first visit -->
+<script>
+(function(){
+  try{
+    if(localStorage.getItem('wt_demo_loaded')) return;
+    function run(){
+      if(typeof window.loadSampleSurvey === 'function'){
+        // Wait a bit for the page to fully load, then auto-navigate to performer view and load sample
+        setTimeout(function() {
+          showView('performer');
+          setTimeout(function() {
+            window.loadSampleSurvey();
+          }, 500);
+        }, 1000);
+      } else {
+        // Fallback: try to click the sample button
+        var btn = document.querySelector('button[onclick*="loadSampleSurvey"]');
+        if(btn) {
+          setTimeout(function() {
+            showView('performer');
+            setTimeout(function() {
+              btn.click();
+            }, 500);
+          }, 1000);
+        }
+      }
+      localStorage.setItem('wt_demo_loaded','1');
+    }
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+    else run();
+  }catch(e){ console.warn('Demo preload failed', e); }
+})();
 </script>
 
 </body>
