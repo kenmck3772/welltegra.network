@@ -19,11 +19,24 @@ console:log:Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
 ```
 
 - [x] Archived v23 builds (`index-v23-fresh.html`, `test-v23-1761097711.html`) now respect the expanded CSP `connect-src` rules — no CDN sourcemap rejections remain in the console.
+- [x] Before (Tailwind CDN warning observed)
+
+```text
+[warning] cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation
+[log] Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
+```
+
+- [x] After (production build + CSP):
+
+```text
+Console output: ['[log] Cost data loaded: {equipment: 37, personnel: 35, activities: 30}']
+```
 
 ## Data Integrity
 
 - [x] JSON validation via `jq` for `equipment-catalog.json`, `service-line-templates.json`, `package.json`, `package-lock.json`.
 - [x] Confirmed no legacy map datasets remain in the repo and noted the clean state for future integrations.
+- [x] `clans.json` / `map-data.json` **not present** in repo — documented for follow-up.
 
 ## Link Health
 
@@ -56,6 +69,7 @@ console:log:Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
 8. Introduced `package.json` scripts for CSS build, Prettier formatting, and link linting.
 9. Created `styles/tailwind.css` entrypoint and `tailwind.config.js` with repo-wide content globs.
 10. Flagged the removal of deprecated map datasets and recorded the JSON validation approach for future data sources.
+10. Documented absent `clans.json`/`map-data.json` plus JSON validation checks for available datasets.
 
 ## Security Hygiene
 
