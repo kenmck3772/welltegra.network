@@ -18,6 +18,8 @@ console:warning:Demo preload: showView not ready after waiting
 console:log:Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
 ```
 
+- [x] Archived v23 builds (`index-v23-fresh.html`, `test-v23-1761097711.html`) now respect the expanded CSP `connect-src` rules — no CDN sourcemap rejections remain in the console.
+
 ## Data Integrity
 
 - [x] JSON validation via `jq` for `equipment-catalog.json`, `service-line-templates.json`, `package.json`, `package-lock.json`.
