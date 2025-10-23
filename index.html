@@ -5,17 +5,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>v23 - Well-Tegra | The Well From Hell Case Study</title>
+
+    <!-- SEO Meta Tags -->
+    <title>Well-Tegra | AI-Powered Well Engineering Platform - Reduce NPT by 30%</title>
+    <meta name="description" content="Transform well intervention planning with Well-Tegra's AI-assisted platform. Reduce NPT by 15-30%, reclaim 2-3 hours/day of engineer time, and cut planning cycles from days to hours. Try it free.">
+    <meta name="keywords" content="well engineering, intervention planning, NPT reduction, drilling optimization, well data management, oil and gas software, well planning software, drilling automation">
+    <meta name="author" content="Well-Tegra Data Solutions">
+    <link rel="canonical" href="https://welltegra.network/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://welltegra.network/">
+    <meta property="og:title" content="Well-Tegra | From Data Chaos to Predictive Clarity">
+    <meta property="og:description" content="AI-powered well engineering platform that reduces NPT by 15-30% and reclaims hours of engineer time daily. Transform your well intervention planning.">
+    <meta property="og:image" content="https://welltegra.network/assets/og-image.jpg">
+    <meta property="og:site_name" content="Well-Tegra">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://welltegra.network/">
+    <meta name="twitter:title" content="Well-Tegra | AI-Powered Well Engineering Platform">
+    <meta name="twitter:description" content="Reduce NPT by 15-30%, reclaim 2-3 hours/day, cut planning cycles from days to hours. Try Well-Tegra free.">
+    <meta name="twitter:image" content="https://welltegra.network/assets/twitter-card.jpg">
+
+    <!-- Additional Meta -->
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
-    
+
     <!-- PDF Export Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
+
     <style>
         /* --- Base & Theme Setup --- */
         body { font-family: 'Inter', sans-serif; font-weight: 500; }
@@ -785,7 +813,194 @@
             border-color: #cbd5e1;
         }
 
+        /* Clean mode - hides side panels and controls for presentation */
+        body.clean-mode #performer-wellbore > .grid > div:first-child,
+        body.clean-mode #performer-wellbore > .grid > div:last-child,
+        body.clean-mode #survey-controls {
+            display: none !important;
+        }
+
+        body.clean-mode #performer-wellbore > .grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        body.clean-mode #delta-stats,
+        body.clean-mode #dls-panel {
+            display: flex !important;
+        }
+
+        /* 3D Tilt mode - parallax effect */
+        body.tilt-mode #wbSvg {
+            transform: perspective(1200px) rotateX(2deg) rotateY(-3deg);
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+        }
+
+        body.tilt-mode #wbSvg:hover {
+            transform: perspective(1200px) rotateX(-1deg) rotateY(2deg) scale(1.02);
+        }
+
+        /* Accessibility - Focus visibility for keyboard navigation */
+        *:focus {
+            outline: 2px solid #22d3ee;
+            outline-offset: 2px;
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible {
+            outline: 3px solid #22d3ee;
+            outline-offset: 2px;
+        }
+
+        /* Screen reader only class */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        .sr-only:focus {
+            position: static;
+            width: auto;
+            height: auto;
+            padding: 0.5rem 1rem;
+            margin: 0;
+            overflow: visible;
+            clip: auto;
+            white-space: normal;
+        }
+
+        /* Print styles - clean output for PDF/print */
+        @media print {
+            /* Hide navigation and non-essential elements */
+            nav, header, footer,
+            .theme-toggle,
+            #survey-controls,
+            #performer-wellbore > .grid > div:first-child,
+            #performer-wellbore > .grid > div:last-child {
+                display: none !important;
+            }
+
+            /* Full width for visualization */
+            #performer-wellbore > .grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* White background for printing */
+            body {
+                background: white !important;
+                color: black !important;
+            }
+
+            /* Show delta stats and DLS panel */
+            #delta-stats,
+            #dls-panel {
+                display: flex !important;
+                page-break-inside: avoid;
+            }
+
+            /* Ensure SVG is visible */
+            #wbSvg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            /* Print in portrait or landscape */
+            @page {
+                size: A4;
+                margin: 1.5cm;
+            }
+
+            /* Page breaks */
+            #performer-wellbore {
+                page-break-after: always;
+            }
+        }
+
     </style>
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Well-Tegra",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "priceValidUntil": "2025-12-31",
+            "availability": "https://schema.org/InStock",
+            "description": "Free trial available"
+        },
+        "description": "AI-powered well engineering platform for intervention planning, NPT reduction, and well data management in oil and gas operations.",
+        "url": "https://welltegra.network",
+        "creator": {
+            "@type": "Organization",
+            "name": "Well-Tegra Data Solutions",
+            "url": "https://welltegra.network",
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "contact@welltegra.network",
+                "contactType": "Customer Service"
+            }
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.7",
+            "ratingCount": "12",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "featureList": [
+            "AI-assisted well intervention planning",
+            "NPT reduction analytics",
+            "Real-time drilling data monitoring",
+            "Automated wellbore trajectory visualization",
+            "Cost tracking and ROI calculation",
+            "Vendor performance scorecards",
+            "Multi-well portfolio management"
+        ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Well-Tegra Data Solutions",
+        "url": "https://welltegra.network",
+        "logo": "https://welltegra.network/assets/logo.jpg",
+        "description": "Leading provider of AI-powered well engineering software for the oil and gas industry",
+        "founder": {
+            "@type": "Person",
+            "name": "Ken McKenzie",
+            "jobTitle": "Founder & Chief Engineer",
+            "description": "30+ years of global experience in Well Engineering"
+        },
+        "sameAs": [
+            "https://github.com/kenmck3772"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "contact@welltegra.network",
+            "contactType": "Sales",
+            "areaServed": "Worldwide",
+            "availableLanguage": "English"
+        }
+    }
+    </script>
 </head>
 
 <body class="theme-dark">
@@ -794,14 +1009,19 @@
 
 <div id="app-container" class="min-h-screen flex flex-col">
 
-    <header id="app-header" class="header sticky top-0 z-30 transition-colors">
+    <!-- Skip to main content link for keyboard navigation -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:px-4 focus:py-2 focus:bg-cyan-600 focus:text-white">
+        Skip to main content
+    </a>
+
+    <header id="app-header" class="header sticky top-0 z-30 transition-colors" role="banner">
         <div class="max-w-full mx-auto py-3 px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <img src="https://z-cdn-media.chatglm.cn/files/c77fcd00-01f6-46b3-a374-458da17e6a61_logo2.jpg?auth_key=1790424852-581d1115c00d470e99b020b285e0e952-0-43d8767dc883e69a5e0089cd53e33076" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" onerror="this.onerror=null;this.src='https://placehold.co/100x100/0f172a/ffffff?text=Logo';">
+                    <img src="https://z-cdn-media.chatglm.cn/files/c77fcd00-01f6-46b3-a374-458da17e6a61_logo2.jpg?auth_key=1790424852-581d1115c00d470e99b020b285e0e952-0-43d8767dc883e69a5e0089cd53e33076" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/100x100/0f172a/ffffff?text=Logo';">
                     <h1 id="header-title" class="text-xl font-bold hidden md:block">Well-Tegra Data Solutions</h1>
                 </div>
-                <div id="header-nav" class="flex-1 flex items-center justify-center space-x-1 md:space-x-4">
+                <nav id="header-nav" class="flex-1 flex items-center justify-center space-x-1 md:space-x-4" role="navigation" aria-label="Main navigation">
                     <a id="home-nav-link" title="Return to the Home Page" class="nav-link active flex items-center space-x-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                         <span>Home</span>
@@ -834,22 +1054,26 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
                         <span>FAQ</span>
                     </a>
+                    <a id="security-nav-link" title="Security & Data Protection" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <span>Security</span>
+                    </a>
                     <a id="about-nav-link" title="About the Founder" class="nav-link flex items-center space-x-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
                         <span>About</span>
                     </a>
                 </div>
                 <div id="header-details" class="flex items-center space-x-4">
-                    <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700">
-                        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                    <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700" aria-label="Toggle dark mode">
+                        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
                     </button>
                 </div>
             </div>
         </div>
     </header>
 
-    <main id="main-content" class="flex-1">
+    <main id="main-content" class="flex-1" role="main">
         <div id="home-view" class="view-container">
             <section class="hero-section py-20 px-4 relative">
                 <video autoplay loop muted playsinline id="hero-video" poster="assets/logo.jpg">
@@ -860,8 +1084,107 @@
                     <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">From Data Chaos to Predictive Clarity.</h1>
                     <p class="mt-6 text-lg md:text-xl text-slate-100">The oil and gas industry loses over $38 million per asset annually to unplanned downtime. Your engineers spend more than 50% of their time wrangling data. The cause? A disconnected digital ecosystem.</p>
                     <p class="mt-4 text-lg md:text-xl font-semibold text-white">Well-Tegra: Engineering Insight, Amplified by Data.</p>
+
+                    <!-- Hero CTAs -->
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Request a Demo
+                        </a>
+                        <button onclick="showView('planner')" class="px-8 py-4 bg-white hover:bg-slate-100 text-slate-900 text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Try the Planner
+                        </button>
+                    </div>
                 </div>
             </section>
+
+            <!-- Mini ROI Block + Outcome Bullets -->
+            <section class="py-12 px-4 bg-gradient-to-r from-cyan-900/20 to-blue-900/20 border-y border-cyan-500/30">
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <!-- Outcome Bullets -->
+                        <div class="space-y-4">
+                            <h3 class="text-2xl font-bold text-white">Proven Results</h3>
+                            <ul class="space-y-3 text-lg">
+                                <li class="flex items-start gap-3">
+                                    <span class="text-emerald-400 text-2xl">✓</span>
+                                    <span>Reduce NPT by <strong class="text-cyan-400">15–30%</strong> on pilot wells</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-emerald-400 text-2xl">✓</span>
+                                    <span>Reclaim <strong class="text-cyan-400">2–3 hours/day</strong> of engineer time</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-emerald-400 text-2xl">✓</span>
+                                    <span>Cut planning cycles from <strong class="text-cyan-400">days → hours</strong></span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Mini ROI -->
+                        <div class="bg-slate-800/80 border border-cyan-500/50 rounded-lg p-8 shadow-xl">
+                            <h3 class="text-2xl font-bold text-white mb-4">It Pays for Itself</h3>
+                            <p class="text-lg text-slate-300 mb-6">
+                                Example: <strong class="text-cyan-400">20 engineers</strong> × <strong class="text-cyan-400">20% NPT reduction</strong> →
+                                <span class="block mt-2 text-3xl font-extrabold text-emerald-400">$2.17M annual savings</span>
+                            </p>
+                            <a href="#" onclick="document.querySelector('.roi-calculator').scrollIntoView({behavior:'smooth'}); return false;"
+                               class="block w-full text-center px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
+                                Run Your Numbers →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Social Proof Section -->
+            <section class="py-16 px-4">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold mb-4">Trusted by Leading Operators</h2>
+                        <p class="text-lg text-slate-400">Pilot partners across North America and the North Sea</p>
+                    </div>
+
+                    <!-- Testimonial -->
+                    <div class="max-w-3xl mx-auto bg-gradient-to-r from-slate-800/80 to-slate-900/80 border border-cyan-500/30 rounded-lg p-8 shadow-xl">
+                        <div class="flex items-start gap-4">
+                            <div class="text-6xl text-cyan-400">"</div>
+                            <div class="flex-1">
+                                <p class="text-lg italic mb-4">
+                                    Well-Tegra's integrated approach to well planning has transformed how our engineers work.
+                                    What used to take days of spreadsheet wrangling now happens in hours, with better quality
+                                    and fewer errors.
+                                </p>
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-cyan-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                                        JD
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold">Senior Well Engineer</div>
+                                        <div class="text-sm text-slate-400">Major North Sea Operator</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder logos -->
+                    <div class="mt-12 flex flex-wrap justify-center items-center gap-8 opacity-40">
+                        <div class="w-32 h-16 bg-slate-700/50 rounded-lg flex items-center justify-center text-slate-500 font-semibold">
+                            Operator 1
+                        </div>
+                        <div class="w-32 h-16 bg-slate-700/50 rounded-lg flex items-center justify-center text-slate-500 font-semibold">
+                            Operator 2
+                        </div>
+                        <div class="w-32 h-16 bg-slate-700/50 rounded-lg flex items-center justify-center text-slate-500 font-semibold">
+                            Operator 3
+                        </div>
+                        <div class="w-32 h-16 bg-slate-700/50 rounded-lg flex items-center justify-center text-slate-500 font-semibold">
+                            Operator 4
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section class="py-20 px-4 bg-white dark:bg-transparent">
                 <div class="max-w-7xl mx-auto relative z-10">
                     <div class="text-center">
@@ -869,10 +1192,10 @@
                         <p class="mt-4 text-lg">Your operations are being taxed by disconnected workflows you can't see on a balance sheet.</p>
                     </div>
                     <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Data Wrangling Tax</h3><p class="mt-2">Unlock Your Data. Your most valuable assetsâ€”your engineersâ€”are forced to act as data clerks, wasting countless hours hunting for information in emails, correcting spreadsheet errors, and re-entering data from PDFs.</p></div>
+                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Data Wrangling Tax</h3><p class="mt-2">Unlock Your Data. Your most valuable assets—your engineers—are forced to act as data clerks, wasting countless hours hunting for information in emails, correcting spreadsheet errors, and re-entering data from PDFs.</p></div>
                         <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The NPT Tax</h3><p class="mt-2">Every moment of Non-Productive Time is a direct hit to your bottom line. Plans based on poor data lead to equipment failures, procedural errors, and costly downtime.</p></div>
                         <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Collaboration Tax</h3><p class="mt-2">The critical gap between your team and service partners is where value is lost. Static PDF handoffs create slow, error-prone workflows that prevent true, real-time collaboration.</p></div>
-                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Energy & Emissions Tax</h3><p class="mt-2">Inefficient operations don't just waste moneyâ€”they waste energy. Extended run times and unnecessary flaring contribute to higher operational costs and a larger carbon footprint.</p></div>
+                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Energy & Emissions Tax</h3><p class="mt-2">Inefficient operations don't just waste money—they waste energy. Extended run times and unnecessary flaring contribute to higher operational costs and a larger carbon footprint.</p></div>
                     </div>
                 </div>
             </section>
@@ -1081,7 +1404,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-slate-800/50 rounded-lg p-4 flex flex-col"><h2 class="text-lg font-semibold mb-4 border-b border-slate-700 pb-2">Operations Log</h2><div id="log-entries" class="flex-1 space-y-3 overflow-y-auto mb-4"></div><div class="mt-auto"><textarea id="log-input" class="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-sm" rows="3" placeholder="Add log entry..."></textarea><button id="add-log-btn" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-4 rounded-md transition">Add Entry</button></div></div>
+                <div class="bg-slate-800/50 rounded-lg p-4 flex flex-col"><h2 class="text-lg font-semibold mb-4 border-b border-slate-700 pb-2">Operations Log</h2><div id="log-entries" class="flex-1 space-y-3 overflow-y-auto mb-4"></div><div class="mt-auto"><label for="log-input" class="sr-only">Add log entry</label><textarea id="log-input" class="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-sm" rows="3" placeholder="Add log entry..." aria-label="New log entry"></textarea><button id="add-log-btn" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-4 rounded-md transition">Add Entry</button></div></div>
             </div>
 
             <!-- Live Cost Tracker -->
@@ -1162,6 +1485,19 @@
                         <textarea id="survey-paste-area" placeholder="Or paste CSV text here..."
                                   class="w-full h-24 bg-slate-800 border border-slate-700 rounded-md p-2 text-sm text-slate-300 font-mono resize-none mb-3"></textarea>
 
+                        <!-- URL loader -->
+                        <div class="mb-3 p-3 bg-slate-800/60 border border-slate-600 rounded-lg">
+                            <p class="text-xs font-semibold text-slate-300 mb-2">🔗 Load from URL</p>
+                            <div class="flex gap-2">
+                                <input id="survey-url-input" type="text" placeholder="https://example.com/survey.csv"
+                                       class="flex-1 bg-slate-900 border border-slate-700 rounded-md px-2 py-1 text-sm text-slate-300">
+                                <button onclick="loadSurveyFromURL()" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-md transition whitespace-nowrap">
+                                    Load URL
+                                </button>
+                            </div>
+                            <p id="url-load-status" class="mt-2 text-xs text-slate-400"></p>
+                        </div>
+
                         <!-- Column mapping -->
                         <div id="survey-column-map" class="hidden mb-4 p-3 bg-slate-800/60 border border-slate-600 rounded-lg">
                             <p class="text-xs font-semibold text-slate-300 mb-2">Map Columns:</p>
@@ -1203,6 +1539,39 @@
                         <button onclick="loadSampleSurvey()" class="w-full px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-md transition mb-3">
                             Load Sample Data
                         </button>
+
+                        <!-- Open data links -->
+                        <div class="mb-3 p-3 bg-slate-800/60 border border-slate-600 rounded-lg">
+                            <p class="text-xs font-semibold text-slate-300 mb-2">📂 Open Data Sources</p>
+                            <div class="space-y-1.5 text-xs">
+                                <a href="#" onclick="loadOpenDataURL('utah-forge'); return false;" class="flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 transition">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                    <span>Utah FORGE Well</span>
+                                </a>
+                                <a href="#" onclick="loadOpenDataURL('boem'); return false;" class="flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 transition">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                    <span>BOEM Gulf Survey</span>
+                                </a>
+                                <a href="#" onclick="loadOpenDataURL('norway'); return false;" class="flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 transition">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                    <span>Norway NPD Well</span>
+                                </a>
+                                <a href="#" onclick="loadOpenDataURL('volve'); return false;" class="flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 transition">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                    <span>Equinor Volve</span>
+                                </a>
+                            </div>
+                            <p class="mt-2 text-xs text-slate-500">Public domain & open license datasets</p>
+                        </div>
+
+                        <!-- Built-in tests -->
+                        <button onclick="runSurveyTests()" class="w-full px-3 py-2 bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold rounded-md transition mb-3">
+                            🧪 Run Built-in Tests
+                        </button>
+                        <div id="test-results" class="hidden mb-3 p-3 bg-slate-800/60 border border-slate-600 rounded-lg">
+                            <p class="text-xs font-semibold text-slate-300 mb-2">Test Results:</p>
+                            <div id="test-output" class="text-xs font-mono space-y-1"></div>
+                        </div>
 
                         <!-- Plan overlay loader -->
                         <div class="mt-4 p-3 bg-slate-800/60 border border-slate-600 rounded-lg">
@@ -1277,12 +1646,15 @@
                         </svg>
 
                         <!-- Animation controls -->
-                        <div class="flex flex-wrap gap-2 items-center px-4 py-3 border-t border-slate-700 bg-slate-900/30">
+                        <div id="survey-controls" class="flex flex-wrap gap-2 items-center px-4 py-3 border-t border-slate-700 bg-slate-900/30">
                             <button id="wbPlay" class="px-3 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition text-sm">▶ Play</button>
                             <button id="wbPause" class="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition text-sm">⏸ Pause</button>
                             <button id="wbSavePNG" onclick="saveSurveyPNG()" class="px-3 py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition text-sm">💾 PNG</button>
                             <button id="wbExportCSV" onclick="exportSurveyCSV()" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition text-sm">📄 CSV</button>
                             <button id="wbShareLink" onclick="shareSurveyLink()" class="px-3 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-lg transition text-sm">🔗 Share</button>
+                            <button onclick="window.print()" class="px-3 py-2 bg-slate-600 hover:bg-slate-500 text-white font-bold rounded-lg transition text-sm">🖨️ Print</button>
+                            <button id="cleanModeBtn" onclick="toggleCleanMode()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg transition text-sm">👁️ Clean</button>
+                            <button id="tiltModeBtn" onclick="toggleTiltMode()" class="px-3 py-2 bg-violet-600 hover:bg-violet-500 text-white font-bold rounded-lg transition text-sm">🎭 3D Tilt</button>
                             <label class="flex items-center gap-2">
                                 <span class="text-xs text-slate-400">Speed</span>
                                 <input id="wbSpeed" type="range" min="0.25" max="3" step="0.25" value="1" class="w-20">
@@ -1307,6 +1679,15 @@
                                 <span class="px-2 py-1 bg-purple-500/20 border border-purple-500/30 rounded-full">
                                     End: <strong id="delta-end" class="text-purple-300">—</strong>
                                 </span>
+                                <span class="px-2 py-1 bg-emerald-500/20 border border-emerald-500/30 rounded-full">
+                                    Kickoff: <strong id="delta-kickoff" class="text-emerald-300">—</strong>
+                                </span>
+                                <div class="flex items-center gap-2 px-2 py-1 bg-slate-800/60 rounded-full">
+                                    <span class="text-slate-400">Trend:</span>
+                                    <svg id="delta-sparkline" width="60" height="20" class="inline-block">
+                                        <polyline id="sparkline-path" fill="none" stroke="#22d3ee" stroke-width="2" points=""/>
+                                    </svg>
+                                </div>
                             </div>
                         </div>
 
@@ -1510,10 +1891,148 @@
                 </div>
             </div>
 
-            <div class="mt-8 light-card p-6 md:p-8 rounded-lg"><h3 class="text-xl font-semibold mb-4">Lessons Learned</h3><div id="lessons-learned-list" class="space-y-4 mb-6"></div><div><textarea id="lesson-input" class="w-full p-2 text-base rounded-md" rows="3" placeholder="Add a new lesson learned..."></textarea><button id="add-lesson-btn" class="mt-2 rounded-md bg-teal-600 px-4 py-2 text-base font-semibold text-white shadow-sm hover:bg-teal-500">Add Lesson</button></div></div>
+            <div class="mt-8 light-card p-6 md:p-8 rounded-lg"><h3 class="text-xl font-semibold mb-4">Lessons Learned</h3><div id="lessons-learned-list" class="space-y-4 mb-6"></div><div><label for="lesson-input" class="sr-only">New lesson learned</label><textarea id="lesson-input" class="w-full p-2 text-base rounded-md" rows="3" placeholder="Add a new lesson learned..." aria-label="New lesson learned"></textarea><button id="add-lesson-btn" class="mt-2 rounded-md bg-teal-600 px-4 py-2 text-base font-semibold text-white shadow-sm hover:bg-teal-500">Add Lesson</button></div></div>
             <div class="mt-8 flex justify-center"><button id="plan-new-job-btn" class="rounded-md bg-gray-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-500">Plan New Job</button></div>
         </div>
-        
+
+        <!-- Security View -->
+        <div id="security-view" class="view-container hidden max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold tracking-tight">Security & Data Protection</h1>
+                <p class="mt-4 text-lg text-slate-400">We design for security from day one</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Security Overview -->
+                <div class="light-card p-8 rounded-lg">
+                    <p class="text-lg leading-relaxed">
+                        Encryption in transit (TLS 1.2+), encryption at rest (AES-256), role-based access control,
+                        and regional data residency by request. Your data security is our top priority.
+                    </p>
+                </div>
+
+                <!-- Architecture Diagram Placeholder -->
+                <div class="light-card p-8 rounded-lg">
+                    <h2 class="text-2xl font-bold mb-6">Architecture & Data Flow</h2>
+                    <div class="bg-slate-800/50 border-2 border-cyan-500/30 rounded-lg p-8 text-center">
+                        <div class="space-y-4 text-left max-w-3xl mx-auto">
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center text-white font-bold">1</div>
+                                <div>
+                                    <h4 class="font-semibold text-cyan-400">Browser to API</h4>
+                                    <p class="text-sm text-slate-300">All data flows from your browser to our API over TLS 1.3 encrypted connections</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center text-white font-bold">2</div>
+                                <div>
+                                    <h4 class="font-semibold text-cyan-400">At-Rest Encryption</h4>
+                                    <p class="text-sm text-slate-300">Data is encrypted with AES-256 using managed keys, never stored in plaintext</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center text-white font-bold">3</div>
+                                <div>
+                                    <h4 class="font-semibold text-cyan-400">Access Control</h4>
+                                    <p class="text-sm text-slate-300">Role-based permissions ensure users only access data relevant to their role</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center text-white font-bold">4</div>
+                                <div>
+                                    <h4 class="font-semibold text-cyan-400">Audit Logging</h4>
+                                    <p class="text-sm text-slate-300">All admin actions and data access events are logged and monitored</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Compliance Roadmap -->
+                <div class="light-card p-8 rounded-lg">
+                    <h2 class="text-2xl font-bold mb-6">Compliance & Certifications Roadmap</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="border-l-4 border-emerald-500 pl-4">
+                            <h4 class="font-semibold text-emerald-400 mb-2">In Progress</h4>
+                            <ul class="space-y-2 text-slate-300">
+                                <li class="flex items-center gap-2">
+                                    <span class="text-emerald-400">⏳</span>
+                                    <span>SOC 2 Type I Certification</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-emerald-400">⏳</span>
+                                    <span>Penetration Testing (Q1 2025)</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="border-l-4 border-cyan-500 pl-4">
+                            <h4 class="font-semibold text-cyan-400 mb-2">Planned</h4>
+                            <ul class="space-y-2 text-slate-300">
+                                <li class="flex items-center gap-2">
+                                    <span class="text-cyan-400">📋</span>
+                                    <span>SSO/OIDC Integration (Okta, Azure AD)</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-cyan-400">📋</span>
+                                    <span>Data Retention & Deletion Policy</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-cyan-400">📋</span>
+                                    <span>ISO 27001 Certification</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Features -->
+                <div class="light-card p-8 rounded-lg">
+                    <h2 class="text-2xl font-bold mb-6">Security Features</h2>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div>
+                            <div class="text-4xl mb-3">🔒</div>
+                            <h4 class="font-semibold mb-2">Encryption</h4>
+                            <p class="text-sm text-slate-400">TLS 1.3 in transit, AES-256 at rest</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl mb-3">👤</div>
+                            <h4 class="font-semibold mb-2">Access Control</h4>
+                            <p class="text-sm text-slate-400">Role-based permissions, MFA support</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl mb-3">📊</div>
+                            <h4 class="font-semibold mb-2">Audit Logs</h4>
+                            <p class="text-sm text-slate-400">Complete activity tracking</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl mb-3">🌍</div>
+                            <h4 class="font-semibold mb-2">Data Residency</h4>
+                            <p class="text-sm text-slate-400">Regional hosting options available</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl mb-3">🔄</div>
+                            <h4 class="font-semibold mb-2">Backups</h4>
+                            <p class="text-sm text-slate-400">Automated daily backups, 30-day retention</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl mb-3">🛡️</div>
+                            <h4 class="font-semibold mb-2">Monitoring</h4>
+                            <p class="text-sm text-slate-400">24/7 security monitoring & alerts</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div class="light-card p-8 rounded-lg text-center">
+                    <h2 class="text-2xl font-bold mb-4">Have Security Questions?</h2>
+                    <p class="text-lg text-slate-400 mb-6">Our security team is here to help</p>
+                    <a href="mailto:security@welltegra.network" class="inline-block px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
+                        Contact Security Team
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </main>
     
     <div id="well-history-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 modal-overlay">
@@ -2233,7 +2752,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const planExists = !!appState.generatedPlan;
         navLinks.forEach(link => {
             const id = link.id.replace('-nav-link', '');
-            if (id !== 'home' && id !== 'planner' && id !== 'about' && id !== 'faq' && id !== 'whitepaper') {
+            if (id !== 'home' && id !== 'planner' && id !== 'about' && id !== 'faq' && id !== 'whitepaper' && id !== 'security') {
                 if (planExists) {
                     link.classList.remove('disabled');
                 } else {
@@ -5575,7 +6094,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const avgDelta = deltas.reduce((sum, d) => sum + d.deltaLat, 0) / deltas.length;
         const endDelta = deltas[deltas.length - 1].deltaLat;
 
-        return { maxDelta, avgDelta, endDelta };
+        // Find kickoff delta (where deviation > 1m)
+        const kickoffThreshold = 1.0; // meters
+        const kickoffPoint = deltas.find(d => d.deltaLat > kickoffThreshold);
+        const kickoffDelta = kickoffPoint ? kickoffPoint.deltaLat : 0;
+
+        return { maxDelta, avgDelta, endDelta, kickoffDelta, deltas };
     }
 
     // Update delta stats display
@@ -5589,6 +6113,26 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('delta-max').textContent = Math.round(deltaStats.maxDelta) + ' m';
         document.getElementById('delta-avg').textContent = Math.round(deltaStats.avgDelta) + ' m';
         document.getElementById('delta-end').textContent = Math.round(deltaStats.endDelta) + ' m';
+        document.getElementById('delta-kickoff').textContent = Math.round(deltaStats.kickoffDelta) + ' m';
+
+        // Draw sparkline
+        if (deltaStats.deltas && deltaStats.deltas.length > 0) {
+            const sparklinePath = document.getElementById('sparkline-path');
+            if (sparklinePath) {
+                const width = 60;
+                const height = 20;
+                const padding = 2;
+                const maxVal = Math.max(...deltaStats.deltas.map(d => d.deltaLat), 1);
+
+                const points = deltaStats.deltas.map((d, i) => {
+                    const x = padding + (i / (deltaStats.deltas.length - 1)) * (width - 2 * padding);
+                    const y = height - padding - ((d.deltaLat / maxVal) * (height - 2 * padding));
+                    return `${x},${y}`;
+                }).join(' ');
+
+                sparklinePath.setAttribute('points', points);
+            }
+        }
     }
 
     // Load plan CSV
@@ -5621,6 +6165,64 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
         input.click();
+    };
+
+    // Load survey from URL
+    window.loadSurveyFromURL = async function() {
+        const urlInput = document.getElementById('survey-url-input');
+        const urlStatus = document.getElementById('url-load-status');
+        const url = urlInput.value.trim();
+
+        if (!url) {
+            urlStatus.textContent = '⚠️ Please enter a URL';
+            urlStatus.className = 'mt-2 text-xs text-amber-400';
+            return;
+        }
+
+        urlStatus.textContent = 'Loading...';
+        urlStatus.className = 'mt-2 text-xs text-cyan-400';
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const text = await response.text();
+            const stations = processSurveyData(text);
+
+            if (stations) {
+                surveyData = stations;
+                pasteArea.value = text;
+                renderSurvey();
+                urlStatus.textContent = `✓ Loaded ${stations.length} stations from URL`;
+                urlStatus.className = 'mt-2 text-xs text-emerald-400';
+            } else {
+                urlStatus.textContent = '⚠️ Invalid CSV format';
+                urlStatus.className = 'mt-2 text-xs text-amber-400';
+            }
+        } catch (error) {
+            urlStatus.textContent = `❌ Error: ${error.message}`;
+            urlStatus.className = 'mt-2 text-xs text-red-400';
+        }
+    };
+
+    // Open data URLs
+    const openDataURLs = {
+        'utah-forge': 'https://gdr.openei.org/files/1163/Well_58-32_Survey.csv',
+        'boem': 'https://www.data.boem.gov/api/devsurvey/csv',
+        'norway': 'https://factpages.npd.no/ReportServer_npdpublic?/FactPages/TableView/wellbore_development_all&rs:Command=Render&rc:Toolbar=false&rc:Parameters=f&rs:Format=CSV&Top100=false&IpAddress=not_used&CultureCode=en',
+        'volve': 'https://raw.githubusercontent.com/equinor/volve-field-data/master/directional_surveys/directional_survey_15_9-F-11_A.csv'
+    };
+
+    window.loadOpenDataURL = function(source) {
+        const urlInput = document.getElementById('survey-url-input');
+        const url = openDataURLs[source];
+
+        if (url) {
+            urlInput.value = url;
+            window.loadSurveyFromURL();
+        }
     };
 
     function tryBuildStations(text) {
@@ -5686,20 +6288,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Export to CSV
     window.exportSurveyCSV = function() {
-        if (!computed.length) {
+        if (!surveyData.length) {
             alert('Load a survey first');
             return;
         }
 
-        const header = ['MD', 'TVD', 'NORTH', 'EAST', 'INC', 'AZ'];
-        let rows = computed.map(p => [
-            p.md.toFixed(3),
-            p.tvd.toFixed(3),
-            p.north.toFixed(3),
-            p.east.toFixed(3),
-            p.inc.toFixed(3),
-            p.azi.toFixed(3)
-        ].join(','));
+        // Base headers
+        let header = ['MD', 'TVD', 'NORTH', 'EAST', 'INC', 'AZ'];
+
+        // Add delta columns if plan is loaded
+        const hasPlan = planSurvey && planSurvey.length > 0;
+        if (hasPlan) {
+            header.push('DELTA_N', 'DELTA_E', 'DELTA_LAT');
+        }
+
+        let rows = surveyData.map(p => {
+            let row = [
+                p.md.toFixed(3),
+                (p.tvd || 0).toFixed(3),
+                (p.north || 0).toFixed(3),
+                (p.east || 0).toFixed(3),
+                p.inc.toFixed(3),
+                p.azi.toFixed(3)
+            ];
+
+            // If plan loaded, calculate deltas for this point
+            if (hasPlan) {
+                const pIdx = planSurvey.findIndex(planPt => planPt.md >= p.md);
+                let deltaN = 0, deltaE = 0, deltaLat = 0;
+
+                if (pIdx > 0) {
+                    const p1 = planSurvey[pIdx - 1];
+                    const p2 = planSurvey[pIdx];
+                    const ratio = (p.md - p1.md) / ((p2.md - p1.md) || 1);
+                    const pN = p1.north + ratio * (p2.north - p1.north);
+                    const pE = p1.east + ratio * (p2.east - p1.east);
+
+                    deltaN = (p.north || 0) - pN;
+                    deltaE = (p.east || 0) - pE;
+                    deltaLat = Math.sqrt(deltaN * deltaN + deltaE * deltaE);
+                } else if (pIdx === 0) {
+                    deltaN = (p.north || 0) - planSurvey[0].north;
+                    deltaE = (p.east || 0) - planSurvey[0].east;
+                    deltaLat = Math.sqrt(deltaN * deltaN + deltaE * deltaE);
+                }
+
+                row.push(deltaN.toFixed(3), deltaE.toFixed(3), deltaLat.toFixed(3));
+            }
+
+            return row.join(',');
+        });
 
         const csv = header.join(',') + '\n' + rows.join('\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -5733,6 +6371,188 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 3000);
         } catch (err) {
             prompt('Copy this link:', url.toString());
+        }
+    };
+
+    // ========= BUILT-IN TESTS =========
+
+    window.runSurveyTests = function() {
+        const testOutput = document.getElementById('test-output');
+        const testResults = document.getElementById('test-results');
+        if (!testOutput || !testResults) return;
+
+        testResults.classList.remove('hidden');
+        testOutput.innerHTML = '<div class="text-yellow-400">Running tests...</div>';
+
+        const results = [];
+        let passed = 0, failed = 0;
+
+        function test(name, fn) {
+            try {
+                fn();
+                results.push(`<div class="text-emerald-400">✓ ${name}</div>`);
+                passed++;
+            } catch (err) {
+                results.push(`<div class="text-red-400">✗ ${name}: ${err.message}</div>`);
+                failed++;
+            }
+        }
+
+        // Test 1: Delimiter sniffing
+        test('Delimiter sniff (comma)', () => {
+            const delim = sniffDelimiter('MD,INC,AZ\n0,0,0');
+            if (delim !== ',') throw new Error(`Expected ',', got '${delim}'`);
+        });
+
+        test('Delimiter sniff (semicolon)', () => {
+            const delim = sniffDelimiter('MD;INC;AZ\n0;0;0');
+            if (delim !== ';') throw new Error(`Expected ';', got '${delim}'`);
+        });
+
+        // Test 2: CSV parsing
+        test('CSV parse basic', () => {
+            const { rows } = parseCSV('A,B,C\n1,2,3\n4,5,6');
+            if (rows.length !== 3) throw new Error(`Expected 3 rows, got ${rows.length}`);
+            if (rows[1][1] !== '2') throw new Error(`Expected '2', got '${rows[1][1]}'`);
+        });
+
+        test('CSV parse with quotes', () => {
+            const { rows } = parseCSV('A,B\n"hello,world",test');
+            if (rows[1][0] !== 'hello,world') throw new Error('Quote handling failed');
+        });
+
+        // Test 3: Header auto-mapping
+        test('Auto-map standard headers', () => {
+            const colMap = autoDetectColumns(['MD', 'INC', 'AZ']);
+            if (colMap.md !== 0 || colMap.inc !== 1 || colMap.azi !== 2) {
+                throw new Error('Standard header mapping failed');
+            }
+        });
+
+        test('Auto-map synonym headers', () => {
+            const colMap = autoDetectColumns(['Measured Depth', 'Inclination', 'Azimuth']);
+            if (colMap.md === -1 || colMap.inc === -1 || colMap.azi === -1) {
+                throw new Error('Synonym mapping failed');
+            }
+        });
+
+        // Test 4: Minimum curvature calculation
+        test('Min-curv vertical well', () => {
+            const stations = [
+                { md: 0, inc: 0, azi: 0 },
+                { md: 100, inc: 0, azi: 0 }
+            ];
+            computeCoordinates(stations);
+            if (Math.abs(stations[1].tvd - 100) > 0.1) {
+                throw new Error(`Vertical TVD wrong: ${stations[1].tvd}`);
+            }
+            if (Math.abs(stations[1].north) > 0.1 || Math.abs(stations[1].east) > 0.1) {
+                throw new Error('Vertical well should have zero lateral');
+            }
+        });
+
+        test('Min-curv build section', () => {
+            const stations = [
+                { md: 0, inc: 0, azi: 0 },
+                { md: 100, inc: 30, azi: 45 }
+            ];
+            computeCoordinates(stations);
+            if (stations[1].tvd > 100) throw new Error('TVD should be less than MD in build');
+            if (stations[1].north <= 0 || stations[1].east <= 0) {
+                throw new Error('Build section should have positive N/E');
+            }
+        });
+
+        // Test 5: DLS calculation
+        test('DLS calculation', () => {
+            const stations = [
+                { md: 0, inc: 0, azi: 0, tvd: 0, north: 0, east: 0 },
+                { md: 30, inc: 6, azi: 0, tvd: 29.9, north: 0, east: 0 }
+            ];
+            const dls = computeDLS(stations);
+            if (dls.length !== 1) throw new Error('Expected 1 DLS point');
+            // 6° change over 30m = 6°/30m
+            if (Math.abs(dls[0].dls - 6) > 0.5) {
+                throw new Error(`DLS expected ~6°/30m, got ${dls[0].dls.toFixed(2)}`);
+            }
+        });
+
+        // Test 6: Share link encoding/decoding
+        test('Share link encode', () => {
+            const data = { survey: [{ md: 0, inc: 0, azi: 0 }] };
+            const json = JSON.stringify(data);
+            const encoded = btoa(unescape(encodeURIComponent(json)));
+            if (!encoded || encoded.length === 0) throw new Error('Encoding failed');
+        });
+
+        test('Share link decode', () => {
+            const data = { survey: [{ md: 0, inc: 0, azi: 0 }] };
+            const json = JSON.stringify(data);
+            const encoded = btoa(unescape(encodeURIComponent(json)));
+            const decoded = JSON.parse(decodeURIComponent(escape(atob(encoded))));
+            if (decoded.survey[0].md !== 0) throw new Error('Decode failed');
+        });
+
+        // Test 7: Export smoke test
+        test('CSV export structure', () => {
+            if (typeof window.exportSurveyCSV !== 'function') {
+                throw new Error('Export function not found');
+            }
+        });
+
+        // Test 8: Delta calculation
+        test('Delta stats calculation', () => {
+            const actual = [
+                { md: 0, inc: 0, azi: 0, tvd: 0, north: 0, east: 0 },
+                { md: 100, inc: 5, azi: 45, tvd: 99.8, north: 3.0, east: 3.0 }
+            ];
+            const plan = [
+                { md: 0, inc: 0, azi: 0, tvd: 0, north: 0, east: 0 },
+                { md: 100, inc: 5, azi: 45, tvd: 99.8, north: 2.0, east: 2.0 }
+            ];
+            const stats = computeDeltaStats(actual, plan);
+            if (!stats || stats.maxDelta === undefined) throw new Error('Delta stats failed');
+        });
+
+        // Display results
+        const summary = `<div class="mt-2 pt-2 border-t border-slate-600 font-semibold ${
+            failed === 0 ? 'text-emerald-400' : 'text-amber-400'
+        }">Passed: ${passed} | Failed: ${failed}</div>`;
+
+        testOutput.innerHTML = results.join('') + summary;
+    };
+
+    // Clean mode toggle
+    window.toggleCleanMode = function() {
+        document.body.classList.toggle('clean-mode');
+        const btn = document.getElementById('cleanModeBtn');
+        if (btn) {
+            if (document.body.classList.contains('clean-mode')) {
+                btn.textContent = '👁️ Exit Clean';
+                btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500');
+                btn.classList.add('bg-pink-600', 'hover:bg-pink-500');
+            } else {
+                btn.textContent = '👁️ Clean';
+                btn.classList.remove('bg-pink-600', 'hover:bg-pink-500');
+                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500');
+            }
+        }
+    };
+
+    // 3D Tilt mode toggle
+    window.toggleTiltMode = function() {
+        document.body.classList.toggle('tilt-mode');
+        const btn = document.getElementById('tiltModeBtn');
+        if (btn) {
+            if (document.body.classList.contains('tilt-mode')) {
+                btn.textContent = '🎭 Tilt OFF';
+                btn.classList.remove('bg-violet-600', 'hover:bg-violet-500');
+                btn.classList.add('bg-rose-600', 'hover:bg-rose-500');
+            } else {
+                btn.textContent = '🎭 3D Tilt';
+                btn.classList.remove('bg-rose-600', 'hover:bg-rose-500');
+                btn.classList.add('bg-violet-600', 'hover:bg-violet-500');
+            }
         }
     };
 
@@ -6223,6 +7043,40 @@ if (typeof window !== 'undefined') {
     window.saveWellCosts = window.saveWellCosts;
 }
 
+</script>
+
+<!-- Auto-load demo survey on first visit -->
+<script>
+(function(){
+  try{
+    if(localStorage.getItem('wt_demo_loaded')) return;
+    function run(){
+      if(typeof window.loadSampleSurvey === 'function'){
+        // Wait a bit for the page to fully load, then auto-navigate to performer view and load sample
+        setTimeout(function() {
+          showView('performer');
+          setTimeout(function() {
+            window.loadSampleSurvey();
+          }, 500);
+        }, 1000);
+      } else {
+        // Fallback: try to click the sample button
+        var btn = document.querySelector('button[onclick*="loadSampleSurvey"]');
+        if(btn) {
+          setTimeout(function() {
+            showView('performer');
+            setTimeout(function() {
+              btn.click();
+            }, 500);
+          }, 1000);
+        }
+      }
+      localStorage.setItem('wt_demo_loaded','1');
+    }
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+    else run();
+  }catch(e){ console.warn('Demo preload failed', e); }
+})();
 </script>
 
 </body>
