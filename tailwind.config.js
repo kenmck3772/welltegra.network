@@ -4,6 +4,9 @@ module.exports = {
     './**/*.html',
     './module-loader.js',
     '!./node_modules/**'
+    './*.html',
+    './**/*.html',
+    './module-loader.js'
   ],
   theme: {
     extend: {
