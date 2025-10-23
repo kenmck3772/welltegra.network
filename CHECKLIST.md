@@ -21,7 +21,7 @@ console:log:Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
 ## Data Integrity
 
 - [x] JSON validation via `jq` for `equipment-catalog.json`, `service-line-templates.json`, `package.json`, `package-lock.json`.
-- [x] `clans.json` / `map-data.json` **not present** in repo — documented for follow-up.
+- [x] Confirmed no legacy map datasets remain in the repo and noted the clean state for future integrations.
 
 ## Link Health
 
@@ -53,7 +53,7 @@ console:log:Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
 7. Updated CSP `img-src` allowlist to only include self + data URIs.
 8. Introduced `package.json` scripts for CSS build, Prettier formatting, and link linting.
 9. Created `styles/tailwind.css` entrypoint and `tailwind.config.js` with repo-wide content globs.
-10. Documented absent `clans.json`/`map-data.json` plus JSON validation checks for available datasets.
+10. Flagged the removal of deprecated map datasets and recorded the JSON validation approach for future data sources.
 
 ## Security Hygiene
 
