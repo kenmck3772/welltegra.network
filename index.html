@@ -34,6 +34,7 @@
     <meta name="revisit-after" content="7 days">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://welltegra.network; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data:;  base-uri 'self'; form-action 'self'">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://welltegra.network; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com; media-src 'self' data:;  base-uri 'self'; form-action 'self'">
     <link rel="stylesheet" href="assets/css/tailwind.css">
     <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
@@ -2050,6 +2051,13 @@
 </div>
 
 <script>
+const pendingShowViewCalls = [];
+if (typeof window !== 'undefined') {
+    window.showView = function(viewName) {
+        pendingShowViewCalls.push(viewName);
+    };
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // --- UI COMPONENT BUILDERS --- 
     /**
@@ -5288,6 +5296,15 @@ document.addEventListener('DOMContentLoaded', function() {
         window.calculateTotalJobCost = calculateTotalJobCost;
         window.saveWellCosts = saveWellCosts;
         window.renderNPTList = renderNPTList;
+        window.showView = switchView;
+        window.addNPTEventFromUI = addNPTEventFromUI;
+
+        while (pendingShowViewCalls.length > 0) {
+            const queuedView = pendingShowViewCalls.shift();
+            if (queuedView) {
+                switchView(queuedView);
+            }
+        }
     };
 
     init();
@@ -5297,6 +5314,7 @@ document.addEventListener('DOMContentLoaded', function() {
 (function() {
     // Survey data state
     let surveyData = [];
+    let computed = [];
     let currentView = 'profile'; // or 'plan'
     let running = false, tNorm = 0, speed = 1, last = 0;
     let pathLength = 0;
@@ -5543,6 +5561,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Render survey visualization
     function renderSurvey() {
         if (surveyData.length === 0) return;
+
+        computed = surveyData.slice();
 
         // Update stats
         surveyCount.textContent = surveyData.length;
@@ -7037,14 +7057,6 @@ function addNPTEventFromUI() {
     }
 }
 
-// Expose functions to window for global access
-if (typeof window !== 'undefined') {
-    window.addNPTEvent = window.addNPTEvent;
-    window.removeNPTEvent = window.removeNPTEvent;
-    window.calculateTotalNPTCost = window.calculateTotalNPTCost;
-    window.saveWellCosts = window.saveWellCosts;
-}
-
 </script>
 
 <!-- Auto-load demo survey on first visit -->
@@ -7053,27 +7065,42 @@ if (typeof window !== 'undefined') {
   try{
     if(localStorage.getItem('wt_demo_loaded')) return;
     function run(){
-      if(typeof window.loadSampleSurvey === 'function'){
-        // Wait a bit for the page to fully load, then auto-navigate to performer view and load sample
-        setTimeout(function() {
-          showView('performer');
+      var ensureShowView = function(callback, attempt){
+        if(typeof window.showView === 'function'){
+          callback(window.showView);
+        } else if((attempt || 0) < 20){
+          setTimeout(function(){ ensureShowView(callback, (attempt || 0) + 1); }, 150);
+        } else {
+          console.warn('Demo preload: showView not ready after waiting');
+        }
+      };
+
+      ensureShowView(function(showViewFn){
+        var activatePerformer = function(){
+          showViewFn('performer');
+        };
+
+        if(typeof window.loadSampleSurvey === 'function'){
           setTimeout(function() {
-            window.loadSampleSurvey();
-          }, 500);
-        }, 1000);
-      } else {
-        // Fallback: try to click the sample button
-        var btn = document.querySelector('button[onclick*="loadSampleSurvey"]');
-        if(btn) {
-          setTimeout(function() {
-            showView('performer');
+            activatePerformer();
             setTimeout(function() {
-              btn.click();
+              window.loadSampleSurvey();
             }, 500);
           }, 1000);
+        } else {
+          var btn = document.querySelector('button[onclick*="loadSampleSurvey"]');
+          if(btn) {
+            setTimeout(function() {
+              activatePerformer();
+              setTimeout(function() {
+                btn.click();
+              }, 500);
+            }, 1000);
+          }
         }
-      }
-      localStorage.setItem('wt_demo_loaded','1');
+
+        localStorage.setItem('wt_demo_loaded','1');
+      });
     }
     if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
     else run();

@@ -5,6 +5,8 @@
 - Replaced Tailwind CDN usage with a CLI-built `assets/css/tailwind.css`, added `package.json` tooling, and documented the workflow in `tailwind.config.js`.
 - Hardened external assets with CSP meta tags, SRI-pinned CDNs, local favicon/logo assets, and `rel="noopener noreferrer"` for outbound links.
 - Added Playwright-assisted console regression check, link health scan, and captured Lighthouse metrics for ongoing performance work.
+- Resolved first-visit auto-play errors by queueing `showView` calls until the SPA boot sequence completes and initializing survey state (`computed`) before render.
+- Expanded the CSP `connect-src` allowlist to include the pinned CDNs, clearing source-map fetch violations while keeping the policy tight.
 
 ## Verification
 
