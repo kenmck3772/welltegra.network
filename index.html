@@ -18,7 +18,7 @@
     <meta property="og:url" content="https://welltegra.network/">
     <meta property="og:title" content="Well-Tegra | From Data Chaos to Predictive Clarity">
     <meta property="og:description" content="AI-powered well engineering platform that reduces NPT by 15-30% and reclaims hours of engineer time daily. Transform your well intervention planning.">
-    <meta property="og:image" content="https://welltegra.network/assets/og-image.jpg">
+    <meta property="og:image" content="https://welltegra.network/assets/logo.jpg">
     <meta property="og:site_name" content="Well-Tegra">
 
     <!-- Twitter Card -->
@@ -26,7 +26,7 @@
     <meta name="twitter:url" content="https://welltegra.network/">
     <meta name="twitter:title" content="Well-Tegra | AI-Powered Well Engineering Platform">
     <meta name="twitter:description" content="Reduce NPT by 15-30%, reclaim 2-3 hours/day, cut planning cycles from days to hours. Try Well-Tegra free.">
-    <meta name="twitter:image" content="https://welltegra.network/assets/twitter-card.jpg">
+    <meta name="twitter:image" content="https://welltegra.network/assets/logo.jpg">
 
     <!-- Additional Meta -->
     <meta name="robots" content="index, follow">
@@ -34,15 +34,17 @@
     <meta name="revisit-after" content="7 days">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://welltegra.network; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data:;  base-uri 'self'; form-action 'self'">
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
 
     <!-- PDF Export Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <style>
         /* --- Base & Theme Setup --- */
@@ -1018,7 +1020,7 @@
         <div class="max-w-full mx-auto py-3 px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <img src="https://z-cdn-media.chatglm.cn/files/c77fcd00-01f6-46b3-a374-458da17e6a61_logo2.jpg?auth_key=1790424852-581d1115c00d470e99b020b285e0e952-0-43d8767dc883e69a5e0089cd53e33076" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/100x100/0f172a/ffffff?text=Logo';">
+                    <img src="assets/logo.jpg" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" loading="lazy">
                     <h1 id="header-title" class="text-xl font-bold hidden md:block">Well-Tegra Data Solutions</h1>
                 </div>
                 <nav id="header-nav" class="flex-1 flex items-center justify-center space-x-1 md:space-x-4" role="navigation" aria-label="Main navigation">
@@ -1344,7 +1346,7 @@
             <div class="text-center">
                 <h2 class="text-3xl font-bold tracking-tight">Well-Tegra White Paper</h2>
                 <p class="mt-4 max-w-2xl mx-auto text-lg">Dive deeper into the technical architecture and strategic vision behind the Well-Tegra platform. Our white paper provides a comprehensive overview of the privacy-preserving AI, enterprise blockchain, and data unification strategies that power our solution.</p>
-                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" download class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
+                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" download class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
                     Download the White Paper
                 </a>
             </div>
@@ -2048,6 +2050,13 @@
 </div>
 
 <script>
+const pendingShowViewCalls = [];
+if (typeof window !== 'undefined') {
+    window.showView = function(viewName) {
+        pendingShowViewCalls.push(viewName);
+    };
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // --- UI COMPONENT BUILDERS --- 
     /**
@@ -5286,6 +5295,15 @@ document.addEventListener('DOMContentLoaded', function() {
         window.calculateTotalJobCost = calculateTotalJobCost;
         window.saveWellCosts = saveWellCosts;
         window.renderNPTList = renderNPTList;
+        window.showView = switchView;
+        window.addNPTEventFromUI = addNPTEventFromUI;
+
+        while (pendingShowViewCalls.length > 0) {
+            const queuedView = pendingShowViewCalls.shift();
+            if (queuedView) {
+                switchView(queuedView);
+            }
+        }
     };
 
     init();
@@ -5295,6 +5313,7 @@ document.addEventListener('DOMContentLoaded', function() {
 (function() {
     // Survey data state
     let surveyData = [];
+    let computed = [];
     let currentView = 'profile'; // or 'plan'
     let running = false, tNorm = 0, speed = 1, last = 0;
     let pathLength = 0;
@@ -5541,6 +5560,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Render survey visualization
     function renderSurvey() {
         if (surveyData.length === 0) return;
+
+        computed = surveyData.slice();
 
         // Update stats
         surveyCount.textContent = surveyData.length;
@@ -7035,14 +7056,6 @@ function addNPTEventFromUI() {
     }
 }
 
-// Expose functions to window for global access
-if (typeof window !== 'undefined') {
-    window.addNPTEvent = window.addNPTEvent;
-    window.removeNPTEvent = window.removeNPTEvent;
-    window.calculateTotalNPTCost = window.calculateTotalNPTCost;
-    window.saveWellCosts = window.saveWellCosts;
-}
-
 </script>
 
 <!-- Auto-load demo survey on first visit -->
@@ -7051,27 +7064,42 @@ if (typeof window !== 'undefined') {
   try{
     if(localStorage.getItem('wt_demo_loaded')) return;
     function run(){
-      if(typeof window.loadSampleSurvey === 'function'){
-        // Wait a bit for the page to fully load, then auto-navigate to performer view and load sample
-        setTimeout(function() {
-          showView('performer');
+      var ensureShowView = function(callback, attempt){
+        if(typeof window.showView === 'function'){
+          callback(window.showView);
+        } else if((attempt || 0) < 20){
+          setTimeout(function(){ ensureShowView(callback, (attempt || 0) + 1); }, 150);
+        } else {
+          console.warn('Demo preload: showView not ready after waiting');
+        }
+      };
+
+      ensureShowView(function(showViewFn){
+        var activatePerformer = function(){
+          showViewFn('performer');
+        };
+
+        if(typeof window.loadSampleSurvey === 'function'){
           setTimeout(function() {
-            window.loadSampleSurvey();
-          }, 500);
-        }, 1000);
-      } else {
-        // Fallback: try to click the sample button
-        var btn = document.querySelector('button[onclick*="loadSampleSurvey"]');
-        if(btn) {
-          setTimeout(function() {
-            showView('performer');
+            activatePerformer();
             setTimeout(function() {
-              btn.click();
+              window.loadSampleSurvey();
             }, 500);
           }, 1000);
+        } else {
+          var btn = document.querySelector('button[onclick*="loadSampleSurvey"]');
+          if(btn) {
+            setTimeout(function() {
+              activatePerformer();
+              setTimeout(function() {
+                btn.click();
+              }, 500);
+            }, 1000);
+          }
         }
-      }
-      localStorage.setItem('wt_demo_loaded','1');
+
+        localStorage.setItem('wt_demo_loaded','1');
+      });
     }
     if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
     else run();

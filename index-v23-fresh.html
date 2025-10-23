@@ -5,16 +5,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://welltegra.network; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data:;  base-uri 'self'; form-action 'self'">
     <title>v23 - Well-Tegra | The Well From Hell Case Study</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
     
     <!-- PDF Export Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <style>
         /* --- Base & Theme Setup --- */
@@ -657,7 +659,7 @@
 
 <div id="welcome-screen" class="fixed inset-0 bg-slate-900 flex items-center justify-center z-50 transition-opacity duration-500">
     <div class="text-center">
-        <img src="https://z-cdn-media.chatglm.cn/files/c77fcd00-01f6-46b3-a374-458da17e6a61_logo2.jpg?auth_key=1790424852-581d1115c00d470e99b020b285e0e952-0-43d8767dc883e69a5e0089cd53e33076" alt="Well-Tegra Data Solutions Logo" class="h-24 w-auto mx-auto mb-8 animate-pulse">
+        <img src="assets/logo.jpg" alt="Well-Tegra Data Solutions Logo" class="h-24 w-auto mx-auto mb-8 animate-pulse">
         <div class="bg-slate-800 p-8 rounded-lg shadow-2xl w-80">
             <h2 class="text-2xl font-bold text-white mb-6">Platform Login</h2>
             <div class="space-y-4">
@@ -677,7 +679,7 @@
         <div class="max-w-full mx-auto py-3 px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <img src="https://z-cdn-media.chatglm.cn/files/c77fcd00-01f6-46b3-a374-458da17e6a61_logo2.jpg?auth_key=1790424852-581d1115c00d470e99b020b285e0e952-0-43d8767dc883e69a5e0089cd53e33076" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" onerror="this.onerror=null;this.src='https://placehold.co/100x100/0f172a/ffffff?text=Logo';">
+                    <img src="assets/logo.jpg" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3">
                     <h1 id="header-title" class="text-xl font-bold hidden md:block">Well-Tegra Data Solutions</h1>
                 </div>
                 <div id="header-nav" class="flex-1 flex items-center justify-center space-x-1 md:space-x-4">
@@ -879,7 +881,7 @@
             <div class="text-center">
                 <h2 class="text-3xl font-bold tracking-tight">Well-Tegra White Paper</h2>
                 <p class="mt-4 max-w-2xl mx-auto text-lg">Dive deeper into the technical architecture and strategic vision behind the Well-Tegra platform. Our white paper provides a comprehensive overview of the privacy-preserving AI, enterprise blockchain, and data unification strategies that power our solution.</p>
-                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" download class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
+                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" download class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
                     Download the White Paper
                 </a>
             </div>
