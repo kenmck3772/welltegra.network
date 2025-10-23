@@ -785,6 +785,80 @@
             border-color: #cbd5e1;
         }
 
+        /* Clean mode - hides side panels and controls for presentation */
+        body.clean-mode #performer-wellbore > .grid > div:first-child,
+        body.clean-mode #performer-wellbore > .grid > div:last-child,
+        body.clean-mode #survey-controls {
+            display: none !important;
+        }
+
+        body.clean-mode #performer-wellbore > .grid {
+            grid-template-columns: 1fr !important;
+        }
+
+        body.clean-mode #delta-stats,
+        body.clean-mode #dls-panel {
+            display: flex !important;
+        }
+
+        /* 3D Tilt mode - parallax effect */
+        body.tilt-mode #wbSvg {
+            transform: perspective(1200px) rotateX(2deg) rotateY(-3deg);
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease;
+        }
+
+        body.tilt-mode #wbSvg:hover {
+            transform: perspective(1200px) rotateX(-1deg) rotateY(2deg) scale(1.02);
+        }
+
+        /* Print styles - clean output for PDF/print */
+        @media print {
+            /* Hide navigation and non-essential elements */
+            nav, header, footer,
+            .theme-toggle,
+            #survey-controls,
+            #performer-wellbore > .grid > div:first-child,
+            #performer-wellbore > .grid > div:last-child {
+                display: none !important;
+            }
+
+            /* Full width for visualization */
+            #performer-wellbore > .grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* White background for printing */
+            body {
+                background: white !important;
+                color: black !important;
+            }
+
+            /* Show delta stats and DLS panel */
+            #delta-stats,
+            #dls-panel {
+                display: flex !important;
+                page-break-inside: avoid;
+            }
+
+            /* Ensure SVG is visible */
+            #wbSvg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            /* Print in portrait or landscape */
+            @page {
+                size: A4;
+                margin: 1.5cm;
+            }
+
+            /* Page breaks */
+            #performer-wellbore {
+                page-break-after: always;
+            }
+        }
+
     </style>
 </head>
 
@@ -1241,6 +1315,15 @@
                             <p class="mt-2 text-xs text-slate-500">Public domain & open license datasets</p>
                         </div>
 
+                        <!-- Built-in tests -->
+                        <button onclick="runSurveyTests()" class="w-full px-3 py-2 bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold rounded-md transition mb-3">
+                            🧪 Run Built-in Tests
+                        </button>
+                        <div id="test-results" class="hidden mb-3 p-3 bg-slate-800/60 border border-slate-600 rounded-lg">
+                            <p class="text-xs font-semibold text-slate-300 mb-2">Test Results:</p>
+                            <div id="test-output" class="text-xs font-mono space-y-1"></div>
+                        </div>
+
                         <!-- Plan overlay loader -->
                         <div class="mt-4 p-3 bg-slate-800/60 border border-slate-600 rounded-lg">
                             <p class="text-xs font-semibold text-slate-300 mb-2">📋 Plan Overlay (Optional)</p>
@@ -1314,12 +1397,15 @@
                         </svg>
 
                         <!-- Animation controls -->
-                        <div class="flex flex-wrap gap-2 items-center px-4 py-3 border-t border-slate-700 bg-slate-900/30">
+                        <div id="survey-controls" class="flex flex-wrap gap-2 items-center px-4 py-3 border-t border-slate-700 bg-slate-900/30">
                             <button id="wbPlay" class="px-3 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition text-sm">▶ Play</button>
                             <button id="wbPause" class="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition text-sm">⏸ Pause</button>
                             <button id="wbSavePNG" onclick="saveSurveyPNG()" class="px-3 py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition text-sm">💾 PNG</button>
                             <button id="wbExportCSV" onclick="exportSurveyCSV()" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition text-sm">📄 CSV</button>
                             <button id="wbShareLink" onclick="shareSurveyLink()" class="px-3 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-lg transition text-sm">🔗 Share</button>
+                            <button onclick="window.print()" class="px-3 py-2 bg-slate-600 hover:bg-slate-500 text-white font-bold rounded-lg transition text-sm">🖨️ Print</button>
+                            <button id="cleanModeBtn" onclick="toggleCleanMode()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg transition text-sm">👁️ Clean</button>
+                            <button id="tiltModeBtn" onclick="toggleTiltMode()" class="px-3 py-2 bg-violet-600 hover:bg-violet-500 text-white font-bold rounded-lg transition text-sm">🎭 3D Tilt</button>
                             <label class="flex items-center gap-2">
                                 <span class="text-xs text-slate-400">Speed</span>
                                 <input id="wbSpeed" type="range" min="0.25" max="3" step="0.25" value="1" class="w-20">
@@ -5815,20 +5901,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Export to CSV
     window.exportSurveyCSV = function() {
-        if (!computed.length) {
+        if (!surveyData.length) {
             alert('Load a survey first');
             return;
         }
 
-        const header = ['MD', 'TVD', 'NORTH', 'EAST', 'INC', 'AZ'];
-        let rows = computed.map(p => [
-            p.md.toFixed(3),
-            p.tvd.toFixed(3),
-            p.north.toFixed(3),
-            p.east.toFixed(3),
-            p.inc.toFixed(3),
-            p.azi.toFixed(3)
-        ].join(','));
+        // Base headers
+        let header = ['MD', 'TVD', 'NORTH', 'EAST', 'INC', 'AZ'];
+
+        // Add delta columns if plan is loaded
+        const hasPlan = planSurvey && planSurvey.length > 0;
+        if (hasPlan) {
+            header.push('DELTA_N', 'DELTA_E', 'DELTA_LAT');
+        }
+
+        let rows = surveyData.map(p => {
+            let row = [
+                p.md.toFixed(3),
+                (p.tvd || 0).toFixed(3),
+                (p.north || 0).toFixed(3),
+                (p.east || 0).toFixed(3),
+                p.inc.toFixed(3),
+                p.azi.toFixed(3)
+            ];
+
+            // If plan loaded, calculate deltas for this point
+            if (hasPlan) {
+                const pIdx = planSurvey.findIndex(planPt => planPt.md >= p.md);
+                let deltaN = 0, deltaE = 0, deltaLat = 0;
+
+                if (pIdx > 0) {
+                    const p1 = planSurvey[pIdx - 1];
+                    const p2 = planSurvey[pIdx];
+                    const ratio = (p.md - p1.md) / ((p2.md - p1.md) || 1);
+                    const pN = p1.north + ratio * (p2.north - p1.north);
+                    const pE = p1.east + ratio * (p2.east - p1.east);
+
+                    deltaN = (p.north || 0) - pN;
+                    deltaE = (p.east || 0) - pE;
+                    deltaLat = Math.sqrt(deltaN * deltaN + deltaE * deltaE);
+                } else if (pIdx === 0) {
+                    deltaN = (p.north || 0) - planSurvey[0].north;
+                    deltaE = (p.east || 0) - planSurvey[0].east;
+                    deltaLat = Math.sqrt(deltaN * deltaN + deltaE * deltaE);
+                }
+
+                row.push(deltaN.toFixed(3), deltaE.toFixed(3), deltaLat.toFixed(3));
+            }
+
+            return row.join(',');
+        });
 
         const csv = header.join(',') + '\n' + rows.join('\n');
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
@@ -5862,6 +5984,188 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 3000);
         } catch (err) {
             prompt('Copy this link:', url.toString());
+        }
+    };
+
+    // ========= BUILT-IN TESTS =========
+
+    window.runSurveyTests = function() {
+        const testOutput = document.getElementById('test-output');
+        const testResults = document.getElementById('test-results');
+        if (!testOutput || !testResults) return;
+
+        testResults.classList.remove('hidden');
+        testOutput.innerHTML = '<div class="text-yellow-400">Running tests...</div>';
+
+        const results = [];
+        let passed = 0, failed = 0;
+
+        function test(name, fn) {
+            try {
+                fn();
+                results.push(`<div class="text-emerald-400">✓ ${name}</div>`);
+                passed++;
+            } catch (err) {
+                results.push(`<div class="text-red-400">✗ ${name}: ${err.message}</div>`);
+                failed++;
+            }
+        }
+
+        // Test 1: Delimiter sniffing
+        test('Delimiter sniff (comma)', () => {
+            const delim = sniffDelimiter('MD,INC,AZ\n0,0,0');
+            if (delim !== ',') throw new Error(`Expected ',', got '${delim}'`);
+        });
+
+        test('Delimiter sniff (semicolon)', () => {
+            const delim = sniffDelimiter('MD;INC;AZ\n0;0;0');
+            if (delim !== ';') throw new Error(`Expected ';', got '${delim}'`);
+        });
+
+        // Test 2: CSV parsing
+        test('CSV parse basic', () => {
+            const { rows } = parseCSV('A,B,C\n1,2,3\n4,5,6');
+            if (rows.length !== 3) throw new Error(`Expected 3 rows, got ${rows.length}`);
+            if (rows[1][1] !== '2') throw new Error(`Expected '2', got '${rows[1][1]}'`);
+        });
+
+        test('CSV parse with quotes', () => {
+            const { rows } = parseCSV('A,B\n"hello,world",test');
+            if (rows[1][0] !== 'hello,world') throw new Error('Quote handling failed');
+        });
+
+        // Test 3: Header auto-mapping
+        test('Auto-map standard headers', () => {
+            const colMap = autoDetectColumns(['MD', 'INC', 'AZ']);
+            if (colMap.md !== 0 || colMap.inc !== 1 || colMap.azi !== 2) {
+                throw new Error('Standard header mapping failed');
+            }
+        });
+
+        test('Auto-map synonym headers', () => {
+            const colMap = autoDetectColumns(['Measured Depth', 'Inclination', 'Azimuth']);
+            if (colMap.md === -1 || colMap.inc === -1 || colMap.azi === -1) {
+                throw new Error('Synonym mapping failed');
+            }
+        });
+
+        // Test 4: Minimum curvature calculation
+        test('Min-curv vertical well', () => {
+            const stations = [
+                { md: 0, inc: 0, azi: 0 },
+                { md: 100, inc: 0, azi: 0 }
+            ];
+            computeCoordinates(stations);
+            if (Math.abs(stations[1].tvd - 100) > 0.1) {
+                throw new Error(`Vertical TVD wrong: ${stations[1].tvd}`);
+            }
+            if (Math.abs(stations[1].north) > 0.1 || Math.abs(stations[1].east) > 0.1) {
+                throw new Error('Vertical well should have zero lateral');
+            }
+        });
+
+        test('Min-curv build section', () => {
+            const stations = [
+                { md: 0, inc: 0, azi: 0 },
+                { md: 100, inc: 30, azi: 45 }
+            ];
+            computeCoordinates(stations);
+            if (stations[1].tvd > 100) throw new Error('TVD should be less than MD in build');
+            if (stations[1].north <= 0 || stations[1].east <= 0) {
+                throw new Error('Build section should have positive N/E');
+            }
+        });
+
+        // Test 5: DLS calculation
+        test('DLS calculation', () => {
+            const stations = [
+                { md: 0, inc: 0, azi: 0, tvd: 0, north: 0, east: 0 },
+                { md: 30, inc: 6, azi: 0, tvd: 29.9, north: 0, east: 0 }
+            ];
+            const dls = computeDLS(stations);
+            if (dls.length !== 1) throw new Error('Expected 1 DLS point');
+            // 6° change over 30m = 6°/30m
+            if (Math.abs(dls[0].dls - 6) > 0.5) {
+                throw new Error(`DLS expected ~6°/30m, got ${dls[0].dls.toFixed(2)}`);
+            }
+        });
+
+        // Test 6: Share link encoding/decoding
+        test('Share link encode', () => {
+            const data = { survey: [{ md: 0, inc: 0, azi: 0 }] };
+            const json = JSON.stringify(data);
+            const encoded = btoa(unescape(encodeURIComponent(json)));
+            if (!encoded || encoded.length === 0) throw new Error('Encoding failed');
+        });
+
+        test('Share link decode', () => {
+            const data = { survey: [{ md: 0, inc: 0, azi: 0 }] };
+            const json = JSON.stringify(data);
+            const encoded = btoa(unescape(encodeURIComponent(json)));
+            const decoded = JSON.parse(decodeURIComponent(escape(atob(encoded))));
+            if (decoded.survey[0].md !== 0) throw new Error('Decode failed');
+        });
+
+        // Test 7: Export smoke test
+        test('CSV export structure', () => {
+            if (typeof window.exportSurveyCSV !== 'function') {
+                throw new Error('Export function not found');
+            }
+        });
+
+        // Test 8: Delta calculation
+        test('Delta stats calculation', () => {
+            const actual = [
+                { md: 0, inc: 0, azi: 0, tvd: 0, north: 0, east: 0 },
+                { md: 100, inc: 5, azi: 45, tvd: 99.8, north: 3.0, east: 3.0 }
+            ];
+            const plan = [
+                { md: 0, inc: 0, azi: 0, tvd: 0, north: 0, east: 0 },
+                { md: 100, inc: 5, azi: 45, tvd: 99.8, north: 2.0, east: 2.0 }
+            ];
+            const stats = computeDeltaStats(actual, plan);
+            if (!stats || stats.maxDelta === undefined) throw new Error('Delta stats failed');
+        });
+
+        // Display results
+        const summary = `<div class="mt-2 pt-2 border-t border-slate-600 font-semibold ${
+            failed === 0 ? 'text-emerald-400' : 'text-amber-400'
+        }">Passed: ${passed} | Failed: ${failed}</div>`;
+
+        testOutput.innerHTML = results.join('') + summary;
+    };
+
+    // Clean mode toggle
+    window.toggleCleanMode = function() {
+        document.body.classList.toggle('clean-mode');
+        const btn = document.getElementById('cleanModeBtn');
+        if (btn) {
+            if (document.body.classList.contains('clean-mode')) {
+                btn.textContent = '👁️ Exit Clean';
+                btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-500');
+                btn.classList.add('bg-pink-600', 'hover:bg-pink-500');
+            } else {
+                btn.textContent = '👁️ Clean';
+                btn.classList.remove('bg-pink-600', 'hover:bg-pink-500');
+                btn.classList.add('bg-indigo-600', 'hover:bg-indigo-500');
+            }
+        }
+    };
+
+    // 3D Tilt mode toggle
+    window.toggleTiltMode = function() {
+        document.body.classList.toggle('tilt-mode');
+        const btn = document.getElementById('tiltModeBtn');
+        if (btn) {
+            if (document.body.classList.contains('tilt-mode')) {
+                btn.textContent = '🎭 Tilt OFF';
+                btn.classList.remove('bg-violet-600', 'hover:bg-violet-500');
+                btn.classList.add('bg-rose-600', 'hover:bg-rose-500');
+            } else {
+                btn.textContent = '🎭 3D Tilt';
+                btn.classList.remove('bg-rose-600', 'hover:bg-rose-500');
+                btn.classList.add('bg-violet-600', 'hover:bg-violet-500');
+            }
         }
     };
 
