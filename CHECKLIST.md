@@ -24,6 +24,7 @@
 ## Data Integrity
 
 - [x] Validated JSON structure with `python -m json.tool` for `equipment-catalog.json` and `service-line-templates.json`.
+- [x] Confirmed no legacy map-data JSON files are referenced or required by the current build.
 - [x] Confirmed `clans.json` / `map-data.json` are not present in the repository; flagged absence for future integrations.
 
 ## Link Health
