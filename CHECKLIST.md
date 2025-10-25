@@ -12,6 +12,7 @@
   - After CSP cleanup: unchanged (no warnings or errors introduced).
 
 - [x] `index-v23-fresh.html` — archived demo preview
+  - Before: hero video blocked by CSP and attempted to stream a missing `thumbnail.mp4`/`thumbnail.png` asset from production, triggering CSP rejections followed by 404s.
   - Before: hero video blocked by CSP, generating console errors.
 
     ```text
@@ -19,6 +20,7 @@
     ERROR: Refused to load media from 'https://welltegra.network/assets/thumbnail.mp4' because it violates the following Content Security Policy directive: "media-src 'self' data:".
     ```
 
+  - After CSP media allowlist update and swapping in local `assets/hero4.mp4` + `assets/logo.jpg`: clean console (no messages).
   - After CSP media allowlist update: clean console (no messages).
 
 ## Data Integrity
@@ -30,6 +32,7 @@
 ## Link Health
 
 - [x] `npm run lint:links` (linkinator) → crawled 11 URLs with 0 failures.
+- [x] Replaced archived hero video/poster URLs that pointed to missing `https://welltegra.network/assets/thumbnail.{mp4,png}` with local `assets/hero4.mp4` + `assets/logo.jpg` to eliminate remote 404s.
 
 ## Styling Pipeline
 
@@ -50,6 +53,7 @@
 ## Accessibility & SEO — Top 10 Actionable Fixes
 
 1. Consolidated duplicate CSP `<meta>` tags to prevent conflicting directives (`index*.html`).
+2. Added `https://welltegra.network` to `media-src` and swapped archived hero video/poster URLs to local assets so demos stream without CSP violations or 404s (`index-v23-fresh.html`, `test-v23-1761097711.html`, `pricing.html`).
 2. Added `https://welltegra.network` to `media-src` so archived hero video streams without CSP violations (`index-v23-fresh.html`, `test-v23-1761097711.html`, `pricing.html`).
 3. Retained strict `default-src 'self'` baseline to limit third-party script execution.
 4. Ensured Tailwind is served from the compiled `assets/css/tailwind.css` bundle instead of the CDN runtime.
