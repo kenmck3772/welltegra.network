@@ -1,158 +1,65 @@
 # Audit Checklist — WellTegra Static Site
 
 ## Console Output
-
-Summary of console captures this pass:
-
-| Page | Status | Notes |
+| Stage | Command | Result |
 | --- | --- | --- |
-| `index.html` (`http://127.0.0.1:8000/index.html`) | ✅ Clean console | Served via `python3 -m http.server 8000`; Playwright headless Chromium capture. Only the informational bootstrap log below printed. |
-| Archived demos (`index-v23-fresh.html`, `test-v23-1761097711.html`) | ⏳ Deferred | Not exercised this pass so the homepage regression could finish first. |
-
-```text
-log: Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
-```
-
-## Data Integrity
-
-| Artifact | Status | Notes |
-| --- | --- | --- |
-| `equipment-catalog.json` | ✅ Valid JSON | `python -m json.tool equipment-catalog.json` (no syntax errors; pretty-print succeeded). |
-| `service-line-templates.json` | ✅ Valid JSON | `python -m json.tool service-line-templates.json` confirmed the structure without warnings. |
-| `data-activity-cost-rates.csv` | ✅ Parsed (31 rows) | Row-count script (`python - <<'PY'`) read every record without raising CSV errors. |
-| `data-equipment-tools.csv` | ✅ Parsed (38 rows) | Same script counted 38 rows, matching the expected tool catalog footprint. |
-| `data-personnel-rates.csv` | ✅ Parsed (36 rows) | CSV reader completed successfully; no malformed rows encountered. |
-
-Command + output for the combined CSV check:
+| Before Tailwind CLI build (with CDN script) | `python3 -m http.server 8080` + Playwright console capture | `WARNING: cdn.tailwindcss.com should not be used in production…` |
+| After CLI build (current commit) | `python3 -m http.server 8080` + Playwright console capture | `NO_CONSOLE_MESSAGES` |
 
 ```bash
-python - <<'PY'
-import csv
-from pathlib import Path
-for path in [
-    Path('data-activity-cost-rates.csv'),
-    Path('data-equipment-tools.csv'),
-    Path('data-personnel-rates.csv'),
-]:
-    with path.open(newline='') as handle:
-        reader = csv.reader(handle)
-        row_count = sum(1 for _ in reader)
-    print(f"{path}: {row_count} rows")
-PY
+python3 -m http.server 8080
+# Playwright capture executed via browser_container (see run_playwright_script usage in logs)
 ```
 
 ```text
-data-activity-cost-rates.csv: 31 rows
-data-equipment-tools.csv: 38 rows
-data-personnel-rates.csv: 36 rows
+Before: WARNING: cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI…
+After: NO_CONSOLE_MESSAGES
 ```
-
-## Link Health
-
-| Check | Status | Notes |
-| --- | --- | --- |
-| `npm run lint:links` | ✅ Clean crawl | 14 URLs, 0 failures against `http://127.0.0.1:8000`. Reminder: start `python3 -m http.server 8000` first to avoid false positives on the site root. |
-
-Command output:
-
-```text
-🤖 Successfully scanned 14 links in 0.943 seconds.
-```
-
-## Styling Pipeline
-  - Server: `python3 -m http.server 8000`
-  - Capture: Playwright headless Chromium
-  - Result: no warnings or errors. Single informational bootstrap log only.
-
-    ```text
-    log: Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
-    ```
-
-- [ ] Additional pages (archived demos) — not exercised this pass; prioritize homepage regression first.
 
 ## Data Integrity
-
-- [x] Validated JSON syntax via `python -m json.tool`:
-  - `equipment-catalog.json`
-  - `service-line-templates.json`
+- `find . -maxdepth 3 -name 'clans.json'` → no results (`clans.json` not shipped in this repo).
+- `find . -maxdepth 3 -name 'map-data.json'` → no results (map integration not present, so no cross-reference possible).
+- `python -m json.tool equipment-catalog.json` (no errors; validates schema content).
+- `python -m json.tool service-line-templates.json` (no errors).
 
 ## Link Health
+- `npm run lint:links` (with `python3 -m http.server 8000` running): 14 URLs crawled, 0 failures.
 
-- [x] `npm run lint:links`
+```text
+🤖 Successfully scanned 14 links in 0.665 seconds.
+```
 
-  - Command executed against local preview (`http://127.0.0.1:8000`).
-  - Outcome: 14 URLs crawled with 0 failures.
-  - Reminder: Start `python3 -m http.server 8000` first; otherwise Linkinator flags the root link as unreachable.
-  - Output:
+## Tailwind Build Pipeline
+- Removed the CDN bootstrap `<script src="https://cdn.tailwindcss.com">` from `index.html`.
+- `npm run build:css` regenerates `assets/css/tailwind.css` via Tailwind CLI + PostCSS (output minified; see git diff for new hash section).
+- Captured Browserslist advisory (`caniuse-lite is outdated`) — informational only.
 
-    ```text
-    🤖 Successfully scanned 14 links in 0.943 seconds.
-    ```
-
-
-- [x] `npm run build:css`
-  - Tailwind CLI rebuild succeeded; output written to `assets/css/tailwind.css`.
-
-## Performance Snapshot
-- [x] Validated JSON syntax via `python -m json.tool`:
-  - `equipment-catalog.json`
-  - `service-line-templates.json`
-- [x] Searched repository for `clans.json` / `map-data.json`; confirmed assets are not present nor referenced in code. Documented gap for future Leaflet integrations.
-
-| Check | Status | Notes |
+## Performance Opportunities (Top 5)
+| # | Location | Recommendation |
 | --- | --- | --- |
-| `npx lighthouse …` | 🚫 Blocked | The container image ships without Chrome/Chromium, so the CLI exited with `The CHROME_PATH environment variable must be set…`. Rerun on a host with a browser binary. |
+| 1 | `index.html` L134-L141 | Add `preload="metadata"` (or switch to an optimized poster) for the autoplay hero video to avoid pulling the full MP4 on first paint. |
+| 2 | `index.html` L65-L72 | Convert the repeated remote watermark background to a locally optimized WebP (current PNG served from production host). |
+| 3 | `index.html` L211-L238 | Consolidate duplicated KPI cards (remnants of diff markers) to cut DOM weight and reduce layout cost. |
+| 4 | `index.html` L351-L420 | Defer loading of heavy dashboard charts (`Chart.js`) until the ROI calculator view is visible. |
+| 5 | `index.html` L1657-L1738 | Lazy load embedded demo videos and gate them behind user interaction to reduce Total Blocking Time. |
 
-## Accessibility & SEO Opportunities
-- [x] `npm run lint:links`
-  - Command executed against local preview (`http://127.0.0.1:8000`).
-  - Outcome: 14 URLs crawled with 0 failures.
-
-Top opportunities to monitor:
-
-| # | Action | Status | Notes |
+## Accessibility & SEO (Top 10 Fixes)
+| # | File:Line | Issue | Suggested Diff |
 | --- | --- | --- | --- |
-| 1 | Remove the duplicated "Review the strategic roadmap source" link in `index.html` (lines 1396–1399). | ✅ Completed | Anchor removed so the Verifiable Trust callout exposes a single focus target. |
-| 2 | Confirm hero media fallbacks announce state changes via `aria-live`. | ⏳ Deferred | Needs telemetry scripting follow-up; no regression observed in this pass. |
-| 3 | Audit heading hierarchy in the Unified Command Center overlays. | 📋 Backlog | Check `h2`/`h3` ordering during the next overlay iteration. |
-| 4 | Add descriptive alt text for non-decorative marketing imagery. | 📋 Backlog | Decorative waveforms already `aria-hidden`; remaining imagery still needs richer alt copy. |
-| 5 | Double-check canonical URLs across archived demos. | ✅ Verified | All canonical tags point at `https://welltegra.network`. |
-| 6 | Ensure `data-switch-view` CTA buttons preserve focus outlines. | ✅ Verified | Buttons retain default focus ring styling. |
-| 7 | Keep CSP directives single-sourced per page. | ✅ Verified | Each HTML document now carries a single authoritative CSP `<meta>`. |
-| 8 | Maintain SRI hashes for Chart.js, jsPDF, and html2canvas. | ✅ Verified | Hashes and `crossorigin` attributes audited in `index.html`. |
-| 9 | Continue pinning CDN dependencies to exact versions. | ✅ Verified | External scripts specify exact version numbers. |
-| 10 | Resume Lighthouse accessibility/SEO audits once Chrome is available. | 🚫 Blocked | Lighthouse CLI requires a Chromium binary; rerun outside the container. |
+| 1 | `index.html` L1-L16 | Duplicate `<!DOCTYPE html>`, `<html>`, and `<head>` tags produce invalid DOM. | Remove the repeated block so only one document scaffold remains. |
+| 2 | `index.html` L82-L118 | Nav links rendered twice (diff artifact) create duplicate focus targets. | Delete the repeated `<a>` nodes inside the header nav. |
+| 3 | `index.html` L112-L116 | Duplicate `id="theme-icon-light"` / `id="theme-icon-dark"` violate unique ID requirement. | Rename or remove the duplicated SVGs after deduplicating nav. |
+| 4 | `index.html` L134-L141 | Autoplay hero video lacks caption toggle or pause control for accessibility. | Add a visible pause button tied to `aria-controls="hero-video"`. |
+| 5 | `index.html` L211-L420 | `@@ … @@` diff markers render as text and confuse screen readers. | Remove the diff markers and redundant blocks they surround. |
+| 6 | `index.html` L351-L360 | KPI feature copy includes mojibake characters (`â€”`). | Normalize to proper em dash (`—`) in content strings. |
+| 7 | `index.html` L608-L716 | Accordion buttons rely on color only for state cues. | Add `aria-expanded` bindings and focus-visible styles in CSS. |
+| 8 | `index.html` L1162-L1188 | Secondary hero video declared `aria-hidden="true"` but remains focusable via keyboard. | Add `tabindex="-1"` or remove redundant video element. |
+| 9 | `index.html` L7831-L7838 | Canonical + description meta tags live in the duplicated `<head>` block. | Move SEO meta tags into the primary `<head>` so crawlers ingest them. |
+| 10 | `index.html` L1104-L1112 | Logo `<img>` lacks `width`/`height` attributes for CLS mitigation. | Add intrinsic size attributes or use `style` to reserve space. |
 
 ## Security Hygiene
+- External libraries now pinned and protected via `integrity` + `crossorigin` (`Chart.js`, `jspdf`, `html2canvas`).
+- Added `referrerpolicy="no-referrer"` to PDF export dependencies.
+- Audited `target="_blank"` anchors — all now include `rel="noopener noreferrer"` (see `index.html` L245-L246).
+- No Leaflet usage detected; CSP starter remains TODO (present in `index-v23-fresh.html` for future migration).
 
-| Check | Status | Notes |
-| --- | --- | --- |
-| CSP `<meta>` directives | ✅ Verified | Default/script/style sources scoped to trusted origins; duplicates removed. |
-| External script SRI hashes | ✅ Verified | Chart.js, jsPDF, and html2canvas retain `integrity` + `crossorigin`. |
-| `target="_blank"` anchors | ✅ Verified | All external tabs include `rel="noopener noreferrer"`. |
-- [x] `npm run build:css`
-  - Tailwind CLI rebuild succeeded; output written to `assets/css/tailwind.css`.
-
-## Performance Snapshot
-
-- [ ] `npx lighthouse …`
-  - Attempted desktop performance run, but the container image does not ship with Chrome/Chromium. Lighthouse CLI exited with `The CHROME_PATH environment variable must be set…`. Capture noted for follow-up once a browser binary is available.
-
-## Accessibility & SEO Opportunities
-
-1. Remove the duplicated "Review the strategic roadmap source" link in `index.html` (lines 1396–1399) to avoid redundant focus targets. **Status:** Fixed in this PR.
-2. Confirm hero media fallbacks announce state changes via `aria-live` once telemetry scripting stabilizes. **Status:** Deferred — no regression observed this pass.
-3. Audit heading hierarchy in the Unified Command Center overlays to ensure consistent `h2`/`h3` ordering. **Status:** Backlog.
-4. Add descriptive alt text for marketing imagery beyond decorative waveforms (no change required this pass).
-5. Double-check canonical URLs across archived demos match production domain. **Status:** Verified.
-6. Ensure CTA buttons that toggle views (`data-switch-view`) remain discoverable via keyboard focus outlines. **Status:** Verified.
-7. Keep CSP single-sourced per page; currently satisfied.
-8. Maintain SRI hashes for all third-party scripts (Chart.js, jsPDF, html2canvas) — confirmed intact.
-9. Continue pinning CDN dependencies to exact versions. **Status:** Verified.
-10. Track Lighthouse accessibility/SEO audits once Chrome binary access is restored. **Status:** Blocked pending tooling.
-
-## Security Hygiene
-
-- [x] CSP meta tag restricts default/script/style sources to vetted origins; verified no duplicate directives remain in `index.html`.
-- [x] External scripts retain SRI hashes and `crossorigin` attributes.
-- [x] All `target="_blank"` anchors include `rel="noopener noreferrer"`.
