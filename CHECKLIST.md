@@ -19,6 +19,7 @@
   - Current iteration: walked through the Toolstring Configurator (preset switch, filter, add/remove/move controls) then regenerated the plan and launched Performer—chips, summary totals, and the fade-in animation updated without logging errors.
   - Current iteration: switched from W666 to W601 mid-session to verify Step 2 now surfaces the configurator immediately with the selected well called out, placeholder presets disabled until an objective is chosen, and the view auto-scrolls without console noise.
   - Current iteration: watched the Performer telemetry tick at the new 400&nbsp;ms cadence—depth, hookload, and pressure now glide instead of jumping in one-second increments and the console remains clear while the alarm thresholds fire.
+  - Current iteration: expanded each Unified Command Center story via the new `[data-story-trigger]` overlays, cycled between them with the nav buttons/Arrow keys, closed them with the backdrop and ESC key, and confirmed the console remained clean while focus returned to the initiating CTA.
 
 - [x] `index-v23-fresh.html` — archived demo preview
 
@@ -30,11 +31,31 @@
     ```
 
   - After CSP media allowlist update and swapping in local `assets/hero4.mp4` + `assets/logo.jpg`: clean console (no messages).
+  - Before: no blocking errors; only data bootstrap log captured.
+
+    ```text
+    LOG: Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
+    ```
+
+  - After CSP cleanup: unchanged (no warnings or errors introduced).
+
+- [x] `index-v23-fresh.html` — archived demo preview
+  - Before: hero video blocked by CSP and attempted to stream a missing `thumbnail.mp4`/`thumbnail.png` asset from production, triggering CSP rejections followed by 404s.
+  - Before: hero video blocked by CSP, generating console errors.
+
+    ```text
+    ERROR: Refused to load media from 'https://welltegra.network/assets/thumbnail.mp4' because it violates the following Content Security Policy directive: "media-src 'self' data:".
+    ERROR: Refused to load media from 'https://welltegra.network/assets/thumbnail.mp4' because it violates the following Content Security Policy directive: "media-src 'self' data:".
+    ```
+
+  - After CSP media allowlist update and swapping in local `assets/hero4.mp4` + `assets/logo.jpg`: clean console (no messages).
+  - After CSP media allowlist update: clean console (no messages).
 
 ## Data Integrity
 
 - [x] Validated JSON structure with `python -m json.tool` for `equipment-catalog.json` and `service-line-templates.json`.
 - [x] Confirmed no legacy map-data JSON files are referenced or required by the current build.
+- [x] Confirmed `clans.json` / `map-data.json` are not present in the repository; flagged absence for future integrations.
 
 ## Link Health
 
@@ -63,6 +84,7 @@
 
 1. Consolidated duplicate CSP `<meta>` tags to prevent conflicting directives (`index*.html`).
 2. Added `https://welltegra.network` to `media-src` and swapped archived hero video/poster URLs to local assets so demos stream without CSP violations or 404s (`index-v23-fresh.html`, `test-v23-1761097711.html`, `pricing.html`).
+2. Added `https://welltegra.network` to `media-src` so archived hero video streams without CSP violations (`index-v23-fresh.html`, `test-v23-1761097711.html`, `pricing.html`).
 3. Retained strict `default-src 'self'` baseline to limit third-party script execution.
 4. Ensured Tailwind is served from the compiled `assets/css/tailwind.css` bundle instead of the CDN runtime.
 5. Preserved SRI attributes and version pinning for Chart.js, jsPDF, and html2canvas to lock dependency integrity.
@@ -71,6 +93,13 @@
 8. Extended the accessible story overlays with `[data-story-trigger]` controls, cyclic nav buttons, Arrow-key support, focus management, KPI `dl` highlight cards, and a live region that announces the active story summary so assistive tech users can follow the Logistics, Performer, Commercial/ESG, HSE Sentinel, and POB & Emergency narratives (`index.html`).
 9. Added a Toolstring Configurator in Step 2 with labelled preset dropdown, search input, add/remove/move buttons, and a live summary/metric card so keyboard and screen reader users can assemble the run without losing context (`index.html`).
 10. Refreshed the hero section with a responsive metrics deck plus an autoplay helper that degrades to a fallback banner when media fails, keeping the hero copy accessible and preventing blank space (`index.html`).
+8. Added accessible story overlays powered by `[data-story-trigger]` controls, cyclic nav buttons, Arrow-key support, focus management, and documented fallbacks so assistive tech users can follow the Logistics/Performer/ESG narratives (`index.html`).
+9. Embedded a 30-second Performer walkthrough video with caption plus a decorative roadmap SVG timeline to reinforce the white paper milestones without duplicating screen reader content (`index.html`).
+8. Added accessible `<details>` narratives and keyboard-friendly `data-switch-view` buttons so the new Command Center and White Paper sections work for screen readers without extra scripts (`index.html`).
+9. Mapped the strategic roadmap timeline to the executive CTA so leadership sees the white paper milestones in-line with the homepage journey (`index.html`).
+8. Documented JSON validation workflow for operational datasets to maintain structured-data accuracy.
+9. Maintained local favicon/logo assets to avoid cross-origin fetches blocked by CSP.
+10. Recorded Lighthouse recommendations (unused JS/CSS) for backlog grooming.
 
 ## Security Hygiene
 
