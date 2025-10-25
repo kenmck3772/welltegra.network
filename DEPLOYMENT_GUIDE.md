@@ -40,9 +40,16 @@
 
 6. **Push to GitHub**
    ```bash
+   # Rename your local branch to match the deployment branch you want to use
+   # (main is recommended, but the repo also supports a "work" branch)
    git branch -M main
    git push -u origin main
    ```
+
+   > **Heads up**: The GitHub Pages workflow deploys when you push to either the
+   > `main` or `work` branch. If you prefer to keep using a branch named
+   > `work`, run `git branch -M work` before pushing and then push with
+   > `git push -u origin work`.
 
 ### For Future Updates
 
