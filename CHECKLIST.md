@@ -33,6 +33,7 @@
 
 - [x] `npm run lint:links` (linkinator) → crawled 11 URLs with 0 failures.
 - [x] Replaced archived hero video/poster URLs that pointed to missing `https://welltegra.network/assets/thumbnail.{mp4,png}` with local `assets/hero4.mp4` + `assets/logo.jpg` to eliminate remote 404s.
+- [x] Updated archived demo watermark backgrounds to read from the bundled `assets/watermark.jpg` instead of the missing production `watermark.png` asset.
 
 ## Styling Pipeline
 

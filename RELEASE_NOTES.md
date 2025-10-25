@@ -4,6 +4,7 @@
 
 - Removed duplicated Content-Security-Policy `<meta>` directives and added `https://welltegra.network` to the `media-src` allowlist so hero videos render without console violations.
 - Redirected archived hero video/poster references away from the missing `thumbnail.*` assets to the committed `assets/hero4.mp4` + `assets/logo.jpg`, eliminating remote 404s during playback.
+- Pointed archived demo watermark backgrounds at the committed `assets/watermark.jpg` asset to stop browsers from requesting the missing production PNG.
 - Rebuilt Tailwind via `npm run build:css` to keep `assets/css/tailwind.css` current after CSP adjustments.
 - Refreshed project audit artifacts (`CHECKLIST.md`) with latest console captures, JSON validation notes, Lighthouse metrics, and action items.
 

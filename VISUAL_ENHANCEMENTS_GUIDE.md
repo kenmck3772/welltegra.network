@@ -241,7 +241,7 @@ box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.04);
 #main-content::before {
     content: '';
     position: absolute;
-    background-image: url('assets/watermark.png');
+    background-image: url('assets/watermark.jpg');
     background-repeat: repeat;
     opacity: 0.02; /* Very subtle */
     z-index: -1;
