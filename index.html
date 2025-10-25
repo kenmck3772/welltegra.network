@@ -3,6 +3,9 @@
 <html lang="en" class="scroll-smooth">
 
 <head>
+<head>
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <meta charset="UTF-8">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://welltegra.network; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data: https://welltegra.network;  base-uri 'self'; form-action 'self'">
@@ -17,6 +20,10 @@
     <!-- PDF Export Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- PDF Export Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     
     <style>
         /* --- Base & Theme Setup --- */
@@ -222,6 +229,113 @@
         }
         .hero-section h1 { text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); }
         .hero-section p { text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); }
+
+        .section-title { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.025em; }
+        .accent-text { color: #2563eb; }
+        .dark .accent-text { color: #60a5fa; }
+        .roi-calculator { background-color: #f0f9ff; }
+        .dark .roi-calculator { background-color: #1e293b; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+
+
+        <div id="whitepaper-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div id="whitepaper-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight">Well-Tegra White Paper</h2>
+                <h2 class="text-3xl font-bold tracking-tight">Well-Tegra White Paper</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg">Dive deeper into the technical architecture and strategic vision behind the Well-Tegra platform. Our white paper provides a comprehensive overview of the privacy-preserving AI, enterprise blockchain, and data unification strategies that power our solution.</p>
+                <p class="mt-4 max-w-2xl mx-auto text-lg">Dive deeper into the technical architecture and strategic vision behind the Well-Tegra platform. Our white paper provides a comprehensive overview of the privacy-preserving AI, enterprise blockchain, and data unification strategies that power our solution.</p>
+                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" download class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
+                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" download class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
+                    Download the White Paper
+                    Download the White Paper
+                </a>
+                </a>
+            </div>
+            </div>
+        </div>
+        </div>
+
+
+        <div id="faq-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div id="faq-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Frequently Asked Questions</h2><p class="mt-2 max-w-2xl mx-auto text-lg">Find answers to common questions about the Well-Tegra platform.</p></div>
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Frequently Asked Questions</h2><p class="mt-2 max-w-2xl mx-auto text-lg">Find answers to common questions about the Well-Tegra platform.</p></div>
+            <div id="faq-accordion" class="mt-10 light-card rounded-lg shadow-md overflow-hidden">
+            <div id="faq-accordion" class="mt-10 light-card rounded-lg shadow-md overflow-hidden">
+                </div>
+                </div>
+        </div>
+        </div>
+
+
+        <div id="about-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div id="about-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">About Me & The Mission</h2></div>
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">About Me & The Mission</h2></div>
+            <div class="mt-10 light-card p-8 rounded-lg space-y-8">
+            <div class="mt-10 light-card p-8 rounded-lg space-y-8">
+                <div>
+                <div>
+                    <h3 class="text-2xl font-bold">From the Wellsite to the Web</h3>
+                    <h3 class="text-2xl font-bold">From the Wellsite to the Web</h3>
+                    <p class="text-lg italic">"I built Well-Tegra because I've lived the problems it's designed to solve." - Kenneth McKenzie</p>
+                    <p class="text-lg italic">"I built Well-Tegra because I've lived the problems it's designed to solve." - Kenneth McKenzie</p>
+                </div>
+                </div>
+                <div>
+                <div>
+                    <h4 class="text-xl font-semibold">My Perspective</h4>
+                    <h4 class="text-xl font-semibold">My Perspective</h4>
+                    <p>I'm not a software developer who decided to get into oil and gas. I'm a well services guy who learned to code. My career started at the sharp end with Tristar Oilfield Services and took me around the world, working with service leaders like Expro and Wellserv, and later supervising operations for major operators like BG Group, CNR, and Woodside. I've been on both sides of the fenceâ€”I know the service company's challenges and the operator's objectives. That's the insight Well-Tegra is built on.</p>
+                    <p>I'm not a software developer who decided to get into oil and gas. I'm a well services guy who learned to code. My career started at the sharp end with Tristar Oilfield Services and took me around the world, working with service leaders like Expro and Wellserv, and later supervising operations for major operators like BG Group, CNR, and Woodside. I've been on both sides of the fenceâ€”I know the service company's challenges and the operator's objectives. That's the insight Well-Tegra is built on.</p>
+                </div>
+                </div>
+                 <div>
+                 <div>
+                    <h4 class="text-xl font-semibold">Why I Built This</h4>
+                    <h4 class="text-xl font-semibold">Why I Built This</h4>
+                    <p>I've seen first-hand how much time, money, and energy we waste because our data is a mess. It's locked in different systems, buried in old reports, and stuck in spreadsheets. We repeat the same mistakes because the lessons learned from one job are never available for the next. The "Well From Hell" in this demo isn't an exaggeration; it's a sanitized version of the real-world train wrecks I've witnessedâ€”and helped clean up.</p>
+                    <p>I've seen first-hand how much time, money, and energy we waste because our data is a mess. It's locked in different systems, buried in old reports, and stuck in spreadsheets. We repeat the same mistakes because the lessons learned from one job are never available for the next. The "Well From Hell" in this demo isn't an exaggeration; it's a sanitized version of the real-world train wrecks I've witnessedâ€”and helped clean up.</p>
+@@ -1003,54 +1005,54 @@
+                            <div class="star-rating" id="metric-safety-stars"></div>
+                            <div class="star-rating" id="metric-safety-stars"></div>
+                            <span class="score-badge score-excellent">98%</span>
+                            <span class="score-badge score-excellent">98%</span>
+                        </div>
+                        </div>
+        .performer-view {
+            position: relative;
+        }
+        .performer-view .dashboard-grid,
+        .performer-view #performer-cost-tracker,
+        .performer-view #performer-wellbore {
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+        .performer-view.is-loading .dashboard-grid,
+        .performer-view.is-loading #performer-cost-tracker,
+        .performer-view.is-loading #performer-wellbore {
+            opacity: 0;
+            transform: translateY(14px);
+            pointer-events: none;
+        }
+        .performer-view.is-ready .dashboard-grid,
+        .performer-view.is-ready #performer-cost-tracker,
+        .performer-view.is-ready #performer-wellbore {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #toolstring-chip-row span {
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            padding: 0.25rem 0.65rem;
+            background-color: rgba(15, 23, 42, 0.6);
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
 
         .section-title { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.025em; }
         .accent-text { color: #2563eb; }
@@ -3834,3 +3948,1555 @@ async function generatePDFReport() {
 
 </body>
 </html>
+                <!-- Job Procedure Builder -->
+                <div class="lg:col-span-1 mt-8 lg:mt-0">
+                    <div class="light-card rounded-lg shadow-xl">
+                        <div class="p-4 border-b border-gray-700">
+                            <h3 class="text-xl font-bold">Job Procedure & Cost</h3>
+                            ${appState.selectedWell ? `<p class="text-sm text-cyan-400 mt-1">📍 Well: ${appState.selectedWell.id} - ${appState.selectedWell.name}</p>` : ''}
+                        </div>
+
+                        <div class="p-4 border-b border-gray-700">
+                            <label class="block text-sm font-semibold text-cyan-400 mb-2">Job Duration (Days)</label>
+                            <input type="number" id="job-duration-input" value="1" min="1"
+                                class="w-1/2 bg-gray-800 border-gray-700 rounded-md px-3 py-2 text-white font-bold"
+                                onchange="updateJobDuration(this.value)">
+                            <p class="text-xs text-gray-400 mt-2">Costs for "/Day" items will be multiplied by this value.</p>
+                        </div>
+
+                        <div class="p-4 border-b border-gray-700">
+                            <h4 class="text-sm font-semibold text-cyan-400 mb-3">Add Job Step</h4>
+                            <div class="flex gap-2">
+                                <input type="text" id="step-title-input" placeholder="e.g., Step 1: Rig Up"
+                                    class="flex-grow bg-gray-800 border-gray-700 rounded-md px-3 py-2 text-white">
+                                <button onclick="addJobStep()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-md">Add</button>
+                            </div>
+                        </div>
+
+                        <div id="procedure-list-container" class="max-h-96 overflow-y-auto p-4">
+                            <ul id="procedure-list">
+                                <li class="py-6 text-center text-gray-500">Add a job step to begin building your procedure.</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 bg-gray-800 rounded-b-lg flex justify-between items-center">
+                            <span class="text-lg font-bold uppercase">Total Cost</span>
+                            <span id="job-total" class="text-3xl font-black text-cyan-400">£0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Render the service catalogue
+        renderServiceCatalogue();
+
+        // Activate first tab
+        document.querySelector('.cost-main-tab').classList.add('active');
+    }
+
+    // Render service catalogue panels
+    function renderServiceCatalogue() {
+        const panels = document.getElementById('cost-main-content-panels');
+        if (!panels) return;
+
+        let html = '';
+        for (const discipline in serviceCatalogue) {
+            html += `
+                <div id="cost-content-${discipline}" class="cost-main-content" style="display:none;">
+                    <div class="flex flex-wrap border-b border-gray-600 mb-4">
+            `;
+
+            const categories = Object.keys(serviceCatalogue[discipline]);
+            categories.forEach(category => {
+                html += `
+                    <button class="cost-sub-tab text-sm font-semibold py-2 px-3 border-b-2 border-transparent text-gray-400 hover:text-cyan-300"
+                            onclick="showCostSubTab('${discipline}', '${category}')">${category.charAt(0).toUpperCase() + category.slice(1)}</button>
+                `;
+            });
+
+            html += `</div><div class="catalogue-table-container">`;
+
+            categories.forEach(category => {
+                html += `
+                    <div class="cost-sub-content-${discipline}" id="cost-content-${discipline}-${category}" style="display:none;">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-700 text-cyan-400 text-xs">
+                                <tr>
+                                    <th class="p-2 text-left">Description</th>
+                                    <th class="p-2 text-left">Code</th>
+                                    <th class="p-2 text-left">Rate/Unit</th>
+                                    <th class="p-2"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                serviceCatalogue[discipline][category].forEach(item => {
+                    const itemJSON = JSON.stringify(item).replace(/"/g, '&quot;');
+                    html += `
+                        <tr class="border-b border-gray-700 hover:bg-gray-800">
+                            <td class="p-2">${item.name}</td>
+                            <td class="p-2 font-mono text-xs text-gray-400">${item.code}</td>
+                            <td class="p-2 font-bold">£${item.baseRate}<span class="text-xs font-normal text-gray-400">/${item.unit}</span></td>
+                            <td class="p-2 text-right">
+                                <button class="cost-add-btn" onclick='addItemToActiveStep(${itemJSON})'>Add</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            });
+
+            html += `</div></div>`;
+        }
+
+        panels.innerHTML = html;
+
+        // Show first discipline and first category
+        showCostMainTab('ct');
+    }
+
+    // --- INITIALIZATION ---
+
+    const init = () => {
+        renderWellCards();
+        renderObjectives();
+        renderProblems();
+        initSavingsChart();
+        updateNavLinks();
+        loadCostData(); // Load cost data from CSV files
+        initJobCostingTool(); // Initialize job costing tool
+        // Expose job costing state to window for global functions
+        window.jobCostingState = jobCostingState;
+        window.appState = appState;
+        // Expose NPT functions
+        window.addNPTEvent = addNPTEvent;
+        window.removeNPTEvent = removeNPTEvent;
+        window.calculateTotalNPTCost = calculateTotalNPTCost;
+        window.calculateTotalJobCost = calculateTotalJobCost;
+        window.saveWellCosts = saveWellCosts;
+        window.renderNPTList = renderNPTList;
+        window.showView = switchView;
+        window.addNPTEventFromUI = addNPTEventFromUI;
+
+        while (pendingShowViewCalls.length > 0) {
+            const queuedView = pendingShowViewCalls.shift();
+            if (queuedView) {
+                switchView(queuedView);
+            }
+        }
+    };
+
+    init();
+});
+
+// --- WELLBORE SURVEY CSV TOOL WITH MINIMUM CURVATURE ---
+(function() {
+    // Survey data state
+    let surveyData = [];
+    let computed = [];
+    let currentView = 'profile'; // or 'plan'
+    let running = false, tNorm = 0, speed = 1, last = 0;
+    let pathLength = 0;
+
+    // DOM elements
+    const svg = document.getElementById('wbSvg');
+    const path = document.getElementById('wbPath');
+    const dot = document.getElementById('toolDot');
+    const mdBadge = document.getElementById('mdBadge');
+    const stationsG = document.getElementById('survey-stations');
+    const axesG = document.getElementById('survey-axes');
+
+    const dropZone = document.getElementById('survey-drop-zone');
+    const fileInput = document.getElementById('survey-file-input');
+    const pasteArea = document.getElementById('survey-paste-area');
+    const columnMap = document.getElementById('survey-column-map');
+    const statusEl = document.getElementById('survey-status');
+    const viewLabel = document.getElementById('survey-view-label');
+    const dataBadge = document.getElementById('survey-data-badge');
+
+    const playBtn = document.getElementById('wbPlay');
+    const pauseBtn = document.getElementById('wbPause');
+    const speedEl = document.getElementById('wbSpeed');
+    const scrubEl = document.getElementById('wbScrub');
+    const infoEl = document.getElementById('wbInfo');
+
+    const kMD = document.getElementById('kpiMD');
+    const kTVD = document.getElementById('kpiTVD');
+    const kInc = document.getElementById('kpiIncl');
+    const kAz = document.getElementById('kpiAz');
+    const kNorth = document.getElementById('kpiNorth');
+    const kEast = document.getElementById('kpiEast');
+    const kDep = document.getElementById('kpiDep');
+
+    const surveyCount = document.getElementById('survey-count');
+    const surveyMaxInc = document.getElementById('survey-max-inc');
+    const surveyTotalMD = document.getElementById('survey-total-md');
+
+    if (!svg || !path) return;
+
+    // CSV Parsing with delimiter detection
+    function sniffDelimiter(text) {
+        const first = text.split('\n')[0];
+        const delims = [',', ';', '\t', '|'];
+        let best = ',', maxCount = 0;
+        for (const d of delims) {
+            const count = (first.match(new RegExp('\\' + d, 'g')) || []).length;
+            if (count > maxCount) {
+                maxCount = count;
+                best = d;
+            }
+        }
+        return best;
+    }
+
+    function parseCSV(text) {
+        const delim = sniffDelimiter(text);
+        const lines = text.trim().split('\n');
+        const rows = [];
+        for (const line of lines) {
+            const row = [];
+            let current = '', inQuote = false;
+            for (let i = 0; i < line.length; i++) {
+                const c = line[i];
+                if (c === '"') inQuote = !inQuote;
+                else if (c === delim && !inQuote) {
+                    row.push(current.trim());
+                    current = '';
+                } else {
+                    current += c;
+                }
+            }
+            row.push(current.trim());
+            rows.push(row);
+        }
+        return { rows, delim };
+    }
+
+    // Auto-detect MD, INC, AZ columns with enhanced synonym support
+    function autoDetectColumns(headers) {
+        const lower = headers.map(h=> (h||'').toString().trim().toLowerCase());
+
+        function findOne(candidates){
+            for(const c of candidates){
+                const idx = lower.indexOf(c);
+                if(idx!==-1) return idx;
+            }
+            // Try partial match
+            for(const c of candidates){
+                const idx = lower.findIndex(h => h.includes(c));
+                if(idx!==-1) return idx;
+            }
+            return -1;
+        }
+
+        // Broader synonym support for BOEM/NSTA/NLOG/FORGE/Volve datasets
+        const md = findOne(['md','measured depth','measured_depth','measureddepth','md (m)','mdm','depth md','depth (md)','depth (m)','depth']);
+        const inc = findOne(['inc','incl','inclination','inclination (deg)','inc (deg)','angle']);
+        const azi = findOne(['azi','azimuth','az','az (deg)','azimuth (deg)','azm','bearing']);
+        const tvd = findOne(['tvd','tvd (m)','tvdss','true vertical depth']);
+        const north = findOne(['n','north','northing','y','y (m)','northing (m)','deviation north']);
+        const east = findOne(['e','east','easting','x','x (m)','easting (m)','deviation east']);
+
+        return {md, inc, azi, tvd, north, east};
+    }
+
+    // Minimum Curvature calculation
+    function computeCoordinates(stations) {
+        if (stations.length === 0) return;
+
+        // Initialize first station
+        stations[0].tvd = stations[0].tvd || 0;
+        stations[0].north = stations[0].north || 0;
+        stations[0].east = stations[0].east || 0;
+
+        for (let i = 1; i < stations.length; i++) {
+            const a = stations[i - 1];
+            const b = stations[i];
+
+            const md1 = a.md, md2 = b.md;
+            const inc1 = (a.inc || 0) * Math.PI / 180;
+            const inc2 = (b.inc || 0) * Math.PI / 180;
+            const az1 = (a.azi || 0) * Math.PI / 180;
+            const az2 = (b.azi || 0) * Math.PI / 180;
+
+            const dMD = md2 - md1;
+
+            // Minimum curvature method
+            const cosDL = Math.sin(inc1) * Math.sin(inc2) * Math.cos(az2 - az1) + Math.cos(inc1) * Math.cos(inc2);
+            const DL = Math.acos(Math.min(1, Math.max(-1, cosDL)));
+            const RF = (DL > 1e-6) ? (2 / DL) * Math.tan(DL / 2) : 1;
+
+            const dN = 0.5 * dMD * RF * (Math.sin(inc1) * Math.cos(az1) + Math.sin(inc2) * Math.cos(az2));
+            const dE = 0.5 * dMD * RF * (Math.sin(inc1) * Math.sin(az1) + Math.sin(inc2) * Math.sin(az2));
+            const dV = 0.5 * dMD * RF * (Math.cos(inc1) + Math.cos(inc2));
+
+            b.tvd = (a.tvd || 0) + dV;
+            b.north = (a.north || 0) + dN;
+            b.east = (a.east || 0) + dE;
+        }
+
+        // Calculate departure
+        stations.forEach(s => {
+            s.departure = Math.sqrt(s.north * s.north + s.east * s.east);
+        });
+    }
+
+    // Process CSV and extract survey data
+    function processSurveyData(text) {
+        try {
+            const { rows } = parseCSV(text);
+            if (rows.length < 2) {
+                throw new Error('Not enough data rows');
+            }
+
+            const headers = rows[0];
+            const colMap = autoDetectColumns(headers);
+
+            // Check if manual mapping needed
+            if (colMap.md === -1 || colMap.inc === -1 || colMap.azi === -1) {
+                showColumnMapper(headers);
+                return null;
+            }
+
+            return extractStations(rows.slice(1), colMap);
+        } catch (err) {
+            statusEl.textContent = '❌ Error: ' + err.message;
+            statusEl.className = 'mt-4 text-xs text-red-400';
+            return null;
+        }
+    }
+
+    function extractStations(dataRows, colMap) {
+        const stations = [];
+        for (const row of dataRows) {
+            const md = parseFloat(row[colMap.md]);
+            const inc = parseFloat(row[colMap.inc]);
+            const azi = parseFloat(row[colMap.azi]);
+
+            if (isNaN(md) || isNaN(inc) || isNaN(azi)) continue;
+
+            const station = { md, inc, azi };
+
+            // Optional coordinates
+            if (colMap.tvd >= 0) station.tvd = parseFloat(row[colMap.tvd]) || 0;
+            if (colMap.north >= 0) station.north = parseFloat(row[colMap.north]) || 0;
+            if (colMap.east >= 0) station.east = parseFloat(row[colMap.east]) || 0;
+
+            stations.push(station);
+        }
+
+        // Sort by MD
+        stations.sort((a, b) => a.md - b.md);
+
+        // Compute missing coordinates
+        computeCoordinates(stations);
+
+        return stations;
+    }
+
+    function showColumnMapper(headers) {
+        const selects = ['col-md', 'col-inc', 'col-azi'];
+        selects.forEach(id => {
+            const sel = document.getElementById(id);
+            sel.innerHTML = '<option value="">-- Select --</option>';
+            headers.forEach((h, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = h;
+                sel.appendChild(opt);
+            });
+        });
+        columnMap.classList.remove('hidden');
+        statusEl.textContent = '⚠️ Please map columns manually';
+        statusEl.className = 'mt-4 text-xs text-amber-400';
+    }
+
+    window.applySurveyMapping = function() {
+        const colMap = {
+            md: parseInt(document.getElementById('col-md').value),
+            inc: parseInt(document.getElementById('col-inc').value),
+            azi: parseInt(document.getElementById('col-azi').value),
+            tvd: -1, north: -1, east: -1
+        };
+
+        if (isNaN(colMap.md) || isNaN(colMap.inc) || isNaN(colMap.azi)) {
+            alert('Please select all required columns (MD, INC, AZ)');
+            return;
+        }
+
+        const text = pasteArea.value.trim();
+        if (!text) return;
+
+        const { rows } = parseCSV(text);
+        const stations = extractStations(rows.slice(1), colMap);
+
+        if (stations && stations.length > 0) {
+            surveyData = stations;
+            columnMap.classList.add('hidden');
+            renderSurvey();
+        }
+    };
+
+    // Render survey visualization
+    function renderSurvey() {
+        if (surveyData.length === 0) return;
+
+        computed = surveyData.slice();
+
+        // Update stats
+        surveyCount.textContent = surveyData.length;
+        surveyMaxInc.textContent = Math.max(...surveyData.map(s => s.inc)).toFixed(1) + '°';
+        surveyTotalMD.textContent = surveyData[surveyData.length - 1].md.toFixed(1) + ' m';
+        dataBadge.textContent = surveyData.length + ' stations';
+        dataBadge.className = 'text-xs text-cyan-400';
+
+        statusEl.textContent = '✓ ' + surveyData.length + ' survey stations loaded';
+        statusEl.className = 'mt-4 text-xs text-emerald-400';
+
+        // Compute DLS for actual survey
+        if (computed && computed.length > 1) {
+            dlsData = computeDLS(computed);
+        }
+
+        // Render current view
+        if (currentView === 'profile') {
+            renderProfileView();
+        } else {
+            renderPlanView();
+        }
+
+        // Render DLS hotspots and panel
+        renderDLSHotspots();
+        renderDLSPanel();
+
+        // Reset animation
+        tNorm = 0;
+        updateAnimation(0);
+    }
+
+    function renderProfileView() {
+        viewLabel.textContent = 'Profile View (Departure vs TVD)';
+
+        if (!computed || computed.length === 0) return;
+
+        // Find bounds
+        const maxDep = Math.max(...computed.map(s => s.departure));
+        const maxTVD = Math.max(...computed.map(s => s.tvd));
+
+        // SVG dimensions
+        const margin = 60, width = 800 - 2 * margin, height = 520 - 2 * margin;
+        const scaleX = width / (maxDep * 1.1 || 1);
+        const scaleY = height / (maxTVD * 1.1 || 1);
+
+        // Build actual path
+        let pathD = '';
+        computed.forEach((s, i) => {
+            const dep = Math.sqrt(s.north * s.north + s.east * s.east);
+            const x = margin + dep * scaleX;
+            const y = margin + s.tvd * scaleY;
+            pathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
+        });
+
+        path.setAttribute('d', pathD);
+        pathLength = path.getTotalLength();
+
+        // Draw station dots
+        stationsG.innerHTML = '';
+        computed.forEach(s => {
+            const dep = Math.sqrt(s.north * s.north + s.east * s.east);
+            const x = margin + dep * scaleX;
+            const y = margin + s.tvd * scaleY;
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', x);
+            circle.setAttribute('cy', y);
+            circle.setAttribute('r', '3');
+            circle.setAttribute('fill', '#22d3ee');
+            circle.setAttribute('opacity', '0.6');
+            stationsG.appendChild(circle);
+        });
+
+        // Render plan overlay if available
+        if (planSurvey.length > 0 && togglePlan && togglePlan.checked) {
+            let planPathD = '';
+            planSurvey.forEach((s, i) => {
+                const dep = Math.sqrt(s.north * s.north + s.east * s.east);
+                const x = margin + dep * scaleX;
+                const y = margin + s.tvd * scaleY;
+                planPathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
+            });
+
+            // Remove existing plan path
+            const existingPlan = svg.querySelector('#plan-overlay-path');
+            if (existingPlan) existingPlan.remove();
+
+            // Add plan path
+            const planPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            planPath.setAttribute('id', 'plan-overlay-path');
+            planPath.setAttribute('d', planPathD);
+            planPath.setAttribute('fill', 'none');
+            planPath.setAttribute('stroke', '#94a3b8');
+            planPath.setAttribute('stroke-width', '3');
+            planPath.setAttribute('stroke-dasharray', '8 6');
+            planPath.setAttribute('opacity', '0.7');
+            svg.insertBefore(planPath, path);
+        } else {
+            const existingPlan = svg.querySelector('#plan-overlay-path');
+            if (existingPlan) existingPlan.remove();
+        }
+
+        // Update axes labels
+        axesG.innerHTML = `
+            <text x="400" y="515" fill="#94a3b8" font-size="11" text-anchor="middle">Departure (m)</text>
+            <text x="10" y="260" fill="#94a3b8" font-size="11" transform="rotate(-90 10 260)" text-anchor="middle">TVD (m)</text>
+        `;
+    }
+
+    function renderPlanView() {
+        viewLabel.textContent = 'Plan View (East vs North)';
+
+        if (!computed || computed.length === 0) return;
+
+        // Find bounds
+        const minN = Math.min(...computed.map(s => s.north || 0));
+        const maxN = Math.max(...computed.map(s => s.north || 0));
+        const minE = Math.min(...computed.map(s => s.east || 0));
+        const maxE = Math.max(...computed.map(s => s.east || 0));
+
+        const rangeN = maxN - minN || 1;
+        const rangeE = maxE - minE || 1;
+
+        const margin = 60, width = 800 - 2 * margin, height = 520 - 2 * margin;
+        const scale = Math.min(width / (rangeE * 1.1), height / (rangeN * 1.1));
+
+        // Build actual path
+        let pathD = '';
+        computed.forEach((s, i) => {
+            const x = margin + width / 2 + (s.east - (minE + maxE) / 2) * scale;
+            const y = margin + height / 2 - (s.north - (minN + maxN) / 2) * scale;
+            pathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
+        });
+
+        path.setAttribute('d', pathD);
+        pathLength = path.getTotalLength();
+
+        // Draw station dots
+        stationsG.innerHTML = '';
+        computed.forEach(s => {
+            const x = margin + width / 2 + (s.east - (minE + maxE) / 2) * scale;
+            const y = margin + height / 2 - (s.north - (minN + maxN) / 2) * scale;
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', x);
+            circle.setAttribute('cy', y);
+            circle.setAttribute('r', '3');
+            circle.setAttribute('fill', '#22d3ee');
+            circle.setAttribute('opacity', '0.6');
+            stationsG.appendChild(circle);
+        });
+
+        // Render plan overlay if available
+        if (planSurvey.length > 0 && togglePlan && togglePlan.checked) {
+            let planPathD = '';
+            planSurvey.forEach((s, i) => {
+                const x = margin + width / 2 + (s.east - (minE + maxE) / 2) * scale;
+                const y = margin + height / 2 - (s.north - (minN + maxN) / 2) * scale;
+                planPathD += (i === 0 ? 'M' : 'L') + x + ',' + y + ' ';
+            });
+
+            // Remove existing plan path
+            const existingPlan = svg.querySelector('#plan-overlay-path');
+            if (existingPlan) existingPlan.remove();
+
+            // Add plan path
+            const planPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            planPath.setAttribute('id', 'plan-overlay-path');
+            planPath.setAttribute('d', planPathD);
+            planPath.setAttribute('fill', 'none');
+            planPath.setAttribute('stroke', '#94a3b8');
+            planPath.setAttribute('stroke-width', '3');
+            planPath.setAttribute('stroke-dasharray', '8 6');
+            planPath.setAttribute('opacity', '0.7');
+            svg.insertBefore(planPath, path);
+        } else {
+            const existingPlan = svg.querySelector('#plan-overlay-path');
+            if (existingPlan) existingPlan.remove();
+        }
+
+        // Update axes labels
+        axesG.innerHTML = `
+            <text x="400" y="515" fill="#94a3b8" font-size="11" text-anchor="middle">East (m)</text>
+            <text x="10" y="260" fill="#94a3b8" font-size="11" transform="rotate(-90 10 260)" text-anchor="middle">North (m)</text>
+        `;
+    }
+
+    // Animation system
+    function updateAnimation(norm) {
+        if (surveyData.length === 0 || pathLength === 0) return;
+
+        norm = Math.max(0, Math.min(1, norm));
+        const len = norm * pathLength;
+        const p = path.getPointAtLength(len);
+
+        // Update tool position
+        dot.setAttribute('cx', p.x);
+        dot.setAttribute('cy', p.y);
+        mdBadge.setAttribute('x', p.x + 12);
+        mdBadge.setAttribute('y', p.y - 12);
+
+        // Find current survey station by interpolation
+        const totalMD = surveyData[surveyData.length - 1].md;
+        const currentMD = norm * totalMD;
+
+        // Find surrounding stations
+        let idx = 0;
+        for (let i = 0; i < surveyData.length - 1; i++) {
+            if (currentMD >= surveyData[i].md && currentMD <= surveyData[i + 1].md) {
+                idx = i;
+                break;
+            }
+        }
+
+        const s1 = surveyData[idx];
+        const s2 = surveyData[Math.min(idx + 1, surveyData.length - 1)];
+        const ratio = s2.md > s1.md ? (currentMD - s1.md) / (s2.md - s1.md) : 0;
+
+        // Interpolate values
+        const md = s1.md + ratio * (s2.md - s1.md);
+        const tvd = s1.tvd + ratio * (s2.tvd - s1.tvd);
+        const inc = s1.inc + ratio * (s2.inc - s1.inc);
+        const azi = s1.azi + ratio * (s2.azi - s1.azi);
+        const north = s1.north + ratio * (s2.north - s1.north);
+        const east = s1.east + ratio * (s2.east - s1.east);
+        const dep = Math.sqrt(north * north + east * east);
+
+        // Update KPIs
+        mdBadge.textContent = 'MD ' + md.toFixed(1) + ' m';
+        kMD.textContent = md.toFixed(1) + ' m';
+        kTVD.textContent = tvd.toFixed(1) + ' m';
+        kInc.textContent = inc.toFixed(1) + '°';
+        kAz.textContent = azi.toFixed(1) + '°';
+        kNorth.textContent = north.toFixed(1) + ' m';
+        kEast.textContent = east.toFixed(1) + ' m';
+        kDep.textContent = dep.toFixed(1) + ' m';
+
+        infoEl.textContent = 'Incl: ' + inc.toFixed(1) + '° | Az: ' + azi.toFixed(1) + '°';
+        scrubEl.value = Math.round(norm * 1000);
+        tNorm = norm;
+    }
+
+    function animationLoop(ts) {
+        if (!running) {
+            last = ts;
+            return;
+        }
+        const dt = (ts - last) / 1000;
+        last = ts;
+        const advance = dt * 0.08 * speed;
+        let next = tNorm + advance;
+        if (next >= 1) {
+            next = 1;
+            running = false;
+        }
+        updateAnimation(next);
+        requestAnimationFrame(animationLoop);
+    }
+
+    // Event handlers
+    playBtn.addEventListener('click', () => {
+        if (surveyData.length === 0) {
+            statusEl.textContent = '⚠️ Please load survey data first';
+            statusEl.className = 'mt-4 text-xs text-amber-400';
+            return;
+        }
+        running = true;
+        requestAnimationFrame((ts) => {
+            last = ts;
+            requestAnimationFrame(animationLoop);
+        });
+    });
+
+    pauseBtn.addEventListener('click', () => {
+        running = false;
+    });
+
+    speedEl.addEventListener('input', e => {
+        speed = parseFloat(e.target.value);
+    });
+
+    scrubEl.addEventListener('input', e => {
+        running = false;
+        updateAnimation(e.target.value / 1000);
+    });
+
+    // File upload handlers
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#22d3ee';
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.style.borderColor = '#475569';
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#475569';
+        const file = e.dataTransfer.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const text = evt.target.result;
+                pasteArea.value = text;
+                const stations = processSurveyData(text);
+                if (stations) {
+                    surveyData = stations;
+                    renderSurvey();
+                }
+            };
+            reader.readAsText(file);
+        }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const text = evt.target.result;
+                pasteArea.value = text;
+                const stations = processSurveyData(text);
+                if (stations) {
+                    surveyData = stations;
+                    renderSurvey();
+                }
+            };
+            reader.readAsText(file);
+        }
+    });
+
+    pasteArea.addEventListener('input', () => {
+        const text = pasteArea.value.trim();
+        if (text) {
+            const stations = processSurveyData(text);
+            if (stations) {
+                surveyData = stations;
+                renderSurvey();
+            }
+        }
+    });
+
+    // View switching
+    window.switchSurveyView = function(view) {
+        currentView = view;
+
+        const profileBtn = document.getElementById('view-profile-btn');
+        const planBtn = document.getElementById('view-plan-btn');
+
+        if (view === 'profile') {
+            profileBtn.className = 'px-3 py-2 bg-cyan-600 text-white text-sm font-semibold rounded-md transition';
+            planBtn.className = 'px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-md transition';
+        } else {
+            profileBtn.className = 'px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-md transition';
+            planBtn.className = 'px-3 py-2 bg-cyan-600 text-white text-sm font-semibold rounded-md transition';
+        }
+
+        if (surveyData.length > 0) {
+            renderSurvey();
+        }
+    };
+
+    // Sample data loader
+    window.loadSampleSurvey = function() {
+        const sample = `MD,INC,AZ
+0,0,0
+500,5,45
+1000,15,90
+1500,30,120
+2000,45,135
+2500,60,150
+3000,75,165
+3500,85,180`;
+
+        pasteArea.value = sample;
+        const stations = processSurveyData(sample);
+        if (stations) {
+            surveyData = stations;
+            renderSurvey();
+        }
+    };
+
+    // ========= PLAN OVERLAY & DLS ENHANCEMENTS =========
+
+    let planSurvey = [];  // Separate plan data
+    let dlsData = [];     // DLS calculations for actual survey
+    let deltaStats = null; // Delta statistics when plan is loaded
+
+    const dlsThreshold = document.getElementById('dls-threshold');
+    const dlsThresholdVal = document.getElementById('dls-threshold-val');
+    const togglePlan = document.getElementById('toggle-plan');
+    const toggleHotspots = document.getElementById('toggle-hotspots');
+    const deltaStatsDiv = document.getElementById('delta-stats');
+    const dlsPanel = document.getElementById('dls-panel');
+    const dlsList = document.getElementById('dls-list');
+
+    // Update DLS threshold display
+    if (dlsThreshold && dlsThresholdVal) {
+        dlsThreshold.addEventListener('input', (e) => {
+            dlsThresholdVal.textContent = parseFloat(e.target.value).toFixed(1);
+            if (dlsData.length > 0) {
+                renderDLSHotspots();
+                renderDLSPanel();
+            }
+        });
+    }
+
+    // Toggle event listeners
+    if (togglePlan) {
+        togglePlan.addEventListener('change', () => {
+            if (surveyData.length > 0) renderSurvey();
+        });
+    }
+
+    if (toggleHotspots) {
+        toggleHotspots.addEventListener('change', () => {
+            renderDLSHotspots();
+            renderDLSPanel();
+        });
+    }
+
+    // Compute DLS (Dogleg Severity) for survey
+    function computeDLS(stations) {
+        const dls = [];
+        if (stations.length < 2) return dls;
+
+        for (let i = 1; i < stations.length; i++) {
+            const a = stations[i - 1];
+            const b = stations[i];
+
+            const inc1 = (a.inc || 0) * Math.PI / 180;
+            const inc2 = (b.inc || 0) * Math.PI / 180;
+            const az1 = (a.azi || 0) * Math.PI / 180;
+            const az2 = (b.azi || 0) * Math.PI / 180;
+
+            const cosDL = Math.sin(inc1) * Math.sin(inc2) * Math.cos(az2 - az1) + Math.cos(inc1) * Math.cos(inc2);
+            const DL = Math.acos(Math.min(1, Math.max(-1, cosDL)));
+            const dmd = (b.md - a.md) || 1;
+            const dlsDeg = (DL * 180 / Math.PI) / (dmd / 30); // degrees per 30m
+
+            dls.push({ md: b.md, dls: dlsDeg, tvd: b.tvd, north: b.north, east: b.east });
+        }
+
+        return dls;
+    }
+
+    // Render DLS hotspots on SVG
+    function renderDLSHotspots() {
+        // Remove existing hotspots
+        const existing = svg.querySelectorAll('.dls-hotspot');
+        existing.forEach(el => el.remove());
+
+        if (!toggleHotspots || !toggleHotspots.checked || dlsData.length === 0) return;
+
+        const threshold = dlsThreshold ? parseFloat(dlsThreshold.value) : 6;
+        const pathEl = document.getElementById('wbPath');
+        if (!pathEl) return;
+
+        const L = pathEl.getTotalLength();
+        if (L === 0) return;
+
+        dlsData.forEach(item => {
+            if (item.dls < threshold) return;
+
+            const t = (item.md - mdMin) / ((mdMax - mdMin) || 1);
+            const p = pathEl.getPointAtLength(t * L);
+
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('class', 'dls-hotspot');
+            circle.setAttribute('cx', p.x);
+            circle.setAttribute('cy', p.y);
+            circle.setAttribute('r', '5');
+            circle.setAttribute('fill', '#ef4444');
+            circle.setAttribute('stroke', '#0b1220');
+            circle.setAttribute('stroke-width', '2');
+            circle.setAttribute('opacity', '0.9');
+
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+            title.textContent = `MD ${Math.round(item.md)} m · ${item.dls.toFixed(1)}°/30m`;
+            circle.appendChild(title);
+
+            svg.appendChild(circle);
+        });
+    }
+
+    // Render DLS panel with top hotspots
+    function renderDLSPanel() {
+        if (!dlsData.length || !toggleHotspots || !toggleHotspots.checked) {
+            if (dlsPanel) dlsPanel.classList.add('hidden');
+            return;
+        }
+
+        const threshold = dlsThreshold ? parseFloat(dlsThreshold.value) : 6;
+        const hotspots = dlsData.filter(d => d.dls >= threshold).sort((a, b) => b.dls - a.dls).slice(0, 6);
+
+        if (hotspots.length === 0) {
+            if (dlsPanel) dlsPanel.classList.add('hidden');
+            return;
+        }
+
+        if (dlsPanel) {
+            dlsPanel.classList.remove('hidden');
+            if (dlsList) {
+                dlsList.innerHTML = hotspots.map(h => `
+                    <button onclick="jumpToMD(${h.md})" class="px-2 py-1 bg-red-900/30 hover:bg-red-900/50 border border-red-700/50 rounded text-left transition">
+                        MD ${Math.round(h.md)} m
+                    </button>
+                    <div class="px-2 py-1 bg-red-900/20 border border-red-700/30 rounded text-right">
+                        ${h.dls.toFixed(1)}°/30m
+                    </div>
+                    </div>
+                    <div class="metric-row">
+                    <div class="metric-row">
+                        <span class="metric-label">Responsiveness</span>
+                        <span class="metric-label">Responsiveness</span>
+                        <div class="metric-value">
+                        <div class="metric-value">
+                            <div class="star-rating" id="metric-response-stars"></div>
+                            <div class="star-rating" id="metric-response-stars"></div>
+                            <span class="score-badge score-good">85%</span>
+                            <span class="score-badge score-good">85%</span>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+
+                <div class="mt-6 text-sm opacity-90">
+                <div class="mt-6 text-sm opacity-90">
+                    <strong>Recommendation:</strong> Excellent overall performance. Continue partnership and consider for additional wells.
+                    <strong>Recommendation:</strong> Excellent overall performance. Continue partnership and consider for additional wells.
+                </div>
+                </div>
+            </div>
+            </div>
+
+
+            <div class="mt-8 light-card p-6 md:p-8 rounded-lg"><h3 class="text-xl font-semibold mb-4">Lessons Learned</h3><div id="lessons-learned-list" class="space-y-4 mb-6"></div><div><textarea id="lesson-input" class="w-full p-2 text-base rounded-md" rows="3" placeholder="Add a new lesson learned..."></textarea><button id="add-lesson-btn" class="mt-2 rounded-md bg-teal-600 px-4 py-2 text-base font-semibold text-white shadow-sm hover:bg-teal-500">Add Lesson</button></div></div>
+            <div class="mt-8 light-card p-6 md:p-8 rounded-lg"><h3 class="text-xl font-semibold mb-4">Lessons Learned</h3><div id="lessons-learned-list" class="space-y-4 mb-6"></div><div><textarea id="lesson-input" class="w-full p-2 text-base rounded-md" rows="3" placeholder="Add a new lesson learned..."></textarea><button id="add-lesson-btn" class="mt-2 rounded-md bg-teal-600 px-4 py-2 text-base font-semibold text-white shadow-sm hover:bg-teal-500">Add Lesson</button></div></div>
+            <div class="mt-8 flex justify-center"><button id="plan-new-job-btn" class="rounded-md bg-gray-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-500">Plan New Job</button></div>
+            <div class="mt-8 flex justify-center"><button id="plan-new-job-btn" class="rounded-md bg-gray-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-500">Plan New Job</button></div>
+        </div>
+        </div>
+        
+        
+    </main>
+    </main>
+    
+    
+    <div id="well-history-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 modal-overlay">
+    <div id="well-history-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 modal-overlay">
+        <div class="relative top-10 mx-auto p-5 border w-full max-w-5xl shadow-lg rounded-md modal-container">
+        <div class="relative top-10 mx-auto p-5 border w-full max-w-5xl shadow-lg rounded-md modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="flex justify-between items-center border-b pb-3 dark:border-gray-700">
+            <div class="flex justify-between items-center border-b pb-3 dark:border-gray-700">
+                <h3 id="modal-title" class="text-2xl font-bold"></h3>
+                <h3 id="modal-title" class="text-2xl font-bold"></h3>
+                <button id="close-modal-btn" class="text-3xl font-bold hover:text-red-500">&times;</button>
+                <button id="close-modal-btn" type="button" class="text-3xl font-bold hover:text-red-500" aria-label="Close well history dialog">&times;</button>
+            </div>
+            </div>
+            <div id="modal-content" class="mt-4 max-h-[80vh] overflow-y-auto p-1"></div>
+            <div id="modal-content" class="mt-4 max-h-[80vh] overflow-y-auto p-1"></div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+
+</div>
+</div>
+
+
+<script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
+    // --- UI COMPONENT BUILDERS --- 
+    // --- UI COMPONENT BUILDERS --- 
+    /**
+    /**
+     * Creates a radial gauge component and injects it into a container.
+     * Creates a radial gauge component and injects it into a container.
+     * @param {string} containerId - The ID of the element to contain the gauge.
+     * @param {string} containerId - The ID of the element to contain the gauge.
+     * @param {string} label - The text label for the gauge.
+     * @param {string} label - The text label for the gauge.
+     * @param {string} units - The units for the gauge value.
+     * @param {string} units - The units for the gauge value.
+     * @param {number} maxValue - The maximum value for the gauge's scale.
+     * @param {number} maxValue - The maximum value for the gauge's scale.
+     */
+     */
+    function createRadialGauge(containerId, label, units, maxValue) {
+    function createRadialGauge(containerId, label, units, maxValue) {
+        const container = document.getElementById(containerId);
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        if (!container) return;
+        const size = 120;
+        const size = 120;
+        const strokeWidth = 10;
+        const strokeWidth = 10;
+        const radius = (size / 2) - (strokeWidth * 2);
+        const radius = (size / 2) - (strokeWidth * 2);
+        const circumference = radius * 2 * Math.PI;
+        const circumference = radius * 2 * Math.PI;
+
+
+index.html
++82
+-34
+
+<!DOCTYPE html>
+
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>Well-Tegra | AI-Powered Well Engineering Platform - Reduce NPT by 30%</title>
+    <meta name="description" content="Transform well intervention planning with Well-Tegra's AI-assisted platform. Reduce NPT by 15-30%, reclaim 2-3 hours/day of engineer time, and cut planning cycles from days to hours. Try it free.">
+    <meta name="keywords" content="well engineering, intervention planning, NPT reduction, drilling optimization, well data management, oil and gas software, well planning software, drilling automation">
+    <meta name="author" content="Well-Tegra Data Solutions">
+    <link rel="canonical" href="https://welltegra.network/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://welltegra.network/">
+    <meta property="og:title" content="Well-Tegra | From Data Chaos to Predictive Clarity">
+    <meta property="og:description" content="AI-powered well engineering platform that reduces NPT by 15-30% and reclaims hours of engineer time daily. Transform your well intervention planning.">
+    <meta property="og:image" content="/assets/og-image.jpg">
+    <meta property="og:site_name" content="Well-Tegra">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://welltegra.network/">
+    <meta name="twitter:title" content="Well-Tegra | AI-Powered Well Engineering Platform">
+    <meta name="twitter:description" content="Reduce NPT by 15-30%, reclaim 2-3 hours/day, cut planning cycles from days to hours. Try Well-Tegra free.">
+    <meta name="twitter:image" content="/assets/twitter-card.jpg">
+
+    <!-- Additional Meta -->
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
+
+    <!-- PDF Export Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+        /* --- Base & Theme Setup --- */
+        body { font-family: 'Inter', sans-serif; font-weight: 500; }
+        h1, h2, h3, h4, h5, h6 { font-weight: 800; } /* Bolder headings */
+        .theme-light { background-color: #f8fafc; }
+        .theme-dark { background-color: #0f172a; color: #e2e8f0; }
+
+        /* --- Watermark Background --- */
+        #main-content {
+            position: relative;
+            z-index: 1;
+        }
+        .theme-light #main-content::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('assets/watermark.jpg');
+            background-repeat: repeat;
+            background-position: center;
+            background-size: 350px;
+            opacity: 0.02;
+            z-index: -1;
+            pointer-events: none;
+        }
+@@ -1000,108 +1000,110 @@
+            "availableLanguage": "English"
+        }
+    }
+    </script>
+</head>
+
+<body class="theme-dark">
+
+<!-- Login page removed - direct access to application -->
+
+<div id="app-container" class="min-h-screen flex flex-col">
+
+    <!-- Skip to main content link for keyboard navigation -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:px-4 focus:py-2 focus:bg-cyan-600 focus:text-white">
+        Skip to main content
+    </a>
+
+    <header id="app-header" class="header sticky top-0 z-30 transition-colors" role="banner">
+        <div class="max-w-full mx-auto py-3 px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="https://z-cdn-media.chatglm.cn/files/c77fcd00-01f6-46b3-a374-458da17e6a61_logo2.jpg?auth_key=1790424852-581d1115c00d470e99b020b285e0e952-0-43d8767dc883e69a5e0089cd53e33076" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/100x100/0f172a/ffffff?text=Logo';">
+                    <h1 id="header-title" class="text-xl font-bold hidden md:block">Well-Tegra Data Solutions</h1>
+                </div>
+                <nav id="header-nav" class="flex-1 flex items-center justify-center space-x-1 md:space-x-4" role="navigation" aria-label="Main navigation">
+                    <a id="home-nav-link" href="#home-view" role="tab" aria-selected="true" aria-controls="home-view" title="Return to the Home Page" class="nav-link active flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span>Home</span>
+                    </a>
+                    <a id="planner-nav-link" href="#planner-view" role="tab" aria-selected="false" aria-controls="planner-view" title="Go to the Well Intervention Planner" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+                        <span>Planner</span>
+                    </a>
+                    <a id="logistics-nav-link" href="#logistics-view" role="tab" aria-selected="false" aria-controls="logistics-view" title="Manage Equipment and Personnel" class="nav-link flex items-center space-x-2">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/><path d="M18 18h-1.3c-.5 0-.9-.3-1.1-.7l-2.6-5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+                        <span>Logistics</span>
+                    </a>
+                    <a id="commercial-nav-link" href="#commercial-view" role="tab" aria-selected="false" aria-controls="commercial-view" title="View Financial Dashboards" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        <span>Commercial</span>
+                    </a>
+                    <a id="hse-nav-link" href="#hse-view" role="tab" aria-selected="false" aria-controls="hse-view" title="View Health, Safety, and Environment Data" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span>HSE & Risk</span>
+                    </a>
+                    <a id="pob-nav-link" href="#pob-view" role="tab" aria-selected="false" aria-controls="pob-view" title="View Personnel on Board and Emergency Response" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <span>POB & ER</span>
+                    </a>
+                    <a id="whitepaper-nav-link" href="#whitepaper-view" role="tab" aria-selected="false" aria-controls="whitepaper-view" title="Download the White Paper" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        <span>White Paper</span>
+                    </a>
+                     <a id="faq-nav-link" href="#faq-view" role="tab" aria-selected="false" aria-controls="faq-view" title="Frequently Asked Questions" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
+                        <span>FAQ</span>
+                    </a>
+                    <a id="security-nav-link" href="#security-view" role="tab" aria-selected="false" aria-controls="security-view" title="Security & Data Protection" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <span>Security</span>
+                    </a>
+                    <a id="about-nav-link" href="#about-view" role="tab" aria-selected="false" aria-controls="about-view" title="About the Founder" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
+                        <span>About</span>
+                    </a>
+                </div>
+                <div id="header-details" class="flex items-center space-x-4">
+                    <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700" aria-label="Toggle dark mode">
+                        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="flex-1" role="main">
+        <div id="home-view" class="view-container">
+            <section class="hero-section py-20 px-4 relative" aria-describedby="hero-video-description">
+                <video autoplay loop muted playsinline id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description">
+                    <source src="assets/hero.mp4" type="video/mp4">
+                    <track kind="descriptions" srclang="en" label="English descriptions" src="assets/hero-video-descriptions.vtt" default>
+                </video>
+                <div class="hero-overlay"></div>
+                <p id="hero-video-description" class="sr-only">Looping montage showing engineers collaborating over drilling dashboards and subsurface schematics.</p>
+                <div class="max-w-4xl mx-auto text-center relative z-10">
+                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">From Data Chaos to Predictive Clarity.</h1>
+                    <p class="mt-6 text-lg md:text-xl text-slate-100">The oil and gas industry loses over $38 million per asset annually to unplanned downtime. Your engineers spend more than 50% of their time wrangling data. The cause? A disconnected digital ecosystem.</p>
+                    <p class="mt-4 text-lg md:text-xl font-semibold text-white">Well-Tegra: Engineering Insight, Amplified by Data.</p>
+
+                    <!-- Hero CTAs -->
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Request a Demo
+                        </a>
+                        <button onclick="showView('planner')" class="px-8 py-4 bg-white hover:bg-slate-100 text-slate-900 text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Try the Planner
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mini ROI Block + Outcome Bullets -->
+            <section class="py-12 px-4 bg-gradient-to-r from-cyan-900/20 to-blue-900/20 border-y border-cyan-500/30">
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <!-- Outcome Bullets -->
+                        <div class="space-y-4">
+                            <h3 class="text-2xl font-bold text-white">Proven Results</h3>
+                            <ul class="space-y-3 text-lg">
+@@ -1322,51 +1324,51 @@
+            <div id="logistics-content" class="mt-10 grid gap-12 lg:grid-cols-2">
+                <div class="light-card p-6 rounded-lg"><h3 class="text-xl font-semibold mb-4">Equipment Hub</h3><input type="text" id="equipment-search" placeholder="Search equipment..." class="w-full p-2 rounded-md mb-4"><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="table-header"><tr><th class="p-2">Asset ID</th><th>Type</th><th>Location</th><th>Test Status</th><th>Actions</th></tr></thead><tbody id="equipment-table-body"></tbody></table></div></div>
+                <div class="light-card p-6 rounded-lg"><h3 class="text-xl font-semibold mb-4">Personnel Roster</h3><input type="text" id="personnel-search" placeholder="Search personnel..." class="w-full p-2 rounded-md mb-4"><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="table-header"><tr><th class="p-2">Name</th><th>Role</th><th>Status</th><th>Certs Valid</th></tr></thead><tbody id="personnel-table-body"></tbody></table></div></div>
+            </div>
+        </div>
+        
+        <div id="commercial-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Commercial Dashboard</h2><p id="commercial-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Live financial tracking for the selected operation.</p></div>
+            <div id="commercial-content" class="mt-10"></div>
+        </div>
+
+        <div id="hse-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">HSE & Risk Dashboard</h2><p id="hse-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Centralized risk register and permit to work status.</p></div>
+            <div id="hse-content" class="mt-10"></div>
+        </div>
+
+        <div id="pob-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Personnel on Board & Emergency Response</h2><p id="pob-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Live POB manifest and emergency muster status.</p></div>
+            <div id="pob-content" class="mt-10"></div>
+        </div>
+
+        <div id="whitepaper-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight">Well-Tegra White Paper</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg">Dive deeper into the technical architecture and strategic vision behind the Well-Tegra platform. Our white paper provides a comprehensive overview of the privacy-preserving AI, enterprise blockchain, and data unification strategies that power our solution.</p>
+                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" download class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
+                    Download the White Paper
+                </a>
+            </div>
+        </div>
+
+        <div id="faq-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Frequently Asked Questions</h2><p class="mt-2 max-w-2xl mx-auto text-lg">Find answers to common questions about the Well-Tegra platform.</p></div>
+            <div id="faq-accordion" class="mt-10 light-card rounded-lg shadow-md overflow-hidden">
+                </div>
+        </div>
+
+        <div id="about-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">About Me & The Mission</h2></div>
+            <div class="mt-10 light-card p-8 rounded-lg space-y-8">
+                <div>
+                    <h3 class="text-2xl font-bold">From the Wellsite to the Web</h3>
+                    <p class="text-lg italic">"I built Well-Tegra because I've lived the problems it's designed to solve." - Kenneth McKenzie</p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold">My Perspective</h4>
+                    <p>I'm not a software developer who decided to get into oil and gas. I'm a well services guy who learned to code. My career started at the sharp end with Tristar Oilfield Services and took me around the world, working with service leaders like Expro and Wellserv, and later supervising operations for major operators like BG Group, CNR, and Woodside. I've been on both sides of the fenceâ€”I know the service company's challenges and the operator's objectives. That's the insight Well-Tegra is built on.</p>
+                </div>
+                 <div>
+                    <h4 class="text-xl font-semibold">Why I Built This</h4>
+                    <p>I've seen first-hand how much time, money, and energy we waste because our data is a mess. It's locked in different systems, buried in old reports, and stuck in spreadsheets. We repeat the same mistakes because the lessons learned from one job are never available for the next. The "Well From Hell" in this demo isn't an exaggeration; it's a sanitized version of the real-world train wrecks I've witnessedâ€”and helped clean up.</p>
+@@ -2014,54 +2016,54 @@
+                            <h4 class="font-semibold mb-2">Backups</h4>
+                            <p class="text-sm text-slate-400">Automated daily backups, 30-day retention</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl mb-3">🛡️</div>
+                            <h4 class="font-semibold mb-2">Monitoring</h4>
+                            <p class="text-sm text-slate-400">24/7 security monitoring & alerts</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div class="light-card p-8 rounded-lg text-center">
+                    <h2 class="text-2xl font-bold mb-4">Have Security Questions?</h2>
+                    <p class="text-lg text-slate-400 mb-6">Our security team is here to help</p>
+                    <a href="mailto:security@welltegra.network" class="inline-block px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
+                        Contact Security Team
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <div id="well-history-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 modal-overlay">
+        <div class="relative top-10 mx-auto p-5 border w-full max-w-5xl shadow-lg rounded-md modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="flex justify-between items-center border-b pb-3 dark:border-gray-700">
+                <h3 id="modal-title" class="text-2xl font-bold"></h3>
+                <button id="close-modal-btn" type="button" class="text-3xl font-bold hover:text-red-500" aria-label="Close well history dialog">&times;</button>
+            </div>
+            <div id="modal-content" class="mt-4 max-h-[80vh] overflow-y-auto p-1"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- UI COMPONENT BUILDERS --- 
+    /**
+     * Creates a radial gauge component and injects it into a container.
+     * @param {string} containerId - The ID of the element to contain the gauge.
+     * @param {string} label - The text label for the gauge.
+     * @param {string} units - The units for the gauge value.
+     * @param {number} maxValue - The maximum value for the gauge's scale.
+     */
+    function createRadialGauge(containerId, label, units, maxValue) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        const size = 120;
+        const strokeWidth = 10;
+        const radius = (size / 2) - (strokeWidth * 2);
+        const circumference = radius * 2 * Math.PI;
+
+@@ -2654,57 +2656,68 @@ document.addEventListener('DOMContentLoaded', function() {
+    modalTitle = document.getElementById('modal-title'), 
+    modalContent = document.getElementById('modal-content'), 
+    closeModalBtn = document.getElementById('close-modal-btn');
+    
+    // Theme
+
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    
+    // --- VIEW & STATE MANAGEMENT ---
+
+    const switchView = (viewName) => {
+        if (appState.liveDataInterval) {
+            clearInterval(appState.liveDataInterval);
+            appState.liveDataInterval = null;
+        }
+
+        appState.currentView = viewName;
+        body.className = `theme-${localStorage.getItem('theme') || 'light'}`;
+        if (viewName === 'performer') {
+            body.classList.add('theme-dark');
+        }
+
+        views.forEach(v => v.classList.add('hidden'));
+        document.getElementById(`${viewName}-view`).classList.remove('hidden');
+
+        navLinks.forEach(l => {
+            l.classList.remove('active');
+            l.setAttribute('aria-selected', 'false');
+            const isDisabled = l.classList.contains('disabled');
+            l.setAttribute('tabindex', isDisabled ? '-1' : '0');
+            if (isDisabled) {
+                l.setAttribute('aria-disabled', 'true');
+            } else {
+                l.removeAttribute('aria-disabled');
+            }
+        });
+        const activeLink = document.getElementById(`${viewName}-nav-link`);
+        if (activeLink) {
+            activeLink.classList.add('active');
+            activeLink.setAttribute('aria-selected', 'true');
+        }
+
+        headerDetails.innerHTML = '';
+        const theme = viewName === 'performer' ? 'dark' : localStorage.getItem('theme') || 'light';
+        setTheme(theme);
+
+        let viewTitle = viewName.charAt(0).toUpperCase() + viewName.slice(1);
+        if(viewName === 'pob') viewTitle = 'POB & ER';
+        if(viewName === 'hse') viewTitle = 'HSE & Risk';
+        if(viewName === 'whitepaper') viewTitle = 'White Paper';
+        headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
+
+        if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
+            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">â— LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            initializePerformer();
+        } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
+            if(appState.selectedWell && appState.generatedPlan) {
+                headerDetails.innerHTML = `<div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            }
+            if (viewName === 'commercial') renderCommercialView();
+            if (viewName === 'hse') renderHSEView();
+            if (viewName === 'pob') renderPOBView();
+        } else if (viewName === 'logistics') {
+            renderAssetManagementViews();
+        } else if (viewName === 'faq') {
+            initializeFaqAccordion();
+        }
+    };
+@@ -3932,86 +3945,110 @@ document.addEventListener('DOMContentLoaded', function() {
+                <div class="faq-answer">${item.answer}</div>
+            </div>
+        `).join('');
+
+        accordion.addEventListener('click', (e) => {
+            const questionButton = e.target.closest('.faq-question');
+            if (questionButton) {
+                const currentlyActive = document.querySelector('.faq-question.active');
+                if (currentlyActive && currentlyActive !== questionButton) {
+                    currentlyActive.classList.remove('active');
+                }
+                questionButton.classList.toggle('active');
+            }
+        });
+    };
+
+    // --- MODAL LOGIC ---
+
+    const openModal = (wellId) => {
+        const well = wellData.find(w => w.id === wellId); 
+        if (!well) return;
+        
+        modalTitle.textContent = `Well History & Schematic: ${well.name}`;
+        modalContent.innerHTML = `
+            <div class="mb-4 border-b dark:border-gray-700">
+                <nav class="-mb-px flex space-x-8" aria-label="Well history sections" role="tablist">
+                    <button type="button" class="modal-tab active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="history" role="tab" aria-selected="true" aria-controls="modal-tab-history">History & Schematic</button>
+                    <button type="button" class="modal-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="reports" role="tab" aria-selected="false" aria-controls="modal-tab-reports">Daily Reports</button>
+                </nav>
+            </div>
+            <div id="modal-tab-history">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2">
+                        <h4 class="text-xl font-semibold mb-4">Operational History</h4>
+                        <div id="history-content" class="max-h-96 overflow-y-auto pr-2"></div>
+                    </div>
+                    <div class="md:col-span-1">
+                        <h4 class="text-xl font-semibold mb-4">Wellbore Schematic</h4>
+                        <div class="bg-white dark:bg-slate-800 p-2 rounded-lg shadow-inner border dark:border-slate-700">
+                            ${renderWellSchematic(well)}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="modal-tab-reports" class="hidden">
+                <h4 class="text-xl font-semibold mb-4">Daily Reports (from legacy spreadsheets)</h4>
+                <div id="reports-content" class="h-96 overflow-y-auto"></div>
+            </div>
+        `;
+        
+        renderModalTabs(well);
+        
+        const modalTabs = Array.from(document.querySelectorAll('.modal-tab'));
+        const setActiveModalTab = (selectedTab) => {
+            modalTabs.forEach(tab => {
+                const isActive = tab === selectedTab;
+                tab.classList.toggle('active', isActive);
+                tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                const targetId = tab.getAttribute('aria-controls');
+                if (targetId) {
+                    const targetPanel = document.getElementById(targetId);
+                    if (targetPanel) {
+                        targetPanel.classList.toggle('hidden', !isActive);
+                    }
+                }
+            });
+        };
+
+        modalTabs.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                setActiveModalTab(tab);
+            });
+
+            tab.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActiveModalTab(tab);
+                }
+            });
+        });
+
+        if (modalTabs.length) {
+            setActiveModalTab(modalTabs[0]);
+        }
+        
+        modal.classList.remove('hidden');
+    };
+
+    const renderModalTabs = (well) => {
+        document.getElementById('history-content').innerHTML = well.history.length ? well.history.map(h => `
+            <div class="p-4 mb-4 border dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                <p class="font-bold text-lg">${h.operation} <span class="text-sm font-normal">- ${h.date}</span></p>
+                <div class="mt-3 space-y-3">
+                    <div class="flex items-start">
+                        <span class="text-red-600 dark:text-red-400 mr-3">${getIcon('exclamation-triangle', 'w-6 h-6')}</span>
+                        <div>
+                            <strong class="font-semibold text-red-600 dark:text-red-400">Problem:</strong>
+                            <p class="text-sm">${h.problem}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-green-600 dark:text-green-400 mr-3">${getIcon('check-circle', 'w-6 h-6')}</span>
+                        <div>
+                            <strong class="font-semibold text-green-600 dark:text-green-400">Lesson Learned:</strong>
+                            <p class="text-sm">${h.lesson}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+@@ -4281,54 +4318,65 @@ document.addEventListener('DOMContentLoaded', function() {
+        
+        calculateROI();
+    };
+
+    if (engineerCountSlider) {
+        [engineerCountSlider, nptReductionSlider, timeSavingsSlider].forEach(slider => {
+            slider.addEventListener('input', calculateROI);
+        });
+    }
+
+    // --- EVENT LISTENERS ---
+
+    // Auto-initialize application on page load (login removed)
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        setTheme(savedTheme);
+        switchView('home');
+    });
+
+    themeToggleBtn.addEventListener('click', () => {
+        const currentTheme = body.classList.contains('theme-dark') ? 'dark' : 'light';
+        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    navLinks.forEach(link => {
+        const activate = () => {
+            if (link.classList.contains('disabled')) return;
+            switchView(link.id.replace('-nav-link', ''));
+        };
+
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            activate();
+        });
+
+        link.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                activate();
+            }
+        });
+    });
+
+    // Well selection event listener
+    wellSelectionGrid.addEventListener('click', (e) => {
+        // Handle view details button
+        if (e.target.closest('.view-details-btn')) { 
+            e.stopPropagation(); 
+            openModal(e.target.closest('.view-details-btn').dataset.wellId); 
+            return; 
+        }
+        
+        // Handle well card selection
+        const card = e.target.closest('.planner-card'); 
+        if (!card) return;
+        
+        appState.selectedWell = wellData.find(w => w.id === card.dataset.wellId);
+        document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+
+        renderProblems(); // Update the problems list based on selection
+        updatePlannerStepUI(2);
+    });
+
+    // Objective selection event listener
