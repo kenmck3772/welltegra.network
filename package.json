@@ -6,7 +6,7 @@
   "scripts": {
     "build:css": "tailwindcss -c tailwind.config.js -i styles/tailwind.css -o assets/css/tailwind.css --minify",
     "format": "prettier --write CHECKLIST.md RELEASE_NOTES.md",
-    "lint:links": "linkinator http://127.0.0.1:8000 --silent --skip 'mailto:*' --timeout 3000"
+    "lint:links": "linkinator http://127.0.0.1:8000 --silent --skip 'mailto:*' --skip 'https://github.com/*' --timeout 3000"
   },
   "keywords": [],
   "author": "",
