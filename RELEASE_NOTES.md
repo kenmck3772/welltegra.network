@@ -4,6 +4,7 @@
 
 - Removed the redundant "Review the strategic roadmap source" anchor in `index.html` to prevent duplicate focus targets in the Verifiable Trust section.
 - Rebuilt the Tailwind bundle via `npm run build:css` so `assets/css/tailwind.css` reflects the latest source tokens.
+- Refreshed `CHECKLIST.md` with current console captures, JSON/CSV validation results, link audit output, and documented the Lighthouse limitation (missing Chrome binary).
 - Refreshed `CHECKLIST.md` with current console captures, JSON validation results, link audit output, and documented the Lighthouse limitation (missing Chrome binary).
 - Added a Linkinator reminder so future link checks run against an active local server and include the successful crawl output.
 
