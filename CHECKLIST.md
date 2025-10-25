@@ -11,6 +11,7 @@
     ```
 
   - After CSP cleanup: unchanged (no warnings or errors introduced).
+  - Current iteration: triggered the "Read the Executive White Paper Summary" and "Launch the Planner Demo" CTAs (new `data-switch-view` handlers) — console stayed silent while the controller routed to `whitepaper`/`planner` views.
 
 - [x] `index-v23-fresh.html` — archived demo preview
 
@@ -60,8 +61,8 @@
 5. Preserved SRI attributes and version pinning for Chart.js, jsPDF, and html2canvas to lock dependency integrity.
 6. Verified all outbound links that open new tabs include `rel="noopener noreferrer"` to block tab-nabbing.
 7. Confirmed canonical + OpenGraph metadata reference the production domain for SEO consistency.
-8. Documented JSON validation workflow for operational datasets to maintain structured-data accuracy.
-9. Maintained local favicon/logo assets to avoid cross-origin fetches blocked by CSP.
+8. Added accessible `<details>` narratives and keyboard-friendly `data-switch-view` buttons so the new Command Center and White Paper sections work for screen readers without extra scripts (`index.html`).
+9. Mapped the strategic roadmap timeline to the executive CTA so leadership sees the white paper milestones in-line with the homepage journey (`index.html`).
 10. Recorded Lighthouse recommendations (unused JS/CSS) for backlog grooming.
 
 ## Security Hygiene
