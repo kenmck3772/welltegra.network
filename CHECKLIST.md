@@ -3,6 +3,26 @@
 ## Console Output
 
 - [x] `index.html` — local preview (`http://127.0.0.1:8000/index.html`)
+
+  - Before: no blocking errors; only data bootstrap log captured.
+
+    ```text
+    LOG: Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
+    ```
+
+  - After CSP cleanup: unchanged (no warnings or errors introduced).
+  - Current iteration: triggered the "Read the Executive White Paper Summary" and "Launch the Planner Demo" CTAs (new `data-switch-view` handlers) — console stayed silent while the controller routed to `whitepaper`/`planner` views.
+
+- [x] `index-v23-fresh.html` — archived demo preview
+
+  - Before: hero video blocked by CSP and attempted to stream a missing `thumbnail.mp4`/`thumbnail.png` asset from production, triggering CSP rejections followed by 404s.
+
+    ```text
+    ERROR: Refused to load media from 'https://welltegra.network/assets/thumbnail.mp4' because it violates the following Content Security Policy directive: "media-src 'self' data:".
+    ERROR: Refused to load media from 'https://welltegra.network/assets/thumbnail.mp4' because it violates the following Content Security Policy directive: "media-src 'self' data:".
+    ```
+
+  - After CSP media allowlist update and swapping in local `assets/hero4.mp4` + `assets/logo.jpg`: clean console (no messages).
   - Before: no blocking errors; only data bootstrap log captured.
 
     ```text
@@ -34,6 +54,7 @@
 - [x] `npm run lint:links` (linkinator) → crawled 11 URLs with 0 failures.
 - [x] Replaced archived hero video/poster URLs that pointed to missing `https://welltegra.network/assets/thumbnail.{mp4,png}` with local `assets/hero4.mp4` + `assets/logo.jpg` to eliminate remote 404s.
 - [x] Updated archived demo watermark backgrounds to read from the bundled `assets/watermark.jpg` instead of the missing production `watermark.png` asset.
+- [x] Synced `assets/README.md` with the committed media inventory (`watermark.jpg`, `logo.jpg`, `hero4.mp4`) and documented the relative-path usage so future uploads stay aligned with the HTML references.
 
 ## Styling Pipeline
 
@@ -61,6 +82,8 @@
 5. Preserved SRI attributes and version pinning for Chart.js, jsPDF, and html2canvas to lock dependency integrity.
 6. Verified all outbound links that open new tabs include `rel="noopener noreferrer"` to block tab-nabbing.
 7. Confirmed canonical + OpenGraph metadata reference the production domain for SEO consistency.
+8. Added accessible `<details>` narratives and keyboard-friendly `data-switch-view` buttons so the new Command Center and White Paper sections work for screen readers without extra scripts (`index.html`).
+9. Mapped the strategic roadmap timeline to the executive CTA so leadership sees the white paper milestones in-line with the homepage journey (`index.html`).
 8. Documented JSON validation workflow for operational datasets to maintain structured-data accuracy.
 9. Maintained local favicon/logo assets to avoid cross-origin fetches blocked by CSP.
 10. Recorded Lighthouse recommendations (unused JS/CSS) for backlog grooming.

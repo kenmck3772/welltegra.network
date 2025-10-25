@@ -2,6 +2,9 @@
 
 ## Summary
 
+- Introduced "Verifiable Trust", "Unified Command Center", and "Strategic Roadmap" sections on the homepage so investors and operators see how the white paper architecture is embedded in the live product experience (`index.html`).
+- Added accessible `<details>` narratives plus reusable `data-switch-view` buttons that jump straight to the Planner and White Paper views without triggering console noise (`index.html`).
+- Maintained the hardened CSP/media fixes and updated the audit artefacts with the new CTA regression notes (`CHECKLIST.md`).
 - Removed duplicated Content-Security-Policy `<meta>` directives and added `https://welltegra.network` to the `media-src` allowlist so hero videos render without console violations.
 - Redirected archived hero video/poster references away from the missing `thumbnail.*` assets to the committed `assets/hero4.mp4` + `assets/logo.jpg`, eliminating remote 404s during playback.
 - Pointed archived demo watermark backgrounds at the committed `assets/watermark.jpg` asset to stop browsers from requesting the missing production PNG.
@@ -15,6 +18,7 @@
    - `http://127.0.0.1:8000/index.html`
    - `http://127.0.0.1:8000/index-v23-fresh.html`
    - `http://127.0.0.1:8000/test-v23-1761097711.html`
+3. Confirm browser console is free of CSP media errors, then click the "Read the Executive White Paper Summary" and "Launch the Planner Demo" buttons — each should switch views cleanly with no new warnings.
 3. Confirm browser console is free of CSP media errors and that hero videos autoplay using the bundled `assets/hero4.mp4` source (poster should load from `assets/logo.jpg`).
 3. Confirm browser console is free of CSP media errors and that hero videos autoplay.
 4. Rebuild Tailwind if styles change: `npm run build:css`.
