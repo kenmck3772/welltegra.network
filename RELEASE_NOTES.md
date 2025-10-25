@@ -1,18 +1,18 @@
-# Release Notes — Tailwind Build & Security Hardening
+# Release Notes — CSP Cleanup & Console Regression
 
 ## Summary
 
-- Replaced Tailwind CDN usage with a CLI-built `assets/css/tailwind.css`, added `package.json` tooling, and documented the workflow in `tailwind.config.js`.
-- Hardened external assets with CSP meta tags, SRI-pinned CDNs, local favicon/logo assets, and `rel="noopener noreferrer"` for outbound links.
-- Added Playwright-assisted console regression check, link health scan, and captured Lighthouse metrics for ongoing performance work.
-- Resolved first-visit auto-play errors by queueing `showView` calls until the SPA boot sequence completes and initializing survey state (`computed`) before render.
-- Expanded the CSP `connect-src` allowlist to include the pinned CDNs, clearing source-map fetch violations while keeping the policy tight.
+- Introduced "Verifiable Trust", "Unified Command Center", and "Strategic Roadmap" sections on the homepage so investors and operators see how the white paper architecture is embedded in the live product experience, now including a ledger handshake diagram, captioned walkthrough video, and roadmap timeline SVG (`index.html`).
+- Added accessible `<details>` narratives plus reusable `data-switch-view` buttons that jump straight to the Planner and White Paper views without triggering console noise (`index.html`).
+- Maintained the hardened CSP/media fixes and updated the audit artefacts with the new CTA regression notes (`CHECKLIST.md`).
 
 ## Verification
 
-1. Install dependencies: `npm install`.
-2. Build Tailwind CSS: `npm run build:css`.
-3. Serve locally (e.g., `python -m http.server 8000`) and load `http://127.0.0.1:8000/index.html`.
-4. Confirm browser console is clean aside from intentional analytics logging.
-5. Run link lint: `npm run lint:links` (requires local server running).
-6. Optional: re-run Lighthouse `npx lighthouse http://127.0.0.1:8000/index.html --output=html --chrome-flags="--headless --no-sandbox"` and note CDN certificate noise is confined to headless mode.
+1. Install dependencies: `npm install` (only required once per environment).
+2. Serve locally (`python -m http.server 8000`) and browse:
+   - `http://127.0.0.1:8000/index.html`
+   - `http://127.0.0.1:8000/index-v23-fresh.html`
+   - `http://127.0.0.1:8000/test-v23-1761097711.html`
+3. Confirm browser console is free of CSP media errors, then click the "Read the Executive White Paper Summary" and "Launch the Planner Demo" buttons — each should switch views cleanly with no new warnings.
+4. Rebuild Tailwind if styles change: `npm run build:css`.
+5. Optional: rerun Lighthouse `npx lighthouse http://127.0.0.1:8000/index.html --quiet --chrome-flags="--headless --no-sandbox" --only-categories=performance --preset=desktop` to compare metrics with the recorded baseline (Performance 0.99, TBT 0 ms).
