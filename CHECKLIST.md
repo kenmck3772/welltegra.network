@@ -33,6 +33,20 @@
     🤖 Successfully scanned 14 links in 0.943 seconds.
     ```
 
+
+## Data Integrity
+
+- [x] Validated JSON syntax via `python -m json.tool`:
+  - `equipment-catalog.json`
+  - `service-line-templates.json`
+- [x] Searched repository for `clans.json` / `map-data.json`; confirmed assets are not present nor referenced in code. Documented gap for future Leaflet integrations.
+
+## Link Health
+
+- [x] `npm run lint:links`
+  - Command executed against local preview (`http://127.0.0.1:8000`).
+  - Outcome: 14 URLs crawled with 0 failures.
+
 ## Styling Pipeline
 
 - [x] `npm run build:css`

@@ -14,3 +14,4 @@
 3. Load `http://127.0.0.1:8000/index.html` and confirm the Verifiable Trust callout shows a single strategic roadmap link.
 4. Re-run Tailwind when modifying styles: `npm run build:css`.
 5. Optional: `npm run lint:links` to reconfirm there are no broken internal links (start the local server first so the crawler can reach `http://127.0.0.1:8000`).
+5. Optional: `npm run lint:links` to reconfirm there are no broken internal links.
