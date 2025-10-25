@@ -3,6 +3,7 @@
 ## Console Output
 
 - [x] `index.html` — local preview (`http://127.0.0.1:8000/index.html`)
+
   - Server: `python3 -m http.server 8000`
   - Capture: Playwright headless Chromium
   - Result: no warnings or errors. Single informational bootstrap log only.
@@ -12,6 +13,26 @@
     ```
 
 - [ ] Additional pages (archived demos) — not exercised this pass; prioritize homepage regression first.
+
+## Data Integrity
+
+- [x] Validated JSON syntax via `python -m json.tool`:
+  - `equipment-catalog.json`
+  - `service-line-templates.json`
+
+## Link Health
+
+- [x] `npm run lint:links`
+
+  - Command executed against local preview (`http://127.0.0.1:8000`).
+  - Outcome: 14 URLs crawled with 0 failures.
+  - Reminder: Start `python3 -m http.server 8000` first; otherwise Linkinator flags the root link as unreachable.
+  - Output:
+
+    ```text
+    🤖 Successfully scanned 14 links in 0.943 seconds.
+    ```
+
 
 ## Data Integrity
 
