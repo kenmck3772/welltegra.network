@@ -12,6 +12,7 @@
 
   - After CSP cleanup: unchanged (no warnings or errors introduced).
   - Current iteration: triggered the "Read the Executive White Paper Summary" and "Launch the Planner Demo" CTAs (new `data-switch-view` handlers) — console stayed silent while the controller routed to `whitepaper`/`planner` views.
+  - Current iteration: expanded each Unified Command Center story via the new `[data-story-trigger]` overlays, closed them with both the overlay backdrop and ESC key, and confirmed the console remained clean while focus returned to the initiating CTA.
 
 - [x] `index-v23-fresh.html` — archived demo preview
 
@@ -61,7 +62,7 @@
 5. Preserved SRI attributes and version pinning for Chart.js, jsPDF, and html2canvas to lock dependency integrity.
 6. Verified all outbound links that open new tabs include `rel="noopener noreferrer"` to block tab-nabbing.
 7. Confirmed canonical + OpenGraph metadata reference the production domain for SEO consistency.
-8. Added accessible `<figure>` narrative with titled/annotated SVG plus keyboard-friendly `data-switch-view` buttons so the Command Center and White Paper sections work for screen readers without extra scripts (`index.html`).
+8. Added accessible story overlays powered by `[data-story-trigger]` controls, focus management, ESC/backdrop dismissal, and documented fallbacks so assistive tech users can follow the Logistics/Performer/ESG narratives (`index.html`).
 9. Embedded a 30-second Performer walkthrough video with caption plus a decorative roadmap SVG timeline to reinforce the white paper milestones without duplicating screen reader content (`index.html`).
 10. Recorded Lighthouse recommendations (unused JS/CSS) for backlog grooming.
 
