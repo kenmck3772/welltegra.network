@@ -1407,6 +1407,20 @@
                                 Close story
                             </button>
                         </div>
+                        <div class="mt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-emerald-100 sm:text-sm" data-story-pagination>
+                            <button type="button" data-story-nav="prev" class="inline-flex items-center gap-2 rounded-full border border-emerald-300/60 px-4 py-2 font-semibold text-emerald-100 transition hover:bg-emerald-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-200" aria-label="Previous story">
+                                <span aria-hidden="true">←</span>
+                                <span>Previous story</span>
+                            </button>
+                            <div class="flex flex-col items-center gap-1 text-[0.65rem] sm:text-xs">
+                                <p data-story-pagination-label class="font-semibold uppercase tracking-[0.4em] text-emerald-200/70">Story 1 of 3</p>
+                                <p data-story-pagination-hint class="font-medium text-emerald-200/60">Previous: — · Next: —</p>
+                            </div>
+                            <button type="button" data-story-nav="next" class="inline-flex items-center gap-2 rounded-full border border-emerald-300/60 px-4 py-2 font-semibold text-emerald-100 transition hover:bg-emerald-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-200" aria-label="Next story">
+                                <span>Next story</span>
+                                <span aria-hidden="true">→</span>
+                            </button>
+                        </div>
                     </article>
                     <article data-story-dialog="performer" class="story-panel hidden rounded-3xl border border-slate-500/50 bg-slate-950/95 p-8 text-slate-100 shadow-2xl shadow-slate-900/60" role="dialog" aria-modal="true" aria-labelledby="story-performer-title" aria-describedby="story-performer-body" hidden>
                         <div class="flex items-start justify-between gap-4">
@@ -1432,6 +1446,20 @@
                                 Close story
                             </button>
                         </div>
+                        <div class="mt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-200 sm:text-sm" data-story-pagination>
+                            <button type="button" data-story-nav="prev" class="inline-flex items-center gap-2 rounded-full border border-slate-500/60 px-4 py-2 font-semibold text-slate-200 transition hover:bg-slate-800/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400" aria-label="Previous story">
+                                <span aria-hidden="true">←</span>
+                                <span>Previous story</span>
+                            </button>
+                            <div class="flex flex-col items-center gap-1 text-[0.65rem] sm:text-xs">
+                                <p data-story-pagination-label class="font-semibold uppercase tracking-[0.4em] text-slate-300/70">Story 1 of 3</p>
+                                <p data-story-pagination-hint class="font-medium text-slate-300/60">Previous: — · Next: —</p>
+                            </div>
+                            <button type="button" data-story-nav="next" class="inline-flex items-center gap-2 rounded-full border border-slate-500/60 px-4 py-2 font-semibold text-slate-200 transition hover:bg-slate-800/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400" aria-label="Next story">
+                                <span>Next story</span>
+                                <span aria-hidden="true">→</span>
+                            </button>
+                        </div>
                     </article>
                     <article data-story-dialog="esg" class="story-panel hidden rounded-3xl border border-amber-400/40 bg-slate-900/95 p-8 text-slate-100 shadow-2xl shadow-amber-500/20" role="dialog" aria-modal="true" aria-labelledby="story-esg-title" aria-describedby="story-esg-body" hidden>
                         <div class="flex items-start justify-between gap-4">
@@ -1455,6 +1483,20 @@
                             </a>
                             <button type="button" data-story-close class="inline-flex items-center justify-center rounded-full border border-amber-300/70 px-5 py-2 text-sm font-semibold text-amber-100 transition hover:bg-amber-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200">
                                 Close story
+                            </button>
+                        </div>
+                        <div class="mt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-amber-100 sm:text-sm" data-story-pagination>
+                            <button type="button" data-story-nav="prev" class="inline-flex items-center gap-2 rounded-full border border-amber-300/70 px-4 py-2 font-semibold text-amber-100 transition hover:bg-amber-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200" aria-label="Previous story">
+                                <span aria-hidden="true">←</span>
+                                <span>Previous story</span>
+                            </button>
+                            <div class="flex flex-col items-center gap-1 text-[0.65rem] sm:text-xs">
+                                <p data-story-pagination-label class="font-semibold uppercase tracking-[0.4em] text-amber-200/70">Story 1 of 3</p>
+                                <p data-story-pagination-hint class="font-medium text-amber-200/60">Previous: — · Next: —</p>
+                            </div>
+                            <button type="button" data-story-nav="next" class="inline-flex items-center gap-2 rounded-full border border-amber-300/70 px-4 py-2 font-semibold text-amber-100 transition hover:bg-amber-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200" aria-label="Next story">
+                                <span>Next story</span>
+                                <span aria-hidden="true">→</span>
                             </button>
                         </div>
                     </article>
@@ -4621,6 +4663,19 @@ document.addEventListener('DOMContentLoaded', function() {
         let lastStoryTrigger = null;
         let previousBodyOverflow = '';
 
+        const storyOrder = storyPanels
+            .map(panel => panel.dataset.storyDialog)
+            .filter(Boolean);
+
+        const getPanelById = (storyId) =>
+            storyPanels.find(panel => panel.dataset.storyDialog === storyId) || null;
+
+        const getPanelTitle = (panel) => {
+            if (!panel) return '';
+            const heading = panel.querySelector('h3');
+            return heading ? heading.textContent.trim() : '';
+        };
+
         const hideAllStoryPanels = () => {
             storyPanels.forEach(panel => {
                 panel.setAttribute('hidden', '');
@@ -4630,15 +4685,74 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         };
 
-        const openStoryDialog = (storyId, trigger) => {
-            const panel = storyPanels.find(p => p.dataset.storyDialog === storyId);
+        const updateStoryPagination = (panel) => {
             if (!panel) return;
+
+            const storyId = panel.dataset.storyDialog;
+            const currentIndex = storyOrder.indexOf(storyId);
+            const totalStories = storyOrder.length;
+
+            const label = panel.querySelector('[data-story-pagination-label]');
+            if (label && currentIndex !== -1) {
+                label.textContent = `Story ${currentIndex + 1} of ${totalStories}`;
+            }
+
+            const hint = panel.querySelector('[data-story-pagination-hint]');
+            const prevButton = panel.querySelector('[data-story-nav="prev"]');
+            const nextButton = panel.querySelector('[data-story-nav="next"]');
+
+            const prevIndex = currentIndex === -1
+                ? -1
+                : (currentIndex - 1 + totalStories) % totalStories;
+            const nextIndex = currentIndex === -1
+                ? -1
+                : (currentIndex + 1) % totalStories;
+
+            const prevPanel = prevIndex === -1 ? null : getPanelById(storyOrder[prevIndex]);
+            const nextPanel = nextIndex === -1 ? null : getPanelById(storyOrder[nextIndex]);
+            const prevTitle = getPanelTitle(prevPanel);
+            const nextTitle = getPanelTitle(nextPanel);
+
+            if (prevButton) {
+                prevButton.setAttribute(
+                    'aria-label',
+                    prevTitle ? `Previous story: ${prevTitle}` : 'Previous story'
+                );
+            }
+
+            if (nextButton) {
+                nextButton.setAttribute(
+                    'aria-label',
+                    nextTitle ? `Next story: ${nextTitle}` : 'Next story'
+                );
+            }
+
+            if (hint) {
+                const previousText = prevTitle ? `Previous: ${prevTitle}` : 'Previous: —';
+                const nextText = nextTitle ? `Next: ${nextTitle}` : 'Next: —';
+                hint.textContent = `${previousText} · ${nextText}`;
+            }
+        };
+
+        const openStoryDialog = (storyId, trigger = null) => {
+            const panel = getPanelById(storyId);
+            if (!panel) return;
+
+            const isFirstOpen = !activeStoryId;
+
+            if (isFirstOpen) {
+                previousBodyOverflow = body.style.overflow;
+            }
+
+            if (trigger && trigger.dataset.storyTrigger !== undefined) {
+                lastStoryTrigger = trigger;
+            } else if (isFirstOpen && trigger) {
+                lastStoryTrigger = trigger;
+            }
 
             hideAllStoryPanels();
 
             activeStoryId = storyId;
-            lastStoryTrigger = trigger;
-            previousBodyOverflow = body.style.overflow;
 
             storyOverlay.classList.remove('hidden');
             storyOverlay.setAttribute('aria-hidden', 'false');
@@ -4648,6 +4762,8 @@ document.addEventListener('DOMContentLoaded', function() {
             panel.removeAttribute('hidden');
             panel.setAttribute('aria-hidden', 'false');
             panel.setAttribute('tabindex', '-1');
+
+            updateStoryPagination(panel);
 
             const focusTarget = panel.querySelector('[data-story-close]') || panel;
             requestAnimationFrame(() => {
@@ -4700,6 +4816,26 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
+        storyOverlay.querySelectorAll('[data-story-nav]').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                if (!activeStoryId) return;
+
+                const direction = button.getAttribute('data-story-nav');
+                if (!direction) return;
+
+                const currentIndex = storyOrder.indexOf(activeStoryId);
+                if (currentIndex === -1) return;
+
+                const offset = direction === 'prev' ? -1 : 1;
+                const nextIndex = (currentIndex + offset + storyOrder.length) % storyOrder.length;
+                const nextStoryId = storyOrder[nextIndex];
+                if (!nextStoryId) return;
+
+                openStoryDialog(nextStoryId);
+            });
+        });
+
         storyOverlay.addEventListener('click', (event) => {
             if (event.target.dataset.storyDismiss !== undefined) {
                 closeStoryDialog();
@@ -4707,8 +4843,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && activeStoryId) {
+            if (!activeStoryId) return;
+
+            if (event.key === 'Escape') {
                 closeStoryDialog();
+            } else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                event.preventDefault();
+                const currentIndex = storyOrder.indexOf(activeStoryId);
+                if (currentIndex === -1) return;
+
+                const offset = event.key === 'ArrowLeft' ? -1 : 1;
+                const nextIndex = (currentIndex + offset + storyOrder.length) % storyOrder.length;
+                const nextStoryId = storyOrder[nextIndex];
+                if (!nextStoryId) return;
+
+                openStoryDialog(nextStoryId);
             }
         });
     }
