@@ -2,106 +2,95 @@
 
 ## Console Output
 
-- [x] `index.html` — local preview (`http://127.0.0.1:8000/index.html`)
+Summary of console captures this pass:
 
-  - Before: no blocking errors; only data bootstrap log captured.
+| Page | Status | Notes |
+| --- | --- | --- |
+| `index.html` (`http://127.0.0.1:8000/index.html`) | ✅ Clean console | Served via `python3 -m http.server 8000`; Playwright headless Chromium capture. Only the informational bootstrap log below printed. |
+| Archived demos (`index-v23-fresh.html`, `test-v23-1761097711.html`) | ⏳ Deferred | Not exercised this pass so the homepage regression could finish first. |
 
-    ```text
-    LOG: Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
-    ```
-
-  - After CSP cleanup: unchanged (no warnings or errors introduced).
-  - Current iteration: triggered the "Read the Executive White Paper Summary" and "Launch the Planner Demo" CTAs (new `data-switch-view` handlers) — console stayed silent while the controller routed to `whitepaper`/`planner` views.
-  - Current iteration: expanded each Unified Command Center story via the `[data-story-trigger]` overlays (Logistics, Performer, Commercial/ESG, HSE Sentinel, and POB & Emergency), cycled between them with the nav buttons/Arrow keys, closed them with the backdrop and ESC key, and confirmed the console remained clean while focus returned to the initiating CTA.
-  - Current iteration: exercised the story progress map buttons inside the overlay to jump directly across all five narratives; verified `aria-current`/`aria-pressed` toggled, disabled states applied to the active pill, and no warnings surfaced.
-  - Current iteration: checked the new KPI highlight cards inside every overlay (Logistics through POB) and confirmed the `dl` structures rendered without console chatter while the sr-only status region announced the active story summary as panels changed.
-  - Current iteration: validated the hero autoplay/fallback script by forcing the network panel to block `assets/hero.mp4`; the fallback banner appeared, no autoplay warnings surfaced, the banner dismissed itself once playback resumed, and the console stayed empty throughout.
-  - Current iteration: walked through the Toolstring Configurator (preset switch, filter, add/remove/move controls) then regenerated the plan and launched Performer—chips, summary totals, and the fade-in animation updated without logging errors.
-  - Current iteration: switched from W666 to W601 mid-session to verify Step 2 now surfaces the configurator immediately with the selected well called out, placeholder presets disabled until an objective is chosen, and the view auto-scrolls without console noise.
-  - Current iteration: watched the Performer telemetry tick at the new 400&nbsp;ms cadence—depth, hookload, and pressure now glide instead of jumping in one-second increments and the console remains clear while the alarm thresholds fire.
-  - Current iteration: expanded each Unified Command Center story via the new `[data-story-trigger]` overlays, cycled between them with the nav buttons/Arrow keys, closed them with the backdrop and ESC key, and confirmed the console remained clean while focus returned to the initiating CTA.
-
-- [x] `index-v23-fresh.html` — archived demo preview
-
-  - Before: hero video blocked by CSP and attempted to stream a missing `thumbnail.mp4`/`thumbnail.png` asset from production, triggering CSP rejections followed by 404s.
-
-    ```text
-    ERROR: Refused to load media from 'https://welltegra.network/assets/thumbnail.mp4' because it violates the following Content Security Policy directive: "media-src 'self' data:".
-    ERROR: Refused to load media from 'https://welltegra.network/assets/thumbnail.mp4' because it violates the following Content Security Policy directive: "media-src 'self' data:".
-    ```
-
-  - After CSP media allowlist update and swapping in local `assets/hero4.mp4` + `assets/logo.jpg`: clean console (no messages).
-  - Before: no blocking errors; only data bootstrap log captured.
-
-    ```text
-    LOG: Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
-    ```
-
-  - After CSP cleanup: unchanged (no warnings or errors introduced).
-
-- [x] `index-v23-fresh.html` — archived demo preview
-  - Before: hero video blocked by CSP and attempted to stream a missing `thumbnail.mp4`/`thumbnail.png` asset from production, triggering CSP rejections followed by 404s.
-  - Before: hero video blocked by CSP, generating console errors.
-
-    ```text
-    ERROR: Refused to load media from 'https://welltegra.network/assets/thumbnail.mp4' because it violates the following Content Security Policy directive: "media-src 'self' data:".
-    ERROR: Refused to load media from 'https://welltegra.network/assets/thumbnail.mp4' because it violates the following Content Security Policy directive: "media-src 'self' data:".
-    ```
-
-  - After CSP media allowlist update and swapping in local `assets/hero4.mp4` + `assets/logo.jpg`: clean console (no messages).
-  - After CSP media allowlist update: clean console (no messages).
+```text
+log: Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
+```
 
 ## Data Integrity
 
-- [x] Validated JSON structure with `python -m json.tool` for `equipment-catalog.json` and `service-line-templates.json`.
-- [x] Confirmed no legacy map-data JSON files are referenced or required by the current build.
-- [x] Confirmed `clans.json` / `map-data.json` are not present in the repository; flagged absence for future integrations.
+| Artifact | Status | Notes |
+| --- | --- | --- |
+| `equipment-catalog.json` | ✅ Valid JSON | `python -m json.tool equipment-catalog.json` (no syntax errors; pretty-print succeeded). |
+| `service-line-templates.json` | ✅ Valid JSON | `python -m json.tool service-line-templates.json` confirmed the structure without warnings. |
+| `data-activity-cost-rates.csv` | ✅ Parsed (31 rows) | Row-count script (`python - <<'PY'`) read every record without raising CSV errors. |
+| `data-equipment-tools.csv` | ✅ Parsed (38 rows) | Same script counted 38 rows, matching the expected tool catalog footprint. |
+| `data-personnel-rates.csv` | ✅ Parsed (36 rows) | CSV reader completed successfully; no malformed rows encountered. |
+
+Command + output for the combined CSV check:
+
+```bash
+python - <<'PY'
+import csv
+from pathlib import Path
+for path in [
+    Path('data-activity-cost-rates.csv'),
+    Path('data-equipment-tools.csv'),
+    Path('data-personnel-rates.csv'),
+]:
+    with path.open(newline='') as handle:
+        reader = csv.reader(handle)
+        row_count = sum(1 for _ in reader)
+    print(f"{path}: {row_count} rows")
+PY
+```
+
+```text
+data-activity-cost-rates.csv: 31 rows
+data-equipment-tools.csv: 38 rows
+data-personnel-rates.csv: 36 rows
+```
 
 ## Link Health
 
-- [x] `npm run lint:links` (linkinator) → crawled 11 URLs with 0 failures.
-- [x] Replaced archived hero video/poster URLs that pointed to missing `https://welltegra.network/assets/thumbnail.{mp4,png}` with local `assets/hero4.mp4` + `assets/logo.jpg` to eliminate remote 404s.
-- [x] Updated archived demo watermark backgrounds to read from the bundled `assets/watermark.jpg` instead of the missing production `watermark.png` asset.
-- [x] Synced `assets/README.md` with the committed media inventory (`watermark.jpg`, `logo.jpg`, `hero4.mp4`) and documented the relative-path usage so future uploads stay aligned with the HTML references.
+| Check | Status | Notes |
+| --- | --- | --- |
+| `npm run lint:links` | ✅ Clean crawl | 14 URLs, 0 failures against `http://127.0.0.1:8000`. Reminder: start `python3 -m http.server 8000` first to avoid false positives on the site root. |
+
+Command output:
+
+```text
+🤖 Successfully scanned 14 links in 0.943 seconds.
+```
 
 ## Styling Pipeline
 
-- [x] Tailwind CLI build verified via `npm run build:css` (outputs `assets/css/tailwind.css`).
+- [x] `npm run build:css`
+  - Tailwind CLI rebuild succeeded; output written to `assets/css/tailwind.css`.
 
-## Lighthouse Snapshot
+## Performance Snapshot
 
-- [x] `npx lighthouse http://127.0.0.1:8000/index.html --quiet --chrome-flags="--headless --no-sandbox" --only-categories=performance --preset=desktop`
-  - Performance score: 0.99
-  - Core metrics: FCP 0.7 s, LCP 0.7 s, Speed Index 0.7 s, TBT 0 ms, CLS 0.002
-  - Top 5 quick wins:
-    1. Reduce unused JavaScript (est. savings 149 KiB / 120 ms)
-    2. Minify JavaScript bundles (est. savings 59 KiB)
-    3. Trim unused CSS rules (est. savings 56 KiB)
-    4. Minify CSS output (est. savings 12 KiB)
-    5. Maintain low server response time (TTFB 0 ms observed)
+| Check | Status | Notes |
+| --- | --- | --- |
+| `npx lighthouse …` | 🚫 Blocked | The container image ships without Chrome/Chromium, so the CLI exited with `The CHROME_PATH environment variable must be set…`. Rerun on a host with a browser binary. |
 
-## Accessibility & SEO — Top 10 Actionable Fixes
+## Accessibility & SEO Opportunities
 
-1. Consolidated duplicate CSP `<meta>` tags to prevent conflicting directives (`index*.html`).
-2. Added `https://welltegra.network` to `media-src` and swapped archived hero video/poster URLs to local assets so demos stream without CSP violations or 404s (`index-v23-fresh.html`, `test-v23-1761097711.html`, `pricing.html`).
-2. Added `https://welltegra.network` to `media-src` so archived hero video streams without CSP violations (`index-v23-fresh.html`, `test-v23-1761097711.html`, `pricing.html`).
-3. Retained strict `default-src 'self'` baseline to limit third-party script execution.
-4. Ensured Tailwind is served from the compiled `assets/css/tailwind.css` bundle instead of the CDN runtime.
-5. Preserved SRI attributes and version pinning for Chart.js, jsPDF, and html2canvas to lock dependency integrity.
-6. Verified all outbound links that open new tabs include `rel="noopener noreferrer"` to block tab-nabbing.
-7. Confirmed canonical + OpenGraph metadata reference the production domain for SEO consistency.
-8. Extended the accessible story overlays with `[data-story-trigger]` controls, cyclic nav buttons, Arrow-key support, focus management, KPI `dl` highlight cards, and a live region that announces the active story summary so assistive tech users can follow the Logistics, Performer, Commercial/ESG, HSE Sentinel, and POB & Emergency narratives (`index.html`).
-9. Added a Toolstring Configurator in Step 2 with labelled preset dropdown, search input, add/remove/move buttons, and a live summary/metric card so keyboard and screen reader users can assemble the run without losing context (`index.html`).
-10. Refreshed the hero section with a responsive metrics deck plus an autoplay helper that degrades to a fallback banner when media fails, keeping the hero copy accessible and preventing blank space (`index.html`).
-8. Added accessible story overlays powered by `[data-story-trigger]` controls, cyclic nav buttons, Arrow-key support, focus management, and documented fallbacks so assistive tech users can follow the Logistics/Performer/ESG narratives (`index.html`).
-9. Embedded a 30-second Performer walkthrough video with caption plus a decorative roadmap SVG timeline to reinforce the white paper milestones without duplicating screen reader content (`index.html`).
-8. Added accessible `<details>` narratives and keyboard-friendly `data-switch-view` buttons so the new Command Center and White Paper sections work for screen readers without extra scripts (`index.html`).
-9. Mapped the strategic roadmap timeline to the executive CTA so leadership sees the white paper milestones in-line with the homepage journey (`index.html`).
-8. Documented JSON validation workflow for operational datasets to maintain structured-data accuracy.
-9. Maintained local favicon/logo assets to avoid cross-origin fetches blocked by CSP.
-10. Recorded Lighthouse recommendations (unused JS/CSS) for backlog grooming.
+Top opportunities to monitor:
+
+| # | Action | Status | Notes |
+| --- | --- | --- | --- |
+| 1 | Remove the duplicated "Review the strategic roadmap source" link in `index.html` (lines 1396–1399). | ✅ Completed | Anchor removed so the Verifiable Trust callout exposes a single focus target. |
+| 2 | Confirm hero media fallbacks announce state changes via `aria-live`. | ⏳ Deferred | Needs telemetry scripting follow-up; no regression observed in this pass. |
+| 3 | Audit heading hierarchy in the Unified Command Center overlays. | 📋 Backlog | Check `h2`/`h3` ordering during the next overlay iteration. |
+| 4 | Add descriptive alt text for non-decorative marketing imagery. | 📋 Backlog | Decorative waveforms already `aria-hidden`; remaining imagery still needs richer alt copy. |
+| 5 | Double-check canonical URLs across archived demos. | ✅ Verified | All canonical tags point at `https://welltegra.network`. |
+| 6 | Ensure `data-switch-view` CTA buttons preserve focus outlines. | ✅ Verified | Buttons retain default focus ring styling. |
+| 7 | Keep CSP directives single-sourced per page. | ✅ Verified | Each HTML document now carries a single authoritative CSP `<meta>`. |
+| 8 | Maintain SRI hashes for Chart.js, jsPDF, and html2canvas. | ✅ Verified | Hashes and `crossorigin` attributes audited in `index.html`. |
+| 9 | Continue pinning CDN dependencies to exact versions. | ✅ Verified | External scripts specify exact version numbers. |
+| 10 | Resume Lighthouse accessibility/SEO audits once Chrome is available. | 🚫 Blocked | Lighthouse CLI requires a Chromium binary; rerun outside the container. |
 
 ## Security Hygiene
 
-- [x] CSP updates now share a single, authoritative directive per page with an explicit media allowlist covering production assets.
-- [x] Existing SRI hashes and `rel="noopener"` safeguards remain in place.
+| Check | Status | Notes |
+| --- | --- | --- |
+| CSP `<meta>` directives | ✅ Verified | Default/script/style sources scoped to trusted origins; duplicates removed. |
+| External script SRI hashes | ✅ Verified | Chart.js, jsPDF, and html2canvas retain `integrity` + `crossorigin`. |
+| `target="_blank"` anchors | ✅ Verified | All external tabs include `rel="noopener noreferrer"`. |
