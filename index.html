@@ -1244,6 +1244,34 @@
                         </div>
                     </div>
                     <div class="grid gap-6">
+                        <figure class="rounded-2xl border border-emerald-400/40 bg-slate-900/70 p-6 shadow-xl shadow-emerald-500/10">
+                            <figcaption class="text-sm font-semibold uppercase tracking-wider text-emerald-300">Ledger handshake at a glance</figcaption>
+                            <svg viewBox="0 0 320 200" role="img" aria-labelledby="trust-diagram-title trust-diagram-desc" class="mt-4 w-full">
+                                <title id="trust-diagram-title">Immutable collaboration diagram</title>
+                                <desc id="trust-diagram-desc">Operator and service partners synchronize decisions to a shared ledger that regulators can verify in real time.</desc>
+                                <rect x="20" y="24" width="96" height="56" rx="14" ry="14" fill="#083344" stroke="#2dd4bf" stroke-width="2"></rect>
+                                <text x="68" y="56" text-anchor="middle" font-size="13" fill="#5eead4">Operator</text>
+                                <rect x="204" y="24" width="96" height="56" rx="14" ry="14" fill="#0f172a" stroke="#38bdf8" stroke-width="2"></rect>
+                                <text x="252" y="56" text-anchor="middle" font-size="13" fill="#bae6fd">Service Partner</text>
+                                <rect x="112" y="120" width="96" height="56" rx="14" ry="14" fill="#082f49" stroke="#facc15" stroke-width="2"></rect>
+                                <text x="160" y="152" text-anchor="middle" font-size="13" fill="#fde68a">Regulator</text>
+                                <rect x="132" y="64" width="64" height="48" rx="12" ry="12" fill="#134e4a" stroke="#34d399" stroke-width="2"></rect>
+                                <text x="164" y="92" text-anchor="middle" font-size="13" fill="#bbf7d0">Ledger</text>
+                                <polyline points="116,68 92,68 92,80 132,80" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round"></polyline>
+                                <polyline points="204,80 228,80 228,68 196,68" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"></polyline>
+                                <polyline points="164,112 164,120" fill="none" stroke="#facc15" stroke-width="2" stroke-linecap="round"></polyline>
+                                <circle cx="92" cy="80" r="4" fill="#2dd4bf"></circle>
+                                <circle cx="228" cy="80" r="4" fill="#38bdf8"></circle>
+                                <circle cx="164" cy="120" r="4" fill="#facc15"></circle>
+                                <path d="M84 110h-8a8 8 0 0 0-8 8v14" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round"></path>
+                                <path d="M244 110h8a8 8 0 0 1 8 8v14" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"></path>
+                                <path d="M140 164v8a8 8 0 0 0 8 8h44" fill="none" stroke="#facc15" stroke-width="2" stroke-linecap="round"></path>
+                                <circle cx="76" cy="138" r="6" fill="#2dd4bf"></circle>
+                                <circle cx="244" cy="138" r="6" fill="#38bdf8"></circle>
+                                <circle cx="192" cy="180" r="6" fill="#facc15"></circle>
+                            </svg>
+                            <p class="mt-4 text-sm text-slate-300">Each participant notarizes their actions to the same distributed ledger. Exceptions flow instantly to compliance teams, turning the Collaboration Tax into verifiable trust.</p>
+                        </figure>
                         <div class="rounded-2xl border border-emerald-400/40 bg-slate-900/70 p-6 shadow-xl shadow-emerald-500/10">
                             <p class="text-sm font-semibold uppercase tracking-wider text-emerald-300">Collaboration Tax Eliminated</p>
                             <h3 class="mt-3 text-2xl font-bold">Ledger-backed job reconciliation</h3>
@@ -1290,6 +1318,10 @@
                                     <span class="ml-4 text-sm font-medium text-emerald-600 transition group-open:text-emerald-300">Field story</span>
                                 </summary>
                                 <p class="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">A logistics coordinator tracks a coil tubing fleet inbound from Aberdeen. Asset telemetry hashes feed the shared ledger, so when maintenance flags a certification gap, the system auto-routes a replacement unit and alerts the operator before the rig-up window closes.</p>
+                                <button type="button" data-story-trigger="logistics" class="mt-4 inline-flex items-center gap-2 rounded-full border border-emerald-400 px-4 py-2 text-sm font-semibold text-emerald-600 transition hover:bg-emerald-100/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 dark:text-emerald-200 dark:hover:bg-emerald-500/10">
+                                    <span aria-hidden="true">↗</span>
+                                    Read the full logistics story
+                                </button>
                             </details>
                             <details class="group rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/60 p-6 shadow-sm transition">
                                 <summary class="flex cursor-pointer items-center justify-between text-lg font-semibold text-slate-900 dark:text-white">
@@ -1297,6 +1329,10 @@
                                     <span class="ml-4 text-sm font-medium text-emerald-600 transition group-open:text-emerald-300">Picture-in-picture</span>
                                 </summary>
                                 <p class="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">Supervisors monitor torque-and-drag, delta pressure, and procedural compliance in real time. When a deviation breaches tolerance, Performer freezes the job script, logs the exception to the ledger, and generates a cross-functional alert for commercial and HSE leaders.</p>
+                                <button type="button" data-story-trigger="performer" class="mt-4 inline-flex items-center gap-2 rounded-full border border-slate-400 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400 dark:border-slate-600 dark:text-emerald-200 dark:hover:bg-slate-800/60">
+                                    <span aria-hidden="true">▶</span>
+                                    See the live ops playbook
+                                </button>
                             </details>
                             <details class="group rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/60 p-6 shadow-sm transition">
                                 <summary class="flex cursor-pointer items-center justify-between text-lg font-semibold text-slate-900 dark:text-white">
@@ -1304,6 +1340,10 @@
                                     <span class="ml-4 text-sm font-medium text-emerald-600 transition group-open:text-emerald-300">Day-in-the-life</span>
                                 </summary>
                                 <p class="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">Finance analysts receive ledger-certified cost deltas while sustainability teams stream methane intensity data into assurance reports. No duplicate spreadsheets—just the same trusted dataset powering the balance sheet and the boardroom narrative.</p>
+                                <button type="button" data-story-trigger="esg" class="mt-4 inline-flex items-center gap-2 rounded-full border border-amber-400 px-4 py-2 text-sm font-semibold text-amber-600 transition hover:bg-amber-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 dark:text-amber-200 dark:hover:bg-amber-500/10">
+                                    <span aria-hidden="true">✦</span>
+                                    Follow the CFO & HSE walkthrough
+                                </button>
                             </details>
                         </div>
                         <div class="mt-12 flex flex-wrap gap-4">
@@ -1314,6 +1354,13 @@
                         </div>
                     </div>
                     <div class="space-y-6">
+                        <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/70 shadow-lg overflow-hidden">
+                            <video controls preload="metadata" poster="assets/logo.jpg" class="w-full" aria-describedby="command-center-video-caption">
+                                <source src="assets/hero4.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <p id="command-center-video-caption" class="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">30-second Performer cockpit walkthrough showing ledger-backed halt, annotate, and reconcile actions in real time.</p>
+                        </div>
                         <div class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-900/70 p-6 shadow-lg">
                             <p class="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Modules at a glance</p>
                             <ul class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
@@ -1333,12 +1380,154 @@
                     </div>
                 </div>
             </section>
+            <div data-story-overlay class="fixed inset-0 z-50 hidden flex items-center justify-center px-4 sm:px-8">
+                <div class="absolute inset-0 bg-slate-950/80" data-story-dismiss aria-hidden="true"></div>
+                <div class="relative z-10 w-full max-w-3xl space-y-6">
+                    <article data-story-dialog="logistics" class="story-panel hidden rounded-3xl border border-emerald-400/40 bg-slate-900/95 p-8 text-slate-100 shadow-2xl shadow-emerald-500/20" role="dialog" aria-modal="true" aria-labelledby="story-logistics-title" aria-describedby="story-logistics-body" hidden>
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-[0.35em] text-emerald-300">Field story</p>
+                                <h3 id="story-logistics-title" class="mt-2 text-2xl font-bold">Logistics Control Tower &mdash; Dawn dispatch</h3>
+                            </div>
+                            <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-emerald-400/40 text-emerald-200 transition hover:bg-emerald-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-200" data-story-close aria-label="Close logistics story">
+                                <span aria-hidden="true">✕</span>
+                            </button>
+                        </div>
+                        <p id="story-logistics-body" class="mt-6 text-sm leading-relaxed text-emerald-100/90">06:00 on the North Sea. The coil tubing unit booked for Rig 41 pings a telemetry hash that shows a certification lapse. Within seconds the ledger flags the variance, maintenance signs the override, and Logistics Control Tower reroutes a standby unit while the operator sees the timeline update inside the Unified Command Center.</p>
+                        <ul class="mt-6 space-y-3 text-sm text-emerald-100">
+                            <li class="flex items-start gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-300"></span><span><strong>Ledger sync:</strong> Asset health, certifications, and travel milestones notarize automatically, so dispatch calls are never hidden in inboxes.</span></li>
+                            <li class="flex items-start gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-300"></span><span><strong>Operator view:</strong> The rig superintendent sees an updated arrival ETA and the replacement crew manifest before the morning stand-up.</span></li>
+                            <li class="flex items-start gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-emerald-300"></span><span><strong>Regulator audit:</strong> Compliance teams download the notarized handoff sequence directly from the ledger if a safety review is triggered.</span></li>
+                        </ul>
+                        <div class="mt-8 flex flex-wrap gap-3">
+                            <button type="button" data-switch-view="planner" data-scroll-target="planner-view" class="inline-flex items-center justify-center rounded-full bg-emerald-400 px-5 py-2 text-sm font-semibold text-slate-900 transition hover:bg-emerald-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-100">
+                                Jump to the logistics planner view
+                            </button>
+                            <button type="button" data-story-close class="inline-flex items-center justify-center rounded-full border border-emerald-300/70 px-5 py-2 text-sm font-semibold text-emerald-200 transition hover:bg-emerald-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-200">
+                                Close story
+                            </button>
+                        </div>
+                        <div class="mt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-emerald-100 sm:text-sm" data-story-pagination>
+                            <button type="button" data-story-nav="prev" class="inline-flex items-center gap-2 rounded-full border border-emerald-300/60 px-4 py-2 font-semibold text-emerald-100 transition hover:bg-emerald-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-200" aria-label="Previous story">
+                                <span aria-hidden="true">←</span>
+                                <span>Previous story</span>
+                            </button>
+                            <div class="flex flex-col items-center gap-1 text-[0.65rem] sm:text-xs">
+                                <p data-story-pagination-label class="font-semibold uppercase tracking-[0.4em] text-emerald-200/70">Story 1 of 3</p>
+                                <p data-story-pagination-hint class="font-medium text-emerald-200/60">Previous: — · Next: —</p>
+                            </div>
+                            <button type="button" data-story-nav="next" class="inline-flex items-center gap-2 rounded-full border border-emerald-300/60 px-4 py-2 font-semibold text-emerald-100 transition hover:bg-emerald-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-200" aria-label="Next story">
+                                <span>Next story</span>
+                                <span aria-hidden="true">→</span>
+                            </button>
+                        </div>
+                    </article>
+                    <article data-story-dialog="performer" class="story-panel hidden rounded-3xl border border-slate-500/50 bg-slate-950/95 p-8 text-slate-100 shadow-2xl shadow-slate-900/60" role="dialog" aria-modal="true" aria-labelledby="story-performer-title" aria-describedby="story-performer-body" hidden>
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-400">Operations snapshot</p>
+                                <h3 id="story-performer-title" class="mt-2 text-2xl font-bold">Performer Live Ops &mdash; Exception drill-down</h3>
+                            </div>
+                            <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-500/50 text-slate-300 transition hover:bg-slate-800/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400" data-story-close aria-label="Close Performer story">
+                                <span aria-hidden="true">✕</span>
+                            </button>
+                        </div>
+                        <p id="story-performer-body" class="mt-6 text-sm leading-relaxed text-slate-200">During a milling run, torque spikes 12% above tolerance. Performer pauses the scripted sequence, timestamps the event to the ledger, and opens a triage window. HSE annotates the variance, Commercial approves the standby crew cost, and Operations restarts only after the remedial checklist clears.</p>
+                        <ul class="mt-6 space-y-3 text-sm text-slate-200">
+                            <li class="flex items-start gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-sky-400"></span><span><strong>Picture-in-picture:</strong> Supervisors keep the live feed up while drilling into historical offsets suggested by Analyzer.</span></li>
+                            <li class="flex items-start gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-sky-400"></span><span><strong>Ledger-native approvals:</strong> Every halt, override, and resume action inherits the same tamper-proof signature that underpins the white paper architecture.</span></li>
+                            <li class="flex items-start gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-sky-400"></span><span><strong>Executive signal:</strong> CFO and ESG leaders receive synchronized alerts, so the financial and sustainability narratives stay aligned.</span></li>
+                        </ul>
+                        <div class="mt-8 flex flex-wrap gap-3">
+                            <a href="assets/hero4.mp4" class="inline-flex items-center justify-center rounded-full bg-slate-100 px-5 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-200" target="_blank" rel="noopener noreferrer">
+                                Download the walkthrough clip
+                            </a>
+                            <button type="button" data-story-close class="inline-flex items-center justify-center rounded-full border border-slate-500/60 px-5 py-2 text-sm font-semibold text-slate-100 transition hover:bg-slate-800/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500">
+                                Close story
+                            </button>
+                        </div>
+                        <div class="mt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-200 sm:text-sm" data-story-pagination>
+                            <button type="button" data-story-nav="prev" class="inline-flex items-center gap-2 rounded-full border border-slate-500/60 px-4 py-2 font-semibold text-slate-200 transition hover:bg-slate-800/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400" aria-label="Previous story">
+                                <span aria-hidden="true">←</span>
+                                <span>Previous story</span>
+                            </button>
+                            <div class="flex flex-col items-center gap-1 text-[0.65rem] sm:text-xs">
+                                <p data-story-pagination-label class="font-semibold uppercase tracking-[0.4em] text-slate-300/70">Story 1 of 3</p>
+                                <p data-story-pagination-hint class="font-medium text-slate-300/60">Previous: — · Next: —</p>
+                            </div>
+                            <button type="button" data-story-nav="next" class="inline-flex items-center gap-2 rounded-full border border-slate-500/60 px-4 py-2 font-semibold text-slate-200 transition hover:bg-slate-800/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400" aria-label="Next story">
+                                <span>Next story</span>
+                                <span aria-hidden="true">→</span>
+                            </button>
+                        </div>
+                    </article>
+                    <article data-story-dialog="esg" class="story-panel hidden rounded-3xl border border-amber-400/40 bg-slate-900/95 p-8 text-slate-100 shadow-2xl shadow-amber-500/20" role="dialog" aria-modal="true" aria-labelledby="story-esg-title" aria-describedby="story-esg-body" hidden>
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-[0.35em] text-amber-300">Leadership vignette</p>
+                                <h3 id="story-esg-title" class="mt-2 text-2xl font-bold">Commercial & ESG Bridge &mdash; Board packet rehearsal</h3>
+                            </div>
+                            <button type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-amber-400/40 text-amber-200 transition hover:bg-amber-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200" data-story-close aria-label="Close Commercial and ESG story">
+                                <span aria-hidden="true">✕</span>
+                            </button>
+                        </div>
+                        <p id="story-esg-body" class="mt-6 text-sm leading-relaxed text-amber-50/90">On the eve of quarterly results, the CFO rehearses the earnings script while the HSE lead prepares an ESG briefing. Both teams pull from the same ledger-backed dataset: financial variance, methane intensity, and contractor safety performance. When the board asks about the "Collaboration Tax" savings, the answer is already notarized.</p>
+                        <ul class="mt-6 space-y-3 text-sm text-amber-100">
+                            <li class="flex items-start gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-amber-300"></span><span><strong>Unified narrative:</strong> Investor relations exports a ledger-certified PDF, while sustainability shares the JSON backing the dashboard, eliminating rework.</span></li>
+                            <li class="flex items-start gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-amber-300"></span><span><strong>Access guardrails:</strong> Smart contracts redact partner-sensitive pricing, keeping compliance teams comfortable with the shared dataset.</span></li>
+                            <li class="flex items-start gap-3"><span class="mt-1 h-2.5 w-2.5 rounded-full bg-amber-300"></span><span><strong>Roadmap tie-in:</strong> The Energy Neural Network milestones in the white paper map directly to the metrics powering this briefing.</span></li>
+                        </ul>
+                        <div class="mt-8 flex flex-wrap gap-3">
+                            <a href="STRATEGIC_ROADMAP_2025-2027.md" class="inline-flex items-center justify-center rounded-full bg-amber-400 px-5 py-2 text-sm font-semibold text-slate-900 transition hover:bg-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-100" target="_blank" rel="noopener noreferrer">
+                                Review the multi-year roadmap
+                            </a>
+                            <button type="button" data-story-close class="inline-flex items-center justify-center rounded-full border border-amber-300/70 px-5 py-2 text-sm font-semibold text-amber-100 transition hover:bg-amber-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200">
+                                Close story
+                            </button>
+                        </div>
+                        <div class="mt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-amber-100 sm:text-sm" data-story-pagination>
+                            <button type="button" data-story-nav="prev" class="inline-flex items-center gap-2 rounded-full border border-amber-300/70 px-4 py-2 font-semibold text-amber-100 transition hover:bg-amber-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200" aria-label="Previous story">
+                                <span aria-hidden="true">←</span>
+                                <span>Previous story</span>
+                            </button>
+                            <div class="flex flex-col items-center gap-1 text-[0.65rem] sm:text-xs">
+                                <p data-story-pagination-label class="font-semibold uppercase tracking-[0.4em] text-amber-200/70">Story 1 of 3</p>
+                                <p data-story-pagination-hint class="font-medium text-amber-200/60">Previous: — · Next: —</p>
+                            </div>
+                            <button type="button" data-story-nav="next" class="inline-flex items-center gap-2 rounded-full border border-amber-300/70 px-4 py-2 font-semibold text-amber-100 transition hover:bg-amber-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200" aria-label="Next story">
+                                <span>Next story</span>
+                                <span aria-hidden="true">→</span>
+                            </button>
+                        </div>
+                    </article>
+                </div>
+            </div>
             <section id="strategic-roadmap" class="py-20 px-4 bg-slate-100 dark:bg-slate-900/50">
                 <div class="max-w-5xl mx-auto">
                     <div class="text-center">
                         <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Roadmap Highlights</p>
                         <h2 class="mt-3 text-3xl font-bold tracking-tight text-slate-900 dark:text-white">From tactical wins to the Energy Neural Network</h2>
                         <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">We distilled the 40-page white paper into a three-phase path that ties today's product to the long-term data consortium vision.</p>
+                    </div>
+                    <div class="mt-10 hidden lg:block" aria-hidden="true">
+                        <svg viewBox="0 0 960 120" class="w-full" role="presentation">
+                            <line x1="120" y1="60" x2="840" y2="60" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" stroke-dasharray="12 12"></line>
+                            <g>
+                                <circle cx="120" cy="60" r="18" fill="#34d399"></circle>
+                                <text x="120" y="28" text-anchor="middle" font-size="16" fill="#047857">2024</text>
+                                <text x="120" y="96" text-anchor="middle" font-size="12" fill="#0f172a">Planner</text>
+                            </g>
+                            <g>
+                                <circle cx="480" cy="60" r="18" fill="#38bdf8"></circle>
+                                <text x="480" y="28" text-anchor="middle" font-size="16" fill="#0369a1">2025</text>
+                                <text x="480" y="96" text-anchor="middle" font-size="12" fill="#0f172a">Command Center</text>
+                            </g>
+                            <g>
+                                <circle cx="840" cy="60" r="18" fill="#fbbf24"></circle>
+                                <text x="840" y="28" text-anchor="middle" font-size="16" fill="#b45309">2026+</text>
+                                <text x="840" y="96" text-anchor="middle" font-size="12" fill="#0f172a">Data Consortium</text>
+                            </g>
+                        </svg>
                     </div>
                     <ol class="mt-12 space-y-10">
                         <li class="relative pl-12">
@@ -2731,6 +2920,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const headerTitle = document.getElementById('header-title');
     const headerDetails = document.getElementById('header-details');
     const headerNav = document.getElementById('header-nav');
+    const storyOverlay = document.querySelector('[data-story-overlay]');
+    const storyPanels = storyOverlay ? Array.from(storyOverlay.querySelectorAll('[data-story-dialog]')) : [];
     
     // Planner
 
@@ -4466,6 +4657,210 @@ document.addEventListener('DOMContentLoaded', function() {
             switchView(e.currentTarget.id.replace('-nav-link', ''));
         });
     });
+
+    if (storyOverlay && storyPanels.length) {
+        let activeStoryId = null;
+        let lastStoryTrigger = null;
+        let previousBodyOverflow = '';
+
+        const storyOrder = storyPanels
+            .map(panel => panel.dataset.storyDialog)
+            .filter(Boolean);
+
+        const getPanelById = (storyId) =>
+            storyPanels.find(panel => panel.dataset.storyDialog === storyId) || null;
+
+        const getPanelTitle = (panel) => {
+            if (!panel) return '';
+            const heading = panel.querySelector('h3');
+            return heading ? heading.textContent.trim() : '';
+        };
+
+        const hideAllStoryPanels = () => {
+            storyPanels.forEach(panel => {
+                panel.setAttribute('hidden', '');
+                panel.setAttribute('aria-hidden', 'true');
+                panel.classList.add('hidden');
+                panel.removeAttribute('tabindex');
+            });
+        };
+
+        const updateStoryPagination = (panel) => {
+            if (!panel) return;
+
+            const storyId = panel.dataset.storyDialog;
+            const currentIndex = storyOrder.indexOf(storyId);
+            const totalStories = storyOrder.length;
+
+            const label = panel.querySelector('[data-story-pagination-label]');
+            if (label && currentIndex !== -1) {
+                label.textContent = `Story ${currentIndex + 1} of ${totalStories}`;
+            }
+
+            const hint = panel.querySelector('[data-story-pagination-hint]');
+            const prevButton = panel.querySelector('[data-story-nav="prev"]');
+            const nextButton = panel.querySelector('[data-story-nav="next"]');
+
+            const prevIndex = currentIndex === -1
+                ? -1
+                : (currentIndex - 1 + totalStories) % totalStories;
+            const nextIndex = currentIndex === -1
+                ? -1
+                : (currentIndex + 1) % totalStories;
+
+            const prevPanel = prevIndex === -1 ? null : getPanelById(storyOrder[prevIndex]);
+            const nextPanel = nextIndex === -1 ? null : getPanelById(storyOrder[nextIndex]);
+            const prevTitle = getPanelTitle(prevPanel);
+            const nextTitle = getPanelTitle(nextPanel);
+
+            if (prevButton) {
+                prevButton.setAttribute(
+                    'aria-label',
+                    prevTitle ? `Previous story: ${prevTitle}` : 'Previous story'
+                );
+            }
+
+            if (nextButton) {
+                nextButton.setAttribute(
+                    'aria-label',
+                    nextTitle ? `Next story: ${nextTitle}` : 'Next story'
+                );
+            }
+
+            if (hint) {
+                const previousText = prevTitle ? `Previous: ${prevTitle}` : 'Previous: —';
+                const nextText = nextTitle ? `Next: ${nextTitle}` : 'Next: —';
+                hint.textContent = `${previousText} · ${nextText}`;
+            }
+        };
+
+        const openStoryDialog = (storyId, trigger = null) => {
+            const panel = getPanelById(storyId);
+            if (!panel) return;
+
+            const isFirstOpen = !activeStoryId;
+
+            if (isFirstOpen) {
+                previousBodyOverflow = body.style.overflow;
+            }
+
+            if (trigger && trigger.dataset.storyTrigger !== undefined) {
+                lastStoryTrigger = trigger;
+            } else if (isFirstOpen && trigger) {
+                lastStoryTrigger = trigger;
+            }
+
+            hideAllStoryPanels();
+
+            activeStoryId = storyId;
+
+            storyOverlay.classList.remove('hidden');
+            storyOverlay.setAttribute('aria-hidden', 'false');
+            body.style.overflow = 'hidden';
+
+            panel.classList.remove('hidden');
+            panel.removeAttribute('hidden');
+            panel.setAttribute('aria-hidden', 'false');
+            panel.setAttribute('tabindex', '-1');
+
+            updateStoryPagination(panel);
+
+            const focusTarget = panel.querySelector('[data-story-close]') || panel;
+            requestAnimationFrame(() => {
+                if (focusTarget && typeof focusTarget.focus === 'function') {
+                    focusTarget.focus();
+                }
+            });
+        };
+
+        const closeStoryDialog = () => {
+            if (!activeStoryId) return;
+
+            hideAllStoryPanels();
+            storyOverlay.classList.add('hidden');
+            storyOverlay.setAttribute('aria-hidden', 'true');
+            body.style.overflow = previousBodyOverflow || '';
+
+            const triggerToRefocus = lastStoryTrigger;
+            activeStoryId = null;
+            lastStoryTrigger = null;
+            previousBodyOverflow = '';
+
+            if (triggerToRefocus && typeof triggerToRefocus.focus === 'function') {
+                triggerToRefocus.focus();
+            }
+        };
+
+        hideAllStoryPanels();
+        storyOverlay.setAttribute('aria-hidden', 'true');
+
+        document.querySelectorAll('[data-story-trigger]').forEach(trigger => {
+            trigger.addEventListener('click', (event) => {
+                event.preventDefault();
+                const storyId = trigger.getAttribute('data-story-trigger');
+                if (!storyId) return;
+                openStoryDialog(storyId, trigger);
+            });
+        });
+
+        storyOverlay.querySelectorAll('[data-story-close]').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                closeStoryDialog();
+            });
+        });
+
+        storyOverlay.querySelectorAll('[data-switch-view]').forEach(button => {
+            button.addEventListener('click', () => {
+                closeStoryDialog();
+            });
+        });
+
+        storyOverlay.querySelectorAll('[data-story-nav]').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                if (!activeStoryId) return;
+
+                const direction = button.getAttribute('data-story-nav');
+                if (!direction) return;
+
+                const currentIndex = storyOrder.indexOf(activeStoryId);
+                if (currentIndex === -1) return;
+
+                const offset = direction === 'prev' ? -1 : 1;
+                const nextIndex = (currentIndex + offset + storyOrder.length) % storyOrder.length;
+                const nextStoryId = storyOrder[nextIndex];
+                if (!nextStoryId) return;
+
+                openStoryDialog(nextStoryId);
+            });
+        });
+
+        storyOverlay.addEventListener('click', (event) => {
+            if (event.target.dataset.storyDismiss !== undefined) {
+                closeStoryDialog();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (!activeStoryId) return;
+
+            if (event.key === 'Escape') {
+                closeStoryDialog();
+            } else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                event.preventDefault();
+                const currentIndex = storyOrder.indexOf(activeStoryId);
+                if (currentIndex === -1) return;
+
+                const offset = event.key === 'ArrowLeft' ? -1 : 1;
+                const nextIndex = (currentIndex + offset + storyOrder.length) % storyOrder.length;
+                const nextStoryId = storyOrder[nextIndex];
+                if (!nextStoryId) return;
+
+                openStoryDialog(nextStoryId);
+            }
+        });
+    }
 
     document.querySelectorAll('[data-switch-view]').forEach(trigger => {
         trigger.addEventListener('click', (event) => {
