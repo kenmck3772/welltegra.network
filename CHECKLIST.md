@@ -2,76 +2,66 @@
 
 ## Console Output
 
-- [x] Before (local preview on `index.html`):
+- [x] `index.html` — local preview (`http://127.0.0.1:8000/index.html`)
+  - Before: no blocking errors; only data bootstrap log captured.
 
-```text
-console:log:Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
-pageerror:showView is not defined
-pageerror:switchView is not defined
-pageerror:computed is not defined
-console:warning:Demo preload: showView not ready after waiting
-```
+    ```text
+    LOG: Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
+    ```
 
-- [x] After (post-fix preview):
+  - After CSP cleanup: unchanged (no warnings or errors introduced).
 
-```text
-console:log:Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
-```
+- [x] `index-v23-fresh.html` — archived demo preview
+  - Before: hero video blocked by CSP and attempted to stream a missing `thumbnail.mp4`/`thumbnail.png` asset from production, triggering CSP rejections followed by 404s.
 
-- [x] Archived v23 builds (`index-v23-fresh.html`, `test-v23-1761097711.html`) now respect the expanded CSP `connect-src` rules — no CDN sourcemap rejections remain in the console.
-- [x] Before (Tailwind CDN warning observed)
+    ```text
+    ERROR: Refused to load media from 'https://welltegra.network/assets/thumbnail.mp4' because it violates the following Content Security Policy directive: "media-src 'self' data:".
+    ERROR: Refused to load media from 'https://welltegra.network/assets/thumbnail.mp4' because it violates the following Content Security Policy directive: "media-src 'self' data:".
+    ```
 
-```text
-[warning] cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation
-[log] Cost data loaded: {equipment: 37, personnel: 35, activities: 30}
-```
-
-- [x] After (production build + CSP):
-
-```text
-Console output: ['[log] Cost data loaded: {equipment: 37, personnel: 35, activities: 30}']
-```
+  - After CSP media allowlist update and swapping in local `assets/hero4.mp4` + `assets/logo.jpg`: clean console (no messages).
 
 ## Data Integrity
 
-- [x] JSON validation via `jq` for `equipment-catalog.json`, `service-line-templates.json`, `package.json`, `package-lock.json`.
-- [x] Confirmed no legacy map datasets remain in the repo and noted the clean state for future integrations.
-- [x] `clans.json` / `map-data.json` **not present** in repo — documented for follow-up.
+- [x] Validated JSON structure with `python -m json.tool` for `equipment-catalog.json` and `service-line-templates.json`.
+- [x] Confirmed no legacy map-data JSON files are referenced or required by the current build.
 
 ## Link Health
 
-- [x] `npm run lint:links` (linkinator) → 0 broken links remaining.
+- [x] `npm run lint:links` (linkinator) → crawled 11 URLs with 0 failures.
+- [x] Replaced archived hero video/poster URLs that pointed to missing `https://welltegra.network/assets/thumbnail.{mp4,png}` with local `assets/hero4.mp4` + `assets/logo.jpg` to eliminate remote 404s.
+- [x] Updated archived demo watermark backgrounds to read from the bundled `assets/watermark.jpg` instead of the missing production `watermark.png` asset.
 
 ## Styling Pipeline
 
-- [x] Tailwind CLI build wired (`npm run build:css`) → generates `assets/css/tailwind.css`.
-- [x] CDN scripts replaced with local build across HTML variants (index, pricing, archived builds, assets prototype).
+- [x] Tailwind CLI build verified via `npm run build:css` (outputs `assets/css/tailwind.css`).
 
 ## Lighthouse Snapshot
 
-- [x] Lighthouse (`npx lighthouse … --chrome-flags="--headless --no-sandbox"`)
-  - Performance: 0.67
-  - Accessibility: 0.98
-  - Best Practices: 0.92
-  - SEO: 1.00
-  - Noted environment-only HTTPS certificate errors for CDN assets; real browsers load successfully.
-  - Key metrics: FCP 3.5 s, LCP 3.7 s, Speed Index 4.8 s, TBT 710 ms, CLS 0.
+- [x] `npx lighthouse http://127.0.0.1:8000/index.html --quiet --chrome-flags="--headless --no-sandbox" --only-categories=performance --preset=desktop`
+  - Performance score: 0.99
+  - Core metrics: FCP 0.7 s, LCP 0.7 s, Speed Index 0.7 s, TBT 0 ms, CLS 0.002
+  - Top 5 quick wins:
+    1. Reduce unused JavaScript (est. savings 149 KiB / 120 ms)
+    2. Minify JavaScript bundles (est. savings 59 KiB)
+    3. Trim unused CSS rules (est. savings 56 KiB)
+    4. Minify CSS output (est. savings 12 KiB)
+    5. Maintain low server response time (TTFB 0 ms observed)
 
-## Accessibility & SEO Fixes (Top 10)
+## Accessibility & SEO — Top 10 Actionable Fixes
 
-1. Added CSP meta to primary HTML variants to scope remote resources.
-2. Replaced Tailwind CDN with compiled `assets/css/tailwind.css` (better caching & removes console warning).
-3. Added SRI + version pinning for Chart.js, jsPDF, html2canvas.
-4. Swapped remote logo image for local `assets/logo.jpg` + favicon links.
-5. Added `rel="noopener noreferrer"` on all `target="_blank"` anchors.
-6. Injected `rel="icon"` for pages missing favicons (prevents Lighthouse console error).
-7. Updated CSP `img-src` allowlist to only include self + data URIs.
-8. Introduced `package.json` scripts for CSS build, Prettier formatting, and link linting.
-9. Created `styles/tailwind.css` entrypoint and `tailwind.config.js` with repo-wide content globs.
-10. Flagged the removal of deprecated map datasets and recorded the JSON validation approach for future data sources.
-10. Documented absent `clans.json`/`map-data.json` plus JSON validation checks for available datasets.
+1. Consolidated duplicate CSP `<meta>` tags to prevent conflicting directives (`index*.html`).
+2. Added `https://welltegra.network` to `media-src` and swapped archived hero video/poster URLs to local assets so demos stream without CSP violations or 404s (`index-v23-fresh.html`, `test-v23-1761097711.html`, `pricing.html`).
+3. Retained strict `default-src 'self'` baseline to limit third-party script execution.
+4. Ensured Tailwind is served from the compiled `assets/css/tailwind.css` bundle instead of the CDN runtime.
+5. Preserved SRI attributes and version pinning for Chart.js, jsPDF, and html2canvas to lock dependency integrity.
+6. Verified all outbound links that open new tabs include `rel="noopener noreferrer"` to block tab-nabbing.
+7. Confirmed canonical + OpenGraph metadata reference the production domain for SEO consistency.
+8. Documented JSON validation workflow for operational datasets to maintain structured-data accuracy.
+9. Maintained local favicon/logo assets to avoid cross-origin fetches blocked by CSP.
+10. Recorded Lighthouse recommendations (unused JS/CSS) for backlog grooming.
 
 ## Security Hygiene
 
-- [x] Added CSP starter, SRI hashes, and `rel="noopener"` safeguards.
-- [x] Note: CDN certificate warnings occur only in headless Lighthouse; interactive Chromium session shows clean console.
+- [x] CSP updates now share a single, authoritative directive per page with an explicit media allowlist covering production assets.
+- [x] Existing SRI hashes and `rel="noopener"` safeguards remain in place.
