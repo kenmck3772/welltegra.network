@@ -1254,6 +1254,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (designBlueprintContainer) {
             designBlueprintContainer.innerHTML = '<p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>';
         }
+        // Reset buttons
+        generatePlanBtnManual.disabled = true;
+        generatePlanBtnAi.disabled = true;
 
         if (plannerStatusRegion) {
             plannerStatusRegion.textContent = '';
@@ -2485,6 +2488,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             }
         }
+        const filteredPersonnel = personnelData.filter(p => 
+            requiredRoles.includes(p.role) && 
+            (p.name.toLowerCase().includes(persF) || p.role.toLowerCase().includes(persF))
+        );
+        
+        personnelTableBody.innerHTML = filteredPersonnel.map(p => `
+            <tr>
+                <td class="p-2">${p.name}</td>
+                <td class="p-2">${p.role}</td>
+                <td class="p-2">
+                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.status.toLowerCase().replace(/\s/g, '')}">${p.status}</span>
+                </td>
+                <td class="p-2">${p.certsValid ? '✅ Valid' : '⚠️ Expired'}</td>
+            </tr>
+        `).join('');
     };
 
     const checkLogistics = () => {
@@ -2556,6 +2574,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p class="text-sm font-medium">Accounted For</p>
                     <p class="text-4xl font-bold text-green-600">${musteredCount}</p>
                     <p class="mt-2 text-xs text-slate-400">Unaccounted: ${unaccountedCount}</p>
+                </div>
+                <div class="light-card p-6 text-center rounded-lg">
+                    <p class="text-sm font-medium">Daily Crew Rate</p>
+                    <p class="text-3xl font-bold">${formatCurrency(totalDailyRate)}</p>
+                </div>
+                <div class="light-card p-6 text-center rounded-lg">
                 </div>
                 <div class="light-card p-6 text-center rounded-lg">
                     <p class="text-sm font-medium">Daily Crew Rate</p>
@@ -3559,6 +3583,8 @@ const validateInvoice = () => {
         appState.ai.selectedProblemId = null;
         appState.ai.selectedRecommendation = null;
         announcePlannerStatus(`${appState.selectedWell.name} selected. Review the well dossier and continue to objectives when ready.`);
+        updatePlannerStepUI(2);
+        announcePlannerStatus(`${appState.selectedWell.name} selected. Step two unlocked.`);
     });
 
     // Objective selection event listener
@@ -3579,6 +3605,11 @@ const validateInvoice = () => {
         renderDesignBlueprint();
         if (appState.selectedObjective) {
             announcePlannerStatus(`${appState.selectedObjective.name} objective selected. Continue to the engineering blueprint.`);
+        
+        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value);
+        generatePlanBtnManual.disabled = !appState.selectedObjective;
+        if (appState.selectedObjective) {
+            announcePlannerStatus(`${appState.selectedObjective.name} objective selected. Generate plan when ready.`);
         }
     });
 
@@ -3632,6 +3663,8 @@ const validateInvoice = () => {
             if (step2ContinueBtn) step2ContinueBtn.disabled = false;
             renderDesignBlueprint();
             announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Continue to the engineering blueprint.`);
+            generatePlanBtnAi.disabled = false;
+            announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Generate plan when ready.`);
         }));
     });
 
@@ -3747,6 +3780,23 @@ const validateInvoice = () => {
             }
         });
     }
+    // Generate plan buttons event listeners
+    generatePlanBtnManual.addEventListener('click', () => {
+        if (!appState.selectedWell || !appState.selectedObjective) return;
+        appState.generatedPlan = proceduresData[appState.selectedObjective.id];
+        renderPlan();
+        updatePlannerStepUI(3);
+        announcePlannerStatus('Manual plan generated. Review the plan in step three.');
+    });
+
+    generatePlanBtnAi.addEventListener('click', () => {
+        if (!appState.selectedWell || !appState.ai.selectedRecommendation) return;
+        appState.selectedObjective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId);
+        appState.generatedPlan = proceduresData[appState.selectedObjective.id];
+        renderPlan();
+        updatePlannerStepUI(3);
+        announcePlannerStatus('AI-assisted plan generated. Review the plan in step three.');
+    });
 
     // Control buttons event listeners
     startOverBtn.addEventListener('click', () => {
@@ -3754,6 +3804,7 @@ const validateInvoice = () => {
         announcePlannerStatus('Planner reset. Start by selecting a well.');
     });
     beginOpBtn.addEventListener('click', () => {
+    beginOpBtn.addEventListener('click', () => { 
         if (!appState.generatedPlan) return; 
         switchView('performer'); 
     });
