@@ -5,6 +5,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data:; base-uri 'self'; form-action 'self'">
+
+    <!-- SEO Meta Tags -->
+    <title>Well-Tegra | AI-Powered Well Engineering Platform - Reduce NPT by 30%</title>
+    <meta name="description" content="Transform well intervention planning with Well-Tegra's AI-assisted platform. Reduce NPT by 15-30%, reclaim 2-3 hours/day of engineer time, and cut planning cycles from days to hours. Try it free.">
+    <meta name="keywords" content="well engineering, intervention planning, NPT reduction, drilling optimization, well data management, oil and gas software, well planning software, drilling automation">
+    <meta name="author" content="Well-Tegra Data Solutions">
+    <link rel="canonical" href="https://welltegra.network/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://welltegra.network/">
+    <meta property="og:title" content="Well-Tegra | From Data Chaos to Predictive Clarity">
+    <meta property="og:description" content="AI-powered well engineering platform that reduces NPT by 15-30% and reclaims hours of engineer time daily. Transform your well intervention planning.">
+    <meta property="og:image" content="/assets/og-image.jpg">
+    <meta property="og:site_name" content="Well-Tegra">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://welltegra.network/">
+    <meta name="twitter:title" content="Well-Tegra | AI-Powered Well Engineering Platform">
+    <meta name="twitter:description" content="Reduce NPT by 15-30%, reclaim 2-3 hours/day, cut planning cycles from days to hours. Try Well-Tegra free.">
+    <meta name="twitter:image" content="/assets/twitter-card.jpg">
+
+    <!-- Additional Meta -->
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+
+    <style>
+        /* --- Base & Theme Setup --- */
+        body { font-family: 'Inter', sans-serif; font-weight: 500; }
+        h1, h2, h3, h4, h5, h6 { font-weight: 800; }
+        .theme-light { background-color: #f8fafc; }
+        .theme-dark { background-color: #0f172a; color: #e2e8f0; }
+
+        /* --- Watermark Background --- */
+        #main-content {
+            position: relative;
+            z-index: 1;
+        }
+        .theme-light #main-content::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('assets/watermark.jpg');
+            background-repeat: repeat;
+            background-position: center;
+            background-size: 350px;
+            opacity: 0.02;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com; media-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'">
     <meta name="description" content="Well-Tegra v23 demonstrates AI-assisted well intervention planning, logistics orchestration, commercial analytics, and HSE insights for complex wells.">
     <title>v23 - Well-Tegra | The Well From Hell Case Study</title>
@@ -22,6 +87,68 @@
 
 <body class="theme-dark">
 
+<!-- Login page removed - direct access to application -->
+
+<div id="app-container" class="min-h-screen flex flex-col">
+
+    <!-- Skip to main content link for keyboard navigation -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:px-4 focus:py-2 focus:bg-cyan-600 focus:text-white">
+        Skip to main content
+    </a>
+
+    <header id="app-header" class="header sticky top-0 z-30 transition-colors" role="banner">
+        <div class="max-w-full mx-auto py-3 px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="assets/logo.jpg" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" loading="lazy">
+                    <h1 id="header-title" class="text-xl font-bold hidden md:block">Well-Tegra Data Solutions</h1>
+                </div>
+                <nav id="header-nav" class="flex-1 flex items-center justify-center space-x-1 md:space-x-4" role="navigation" aria-label="Main navigation">
+                    <a id="home-nav-link" href="#home-view" role="tab" aria-selected="true" aria-controls="home-view" title="Return to the Home Page" class="nav-link active flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span>Home</span>
+                    </a>
+                    <a id="planner-nav-link" href="#planner-view" role="tab" aria-selected="false" aria-controls="planner-view" title="Go to the Well Intervention Planner" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+                        <span>Planner</span>
+                    </a>
+                    <a id="logistics-nav-link" href="#logistics-view" role="tab" aria-selected="false" aria-controls="logistics-view" title="Manage Equipment and Personnel" class="nav-link flex items-center space-x-2">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/><path d="M18 18h-1.3c-.5 0-.9-.3-1.1-.7l-2.6-5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+                        <span>Logistics</span>
+                    </a>
+                    <a id="commercial-nav-link" href="#commercial-view" role="tab" aria-selected="false" aria-controls="commercial-view" title="View Financial Dashboards" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        <span>Commercial</span>
+                    </a>
+                    <a id="hse-nav-link" href="#hse-view" role="tab" aria-selected="false" aria-controls="hse-view" title="View Health, Safety, and Environment Data" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span>HSE & Risk</span>
+                    </a>
+                    <a id="pob-nav-link" href="#pob-view" role="tab" aria-selected="false" aria-controls="pob-view" title="View Personnel on Board and Emergency Response" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <span>POB & ER</span>
+                    </a>
+                    <a id="whitepaper-nav-link" href="#whitepaper-view" role="tab" aria-selected="false" aria-controls="whitepaper-view" title="Download the White Paper" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        <span>White Paper</span>
+                    </a>
+                     <a id="faq-nav-link" href="#faq-view" role="tab" aria-selected="false" aria-controls="faq-view" title="Frequently Asked Questions" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
+                        <span>FAQ</span>
+                    </a>
+                    <a id="security-nav-link" href="#security-view" role="tab" aria-selected="false" aria-controls="security-view" title="Security & Data Protection" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <span>Security</span>
+                    </a>
+                    <a id="about-nav-link" href="#about-view" role="tab" aria-selected="false" aria-controls="about-view" title="About the Founder" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
+                        <span>About</span>
+                    </a>
+                </div>
+                <div id="header-details" class="flex items-center space-x-4">
+                    <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700" aria-label="Toggle dark mode">
+                        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
 <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-slate-900">Skip to main content</a>
 
 <div id="app-container" class="min-h-screen flex flex-col">
@@ -81,6 +208,15 @@
         </div>
     </header>
 
+    <main id="main-content" class="flex-1" role="main">
+        <div id="home-view" class="view-container">
+            <section class="hero-section py-20 px-4 relative" aria-describedby="hero-video-description">
+                <video autoplay loop muted playsinline id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description">
+                    <source src="assets/hero.mp4" type="video/mp4">
+                    <track kind="descriptions" srclang="en" label="English descriptions" src="assets/hero-video-descriptions.vtt" default>
+                </video>
+                <div class="hero-overlay"></div>
+                <p id="hero-video-description" class="sr-only">Looping montage showing engineers collaborating over drilling dashboards and subsurface schematics.</p>
     <main id="main-content" class="flex-1">
         <div id="home-view" class="view-container">
             <section class="hero-section py-20 px-4 relative">
@@ -92,6 +228,30 @@
                     <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">From Data Chaos to Predictive Clarity.</h1>
                     <p class="mt-6 text-lg md:text-xl text-slate-100">The oil and gas industry loses over $38 million per asset annually to unplanned downtime. Your engineers spend more than 50% of their time wrangling data. The cause? A disconnected digital ecosystem.</p>
                     <p class="mt-4 text-lg md:text-xl font-semibold text-white">Well-Tegra: Engineering Insight, Amplified by Data.</p>
+
+                    <!-- Hero CTAs -->
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Request a Demo
+                        </a>
+                        <button onclick="showView('planner')" class="px-8 py-4 bg-white hover:bg-slate-100 text-slate-900 text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Try the Planner
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mini ROI Block + Outcome Bullets -->
+            <section class="py-12 px-4 bg-gradient-to-r from-cyan-900/20 to-blue-900/20 border-y border-cyan-500/30">
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <!-- Outcome Bullets -->
+                        <div class="space-y-4">
+                            <h3 class="text-2xl font-bold text-white">Proven Results</h3>
+                            <ul class="space-y-3 text-lg">
+            <div id="logistics-content" class="mt-10 grid gap-12 lg:grid-cols-2">
+                <div class="light-card p-6 rounded-lg"><h3 class="text-xl font-semibold mb-4">Equipment Hub</h3><input type="text" id="equipment-search" placeholder="Search equipment..." class="w-full p-2 rounded-md mb-4"><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="table-header"><tr><th class="p-2">Asset ID</th><th>Type</th><th>Location</th><th>Test Status</th><th>Actions</th></tr></thead><tbody id="equipment-table-body"></tbody></table></div></div>
+                <div class="light-card p-6 rounded-lg"><h3 class="text-xl font-semibold mb-4">Personnel Roster</h3><input type="text" id="personnel-search" placeholder="Search personnel..." class="w-full p-2 rounded-md mb-4"><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="table-header"><tr><th class="p-2">Name</th><th>Role</th><th>Status</th><th>Certs Valid</th></tr></thead><tbody id="personnel-table-body"></tbody></table></div></div>
                     <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                         <button id="hero-video-toggle" type="button" aria-controls="hero-video" aria-pressed="true" class="inline-flex items-center gap-2 rounded-full bg-black/60 px-5 py-2 text-sm font-semibold text-white backdrop-blur focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-400 focus-visible:ring-offset-slate-900 transition">
                             <span class="hero-video-toggle-icon" aria-hidden="true">⏸</span>
@@ -378,6 +538,7 @@
             <div class="text-center">
                 <h2 class="text-3xl font-bold tracking-tight">Well-Tegra White Paper</h2>
                 <p class="mt-4 max-w-2xl mx-auto text-lg">Dive deeper into the technical architecture and strategic vision behind the Well-Tegra platform. Our white paper provides a comprehensive overview of the privacy-preserving AI, enterprise blockchain, and data unification strategies that power our solution.</p>
+                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" download class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
                 <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
                     Download the White Paper
                 </a>
@@ -399,6 +560,18 @@
                 </div>
                 <div>
                     <h4 class="text-xl font-semibold">My Perspective</h4>
+                    <p>I'm not a software developer who decided to get into oil and gas. I'm a well services guy who learned to code. My career started at the sharp end with Tristar Oilfield Services and took me around the world, working with service leaders like Expro and Wellserv, and later supervising operations for major operators like BG Group, CNR, and Woodside. I've been on both sides of the fenceâ€”I know the service company's challenges and the operator's objectives. That's the insight Well-Tegra is built on.</p>
+                </div>
+                 <div>
+                    <h4 class="text-xl font-semibold">Why I Built This</h4>
+                    <p>I've seen first-hand how much time, money, and energy we waste because our data is a mess. It's locked in different systems, buried in old reports, and stuck in spreadsheets. We repeat the same mistakes because the lessons learned from one job are never available for the next. The "Well From Hell" in this demo isn't an exaggeration; it's a sanitized version of the real-world train wrecks I've witnessedâ€”and helped clean up.</p>
+                            <h4 class="font-semibold mb-2">Backups</h4>
+                            <p class="text-sm text-slate-400">Automated daily backups, 30-day retention</p>
+                        </div>
+                        <div>
+                            <div class="text-4xl mb-3">🛡️</div>
+                            <h4 class="font-semibold mb-2">Monitoring</h4>
+                            <p class="text-sm text-slate-400">24/7 security monitoring & alerts</p>
                     <p>I'm not a software developer who decided to get into oil and gas. I'm a well services guy who learned to code. My career started at the sharp end with Tristar Oilfield Services and took me around the world, working with service leaders like Expro and Wellserv, and later supervising operations for major operators like BG Group, CNR, and Woodside. I've been on both sides of the fence—I know the service company's challenges and the operator's objectives. That's the insight Well-Tegra is built on.</p>
                 </div>
                  <div>
@@ -513,6 +686,24 @@
                     </div>
                 </div>
 
+                <!-- Contact -->
+                <div class="light-card p-8 rounded-lg text-center">
+                    <h2 class="text-2xl font-bold mb-4">Have Security Questions?</h2>
+                    <p class="text-lg text-slate-400 mb-6">Our security team is here to help</p>
+                    <a href="mailto:security@welltegra.network" class="inline-block px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
+                        Contact Security Team
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <div id="well-history-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 modal-overlay">
+        <div class="relative top-10 mx-auto p-5 border w-full max-w-5xl shadow-lg rounded-md modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="flex justify-between items-center border-b pb-3 dark:border-gray-700">
+                <h3 id="modal-title" class="text-2xl font-bold"></h3>
+                <button id="close-modal-btn" type="button" class="text-3xl font-bold hover:text-red-500" aria-label="Close well history dialog">&times;</button>
                 <div class="mt-6 text-sm opacity-90">
                     <strong>Recommendation:</strong> Excellent overall performance. Continue partnership and consider for additional wells.
                 </div>
