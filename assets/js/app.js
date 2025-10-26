@@ -392,33 +392,420 @@ document.addEventListener('DOMContentLoaded', function() {
             tfaModel: { pickUp: [[0,0], [7500, 20]], slackOff: [[0,0], [7500, -20]], alarmUpper: [[0,2], [7500, 22]], alarmLower: [[0,-2], [7500, -22]] } 
         }
     };
-    const equipmentRequirements = {
-        obj1: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Steel Patch & Setting Tool", source: "Vendor", price: 500000 } ],
-        obj2: [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Rotating Jetting Nozzle", source: "Vendor", price: 25000 }, { name: "DTPA Chemical", source: "Vendor", price: 80000 } ],
-        obj3: [ { name: "Slickline Unit", source: "Vendor", price: 75000 }, { name: "Insert Safety Valve (WRSV)", source: "Vendor", price: 150000 }, { name: "Lock-Open Tool", source: "Vendor", price: 20000 } ],
-        obj4: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Sand Screen & Expansion Tool", source: "Vendor", price: 600000 } ],
-        obj5: [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Wax Dissolver Chemical", source: "Vendor", price: 50000 }, { name: "Mechanical Scraper BHA", source: "Vendor", price: 15000 } ]
+    const programSectionTemplates = [
+        {
+            id: 'dataIntake',
+            title: '1. Data Intake & Validation',
+            templateChecklist: [
+                'Collect all structured files (schematics, cost trackers, survey exports) and upload through the LangExtract intake workspace.',
+                'Normalize filenames, metadata, and key-value fields using the W66x parsing ruleset before unlocking design tasks.',
+                'Confirm mandatory attributes (well name, latest integrity status, last intervention date) are populated in the scrubbed dataset.'
+            ]
+        },
+        {
+            id: 'design',
+            title: '2. Detailed Design & Engineering',
+            templateChecklist: [
+                'Validate well trajectory, completion schematic, and pressure envelopes from the approved master data set.',
+                'Select the intervention objective and verify engineering calculations (loads, volumes, hydraulics) meet company standards.',
+                'Align cost codes and success criteria with the project charter before final design sign-off.'
+            ]
+        },
+        {
+            id: 'execution',
+            title: '3. Execution Program & Procedures',
+            templateChecklist: [
+                'Break the intervention into phased operations with measurable acceptance criteria.',
+                'Reference the approved equipment catalogue for tool selection and dimensional control.',
+                'Embed contingency triggers and hold points that map to the risk register.'
+            ]
+        },
+        {
+            id: 'logistics',
+            title: '4. Logistics, Costing & Cost Codes',
+            templateChecklist: [
+                'Cross-check equipment availability, certification status, and transit timing against the logistics workspace.',
+                'Populate personnel roster with competency validation and travel plans.',
+                'Assign corporate cost codes with daily cost estimates for budget governance.'
+            ]
+        },
+        {
+            id: 'risk',
+            title: '5. Risk, HSE & Contingency Planning',
+            templateChecklist: [
+                'Review risk register entries and ensure each has an owner, response plan, and escalation contact.',
+                'Confirm permits-to-work, SIMOPS constraints, and barrier health status before execution.',
+                'Document contingency equipment/personnel mobilization paths for high-impact scenarios.'
+            ]
+        },
+        {
+            id: 'handover',
+            title: '6. Handover, Reporting & Lessons Learned',
+            templateChecklist: [
+                'Capture operational metrics (time vs. depth, spend vs. AFE, NPT) for the final report package.',
+                'Compile lessons learned, vendor scorecards, and barrier compliance sign-off.',
+                'Schedule the multi-discipline close-out review and archive artefacts to the knowledge base.'
+            ]
+        }
+    ];
+    const programDossiers = {
+        obj1: {
+            dataIntake: {
+                uniqueHighlights: [
+                    'Include the April 2024 multi-finger caliper CSV (W666_MFC_2024-04-12.csv) that quantifies the 8,480–8,540 ft restriction.',
+                    'Attach LangExtract QA summary showing 100% field coverage for casing deformation attributes.',
+                    'Pull expandable patch vendor run history from case study M-21 to demonstrate proven metallurgy for HPHT service.'
+                ],
+                documents: [
+                    'LangExtract_Report_W666_Structural.json',
+                    'VendorQualification_ExpandablePatch_M21.pdf'
+                ]
+            },
+            design: {
+                uniqueHighlights: [
+                    'Patch length locked at 60 ft to span the ovalised interval with 10 ft overlap above and below.',
+                    'Expansion pressure verified at 9,800 psi against 9 5/8" 53.5# casing to avoid burst risk.',
+                    'Thermal expansion model updated to reflect HPHT shut-in temperature of 285°C.'
+                ],
+                costCodes: [
+                    { code: 'INT-W666-PATCH-ENG', description: 'Engineering review & simulations', estimate: 45000 },
+                    { code: 'INT-W666-PATCH-TOOLS', description: 'Expandable patch hardware & deployment kit', estimate: 520000 }
+                ]
+            },
+            execution: {
+                uniqueHighlights: [
+                    'Phase 1 clean-out requires 2 slickline runs with 2.125" gauge cutter to confirm drift prior to HWU rig-up.',
+                    'HWU deployment scheduled as 24 hr operation with continuous monitoring of hookload vs. modeled TFA curves.',
+                    'Pressure test hold point at 5,000 psi for 30 minutes prior to handing back to production operations.'
+                ],
+                watchItems: [
+                    'Potential for debris accumulation above patch causing overpull; stage swabbing equipment on deck.',
+                    'Annulus pressure monitoring must remain within 50 psi of model; exceedance triggers barrier management call.',
+                    'If expansion delta-P falls below 8,500 psi, halt and investigate hydraulic system losses.'
+                ]
+            },
+            logistics: {
+                uniqueHighlights: [
+                    'HWU spread to sail from Aberdeen base with 48 hr weather window; vessel slot confirmed with marine logistics.',
+                    'Expandable patch kit staged at quayside rack B12 with humidity-controlled storage.',
+                    'Wireline contingency crew on 12 hr call-out to support clean-up post expansion.'
+                ],
+                costCodes: [
+                    { code: 'LOG-W666-HWU-MOB', description: 'HWU mobilization & demob', estimate: 180000 },
+                    { code: 'LOG-W666-VESSEL', description: 'Marine spread day rate (3 days firm)', estimate: 210000 }
+                ]
+            },
+            risk: {
+                uniqueHighlights: [
+                    'Primary risk remains casing failure during expansion—maintain slow pump ramp and real-time strain trending.',
+                    'SIMOPS conflict with production chemical dosing schedule resolved via night shift window.',
+                    'Barrier diagram updated to reflect temporary lock-open status of the TRSSV during HWU operations.'
+                ],
+                watchItems: [
+                    'Issue contingency plan W666-CAS-01 if strain gauge exceeds 80% limit.',
+                    'Hold sand clean-out package on standby should debris settle above patch.',
+                    'Escalate to drilling manager if annulus pressure rises >150 psi during expansion.'
+                ]
+            },
+            handover: {
+                uniqueHighlights: [
+                    'Capture final caliper log to confirm restored ID of 2.441" minimum.',
+                    'Document HWU performance curve vs. model as benchmarking input for future expansions.',
+                    'Log lessons around vendor torque-turn monitoring and share with completions community.'
+                ],
+                deliverables: [
+                    'As-built expandable patch schematic with depth correlation.',
+                    'Barrier restoration certificate signed by Well Examiner.',
+                    'Updated digital twin inputs uploaded to Well-Tegra knowledge base.'
+                ]
+            }
+        },
+        obj2: {
+            dataIntake: {
+                uniqueHighlights: [
+                    'Load produced water chemistry logs highlighting elevated BaSO4 risk factors (Sample_W666_2024-03-22.xlsx).',
+                    'LangExtract ingestion flagged missing tubing roughness coefficients—manual entry completed 2024-04-05.',
+                    'Import CT string tally from vendor to cross-check against wax removal operations.'
+                ],
+                documents: [
+                    'ScaleDiagnostics_W666_Q1-2024.pdf',
+                    'LangExtract_QA_W666_Scale.json'
+                ]
+            },
+            design: {
+                uniqueHighlights: [
+                    'Chemical soak volume set at 2,400 gal 28% DTPA with corrosion inhibitor blend validated by lab report 24-017.',
+                    'Jetting nozzle selection based on 8,000 psi circulating pressure and 3/16" orifice combination.',
+                    'Hydraulics model updated with friction factors from 2024 caliper data to avoid exceeding tubing MAOP.'
+                ],
+                costCodes: [
+                    { code: 'INT-W666-SCALE-CHEM', description: 'Chemical package & lab QA', estimate: 190000 },
+                    { code: 'INT-W666-SCALE-CT', description: 'Coiled tubing unit & crew', estimate: 320000 }
+                ]
+            },
+            execution: {
+                uniqueHighlights: [
+                    'Stage 1 chemical soak executed over 36 hrs with continuous annulus pressure monitoring.',
+                    'Stage 2 jetting run limited to 40 fpm downward speed to prevent nozzle erosion.',
+                    'Post-job slickline drift to verify 2.313" ID clearance before handover.'
+                ],
+                watchItems: [
+                    'Monitor return pH and density; if below target, extend soak by 6 hrs.',
+                    'Keep bullheading pressure under 6,500 psi to protect weak annulus barrier.',
+                    'Deploy scale basket on surface to capture debris and avoid separator fouling.'
+                ]
+            },
+            logistics: {
+                uniqueHighlights: [
+                    'CT reel weights exceed 70t—confirm crane lift plan and deck reinforcement (Structural memo STR-2024-11).',
+                    'Chemical tote staging requires heated storage; allocate zone on deck C with spill containment.',
+                    'Pump spread to mobilize two days early for pressure testing with offshore team.'
+                ],
+                costCodes: [
+                    { code: 'LOG-W666-CHEM-SEA', description: 'Hazardous chemical transport & heating', estimate: 85000 },
+                    { code: 'LOG-W666-CT-LOG', description: 'CT spread logistics & standby', estimate: 120000 }
+                ]
+            },
+            risk: {
+                uniqueHighlights: [
+                    'Primary HSE focus on chemical handling—double-check PPE matrix and eyewash availability.',
+                    'Lost circulation while jetting flagged as medium risk; contingency includes staged viscous pills.',
+                    'Gas breakthrough while circulating requires immediate diversion to flare per procedure.'
+                ],
+                watchItems: [
+                    'Trigger contingency plan W666-SCL-02 if return solids exceed 2 bbl/hr.',
+                    'Deploy spill response team if tote temperature sensors fail.',
+                    'Escalate to operations manager upon any MAASP exceedance.'
+                ]
+            },
+            handover: {
+                uniqueHighlights: [
+                    'Compile before/after production test showing restored condensate rate (+165%).',
+                    'Archive chemical batch certificates with QA signatures in the completions drive.',
+                    'Share CT drag vs. model comparison for future scale removal jobs.'
+                ],
+                deliverables: [
+                    'Updated tubing condition report with drift confirmation.',
+                    'Chemical usage reconciliation spreadsheet for finance review.',
+                    'Lessons learned entry covering soak duration optimization.'
+                ]
+            }
+        },
+        obj3: {
+            dataIntake: {
+                uniqueHighlights: [
+                    'LangExtract scrub flagged missing valve function tests—added 2024-04-08 DHSV results.',
+                    'Include vendor datasheet for target WRSV model (Size 3.813" XN profile).',
+                    'Upload regulatory correspondence mandating barrier restoration timeline.'
+                ],
+                documents: [
+                    'DHSV_Test_Log_W666_Apr2024.pdf',
+                    'LangExtract_W666_Barrier.json'
+                ]
+            },
+            design: {
+                uniqueHighlights: [
+                    'Lock-open tool shear value confirmed at 5,500 lbf to avoid accidental release.',
+                    'Insert valve sized for 5,000 psi working pressure with ambient temperature factor 1.15.',
+                    'Function test script aligned with regulatory checklist OGUK-DHSV-17.'
+                ],
+                costCodes: [
+                    { code: 'INT-W666-DHSV-ENG', description: 'Barrier restoration engineering & assurance', estimate: 28000 },
+                    { code: 'INT-W666-DHSV-VALVE', description: 'Insert safety valve hardware & accessories', estimate: 165000 }
+                ]
+            },
+            execution: {
+                uniqueHighlights: [
+                    'Step 1 slickline run to mechanically lock open the failed valve with surface verification sign-off.',
+                    'Step 2 run with new WRSV includes 12 hr nitrogen pressure hold before retrieving running tool.',
+                    'Barrier verification performed with inflow test at 3,000 psi differential.'
+                ],
+                watchItems: [
+                    'Confirm control line pressure remains stable within ±50 psi during install.',
+                    'Have contingency insert valve available on deck in case of seal stack damage.',
+                    'If drift check fails post-install, re-run with smaller gauge to diagnose restriction.'
+                ]
+            },
+            logistics: {
+                uniqueHighlights: [
+                    'Wireline crew scheduled for 48 hr campaign with backup crew on 24 hr standby.',
+                    'Insert valve shipping case stored in climate-controlled container to protect elastomers.',
+                    'Pressure test equipment calibrated the week prior; certificate stored under QA# PT-5541.'
+                ],
+                costCodes: [
+                    { code: 'LOG-W666-WL-MOB', description: 'Wireline spread mobilization', estimate: 60000 },
+                    { code: 'LOG-W666-QA-TEST', description: 'Pressure test package & QA support', estimate: 35000 }
+                ]
+            },
+            risk: {
+                uniqueHighlights: [
+                    'Barrier compliance is critical—any failed test triggers immediate operations manager notification.',
+                    'Slickline operations performed under suspended production; SIMOPS ban in place for duration.',
+                    'Track fatigue on slickline cable due to high tension runs—replace if >85% fatigue life reached.'
+                ],
+                watchItems: [
+                    'If lock-open tool fails to set, switch to contingency hydraulic tool and notify completions lead.',
+                    'Monitor for hydrate formation during inflow test; methanol contingency on standby.',
+                    'Ensure BOP test remains valid; retest if operation exceeds 48 hrs.'
+                ]
+            },
+            handover: {
+                uniqueHighlights: [
+                    'Submit updated barrier status report to regulator within 24 hrs of completion.',
+                    'Record slickline depth correlation with composite log tie for future maintenance.',
+                    'Document vendor performance rating for contractual KPIs.'
+                ],
+                deliverables: [
+                    'Signed OGUK barrier verification checklist.',
+                    'Function test charts appended to final report.',
+                    'Updated well file in Well-Tegra with new valve serial number.'
+                ]
+            }
+        },
+        obj4: {
+            dataIntake: {
+                uniqueHighlights: [
+                    'Integrate sand production logs from C-08 intervention to benchmark expected fines levels.',
+                    'LangExtract scrub identifies missing gravel-pack data—manual entry completed 2024-03-29.',
+                    'Capture ESS vendor compatibility statement for existing tubing ID.'
+                ],
+                documents: [
+                    'SandControl_History_W666.pdf',
+                    'LangExtract_W666_Sand.json'
+                ]
+            },
+            design: {
+                uniqueHighlights: [
+                    'ESS length selected at 120 ft covering perforations 17,420–17,540 ft.',
+                    'Expansion forces modeled to stay below tubing collapse envelope using vendor software.',
+                    'Flowback choke schedule produced to manage fines during cleanup.'
+                ],
+                costCodes: [
+                    { code: 'INT-W666-ESS-ENG', description: 'ESS engineering & modeling', estimate: 67000 },
+                    { code: 'INT-W666-ESS-HARD', description: 'Expandable sand screen hardware', estimate: 740000 }
+                ]
+            },
+            execution: {
+                uniqueHighlights: [
+                    'CT cleanout prior to ESS run uses dual-filter BHA to capture fines.',
+                    'Expansion performed in three stages to manage axial loads.',
+                    'Post-expansion flowback limited to 1.2 MMSCFD for 24 hrs before ramp-up.'
+                ],
+                watchItems: [
+                    'Monitor torque and drag; if deviation >15% from model, pause and analyze.',
+                    'Have gravel-pack squeezes on standby if ESS fails to seat.',
+                    'Track sand cut at separator; escalate if >100 ppm after 12 hrs.'
+                ]
+            },
+            logistics: {
+                uniqueHighlights: [
+                    'ESS kit shipped in temperature-controlled container; maintain below 30°C.',
+                    'HWU availability aligned with obj1 schedule to optimize spread days.',
+                    'Sand management package (cyclones & desanders) mobilized alongside main equipment.'
+                ],
+                costCodes: [
+                    { code: 'LOG-W666-ESS-MOB', description: 'ESS logistics & handling', estimate: 160000 },
+                    { code: 'LOG-W666-SAND-MGMT', description: 'Surface sand management equipment rental', estimate: 95000 }
+                ]
+            },
+            risk: {
+                uniqueHighlights: [
+                    'Risk of screen damage during expansion mitigated with staged pressurization and vendor oversight.',
+                    'SIMOPS with production inhibited; ensure methanol injection offline during cleanout.',
+                    'Barrier plan accounts for packer integrity; verify with annulus pressure test prior to ESS run.'
+                ],
+                watchItems: [
+                    'Keep emergency milling equipment on standby if ESS fails to collapse fully.',
+                    'Escalate to completions superintendent if sand cut remains high beyond cleanup window.',
+                    'Deploy acoustic monitoring to detect potential screen tearing.'
+                ]
+            },
+            handover: {
+                uniqueHighlights: [
+                    'Provide production ramp-up guidance to reservoir team for fines management.',
+                    'Archive expansion pressure charts for future ESS installs.',
+                    'Log lesson learned on simultaneous CT/HWU resource sharing.'
+                ],
+                deliverables: [
+                    'ESS post-job report with expansion summary.',
+                    'Updated sand monitoring dashboard inputs.',
+                    'Vendor performance evaluation worksheet.'
+                ]
+            }
+        },
+        obj5: {
+            dataIntake: {
+                uniqueHighlights: [
+                    'Upload paraffin deposition trend charts from PI historian to quantify wax build-up rate.',
+                    'LangExtract flagged missing CT mechanical scraper specs—added vendor sheet 2024-03-18.',
+                    'Include ambient sea temperature data for thermal modeling.'
+                ],
+                documents: [
+                    'WaxAnalysis_W666_Q1.csv',
+                    'LangExtract_W666_Wax.json'
+                ]
+            },
+            design: {
+                uniqueHighlights: [
+                    'Heated solvent blend sized for 1.5x tubing volume with recirculation to maintain 80°C downhole.',
+                    'Scraper blades configured for 4.5" tubing with tungsten-carbide inserts for stubborn wax.',
+                    'Thermal model ensures annulus pressure remains below 2,200 psi during heating cycle.'
+                ],
+                costCodes: [
+                    { code: 'INT-W666-WAX-CHEM', description: 'Heated chemical package', estimate: 140000 },
+                    { code: 'INT-W666-WAX-CT', description: 'Coiled tubing operations', estimate: 210000 }
+                ]
+            },
+            execution: {
+                uniqueHighlights: [
+                    'Initial circulation with hot solvent for 6 hrs followed by scraper runs at 30 fpm.',
+                    'Monitor tubing head temperature; maintain between 70–80°C for effective wax removal.',
+                    'Final flush with inhibitor-laced condensate to delay future deposition.'
+                ],
+                watchItems: [
+                    'Watch for rapid temperature drop indicating heater failure—trigger backup generator.',
+                    'If scraper differential pressure spikes >500 psi, pull out and inspect blades.',
+                    'Monitor VOC levels on deck; deploy gas detection alarms per HSE plan.'
+                ]
+            },
+            logistics: {
+                uniqueHighlights: [
+                    'Heater unit requires 415V supply; electrical team to install temporary feed with load permit.',
+                    'Chemical totes stored in heated ISO containers; verify thermostat redundancy.',
+                    'CT crew shared with scale program—align schedules to avoid conflicts.'
+                ],
+                costCodes: [
+                    { code: 'LOG-W666-WAX-HEAT', description: 'Heater package logistics & fuel', estimate: 65000 },
+                    { code: 'LOG-W666-WAX-STBY', description: 'Standby allowance for CT crew overlap', estimate: 40000 }
+                ]
+            },
+            risk: {
+                uniqueHighlights: [
+                    'Primary HSE risk is hot-fluid exposure—enforce exclusion zones and thermal PPE.',
+                    'Potential for wax chunks to plug surface equipment; install inline strainers.',
+                    'Heating cycle may disturb annulus pressure; monitor continuously.'
+                ],
+                watchItems: [
+                    'Trigger contingency plan W666-WAX-03 if annulus pressure trend exceeds 100 psi rise.',
+                    'Ensure chemical handling team follows hot-work permit with fire watch.',
+                    'Escalate to operations manager upon detection of hydrocarbon vapor alarms.'
+                ]
+            },
+            handover: {
+                uniqueHighlights: [
+                    'Deliver wax deposition forecast showing extended cleanout interval to 9 months.',
+                    'Document heater performance and energy consumption for optimization.',
+                    'Share inhibitor selection rationale with flow assurance engineers.'
+                ],
+                deliverables: [
+                    'Wax removal job recap with before/after flowline pressures.',
+                    'Updated flow assurance model inputs uploaded to central library.',
+                    'Lessons learned note on thermal management best practices.'
+                ]
+            }
+        }
     };
-    const equipmentData = [ 
-        { id: 'CTU-01', type: 'Coiled Tubing Unit', location: 'Onboard - Deck A', testStatus: 'Passed', nextMaint: '2025-09-15', rate: 25000, status: 'On Job' }, 
-        { id: 'CTU-02', type: 'Coiled Tubing Unit', location: 'Onshore Base', testStatus: 'Pending', nextMaint: '2025-07-10', rate: 25000, status: 'Maintenance' }, 
-        { id: 'WL-01', type: 'Wireline Truck/Skid', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-08-22', rate: 18000, status: 'Available' }, 
-        { id: 'SL-01', type: 'Slickline Unit', location: 'In Transit', testStatus: 'Passed', nextMaint: '2025-07-20', rate: 15000, status: 'In Transit' }, 
-        { id: 'PUMP-01', type: 'High-Pressure Pumps', location: 'Onboard - Pump Room', testStatus: 'Pending', nextMaint: '2025-10-01', rate: 8000, status: 'On Job' }, 
-        { id: 'PUMP-02', type: 'High-Pressure Pumps', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-11-05', rate: 8000, status: 'Available' }, 
-        { id: 'RIG-01', type: 'Workover Rig', location: 'Onboard - Drill Floor', testStatus: 'Passed', nextMaint: '2025-08-01', rate: 85000, status: 'On Job' }, 
-    ];
-    const personnelData = [ 
-        { id: 'P001', name: 'Bob Raker', role: 'Wellsite Engineer', company: 'Operator', status: 'Onboard', certsValid: true, rate: 2200, muster: 'A', lifeboat: 1 }, 
-        { id: 'P002', name: 'Jane Smith', role: 'Coiled Tubing Supervisor', company: 'Service Co.', status: 'Onboard', certsValid: true, rate: 2500, muster: 'A', lifeboat: 1 }, 
-        { id: 'P003', name: 'Mike Johnson', role: 'Wireline Supervisor', company: 'Service Co.', status: 'On Job', certsValid: true, rate: 2300, muster: 'B', lifeboat: 2 }, 
-        { id: 'P004', name: 'Emily White', role: 'Slickline Supervisor', company: 'Service Co.', status: 'Available', certsValid: false, rate: 2300, muster: 'B', lifeboat: 2 }, 
-        { id: 'P005', name: 'Chris Green', role: 'Pump Operator', company: 'Service Co.', status: 'In Transit', certsValid: true, rate: 1800, muster: 'A', lifeboat: 1 }, 
-        { id: 'P006', name: 'Alex Brown', role: 'Rig Supervisor', company: 'Operator', status: 'Onboard', certsValid: true, rate: 3000, muster: 'B', lifeboat: 2 }, 
-        { id: 'P007', name: 'David Chen', role: 'ESP Specialist', company: 'Service Co.', status: 'Standby', certsValid: true, rate: 3500, muster: 'A', lifeboat: 2 } 
-    ];
-    const musterStations = [ { id: 'A', name: 'Muster Station A', capacity: 50, current: 0 }, { id: 'B', name: 'Muster Station B', capacity: 50, current: 0 } ];
-    
+
     // --- FAQ DATA ---
 
     const faqData = [
@@ -818,6 +1205,377 @@ document.addEventListener('DOMContentLoaded', function() {
         `).join(''); 
     };
 
+    const renderBulletList = (items, emptyText) => {
+        if (!items || items.length === 0) {
+            return `<p class="text-sm italic text-slate-500 dark:text-slate-400">${emptyText}</p>`;
+        }
+        return `
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+                ${items.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+        `;
+    };
+    const renderOptionalList = (title, items) => {
+        if (!items || items.length === 0) return '';
+        return `
+            <div class="mt-6">
+                <h6 class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">${title}</h6>
+                ${renderBulletList(items, '')}
+            </div>
+        `;
+    };
+    const renderCostCodeTable = (codes) => {
+        if (!codes || codes.length === 0) return '';
+        return `
+            <div class="mt-6">
+                <h6 class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">Cost Codes</h6>
+                <div class="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
+                    <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700 text-sm">
+                        <thead class="bg-slate-50 dark:bg-slate-800/60">
+                            <tr>
+                                <th class="px-3 py-2 text-left font-semibold text-slate-600 dark:text-slate-300">Code</th>
+                                <th class="px-3 py-2 text-left font-semibold text-slate-600 dark:text-slate-300">Description</th>
+                                <th class="px-3 py-2 text-right font-semibold text-slate-600 dark:text-slate-300">Estimate</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                            ${codes.map(code => `
+                                <tr>
+                                    <td class="px-3 py-2 font-mono text-slate-700 dark:text-slate-200">${code.code}</td>
+                                    <td class="px-3 py-2 text-slate-600 dark:text-slate-300">${code.description}</td>
+                                    <td class="px-3 py-2 text-right text-slate-600 dark:text-slate-300">$${code.estimate.toLocaleString()}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+    };
+    const equipmentRequirementsMap = {
+        obj1: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Steel Patch & Setting Tool", source: "Vendor", price: 500000 } ],
+        obj2: [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Rotating Jetting Nozzle", source: "Vendor", price: 25000 }, { name: "DTPA Chemical", source: "Vendor", price: 80000 } ],
+        obj3: [ { name: "Slickline Unit", source: "Vendor", price: 75000 }, { name: "Insert Safety Valve (WRSV)", source: "Vendor", price: 150000 }, { name: "Lock-Open Tool", source: "Vendor", price: 20000 } ],
+        obj4: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Sand Screen & Expansion Tool", source: "Vendor", price: 600000 } ],
+        obj5: [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Wax Dissolver Chemical", source: "Vendor", price: 50000 }, { name: "Mechanical Scraper BHA", source: "Vendor", price: 15000 } ]
+    };
+    const equipmentData = [ 
+        { id: 'CTU-01', type: 'Coiled Tubing Unit', location: 'Onboard - Deck A', testStatus: 'Passed', nextMaint: '2025-09-15', rate: 25000, status: 'On Job' }, 
+        { id: 'CTU-02', type: 'Coiled Tubing Unit', location: 'Onshore Base', testStatus: 'Pending', nextMaint: '2025-07-10', rate: 25000, status: 'Maintenance' }, 
+        { id: 'WL-01', type: 'Wireline Truck/Skid', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-08-22', rate: 18000, status: 'Available' }, 
+        { id: 'SL-01', type: 'Slickline Unit', location: 'In Transit', testStatus: 'Passed', nextMaint: '2025-07-20', rate: 15000, status: 'In Transit' }, 
+        { id: 'PUMP-01', type: 'High-Pressure Pumps', location: 'Onboard - Pump Room', testStatus: 'Pending', nextMaint: '2025-10-01', rate: 8000, status: 'On Job' }, 
+        { id: 'PUMP-02', type: 'High-Pressure Pumps', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-11-05', rate: 8000, status: 'Available' }, 
+        { id: 'RIG-01', type: 'Workover Rig', location: 'Onboard - Drill Floor', testStatus: 'Passed', nextMaint: '2025-08-01', rate: 85000, status: 'On Job' }, 
+    ];
+    const personnelData = [ 
+        { id: 'P001', name: 'Bob Raker', role: 'Wellsite Engineer', company: 'Operator', status: 'Onboard', certsValid: true, rate: 2200, muster: 'A', lifeboat: 1 }, 
+        { id: 'P002', name: 'Jane Smith', role: 'Coiled Tubing Supervisor', company: 'Service Co.', status: 'Onboard', certsValid: true, rate: 2500, muster: 'A', lifeboat: 1 }, 
+        { id: 'P003', name: 'Mike Johnson', role: 'Wireline Supervisor', company: 'Service Co.', status: 'On Job', certsValid: true, rate: 2300, muster: 'B', lifeboat: 2 }, 
+        { id: 'P004', name: 'Emily White', role: 'Slickline Supervisor', company: 'Service Co.', status: 'Available', certsValid: false, rate: 2300, muster: 'B', lifeboat: 2 }, 
+        { id: 'P005', name: 'Chris Green', role: 'Pump Operator', company: 'Service Co.', status: 'In Transit', certsValid: true, rate: 1800, muster: 'A', lifeboat: 1 }, 
+        { id: 'P006', name: 'Alex Brown', role: 'Rig Supervisor', company: 'Operator', status: 'Onboard', certsValid: true, rate: 3000, muster: 'B', lifeboat: 2 }, 
+        { id: 'P007', name: 'David Chen', role: 'ESP Specialist', company: 'Service Co.', status: 'Standby', certsValid: true, rate: 3500, muster: 'A', lifeboat: 2 } 
+    ];
+    const musterStations = [ { id: 'A', name: 'Muster Station A', capacity: 50, current: 0 }, { id: 'B', name: 'Muster Station B', capacity: 50, current: 0 } ];
+    
+    // --- FAQ DATA ---
+
+    const faqData = [
+        {
+            question: "What is Well-Tegra?",
+            answer: `<p>Well-Tegra is an advanced technology platform designed to foster collaborative intelligence within the energy sector. It provides a comprehensive architectural blueprint that integrates privacy-preserving Artificial Intelligence (AI) and enterprise blockchain technology to solve long-standing challenges in energy operations.</p><p>Its primary mission is to transform the vast, fragmented, and often inaccessible data generated by oil and gas operations into a unified, analysis-ready asset, enabling competing firms to securely pool operational insights for mutual benefit.</p>`
+        },
+        {
+            question: "What fundamental problem does Well-Tegra solve?",
+            answer: `<p>The fundamental problem Well-Tegra addresses is the <strong>endemic data fragmentation</strong> that plagues the modern energy sector. Data is typically locked in isolated "silos," hindering the application of advanced analytics and machine learning.</p><p>This fragmentation comes from disparate sources, incompatible digital formats, and inaccessible physical data, meaning decades of invaluable operational knowledge remain locked away and unusable.</p>`
+        },
+        {
+            question: "Who is the target audience for the Well-Tegra platform?",
+            answer: `<p>The primary target audience consists of <strong>oil and gas operators</strong> and other firms within the energy industry's operational ecosystem. The platform is designed to serve both individual companies seeking to optimize their internal operations and consortia of competing firms aiming to achieve shared intelligence.</p>`
+        },
+        {
+            question: "Why does Well-Tegra use blockchain technology?",
+            answer: `<p>Well-Tegra uses a <strong>private, permissioned blockchain</strong> to create a trusted, transparent, and tamper-proof foundation for its multi-client collaborative ecosystem. This is not a public cryptocurrency blockchain, but a secure environment for vetted partners.</p><p>It provides three core guarantees:</p><ul><li><strong>Cryptographic Hashing:</strong> A unique digital fingerprint for data, making tampering obvious.</li><li><strong>Block Chaining:</strong> An unbreakable, interlocking chain where altering one block invalidates all subsequent blocks.</li><li><strong>Decentralization:</strong> The ledger is copied across all members, requiring majority consensus for changes, making fraudulent changes practically impossible.</li></ul>`
+        },
+        {
+            question: "How can competing companies share data without revealing confidential information?",
+            answer: `<p>Well-Tegra implements a sophisticated, multi-stage anonymization protocol. This "defense-in-depth" strategy layers several advanced privacy-enhancing technologies:</p><ul><li><strong>Stage 1: Identification and Suppression:</strong> Removing explicit identifiers like company and well names.</li><li><strong>Stage 2: Generalization for K-Anonymity and L-Diversity:</strong> Making records indistinguishable from others to prevent re-identification from combined attributes.</li><li><strong>Stage 3: Perturbation with Differential Privacy:</strong> Adding calibrated statistical "noise" to sensitive numerical data to provide a formal, mathematical guarantee of privacy.</li></ul><p>The platform's most innovative feature is <strong>"verifiable privacy,"</strong> where the anonymization rules are coded into a smart contract on the blockchain, allowing participants to cryptographically verify that the agreed-upon privacy protocol was executed.</p>`
+        },
+        {
+            question: "What is the 'network effect' and how does it benefit data providers?",
+            answer: `<p>The "network effect" is the principle that the value of the platform increases for every participant as more members join. This is achieved by securely leveraging the collective, anonymized data of the entire consortium to build predictive models that are far more powerful than any single organization could develop alone.</p><p>This creates a <strong>virtuous cycle</strong>: more data leads to better models, which provides a powerful incentive for new members to join, which in turn makes the models even more powerful for everyone.</p>`
+        },
+    ];
+
+    // --- GLOBAL STATE ---
+
+    let appState = {
+        currentView: 'home', 
+        selectedWell: null, 
+        selectedObjective: null, 
+        generatedPlan: null, 
+        liveData: null, 
+        logEntries: [], 
+        lessonsLearned: [], 
+        tfaChartInstance: null, 
+        nptChartInstance: null, 
+        savingsChartInstance: null, 
+        liveDataInterval: null,
+        commercial: { afe: 0, actualCost: 0, serviceTickets: [] },
+        ai: { selectedProblemId: null, selectedRecommendation: null },
+        hse: { permits: [], riskRegister: [] },
+        pob: { musterActive: false, musterInterval: null, personnel: [] }
+    };
+
+    // --- DOM ELEMENTS ---
+
+    const body = document.body;
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const appContainer = document.getElementById('app-container');
+    const loginBtn = document.getElementById('login-btn');
+    const views = document.querySelectorAll('.view-container');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const headerTitle = document.getElementById('header-title');
+    const headerDetails = document.getElementById('header-details');
+    const headerNav = document.getElementById('header-nav');
+    
+    // Planner
+
+    const stepIndicators = { 
+        1: document.getElementById('step-1-indicator'), 
+        2: document.getElementById('step-2-indicator'), 
+        3: document.getElementById('step-3-indicator') 
+    };
+    
+    const stepConnectors = {
+        1: document.getElementById('step-1-connector'),
+        2: document.getElementById('step-2-connector')
+    };
+    
+    const stepSections = { 
+        1: document.getElementById('step-1'), 
+        2: document.getElementById('step-2'), 
+        3: document.getElementById('step-3') 
+    };
+    
+    const wellSelectionGrid = document.getElementById('well-selection-grid');
+    const objectivesFieldset = document.getElementById('objectives-fieldset');
+    const problemsFieldset = document.getElementById('problems-fieldset');
+    const generatePlanBtnManual = document.getElementById('generate-plan-btn-manual');
+    const generatePlanBtnAi = document.getElementById('generate-plan-btn-ai');
+    const planOutput = document.getElementById('plan-output');
+    const startOverBtn = document.getElementById('start-over-btn');
+    const beginOpBtn = document.getElementById('begin-op-btn');
+    const aiToggle = document.getElementById('ai-toggle');
+    const manualPlanningView = document.getElementById('manual-planning-view');
+    const aiAdvisorView = document.getElementById('ai-advisor-view');
+    const aiRecommendationsContainer = document.getElementById('ai-recommendations');
+
+    // Performer
+
+    const kpiGrid = document.getElementById('kpi-grid');
+    const procedureStepsContainer = document.getElementById('procedure-steps');
+    const logEntriesContainer = document.getElementById('log-entries'), 
+    logInput = document.getElementById('log-input'), 
+    addLogBtn = document.getElementById('add-log-btn');
+    const chartCard = document.getElementById('chart-card');
+    const performerControls = document.getElementById('performer-controls');
+    const viewAnalysisBtn = document.getElementById('view-analysis-btn');
+
+    // Analyzer
+
+    const analyzerSubtitle = document.getElementById('analyzer-subtitle'), 
+    summaryKpis = document.getElementById('summary-kpis'), 
+    lessonsLearnedList = document.getElementById('lessons-learned-list'), 
+    lessonInput = document.getElementById('lesson-input'), 
+    addLessonBtn = document.getElementById('add-lesson-btn'), 
+    planNewJobBtn = document.getElementById('plan-new-job-btn');
+
+    // Logistics
+
+    const logisticsSubtitle = document.getElementById('logistics-subtitle');
+    const logisticsContent = document.getElementById('logistics-content');
+    const equipmentTableBody = document.getElementById('equipment-table-body'), 
+    personnelTableBody = document.getElementById('personnel-table-body');
+    const equipmentSearch = document.getElementById('equipment-search'), 
+    personnelSearch = document.getElementById('personnel-search');
+
+    // Commercial
+
+    const commercialContent = document.getElementById('commercial-content'), 
+    commercialSubtitle = document.getElementById('commercial-subtitle');
+
+    // HSE & POB
+
+    const hseContent = document.getElementById('hse-content'), 
+    hseSubtitle = document.getElementById('hse-subtitle');
+    const pobContent = document.getElementById('pob-content'), 
+    pobSubtitle = document.getElementById('pob-subtitle');
+
+    // Modal
+
+    const modal = document.getElementById('well-history-modal'), 
+    modalTitle = document.getElementById('modal-title'), 
+    modalContent = document.getElementById('modal-content'), 
+    closeModalBtn = document.getElementById('close-modal-btn');
+    
+    // Theme
+
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    
+    // --- VIEW & STATE MANAGEMENT ---
+
+    const switchView = (viewName) => {
+        if (appState.liveDataInterval) {
+            clearInterval(appState.liveDataInterval);
+            appState.liveDataInterval = null;
+        }
+
+        appState.currentView = viewName;
+        body.className = `theme-${localStorage.getItem('theme') || 'light'}`;
+        if (viewName === 'performer') {
+            body.classList.add('theme-dark');
+        }
+
+        views.forEach(v => v.classList.add('hidden'));
+        document.getElementById(`${viewName}-view`).classList.remove('hidden');
+
+        navLinks.forEach(l => l.classList.remove('active'));
+        const activeLink = document.getElementById(`${viewName}-nav-link`);
+        if (activeLink) {
+            activeLink.classList.add('active');
+        }
+        
+        headerDetails.innerHTML = ''; 
+        const theme = viewName === 'performer' ? 'dark' : localStorage.getItem('theme') || 'light';
+        setTheme(theme);
+
+        let viewTitle = viewName.charAt(0).toUpperCase() + viewName.slice(1);
+        if(viewName === 'pob') viewTitle = 'POB & ER';
+        if(viewName === 'hse') viewTitle = 'HSE & Risk';
+        if(viewName === 'whitepaper') viewTitle = 'White Paper';
+        headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
+
+        if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
+            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">â— LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            initializePerformer();
+        } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
+            if(appState.selectedWell && appState.generatedPlan) {
+                headerDetails.innerHTML = `<div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            }
+            if (viewName === 'commercial') renderCommercialView();
+            if (viewName === 'hse') renderHSEView();
+            if (viewName === 'pob') renderPOBView();
+        } else if (viewName === 'logistics') {
+            renderAssetManagementViews();
+        } else if (viewName === 'faq') {
+            initializeFaqAccordion();
+        }
+    };
+    
+    const resetApp = (switchToHome = false) => {
+        appState.selectedWell = null; 
+        appState.selectedObjective = null; 
+        appState.generatedPlan = null; 
+        appState.lessonsLearned = [];
+        appState.commercial = { afe: 0, actualCost: 0, serviceTickets: [] };
+        appState.ai = { selectedProblemId: null, selectedRecommendation: null };
+        
+        // Reset well selection
+        document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
+        
+        // Reset objective selection
+        const checkedObjective = document.querySelector('input[name="objective"]:checked');
+        if(checkedObjective) { checkedObjective.checked = false; }
+        
+        // Reset problem selection
+        const checkedProblem = document.querySelector('input[name="problem"]:checked');
+        if(checkedProblem) { checkedProblem.checked = false; }
+        
+        // Reset buttons
+        generatePlanBtnManual.disabled = true;
+        generatePlanBtnAi.disabled = true;
+        
+        // Reset AI recommendations
+        aiRecommendationsContainer.classList.add('hidden');
+        
+        // Reset AI toggle
+        aiToggle.checked = false;
+        manualPlanningView.classList.remove('hidden');
+        aiAdvisorView.classList.add('hidden');
+        
+        switchView(switchToHome ? 'home' : 'planner');
+        updatePlannerStepUI(1);
+        updateNavLinks();
+    };
+
+    const updateNavLinks = () => {
+        const planExists = !!appState.generatedPlan;
+        navLinks.forEach(link => {
+            const id = link.id.replace('-nav-link', '');
+            if (id !== 'home' && id !== 'planner' && id !== 'about' && id !== 'faq' && id !== 'whitepaper') {
+                if (planExists) {
+                    link.classList.remove('disabled');
+                } else {
+                    link.classList.add('disabled');
+                }
+            }
+        });
+    };
+
+    // --- PLANNER LOGIC ---
+
+    const renderWellCards = () => { 
+        wellSelectionGrid.innerHTML = wellData.map(well => {
+            const isWellFromHell = well.id === 'W666';
+            const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
+            const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
+            
+            return `
+                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}">
+                    <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xl font-bold text-white">${well.name}</h3>
+                            ${isWellFromHell ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full">CRITICAL</span>' : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full">CASE STUDY</span>'}
+                        </div>
+                        <p class="text-sm text-blue-100">${well.field} - ${well.type}</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
+                        </div>
+                        <p class="text-sm">${well.issue}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
+                            <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold" data-well-id="${well.id}">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join(''); 
+    };
+
+    const renderObjectives = () => { 
+        objectivesFieldset.innerHTML = objectivesData.map(obj => `
+            <div class="objective-card light-card" data-objective-id="${obj.id}">
+                <input type="radio" name="objective" id="${obj.id}" value="${obj.id}" class="sr-only">
+                <label for="${obj.id}" class="cursor-pointer h-full">
+                    <div class="flex items-start">
+                        <span class="text-2xl mr-3">${obj.icon}</span>
+                        <div>
+                            <span class="font-semibold text-lg">${obj.name}</span>
+                            <p class="text-sm mt-1">${obj.description}</p>
+                        </div>
+                    </div>
+                </label>
+            </div>
+        `).join(''); 
+    };
+
+
     const renderProblems = () => {
         // Only show problems relevant to the "Well From Hell"
         if (appState.selectedWell && appState.selectedWell.id === 'W666') {
@@ -875,7 +1633,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         ` : '';
         
-        const equipmentList = equipmentRequirements[appState.selectedObjective.id];
+        const equipmentList = equipmentRequirementsMap[appState.selectedObjective.id];
         let equipmentHtml = `
             <div class="plan-summary-card light-card overflow-hidden">
                 <div class="card-header bg-blue-500">
@@ -972,7 +1730,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        planOutput.innerHTML = `
+        let planHtml = `
             <div class="plan-summary-card light-card overflow-hidden mb-8">
                 <div class="card-header bg-gradient-to-r from-blue-600 to-teal-500">
                     <h3 class="text-2xl font-bold text-white">Intervention Plan: ${well.name}</h3>
@@ -995,20 +1753,61 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             </div>
-            
+
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 ${timelineHtml}
                 ${equipmentHtml}
             </div>
-            
+
             <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
                 ${riskHtml}
                 ${costHtml}
             </div>
-            
+
             ${logisticsHtml}
         `;
-        
+        const dossierData = programDossiers[appState.selectedObjective.id];
+        if (dossierData) {
+            const dossierSections = programSectionTemplates.map(section => {
+                const sectionData = dossierData[section.id] || {};
+                return `
+                    <section class="rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+                            <h4 class="text-lg font-semibold text-slate-800 dark:text-slate-100">${section.title}</h4>
+                            <span class="inline-flex items-center text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Template vs. ${well.id} Inputs</span>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div>
+                                <h5 class="text-sm font-semibold text-slate-600 dark:text-slate-300 mb-2">Template Checklist</h5>
+                                ${renderBulletList(section.templateChecklist, 'No template guidance recorded yet.')}
+                            </div>
+                            <div>
+                                <h5 class="text-sm font-semibold text-slate-600 dark:text-slate-300 mb-2">${well.name} Specific Inputs</h5>
+                                ${renderBulletList(sectionData.uniqueHighlights, 'Use the template checklist for this section.')}
+                            </div>
+                        </div>
+                        ${renderOptionalList('Attachments & Evidence', sectionData.documents)}
+                        ${renderCostCodeTable(sectionData.costCodes)}
+                        ${renderOptionalList('Watch Items', sectionData.watchItems)}
+                        ${renderOptionalList('Handover Deliverables', sectionData.deliverables)}
+                    </section>
+                `;
+            }).join('');
+
+            planHtml += `
+                <div class="plan-summary-card light-card overflow-hidden mt-8">
+                    <div class="card-header bg-slate-800">
+                        <h4 class="text-xl font-semibold text-white">Structured Program Dossier</h4>
+                        <p class="text-sm text-slate-200 mt-1">Each section pairs the reusable Well-Tegra template with the W666-specific data points captured during planning.</p>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        ${dossierSections}
+                    </div>
+                </div>
+            `;
+        }
+        planOutput.innerHTML = planHtml;
+
         // Initialize risk chart
         const riskChartCtx = document.getElementById('riskChart');
         if (riskChartCtx) {
@@ -1498,7 +2297,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         logisticsSubtitle.textContent = `Logistics for ${appState.generatedPlan.name} on ${appState.selectedWell.name}`;
         
-        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id];
+        const requiredEquipment = equipmentRequirementsMap[appState.selectedObjective.id];
         const requiredRoles = appState.generatedPlan.personnel;
 
         const eqF = eqFilter.toLowerCase();
@@ -1544,7 +2343,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const checkLogistics = () => {
         const conflicts = [];
-        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id];
+        const requiredEquipment = equipmentRequirementsMap[appState.selectedObjective.id];
 
         requiredEquipment.forEach(req => {
             if (req.source === 'Vendor') {
@@ -1711,7 +2510,7 @@ document.addEventListener('DOMContentLoaded', function() {
         appState.commercial.actualCost = 0;
         appState.commercial.serviceTickets = [];
         
-        const equipmentList = equipmentRequirements[appState.selectedObjective.id] || [];
+        const equipmentList = equipmentRequirementsMap[appState.selectedObjective.id] || [];
         equipmentList.forEach(item => {
             if (item.price > 0) {
                 const cost = item.price * appState.generatedPlan.duration;
