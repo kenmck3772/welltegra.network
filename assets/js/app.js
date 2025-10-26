@@ -1254,6 +1254,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (designBlueprintContainer) {
             designBlueprintContainer.innerHTML = '<p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>';
         }
+        // Reset buttons
+        generatePlanBtnManual.disabled = true;
+        generatePlanBtnAi.disabled = true;
 
         if (plannerStatusRegion) {
             plannerStatusRegion.textContent = '';
@@ -2375,6 +2378,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const eqF = eqFilter.toLowerCase();
         const matchingEquipment = equipmentData.filter(item => {
+        const filteredEquipment = equipmentData.filter(item => {
             const matchesRequirement = requiredEquipment.some(req => matchesEquipmentRequirement(req.name, item));
             if (!matchesRequirement) return false;
             if (!eqF) return true;
@@ -2384,6 +2388,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         equipmentTableBody.innerHTML = matchingEquipment.length ? matchingEquipment.map(item => {
+        equipmentTableBody.innerHTML = filteredEquipment.length ? filteredEquipment.map(item => {
             const testStatus = item.testStatus || 'Pending';
             const statusClass = toStatusClass(testStatus || 'pending');
             const testDisabled = testStatus !== 'Pending';
@@ -2406,6 +2411,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const persF = persFilter.toLowerCase();
         const matchingPersonnel = personnelData.filter(person => {
+        const filteredPersonnel = personnelData.filter(person => {
             const matchesRole = requiredRoles.some(role => matchesPersonnelRole(role, person));
             if (!matchesRole) return false;
             if (!persF) return true;
@@ -2415,6 +2421,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         personnelTableBody.innerHTML = matchingPersonnel.length ? matchingPersonnel.map(person => {
+        personnelTableBody.innerHTML = filteredPersonnel.length ? filteredPersonnel.map(person => {
             const statusClass = toStatusClass(person.status || 'available');
             const perDiem = person.perDiem ? `<span class="block text-xs text-slate-400">Per diem ${formatCurrency(person.perDiem)}</span>` : '';
             return `
@@ -2485,6 +2492,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             }
         }
+        const filteredPersonnel = personnelData.filter(p => 
+            requiredRoles.includes(p.role) && 
+            (p.name.toLowerCase().includes(persF) || p.role.toLowerCase().includes(persF))
+        );
+        
+        personnelTableBody.innerHTML = filteredPersonnel.map(p => `
+            <tr>
+                <td class="p-2">${p.name}</td>
+                <td class="p-2">${p.role}</td>
+                <td class="p-2">
+                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.status.toLowerCase().replace(/\s/g, '')}">${p.status}</span>
+                </td>
+                <td class="p-2">${p.certsValid ? '✅ Valid' : '⚠️ Expired'}</td>
+            </tr>
+        `).join('');
     };
 
     const checkLogistics = () => {
@@ -2556,6 +2578,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p class="text-sm font-medium">Accounted For</p>
                     <p class="text-4xl font-bold text-green-600">${musteredCount}</p>
                     <p class="mt-2 text-xs text-slate-400">Unaccounted: ${unaccountedCount}</p>
+                </div>
+                <div class="light-card p-6 text-center rounded-lg">
+                    <p class="text-sm font-medium">Daily Crew Rate</p>
+                    <p class="text-3xl font-bold">${formatCurrency(totalDailyRate)}</p>
+                </div>
+                <div class="light-card p-6 text-center rounded-lg">
                 </div>
                 <div class="light-card p-6 text-center rounded-lg">
                     <p class="text-sm font-medium">Daily Crew Rate</p>
@@ -3559,6 +3587,8 @@ const validateInvoice = () => {
         appState.ai.selectedProblemId = null;
         appState.ai.selectedRecommendation = null;
         announcePlannerStatus(`${appState.selectedWell.name} selected. Review the well dossier and continue to objectives when ready.`);
+        updatePlannerStepUI(2);
+        announcePlannerStatus(`${appState.selectedWell.name} selected. Step two unlocked.`);
     });
 
     // Objective selection event listener
@@ -3579,6 +3609,11 @@ const validateInvoice = () => {
         renderDesignBlueprint();
         if (appState.selectedObjective) {
             announcePlannerStatus(`${appState.selectedObjective.name} objective selected. Continue to the engineering blueprint.`);
+        
+        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value);
+        generatePlanBtnManual.disabled = !appState.selectedObjective;
+        if (appState.selectedObjective) {
+            announcePlannerStatus(`${appState.selectedObjective.name} objective selected. Generate plan when ready.`);
         }
     });
 
@@ -3632,6 +3667,8 @@ const validateInvoice = () => {
             if (step2ContinueBtn) step2ContinueBtn.disabled = false;
             renderDesignBlueprint();
             announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Continue to the engineering blueprint.`);
+            generatePlanBtnAi.disabled = false;
+            announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Generate plan when ready.`);
         }));
     });
 
@@ -3653,6 +3690,11 @@ const validateInvoice = () => {
              if (!e.target.checked) {
                  aiRecommendationsContainer.classList.add('hidden');
              }
+        }
+        if (step2ContinueBtn) {
+            const hasSelection = e.target.checked ? !!appState.ai.selectedRecommendation : !!appState.selectedObjective;
+            step2ContinueBtn.disabled = !hasSelection;
+        }
         }
         if (step2ContinueBtn) {
             const hasSelection = e.target.checked ? !!appState.ai.selectedRecommendation : !!appState.selectedObjective;
@@ -3748,12 +3790,108 @@ const validateInvoice = () => {
         });
     }
 
+    if (step2ContinueBtn) {
+        step2ContinueBtn.addEventListener('click', () => {
+            if (!appState.selectedObjective) return;
+            updatePlannerStepUI(3);
+            renderDesignBlueprint();
+            if (generateProgramBtn) generateProgramBtn.disabled = !appState.selectedObjective;
+            announcePlannerStatus('Blueprint loaded. Validate the engineering design, then generate the integrated program.');
+        });
+    }
+
+    if (generateProgramBtn) {
+        generateProgramBtn.addEventListener('click', () => {
+            if (!appState.selectedWell) return;
+            let objectiveId = appState.selectedObjective?.id;
+            if (aiToggle.checked && appState.ai.selectedRecommendation) {
+                objectiveId = appState.ai.selectedRecommendation.objectiveId;
+            }
+            if (!objectiveId) return;
+
+            appState.selectedObjective = objectivesData.find(o => o.id === objectiveId);
+            appState.generatedPlan = proceduresData[objectiveId];
+            renderPlan();
+            updatePlannerStepUI(4);
+            announcePlannerStatus('Integrated program generated. Review procedure, risks, and cost in step four.');
+        });
+    }
+
+    if (step4ContinueBtn) {
+        step4ContinueBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            renderReadinessSummary();
+            updatePlannerStepUI(5);
+            announcePlannerStatus('Readiness package compiled. Resolve outstanding logistics or jump to execution prep.');
+        });
+    }
+
+    if (openLogisticsBtn) {
+        openLogisticsBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            switchView('logistics');
+        });
+    }
+
+    if (openCommercialBtn) {
+        openCommercialBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            switchView('commercial');
+        });
+    }
+
+    if (openHseBtn) {
+        openHseBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            switchView('hse');
+        });
+    }
+
+    if (step5ContinueBtn) {
+        step5ContinueBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            updatePlannerStepUI(6);
+            if (beginOpBtn) beginOpBtn.disabled = false;
+            announcePlannerStatus('Execution stage ready. Launch Live Operations or open the analysis workspace.');
+        });
+    }
+
+    if (reviewAnalysisBtnFinal) {
+        reviewAnalysisBtnFinal.addEventListener('click', () => {
+            switchView('analyzer');
+            if (typeof window.initializeAnalyzer === 'function') {
+                window.initializeAnalyzer();
+            } else {
+                initializeAnalyzer();
+                initializeVendorScorecard();
+            }
+        });
+    }
+    // Generate plan buttons event listeners
+    generatePlanBtnManual.addEventListener('click', () => {
+        if (!appState.selectedWell || !appState.selectedObjective) return;
+        appState.generatedPlan = proceduresData[appState.selectedObjective.id];
+        renderPlan();
+        updatePlannerStepUI(3);
+        announcePlannerStatus('Manual plan generated. Review the plan in step three.');
+    });
+
+    generatePlanBtnAi.addEventListener('click', () => {
+        if (!appState.selectedWell || !appState.ai.selectedRecommendation) return;
+        appState.selectedObjective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId);
+        appState.generatedPlan = proceduresData[appState.selectedObjective.id];
+        renderPlan();
+        updatePlannerStepUI(3);
+        announcePlannerStatus('AI-assisted plan generated. Review the plan in step three.');
+    });
+
     // Control buttons event listeners
     startOverBtn.addEventListener('click', () => {
         resetApp(false);
         announcePlannerStatus('Planner reset. Start by selecting a well.');
     });
     beginOpBtn.addEventListener('click', () => {
+    beginOpBtn.addEventListener('click', () => { 
         if (!appState.generatedPlan) return; 
         switchView('performer'); 
     });
