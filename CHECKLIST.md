@@ -3,6 +3,13 @@
 ## Console Output
 | Stage | Command | Result |
 | --- | --- | --- |
+| Historical (pre-CLI build) | `python3 -m http.server 8080` + Playwright console capture | `WARNING: cdn.tailwindcss.com should not be used in production…` |
+| Current (post-login removal + accessible nav) | `python -m http.server 8000` + Playwright hero toggle + nav traversal | `NO_CONSOLE_MESSAGES` |
+| Current (prefers-reduced-motion) | `python -m http.server 8000` + Playwright context with `reduced_motion='reduce'` | `NO_CONSOLE_MESSAGES` |
+
+```bash
+python -m http.server 8000
+# Playwright script toggles the hero video and tabs through the primary navigation to surface runtime errors
 | Before Tailwind CLI build (with CDN script) | `python3 -m http.server 8080` + Playwright console capture | `WARNING: cdn.tailwindcss.com should not be used in production…` |
 | After CLI build (current commit) | `python3 -m http.server 8080` + Playwright console capture | `NO_CONSOLE_MESSAGES` |
 
@@ -13,6 +20,19 @@ python3 -m http.server 8080
 
 ```text
 Before: WARNING: cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI…
+After: NO_CONSOLE_MESSAGES (default + reduced motion contexts)
+```
+
+```text
+Playwright reduced-motion context:
+CONTEXT reduce
+CONSOLE_LOGS []
+MATCHES True
+VIDEO_STATE True
+TOGGLE_TEXT Play background video
+TOGGLE_ICON ▶
+```
+
 After: NO_CONSOLE_MESSAGES
 ```
 
@@ -23,6 +43,10 @@ After: NO_CONSOLE_MESSAGES
 - `python -m json.tool service-line-templates.json` (no errors).
 
 ## Link Health
+- `npm run lint:links` (with `python -m http.server 8000` running): 10 URLs crawled, 0 failures.
+
+```text
+🤖 Successfully scanned 10 links in 0.393 seconds.
 - `npm run lint:links` (with `python3 -m http.server 8000` running): 14 URLs crawled, 0 failures.
 
 ```text
@@ -31,12 +55,19 @@ After: NO_CONSOLE_MESSAGES
 
 ## Tailwind Build Pipeline
 - Removed the CDN bootstrap `<script src="https://cdn.tailwindcss.com">` from `index.html`.
+- Rehomed the bespoke theme CSS (formerly inline) into `styles/tailwind.css` so it is compiled with Tailwind and cached via the static asset pipeline.
+- Extracted the monolithic inline script to `assets/js/app.js` and wired it with `defer`, allowing the CSP `script-src` directive to drop `'unsafe-inline'`.
 - `npm run build:css` regenerates `assets/css/tailwind.css` via Tailwind CLI + PostCSS (output minified; see git diff for new hash section).
 - Captured Browserslist advisory (`caniuse-lite is outdated`) — informational only.
 
 ## Performance Opportunities (Top 5)
 | # | Location | Recommendation |
 | --- | --- | --- |
+| 1 | `index.html` L102-L104 | Add `preload="metadata"` (or swap in a lighter poster) for the hero video so autoplay does not fetch the entire MP4 on first paint. |
+| 2 | `index.html` L15-L22 | Preload the Inter/Roboto Mono font files (`rel="preload" as="font" type="font/woff2" crossorigin`) to cut layout shifts before webfonts arrive. |
+| 3 | `assets/js/app.js` L2202-L2248 | Lazy-init `initSavingsChart()` when the ROI calculator view becomes active so Chart.js and canvas rendering do not cost time on login. |
+| 4 | `assets/css/tailwind.css` watermark block | Convert `assets/watermark.jpg` to WebP/AVIF and drop the legacy JPEG to reduce repeating background payloads. |
+| 5 | `assets/js/app.js` live data interval setup | Debounce the simulation interval when switching away from the performer view to avoid background timers keeping the tab busy. |
 | 1 | `index.html` L134-L141 | Add `preload="metadata"` (or switch to an optimized poster) for the autoplay hero video to avoid pulling the full MP4 on first paint. |
 | 2 | `index.html` L65-L72 | Convert the repeated remote watermark background to a locally optimized WebP (current PNG served from production host). |
 | 3 | `index.html` L211-L238 | Consolidate duplicated KPI cards (remnants of diff markers) to cut DOM weight and reduce layout cost. |
@@ -46,6 +77,16 @@ After: NO_CONSOLE_MESSAGES
 ## Accessibility & SEO (Top 10 Fixes)
 | # | File:Line | Issue | Suggested Diff |
 | --- | --- | --- | --- |
+| 1 | `index.html` L35-L94; `assets/js/app.js` L654-L756 | ✅ Primary nav now uses `<button type="button">` controls with `aria-current` and gated views toggle `aria-disabled`/`disabled`. | Converted each nav item to a real button and taught `switchView()`/`updateNavLinks()` to manage `aria-current`, `aria-disabled`, and keyboard focus state. |
+| 2 | `index.html` L73-L77 | ✅ Theme toggle button now exposes an accessible label. | Added `aria-label="Toggle light and dark theme"` to the theme control while keeping the SVGs decorative. |
+| 3 | `index.html` L102-L104 | Hero video lacks textual description for screen readers. | Add `aria-label` or `aria-describedby` to describe the footage (or mark `aria-hidden="true"` if purely decorative). |
+| 4 | `assets/js/app.js` L706-L732 | Planner cards are clickable `<div>` elements with no keyboard support. | Add `tabindex="0"`, `role="button"`, and handle `Enter`/`Space` keypress events. |
+| 5 | `assets/js/app.js` L654-L662 | ✅ Hidden views are now marked `aria-hidden="true"` until activated. | `switchView()` tags every `.view-container` as `aria-hidden` before revealing the target view so screen readers ignore inactive sections. |
+| 6 | `index.html` L14-L18 | Document head lacks a meta description for search previews. | Add `<meta name="description" content="…">`. |
+| 7 | `index.html` L14-L18 | No canonical URL declared for the GitHub Pages deployment. | Add `<link rel="canonical" href="https://welltegra.network/">`. |
+| 8 | `index.html` L37-L43 | Login logo image omits `width`/`height`, causing layout shift. | Supply intrinsic dimensions (`width="96" height="96"`) or CSS aspect ratio. |
+| 9 | `index.html` L110-L114, `assets/js/app.js` L569-L636 | ✅ Hero video toggle now ships with an icon, polite status text, and respects `prefers-reduced-motion`. | `index.html`: inject icon + live region spans. `assets/js/app.js`: swap text/icon in `updateToggleState()`, add reduced-motion guard. |
+| 10 | `assets/js/app.js` PDF export alerts | `alert()` usage during PDF failures is disruptive for screen readers. | Replace with an inline status region (`role="alert"`). |
 | 1 | `index.html` L1-L16 | Duplicate `<!DOCTYPE html>`, `<html>`, and `<head>` tags produce invalid DOM. | Remove the repeated block so only one document scaffold remains. |
 | 2 | `index.html` L82-L118 | Nav links rendered twice (diff artifact) create duplicate focus targets. | Delete the repeated `<a>` nodes inside the header nav. |
 | 3 | `index.html` L112-L116 | Duplicate `id="theme-icon-light"` / `id="theme-icon-dark"` violate unique ID requirement. | Rename or remove the duplicated SVGs after deduplicating nav. |
@@ -61,5 +102,6 @@ After: NO_CONSOLE_MESSAGES
 - External libraries now pinned and protected via `integrity` + `crossorigin` (`Chart.js`, `jspdf`, `html2canvas`).
 - Added `referrerpolicy="no-referrer"` to PDF export dependencies.
 - Audited `target="_blank"` anchors — all now include `rel="noopener noreferrer"` (see `index.html` L245-L246).
+- Hardened the CSP by removing `'unsafe-inline'` from `script-src` and binding the PDF export button through `addEventListener` instead of inline handlers.
 - No Leaflet usage detected; CSP starter remains TODO (present in `index-v23-fresh.html` for future migration).
 

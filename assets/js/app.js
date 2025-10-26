@@ -1,1285 +1,3 @@
-<!DOCTYPE html>
-
-<html lang="en" class="scroll-smooth">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://welltegra.network; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data: https://welltegra.network; base-uri 'self'; form-action 'self'">
-    <title>v23 - Well-Tegra | The Well From Hell Case Study</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css">
-    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous" defer></script>
-<head>
-    <link rel="stylesheet" href="assets/css/tailwind.css">
-    <meta charset="UTF-8">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://welltegra.network; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data: https://welltegra.network;  base-uri 'self'; form-action 'self'">
-    <title>v23 - Well-Tegra | The Well From Hell Case Study</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css">
-    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
-    
-    <!-- PDF Export Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
-    
-    
-</head>
-
-<body class="theme-dark">
-
-<div id="app-container" class="min-h-screen flex flex-col">
-
-    <header id="app-header" class="header sticky top-0 z-30 transition-colors">
-        <div class="max-w-full mx-auto py-3 px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <img src="assets/logo.jpg" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3">
-                    <h1 id="header-title" class="text-xl font-bold hidden md:block">Well-Tegra Data Solutions</h1>
-                </div>
-                <nav id="header-nav" class="flex-1 flex items-center justify-center space-x-1 md:space-x-4" aria-label="Primary">
-                    <button id="home-nav-link" type="button" title="Return to the Home Page" class="nav-link active flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                        <span>Home</span>
-                    </button>
-                    <button id="planner-nav-link" type="button" title="Go to the Well Intervention Planner" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
-                        <span>Planner</span>
-                    </button>
-                    <button id="logistics-nav-link" type="button" title="Manage Equipment and Personnel" class="nav-link flex items-center space-x-2">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/><path d="M18 18h-1.3c-.5 0-.9-.3-1.1-.7l-2.6-5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
-                        <span>Logistics</span>
-                    </button>
-                    <button id="commercial-nav-link" type="button" title="View Financial Dashboards" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                        <span>Commercial</span>
-                    </button>
-                    <button id="hse-nav-link" type="button" title="View Health, Safety, and Environment Data" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        <span>HSE & Risk</span>
-                    </button>
-                    <button id="pob-nav-link" type="button" title="View Personnel on Board and Emergency Response" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        <span>POB & ER</span>
-                    </button>
-                    <button id="whitepaper-nav-link" type="button" title="Download the White Paper" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        <span>White Paper</span>
-                    </button>
-                     <button id="faq-nav-link" type="button" title="Frequently Asked Questions" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
-                        <span>FAQ</span>
-                    </button>
-                    <button id="about-nav-link" type="button" title="About the Founder" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
-                        <span>About</span>
-                    </button>
-                </nav>
-                <div id="header-details" class="flex items-center space-x-4">
-                    <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700" aria-label="Toggle light and dark theme">
-                        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main id="main-content" class="flex-1">
-        <div id="home-view" class="view-container">
-            <section class="hero-section py-20 px-4 relative">
-                <video autoplay loop muted playsinline id="hero-video" poster="assets/logo.jpg">
-                    <source src="assets/hero4.mp4" type="video/mp4">
-                </video>
-                <div class="hero-overlay"></div>
-                <div class="max-w-4xl mx-auto text-center relative z-10">
-                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">From Data Chaos to Predictive Clarity.</h1>
-                    <p class="mt-6 text-lg md:text-xl text-slate-100">The oil and gas industry loses over $38 million per asset annually to unplanned downtime. Your engineers spend more than 50% of their time wrangling data. The cause? A disconnected digital ecosystem.</p>
-                    <p class="mt-4 text-lg md:text-xl font-semibold text-white">Well-Tegra: Engineering Insight, Amplified by Data.</p>
-                    <div class="mt-8 flex justify-center">
-                        <button id="hero-video-toggle" type="button" aria-controls="hero-video" aria-pressed="true" class="inline-flex items-center gap-2 rounded-full bg-black/60 px-5 py-2 text-sm font-semibold text-white backdrop-blur focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-400 focus-visible:ring-offset-slate-900 transition">
-                            <span class="hero-video-toggle-icon" aria-hidden="true">⏸</span>
-                            <span class="hero-video-toggle-text" aria-live="polite">Pause background video</span>
-                        </button>
-                    </div>
-                </div>
-            </section>
-            <section class="py-20 px-4 bg-white dark:bg-transparent">
-                <div class="max-w-7xl mx-auto relative z-10">
-                    <div class="text-center">
-                        <h2 class="section-title">Are You Paying the Hidden Taxes of Inefficiency?</h2>
-                        <p class="mt-4 text-lg">Your operations are being taxed by disconnected workflows you can't see on a balance sheet.</p>
-                    </div>
-                    <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Data Wrangling Tax</h3><p class="mt-2">Unlock Your Data. Your most valuable assets—your engineers—are forced to act as data clerks, wasting countless hours hunting for information in emails, correcting spreadsheet errors, and re-entering data from PDFs.</p></div>
-                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The NPT Tax</h3><p class="mt-2">Every moment of Non-Productive Time is a direct hit to your bottom line. Plans based on poor data lead to equipment failures, procedural errors, and costly downtime.</p></div>
-                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Collaboration Tax</h3><p class="mt-2">The critical gap between your team and service partners is where value is lost. Static PDF handoffs create slow, error-prone workflows that prevent true, real-time collaboration.</p></div>
-                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Energy & Emissions Tax</h3><p class="mt-2">Inefficient operations don't just waste money—they waste energy. Extended run times and unnecessary flaring contribute to higher operational costs and a larger carbon footprint.</p></div>
-                    </div>
-                </div>
-            </section>
-            <section class="py-20 px-4 roi-calculator dark:bg-slate-900/50">
-                <div class="max-w-6xl mx-auto relative z-10">
-                    <div class="text-center"><h2 class="section-title">The Platform That Pays for Itself</h2><p class="mt-4 text-lg">Unlock Your Reservoir's True Potential. Use our interactive calculator to estimate your potential annual savings with Well-Tegra.</p></div>
-                    <div class="mt-12 grid lg:grid-cols-2 gap-12 items-center">
-                        <div class="light-card p-8 rounded-lg shadow-lg">
-                            <div class="space-y-6">
-                                <div><label for="engineerCount" class="font-semibold">Number of Well Engineers</label><div class="flex items-center space-x-4"><input type="range" id="engineerCount" min="5" max="100" value="20" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer"><span id="engineerCountValue" class="font-bold text-lg w-12 text-center">20</span></div></div>
-                                <div><label for="nptReduction" class="font-semibold">Projected NPT Reduction</label><div class="flex items-center space-x-4"><input type="range" id="nptReduction" min="5" max="40" value="20" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer"><span id="nptReductionValue" class="font-bold text-lg w-12 text-center">20%</span></div></div>
-                                <div><label for="timeSavings" class="font-semibold">Engineering Time Reclaimed</label><div class="flex items-center space-x-4"><input type="range" id="timeSavings" min="10" max="50" value="40" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer"><span id="timeSavingsValue" class="font-bold text-lg w-12 text-center">40%</span></div></div>
-                            </div>
-                            <div class="mt-8 pt-6 border-t border-slate-300 dark:border-slate-600 text-center"><p class="text-xl font-semibold">Total Estimated Annual Savings:</p><p id="totalSavings" class="text-5xl font-extrabold accent-text mt-2">$2,168,000</p></div>
-                        </div>
-                        <div class="chart-container"><canvas id="savingsChart"></canvas></div>
-                    </div>
-                </div>
-            </section>
-        </div>
-        
-        <div id="planner-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="planner-header">
-                <h2 class="text-3xl font-bold tracking-tight text-white">Well Intervention Planner</h2>
-                <p class="mt-2 max-w-2xl mx-auto text-lg text-blue-100">The Single Source of Truth for Your Entire Well Portfolio.</p>
-            </div>
-            
-            <div class="mb-12 flex items-center justify-center space-x-2">
-                <div id="step-1-indicator" class="step-indicator w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">1</div>
-                <div id="step-1-connector" class="step-connector flex-1"></div>
-                <div id="step-2-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">2</div>
-                <div id="step-2-connector" class="step-connector flex-1"></div>
-                <div id="step-3-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">3</div>
-            </div>
-            
-            <section id="step-1" class="mb-12">
-                <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold tracking-tight">Step 1: Select a Well</h3>
-                    <p class="mt-4 max-w-3xl mx-auto text-sm">Welcome to the "Well From Hell" case study. The portfolio below contains one critical problem well, <strong>W666 - The Perfect Storm</strong>, which is shut-in with multiple, complex issues. The other wells are historical case studies from the same field, each representing a successful intervention that fixed one of the problems now facing W666. Your task is to select the "Well From Hell" and use the platform's data and AI advisor to build a robust intervention plan, drawing on the lessons learned from the other wells.</p>
-                </div>
-                <div id="well-selection-grid" class="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
-            </section>
-            
-            <section id="step-2" class="mb-12 hidden">
-                <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold tracking-tight">Step 2: Define Intervention Plan</h3>
-                    <p class="mt-4 max-w-3xl mx-auto text-lg">You have selected <strong>W666</strong>. Now, define the objective. Use the <strong>AI Advisor</strong> to analyze the well's known problems. The AI will cross-reference the issues with our historical case studies (the other wells in the portfolio) to recommend the most effective intervention strategies, complete with confidence scores and projected outcomes based on proven solutions.</p>
-                </div>
-                <div class="mt-8 max-w-4xl mx-auto">
-                    <div class="flex items-center justify-center mb-6">
-                        <span class="text-sm font-medium mr-3">Manual Planning</span>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="ai-toggle" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-teal-300 dark:peer-focus:ring-teal-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
-                        </label>
-                        <span class="text-sm font-medium ml-3">AI Advisor</span>
-                    </div>
-                    
-                    <div id="manual-planning-view">
-                        <h4 class="text-lg font-semibold mb-4 text-center">Select Intervention Objective</h4>
-                        <div id="objectives-fieldset" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-                        <div class="mt-8 flex justify-center">
-                            <button id="generate-plan-btn-manual" class="rounded-md bg-teal-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-teal-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Generate Plan</button>
-                        </div>
-                    </div>
-                    
-                    <div id="ai-advisor-view" class="hidden">
-                        <div class="bg-blue-50 dark:bg-blue-900/50 p-4 rounded-lg text-center mb-6">
-                            <p class="text-sm text-blue-800 dark:text-blue-200">Our AI analyzes anonymized operational patterns from all community data providers to find optimal solutions. Your raw well data is never shared, and Well-Tegra cannot access it. This process is secured by smart contracts.</p>
-                        </div>
-                        
-                        <div id="problem-selection">
-                            <h3 class="text-lg font-semibold text-center mb-4">What is the primary problem with this well?</h3>
-                            <div id="problems-fieldset" class="space-y-4"></div>
-                        </div>
-                        
-                        <div id="ai-recommendations" class="hidden mt-8"></div>
-                        
-                        <div class="mt-8 flex justify-center">
-                            <button id="generate-plan-btn-ai" class="rounded-md bg-teal-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-teal-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Generate Plan from Recommendation</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section id="step-3" class="hidden">
-                <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold tracking-tight">Step 3: Review the Generated Plan</h3>
-                    <p class="mt-4 max-w-3xl mx-auto text-lg">This is the final review stage. Based on your selections, the platform has generated a comprehensive, data-driven intervention plan. This includes the baseline procedure, a list of required equipment and personnel, and an initial risk assessment. Please review all sections carefully. If everything is in order, you can proceed to the 'Live Operation' view, which simulates the execution of this plan in real-time. If you need to make changes, you can 'Start Over'.</p>
-                </div>
-                
-                <div id="plan-output" class="mt-10 space-y-8"></div>
-                
-                <div class="mt-8 flex justify-center space-x-4">
-                    <button id="start-over-btn" class="rounded-md bg-gray-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-500 transition-colors">Start Over</button>
-                    <button id="begin-op-btn" class="rounded-md bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 transition-colors">Begin Live Operation</button>
-                </div>
-            </section>
-        </div>
-
-        <div id="logistics-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Logistics & Asset Management</h2><p id="logistics-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Manage equipment and personnel availability, certifications, and maintenance schedules.</p></div>
-            <div id="logistics-content" class="mt-10 grid gap-12 lg:grid-cols-2">
-                <div class="light-card p-6 rounded-lg"><h3 class="text-xl font-semibold mb-4">Equipment Hub</h3><input type="text" id="equipment-search" placeholder="Search equipment..." class="w-full p-2 rounded-md mb-4"><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="table-header"><tr><th class="p-2">Asset ID</th><th>Type</th><th>Location</th><th>Test Status</th><th>Actions</th></tr></thead><tbody id="equipment-table-body"></tbody></table></div></div>
-                <div class="light-card p-6 rounded-lg"><h3 class="text-xl font-semibold mb-4">Personnel Roster</h3><input type="text" id="personnel-search" placeholder="Search personnel..." class="w-full p-2 rounded-md mb-4"><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="table-header"><tr><th class="p-2">Name</th><th>Role</th><th>Status</th><th>Certs Valid</th></tr></thead><tbody id="personnel-table-body"></tbody></table></div></div>
-            </div>
-        </div>
-        
-        <div id="commercial-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Commercial Dashboard</h2><p id="commercial-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Live financial tracking for the selected operation.</p></div>
-            <div id="commercial-content" class="mt-10"></div>
-        </div>
-
-        <div id="hse-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">HSE & Risk Dashboard</h2><p id="hse-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Centralized risk register and permit to work status.</p></div>
-            <div id="hse-content" class="mt-10"></div>
-        </div>
-
-        <div id="pob-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Personnel on Board & Emergency Response</h2><p id="pob-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Live POB manifest and emergency muster status.</p></div>
-            <div id="pob-content" class="mt-10"></div>
-        </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- PDF Export Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
-    
-    <style>
-        /* --- Base & Theme Setup --- */
-        body { font-family: 'Inter', sans-serif; font-weight: 500; }
-        h1, h2, h3, h4, h5, h6 { font-weight: 800; } /* Bolder headings */
-        .theme-light { background-color: #f8fafc; }
-        .theme-dark { background-color: #0f172a; color: #e2e8f0; }
-
-        /* --- Watermark Background --- */
-        #main-content {
-            position: relative;
-            z-index: 1;
-        }
-        .theme-light #main-content::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('assets/watermark.jpg');
-            background-repeat: repeat;
-            background-position: center;
-            background-size: 350px;
-            opacity: 0.02;
-            z-index: -1;
-            pointer-events: none;
-        }
-        .theme-dark #main-content::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('assets/watermark.jpg');
-            background-repeat: repeat;
-            background-position: center;
-            background-size: 350px;
-            opacity: 0.04;
-            filter: invert(1);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .gradient-text {
-            background: linear-gradient(to right, #60a5fa, #5eead4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* --- Light & Dark Theme Specific Styles --- */
-        .theme-light .light-card { background-color: white; }
-        .theme-dark .light-card { background-color: #1e293b; border: 1px solid #334155; }
-        .theme-light .header { background-color: white; box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); }
-        .theme-dark .header { background-color: #0f172a; border-bottom: 1px solid #1e293b; }
-        .theme-light .nav-link { color: #475569; }
-        .theme-dark .nav-link { color: #94a3b8; }
-        .theme-light .nav-link.active { color: #2563eb; border-bottom-color: #2563eb; }
-        .theme-dark .nav-link.active { color: #60a5fa; border-bottom-color: #60a5fa; }
-        .nav-link.disabled { color: #9ca3af !important; cursor: not-allowed; opacity: 0.5; }
-        
-        .theme-light h1, .theme-light h2, .theme-light h3, .theme-light h4 { color: #111827; } 
-        .theme-dark h1, .theme-dark h2, .theme-dark h3, .theme-dark h4 { color: #f8fafc; }
-        
-        .theme-light p, .theme-light span, .theme-light label, .theme-light td, .theme-light li { color: #1f2937; line-height: 1.65; }
-        .theme-dark p, .theme-dark span, .theme-dark label, .theme-dark td, .theme-dark li { color: #e2e8f0; line-height: 1.65; }
-
-        .theme-light .table-header { background-color: #f1f5f9; }
-        .theme-dark .table-header { background-color: #334155; }
-        .theme-light .table-row-alt { background-color: #f8fafc; }
-        .theme-dark .table-row-alt { background-color: rgba(30, 41, 59, 0.5); }
-        .theme-light .modal-container { background-color: white; }
-        .theme-dark .modal-container { background-color: #1e293b; }
-        .theme-light .modal-tab { color: #6b7280; }
-        .theme-dark .modal-tab { color: #9ca3af; }
-        .theme-light .modal-tab.active { color: #2563eb; border-bottom-color: #2563eb; }
-        .theme-dark .modal-tab.active { color: #60a5fa; border-bottom-color: #60a5fa; }
-        .theme-light input, .theme-light textarea { background-color: white; border-color: #d1d5db; color: #111827; }
-        .theme-dark input, .theme-dark textarea { background-color: #334155; border-color: #4b5563; color: #f3f4f6; }
-        .theme-light .objective-label, .theme-light .problem-label { border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.2s ease-in-out; }
-        .theme-dark .objective-label, .theme-dark .problem-label { border: 1px solid #475569; cursor: pointer; transition: all 0.2s ease-in-out; }
-        .theme-light input[type="radio"]:checked + .objective-label, .theme-light input[type="radio"]:checked + .problem-label { border-color: #2563eb; background-color: #eff6ff; }
-        .theme-dark input[type="radio"]:checked + .objective-label, .theme-dark input[type="radio"]:checked + .problem-label { border-color: #60a5fa; background-color: #0f172a; }
-        .theme-light .ai-recommendation-card.selected { border-color: #2563eb; background-color: #eff6ff; }
-        .theme-dark .ai-recommendation-card.selected { border-color: #60a5fa; background-color: #0f172a; }
-        .theme-light .bg-gray-50 { background-color: #f9fafb; }
-        .theme-dark .bg-gray-50 { background-color: #334155; }
-        .theme-light #theme-icon-dark { display: none; }
-        .theme-light #theme-icon-light { display: block; }
-        .theme-dark #theme-icon-dark { display: block; }
-        .theme-dark #theme-icon-light { display: none; }
-
-        /* --- Global Component Styles --- */
-        .planner-card { transition: all 0.3s ease-in-out; }
-        .planner-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
-        .theme-light .planner-card.selected { border-color: #2563eb; transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); border-width: 2px; }
-        .theme-dark .planner-card.selected { border-color: #60a5fa; transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); border-width: 2px; }
-
-        /* Highlight the "Well From Hell" */
-        .planner-card[data-well-id="W666"] {
-            border-color: #991b1b;
-            background-image: linear-gradient(rgba(255,0,0,0.05), rgba(255,0,0,0));
-            position: relative;
-            overflow: hidden;
-        }
-        .planner-card[data-well-id="W666"]::before {
-            content: "âš ï¸ WELL FROM HELL";
-            position: absolute;
-            top: 10px;
-            right: -30px;
-            background-color: #ef4444;
-            color: white;
-            padding: 5px 30px;
-            font-size: 10px;
-            font-weight: bold;
-            transform: rotate(45deg);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        .theme-dark .planner-card[data-well-id="W666"] {
-            border-color: #ef4444;
-            background-image: linear-gradient(rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0));
-        }
-        .planner-card[data-well-id="W666"].selected {
-             border-color: #ef4444 !important;
-             box-shadow: 0 10px 15px -3px rgb(239 68 68 / 0.2), 0 4px 6px -4px rgb(239 68 68 / 0.2);
-        }
-
-        .step-indicator { transition: all 0.3s; }
-        .step-indicator.active { 
-            background-color: #2563eb; 
-            color: white;
-            transform: scale(1.1);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .step-indicator.completed { 
-            background-color: #1d4ed8; 
-            color: white;
-        }
-        .step-connector {
-            height: 4px;
-            background-color: #e5e7eb;
-            border-radius: 2px;
-            transition: all 0.3s;
-        }
-        .step-connector.active {
-            background-color: #2563eb;
-        }
-        .step-connector.completed {
-            background-color: #1d4ed8;
-        }
-        .risk-low { background-color: #dcfce7; color: #166534; }
-        .risk-medium { background-color: #fef9c3; color: #854d0e; }
-        .risk-high { background-color: #fee2e2; color: #991b1b; }
-        .status-available, .status-active-underperforming, .status-active-lowinjectivity, .status-approved, .status-mustered, .status-passed, .status-active-restoredproduction, .status-pa-successful { background-color: #dcfce7; color: #166534; }
-        .status-maintenance, .status-pending, .status-intransit, .status-standby { background-color: #fef9c3; color: #854d0e; }
-        .status-unavailable, .status-onjob, .status-expired, .status-unaccounted, .status-failed, .status-drilling-criticalsection, .status-shut-in, .status-shut-in-wellintegrityissues, .status-pacandidate { background-color: #fee2e2; color: #991b1b; }
-        .status-onboard { background-color: #cffafe; color: #0e7490; }
-
-        /* --- Performer View Styles --- */
-        .performer-view .dashboard-grid { display: grid; grid-template-columns: 2fr 5fr 3fr; gap: 1.5rem; height: calc(100vh - 80px); }
-        .performer-view .kpi-card { background-color: #1e293b; border-radius: 0.5rem; border: 1px solid #334155; color: #f8fafc; }
-        .performer-view .procedure-step { border-left: 4px solid #475569; transition: all 0.3s; cursor: pointer; }
-        .performer-view .procedure-step.active { background-color: rgba(96, 165, 250, 0.1); border-left-color: #60a5fa; }
-        .performer-view .procedure-step.completed { border-left-color: #64748b; opacity: 0.6; }
-        .performer-view .log-entry { border-bottom: 1px solid #475569; }
-        .performer-view .alarm, .emergency-header { animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
-        
-        /* --- KPI Gauge Styles --- */
-        .gauge-bg { stroke: #374151; }
-        .gauge-fg { transition: stroke-dashoffset 0.3s ease-in-out, stroke 0.3s ease-in-out; transform: rotate(-90deg); transform-origin: 50% 50%; }
-        .gauge-text { font-family: 'Roboto Mono', monospace; }
-        .bar-bg { background-color: #374151; }
-        .bar-fg { transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out; }
-        .text-normal { color: #5eead4; } .stroke-normal { stroke: #5eead4; } .bg-normal { background-color: #5eead4; }
-        .text-warning { color: #facc15; } .stroke-warning { stroke: #facc15; } .bg-warning { background-color: #facc15; }
-        .text-danger { color: #f87171; } .stroke-danger { stroke: #f87171; } .bg-danger { background-color: #f87171; }
-
-        /* --- General UI Transitions & Styles --- */
-        .ai-recommendation-card { border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.2s ease-in-out; }
-        .ai-recommendation-card:hover { border-color: #2563eb; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-        .ai-recommendation-card.selected { border-width: 2px; }
-        .modal-overlay { transition: opacity 0.3s ease; }
-        .modal-container { transition: transform 0.3s ease; }
-        .schematic-label { font-family: 'Roboto Mono', monospace; font-size: 10px; fill: #4b5563; }
-        .schematic-depth-marker { font-size: 9px; font-family: 'Roboto Mono', monospace; fill: #1d4ed8; }
-        .modal-tab { border-bottom: 2px solid transparent; }
-        
-        /* --- Home Page Specific Styles --- */
-        .hero-section { position: relative; overflow: hidden; }
-        #hero-video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -100;
-            transform: translateX(-50%) translateY(-50%);
-            background-size: cover;
-        }
-        .hero-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(15, 23, 42, 0.8); /* Darker overlay for better contrast */
-            z-index: -50;
-        }
-        .hero-section h1 { text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); }
-        .hero-section p { text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); }
-
-        .section-title { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.025em; }
-        .accent-text { color: #2563eb; }
-        .dark .accent-text { color: #60a5fa; }
-        .roi-calculator { background-color: #f0f9ff; }
-        .dark .roi-calculator { background-color: #1e293b; }
-        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
-        @media (min-width: 768px) { .chart-container { height: 400px; } }
-
-        <div id="whitepaper-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-3xl font-bold tracking-tight">Well-Tegra White Paper</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-lg">Dive deeper into the technical architecture and strategic vision behind the Well-Tegra platform. Our white paper provides a comprehensive overview of the privacy-preserving AI, enterprise blockchain, and data unification strategies that power our solution.</p>
-                <p class="mt-4 max-w-2xl mx-auto text-lg">Dive deeper into the technical architecture and strategic vision behind the Well-Tegra platform. Our white paper provides a comprehensive overview of the privacy-preserving AI, enterprise blockchain, and data unification strategies that power our solution.</p>
-                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" download class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
-                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" download class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
-                    Download the White Paper
-                </a>
-            </div>
-        </div>
-
-        <div id="faq-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Frequently Asked Questions</h2><p class="mt-2 max-w-2xl mx-auto text-lg">Find answers to common questions about the Well-Tegra platform.</p></div>
-            <div id="faq-accordion" class="mt-10 light-card rounded-lg shadow-md overflow-hidden">
-                </div>
-        </div>
-
-        <div id="about-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">About Me & The Mission</h2></div>
-            <div class="mt-10 light-card p-8 rounded-lg space-y-8">
-                <div>
-                    <h3 class="text-2xl font-bold">From the Wellsite to the Web</h3>
-                    <p class="text-lg italic">"I built Well-Tegra because I've lived the problems it's designed to solve." - Kenneth McKenzie</p>
-                </div>
-                <div>
-                    <h4 class="text-xl font-semibold">My Perspective</h4>
-                    <p>I'm not a software developer who decided to get into oil and gas. I'm a well services guy who learned to code. My career started at the sharp end with Tristar Oilfield Services and took me around the world, working with service leaders like Expro and Wellserv, and later supervising operations for major operators like BG Group, CNR, and Woodside. I've been on both sides of the fence—I know the service company's challenges and the operator's objectives. That's the insight Well-Tegra is built on.</p>
-                </div>
-                 <div>
-                    <h4 class="text-xl font-semibold">Why I Built This</h4>
-                    <p>I've seen first-hand how much time, money, and energy we waste because our data is a mess. It's locked in different systems, buried in old reports, and stuck in spreadsheets. We repeat the same mistakes because the lessons learned from one job are never available for the next. The "Well From Hell" in this demo isn't an exaggeration; it's a sanitized version of the real-world train wrecks I've witnessed—and helped clean up.</p>
-                    <p class="mt-2">Well-Tegra is my answer to that chaos. It's a platform designed from an operator's perspective, focused on a single source of truth that connects planning, execution, and analysis.</p>
-                </div>
-                <div class="bg-blue-50 dark:bg-blue-900/50 border-l-4 border-blue-400 p-4 rounded-r-lg">
-                    <h4 class="font-bold text-blue-800 dark:text-blue-300">The Path Forward</h4>
-                    <p class="mt-2 text-blue-700 dark:text-blue-200">This demo is the blueprint. It was built on a Chromebook with a lot of determination, but to bring it to life, it needs the power of real, collective data. The next step is to partner with operators and service companies to build out the anonymized data pool that will drive the predictive AI. The platform is ready to scale, and I'm actively seeking the right partners to help build the future of well operations.</p>
-                </div>
-            </div>
-        </div>
-
-        /* --- Enhanced Planner Styles --- */
-        .planner-header {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            color: white;
-            padding: 2rem;
-            border-radius: 0.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .well-card-enhanced {
-            position: relative;
-            border-radius: 0.75rem;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .well-card-enhanced .card-header {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .well-card-enhanced .card-body {
-            padding: 1rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .well-card-enhanced .card-footer {
-            padding: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-        
-        .well-card-enhanced.selected {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        .objective-card {
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-        
-        .objective-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .objective-card.selected {
-            border-color: #3b82f6;
-            background-color: rgba(59, 130, 246, 0.1);
-        }
-        
-        .ai-recommendation-enhanced {
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-            border: 2px solid transparent;
-            position: relative;
-        }
-        
-        .ai-recommendation-enhanced:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .ai-recommendation-enhanced.selected {
-            border-color: #3b82f6;
-            background-color: rgba(59, 130, 246, 0.1);
-        }
-        
-        .ai-recommendation-enhanced .confidence-badge {
-            position: absolute;
-            top: -10px;
-            right: 20px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
-            color: white;
-            font-weight: bold;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        
-        .plan-summary-card {
-            border-radius: 0.75rem;
-            overflow: hidden;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .plan-summary-card .card-header {
-            background: linear-gradient(135deg, #047857 0%, #10b981 100%);
-            color: white;
-            padding: 1.5rem;
-        }
-        
-        .timeline-step {
-            position: relative;
-            padding-left: 2rem;
-            padding-bottom: 1.5rem;
-        }
-        
-        .timeline-step::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 2px;
-            background-color: #e5e7eb;
-        }
-        
-        .timeline-step:last-child::before {
-            height: 1.5rem;
-        }
-        
-        .timeline-step::after {
-            content: '';
-            position: absolute;
-            left: -6px;
-            top: 0;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background-color: white;
-            border: 2px solid #3b82f6;
-        }
-        
-        .equipment-card {
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-left: 4px solid #3b82f6;
-        }
-        
-        .risk-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-        
-        .cost-estimation {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            background-color: rgba(255, 255, 255, 0.05);
-            margin-bottom: 0.5rem;
-        }
-        
-        .cost-estimation .label {
-            font-weight: 600;
-        }
-        
-        .cost-estimation .value {
-            font-weight: bold;
-            color: #10b981;
-        }
-
-        /* ========================================
-           V23 FEATURE STYLES
-           ======================================== */
-
-        /* --- Anomaly Detection Styles --- */
-        .anomaly-alert {
-            animation: slideInRight 0.4s ease-out;
-            border-left-width: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .anomaly-alert:hover {
-            transform: translateX(-4px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .anomaly-warning {
-            border-left-color: #f59e0b;
-            background-color: #fffbeb;
-        }
-
-        .theme-dark .anomaly-warning {
-            background-color: rgba(251, 191, 36, 0.1);
-            border-color: #fbbf24;
-        }
-
-        .anomaly-critical {
-            border-left-color: #ef4444;
-            background-color: #fef2f2;
-        }
-
-        .theme-dark .anomaly-critical {
-            background-color: rgba(239, 68, 68, 0.1);
-            border-color: #f87171;
-        }
-
-        .anomaly-resolved {
-            border-left-color: #10b981;
-            background-color: #f0fdf4;
-            opacity: 0.7;
-        }
-
-        .theme-dark .anomaly-resolved {
-            background-color: rgba(16, 185, 129, 0.1);
-            border-color: #34d399;
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes pulse-warning {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        .anomaly-icon-warning {
-            animation: pulse-warning 2s ease-in-out infinite;
-        }
-
-        /* --- Vendor Scorecard Styles --- */
-        .vendor-scorecard {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            padding: 24px;
-            color: white;
-        }
-
-        .theme-dark .vendor-scorecard {
-            background: linear-gradient(135deg, #4c51bf 0%, #553c9a 100%);
-        }
-
-        .star-rating {
-            display: inline-flex;
-            gap: 2px;
-        }
-
-        .star {
-            color: #fbbf24;
-            font-size: 18px;
-        }
-
-        .star.empty {
-            color: #d1d5db;
-        }
-
-        .theme-dark .star.empty {
-            color: #4b5563;
-        }
-
-        .metric-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .metric-row:last-child {
-            border-bottom: none;
-        }
-
-        .metric-label {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .metric-value {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .score-badge {
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 12px;
-        }
-
-        .score-excellent {
-            background-color: #10b981;
-            color: white;
-        }
-
-        .score-good {
-            background-color: #3b82f6;
-            color: white;
-        }
-
-        .score-fair {
-            background-color: #f59e0b;
-            color: white;
-        }
-
-        .score-poor {
-            background-color: #ef4444;
-            color: white;
-        }
-
-        /* --- PDF Export Styles --- */
-        .pdf-export-btn {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pdf-export-btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .pdf-export-btn:active::after {
-            width: 300px;
-            height: 300px;
-        }
-
-        .pdf-generating {
-            pointer-events: none;
-            opacity: 0.6;
-        }
-
-        .pdf-spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #ffffff;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* --- Utility Classes for v23 --- */
-        .fade-in-up {
-            animation: fadeInUp 0.5s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .theme-dark .glass-effect {
-            background: rgba(15, 23, 42, 0.4);
-            border: 1px solid rgba(71, 85, 105, 0.3);
-        }
-
-    </style>
-</head>
-
-<body class="theme-dark">
-
-<div id="welcome-screen" class="fixed inset-0 bg-slate-900 flex items-center justify-center z-50 transition-opacity duration-500">
-    <div class="text-center">
-        <img src="assets/logo.jpg" alt="Well-Tegra Data Solutions Logo" class="h-24 w-auto mx-auto mb-8 animate-pulse">
-        <div class="bg-slate-800 p-8 rounded-lg shadow-2xl w-80">
-            <h2 class="text-2xl font-bold text-white mb-6">Platform Login</h2>
-            <div class="space-y-4">
-                <input type="text" id="username" placeholder="Username" value="demo@welltegra.com" class="w-full p-3 rounded-md bg-slate-700 border border-slate-600 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500">
-                <input type="password" id="password" placeholder="Password" value="password" class="w-full p-3 rounded-md bg-slate-700 border border-slate-600 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500">
-            </div>
-            <button id="login-btn" class="mt-6 w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-3 px-4 rounded-md transition-colors">
-                Login
-            </button>
-        </div>
-    </div>
-</div>
-
-<div id="app-container" class="min-h-screen flex-col hidden">
-
-    <header id="app-header" class="header sticky top-0 z-30 transition-colors">
-        <div class="max-w-full mx-auto py-3 px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <img src="assets/logo.jpg" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3">
-                    <h1 id="header-title" class="text-xl font-bold hidden md:block">Well-Tegra Data Solutions</h1>
-                </div>
-                <div id="header-nav" class="flex-1 flex items-center justify-center space-x-1 md:space-x-4">
-                    <a id="home-nav-link" title="Return to the Home Page" class="nav-link active flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                        <span>Home</span>
-                    </a>
-                    <a id="planner-nav-link" title="Go to the Well Intervention Planner" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
-                        <span>Planner</span>
-                    </a>
-                    <a id="logistics-nav-link" title="Manage Equipment and Personnel" class="nav-link flex items-center space-x-2">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/><path d="M18 18h-1.3c-.5 0-.9-.3-1.1-.7l-2.6-5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
-                        <span>Logistics</span>
-                    </a>
-                    <a id="commercial-nav-link" title="View Financial Dashboards" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                        <span>Commercial</span>
-                    </a>
-                    <a id="hse-nav-link" title="View Health, Safety, and Environment Data" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        <span>HSE & Risk</span>
-                    </a>
-                    <a id="pob-nav-link" title="View Personnel on Board and Emergency Response" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        <span>POB & ER</span>
-                    </a>
-                    <a id="whitepaper-nav-link" title="Download the White Paper" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        <span>White Paper</span>
-                    </a>
-                     <a id="faq-nav-link" title="Frequently Asked Questions" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
-                        <span>FAQ</span>
-                    </a>
-                    <a id="about-nav-link" title="About the Founder" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
-                        <span>About</span>
-                    </a>
-                </div>
-                <div id="header-details" class="flex items-center space-x-4">
-                    <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700">
-                        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main id="main-content" class="flex-1">
-        <div id="home-view" class="view-container">
-            <section class="hero-section py-20 px-4 relative">
-                <video autoplay loop muted playsinline id="hero-video" poster="assets/logo.jpg">
-                    <source src="assets/hero4.mp4" type="video/mp4">
-                </video>
-                <div class="hero-overlay"></div>
-                <div class="max-w-4xl mx-auto text-center relative z-10">
-                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">From Data Chaos to Predictive Clarity.</h1>
-                    <p class="mt-6 text-lg md:text-xl text-slate-100">The oil and gas industry loses over $38 million per asset annually to unplanned downtime. Your engineers spend more than 50% of their time wrangling data. The cause? A disconnected digital ecosystem.</p>
-                    <p class="mt-4 text-lg md:text-xl font-semibold text-white">Well-Tegra: Engineering Insight, Amplified by Data.</p>
-                </div>
-            </section>
-            <section class="py-20 px-4 bg-white dark:bg-transparent">
-                <div class="max-w-7xl mx-auto relative z-10">
-                    <div class="text-center">
-                        <h2 class="section-title">Are You Paying the Hidden Taxes of Inefficiency?</h2>
-                        <p class="mt-4 text-lg">Your operations are being taxed by disconnected workflows you can't see on a balance sheet.</p>
-                    </div>
-                    <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Data Wrangling Tax</h3><p class="mt-2">Unlock Your Data. Your most valuable assetsâ€”your engineersâ€”are forced to act as data clerks, wasting countless hours hunting for information in emails, correcting spreadsheet errors, and re-entering data from PDFs.</p></div>
-                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The NPT Tax</h3><p class="mt-2">Every moment of Non-Productive Time is a direct hit to your bottom line. Plans based on poor data lead to equipment failures, procedural errors, and costly downtime.</p></div>
-                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Collaboration Tax</h3><p class="mt-2">The critical gap between your team and service partners is where value is lost. Static PDF handoffs create slow, error-prone workflows that prevent true, real-time collaboration.</p></div>
-                        <div class="feature-card light-card p-6 rounded-lg shadow"><h3 class="text-xl font-bold">The Energy & Emissions Tax</h3><p class="mt-2">Inefficient operations don't just waste moneyâ€”they waste energy. Extended run times and unnecessary flaring contribute to higher operational costs and a larger carbon footprint.</p></div>
-                    </div>
-                </div>
-            </section>
-            <section class="py-20 px-4 roi-calculator dark:bg-slate-900/50">
-                <div class="max-w-6xl mx-auto relative z-10">
-                    <div class="text-center"><h2 class="section-title">The Platform That Pays for Itself</h2><p class="mt-4 text-lg">Unlock Your Reservoir's True Potential. Use our interactive calculator to estimate your potential annual savings with Well-Tegra.</p></div>
-                    <div class="mt-12 grid lg:grid-cols-2 gap-12 items-center">
-                        <div class="light-card p-8 rounded-lg shadow-lg">
-                            <div class="space-y-6">
-                                <div><label for="engineerCount" class="font-semibold">Number of Well Engineers</label><div class="flex items-center space-x-4"><input type="range" id="engineerCount" min="5" max="100" value="20" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer"><span id="engineerCountValue" class="font-bold text-lg w-12 text-center">20</span></div></div>
-                                <div><label for="nptReduction" class="font-semibold">Projected NPT Reduction</label><div class="flex items-center space-x-4"><input type="range" id="nptReduction" min="5" max="40" value="20" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer"><span id="nptReductionValue" class="font-bold text-lg w-12 text-center">20%</span></div></div>
-                                <div><label for="timeSavings" class="font-semibold">Engineering Time Reclaimed</label><div class="flex items-center space-x-4"><input type="range" id="timeSavings" min="10" max="50" value="40" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer"><span id="timeSavingsValue" class="font-bold text-lg w-12 text-center">40%</span></div></div>
-                            </div>
-                            <div class="mt-8 pt-6 border-t border-slate-300 dark:border-slate-600 text-center"><p class="text-xl font-semibold">Total Estimated Annual Savings:</p><p id="totalSavings" class="text-5xl font-extrabold accent-text mt-2">$2,168,000</p></div>
-                        </div>
-                        <div class="chart-container"><canvas id="savingsChart"></canvas></div>
-                    </div>
-                </div>
-            </section>
-        </div>
-        
-        <div id="planner-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="planner-header">
-                <h2 class="text-3xl font-bold tracking-tight text-white">Well Intervention Planner</h2>
-                <p class="mt-2 max-w-2xl mx-auto text-lg text-blue-100">The Single Source of Truth for Your Entire Well Portfolio.</p>
-            </div>
-            
-            <div class="mb-12 flex items-center justify-center space-x-2">
-                <div id="step-1-indicator" class="step-indicator w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">1</div>
-                <div id="step-1-connector" class="step-connector flex-1"></div>
-                <div id="step-2-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">2</div>
-                <div id="step-2-connector" class="step-connector flex-1"></div>
-                <div id="step-3-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">3</div>
-            </div>
-            
-            <section id="step-1" class="mb-12">
-                <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold tracking-tight">Step 1: Select a Well</h3>
-                    <p class="mt-4 max-w-3xl mx-auto text-sm">Welcome to the "Well From Hell" case study. The portfolio below contains one critical problem well, <strong>W666 - The Perfect Storm</strong>, which is shut-in with multiple, complex issues. The other wells are historical case studies from the same field, each representing a successful intervention that fixed one of the problems now facing W666. Your task is to select the "Well From Hell" and use the platform's data and AI advisor to build a robust intervention plan, drawing on the lessons learned from the other wells.</p>
-                </div>
-                <div id="well-selection-grid" class="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
-            </section>
-            
-            <section id="step-2" class="mb-12 hidden">
-                <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold tracking-tight">Step 2: Define Intervention Plan</h3>
-                    <p class="mt-4 max-w-3xl mx-auto text-lg">You have selected <strong>W666</strong>. Now, define the objective. Use the <strong>AI Advisor</strong> to analyze the well's known problems. The AI will cross-reference the issues with our historical case studies (the other wells in the portfolio) to recommend the most effective intervention strategies, complete with confidence scores and projected outcomes based on proven solutions.</p>
-                </div>
-                <div class="mt-8 max-w-4xl mx-auto">
-                    <div class="flex items-center justify-center mb-6">
-                        <span class="text-sm font-medium mr-3">Manual Planning</span>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="ai-toggle" class="sr-only peer">
-                            <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-teal-300 dark:peer-focus:ring-teal-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
-                        </label>
-                        <span class="text-sm font-medium ml-3">AI Advisor</span>
-                    </div>
-                    
-                    <div id="manual-planning-view">
-                        <h4 class="text-lg font-semibold mb-4 text-center">Select Intervention Objective</h4>
-                        <div id="objectives-fieldset" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-                        <div class="mt-8 flex justify-center">
-                            <button id="generate-plan-btn-manual" class="rounded-md bg-teal-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-teal-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Generate Plan</button>
-                        </div>
-                    </div>
-                    
-                    <div id="ai-advisor-view" class="hidden">
-                        <div class="bg-blue-50 dark:bg-blue-900/50 p-4 rounded-lg text-center mb-6">
-                            <p class="text-sm text-blue-800 dark:text-blue-200">Our AI analyzes anonymized operational patterns from all community data providers to find optimal solutions. Your raw well data is never shared, and Well-Tegra cannot access it. This process is secured by smart contracts.</p>
-                        </div>
-                        
-                        <div id="problem-selection">
-                            <h3 class="text-lg font-semibold text-center mb-4">What is the primary problem with this well?</h3>
-                            <div id="problems-fieldset" class="space-y-4"></div>
-                        </div>
-                        
-                        <div id="ai-recommendations" class="hidden mt-8"></div>
-                        
-                        <div class="mt-8 flex justify-center">
-                            <button id="generate-plan-btn-ai" class="rounded-md bg-teal-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-teal-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Generate Plan from Recommendation</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section id="step-3" class="hidden">
-                <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold tracking-tight">Step 3: Review the Generated Plan</h3>
-                    <p class="mt-4 max-w-3xl mx-auto text-lg">This is the final review stage. Based on your selections, the platform has generated a comprehensive, data-driven intervention plan. This includes the baseline procedure, a list of required equipment and personnel, and an initial risk assessment. Please review all sections carefully. If everything is in order, you can proceed to the 'Live Operation' view, which simulates the execution of this plan in real-time. If you need to make changes, you can 'Start Over'.</p>
-                </div>
-                
-                <div id="plan-output" class="mt-10 space-y-8"></div>
-                
-                <div class="mt-8 flex justify-center space-x-4">
-                    <button id="start-over-btn" class="rounded-md bg-gray-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-500 transition-colors">Start Over</button>
-                    <button id="begin-op-btn" class="rounded-md bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 transition-colors">Begin Live Operation</button>
-                </div>
-            </section>
-        </div>
-
-        <div id="logistics-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Logistics & Asset Management</h2><p id="logistics-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Manage equipment and personnel availability, certifications, and maintenance schedules.</p></div>
-            <div id="logistics-content" class="mt-10 grid gap-12 lg:grid-cols-2">
-                <div class="light-card p-6 rounded-lg"><h3 class="text-xl font-semibold mb-4">Equipment Hub</h3><input type="text" id="equipment-search" placeholder="Search equipment..." class="w-full p-2 rounded-md mb-4"><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="table-header"><tr><th class="p-2">Asset ID</th><th>Type</th><th>Location</th><th>Test Status</th><th>Actions</th></tr></thead><tbody id="equipment-table-body"></tbody></table></div></div>
-                <div class="light-card p-6 rounded-lg"><h3 class="text-xl font-semibold mb-4">Personnel Roster</h3><input type="text" id="personnel-search" placeholder="Search personnel..." class="w-full p-2 rounded-md mb-4"><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="table-header"><tr><th class="p-2">Name</th><th>Role</th><th>Status</th><th>Certs Valid</th></tr></thead><tbody id="personnel-table-body"></tbody></table></div></div>
-            </div>
-        </div>
-        
-        <div id="commercial-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Commercial Dashboard</h2><p id="commercial-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Live financial tracking for the selected operation.</p></div>
-            <div id="commercial-content" class="mt-10"></div>
-        </div>
-
-        <div id="hse-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">HSE & Risk Dashboard</h2><p id="hse-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Centralized risk register and permit to work status.</p></div>
-            <div id="hse-content" class="mt-10"></div>
-        </div>
-
-        <div id="pob-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Personnel on Board & Emergency Response</h2><p id="pob-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Live POB manifest and emergency muster status.</p></div>
-            <div id="pob-content" class="mt-10"></div>
-        </div>
-
-        <div id="whitepaper-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-3xl font-bold tracking-tight">Well-Tegra White Paper</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-lg">Dive deeper into the technical architecture and strategic vision behind the Well-Tegra platform. Our white paper provides a comprehensive overview of the privacy-preserving AI, enterprise blockchain, and data unification strategies that power our solution.</p>
-                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" download class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
-                    Download the White Paper
-                </a>
-            </div>
-        </div>
-
-        <div id="faq-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Frequently Asked Questions</h2><p class="mt-2 max-w-2xl mx-auto text-lg">Find answers to common questions about the Well-Tegra platform.</p></div>
-            <div id="faq-accordion" class="mt-10 light-card rounded-lg shadow-md overflow-hidden">
-                </div>
-        </div>
-
-        <div id="about-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">About Me & The Mission</h2></div>
-            <div class="mt-10 light-card p-8 rounded-lg space-y-8">
-                <div>
-                    <h3 class="text-2xl font-bold">From the Wellsite to the Web</h3>
-                    <p class="text-lg italic">"I built Well-Tegra because I've lived the problems it's designed to solve." - Kenneth McKenzie</p>
-                </div>
-                <div>
-                    <h4 class="text-xl font-semibold">My Perspective</h4>
-                    <p>I'm not a software developer who decided to get into oil and gas. I'm a well services guy who learned to code. My career started at the sharp end with Tristar Oilfield Services and took me around the world, working with service leaders like Expro and Wellserv, and later supervising operations for major operators like BG Group, CNR, and Woodside. I've been on both sides of the fenceâ€”I know the service company's challenges and the operator's objectives. That's the insight Well-Tegra is built on.</p>
-                </div>
-                 <div>
-                    <h4 class="text-xl font-semibold">Why I Built This</h4>
-                    <p>I've seen first-hand how much time, money, and energy we waste because our data is a mess. It's locked in different systems, buried in old reports, and stuck in spreadsheets. We repeat the same mistakes because the lessons learned from one job are never available for the next. The "Well From Hell" in this demo isn't an exaggeration; it's a sanitized version of the real-world train wrecks I've witnessedâ€”and helped clean up.</p>
-                    <p class="mt-2">Well-Tegra is my answer to that chaos. It's a platform designed from an operator's perspective, focused on a single source of truth that connects planning, execution, and analysis.</p>
-                </div>
-                <div class="bg-blue-50 dark:bg-blue-900/50 border-l-4 border-blue-400 p-4 rounded-r-lg">
-                    <h4 class="font-bold text-blue-800 dark:text-blue-300">The Path Forward</h4>
-                    <p class="mt-2 text-blue-700 dark:text-blue-200">This demo is the blueprint. It was built on a Chromebook with a lot of determination, but to bring it to life, it needs the power of real, collective data. The next step is to partner with operators and service companies to build out the anonymized data pool that will drive the predictive AI. The platform is ready to scale, and I'm actively seeking the right partners to help build the future of well operations.</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="performer-view" class="view-container hidden performer-view p-4 lg:p-6 h-full">
-            <div class="h-full dashboard-grid">
-                <div id="procedure-panel" class="bg-slate-800/50 rounded-lg p-4 flex flex-col">
-                    <h2 class="text-lg font-semibold mb-2 border-b border-slate-700 pb-2">Operational Procedure</h2>
-                    <p class="text-xs text-slate-400 mb-3">Simulation is running. Click a future step to jump ahead.</p>
-                    <div id="procedure-steps" class="flex-1 space-y-3 overflow-y-auto pr-2"></div>
-                    <div id="performer-controls" class="hidden mt-4">
-                        <button id="view-analysis-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-md transition">View Post-Job Analysis</button>
-                    </div>
-                </div>
-                <div class="flex flex-col gap-4 lg:gap-6">
-                    <div id="kpi-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
-                        </div>
-                    <div id="chart-card" class="flex-1 bg-slate-800/50 rounded-lg p-4 flex-col"><h3 class="text-lg font-semibold mb-2">Tubing Force Analysis: Plan vs. Actual</h3><div class="flex-1 relative"><canvas id="tfaChart"></canvas></div></div>
-
-                    <!-- V23: Real-Time Anomaly Detection -->
-                    <div id="anomaly-alerts-container" class="bg-slate-800/50 rounded-lg p-4">
-                        <h3 class="text-lg font-semibold mb-4">🚨 Live Anomaly Detection</h3>
-                        <div id="anomaly-alerts" class="space-y-3">
-                            <div class="text-slate-400 text-center py-8 text-sm">
-                                Monitoring for anomalies... All systems normal.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-slate-800/50 rounded-lg p-4 flex flex-col"><h2 class="text-lg font-semibold mb-4 border-b border-slate-700 pb-2">Operations Log</h2><div id="log-entries" class="flex-1 space-y-3 overflow-y-auto mb-4"></div><div class="mt-auto"><textarea id="log-input" class="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-sm" rows="3" placeholder="Add log entry..."></textarea><button id="add-log-btn" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-4 rounded-md transition">Add Entry</button></div></div>
-            </div>
-        </div>
-
-        <div id="analyzer-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Post-Job Analysis</h2><p id="analyzer-subtitle" class="mt-2 max-w-2xl mx-auto text-lg"></p></div>
-
-            <!-- PDF Export Button -->
-            <div class="mt-6 flex justify-center">
-                <button onclick="generatePDFReport()" class="pdf-export-btn bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 rounded-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all shadow-lg">
-                    📄 Export Complete Report (PDF)
-                </button>
-            </div>
-
-            <div class="mt-10 grid gap-8 lg:grid-cols-2"><div class="light-card p-6 md:p-8 rounded-lg"><h3 class="text-xl font-semibold mb-4">Performance Summary</h3><div id="summary-kpis" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div></div><div class="light-card p-6 md:p-8 rounded-lg"><h3 class="text-xl font-semibold mb-4">Non-Productive Time (NPT) Breakdown</h3><div class="h-64 md:h-80"><canvas id="nptChart"></canvas></div></div></div>
-
-            <!-- V23: Enhanced Vendor Scorecard -->
-            <div class="vendor-scorecard mt-8 fade-in-up">
-                <h3 class="text-2xl font-bold mb-4">⭐ Vendor Performance Scorecard</h3>
-                <div class="bg-white/10 rounded-lg p-6 mb-4">
-                    <div class="text-center mb-6">
-                        <div class="text-5xl font-bold mb-2" id="vendor-overall-rating">4.2</div>
-                        <div class="star-rating mb-2 justify-center" id="vendor-overall-stars">
-                            <!-- Stars generated by JavaScript -->
-                        </div>
-                        <div class="text-sm opacity-90">Overall Performance Rating</div>
-                    </div>
-                </div>
-
-                <div class="bg-white/5 rounded-lg p-6">
-                    <div class="metric-row">
-                        <span class="metric-label">On-Time Delivery</span>
-                        <div class="metric-value">
-                            <div class="star-rating" id="metric-delivery-stars"></div>
-                            <span class="score-badge score-excellent">95%</span>
-                        </div>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Equipment Quality</span>
-                        <div class="metric-value">
-                            <div class="star-rating" id="metric-quality-stars"></div>
-                            <span class="score-badge score-good">88%</span>
-                        </div>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Technical Support</span>
-                        <div class="metric-value">
-                            <div class="star-rating" id="metric-support-stars"></div>
-                            <span class="score-badge score-excellent">92%</span>
-                        </div>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Cost Competitiveness</span>
-                        <div class="metric-value">
-                            <div class="star-rating" id="metric-cost-stars"></div>
-                            <span class="score-badge score-fair">78%</span>
-                        </div>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Safety Record</span>
-                        <div class="metric-value">
-                            <div class="star-rating" id="metric-safety-stars"></div>
-                            <span class="score-badge score-excellent">98%</span>
-                        </div>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Responsiveness</span>
-                        <div class="metric-value">
-                            <div class="star-rating" id="metric-response-stars"></div>
-                            <span class="score-badge score-good">85%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 text-sm opacity-90">
-                    <strong>Recommendation:</strong> Excellent overall performance. Continue partnership and consider for additional wells.
-                </div>
-            </div>
-
-            <div class="mt-8 light-card p-6 md:p-8 rounded-lg"><h3 class="text-xl font-semibold mb-4">Lessons Learned</h3><div id="lessons-learned-list" class="space-y-4 mb-6"></div><div><textarea id="lesson-input" class="w-full p-2 text-base rounded-md" rows="3" placeholder="Add a new lesson learned..."></textarea><button id="add-lesson-btn" class="mt-2 rounded-md bg-teal-600 px-4 py-2 text-base font-semibold text-white shadow-sm hover:bg-teal-500">Add Lesson</button></div></div>
-            <div class="mt-8 flex justify-center"><button id="plan-new-job-btn" class="rounded-md bg-gray-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-500">Plan New Job</button></div>
-        </div>
-        
-    </main>
-    
-    <div id="well-history-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 modal-overlay">
-        <div class="relative top-10 mx-auto p-5 border w-full max-w-5xl shadow-lg rounded-md modal-container">
-            <div class="flex justify-between items-center border-b pb-3 dark:border-gray-700">
-                <h3 id="modal-title" class="text-2xl font-bold"></h3>
-                <button id="close-modal-btn" class="text-3xl font-bold hover:text-red-500">&times;</button>
-            </div>
-            <div id="modal-content" class="mt-4 max-h-[80vh] overflow-y-auto p-1"></div>
-        </div>
-    </div>
-
-</div>
-
-<script>
 document.addEventListener('DOMContentLoaded', function() {
     // --- UI COMPONENT BUILDERS --- 
     /**
@@ -1753,14 +471,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- DOM ELEMENTS ---
 
     const body = document.body;
-    const welcomeScreen = document.getElementById('welcome-screen');
     const appContainer = document.getElementById('app-container');
-    const loginBtn = document.getElementById('login-btn');
     const views = document.querySelectorAll('.view-container');
     const navLinks = document.querySelectorAll('.nav-link');
     const headerTitle = document.getElementById('header-title');
     const headerDetails = document.getElementById('header-details');
     const headerNav = document.getElementById('header-nav');
+    const heroVideo = document.getElementById('hero-video');
+    const heroVideoToggle = document.getElementById('hero-video-toggle');
     
     // Planner
 
@@ -1846,6 +564,79 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const themeToggleBtn = document.getElementById('theme-toggle-btn');
     
+    const initializeHeroVideoToggle = () => {
+        if (!heroVideo || !heroVideoToggle) return;
+
+        const heroVideoToggleIcon = heroVideoToggle.querySelector('.hero-video-toggle-icon');
+        const heroVideoToggleText = heroVideoToggle.querySelector('.hero-video-toggle-text');
+
+        const updateToggleState = () => {
+            const isPlaying = !heroVideo.paused && !heroVideo.ended;
+            heroVideoToggle.setAttribute('aria-pressed', String(isPlaying));
+            heroVideoToggle.dataset.state = isPlaying ? 'playing' : 'paused';
+
+            if (heroVideoToggleText) {
+                heroVideoToggleText.textContent = isPlaying ? 'Pause background video' : 'Play background video';
+            } else {
+                heroVideoToggle.textContent = isPlaying ? 'Pause background video' : 'Play background video';
+            }
+
+            if (heroVideoToggleIcon) {
+                heroVideoToggleIcon.textContent = isPlaying ? '⏸' : '▶';
+                heroVideoToggleIcon.dataset.state = isPlaying ? 'playing' : 'paused';
+            }
+        };
+
+        const applyReducedMotionPreference = (prefersReducedMotion) => {
+            if (prefersReducedMotion) {
+                heroVideo.pause();
+                heroVideo.autoplay = false;
+                heroVideo.removeAttribute('autoplay');
+                heroVideoToggle.setAttribute('data-reduced-motion', 'true');
+            } else {
+                heroVideoToggle.removeAttribute('data-reduced-motion');
+            }
+
+            updateToggleState();
+        };
+
+        const bindReducedMotionListener = () => {
+            if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+                updateToggleState();
+                return;
+            }
+
+            const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+            const handlePreferenceChange = (event) => applyReducedMotionPreference(event.matches);
+
+            applyReducedMotionPreference(motionQuery.matches);
+
+            if (typeof motionQuery.addEventListener === 'function') {
+                motionQuery.addEventListener('change', handlePreferenceChange);
+            } else if (typeof motionQuery.addListener === 'function') {
+                motionQuery.addListener(handlePreferenceChange);
+            }
+        };
+
+        heroVideoToggle.addEventListener('click', () => {
+            if (heroVideo.paused || heroVideo.ended) {
+                const playPromise = heroVideo.play();
+                if (playPromise && typeof playPromise.then === 'function') {
+                    playPromise.catch(() => {
+                        updateToggleState();
+                    });
+                }
+            } else {
+                heroVideo.pause();
+            }
+        });
+
+        heroVideo.addEventListener('play', updateToggleState);
+        heroVideo.addEventListener('pause', updateToggleState);
+
+        bindReducedMotionListener();
+    };
+
     // --- VIEW & STATE MANAGEMENT ---
 
     const switchView = (viewName) => {
@@ -1860,13 +651,24 @@ document.addEventListener('DOMContentLoaded', function() {
             body.classList.add('theme-dark');
         }
 
-        views.forEach(v => v.classList.add('hidden'));
-        document.getElementById(`${viewName}-view`).classList.remove('hidden');
+        views.forEach(view => {
+            view.classList.add('hidden');
+            view.setAttribute('aria-hidden', 'true');
+        });
+        const targetView = document.getElementById(`${viewName}-view`);
+        if (targetView) {
+            targetView.classList.remove('hidden');
+            targetView.removeAttribute('aria-hidden');
+        }
 
-        navLinks.forEach(l => l.classList.remove('active'));
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            link.removeAttribute('aria-current');
+        });
         const activeLink = document.getElementById(`${viewName}-nav-link`);
         if (activeLink) {
             activeLink.classList.add('active');
+            activeLink.setAttribute('aria-current', 'page');
         }
         
         headerDetails.innerHTML = ''; 
@@ -1936,11 +738,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const planExists = !!appState.generatedPlan;
         navLinks.forEach(link => {
             const id = link.id.replace('-nav-link', '');
-            if (id !== 'home' && id !== 'planner' && id !== 'about' && id !== 'faq' && id !== 'whitepaper') {
-                if (planExists) {
-                    link.classList.remove('disabled');
-                } else {
-                    link.classList.add('disabled');
+            const isGatedView = !['home', 'planner', 'about', 'faq', 'whitepaper'].includes(id);
+            if (isGatedView && !planExists) {
+                link.classList.add('disabled');
+                link.setAttribute('aria-disabled', 'true');
+                if (link.tagName === 'BUTTON') {
+                    link.disabled = true;
+                }
+            } else {
+                link.classList.remove('disabled');
+                link.removeAttribute('aria-disabled');
+                if (link.tagName === 'BUTTON') {
+                    link.disabled = false;
+                    link.removeAttribute('disabled');
                 }
             }
         });
@@ -3105,28 +1915,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const initializeFaqAccordion = () => {
         const accordion = document.getElementById('faq-accordion');
-        accordion.innerHTML = faqData.map(item => `
+        if (!accordion) return;
+
+        accordion.innerHTML = faqData.map((item, index) => {
+            const questionId = `faq-question-${index}`;
+            const answerId = `faq-answer-${index}`;
+            return `
             <div>
-                <button class="faq-question flex justify-between items-center">
+                <button id="${questionId}" type="button" class="faq-question flex justify-between items-center" aria-expanded="false" aria-controls="${answerId}">
                     <span>${item.question}</span>
                     <svg class="icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </button>
-                <div class="faq-answer">${item.answer}</div>
+                <div id="${answerId}" class="faq-answer" role="region" aria-labelledby="${questionId}" hidden>${item.answer}</div>
             </div>
-        `).join('');
+        `;
+        }).join('');
 
-        accordion.addEventListener('click', (e) => {
+        if (!accordion.dataset.accordionInitialized) {
+            accordion.addEventListener('click', (e) => {
             const questionButton = e.target.closest('.faq-question');
-            if (questionButton) {
-                const currentlyActive = document.querySelector('.faq-question.active');
-                if (currentlyActive && currentlyActive !== questionButton) {
-                    currentlyActive.classList.remove('active');
+            if (!questionButton) return;
+
+            const answer = document.getElementById(questionButton.getAttribute('aria-controls'));
+            const isExpanded = questionButton.getAttribute('aria-expanded') === 'true';
+
+            accordion.querySelectorAll('.faq-question[aria-expanded="true"]').forEach(btn => {
+                if (btn !== questionButton) {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-expanded', 'false');
+                    const controlledPanel = document.getElementById(btn.getAttribute('aria-controls'));
+                    if (controlledPanel) {
+                        controlledPanel.setAttribute('hidden', '');
+                    }
                 }
-                questionButton.classList.toggle('active');
+            });
+
+            questionButton.classList.toggle('active', !isExpanded);
+            questionButton.setAttribute('aria-expanded', String(!isExpanded));
+
+            if (answer) {
+                if (isExpanded) {
+                    answer.setAttribute('hidden', '');
+                } else {
+                    answer.removeAttribute('hidden');
+                }
             }
-        });
+            });
+            accordion.dataset.accordionInitialized = 'true';
+        }
     };
 
     // --- MODAL LOGIC ---
@@ -3472,19 +2310,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- EVENT LISTENERS ---
-
-    loginBtn.addEventListener('click', () => {
-        welcomeScreen.style.opacity = '0';
-        setTimeout(() => {
-            welcomeScreen.classList.add('hidden');
+    const initializeApp = () => {
+        if (appContainer) {
             appContainer.classList.remove('hidden');
             appContainer.classList.add('flex');
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            setTheme(savedTheme);
-            switchView('home');
-        }, 500);
-    });
+        }
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+        switchView('home');
+    };
+
+    initializeApp();
+
+    // --- EVENT LISTENERS ---
 
     themeToggleBtn.addEventListener('click', () => {
         const currentTheme = body.classList.contains('theme-dark') ? 'dark' : 'light';
@@ -3882,6 +2720,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- INITIALIZATION ---
 
     const init = () => {
+        initializeHeroVideoToggle();
         renderWellCards();
         renderObjectives();
         renderProblems();
@@ -3889,13 +2728,24 @@ document.addEventListener('DOMContentLoaded', function() {
         updateNavLinks();
     };
 
+    const pdfExportButton = document.getElementById('pdf-export-button');
+    if (pdfExportButton) {
+        pdfExportButton.addEventListener('click', generatePDFReport);
+    }
+
     init();
 });
 
-// --- PDF EXPORT SYSTEM (Global scope for onclick) ---
+// --- PDF EXPORT SYSTEM ---
 
-async function generatePDFReport() {
-    const button = event.target;
+async function generatePDFReport(event) {
+    const evt = event || window.event;
+    const button = evt?.currentTarget || evt?.target || document.getElementById('pdf-export-button');
+    if (!button) {
+        console.warn('PDF export button reference not found.');
+        return;
+    }
+
     const originalText = button.innerHTML;
 
     // Show loading state
@@ -4071,454 +2921,3 @@ async function generatePDFReport() {
     }
 }
 
-</script>
-
-</body>
-</html>
-                <!-- Job Procedure Builder -->
-                <div class="lg:col-span-1 mt-8 lg:mt-0">
-                    <div class="light-card rounded-lg shadow-xl">
-                        <div class="p-4 border-b border-gray-700">
-                            <h3 class="text-xl font-bold">Job Procedure & Cost</h3>
-                            ${appState.selectedWell ? `<p class="text-sm text-cyan-400 mt-1">📍 Well: ${appState.selectedWell.id} - ${appState.selectedWell.name}</p>` : ''}
-                        </div>
-
-                        <div class="p-4 border-b border-gray-700">
-                            <label class="block text-sm font-semibold text-cyan-400 mb-2">Job Duration (Days)</label>
-                            <input type="number" id="job-duration-input" value="1" min="1"
-                                class="w-1/2 bg-gray-800 border-gray-700 rounded-md px-3 py-2 text-white font-bold"
-                                onchange="updateJobDuration(this.value)">
-                            <p class="text-xs text-gray-400 mt-2">Costs for "/Day" items will be multiplied by this value.</p>
-                        </div>
-                    <div id="chart-card" class="flex-1 bg-slate-800/50 rounded-lg p-4 flex-col"><h3 class="text-lg font-semibold mb-2">Tubing Force Analysis: Plan vs. Actual</h3><div class="flex-1 relative"><canvas id="tfaChart"></canvas></div></div>
-
-                    <!-- V23: Real-Time Anomaly Detection -->
-                    <div id="anomaly-alerts-container" class="bg-slate-800/50 rounded-lg p-4">
-                        <h3 class="text-lg font-semibold mb-4">🚨 Live Anomaly Detection</h3>
-                        <div id="anomaly-alerts" class="space-y-3">
-                            <div class="text-slate-400 text-center py-8 text-sm">
-                                Monitoring for anomalies... All systems normal.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-slate-800/50 rounded-lg p-4 flex flex-col"><h2 class="text-lg font-semibold mb-4 border-b border-slate-700 pb-2">Operations Log</h2><div id="log-entries" class="flex-1 space-y-3 overflow-y-auto mb-4"></div><div class="mt-auto"><textarea id="log-input" class="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-sm" rows="3" placeholder="Add log entry..."></textarea><button id="add-log-btn" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-4 rounded-md transition">Add Entry</button></div></div>
-            </div>
-        </div>
-
-        <div id="analyzer-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Post-Job Analysis</h2><p id="analyzer-subtitle" class="mt-2 max-w-2xl mx-auto text-lg"></p></div>
-
-            <!-- PDF Export Button -->
-            <div class="mt-6 flex justify-center">
-                <button id="pdf-export-button" class="pdf-export-btn bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 rounded-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all shadow-lg">
-                    📄 Export Complete Report (PDF)
-                </button>
-            </div>
-
-            <div class="mt-10 grid gap-8 lg:grid-cols-2"><div class="light-card p-6 md:p-8 rounded-lg"><h3 class="text-xl font-semibold mb-4">Performance Summary</h3><div id="summary-kpis" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div></div><div class="light-card p-6 md:p-8 rounded-lg"><h3 class="text-xl font-semibold mb-4">Non-Productive Time (NPT) Breakdown</h3><div class="h-64 md:h-80"><canvas id="nptChart"></canvas></div></div></div>
-
-            <!-- V23: Enhanced Vendor Scorecard -->
-            <div class="vendor-scorecard mt-8 fade-in-up">
-                <h3 class="text-2xl font-bold mb-4">⭐ Vendor Performance Scorecard</h3>
-                <div class="bg-white/10 rounded-lg p-6 mb-4">
-                    <div class="text-center mb-6">
-                        <div class="text-5xl font-bold mb-2" id="vendor-overall-rating">4.2</div>
-                        <div class="star-rating mb-2 justify-center" id="vendor-overall-stars">
-                            <!-- Stars generated by JavaScript -->
-                        </div>
-                        <div class="text-sm opacity-90">Overall Performance Rating</div>
-                    </div>
-                </div>
-
-                <div class="bg-white/5 rounded-lg p-6">
-                    <div class="metric-row">
-                        <span class="metric-label">On-Time Delivery</span>
-                        <div class="metric-value">
-                            <div class="star-rating" id="metric-delivery-stars"></div>
-                            <span class="score-badge score-excellent">95%</span>
-                        </div>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Equipment Quality</span>
-                        <div class="metric-value">
-                            <div class="star-rating" id="metric-quality-stars"></div>
-                            <span class="score-badge score-good">88%</span>
-                        </div>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Technical Support</span>
-                        <div class="metric-value">
-                            <div class="star-rating" id="metric-support-stars"></div>
-                            <span class="score-badge score-excellent">92%</span>
-                        </div>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Cost Competitiveness</span>
-                        <div class="metric-value">
-                            <div class="star-rating" id="metric-cost-stars"></div>
-                            <span class="score-badge score-fair">78%</span>
-                        </div>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Safety Record</span>
-                        <div class="metric-value">
-                            <div class="star-rating" id="metric-safety-stars"></div>
-                            <span class="score-badge score-excellent">98%</span>
-                        </div>
-                    </div>
-                    <div class="metric-row">
-                        <span class="metric-label">Responsiveness</span>
-                        <div class="metric-value">
-                            <div class="star-rating" id="metric-response-stars"></div>
-                            <span class="score-badge score-good">85%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 text-sm opacity-90">
-                    <strong>Recommendation:</strong> Excellent overall performance. Continue partnership and consider for additional wells.
-                </div>
-            </div>
-
-            <div class="mt-8 light-card p-6 md:p-8 rounded-lg"><h3 class="text-xl font-semibold mb-4">Lessons Learned</h3><div id="lessons-learned-list" class="space-y-4 mb-6"></div><div><textarea id="lesson-input" class="w-full p-2 text-base rounded-md" rows="3" placeholder="Add a new lesson learned..."></textarea><button id="add-lesson-btn" class="mt-2 rounded-md bg-teal-600 px-4 py-2 text-base font-semibold text-white shadow-sm hover:bg-teal-500">Add Lesson</button></div></div>
-            <div class="mt-8 flex justify-center"><button id="plan-new-job-btn" class="rounded-md bg-gray-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-500">Plan New Job</button></div>
-        </div>
-        
-    </main>
-    
-    <div id="well-history-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 modal-overlay">
-        <div class="relative top-10 mx-auto p-5 border w-full max-w-5xl shadow-lg rounded-md modal-container">
-            <div class="flex justify-between items-center border-b pb-3 dark:border-gray-700">
-                <h3 id="modal-title" class="text-2xl font-bold"></h3>
-                <button id="close-modal-btn" class="text-3xl font-bold hover:text-red-500">&times;</button>
-                <button id="close-modal-btn" type="button" class="text-3xl font-bold hover:text-red-500" aria-label="Close well history dialog">&times;</button>
-            </div>
-            </div>
-            <div id="modal-content" class="mt-4 max-h-[80vh] overflow-y-auto p-1"></div>
-            <div id="modal-content" class="mt-4 max-h-[80vh] overflow-y-auto p-1"></div>
-        </div>
-        </div>
-    </div>
-    </div>
-
-
-</div>
-</div>
-
-
-<script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-document.addEventListener('DOMContentLoaded', function() {
-    // --- UI COMPONENT BUILDERS --- 
-    // --- UI COMPONENT BUILDERS --- 
-    /**
-    /**
-     * Creates a radial gauge component and injects it into a container.
-     * Creates a radial gauge component and injects it into a container.
-     * @param {string} containerId - The ID of the element to contain the gauge.
-     * @param {string} containerId - The ID of the element to contain the gauge.
-     * @param {string} label - The text label for the gauge.
-     * @param {string} label - The text label for the gauge.
-     * @param {string} units - The units for the gauge value.
-     * @param {string} units - The units for the gauge value.
-     * @param {number} maxValue - The maximum value for the gauge's scale.
-     * @param {number} maxValue - The maximum value for the gauge's scale.
-     */
-     */
-    function createRadialGauge(containerId, label, units, maxValue) {
-    function createRadialGauge(containerId, label, units, maxValue) {
-        const container = document.getElementById(containerId);
-        const container = document.getElementById(containerId);
-        if (!container) return;
-        if (!container) return;
-        const size = 120;
-        const size = 120;
-        const strokeWidth = 10;
-        const strokeWidth = 10;
-        const radius = (size / 2) - (strokeWidth * 2);
-        const radius = (size / 2) - (strokeWidth * 2);
-        const circumference = radius * 2 * Math.PI;
-        const circumference = radius * 2 * Math.PI;
-
-
-index.html
-+82
--34
-
-<!DOCTYPE html>
-
-<html lang="en" class="scroll-smooth">
-
-<head>
-    <link rel="stylesheet" href="assets/css/tailwind.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- SEO Meta Tags -->
-    <title>Well-Tegra | AI-Powered Well Engineering Platform - Reduce NPT by 30%</title>
-    <meta name="description" content="Transform well intervention planning with Well-Tegra's AI-assisted platform. Reduce NPT by 15-30%, reclaim 2-3 hours/day of engineer time, and cut planning cycles from days to hours. Try it free.">
-    <meta name="keywords" content="well engineering, intervention planning, NPT reduction, drilling optimization, well data management, oil and gas software, well planning software, drilling automation">
-    <meta name="author" content="Well-Tegra Data Solutions">
-    <link rel="canonical" href="https://welltegra.network/">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://welltegra.network/">
-    <meta property="og:title" content="Well-Tegra | From Data Chaos to Predictive Clarity">
-    <meta property="og:description" content="AI-powered well engineering platform that reduces NPT by 15-30% and reclaims hours of engineer time daily. Transform your well intervention planning.">
-    <meta property="og:image" content="/assets/og-image.jpg">
-    <meta property="og:site_name" content="Well-Tegra">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://welltegra.network/">
-    <meta name="twitter:title" content="Well-Tegra | AI-Powered Well Engineering Platform">
-    <meta name="twitter:description" content="Reduce NPT by 15-30%, reclaim 2-3 hours/day, cut planning cycles from days to hours. Try Well-Tegra free.">
-    <meta name="twitter:image" content="/assets/twitter-card.jpg">
-
-    <!-- Additional Meta -->
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="English">
-    <meta name="revisit-after" content="7 days">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
-
-    <!-- PDF Export Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <style>
-        /* --- Base & Theme Setup --- */
-        body { font-family: 'Inter', sans-serif; font-weight: 500; }
-        h1, h2, h3, h4, h5, h6 { font-weight: 800; } /* Bolder headings */
-        .theme-light { background-color: #f8fafc; }
-        .theme-dark { background-color: #0f172a; color: #e2e8f0; }
-
-        /* --- Watermark Background --- */
-        #main-content {
-            position: relative;
-            z-index: 1;
-        }
-        .theme-light #main-content::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('assets/watermark.jpg');
-            background-repeat: repeat;
-            background-position: center;
-            background-size: 350px;
-            opacity: 0.02;
-            z-index: -1;
-            pointer-events: none;
-        }
-@@ -1000,108 +1000,110 @@
-            "availableLanguage": "English"
-        }
-    }
-    </script>
-</head>
-
-<body class="theme-dark">
-
-<!-- Login page removed - direct access to application -->
-
-<div id="app-container" class="min-h-screen flex flex-col">
-
-    <!-- Skip to main content link for keyboard navigation -->
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:px-4 focus:py-2 focus:bg-cyan-600 focus:text-white">
-        Skip to main content
-    </a>
-
-    <header id="app-header" class="header sticky top-0 z-30 transition-colors" role="banner">
-        <div class="max-w-full mx-auto py-3 px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <img src="https://z-cdn-media.chatglm.cn/files/c77fcd00-01f6-46b3-a374-458da17e6a61_logo2.jpg?auth_key=1790424852-581d1115c00d470e99b020b285e0e952-0-43d8767dc883e69a5e0089cd53e33076" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/100x100/0f172a/ffffff?text=Logo';">
-                    <h1 id="header-title" class="text-xl font-bold hidden md:block">Well-Tegra Data Solutions</h1>
-                </div>
-                <nav id="header-nav" class="flex-1 flex items-center justify-center space-x-1 md:space-x-4" role="navigation" aria-label="Main navigation">
-                    <a id="home-nav-link" href="#home-view" role="tab" aria-selected="true" aria-controls="home-view" title="Return to the Home Page" class="nav-link active flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                        <span>Home</span>
-                    </a>
-                    <a id="planner-nav-link" href="#planner-view" role="tab" aria-selected="false" aria-controls="planner-view" title="Go to the Well Intervention Planner" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
-                        <span>Planner</span>
-                    </a>
-                    <a id="logistics-nav-link" href="#logistics-view" role="tab" aria-selected="false" aria-controls="logistics-view" title="Manage Equipment and Personnel" class="nav-link flex items-center space-x-2">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/><path d="M18 18h-1.3c-.5 0-.9-.3-1.1-.7l-2.6-5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
-                        <span>Logistics</span>
-                    </a>
-                    <a id="commercial-nav-link" href="#commercial-view" role="tab" aria-selected="false" aria-controls="commercial-view" title="View Financial Dashboards" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                        <span>Commercial</span>
-                    </a>
-                    <a id="hse-nav-link" href="#hse-view" role="tab" aria-selected="false" aria-controls="hse-view" title="View Health, Safety, and Environment Data" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        <span>HSE & Risk</span>
-                    </a>
-                    <a id="pob-nav-link" href="#pob-view" role="tab" aria-selected="false" aria-controls="pob-view" title="View Personnel on Board and Emergency Response" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        <span>POB & ER</span>
-                    </a>
-                    <a id="whitepaper-nav-link" href="#whitepaper-view" role="tab" aria-selected="false" aria-controls="whitepaper-view" title="Download the White Paper" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        <span>White Paper</span>
-                    </a>
-                     <a id="faq-nav-link" href="#faq-view" role="tab" aria-selected="false" aria-controls="faq-view" title="Frequently Asked Questions" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
-                        <span>FAQ</span>
-                    </a>
-                    <a id="security-nav-link" href="#security-view" role="tab" aria-selected="false" aria-controls="security-view" title="Security & Data Protection" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        <span>Security</span>
-                    </a>
-                    <a id="about-nav-link" href="#about-view" role="tab" aria-selected="false" aria-controls="about-view" title="About the Founder" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
-                        <span>About</span>
-                    </a>
-                </div>
-                <div id="header-details" class="flex items-center space-x-4">
-                    <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700" aria-label="Toggle dark mode">
-                        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main id="main-content" class="flex-1" role="main">
-        <div id="home-view" class="view-container">
-            <section class="hero-section py-20 px-4 relative" aria-describedby="hero-video-description">
-                <video autoplay loop muted playsinline id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description">
-                    <source src="assets/hero.mp4" type="video/mp4">
-                    <track kind="descriptions" srclang="en" label="English descriptions" src="assets/hero-video-descriptions.vtt" default>
-                </video>
-                <div class="hero-overlay"></div>
-                <p id="hero-video-description" class="sr-only">Looping montage showing engineers collaborating over drilling dashboards and subsurface schematics.</p>
-                <div class="max-w-4xl mx-auto text-center relative z-10">
-                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">From Data Chaos to Predictive Clarity.</h1>
-                    <p class="mt-6 text-lg md:text-xl text-slate-100">The oil and gas industry loses over $38 million per asset annually to unplanned downtime. Your engineers spend more than 50% of their time wrangling data. The cause? A disconnected digital ecosystem.</p>
-                    <p class="mt-4 text-lg md:text-xl font-semibold text-white">Well-Tegra: Engineering Insight, Amplified by Data.</p>
-
-                    <!-- Hero CTAs -->
-                    <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
-                            Request a Demo
-                        </a>
-                        <button onclick="showView('planner')" class="px-8 py-4 bg-white hover:bg-slate-100 text-slate-900 text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
-                            Try the Planner
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Mini ROI Block + Outcome Bullets -->
-            <section class="py-12 px-4 bg-gradient-to-r from-cyan-900/20 to-blue-900/20 border-y border-cyan-500/30">
-                <div class="max-w-6xl mx-auto">
-                    <div class="grid md:grid-cols-2 gap-8 items-center">
-                        <!-- Outcome Bullets -->
-                        <div class="space-y-4">
-                            <h3 class="text-2xl font-bold text-white">Proven Results</h3>
-                            <ul class="space-y-3 text-lg">
-@@ -1322,51 +1324,51 @@
-            <div id="logistics-content" class="mt-10 grid gap-12 lg:grid-cols-2">
-                <div class="light-card p-6 rounded-lg"><h3 class="text-xl font-semibold mb-4">Equipment Hub</h3><input type="text" id="equipment-search" placeholder="Search equipment..." class="w-full p-2 rounded-md mb-4"><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="table-header"><tr><th class="p-2">Asset ID</th><th>Type</th><th>Location</th><th>Test Status</th><th>Actions</th></tr></thead><tbody id="equipment-table-body"></tbody></table></div></div>
-                <div class="light-card p-6 rounded-lg"><h3 class="text-xl font-semibold mb-4">Personnel Roster</h3><input type="text" id="personnel-search" placeholder="Search personnel..." class="w-full p-2 rounded-md mb-4"><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="table-header"><tr><th class="p-2">Name</th><th>Role</th><th>Status</th><th>Certs Valid</th></tr></thead><tbody id="personnel-table-body"></tbody></table></div></div>
-            </div>
-        </div>
-        
-        <div id="commercial-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Commercial Dashboard</h2><p id="commercial-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Live financial tracking for the selected operation.</p></div>
-            <div id="commercial-content" class="mt-10"></div>
-        </div>
-
-        <div id="hse-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">HSE & Risk Dashboard</h2><p id="hse-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Centralized risk register and permit to work status.</p></div>
-            <div id="hse-content" class="mt-10"></div>
-        </div>
-
-        <div id="pob-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Personnel on Board & Emergency Response</h2><p id="pob-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Live POB manifest and emergency muster status.</p></div>
-            <div id="pob-content" class="mt-10"></div>
-        </div>
-
-        <div id="whitepaper-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-3xl font-bold tracking-tight">Well-Tegra White Paper</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-lg">Dive deeper into the technical architecture and strategic vision behind the Well-Tegra platform. Our white paper provides a comprehensive overview of the privacy-preserving AI, enterprise blockchain, and data unification strategies that power our solution.</p>
-                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" download class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
-                    Download the White Paper
-                </a>
-            </div>
-        </div>
-
-        <div id="faq-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Frequently Asked Questions</h2><p class="mt-2 max-w-2xl mx-auto text-lg">Find answers to common questions about the Well-Tegra platform.</p></div>
-            <div id="faq-accordion" class="mt-10 light-card rounded-lg shadow-md overflow-hidden">
-                </div>
-        </div>
-
-        <div id="about-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">About Me & The Mission</h2></div>
-            <div class="mt-10 light-card p-8 rounded-lg space-y-8">
-                <div>
-                    <h3 class="text-2xl font-bold">From the Wellsite to the Web</h3>
-                    <p class="text-lg italic">"I built Well-Tegra because I've lived the problems it's designed to solve." - Kenneth McKenzie</p>
-                </div>
-                <div>
-                    <h4 class="text-xl font-semibold">My Perspective</h4>
-                    <p>I'm not a software developer who decided to get into oil and gas. I'm a well services guy who learned to code. My career started at the sharp end with Tristar Oilfield Services and took me around the world, working with service leaders like Expro and Wellserv, and later supervising operations for major operators like BG Group, CNR, and Woodside. I've been on both sides of the fenceâ€”I know the service company's challenges and the operator's objectives. That's the insight Well-Tegra is built on.</p>
-                </div>
-                 <div>
-                    <h4 class="text-xl font-semibold">Why I Built This</h4>
-                    <p>I've seen first-hand how much time, money, and energy we waste because our data is a mess. It's locked in different systems, buried in old reports, and stuck in spreadsheets. We repeat the same mistakes because the lessons learned from one job are never available for the next. The "Well From Hell" in this demo isn't an exaggeration; it's a sanitized version of the real-world train wrecks I've witnessedâ€”and helped clean up.</p>
-@@ -2014,54 +2016,54 @@
-                            <h4 class="font-semibold mb-2">Backups</h4>
-                            <p class="text-sm text-slate-400">Automated daily backups, 30-day retention</p>
-                        </div>
-                        <div>
-                            <div class="text-4xl mb-3">🛡️</div>
-                            <h4 class="font-semibold mb-2">Monitoring</h4>
-                            <p class="text-sm text-slate-400">24/7 security monitoring & alerts</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contact -->
-                <div class="light-card p-8 rounded-lg text-center">
-                    <h2 class="text-2xl font-bold mb-4">Have Security Questions?</h2>
-                    <p class="text-lg text-slate-400 mb-6">Our security team is here to help</p>
-                    <a href="mailto:security@welltegra.network" class="inline-block px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
-                        Contact Security Team
-                    </a>
-                </div>
-            </div>
-        </div>
-
-    </main>
-    
-    <div id="well-history-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 modal-overlay">
-        <div class="relative top-10 mx-auto p-5 border w-full max-w-5xl shadow-lg rounded-md modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-            <div class="flex justify-between items-center border-b pb-3 dark:border-gray-700">
-                <h3 id="modal-title" class="text-2xl font-bold"></h3>
-                <button id="close-modal-btn" type="button" class="text-3xl font-bold hover:text-red-500" aria-label="Close well history dialog">&times;</button>
-            </div>
-            <div id="modal-content" class="mt-4 max-h-[80vh] overflow-y-auto p-1"></div>
-        </div>
-    </div>
-
-</div>
-
-    <script src="assets/js/app.js" defer></script>
-
-
-</body>
-</html>
