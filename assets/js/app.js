@@ -2377,6 +2377,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const requiredRoles = appState.generatedPlan.personnel || [];
 
         const eqF = eqFilter.toLowerCase();
+        const matchingEquipment = equipmentData.filter(item => {
         const filteredEquipment = equipmentData.filter(item => {
             const matchesRequirement = requiredEquipment.some(req => matchesEquipmentRequirement(req.name, item));
             if (!matchesRequirement) return false;
@@ -2386,6 +2387,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .some(val => val.toLowerCase().includes(eqF));
         });
 
+        equipmentTableBody.innerHTML = matchingEquipment.length ? matchingEquipment.map(item => {
         equipmentTableBody.innerHTML = filteredEquipment.length ? filteredEquipment.map(item => {
             const testStatus = item.testStatus || 'Pending';
             const statusClass = toStatusClass(testStatus || 'pending');
@@ -2408,6 +2410,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).join('') : `<tr><td colspan="7" class="p-4 text-center text-sm text-slate-400">No matching equipment found.</td></tr>`;
 
         const persF = persFilter.toLowerCase();
+        const matchingPersonnel = personnelData.filter(person => {
         const filteredPersonnel = personnelData.filter(person => {
             const matchesRole = requiredRoles.some(role => matchesPersonnelRole(role, person));
             if (!matchesRole) return false;
@@ -2417,6 +2420,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .some(val => val.toLowerCase().includes(persF));
         });
 
+        personnelTableBody.innerHTML = matchingPersonnel.length ? matchingPersonnel.map(person => {
         personnelTableBody.innerHTML = filteredPersonnel.length ? filteredPersonnel.map(person => {
             const statusClass = toStatusClass(person.status || 'available');
             const perDiem = person.perDiem ? `<span class="block text-xs text-slate-400">Per diem ${formatCurrency(person.perDiem)}</span>` : '';
@@ -3691,6 +3695,11 @@ const validateInvoice = () => {
             const hasSelection = e.target.checked ? !!appState.ai.selectedRecommendation : !!appState.selectedObjective;
             step2ContinueBtn.disabled = !hasSelection;
         }
+        }
+        if (step2ContinueBtn) {
+            const hasSelection = e.target.checked ? !!appState.ai.selectedRecommendation : !!appState.selectedObjective;
+            step2ContinueBtn.disabled = !hasSelection;
+        }
         renderDesignBlueprint();
     });
 
@@ -3700,6 +3709,84 @@ const validateInvoice = () => {
             if (!appState.selectedWell) return;
             updatePlannerStepUI(2);
             announcePlannerStatus('Objective selection unlocked. Choose a manual objective or enable the AI Advisor.');
+        });
+    }
+
+    if (step2ContinueBtn) {
+        step2ContinueBtn.addEventListener('click', () => {
+            if (!appState.selectedObjective) return;
+            updatePlannerStepUI(3);
+            renderDesignBlueprint();
+            if (generateProgramBtn) generateProgramBtn.disabled = !appState.selectedObjective;
+            announcePlannerStatus('Blueprint loaded. Validate the engineering design, then generate the integrated program.');
+        });
+    }
+
+    if (generateProgramBtn) {
+        generateProgramBtn.addEventListener('click', () => {
+            if (!appState.selectedWell) return;
+            let objectiveId = appState.selectedObjective?.id;
+            if (aiToggle.checked && appState.ai.selectedRecommendation) {
+                objectiveId = appState.ai.selectedRecommendation.objectiveId;
+            }
+            if (!objectiveId) return;
+
+            appState.selectedObjective = objectivesData.find(o => o.id === objectiveId);
+            appState.generatedPlan = proceduresData[objectiveId];
+            renderPlan();
+            updatePlannerStepUI(4);
+            announcePlannerStatus('Integrated program generated. Review procedure, risks, and cost in step four.');
+        });
+    }
+
+    if (step4ContinueBtn) {
+        step4ContinueBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            renderReadinessSummary();
+            updatePlannerStepUI(5);
+            announcePlannerStatus('Readiness package compiled. Resolve outstanding logistics or jump to execution prep.');
+        });
+    }
+
+    if (openLogisticsBtn) {
+        openLogisticsBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            switchView('logistics');
+        });
+    }
+
+    if (openCommercialBtn) {
+        openCommercialBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            switchView('commercial');
+        });
+    }
+
+    if (openHseBtn) {
+        openHseBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            switchView('hse');
+        });
+    }
+
+    if (step5ContinueBtn) {
+        step5ContinueBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            updatePlannerStepUI(6);
+            if (beginOpBtn) beginOpBtn.disabled = false;
+            announcePlannerStatus('Execution stage ready. Launch Live Operations or open the analysis workspace.');
+        });
+    }
+
+    if (reviewAnalysisBtnFinal) {
+        reviewAnalysisBtnFinal.addEventListener('click', () => {
+            switchView('analyzer');
+            if (typeof window.initializeAnalyzer === 'function') {
+                window.initializeAnalyzer();
+            } else {
+                initializeAnalyzer();
+                initializeVendorScorecard();
+            }
         });
     }
 
