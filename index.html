@@ -153,20 +153,57 @@
                 <div id="step-2-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">2</div>
                 <div id="step-2-connector" class="step-connector flex-1"></div>
                 <div id="step-3-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">3</div>
+                <div id="step-3-connector" class="step-connector flex-1"></div>
+                <div id="step-4-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">4</div>
+                <div id="step-4-connector" class="step-connector flex-1"></div>
+                <div id="step-5-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">5</div>
+                <div id="step-5-connector" class="step-connector flex-1"></div>
+                <div id="step-6-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">6</div>
             </div>
-            
+
             <section id="step-1" class="mb-12">
                 <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold tracking-tight">Step 1: Select a Well</h3>
-                    <p class="mt-4 max-w-3xl mx-auto text-sm">Welcome to the "Well From Hell" case study. The portfolio below contains one critical problem well, <strong>W666 - The Perfect Storm</strong>, which is shut-in with multiple, complex issues. The other wells are historical case studies from the same field, each representing a successful intervention that fixed one of the problems now facing W666. Your task is to select the "Well From Hell" and use the platform's data and AI advisor to build a robust intervention plan, drawing on the lessons learned from the other wells.</p>
+                    <h3 class="text-2xl font-bold tracking-tight">Step 1: Ingest Portfolio Data</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-sm">Welcome to the "Well From Hell" case study. The portfolio below contains one critical problem well, <strong>W666 - The Perfect Storm</strong>, which is shut-in with multiple, complex issues. The other wells are historical case studies from the same field, each representing a successful intervention that fixed one of the problems now facing W666. Start by selecting the target well so the platform can pull all relevant offset data, historical lessons, and completion architecture.</p>
                 </div>
                 <div id="well-selection-grid" class="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
+                <section id="data-scrubbing-panel" class="mt-12 hidden">
+                    <div class="text-center mb-8">
+                        <h4 class="text-xl font-semibold tracking-tight">How W666 Data Gets Scrubbed Before Planning</h4>
+                        <p id="data-scrubbing-overview" class="mt-3 max-w-3xl mx-auto text-sm text-slate-400"></p>
+                    </div>
+                    <div id="data-scrubbing-stages" class="grid gap-4 md:grid-cols-3"></div>
+                    <div class="mt-8 grid gap-6 lg:grid-cols-2">
+                        <div class="light-card p-6 rounded-lg">
+                            <h5 class="text-lg font-semibold mb-3">LangExtract Task Snapshot</h5>
+                            <dl id="data-scrubbing-schema" class="space-y-3 text-sm"></dl>
+                        </div>
+                        <div class="light-card p-6 rounded-lg">
+                            <h5 class="text-lg font-semibold mb-3">Before & After Example</h5>
+                            <figure>
+                                <figcaption class="text-xs font-semibold tracking-wide uppercase text-slate-400">Source Excerpt</figcaption>
+                                <blockquote id="data-scrubbing-raw" class="mt-2 rounded-md border border-slate-700 bg-slate-900/60 p-3 italic text-sm"></blockquote>
+                            </figure>
+                            <div class="mt-4">
+                                <figcaption class="text-xs font-semibold tracking-wide uppercase text-slate-400">Structured Output</figcaption>
+                                <ul id="data-scrubbing-normalized" class="mt-2 space-y-2 text-sm"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 light-card p-6 rounded-lg">
+                        <h5 class="text-lg font-semibold mb-3">Quality Gates & Evidence</h5>
+                        <ul id="data-scrubbing-summary" class="space-y-2 text-sm"></ul>
+                    </div>
+                </section>
+                <div class="mt-8 flex justify-center">
+                    <button id="step-1-continue" class="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Continue to Objectives</button>
+                </div>
             </section>
-            
+
             <section id="step-2" class="mb-12 hidden">
                 <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold tracking-tight">Step 2: Define Intervention Plan</h3>
-                    <p class="mt-4 max-w-3xl mx-auto text-lg">You have selected <strong>W666</strong>. Now, define the objective. Use the <strong>AI Advisor</strong> to analyze the well's known problems. The AI will cross-reference the issues with our historical case studies (the other wells in the portfolio) to recommend the most effective intervention strategies, complete with confidence scores and projected outcomes based on proven solutions.</p>
+                    <h3 class="text-2xl font-bold tracking-tight">Step 2: Define Objectives & Strategy</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg">With <strong>W666</strong> selected, choose how you want to scope the job. Use the <strong>AI Advisor</strong> to cross-reference known issues with offset case studies or drive manually from engineering objectives. Your selection sets the design basis for the rest of the workflow.</p>
                 </div>
                 <div class="mt-8 max-w-4xl mx-auto">
                     <div class="flex items-center justify-center mb-6">
@@ -181,41 +218,92 @@
                     <div id="manual-planning-view">
                         <h4 class="text-lg font-semibold mb-4 text-center">Select Intervention Objective</h4>
                         <div id="objectives-fieldset" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-                        <div class="mt-8 flex justify-center">
-                            <button id="generate-plan-btn-manual" class="rounded-md bg-teal-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-teal-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Generate Plan</button>
-                        </div>
                     </div>
                     
                     <div id="ai-advisor-view" class="hidden">
                         <div class="bg-blue-50 dark:bg-blue-900/50 p-4 rounded-lg text-center mb-6">
                             <p class="text-sm text-blue-800 dark:text-blue-200">Our AI analyzes anonymized operational patterns from all community data providers to find optimal solutions. Your raw well data is never shared, and Well-Tegra cannot access it. This process is secured by smart contracts.</p>
                         </div>
-                        
+
                         <div id="problem-selection">
                             <h3 class="text-lg font-semibold text-center mb-4">What is the primary problem with this well?</h3>
                             <div id="problems-fieldset" class="space-y-4"></div>
                         </div>
                         
                         <div id="ai-recommendations" class="hidden mt-8"></div>
-                        
-                        <div class="mt-8 flex justify-center">
-                            <button id="generate-plan-btn-ai" class="rounded-md bg-teal-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-teal-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Generate Plan from Recommendation</button>
-                        </div>
+
                     </div>
                 </div>
+                <div class="mt-8 flex justify-center">
+                    <button id="step-2-continue" class="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Continue to Engineering Blueprint</button>
+                </div>
             </section>
-            
+
             <section id="step-3" class="hidden">
                 <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold tracking-tight">Step 3: Review the Generated Plan</h3>
-                    <p class="mt-4 max-w-3xl mx-auto text-lg">This is the final review stage. Based on your selections, the platform has generated a comprehensive, data-driven intervention plan. This includes the baseline procedure, a list of required equipment and personnel, and an initial risk assessment. Please review all sections carefully. If everything is in order, you can proceed to the 'Live Operation' view, which simulates the execution of this plan in real-time. If you need to make changes, you can 'Start Over'.</p>
+                    <h3 class="text-2xl font-bold tracking-tight">Step 3: Engineering Blueprint</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg">Validate the technical design before we build the operational program. The blueprint stitches together trajectory assumptions, casing design, fluid program, BHA strategy, and contingency envelopes tailored to your selected objective.</p>
                 </div>
-                
+                <div id="design-blueprint" class="mt-10 space-y-6 light-card p-6 rounded-lg">
+                    <p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>
+                </div>
+                <div class="mt-8 flex justify-center">
+                    <button id="generate-program-btn" class="rounded-md bg-teal-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-teal-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Generate Integrated Program</button>
+                </div>
+            </section>
+
+            <section id="step-4" class="hidden">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold tracking-tight">Step 4: Build the Operational Program</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg">The platform assembles a detailed procedure, resource plan, and risk profile from the blueprint. Review every element before we lock in logistics and commercial commitments.</p>
+                </div>
+
                 <div id="plan-output" class="mt-10 space-y-8"></div>
-                
+
                 <div class="mt-8 flex justify-center space-x-4">
                     <button id="start-over-btn" class="rounded-md bg-gray-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-500 transition-colors">Start Over</button>
-                    <button id="begin-op-btn" class="rounded-md bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 transition-colors">Begin Live Operation</button>
+                    <button id="step-4-continue" class="rounded-md bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Compile Readiness Package</button>
+                </div>
+            </section>
+
+            <section id="step-5" class="hidden">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold tracking-tight">Step 5: Logistics & Commercial Readiness</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg">Confirm that the required equipment, crews, spend envelopes, and permits are aligned. Address any conflicts before we hand off to execution.</p>
+                </div>
+
+                <div id="readiness-output" class="mt-10 space-y-6"></div>
+
+                <div class="mt-8 flex flex-wrap justify-center gap-4">
+                    <button id="open-logistics-btn" class="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors">Open Logistics Workspace</button>
+                    <button id="open-commercial-btn" class="rounded-md bg-purple-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-purple-500 transition-colors">Open Commercial Dashboard</button>
+                    <button id="open-hse-btn" class="rounded-md bg-amber-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-amber-500 transition-colors">Open HSE & Risk Dashboard</button>
+                    <button id="step-5-continue" class="rounded-md bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Finalize Execution Plan</button>
+                </div>
+            </section>
+
+            <section id="step-6" class="hidden">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold tracking-tight">Step 6: Execute & Handover</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg">Push the approved program into the live operations simulator, capture real-time performance, and prepare the post-job package for handover.</p>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                    <div class="light-card p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold mb-2">Execution Readiness</h4>
+                        <p class="text-sm text-slate-400">Launch the <strong>Live Operations</strong> workspace to run the digital twin, track KPIs, and log events as the intervention progresses.</p>
+                        <p class="text-sm text-slate-400 mt-2">The simulator streams planned versus actual hookload, pressure, and NPT trends so supervisors can intervene before deviations escalate.</p>
+                    </div>
+                    <div class="light-card p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold mb-2">Closeout & Reporting</h4>
+                        <p class="text-sm text-slate-400">Use the <strong>Post-Job Analysis</strong> view to export the final report, vendor scorecards, and lessons learned. Everything is captured for future wells.</p>
+                        <p class="text-sm text-slate-400 mt-2">Hand the validated program, execution history, and improvement actions to production or the next intervention team.</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex flex-wrap justify-center gap-4">
+                    <button id="begin-op-btn" class="rounded-md bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Launch Live Operations</button>
+                    <button id="review-analysis-btn-final" class="rounded-md bg-slate-700 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-slate-600 transition-colors">Open Post-Job Analysis</button>
                 </div>
             </section>
         </div>
