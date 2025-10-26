@@ -62,6 +62,7 @@ After: NO_CONSOLE_MESSAGES
 ## HTML Integrity
 - ✅ Removed duplicate `<!DOCTYPE>` and `<head>` blocks from `index.html`, consolidating the CSP, metadata, and vendor script stack into a single, valid document head.
 - ✅ Pointed the masthead logo back to `assets/logo.jpg` so the tightened CSP (`img-src 'self'`) no longer needs remote exceptions.
+- ✅ Closed the primary navigation `<nav>` element correctly (`index.html` L118-L139) so assistive tech no longer encounters duplicated focusable controls after the malformed closing `</div>`.
 
 ## Data Integrity
 - `find . -maxdepth 3 -name 'clans.json'` → no results (`clans.json` not shipped in this repo).

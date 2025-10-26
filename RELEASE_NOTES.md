@@ -4,6 +4,7 @@
 
 - Moved the structured program dossier dataset and rendering helpers into `assets/js/app.js` so the planner keeps pairing template checklists with W666-specific evidence after the markup cleanup.
 - Consolidated `index.html` into a single valid document by removing duplicate `<!DOCTYPE>`/`<head>` blocks, aligning the CSP/meta tags, and switching the masthead logo to the local asset for CSP compliance.
+- Corrected the malformed closing tag in the primary navigation (`index.html`) so the `<nav>` no longer spills extra `<div>` wrappers that duplicated the focusable controls for assistive technologies.
 - Confirmed the repository excludes the unrelated clan map assets so the experience stays focused on the W666 engineering walkthrough.
 - Added a structured program dossier dataset that pairs reusable template checklists with W666-specific inputs across data intake, design, execution, logistics, risk, and handover stages.
 - Removed the Tailwind CDN bootstrap from `index.html` and rely solely on the minified CLI build (`assets/css/tailwind.css`).
