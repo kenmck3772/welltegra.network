@@ -2,19 +2,12 @@
 
 ## Summary
 
-- Moved the structured program dossier dataset and rendering helpers into `assets/js/app.js` so the planner keeps pairing template checklists with W666-specific evidence after the markup cleanup.
-- Consolidated `index.html` into a single valid document by removing duplicate `<!DOCTYPE>`/`<head>` blocks, aligning the CSP/meta tags, and switching the masthead logo to the local asset for CSP compliance.
-- Corrected the malformed closing tag in the primary navigation (`index.html`) so the `<nav>` no longer spills extra `<div>` wrappers that duplicated the focusable controls for assistive technologies.
-- Confirmed the repository excludes the unrelated clan map assets so the experience stays focused on the W666 engineering walkthrough.
-- Added a structured program dossier dataset that pairs reusable template checklists with W666-specific inputs across data intake, design, execution, logistics, risk, and handover stages.
 - Removed the Tailwind CDN bootstrap from `index.html` and rely solely on the minified CLI build (`assets/css/tailwind.css`).
 - Rehomed the large inline `<style>` block into `styles/tailwind.css` so custom theming ships alongside the Tailwind bundle.
 - Extracted the application logic into `assets/js/app.js`, tightened the CSP to `script-src 'self' …`, and rebound the PDF export trigger via `addEventListener`.
 - Consolidated third-party script hygiene by dropping duplicate `Chart.js`, `jspdf`, and `html2canvas` tags and extending SRI coverage with `referrerpolicy="no-referrer"`.
 - Vendored `Chart.js`, `jspdf`, and `html2canvas` under `assets/vendor/` so the console stays clean in offline/TLS-restricted previews and CSP can lock to `script-src 'self'`.
 - Removed Google Fonts in favour of embedded Inter/Roboto Mono data-URI font faces so the repo stays binary-free while keeping typography stable.
-- Dropped the remaining Google Fonts `<link>` tags and relaxed the CSP font/style directives to rely purely on the bundled assets so console violations disappear under the hardened policy.
-- Added a descriptive `assets/hero-video-descriptions.vtt` track so the hero video no longer 404s and screen readers can announce the footage.
 - Added a meta description and canonical URL to improve SEO snippet quality and prevent duplicate indexing.
 - Added `rel="noopener noreferrer"` to the whitepaper download CTA so all external tabs are isolated.
 - Regenerated the Tailwind bundle via `npm run build:css` to ensure the shipped CSS matches the source tokens.
@@ -24,6 +17,7 @@
 - Marked the hero video as decorative, limited its preload to metadata, and added intrinsic dimensions to the masthead logo to prevent layout shift.
 - Converted planner well cards into keyboard-activatable buttons and now announce selection state with `aria-pressed`.
 - Converted the primary navigation into real buttons and wired `aria-current`/`aria-disabled` plus `aria-hidden` view toggles so keyboard and assistive users get accurate state changes.
+- Deduplicated the header tablist markup so only the button-based navigation remains, resolving the duplicate focus targets introduced by a bad merge.
 - Added an explicit screen-reader label to the theme toggle control.
 - Refined the FAQ accordion generation to emit `aria-expanded`/`aria-controls` wiring and maintain keyboard/assistive parity.
 - Normalized mojibake em dash characters in the hero copy to the proper `—` glyph.
@@ -34,17 +28,15 @@
 2. Build the production stylesheet: `npm run build:css`.
 3. Start a local preview: `python -m http.server 8000`.
 4. Visit `http://127.0.0.1:8000/index.html` and confirm the console is clean (no CDN TLS errors) and the hero toggle pauses/resumes playback.
-5. Open DevTools → Network and reload to confirm `assets/hero-video-descriptions.vtt` returns 200 and no CSP font/style violations appear.
-6. Scroll to the ROI calculator and verify the savings bar chart renders (Chart.js now loads from `assets/vendor/`).
-7. Use the `Tab` key to step through the header navigation; the focus ring should be visible, `Home/Planner` remain active, and gated tabs (e.g., Commercial) stay disabled until a plan exists.
-8. Generate a plan for W666 and confirm the new "Structured Program Dossier" card renders with paired template checklists and well-specific bullets (including cost codes and deliverables).
-9. Use the arrow or tab keys to focus a well card in the planner grid and press `Enter` or `Space` to select it; the card should show the selected styling and announce `aria-pressed="true"` in devtools.
-10. Toggle the operating system's reduced-motion setting (or launch Playwright/Chrome DevTools with `prefers-reduced-motion: reduce`) and confirm the hero video starts paused until the user explicitly plays it.
-11. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.
-12. Visit `http://127.0.0.1:8000/index.html` and confirm the console is clean (no Tailwind CDN warning) and the hero toggle pauses/resumes playback.
-13. Use the `Tab` key to step through the header navigation; the focus ring should be visible, `Home/Planner` remain active, and gated tabs (e.g., Commercial) stay disabled until a plan exists.
-14. Toggle the operating system's reduced-motion setting (or launch Playwright/Chrome DevTools with `prefers-reduced-motion: reduce`) and confirm the hero video starts paused until the user explicitly plays it.
-15. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.
-16. Start a local preview: `python3 -m http.server 8080`.
-17. Visit `http://127.0.0.1:8080/index.html` and confirm the console is clean (no Tailwind CDN warning).
-18. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.
+5. Scroll to the ROI calculator and verify the savings bar chart renders (Chart.js now loads from `assets/vendor/`).
+6. Use the `Tab` key to step through the header navigation; the focus ring should be visible, `Home/Planner` remain active, and gated tabs (e.g., Commercial) stay disabled until a plan exists.
+7. Use the arrow or tab keys to focus a well card in the planner grid and press `Enter` or `Space` to select it; the card should show the selected styling and announce `aria-pressed="true"` in devtools.
+8. Toggle the operating system's reduced-motion setting (or launch Playwright/Chrome DevTools with `prefers-reduced-motion: reduce`) and confirm the hero video starts paused until the user explicitly plays it.
+9. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.
+10. Visit `http://127.0.0.1:8000/index.html` and confirm the console is clean (no Tailwind CDN warning) and the hero toggle pauses/resumes playback.
+11. Use the `Tab` key to step through the header navigation; the focus ring should be visible, `Home/Planner` remain active, and gated tabs (e.g., Commercial) stay disabled until a plan exists.
+12. Toggle the operating system's reduced-motion setting (or launch Playwright/Chrome DevTools with `prefers-reduced-motion: reduce`) and confirm the hero video starts paused until the user explicitly plays it.
+13. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.
+14. Start a local preview: `python3 -m http.server 8080`.
+15. Visit `http://127.0.0.1:8080/index.html` and confirm the console is clean (no Tailwind CDN warning).
+16. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.

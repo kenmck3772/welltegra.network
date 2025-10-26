@@ -2,13 +2,12 @@
 
 ## Console Output
 
-| Stage                                                | Command                                                                          | Result                                                                              |
-| ---------------------------------------------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| Historical (pre-CLI build)                           | `python3 -m http.server 8080` + Playwright console capture                       | `WARNING: cdn.tailwindcss.com should not be used in production…`                    |
-| Current (post-login removal + accessible nav)        | `python -m http.server 8000` + Playwright hero toggle + nav traversal            | `NO_CONSOLE_MESSAGES`                                                               |
-| Current (prefers-reduced-motion)                     | `python -m http.server 8000` + Playwright context with `reduced_motion='reduce'` | `NO_CONSOLE_MESSAGES`                                                               |
-| Current (a11y refinements + self-hosted vendor libs) | `python -m http.server 8000` + Playwright console capture                        | `NO_CONSOLE_MESSAGES`                                                               |
-| Current (CSP tighten + local fonts + hero VTT fix)   | `python -m http.server 8000` + manual tab sweep / ROI calculator                 | `NO_CONSOLE_MESSAGES` — Google Font/CSP violations resolved; hero VTT served 200 OK |
+| Stage                                                | Command                                                                          | Result                                                           |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Historical (pre-CLI build)                           | `python3 -m http.server 8080` + Playwright console capture                       | `WARNING: cdn.tailwindcss.com should not be used in production…` |
+| Current (post-login removal + accessible nav)        | `python -m http.server 8000` + Playwright hero toggle + nav traversal            | `NO_CONSOLE_MESSAGES`                                            |
+| Current (prefers-reduced-motion)                     | `python -m http.server 8000` + Playwright context with `reduced_motion='reduce'` | `NO_CONSOLE_MESSAGES`                                            |
+| Current (a11y refinements + self-hosted vendor libs) | `python -m http.server 8000` + Playwright console capture                        | `NO_CONSOLE_MESSAGES`                                            |
 
 ````bash
 python -m http.server 8000
@@ -59,15 +58,9 @@ After: NO_CONSOLE_MESSAGES
 
 ````
 
-## HTML Integrity
-- ✅ Removed duplicate `<!DOCTYPE>` and `<head>` blocks from `index.html`, consolidating the CSP, metadata, and vendor script stack into a single, valid document head.
-- ✅ Pointed the masthead logo back to `assets/logo.jpg` so the tightened CSP (`img-src 'self'`) no longer needs remote exceptions.
-- ✅ Closed the primary navigation `<nav>` element correctly (`index.html` L118-L139) so assistive tech no longer encounters duplicated focusable controls after the malformed closing `</div>`.
-
 ## Data Integrity
 - `find . -maxdepth 3 -name 'clans.json'` → no results (`clans.json` not shipped in this repo).
 - `find . -maxdepth 3 -name 'map-data.json'` → no results (map integration not present, so no cross-reference possible).
-- `rg -i "clan-map"` across the repo returns nothing, confirming no lingering navigation or sitemap references to the unrelated project.
 - `python -m json.tool equipment-catalog.json` (no errors; validates schema content).
 - `python -m json.tool service-line-templates.json` (no errors).
 
@@ -92,19 +85,17 @@ After: NO_CONSOLE_MESSAGES
 - Rehomed the bespoke theme CSS (formerly inline) into `styles/tailwind.css` so it is compiled with Tailwind and cached via the static asset pipeline.
 - Extracted the monolithic inline script to `assets/js/app.js` and wired it with `defer`, allowing the CSP `script-src` directive to drop `'unsafe-inline'`.
 - `npm run build:css` regenerates `assets/css/tailwind.css` via Tailwind CLI + PostCSS (output minified; see git diff for new hash section).
-- Migrated the structured program dossier dataset and rendering helpers into `assets/js/app.js` so the planner continues to surface template vs. W666-specific content after the HTML cleanup.
 - Captured Browserslist advisory (`caniuse-lite is outdated`) — informational only.
 
 ## Performance Opportunities (Top 5)
 
 | #   | Location                                    | Recommendation                                                                                                                                  |
-| --- | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --- | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
 | 1   | `index.html` L102-L104                      | ✅ Added `preload="metadata"` so the hero video only pulls metadata on first paint.                                                             |
-| 2   | `styles/tailwind.css` font-face block       | ✅ Embedded Inter/Roboto Mono fonts as base64 data URIs to avoid binary blobs while keeping typography intact.                                  | `src: url('data:font/woff2;base64,...') format('woff2');`                                                                                                                                         |
+| 2   | `styles/tailwind.css` font-face block       | ✅ Embedded Inter/Roboto Mono fonts as base64 data URIs to avoid binary blobs while keeping typography intact.                                  | `src: url('data:font/woff2;base64,...') format('woff2');` |
 | 3   | `assets/js/app.js` L2202-L2248              | Lazy-init `initSavingsChart()` when the ROI calculator view becomes active so Chart.js and canvas rendering do not cost time on login.          |
 | 4   | `assets/css/tailwind.css` watermark block   | Convert `assets/watermark.jpg` to WebP/AVIF and drop the legacy JPEG to reduce repeating background payloads.                                   |
 | 5   | `assets/js/app.js` live data interval setup | Debounce the simulation interval when switching away from the performer view to avoid background timers keeping the tab busy.                   |
-| 6   | `index.html` L1980-L2240                    | ✅ Structured program dossier pairs reusable template sections with W666 data for handover.                                                     | Added `programSectionTemplates` and `programDossiers` plus new rendering helpers so each generated plan exports template checklists alongside well-specific inputs, cost codes, and deliverables. |
 | 1   | `index.html` L102-L104                      | Add `preload="metadata"` (or swap in a lighter poster) for the hero video so autoplay does not fetch the entire MP4 on first paint.             |
 | 2   | `index.html` L15-L22                        | Preload the Inter/Roboto Mono font files (`rel="preload" as="font" type="font/woff2" crossorigin`) to cut layout shifts before webfonts arrive. |
 | 3   | `assets/js/app.js` L2202-L2248              | Lazy-init `initSavingsChart()` when the ROI calculator view becomes active so Chart.js and canvas rendering do not cost time on login.          |
@@ -146,7 +137,7 @@ After: NO_CONSOLE_MESSAGES
   | 9 | `index.html` L110-L114, `assets/js/app.js` L569-L636 | ✅ Hero video toggle now ships with an icon, polite status text, and respects `prefers-reduced-motion`. | `index.html`: inject icon + live region spans. `assets/js/app.js`: swap text/icon in `updateToggleState()`, add reduced-motion guard. |
   | 10 | `assets/js/app.js` PDF export alerts | `alert()` usage during PDF failures is disruptive for screen readers. | Replace with an inline status region (`role="alert"`). |
   | 1 | `index.html` L1-L16 | Duplicate `<!DOCTYPE html>`, `<html>`, and `<head>` tags produce invalid DOM. | Remove the repeated block so only one document scaffold remains. |
-  | 2 | `index.html` L82-L118 | Nav links rendered twice (diff artifact) create duplicate focus targets. | Delete the repeated `<a>` nodes inside the header nav. |
+  | 2 | `index.html` L32-L96 | ✅ Primary navigation deduplicated; removed the stray `<a>` block that caused duplicate focus targets. | `index.html`: retain a single button-based tablist; `assets/js/app.js`: no change required because `querySelectorAll('.nav-link')` now returns only the intended controls. |
   | 3 | `index.html` L112-L116 | Duplicate `id="theme-icon-light"` / `id="theme-icon-dark"` violate unique ID requirement. | Rename or remove the duplicated SVGs after deduplicating nav. |
   | 4 | `index.html` L134-L141 | Autoplay hero video lacks caption toggle or pause control for accessibility. | Add a visible pause button tied to `aria-controls="hero-video"`. |
   | 5 | `index.html` L211-L420 | `@@ … @@` diff markers render as text and confuse screen readers. | Remove the diff markers and redundant blocks they surround. |
