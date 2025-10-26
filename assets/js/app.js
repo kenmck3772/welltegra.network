@@ -1964,6 +1964,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             }
         }
+        const filteredPersonnel = personnelData.filter(p => 
+            requiredRoles.includes(p.role) && 
+            (p.name.toLowerCase().includes(persF) || p.role.toLowerCase().includes(persF))
+        );
+        
+        personnelTableBody.innerHTML = filteredPersonnel.map(p => `
+            <tr>
+                <td class="p-2">${p.name}</td>
+                <td class="p-2">${p.role}</td>
+                <td class="p-2">
+                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.status.toLowerCase().replace(/\s/g, '')}">${p.status}</span>
+                </td>
+                <td class="p-2">${p.certsValid ? '✅ Valid' : '⚠️ Expired'}</td>
+            </tr>
+        `).join('');
     };
 
     const checkLogistics = () => {

@@ -19,3 +19,20 @@
 5. Run `node -e "const {chromium}=require('playwright'); …"` (see checklist for full snippet) — the console should print `NO_CONSOLE_MESSAGES`.【16596b†L1】
 6. `npm run lint:links` (with the local server running) — confirm 0 broken links.【55759a†L1-L6】【21c9a3†L1】
 7. Navigate through the planner workflow to ensure charts, tables, and PDF export still function with the vendored libraries.【F:assets/js/app.js†L2224-L2922】
+- Reverted `index.html` and `assets/js/app.js` to a clean single-instance layout, then removed duplicate `<head>` blocks, inline `<style>`/`<script>` fragments, and stray login markup left by earlier merges.【F:index.html†L5-L246】【F:assets/js/app.js†L1-L2960】
+- Locked the CSP to self-hosted resources, added a meta description/canonical URL, and replaced remote Chart.js/jspdf/html2canvas references with copies in `assets/vendor/` so production previews run without CSP violations.【F:index.html†L5-L18】【F:index.html†L14-L18】
+- Normalised mojibake icons in `assets/js/app.js`, restored readable emoji, and ensured status badges use accessible copy instead of garbled characters.【F:assets/js/app.js†L276-L314】【F:assets/js/app.js†L684-L698】【F:assets/js/app.js†L1524-L1532】
+- Added intrinsic logo dimensions and limited the hero video preload to metadata to reduce layout shift while preserving the existing design.【F:index.html†L30-L98】
+- Regenerated the production stylesheet via `npm run build:css` so the Tailwind bundle matches the updated theme tokens and CSP-friendly asset paths.【6a05cb†L1-L5】【a58981†L1-L7】
+- Documented the audit in `CHECKLIST.md`, covering console captures, JSON validation, link health, performance ideas, accessibility/SEO backlog, and security hygiene.【F:CHECKLIST.md†L1-L63】
+- Added a visible-on-focus skip link, ARIA tablist wiring for the primary navigation, and list semantics for hero feature cards to improve structural navigation.【F:index.html†L25-L114】
+- Enhanced ROI controls with programmatic `aria-valuetext`, added live planner status messaging, and replaced PDF export alerts with a status region.【F:index.html†L118-L141】【F:assets/js/app.js†L2224-L2381】【F:assets/js/app.js†L2856-L2920】
+- Updated `CHECKLIST.md` to log the new remediation work and revised accessibility backlog entries, and trimmed the whitepaper CTA to avoid a misleading `download` hint.【F:CHECKLIST.md†L16-L63】【F:index.html†L226-L233】
+
+## Verification
+1. `npm install` (once) to ensure Playwright/Tailwind CLI dependencies are present.
+2. `npm run build:css` — Tailwind CLI rebuild (expect an informational Browserslist warning).【6a05cb†L1-L5】【a58981†L1-L7】
+3. `python3 -m http.server 8000` and open `http://127.0.0.1:8000/index.html`.
+4. Run `node -e "const {chromium}=require('playwright'); …"` (see checklist for full snippet) — the console should print `NO_CONSOLE_MESSAGES`.【16596b†L1】
+5. `npm run lint:links` (with the local server running) — confirm 0 broken links.【55759a†L1-L6】【21c9a3†L1】
+6. Navigate through the planner workflow to ensure charts, tables, and PDF export still function with the vendored libraries.【F:assets/js/app.js†L2224-L2922】
