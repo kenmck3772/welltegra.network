@@ -115,10 +115,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- DATA STORE (REWRITTEN FOR NARRATIVE) ---
     const wellData = [
-        { 
-            id: 'W666', 
+        {
+            id: 'W666',
             name: 'The Perfect Storm',
-            field: 'Montrose', 
+            field: 'Montrose',
             region: 'UKCS', 
             type: 'HPHT Gas Condensate', 
             depth: '18,500ft', 
@@ -279,20 +279,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
     ];
-    const objectivesData = [ 
-        { id: 'obj1', name: 'Remediate Casing Deformation', description: 'Install an expandable steel patch to restore wellbore access.', icon: 'ðŸ”§' }, 
-        { id: 'obj2', name: 'Remove BaSO4 Scale', description: 'Use a chemical and mechanical method to clear tubing blockage.', icon: 'ðŸ§ª' }, 
-        { id: 'obj3', name: 'Restore Downhole Safety Valve', description: 'Lock open the failed TRSSV and install a new insert valve.', icon: 'ðŸ”’' }, 
-        { id: 'obj4', name: 'Repair Sand Control', description: 'Install a through-tubing expandable sand screen patch.', icon: 'ðŸ–ï¸' }, 
-        { id: 'obj5', name: 'Paraffin Wax Removal', description: 'Use CT with chemicals and tools to remove wax blockage.', icon: 'ðŸ•¯ï¸' } 
+    const objectivesData = [
+        { id: 'obj1', name: 'Remediate Casing Deformation', description: 'Install an expandable steel patch to restore wellbore access.', icon: '🔧' },
+        { id: 'obj2', name: 'Remove BaSO4 Scale', description: 'Use a chemical and mechanical method to clear tubing blockage.', icon: '🧪' },
+        { id: 'obj3', name: 'Restore Downhole Safety Valve', description: 'Lock open the failed TRSSV and install a new insert valve.', icon: '🔒' },
+        { id: 'obj4', name: 'Repair Sand Control', description: 'Install a through-tubing expandable sand screen patch.', icon: '🛠️' },
+        { id: 'obj5', name: 'Paraffin Wax Removal', description: 'Use CT with chemicals and tools to remove wax blockage.', icon: '🕯️' }
     ];
-    const problemsData = [ 
-        { id: 'prob1', name: 'Loss of Well Access (Casing Deformation)', description: 'Wellbore is restricted due to geomechanical forces.', linked_objectives: ['obj1'], icon: 'ðŸš«' }, 
-        { id: 'prob2', name: 'Severe Scale Blockage', description: 'Production is blocked by hard, insoluble scale.', linked_objectives: ['obj2'], icon: 'ðŸš°' }, 
-        { id: 'prob3', name: 'Failed Primary Safety Barrier (DHSV)', description: 'Well is legally shut-in due to a failed safety valve.', linked_objectives: ['obj3'], icon: 'âš ï¸' }, 
-        { id: 'prob4', name: 'Sand Control Failure', description: 'Excessive sand production is damaging equipment and limiting rates.', linked_objectives: ['obj4'], icon: 'ðŸœï¸' }, 
-        { id: 'prob5', name: 'Flow Assurance Blockage (Wax)', description: 'Production is severely restricted by paraffin deposits.', linked_objectives: ['obj5'], icon: 'ðŸ•¯ï¸' } 
+    const problemsData = [
+        { id: 'prob1', name: 'Loss of Well Access (Casing Deformation)', description: 'Wellbore is restricted due to geomechanical forces.', linked_objectives: ['obj1'], icon: '🚫' },
+        { id: 'prob2', name: 'Severe Scale Blockage', description: 'Production is blocked by hard, insoluble scale.', linked_objectives: ['obj2'], icon: '🚰' },
+        { id: 'prob3', name: 'Failed Primary Safety Barrier (DHSV)', description: 'Well is legally shut-in due to a failed safety valve.', linked_objectives: ['obj3'], icon: '⚠️' },
+        { id: 'prob4', name: 'Sand Control Failure', description: 'Excessive sand production is damaging equipment and limiting rates.', linked_objectives: ['obj4'], icon: '🏝️' },
+        { id: 'prob5', name: 'Flow Assurance Blockage (Wax)', description: 'Production is severely restricted by paraffin deposits.', linked_objectives: ['obj5'], icon: '🧊' }
     ];
+
     const aiRecommendations = {
         prob1: [ 
             { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis of case study <strong>M-21 (The Montrose Squeeze)</strong> confirms an expandable steel patch is the standard, high-success-rate rigless solution for this specific failure mode in this field.' } 
@@ -311,9 +312,9 @@ document.addEventListener('DOMContentLoaded', function() {
         ]
     };
     const proceduresData = {
-        obj1: { 
-            name: "Expandable Casing Patch Installation", 
-            personnel: ["Wellsite Engineer", "HWU Supervisor"], 
+        obj1: {
+            name: "Expandable Casing Patch Installation",
+            personnel: ["Wellsite Engineer", "HWU Supervisor"],
             steps: [
                 "Perform wellbore cleanout trip with scraper and gauge ring.",
                 "RIH with expandable patch on jointed pipe.",
@@ -389,7 +390,239 @@ document.addEventListener('DOMContentLoaded', function() {
             risks: { operational: 4, geological: 2, equipment: 3, hse: 3, financial: 2 }, 
             cost: 650000, 
             duration: 4, 
-            tfaModel: { pickUp: [[0,0], [7500, 20]], slackOff: [[0,0], [7500, -20]], alarmUpper: [[0,2], [7500, 22]], alarmLower: [[0,-2], [7500, -22]] } 
+            tfaModel: { pickUp: [[0,0], [7500, 20]], slackOff: [[0,0], [7500, -20]], alarmUpper: [[0,2], [7500, 22]], alarmLower: [[0,-2], [7500, -22]] }
+        }
+    };
+    const designBlueprints = {
+        obj1: {
+            title: 'Expandable Patch Engineering Blueprint',
+            summary: 'Restore 9 5/8" casing integrity at 9,200 ft to regain access and reinstate the primary barrier.',
+            conceptual: [
+                'Confirm regulatory objective: reinstate dual-barrier compliance so W666 can be returned to production.',
+                'Leverage case study M-21 to benchmark expansion loads, annular clearances, and metallurgy.',
+                'Ensure the workover unit envelope covers the 80 ft patch length and 350k lbs hookload requirement.'
+            ],
+            detailed: {
+                trajectory: [
+                    'Existing well profile: S-shaped with 32° maximum inclination, build from 2,800–4,000 ft MD.',
+                    'Dogleg severity validated at <3°/100 ft allowing expandable tools to pass.',
+                    'Correlate GR/CCL to confirm deformation top at 9,180 ft MD before setting patch.'
+                ],
+                casing: [
+                    'Surface: 30" x 608 ft, 20" x 2,090 ft, 13-3/8" x 4,931 ft, 9-5/8" production string to 9,060 ft.',
+                    'Patch envelope: 9-5/8" 47 ppf L-80 with expandable liner OD 8.7" providing post-expansion drift 7.9".',
+                    'Post-install test: 4,500 psi internal pressure with 10% overpull contingency.'
+                ],
+                fluids: [
+                    'Kill fluid: 10.2 ppg inhibited brine to balance 0.45 psi/ft gradient above 8,200 ft fluid level.',
+                    'Viscous sweeps scheduled prior to patch run to remove scale fines.',
+                    'Displacement with filtered brine to ensure clean expansion interface.'
+                ],
+                bha: [
+                    'Gauge ring and caliper run to verify minimum ID prior to mobilising HWU.',
+                    'Expandable patch on jointed pipe with hydraulic setting tool; confirm stroke vs. packer load table.',
+                    'Pressure-testing string equipped with double-barrier safety valves for well control.'
+                ],
+                wellControl: [
+                    'HWU BOP stack: 11" 10k with annular + double ram, tested to 7,500 psi prior to operations.',
+                    'Secondary barrier via lubricator tree; emergency shut-in plan validated with control room.',
+                    'Kick tolerance calculated at 3.2 ppg margin with current fluid program.'
+                ],
+                completion: [
+                    'Post-expansion drift run to confirm ID.',
+                    'Update completion schematic and barrier certification prior to handover.',
+                    'Schedule production logging run post job to confirm inflow stability.'
+                ]
+            },
+            contingencies: [
+                'If patch fails to expand on first attempt, execute controlled bleed-off and re-pressurise up to vendor maximum.',
+                'Should deformation exceed 1.5", mobilise contingency milling BHA from vendor hot-shot list.',
+                'Maintain chemical scale inhibitor on location in case solids loading spikes during cleanout.'
+            ]
+        },
+        obj2: {
+            title: 'Scale Removal Engineering Blueprint',
+            summary: 'Eliminate BaSO₄ blockage between 14,500–15,200 ft using chemical soak and mechanical jetting.',
+            conceptual: [
+                'Restore production deliverability and tubing drift to 5.5" by clearing hard scale.',
+                'Validate fluid compatibility with completion metallurgy per Scale Trap case study.',
+                'Coordinate CT spread, pumping services, and waste handling for 48-hour chemical soak.'
+            ],
+            detailed: {
+                trajectory: [
+                    'High-angle section: 38° inclination from 12,000 ft MD onward; CT drag model verified for 1.75" coil.',
+                    'Anti-collision check complete against parallel injector wellbore using latest survey set.',
+                    'Pressure drop modelling confirms pump rate 1.5 bbl/min delivers jetting energy at TD.'
+                ],
+                casing: [
+                    '9-5/8" casing to 9,060 ft with 5-1/2" production tubing landed at 8,546 ft.',
+                    'Scale concentrated in liner top interval; ensure pup joint restrictions cleared before CT run.',
+                    'Check annular pressure rating for heated chemical circulation.'
+                ],
+                fluids: [
+                    'Primary treatment: 12% DTPA chelating agent with corrosion inhibitor, 36 hr soak.',
+                    'Spacer and overflush volumes calculated for 1.3 hole volumes.',
+                    'Post-cleanout displacement with filtered completion brine to minimise residue.'
+                ],
+                bha: [
+                    'CT BHA: rotating jetting head with real-time downhole pressure sub and nozzle selection for 3,000 psi delta.',
+                    'Optional motor + mill contingency staged on location for hard nodules.',
+                    'Wireline plug available to isolate lower perforations if required.'
+                ],
+                wellControl: [
+                    'CT BOP stack: 7-1/16" 10k, annular test 7,500 psi, shear/blind rams verified.',
+                    'Kick tolerance 2.8 ppg with heated chemical; monitor pit gains via historian link.',
+                    'Emergency shutdown matrix shared with pumping crew and control room.'
+                ],
+                completion: [
+                    'Post-job drift and production logging to confirm full ID restored.',
+                    'Reinstate scale inhibition program aligned with new water cut forecast.',
+                    'Update corrosion coupon plan to validate chemical compatibility.'
+                ]
+            },
+            contingencies: [
+                'If jetting stalls, apply oscillation mode and increase pump rate by 10% within CT tension limits.',
+                'Switch to mechanical scraper BHA if residual plugs detected after chemical stage.',
+                'Have nitrogen lift package on standby in case of heavy returns during cleanout.'
+            ]
+        },
+        obj3: {
+            title: 'Safety Valve Restoration Blueprint',
+            summary: 'Replace failed TRSSV with a wireline-retrievable safety valve and certify barrier integrity.',
+            conceptual: [
+                'Re-establish primary barrier to remove regulatory shut-in status.',
+                'Match insert valve envelope to nipple profile verified from offset jobs.',
+                'Minimise rig time by sequencing slickline tasks in a single campaign.'
+            ],
+            detailed: {
+                trajectory: [
+                    'Primary tubing string vertical to 2,500 ft then 20° inclination at valve depth (~2,800 ft).',
+                    'Wireline catenary analysis confirms 0.108" slickline can reach profile without rollers.',
+                    'Correlate depth using CCL/pressure signatures from previous logging passes.'
+                ],
+                casing: [
+                    'Focus zone: TRSSV located inside 5-1/2" production tubing at 2,820 ft.',
+                    'Lock mandrel selection: XN profile, 4.5" rating, 10k psi working pressure.',
+                    'Surface control line integrity verified up to 5,000 psi.'
+                ],
+                fluids: [
+                    'Well under balanced control with 10.2 ppg brine; no additional kill required.',
+                    'Lubricator filled with treated brine to protect valve internals.',
+                    'Optional methanol pill available to manage hydrate risk during shut-in.'
+                ],
+                bha: [
+                    'Phase 1: heavy-duty pulling tool + lock-open key to secure failed flapper.',
+                    'Phase 2: run WRSSV with running tool and equalising prong, verify setting via pressure test.',
+                    'Contingency: gauge run to ensure no debris prior to valve deployment.'
+                ],
+                wellControl: [
+                    'Slickline PCE stack tested to 10k psi; wireline valve at tree provides secondary barrier.',
+                    'Emergency shut-in via ESD panel rehearsed with crew prior to job start.',
+                    'Shear seal contingency available should pressure spike during retrieval.'
+                ],
+                completion: [
+                    'Function test new valve (open/close cycles) and chart pressure response.',
+                    'Update barrier schematic and issue reinstatement certificate to regulator.',
+                    'Schedule quarterly proof tests per field operating standard.'
+                ]
+            },
+            contingencies: [
+                'If lock-open tool fails, mobilise electric line to cut flapper and retrieve debris.',
+                'Have backup WRSSV in hot shot logistics queue in case of seal failure.',
+                'Prepare lubricator extension if lubricator stroke insufficient for WRSSV length.'
+            ]
+        },
+        obj4: {
+            title: 'Sand Control Repair Blueprint',
+            summary: 'Install through-tubing expandable sand screen to stabilise production interval at 17,500 ft.',
+            conceptual: [
+                'Eliminate sanding events that forced repeated shut-ins and erosion of topside equipment.',
+                'Use lessons from case C-08 to validate expandable screen sizing and deployment envelope.',
+                'Coordinate CT cleanout, patch expansion, and flowback strategy as a single integrated package.'
+            ],
+            detailed: {
+                trajectory: [
+                    'High-angle section: 42° inclination at perforated interval; screen run confirmed with deviation model.',
+                    'Dogleg smoothing trip planned with roller stem to reduce friction.',
+                    'Set depth correlated with gamma/resistivity from offset log library.'
+                ],
+                casing: [
+                    'Lower completion: 5-1/2" liner with failed premium screen between 17,450–17,520 ft.',
+                    'Expandable screen OD 4.6" to be expanded to 5.2" sealing inside existing liner.',
+                    'Top packer at 18,950 ft verified to hold planned drawdown.'
+                ],
+                fluids: [
+                    'Pre-job CT sweep with viscous gel to remove mobile sand.',
+                    'Displacement fluid: filtered 9.5 ppg brine to avoid plugging screen matrix.',
+                    'Return the well with ramped drawdown (10%, 30%, 60% choke schedule) to seat sand bed.'
+                ],
+                bha: [
+                    'CT cleanout BHA with dual wiper trip, followed by gauge drift.',
+                    'Expandable screen run on jointed pipe with mechanical expansion tool; confirm force vs. torque curve.',
+                    'Memory pressure gauge installed above screen to monitor stability during flowback.'
+                ],
+                wellControl: [
+                    'HWU stack + CT stack integration tested; ensure simultaneous operations procedures approved.',
+                    'Sour gas contingency: H2S scavenger packaged due to historical trace readings.',
+                    'Emergency sand shutoff plan defined with production ops.'
+                ],
+                completion: [
+                    'Flowback under controlled choke schedule with real-time sand monitoring.',
+                    'Update completion drawing and production strategy to reflect new ESS configuration.',
+                    'Plan follow-up sand probe log 14 days post job to confirm performance.'
+                ]
+            },
+            contingencies: [
+                'If expansion stalls, apply incremental overpull while monitoring hookload envelope.',
+                'Maintain spare ESS joints on location to extend coverage if sand interval larger than forecast.',
+                'Deploy real-time acoustic sand detector to trigger choke back should production spike.'
+            ]
+        },
+        obj5: {
+            title: 'Wax Removal Blueprint',
+            summary: 'Remove paraffin build-up restricting flow between 7,200–8,100 ft and restore production deliverability.',
+            conceptual: [
+                'Stabilise flow assurance by clearing wax and reinstating thermal management plan.',
+                'Blend chemical dissolution with mechanical scraping to avoid repeat interventions.',
+                'Align CT, chemical vendors, and operations crew on 24-hour heating schedule.'
+            ],
+            detailed: {
+                trajectory: [
+                    'Tubing vertical to 6,000 ft then slight deviation 15°; CT drag minimal for 1.5" coil.',
+                    'Temperature modelling confirms surface heating + insulated circulation maintains 140°F at wax zone.',
+                    'Deploy distributed temperature survey post job to monitor cooldown rate.'
+                ],
+                casing: [
+                    'Wax build-up inside 5-1/2" tubing above packer; ensure scraper BHA sized to avoid packer damage.',
+                    'Check tubing drift to 4.65" prior to running mechanical tools.',
+                    'Confirm tree valve seals rated for heated solvent exposure.'
+                ],
+                fluids: [
+                    'Heated solvent blend (xylene + mutual solvent + inhibitor) circulated at 150°F for 6 hours.',
+                    'Follow with hot oil flush to transport loosened wax to surface handling units.',
+                    'Implement continuous paraffin inhibitor injection post job at 5 gal/day.'
+                ],
+                bha: [
+                    'CT string with insulated umbilical, positive displacement motor, and scraper for final pass.',
+                    'Inline temperature sub to monitor downhole temp vs. wax melting point.',
+                    'Optional jetting nozzle for stubborn deposits at nipple shoulders.'
+                ],
+                wellControl: [
+                    'CT BOP 7-1/16" 10k with ram locks engaged; annular packer lubricated for high temp operations.',
+                    'Gas detection enhanced due to potential VOC release from solvent.',
+                    'Emergency shutdown integrates chemical pumps and CT injector stop.'
+                ],
+                completion: [
+                    'Post-job spinner survey to confirm full bore flow restored.',
+                    'Update flow assurance model and restart plan to include insulation and chemical dosing.',
+                    'Schedule monitoring checks at 30/60/90 days to ensure wax does not re-accumulate.'
+                ]
+            },
+            contingencies: [
+                'If solvent returns excessive wax, divert through filtration skid to avoid plugging separator.',
+                'Deploy heating blankets on surface tubulars if ambient drops below 40°F during job.',
+                'Have coiled tubing milling head on standby if scraper cannot remove hardened deposits.'
+            ]
         }
     };
     const equipmentRequirements = {
@@ -399,25 +632,278 @@ document.addEventListener('DOMContentLoaded', function() {
         obj4: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Sand Screen & Expansion Tool", source: "Vendor", price: 600000 } ],
         obj5: [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Wax Dissolver Chemical", source: "Vendor", price: 50000 }, { name: "Mechanical Scraper BHA", source: "Vendor", price: 15000 } ]
     };
-    const equipmentData = [ 
-        { id: 'CTU-01', type: 'Coiled Tubing Unit', location: 'Onboard - Deck A', testStatus: 'Passed', nextMaint: '2025-09-15', rate: 25000, status: 'On Job' }, 
-        { id: 'CTU-02', type: 'Coiled Tubing Unit', location: 'Onshore Base', testStatus: 'Pending', nextMaint: '2025-07-10', rate: 25000, status: 'Maintenance' }, 
-        { id: 'WL-01', type: 'Wireline Truck/Skid', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-08-22', rate: 18000, status: 'Available' }, 
-        { id: 'SL-01', type: 'Slickline Unit', location: 'In Transit', testStatus: 'Passed', nextMaint: '2025-07-20', rate: 15000, status: 'In Transit' }, 
-        { id: 'PUMP-01', type: 'High-Pressure Pumps', location: 'Onboard - Pump Room', testStatus: 'Pending', nextMaint: '2025-10-01', rate: 8000, status: 'On Job' }, 
-        { id: 'PUMP-02', type: 'High-Pressure Pumps', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-11-05', rate: 8000, status: 'Available' }, 
-        { id: 'RIG-01', type: 'Workover Rig', location: 'Onboard - Drill Floor', testStatus: 'Passed', nextMaint: '2025-08-01', rate: 85000, status: 'On Job' }, 
+
+    const fallbackEquipmentData = [
+        { id: 'CTU-01', type: 'Coiled Tubing Unit', category: 'Coiled Tubing', vendor: 'Baker Hughes', location: 'Onboard - Deck A', testStatus: 'Passed', nextMaint: '2025-09-15', rate: 25000, status: 'On Job', notes: '1.75in OD, 15k psi rated spread' },
+        { id: 'CTU-02', type: 'Coiled Tubing Unit', category: 'Coiled Tubing', vendor: 'Archer', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-07-10', rate: 24000, status: 'Available', notes: '2.0in OD, 18kft reel' },
+        { id: 'WL-01', type: 'Wireline Unit', category: 'Wireline', vendor: 'Halliburton', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-08-22', rate: 18000, status: 'Available', notes: '7-conductor, deep HPHT spec' },
+        { id: 'SL-01', type: 'Slickline Unit', category: 'Wireline', vendor: 'SLB', location: 'In Transit', testStatus: 'Passed', nextMaint: '2025-07-20', rate: 15000, status: 'In Transit', notes: '0.108in alloy line, 18kft' },
+        { id: 'HWU-01', type: 'Hydraulic Workover Unit', category: 'Lifting', vendor: 'Key Energy', location: 'Onshore Base', testStatus: 'Pending', nextMaint: '2025-10-01', rate: 32000, status: 'Standby', notes: '350k lb jack, self-contained' },
+        { id: 'PUMP-01', type: 'High-Pressure Pumps', category: 'Pumping', vendor: 'NOV', location: 'Onboard - Pump Room', testStatus: 'Pending', nextMaint: '2025-10-01', rate: 8000, status: 'On Job', notes: '10k psi twin triplex' },
+        { id: 'PUMP-02', type: 'High-Pressure Pumps', category: 'Pumping', vendor: 'NOV', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-11-05', rate: 8200, status: 'Available', notes: 'Spare unit with full certification' },
+        { id: 'JET-01', type: 'Rotating Jetting Nozzle', category: 'Downhole Tools', vendor: 'NOV', location: 'Tool House', testStatus: 'Passed', nextMaint: '2025-07-30', rate: 4500, status: 'Available', notes: 'High-energy jetting head for CT scale removal' },
+        { id: 'SCR-01', type: 'Mechanical Scraper BHA', category: 'Downhole Tools', vendor: 'Weatherford', location: 'Tool House', testStatus: 'Passed', nextMaint: '2025-08-15', rate: 6000, status: 'Available', notes: '4.5in OD coil-ready scraper assembly' },
+        { id: 'CHEM-01', type: 'Wax Dissolver Chemical', category: 'Chemicals', vendor: 'ChampionX', location: 'Chemical Lab', testStatus: 'Passed', nextMaint: '2025-08-05', rate: 4200, status: 'Available', notes: 'High-temp solvent blend' },
+        { id: 'CHEM-02', type: 'DTPA Chemical', category: 'Chemicals', vendor: 'Baker Hughes', location: 'Chemical Lab', testStatus: 'Passed', nextMaint: '2025-08-20', rate: 5200, status: 'Available', notes: 'Chelating acid blend for scale removal' },
+        { id: 'WRSV-01', type: 'Insert Safety Valve (WRSV)', category: 'Well Control', vendor: 'Baker Hughes', location: 'Vendor - Houston', testStatus: 'Passed', nextMaint: '2025-12-01', rate: 42000, status: 'Available', notes: 'HPHT qualified 4.5in valve' },
+        { id: 'LOT-01', type: 'Lock-Open Tool', category: 'Wireline Tools', vendor: 'SLB', location: 'Tool House', testStatus: 'Passed', nextMaint: '2025-06-28', rate: 3200, status: 'Available', notes: 'Heavy-duty lock-open tool' },
+        { id: 'PATCH-01', type: 'Expandable Patch 9in', category: 'Mechanical', vendor: 'Enventure', location: 'Vendor Warehouse - Aberdeen', testStatus: 'Pending', nextMaint: '2025-09-30', rate: 0, status: 'Maintenance', notes: '80ft expandable casing patch' },
+        { id: 'PATCH-02', type: 'Expandable Steel Patch & Setting Tool', category: 'Mechanical', vendor: 'Enventure', location: 'Vendor Warehouse - Aberdeen', testStatus: 'Pending', nextMaint: '2025-10-12', rate: 0, status: 'Maintenance', notes: 'Requires vendor specialist crew' },
+        { id: 'ESS-01', type: 'Expandable Sand Screen', category: 'Sand Control', vendor: 'Halliburton', location: 'Vendor Warehouse - Stavanger', testStatus: 'Pending', nextMaint: '2025-09-12', rate: 0, status: 'Maintenance', notes: 'Through-tubing ESS assembly' },
+        { id: 'ESS-02', type: 'Expandable Sand Screen & Expansion Tool', category: 'Sand Control', vendor: 'Baker Hughes', location: 'Vendor Warehouse - Stavanger', testStatus: 'Pending', nextMaint: '2025-09-18', rate: 0, status: 'Maintenance', notes: 'Expansion tool requires mobilised crew' }
     ];
-    const personnelData = [ 
-        { id: 'P001', name: 'Bob Raker', role: 'Wellsite Engineer', company: 'Operator', status: 'Onboard', certsValid: true, rate: 2200, muster: 'A', lifeboat: 1 }, 
-        { id: 'P002', name: 'Jane Smith', role: 'Coiled Tubing Supervisor', company: 'Service Co.', status: 'Onboard', certsValid: true, rate: 2500, muster: 'A', lifeboat: 1 }, 
-        { id: 'P003', name: 'Mike Johnson', role: 'Wireline Supervisor', company: 'Service Co.', status: 'On Job', certsValid: true, rate: 2300, muster: 'B', lifeboat: 2 }, 
-        { id: 'P004', name: 'Emily White', role: 'Slickline Supervisor', company: 'Service Co.', status: 'Available', certsValid: false, rate: 2300, muster: 'B', lifeboat: 2 }, 
-        { id: 'P005', name: 'Chris Green', role: 'Pump Operator', company: 'Service Co.', status: 'In Transit', certsValid: true, rate: 1800, muster: 'A', lifeboat: 1 }, 
-        { id: 'P006', name: 'Alex Brown', role: 'Rig Supervisor', company: 'Operator', status: 'Onboard', certsValid: true, rate: 3000, muster: 'B', lifeboat: 2 }, 
-        { id: 'P007', name: 'David Chen', role: 'ESP Specialist', company: 'Service Co.', status: 'Standby', certsValid: true, rate: 3500, muster: 'A', lifeboat: 2 } 
+
+    const fallbackPersonnelData = [
+        { id: 'P001', name: 'Bob Raker', role: 'Wellsite Engineer', company: 'Operator', status: 'Onboard', certsValid: true, rate: 3600, perDiem: 200, muster: 'A', lifeboat: 1 },
+        { id: 'P002', name: 'Jane Smith', role: 'Coiled Tubing Supervisor', company: 'Service Co.', status: 'Onboard', certsValid: true, rate: 2280, perDiem: 180, muster: 'A', lifeboat: 1 },
+        { id: 'P003', name: 'Mike Johnson', role: 'Wireline Engineer', company: 'Service Co.', status: 'On Job', certsValid: true, rate: 2640, perDiem: 180, muster: 'B', lifeboat: 2 },
+        { id: 'P004', name: 'Emily White', role: 'Slickline Supervisor', company: 'Service Co.', status: 'Available', certsValid: false, rate: 2300, perDiem: 150, muster: 'B', lifeboat: 2 },
+        { id: 'P005', name: 'Chris Green', role: 'Pump Operator', company: 'Service Co.', status: 'In Transit', certsValid: true, rate: 1560, perDiem: 150, muster: 'A', lifeboat: 1 },
+        { id: 'P006', name: 'Alex Brown', role: 'HWU Supervisor', company: 'Service Co.', status: 'Standby', certsValid: true, rate: 2280, perDiem: 180, muster: 'C', lifeboat: 3 },
+        { id: 'P007', name: 'David Chen', role: 'Rig Supervisor', company: 'Operator', status: 'Onboard', certsValid: true, rate: 3000, perDiem: 200, muster: 'B', lifeboat: 2 }
     ];
-    const musterStations = [ { id: 'A', name: 'Muster Station A', capacity: 50, current: 0 }, { id: 'B', name: 'Muster Station B', capacity: 50, current: 0 } ];
+
+    let equipmentData = fallbackEquipmentData.map(item => ({ ...item }));
+    let personnelData = fallbackPersonnelData.map(person => ({ ...person }));
+    let serviceLineTemplatesIndex = {};
+    let equipmentCatalogIndex = {};
+
+    const objectiveTemplateMap = {
+        obj1: 'spec_multi_intervention',
+        obj2: 'ct_scale_removal',
+        obj3: 'whm_safety_valve',
+        obj4: 'whm_completion_standard',
+        obj5: 'ct_wellbore_cleanout'
+    };
+
+    const normalizeString = (value) => (value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+
+    const toStatusClass = (value) => normalizeString(value).replace(/\s+/g, '');
+
+    const formatCurrency = (value) => {
+        const number = Number(value);
+        if (!number || Number.isNaN(number)) return '—';
+        return `$${Math.round(number).toLocaleString()}`;
+    };
+
+    const equipmentSynonyms = new Map([
+        [normalizeString('Hydraulic Workover Unit (HWU)'), ['hydraulic workover unit', 'workover unit', 'hwu']],
+        [normalizeString('Expandable Steel Patch & Setting Tool'), ['expandable patch', 'setting tool']],
+        [normalizeString('Expandable Sand Screen & Expansion Tool'), ['expandable sand screen', 'ess']],
+        [normalizeString('Coiled Tubing Unit'), ['coiled tubing', 'ct unit']],
+        [normalizeString('Slickline Unit'), ['slickline', 'wireline']],
+        [normalizeString('Insert Safety Valve (WRSV)'), ['safety valve', 'wrs v', 'wireline retrievable safety valve']],
+        [normalizeString('Lock-Open Tool'), ['lock open', 'lockopen']],
+        [normalizeString('DTPA Chemical'), ['dtpa', 'chemical']],
+        [normalizeString('Wax Dissolver Chemical'), ['wax dissolver', 'chemical']],
+        [normalizeString('Mechanical Scraper BHA'), ['scraper', 'bha']],
+        [normalizeString('Rotating Jetting Nozzle'), ['jetting nozzle', 'rotary nozzle']],
+        [normalizeString('High-Pressure Pumps'), ['high pressure pump', 'pump']]
+    ]);
+
+    const personnelRoleSynonyms = new Map([
+        [normalizeString('Slickline Supervisor'), ['wireline supervisor', 'wireline engineer']],
+        [normalizeString('Wireline Supervisor'), ['wireline engineer', 'wireline operator']],
+        [normalizeString('Rig Supervisor'), ['toolpusher']],
+        [normalizeString('HWU Supervisor'), ['hydraulic workover', 'hwu supervisor']]
+    ]);
+
+    const matchesEquipmentRequirement = (requiredName, equipmentItem) => {
+        if (!requiredName || !equipmentItem) return false;
+        const normalizedRequired = normalizeString(requiredName);
+        const normalizedType = normalizeString(equipmentItem.type);
+        const normalizedCategory = normalizeString(equipmentItem.category);
+        if (normalizedType.includes(normalizedRequired) || normalizedRequired.includes(normalizedType)) return true;
+        if (normalizedCategory && (normalizedCategory.includes(normalizedRequired) || normalizedRequired.includes(normalizedCategory))) return true;
+        const synonyms = equipmentSynonyms.get(normalizedRequired);
+        if (synonyms) {
+            return synonyms.some(syn => normalizedType.includes(syn) || normalizedCategory.includes(syn));
+        }
+        return false;
+    };
+
+    const matchesPersonnelRole = (requiredRole, person) => {
+        if (!requiredRole || !person) return false;
+        const normalizedRequired = normalizeString(requiredRole);
+        const normalizedRole = normalizeString(person.role);
+        if (normalizedRequired === normalizedRole) return true;
+        if (normalizedRole.includes(normalizedRequired) || normalizedRequired.includes(normalizedRole)) return true;
+        const synonyms = personnelRoleSynonyms.get(normalizedRequired);
+        return synonyms ? synonyms.some(syn => normalizedRole.includes(syn)) : false;
+    };
+
+    const findMatchingEquipment = (requiredName) => {
+        const candidates = equipmentData.filter(item => matchesEquipmentRequirement(requiredName, item));
+        if (!candidates.length) return null;
+        return candidates.slice().sort((a, b) => {
+            const score = (item) => {
+                switch ((item.status || '').toLowerCase()) {
+                    case 'available':
+                        return 0;
+                    case 'standby':
+                        return 1;
+                    case 'on job':
+                        return 2;
+                    default:
+                        return 3;
+                }
+            };
+            return score(a) - score(b);
+        })[0];
+    };
+
+    const getServiceTemplateForObjective = (objectiveId) => {
+        const templateKey = objectiveTemplateMap[objectiveId];
+        if (!templateKey) return null;
+        return serviceLineTemplatesIndex[templateKey] || null;
+    };
+
+    const resolveVendor = (name) => {
+        const match = findMatchingEquipment(name);
+        return match && match.vendor ? match.vendor : 'Vendor TBD';
+    };
+
+    const parseCsv = (text) => {
+        const rows = [];
+        let current = '';
+        let currentRow = [];
+        let inQuotes = false;
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            if (char === '"') {
+                if (inQuotes && text[i + 1] === '"') {
+                    current += '"';
+                    i++;
+                } else {
+                    inQuotes = !inQuotes;
+                }
+            } else if (char === ',' && !inQuotes) {
+                currentRow.push(current.trim());
+                current = '';
+            } else if ((char === '\n' || char === '\r') && !inQuotes) {
+                if (char === '\r' && text[i + 1] === '\n') i++;
+                currentRow.push(current.trim());
+                if (currentRow.some(value => value !== '')) {
+                    rows.push(currentRow);
+                }
+                current = '';
+                currentRow = [];
+            } else {
+                current += char;
+            }
+        }
+        if (current !== '' || currentRow.length) {
+            currentRow.push(current.trim());
+            rows.push(currentRow);
+        }
+        if (!rows.length) return [];
+        const headers = rows.shift();
+        return rows.map(row => {
+            const record = {};
+            headers.forEach((header, index) => {
+                record[header] = row[index] || '';
+            });
+            return record;
+        });
+    };
+
+    const deriveMaintenanceDate = (index) => {
+        const base = new Date(Date.UTC(2025, 0, 15));
+        base.setDate(base.getDate() + (index + 1) * 11);
+        return base.toISOString().split('T')[0];
+    };
+
+    const mergeEquipmentCsvData = (csvText) => {
+        const records = parseCsv(csvText);
+        if (!records.length) return;
+        const statusCycle = ['Available', 'On Job', 'Maintenance', 'In Transit', 'Standby'];
+        const testCycle = ['Passed', 'Pending'];
+        records.forEach((row, index) => {
+            const record = {
+                id: row['Equipment_ID'] || `EQ-${index + 101}`,
+                type: row['Item_Name'] || row['Category'] || 'Equipment',
+                category: row['Category'] || 'General',
+                vendor: row['Vendor'] || 'Vendor TBD',
+                location: row['Vendor'] ? `Vendor - ${row['Vendor']}` : 'Warehouse',
+                testStatus: testCycle[index % testCycle.length],
+                nextMaint: deriveMaintenanceDate(index),
+                rate: Number(row['Daily_Rate_USD']) || 0,
+                status: statusCycle[index % statusCycle.length],
+                notes: row['Specifications'] || row['Typical_Use'] || ''
+            };
+            const normalizedType = normalizeString(record.type);
+            const existing = equipmentData.find(item => normalizeString(item.type) === normalizedType);
+            if (existing) {
+                Object.assign(existing, { ...record, id: existing.id || record.id });
+            } else {
+                equipmentData.push(record);
+            }
+        });
+    };
+
+    const mergePersonnelCsvData = (csvText) => {
+        const records = parseCsv(csvText);
+        if (!records.length) return;
+        const statusCycle = ['Onboard', 'Available', 'On Job', 'Standby', 'In Transit'];
+        const musterCycle = ['A', 'B', 'C'];
+        const lifeboatCycle = [1, 2, 3];
+        const sampleNames = [
+            'Jordan Chen', 'Priya Desai', 'Lucia Gomez', 'Amir Hassan',
+            'Morgan Lee', 'Noah Patel', 'Sofia Rossi', 'Theo Schmidt',
+            'Nora Williams', 'Ethan Young'
+        ];
+        records.forEach((row, index) => {
+            const normalizedRole = normalizeString(row['Role_Title']);
+            const existing = personnelData.find(person => normalizeString(person.role) === normalizedRole);
+            const record = {
+                id: row['Role_ID'] || `P-${index + 101}`,
+                role: row['Role_Title'] || 'Crew Member',
+                company: row['Category'] && row['Category'].toLowerCase().includes('engineering') ? 'Operator' : 'Service Co.',
+                status: statusCycle[index % statusCycle.length],
+                certsValid: ((index + normalizedRole.length) % 4) !== 0,
+                rate: Number(row['Daily_Rate_USD']) || 0,
+                perDiem: Number(row['Per_Diem_USD']) || 0,
+                muster: musterCycle[index % musterCycle.length],
+                lifeboat: lifeboatCycle[index % lifeboatCycle.length],
+                certifications: row['Certifications_Required'] || ''
+            };
+            if (existing) {
+                const preservedName = existing.name;
+                Object.assign(existing, record, { name: preservedName });
+            } else {
+                record.name = sampleNames[index % sampleNames.length];
+                personnelData.push(record);
+            }
+        });
+    };
+
+    const buildServiceLineIndex = (data) => {
+        const index = {};
+        Object.entries(data || {}).forEach(([categoryKey, payload]) => {
+            const categoryName = payload.name || categoryKey;
+            (payload.templates || []).forEach(template => {
+                index[template.id] = { ...template, category: categoryName };
+            });
+        });
+        return index;
+    };
+
+    const buildEquipmentCatalogIndex = (data) => {
+        const index = {};
+        Object.values(data || {}).forEach(category => {
+            const categoryName = category.name || 'Catalog';
+            (category.items || []).forEach(item => {
+                index[item.id] = { ...item, categoryName };
+            });
+        });
+        return index;
+    };
+
+    const musterStations = [
+        { id: 'A', name: 'Muster Station A', capacity: 50, current: 0 },
+        { id: 'B', name: 'Muster Station B', capacity: 50, current: 0 },
+        { id: 'C', name: 'Muster Station C', capacity: 40, current: 0 }
+    ];
     
     // --- FAQ DATA ---
 
@@ -451,21 +937,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- GLOBAL STATE ---
 
     let appState = {
-        currentView: 'home', 
-        selectedWell: null, 
-        selectedObjective: null, 
-        generatedPlan: null, 
-        liveData: null, 
-        logEntries: [], 
-        lessonsLearned: [], 
-        tfaChartInstance: null, 
-        nptChartInstance: null, 
-        savingsChartInstance: null, 
+        currentView: 'home',
+        selectedWell: null,
+        selectedObjective: null,
+        generatedPlan: null,
+        liveData: null,
+        logEntries: [],
+        lessonsLearned: [],
+        tfaChartInstance: null,
+        nptChartInstance: null,
+        savingsChartInstance: null,
         liveDataInterval: null,
         commercial: { afe: 0, actualCost: 0, serviceTickets: [] },
         ai: { selectedProblemId: null, selectedRecommendation: null },
         hse: { permits: [], riskRegister: [] },
-        pob: { musterActive: false, musterInterval: null, personnel: [] }
+        pob: { musterActive: false, musterInterval: null, personnel: [] },
+        referenceDataLoaded: false
     };
 
     // --- DOM ELEMENTS ---
@@ -479,38 +966,64 @@ document.addEventListener('DOMContentLoaded', function() {
     const headerNav = document.getElementById('header-nav');
     const heroVideo = document.getElementById('hero-video');
     const heroVideoToggle = document.getElementById('hero-video-toggle');
+    const plannerStatusRegion = document.getElementById('planner-status');
     
     // Planner
 
-    const stepIndicators = { 
-        1: document.getElementById('step-1-indicator'), 
-        2: document.getElementById('step-2-indicator'), 
-        3: document.getElementById('step-3-indicator') 
+    const stepIndicators = {
+        1: document.getElementById('step-1-indicator'),
+        2: document.getElementById('step-2-indicator'),
+        3: document.getElementById('step-3-indicator'),
+        4: document.getElementById('step-4-indicator'),
+        5: document.getElementById('step-5-indicator'),
+        6: document.getElementById('step-6-indicator')
     };
-    
+
     const stepConnectors = {
         1: document.getElementById('step-1-connector'),
-        2: document.getElementById('step-2-connector')
+        2: document.getElementById('step-2-connector'),
+        3: document.getElementById('step-3-connector'),
+        4: document.getElementById('step-4-connector'),
+        5: document.getElementById('step-5-connector')
     };
-    
-    const stepSections = { 
-        1: document.getElementById('step-1'), 
-        2: document.getElementById('step-2'), 
-        3: document.getElementById('step-3') 
+
+    const stepSections = {
+        1: document.getElementById('step-1'),
+        2: document.getElementById('step-2'),
+        3: document.getElementById('step-3'),
+        4: document.getElementById('step-4'),
+        5: document.getElementById('step-5'),
+        6: document.getElementById('step-6')
     };
-    
+
     const wellSelectionGrid = document.getElementById('well-selection-grid');
     const objectivesFieldset = document.getElementById('objectives-fieldset');
     const problemsFieldset = document.getElementById('problems-fieldset');
-    const generatePlanBtnManual = document.getElementById('generate-plan-btn-manual');
-    const generatePlanBtnAi = document.getElementById('generate-plan-btn-ai');
+    const step1ContinueBtn = document.getElementById('step-1-continue');
+    const step2ContinueBtn = document.getElementById('step-2-continue');
+    const designBlueprintContainer = document.getElementById('design-blueprint');
+    const generateProgramBtn = document.getElementById('generate-program-btn');
     const planOutput = document.getElementById('plan-output');
+    const readinessOutput = document.getElementById('readiness-output');
     const startOverBtn = document.getElementById('start-over-btn');
+    const step4ContinueBtn = document.getElementById('step-4-continue');
+    const openLogisticsBtn = document.getElementById('open-logistics-btn');
+    const openCommercialBtn = document.getElementById('open-commercial-btn');
+    const openHseBtn = document.getElementById('open-hse-btn');
+    const step5ContinueBtn = document.getElementById('step-5-continue');
     const beginOpBtn = document.getElementById('begin-op-btn');
+    const reviewAnalysisBtnFinal = document.getElementById('review-analysis-btn-final');
     const aiToggle = document.getElementById('ai-toggle');
     const manualPlanningView = document.getElementById('manual-planning-view');
     const aiAdvisorView = document.getElementById('ai-advisor-view');
     const aiRecommendationsContainer = document.getElementById('ai-recommendations');
+    const dataScrubbingPanel = document.getElementById('data-scrubbing-panel');
+    const dataScrubbingOverview = document.getElementById('data-scrubbing-overview');
+    const dataScrubbingStages = document.getElementById('data-scrubbing-stages');
+    const dataScrubbingSchema = document.getElementById('data-scrubbing-schema');
+    const dataScrubbingRaw = document.getElementById('data-scrubbing-raw');
+    const dataScrubbingNormalized = document.getElementById('data-scrubbing-normalized');
+    const dataScrubbingSummary = document.getElementById('data-scrubbing-summary');
 
     // Performer
 
@@ -536,7 +1049,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const logisticsSubtitle = document.getElementById('logistics-subtitle');
     const logisticsContent = document.getElementById('logistics-content');
-    const equipmentTableBody = document.getElementById('equipment-table-body'), 
+    const logisticsReferenceCard = document.getElementById('logistics-reference-card');
+    const equipmentTableBody = document.getElementById('equipment-table-body'),
     personnelTableBody = document.getElementById('personnel-table-body');
     const equipmentSearch = document.getElementById('equipment-search'), 
     personnelSearch = document.getElementById('personnel-search');
@@ -664,11 +1178,15 @@ document.addEventListener('DOMContentLoaded', function() {
         navLinks.forEach(link => {
             link.classList.remove('active');
             link.removeAttribute('aria-current');
+            link.setAttribute('aria-selected', 'false');
+            link.setAttribute('tabindex', '-1');
         });
         const activeLink = document.getElementById(`${viewName}-nav-link`);
         if (activeLink) {
             activeLink.classList.add('active');
             activeLink.setAttribute('aria-current', 'page');
+            activeLink.setAttribute('aria-selected', 'true');
+            activeLink.removeAttribute('tabindex');
         }
         
         headerDetails.innerHTML = ''; 
@@ -682,8 +1200,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
 
         if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
-            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">&bull; LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
-            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">â— LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">• LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
             initializePerformer();
         } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
             if(appState.selectedWell && appState.generatedPlan) {
@@ -702,16 +1219,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const resetApp = (switchToHome = false) => {
         appState.selectedWell = null; 
         appState.selectedObjective = null; 
-        appState.generatedPlan = null; 
+        appState.generatedPlan = null;
         appState.lessonsLearned = [];
         appState.commercial = { afe: 0, actualCost: 0, serviceTickets: [] };
         appState.ai = { selectedProblemId: null, selectedRecommendation: null };
-        
+
+        renderDataScrubbingPipeline(null);
+
         // Reset well selection
-        document.querySelectorAll('.planner-card').forEach(c => {
-            c.classList.remove('selected');
-            c.setAttribute('aria-pressed', 'false');
-        });
         document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
         
         // Reset objective selection
@@ -722,18 +1237,36 @@ document.addEventListener('DOMContentLoaded', function() {
         const checkedProblem = document.querySelector('input[name="problem"]:checked');
         if(checkedProblem) { checkedProblem.checked = false; }
         
-        // Reset buttons
-        generatePlanBtnManual.disabled = true;
-        generatePlanBtnAi.disabled = true;
-        
+        if (planOutput) {
+            planOutput.innerHTML = '';
+        }
+        if (readinessOutput) {
+            readinessOutput.innerHTML = '';
+        }
+
+        if (step1ContinueBtn) step1ContinueBtn.disabled = true;
+        if (step2ContinueBtn) step2ContinueBtn.disabled = true;
+        if (generateProgramBtn) generateProgramBtn.disabled = true;
+        if (step4ContinueBtn) step4ContinueBtn.disabled = true;
+        if (step5ContinueBtn) step5ContinueBtn.disabled = true;
+        if (beginOpBtn) beginOpBtn.disabled = true;
+
+        if (designBlueprintContainer) {
+            designBlueprintContainer.innerHTML = '<p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>';
+        }
+
+        if (plannerStatusRegion) {
+            plannerStatusRegion.textContent = '';
+        }
+
         // Reset AI recommendations
         aiRecommendationsContainer.classList.add('hidden');
-        
+
         // Reset AI toggle
         aiToggle.checked = false;
         manualPlanningView.classList.remove('hidden');
         aiAdvisorView.classList.add('hidden');
-        
+
         switchView(switchToHome ? 'home' : 'planner');
         updatePlannerStepUI(1);
         updateNavLinks();
@@ -768,9 +1301,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const isWellFromHell = well.id === 'W666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
             const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
-
-            return `
-                <article class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}" role="button" tabindex="0" aria-pressed="false">
             
             return `
                 <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}">
@@ -793,9 +1323,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold" data-well-id="${well.id}">View Details</button>
                         </div>
                     </div>
-                </article>
-            `;
-        }).join('');
                 </div>
             `;
         }).join(''); 
@@ -844,10 +1371,140 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
+    const renderDesignBlueprint = () => {
+        if (!designBlueprintContainer) return;
+        if (!appState.selectedObjective) {
+            designBlueprintContainer.innerHTML = '<p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>';
+            if (generateProgramBtn) generateProgramBtn.disabled = true;
+            return;
+        }
+
+        const blueprint = designBlueprints[appState.selectedObjective.id];
+        if (!blueprint) {
+            designBlueprintContainer.innerHTML = '<p class="text-sm text-slate-400 text-center">Blueprint content coming soon for this objective.</p>';
+            if (generateProgramBtn) generateProgramBtn.disabled = true;
+            return;
+        }
+
+        const conceptualHtml = (blueprint.conceptual || []).map(item => `<li>${item}</li>`).join('');
+        const detailSections = [
+            { label: 'Trajectory & Geomechanics', items: blueprint.detailed?.trajectory },
+            { label: 'Casing & Barriers', items: blueprint.detailed?.casing },
+            { label: 'Fluids & Hydraulics', items: blueprint.detailed?.fluids },
+            { label: 'BHA & Tooling Strategy', items: blueprint.detailed?.bha },
+            { label: 'Well Control Envelope', items: blueprint.detailed?.wellControl },
+            { label: 'Completion & Verification', items: blueprint.detailed?.completion }
+        ].filter(section => Array.isArray(section.items) && section.items.length > 0);
+
+        const detailHtml = detailSections.map(section => `
+            <div class="light-card p-5 rounded-lg h-full">
+                <h4 class="text-lg font-semibold mb-3">${section.label}</h4>
+                <ul class="list-disc pl-5 space-y-1 text-sm">
+                    ${section.items.map(item => `<li>${item}</li>`).join('')}
+                </ul>
+            </div>
+        `).join('');
+
+        const contingenciesHtml = (blueprint.contingencies || []).map(item => `<li>${item}</li>`).join('');
+
+        designBlueprintContainer.innerHTML = `
+            <div class="space-y-6">
+                <div>
+                    <h4 class="text-xl font-semibold">${blueprint.title}</h4>
+                    <p class="text-sm text-slate-300 mt-2">${blueprint.summary}</p>
+                </div>
+                <div class="light-card p-5 rounded-lg">
+                    <h4 class="text-lg font-semibold mb-2">Conceptual Drivers</h4>
+                    <ul class="list-disc pl-5 space-y-1 text-sm">
+                        ${conceptualHtml}
+                    </ul>
+                </div>
+                <div class="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+                    ${detailHtml}
+                </div>
+                <div class="light-card p-5 rounded-lg">
+                    <h4 class="text-lg font-semibold mb-2">Contingency Envelope</h4>
+                    <ul class="list-disc pl-5 space-y-1 text-sm">
+                        ${contingenciesHtml}
+                    </ul>
+                </div>
+            </div>
+        `;
+
+        if (generateProgramBtn) {
+            generateProgramBtn.disabled = false;
+        }
+    };
+
+    const renderDataScrubbingPipeline = (wellId) => {
+        if (!dataScrubbingPanel || !dataScrubbingOverview || !dataScrubbingStages || !dataScrubbingSchema || !dataScrubbingRaw || !dataScrubbingNormalized || !dataScrubbingSummary) {
+            return;
+        }
+
+        const pipeline = dataScrubbingPipelines[wellId];
+
+        if (!pipeline) {
+            dataScrubbingPanel.classList.add('hidden');
+            dataScrubbingOverview.textContent = '';
+            dataScrubbingStages.innerHTML = '';
+            dataScrubbingSchema.innerHTML = '';
+            dataScrubbingRaw.innerHTML = '';
+            dataScrubbingNormalized.innerHTML = '';
+            dataScrubbingSummary.innerHTML = '';
+            return;
+        }
+
+        dataScrubbingPanel.classList.remove('hidden');
+        dataScrubbingOverview.textContent = pipeline.overview;
+
+        dataScrubbingStages.innerHTML = pipeline.stages.map(stage => `
+            <div class="light-card p-5 rounded-lg h-full">
+                <div class="flex items-center justify-between">
+                    <h5 class="text-lg font-semibold">${stage.title}</h5>
+                    <span class="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold ${stage.badgeClass}">${stage.status}</span>
+                </div>
+                <p class="mt-2 text-sm text-slate-400">${stage.description}</p>
+                <ul class="mt-3 space-y-1 text-xs text-slate-400">
+                    ${stage.artifacts.map(item => `<li class="flex items-start gap-2"><span class="mt-1 text-slate-500">•</span><span>${item}</span></li>`).join('')}
+                </ul>
+            </div>
+        `).join('');
+
+        dataScrubbingSchema.innerHTML = pipeline.schema.map(item => `
+            <div>
+                <dt class="text-xs font-semibold tracking-wide text-slate-400 uppercase">${item.label}</dt>
+                <dd class="mt-1 text-sm text-slate-200">${item.value}</dd>
+            </div>
+        `).join('');
+
+        dataScrubbingRaw.innerHTML = `
+            <p>${pipeline.rawExcerpt}</p>
+            ${pipeline.rawSource ? `<p class="mt-2 text-xs not-italic text-slate-400">Source: ${pipeline.rawSource}</p>` : ''}
+        `;
+
+        dataScrubbingNormalized.innerHTML = pipeline.normalizedFindings.map(item => `
+            <li class="rounded-md border border-slate-700 bg-slate-900/40 p-3">
+                <div class="flex items-center justify-between text-xs text-slate-400">
+                    <span>${item.label}</span>
+                    ${item.confidence ? `<span>${Math.round(item.confidence * 100)}% confidence</span>` : ''}
+                </div>
+                <p class="mt-2 text-sm font-semibold text-slate-100">${item.value}</p>
+                <p class="mt-2 text-xs text-slate-400"><span class="font-semibold text-slate-300">Evidence:</span> ${item.evidence}</p>
+            </li>
+        `).join('');
+
+        dataScrubbingSummary.innerHTML = pipeline.qaSummary.map(item => `
+            <li class="flex items-start gap-2">
+                <span class="mt-1 text-emerald-400">✔</span>
+                <span>${item}</span>
+            </li>
+        `).join('');
+    };
+
     const renderPlan = () => {
-        const well = appState.selectedWell, 
-        procedure = appState.generatedPlan, 
-        riskLabels = ['Operational', 'Geological', 'Equipment', 'HSE', 'Financial'], 
+        const well = appState.selectedWell,
+        procedure = appState.generatedPlan,
+        riskLabels = ['Operational', 'Geological', 'Equipment', 'HSE', 'Financial'],
         riskData = Object.values(procedure.risks);
         
         const getRiskTag = (level) => { 
@@ -866,7 +1523,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <ul class="space-y-2">
                         ${logisticsConflicts.map(c => `
                             <li class="flex items-start p-3 rounded-md bg-red-50 dark:bg-red-900/50 border-l-4 border-red-400">
-                                <span class="text-red-600 mr-2 font-bold">âš ï¸</span>
+                                <span class="text-red-600 mr-2 font-bold">⚠️</span>
                                 <span class="text-red-800 dark:text-red-300">${c}</span>
                             </li>
                         `).join('')}
@@ -874,35 +1531,106 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         ` : '';
-        
-        const equipmentList = equipmentRequirements[appState.selectedObjective.id];
-        let equipmentHtml = `
+
+        const equipmentList = equipmentRequirements[appState.selectedObjective.id] || [];
+        const enrichedEquipment = equipmentList.map(item => {
+            const matchedEquipment = findMatchingEquipment(item.name);
+            const vendor = matchedEquipment?.vendor || resolveVendor(item.name);
+            const location = matchedEquipment?.location || 'TBD';
+            const status = matchedEquipment?.status || 'Standby';
+            const rate = matchedEquipment?.rate || item.price || 0;
+            const notes = matchedEquipment?.notes || '';
+            const satisfied = item.source !== 'Vendor' || ['available', 'on job'].includes((matchedEquipment?.status || '').toLowerCase());
+            return {
+                ...item,
+                vendor,
+                location,
+                status,
+                rate,
+                notes,
+                checkboxAttr: satisfied ? 'checked disabled' : ''
+            };
+        });
+
+        const equipmentHtml = `
             <div class="plan-summary-card light-card overflow-hidden">
                 <div class="card-header bg-blue-500">
                     <h4 class="text-xl font-semibold text-white">Equipment Requirements</h4>
                 </div>
-                <div class="p-6">
-                    <div class="space-y-3">
-                        ${equipmentList.map(item => `
-                            <div class="equipment-card">
-                                <div class="flex justify-between items-center">
-                                    <div class="flex items-center">
-                                        <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500 mr-4" ${item.source !== 'Vendor' ? 'checked disabled' : ''}>
-                                        <div>
-                                            <p class="font-semibold">${item.name}</p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">
-                                                Source: ${item.source}
-                                            </p>
-                                        </div>
+                <div class="p-6 space-y-3">
+                    ${enrichedEquipment.map(item => `
+                        <div class="equipment-card">
+                            <div class="flex justify-between items-start gap-4">
+                                <div class="flex items-start gap-3">
+                                    <input type="checkbox" class="h-4 w-4 mt-1 rounded border-gray-300 text-teal-600 focus:ring-teal-500" ${item.checkboxAttr}>
+                                    <div>
+                                        <p class="font-semibold">${item.name}</p>
+                                        <p class="text-xs text-slate-400">Source: ${item.source}</p>
+                                        <p class="text-xs text-slate-400">Vendor: ${item.vendor}</p>
+                                        <p class="text-xs text-slate-400">Location: ${item.location}</p>
+                                        ${item.notes ? `<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">${item.notes}</p>` : ''}
                                     </div>
-                                    <p class="font-semibold text-sm">${item.price > 0 ? `$${item.price.toLocaleString()}` : 'N/A'}</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="block text-sm font-semibold">${formatCurrency(item.rate)}</span>
+                                    <span class="inline-block mt-2 px-2 py-1 text-xs font-medium rounded-full status-${toStatusClass(item.status)}">${item.status}</span>
                                 </div>
                             </div>
-                        `).join('')}
-                    </div>
+                        </div>
+                    `).join('')}
                 </div>
             </div>
         `;
+
+        const serviceTemplate = getServiceTemplateForObjective(appState.selectedObjective.id);
+        let serviceTemplateHtml = '';
+        if (serviceTemplate) {
+            const toolingList = (serviceTemplate.equipment_ids || []).map(id => {
+                const catalogItem = equipmentCatalogIndex[id];
+                const matchedEquipment = catalogItem ? findMatchingEquipment(catalogItem.name) : null;
+                const vendorDetail = matchedEquipment?.vendor ? ` • Vendor: ${matchedEquipment.vendor}` : '';
+                const rateDetail = matchedEquipment?.rate ? ` • Rate: ${formatCurrency(matchedEquipment.rate)}` : '';
+                return `
+                    <li class="border-b border-slate-700/40 pb-2 last:border-0">
+                        <p class="font-semibold">${catalogItem ? catalogItem.name : id}</p>
+                        <p class="text-xs text-slate-400">${catalogItem ? catalogItem.categoryName : 'Tooling'}${vendorDetail}${rateDetail}</p>
+                    </li>
+                `;
+            }).join('') || '<li class="text-sm text-slate-400">Tooling catalog entry coming soon.</li>';
+
+            serviceTemplateHtml = `
+                <div class="plan-summary-card light-card overflow-hidden">
+                    <div class="card-header bg-emerald-500">
+                        <h4 class="text-xl font-semibold text-white">Service Line Template</h4>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Category</p>
+                            <p class="font-semibold">${serviceTemplate.category}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Package</p>
+                            <p class="font-semibold">${serviceTemplate.name}</p>
+                            <p class="text-sm text-slate-400">${serviceTemplate.description}</p>
+                            ${serviceTemplate.duration_hours ? `<p class="text-xs text-slate-400 mt-1">Estimated duration: ${serviceTemplate.duration_hours} hours</p>` : ''}
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Applications</p>
+                            <ul class="list-disc pl-5 text-sm space-y-1">${(serviceTemplate.applications || []).map(app => `<li>${app}</li>`).join('')}</ul>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Tooling Pull</p>
+                            <ul class="space-y-2">${toolingList}</ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        const supplementalCards = [];
+        if (serviceTemplateHtml) supplementalCards.push(serviceTemplateHtml);
+        if (logisticsHtml) supplementalCards.push(logisticsHtml);
+        const supplementalSection = supplementalCards.length ? `<div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">${supplementalCards.join('')}</div>` : '';
 
         // Create timeline for procedure steps
         const timelineHtml = `
@@ -1005,16 +1733,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 ${riskHtml}
                 ${costHtml}
             </div>
-            
-            ${logisticsHtml}
+
+            ${supplementalSection}
         `;
         
         // Initialize risk chart
         const riskChartCtx = document.getElementById('riskChart');
         if (riskChartCtx) {
             const chartTheme = getChartThemeOptions();
-            new Chart(riskChartCtx.getContext('2d'), { 
-                type: 'radar', 
+            new Chart(riskChartCtx.getContext('2d'), {
+                type: 'radar',
                 data: { 
                     labels: riskLabels, 
                     datasets: [{ 
@@ -1056,11 +1784,134 @@ document.addEventListener('DOMContentLoaded', function() {
                             display: false 
                         }
                     }
-                } 
+                }
             });
         }
-        
+
+        renderAssetManagementViews(equipmentSearch ? equipmentSearch.value : '', personnelSearch ? personnelSearch.value : '');
+        initializeCommercial();
+        initializeHSE();
+        renderPOBView();
+
         updateNavLinks();
+
+        if (step4ContinueBtn) step4ContinueBtn.disabled = false;
+        if (step5ContinueBtn) step5ContinueBtn.disabled = true;
+        if (beginOpBtn) beginOpBtn.disabled = true;
+        if (readinessOutput) {
+            readinessOutput.innerHTML = '';
+        }
+    };
+
+    const renderReadinessSummary = () => {
+        if (!readinessOutput) return;
+        if (!appState.generatedPlan || !appState.selectedObjective) {
+            readinessOutput.innerHTML = '<div class="light-card p-6 rounded-lg text-sm text-slate-400 text-center">Generate an integrated program to view logistics and commercial readiness.</div>';
+            if (step5ContinueBtn) step5ContinueBtn.disabled = true;
+            return;
+        }
+
+        const plan = appState.generatedPlan;
+        const equipmentList = equipmentRequirements[appState.selectedObjective.id] || [];
+        const enrichedEquipment = equipmentList.map(item => {
+            const matched = findMatchingEquipment(item.name);
+            return {
+                name: item.name,
+                vendor: matched?.vendor || resolveVendor(item.name),
+                status: matched?.status || 'TBD',
+                location: matched?.location || 'TBD',
+                rate: matched?.rate || item.price || 0
+            };
+        });
+        const personnelList = plan.personnel || [];
+        const conflicts = checkLogistics();
+        const riskEntries = Object.entries(plan.risks || {});
+
+        const equipmentHtml = enrichedEquipment.length > 0 ? enrichedEquipment.map(item => `
+            <li class="flex justify-between items-start gap-4 border-b border-slate-700/40 py-2 last:border-0">
+                <div>
+                    <p class="font-semibold">${item.name}</p>
+                    <p class="text-xs text-slate-400">Vendor: ${item.vendor} • Location: ${item.location}</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs text-slate-400 uppercase">Status</p>
+                    <span class="inline-block mt-1 px-2 py-1 text-xs font-medium rounded-full status-${toStatusClass(item.status)}">${item.status}</span>
+                    <p class="text-xs text-slate-400 mt-1">${formatCurrency(item.rate)} / day</p>
+                </div>
+            </li>
+        `).join('') : '<li class="text-sm text-slate-400">No catalogue requirements for this objective.</li>';
+
+        const personnelHtml = personnelList.length > 0 ? personnelList.map(role => `
+            <li class="flex items-center justify-between py-2 border-b border-slate-700/40 last:border-0">
+                <span>${role}</span>
+                <span class="text-xs text-slate-400">Certification check scheduled</span>
+            </li>
+        `).join('') : '<li class="text-sm text-slate-400">No personnel assigned.</li>';
+
+        const riskHtml = riskEntries.length > 0 ? riskEntries.map(([key, value]) => `
+            <li class="flex items-center justify-between">
+                <span class="capitalize">${key}</span>
+                <span>${value}/5 ${value >= 4 ? '⚠️' : value >= 3 ? '▲' : '✔️'}</span>
+            </li>
+        `).join('') : '<li class="text-sm text-slate-400">Risk profile pending.</li>';
+
+        const conflictHtml = conflicts.length > 0 ? `
+            <div class="light-card p-5 rounded-lg border border-red-400/40">
+                <h4 class="text-lg font-semibold text-red-300 mb-2">Outstanding Actions</h4>
+                <ul class="list-disc pl-5 space-y-1 text-sm text-red-200">
+                    ${conflicts.map(item => `<li>${item}</li>`).join('')}
+                </ul>
+            </div>
+        ` : `
+            <div class="light-card p-5 rounded-lg border border-emerald-400/30">
+                <h4 class="text-lg font-semibold text-emerald-300 mb-2">All Logistics Checks Cleared</h4>
+                <p class="text-sm text-emerald-100">No resource conflicts detected. Mobilisation can proceed when approvals are complete.</p>
+            </div>
+        `;
+
+        readinessOutput.innerHTML = `
+            <div class="grid gap-6 lg:grid-cols-2">
+                <div class="space-y-6">
+                    <div class="light-card p-5 rounded-lg">
+                        <h4 class="text-lg font-semibold mb-2">Schedule & Cost Snapshot</h4>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p class="text-slate-400">Planned Duration</p>
+                                <p class="text-xl font-semibold">${plan.duration} days</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400">Program Budget</p>
+                                <p class="text-xl font-semibold">${formatCurrency(plan.cost)}</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400">Objective</p>
+                                <p class="text-sm">${appState.selectedObjective.name}</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400">Risk Summary</p>
+                                <ul class="space-y-1 mt-1 text-xs">
+                                    ${riskHtml}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="light-card p-5 rounded-lg">
+                        <h4 class="text-lg font-semibold mb-2">Equipment Mobilisation</h4>
+                        <ul class="divide-y divide-slate-700/40">${equipmentHtml}</ul>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="light-card p-5 rounded-lg">
+                        <h4 class="text-lg font-semibold mb-2">Crew Line-Up</h4>
+                        <ul>${personnelHtml}</ul>
+                        <p class="text-xs text-slate-500 mt-3">Detailed certifications and travel plans are managed in the Logistics workspace.</p>
+                    </div>
+                    ${conflictHtml}
+                </div>
+            </div>
+        `;
+
+        if (step5ContinueBtn) step5ContinueBtn.disabled = false;
     };
 
     const updatePlannerStepUI = (currentStep) => { 
@@ -1091,10 +1942,10 @@ document.addEventListener('DOMContentLoaded', function() {
         stepIndicators[currentStep].classList.add('active');
         stepIndicators[currentStep].classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
         stepIndicators[currentStep].classList.add('bg-blue-600', 'text-white');
-        
+
         // Show/hide step sections
         Object.keys(stepSections).forEach(key => {
-            stepSections[key].classList.toggle('hidden', key != currentStep);
+            stepSections[key].classList.toggle('hidden', Number(key) !== currentStep);
         });
     };
 
@@ -1375,7 +2226,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else { 
             appState.liveData.jobRunning = false; 
             addLogEntry('System', 'Job procedure complete.'); 
-            document.getElementById('job-status').textContent = "â— JOB COMPLETE"; 
+            document.getElementById('job-status').textContent = "• JOB COMPLETE"; 
             document.getElementById('job-status').classList.replace('text-emerald-400', 'text-gray-500'); 
             performerControls.classList.remove('hidden'); 
         }
@@ -1486,84 +2337,182 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- ASSET & POB LOGIC ---
 
     const renderAssetManagementViews = (eqFilter = '', persFilter = '') => {
-        if (!appState.generatedPlan) {
-            logisticsSubtitle.textContent = "Please generate a plan in the Planner to view job-specific logistics.";
-            logisticsContent.innerHTML = `
-                <div class="text-center col-span-2 light-card p-8 rounded-lg">
-                    <p>No plan is currently active. Please use the Planner module to generate an intervention plan, and the required tooling and personnel will be displayed here.</p>
-                </div>
-            `;
+        if (!equipmentTableBody || !personnelTableBody) return;
+
+        const setEmptyTables = (message) => {
+            equipmentTableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-sm text-slate-400">${message}</td></tr>`;
+            personnelTableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-sm text-slate-400">${message}</td></tr>`;
+        };
+
+        if (!appState.referenceDataLoaded) {
+            logisticsSubtitle.textContent = "Loading catalog data...";
+            setEmptyTables('Loading reference datasets…');
+            if (logisticsReferenceCard) {
+                logisticsReferenceCard.innerHTML = `
+                    <h3 class="text-xl font-semibold mb-4">Service Line Reference</h3>
+                    <p class="text-sm text-slate-400">Fetching service-line templates and tooling catalog…</p>
+                `;
+            }
             return;
         }
-        
+
+        if (!appState.generatedPlan) {
+            logisticsSubtitle.textContent = "Please generate a plan in the Planner to view job-specific logistics.";
+            setEmptyTables('Generate a plan to load logistics data.');
+            if (logisticsReferenceCard) {
+                logisticsReferenceCard.innerHTML = `
+                    <h3 class="text-xl font-semibold mb-4">Service Line Reference</h3>
+                    <p class="text-sm text-slate-400">Generate a plan to view recommended templates and vendor pairings.</p>
+                `;
+            }
+            return;
+        }
+
         logisticsSubtitle.textContent = `Logistics for ${appState.generatedPlan.name} on ${appState.selectedWell.name}`;
-        
-        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id];
-        const requiredRoles = appState.generatedPlan.personnel;
+
+        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id] || [];
+        const requiredRoles = appState.generatedPlan.personnel || [];
 
         const eqF = eqFilter.toLowerCase();
-        const filteredEquipment = equipmentData.filter(e => 
-            requiredEquipment.some(req => req.name === e.type) && 
-            (e.id.toLowerCase().includes(eqF) || e.type.toLowerCase().includes(eqF))
-        );
-        
-        equipmentTableBody.innerHTML = filteredEquipment.map(e => `
-            <tr>
-                <td class="p-2">${e.id}</td>
-                <td class="p-2">${e.type}</td>
-                <td class="p-2">${e.location}</td>
-                <td class="p-2">
-                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${e.status.toLowerCase()}">${e.status}</span>
-                </td>
-                <td class="p-2">
-                    <button class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full hover:bg-blue-200 disabled:opacity-50" 
-                            ${e.location === 'Onboard - Pump Room' && e.testStatus === 'Pending' ? '' : 'disabled'}>
-                        Test
-                    </button>
-                </td>
-            </tr>
-        `).join('');
+        const filteredEquipment = equipmentData.filter(item => {
+            const matchesRequirement = requiredEquipment.some(req => matchesEquipmentRequirement(req.name, item));
+            if (!matchesRequirement) return false;
+            if (!eqF) return true;
+            return [item.id, item.type, item.vendor, item.location]
+                .filter(Boolean)
+                .some(val => val.toLowerCase().includes(eqF));
+        });
+
+        equipmentTableBody.innerHTML = filteredEquipment.length ? filteredEquipment.map(item => {
+            const testStatus = item.testStatus || 'Pending';
+            const statusClass = toStatusClass(testStatus || 'pending');
+            const testDisabled = testStatus !== 'Pending';
+            return `
+                <tr>
+                    <td class="p-2">${item.id}</td>
+                    <td class="p-2">${item.type}</td>
+                    <td class="p-2">${item.vendor || 'Vendor TBD'}</td>
+                    <td class="p-2">${item.location || 'TBD'}</td>
+                    <td class="p-2">${formatCurrency(item.rate)}</td>
+                    <td class="p-2">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full status-${statusClass || 'pending'}">${testStatus}</span>
+                    </td>
+                    <td class="p-2">
+                        <button class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full hover:bg-blue-200${testDisabled ? ' opacity-50 cursor-not-allowed' : ''}" ${testDisabled ? 'disabled' : ''}>Test</button>
+                    </td>
+                </tr>
+            `;
+        }).join('') : `<tr><td colspan="7" class="p-4 text-center text-sm text-slate-400">No matching equipment found.</td></tr>`;
 
         const persF = persFilter.toLowerCase();
-        const filteredPersonnel = personnelData.filter(p => 
-            requiredRoles.includes(p.role) && 
-            (p.name.toLowerCase().includes(persF) || p.role.toLowerCase().includes(persF))
-        );
-        
-        personnelTableBody.innerHTML = filteredPersonnel.map(p => `
-            <tr>
-                <td class="p-2">${p.name}</td>
-                <td class="p-2">${p.role}</td>
-                <td class="p-2">
-                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.status.toLowerCase().replace(/\s/g, '')}">${p.status}</span>
-                </td>
-                <td class="p-2">${p.certsValid ? 'âœ… Valid' : 'âŒ Expired'}</td>
-            </tr>
-        `).join('');
+        const filteredPersonnel = personnelData.filter(person => {
+            const matchesRole = requiredRoles.some(role => matchesPersonnelRole(role, person));
+            if (!matchesRole) return false;
+            if (!persF) return true;
+            return [person.name, person.role, person.company]
+                .filter(Boolean)
+                .some(val => val.toLowerCase().includes(persF));
+        });
+
+        personnelTableBody.innerHTML = filteredPersonnel.length ? filteredPersonnel.map(person => {
+            const statusClass = toStatusClass(person.status || 'available');
+            const perDiem = person.perDiem ? `<span class="block text-xs text-slate-400">Per diem ${formatCurrency(person.perDiem)}</span>` : '';
+            return `
+                <tr>
+                    <td class="p-2">
+                        <div class="flex flex-col">
+                            <span class="font-semibold">${person.name}</span>
+                            <span class="text-xs text-slate-400">${person.id}</span>
+                        </div>
+                    </td>
+                    <td class="p-2">${person.role}</td>
+                    <td class="p-2">${person.company}</td>
+                    <td class="p-2">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full status-${statusClass || 'available'}">${person.status}</span>
+                    </td>
+                    <td class="p-2">
+                        ${formatCurrency(person.rate)}
+                        ${perDiem}
+                    </td>
+                    <td class="p-2">${person.certsValid ? '✅ Valid' : '⚠️ Needs Renewal'}</td>
+                </tr>
+            `;
+        }).join('') : `<tr><td colspan="6" class="p-4 text-center text-sm text-slate-400">No matching personnel found.</td></tr>`;
+
+        if (logisticsReferenceCard) {
+            const template = getServiceTemplateForObjective(appState.selectedObjective.id);
+            if (!template) {
+                logisticsReferenceCard.innerHTML = `
+                    <h3 class="text-xl font-semibold mb-4">Service Line Reference</h3>
+                    <p class="text-sm text-slate-400">No service template mapped to this objective yet.</p>
+                `;
+            } else {
+                const toolingList = (template.equipment_ids || []).map(id => {
+                    const catalogItem = equipmentCatalogIndex[id];
+                    const matchedEquipment = catalogItem ? findMatchingEquipment(catalogItem.name) : null;
+                    const vendorDetail = matchedEquipment?.vendor ? ` • Vendor: ${matchedEquipment.vendor}` : '';
+                    const rateDetail = matchedEquipment?.rate ? ` • Rate: ${formatCurrency(matchedEquipment.rate)}` : '';
+                    return `
+                        <li class="border-b border-slate-700/40 pb-2 last:border-0">
+                            <p class="font-semibold">${catalogItem ? catalogItem.name : id}</p>
+                            <p class="text-xs text-slate-400">${catalogItem ? catalogItem.categoryName : 'Tooling'}${vendorDetail}${rateDetail}</p>
+                        </li>
+                    `;
+                }).join('') || '<li class="text-sm text-slate-400">Tooling catalog entry coming soon.</li>';
+
+                logisticsReferenceCard.innerHTML = `
+                    <h3 class="text-xl font-semibold mb-4">Service Line Reference</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Category</p>
+                            <p class="font-semibold">${template.category}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Package</p>
+                            <p class="font-semibold">${template.name}</p>
+                            <p class="text-sm text-slate-400">${template.description}</p>
+                            ${template.duration_hours ? `<p class="text-xs text-slate-400 mt-1">Estimated duration: ${template.duration_hours} hours</p>` : ''}
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Applications</p>
+                            <ul class="list-disc pl-5 text-sm space-y-1">${(template.applications || []).map(app => `<li>${app}</li>`).join('')}</ul>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Tooling Pull</p>
+                            <ul class="space-y-2">${toolingList}</ul>
+                        </div>
+                    </div>
+                `;
+            }
+        }
     };
 
     const checkLogistics = () => {
         const conflicts = [];
-        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id];
+        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id] || [];
 
         requiredEquipment.forEach(req => {
             if (req.source === 'Vendor') {
-                const availableTool = equipmentData.find(e => e.type === req.name && e.status === 'Available');
+                const availableTool = equipmentData.find(item => matchesEquipmentRequirement(req.name, item) && item.status === 'Available');
                 if (!availableTool) {
-                    conflicts.push(`No available equipment of type: <strong>${req.name}</strong>. Must be ordered from vendor.`);
+                    const vendor = resolveVendor(req.name);
+                    conflicts.push(`No available equipment of type: <strong>${req.name}</strong>. Coordinate with <strong>${vendor}</strong> for mobilisation.`);
                 }
             }
         });
 
-        appState.generatedPlan.personnel.forEach(roleName => {
-            const availablePerson = personnelData.find(p => p.role === roleName && p.status === 'Available');
+        (appState.generatedPlan.personnel || []).forEach(roleName => {
+            const availablePerson = personnelData.find(person => matchesPersonnelRole(roleName, person) && person.status === 'Available');
             if (!availablePerson) {
-                conflicts.push(`No available personnel for role: <strong>${roleName}</strong>.`);
-            } else if (!availablePerson.certsValid) {
-                conflicts.push(`Personnel <strong>${availablePerson.name} (${roleName})</strong> has expired certifications.`);
+                const candidate = personnelData.find(person => matchesPersonnelRole(roleName, person));
+                if (candidate && !candidate.certsValid) {
+                    conflicts.push(`Personnel <strong>${candidate.name} (${roleName})</strong> has certifications that require renewal.`);
+                } else {
+                    conflicts.push(`No available personnel for role: <strong>${roleName}</strong>.`);
+                }
             }
         });
-        
+
         return conflicts;
     };
 
@@ -1593,8 +2542,12 @@ document.addEventListener('DOMContentLoaded', function() {
             ms.current = appState.pob.personnel.filter(p => p.muster === ms.id && p.musterStatus === 'Mustered').length; 
         });
         
+        const unaccountedCount = totalPOB - musteredCount;
+        const totalDailyRate = appState.pob.personnel.reduce((sum, person) => sum + (Number(person.rate) || 0), 0);
+        const totalPerDiem = appState.pob.personnel.reduce((sum, person) => sum + (Number(person.perDiem) || 0), 0);
+
         const summaryHtml = `
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <div class="light-card p-6 text-center rounded-lg">
                     <p class="text-sm font-medium">Total POB</p>
                     <p class="text-4xl font-bold">${totalPOB}</p>
@@ -1602,10 +2555,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="light-card p-6 text-center rounded-lg">
                     <p class="text-sm font-medium">Accounted For</p>
                     <p class="text-4xl font-bold text-green-600">${musteredCount}</p>
+                    <p class="mt-2 text-xs text-slate-400">Unaccounted: ${unaccountedCount}</p>
                 </div>
                 <div class="light-card p-6 text-center rounded-lg">
-                    <p class="text-sm font-medium">Unaccounted For</p>
-                    <p class="text-4xl font-bold text-red-600">${totalPOB - musteredCount}</p>
+                    <p class="text-sm font-medium">Daily Crew Rate</p>
+                    <p class="text-3xl font-bold">${formatCurrency(totalDailyRate)}</p>
+                </div>
+                <div class="light-card p-6 text-center rounded-lg">
+                    <p class="text-sm font-medium">Daily Per Diem</p>
+                    <p class="text-3xl font-bold">${formatCurrency(totalPerDiem)}</p>
                 </div>
             </div>
         `;
@@ -1628,6 +2586,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <th class="p-2">Name</th>
                                 <th class="p-2">Company</th>
                                 <th class="p-2">Role</th>
+                                <th class="p-2">Daily Rate</th>
+                                <th class="p-2">Per Diem</th>
                                 <th class="p-2">Muster Station</th>
                                 <th class="p-2">Status</th>
                             </tr>
@@ -1638,9 +2598,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <td class="p-2">${p.name}</td>
                                     <td class="p-2">${p.company}</td>
                                     <td class="p-2">${p.role}</td>
+                                    <td class="p-2">${formatCurrency(p.rate)}</td>
+                                    <td class="p-2">${formatCurrency(p.perDiem)}</td>
                                     <td class="p-2">${p.muster}</td>
                                     <td class="p-2">
-                                        <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.musterStatus.toLowerCase().replace(' ', '')}">${p.musterStatus}</span>
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full status-${toStatusClass(p.musterStatus || 'pending')}">${p.musterStatus}</span>
                                     </td>
                                 </tr>
                             `).join('')}
@@ -1696,48 +2658,89 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- COMMERCIAL & HSE LOGIC ---
 
     const initializeCommercial = () => {
-        if (!appState.generatedPlan) { 
+        if (!appState.generatedPlan) {
             commercialContent.innerHTML = `
                 <div class="text-center light-card p-8 rounded-lg">
                     <p>No plan is currently active. Please use the Planner module to generate an intervention plan, and the associated financial data will be displayed here.</p>
                 </div>
             `;
-            commercialSubtitle.textContent = "No active operation."
-            return; 
+            commercialSubtitle.textContent = "No active operation.";
+            return;
         }
-        
+
         commercialSubtitle.textContent = `Live financial tracking for ${appState.generatedPlan.name} on ${appState.selectedWell.name}`;
-        appState.commercial.afe = appState.generatedPlan.cost;
+
+        const planDuration = Math.max(1, Number(appState.generatedPlan.duration) || 1);
+        appState.commercial.afe = Number(appState.generatedPlan.cost) || 0;
         appState.commercial.actualCost = 0;
         appState.commercial.serviceTickets = [];
-        
+
+        const pushTicket = ({ description, cost = 0, vendor = 'Vendor TBD', status = 'Pending' }) => {
+            const ticketCost = Number(cost) || 0;
+            appState.commercial.serviceTickets.push({
+                description,
+                cost: ticketCost,
+                vendor,
+                status
+            });
+            appState.commercial.actualCost += ticketCost;
+        };
+
         const equipmentList = equipmentRequirements[appState.selectedObjective.id] || [];
         equipmentList.forEach(item => {
-            if (item.price > 0) {
-                const cost = item.price * appState.generatedPlan.duration;
-                appState.commercial.serviceTickets.push({ 
-                    description: `Rental: ${item.name}`, 
-                    cost: cost, 
-                    validated: true 
-                });
-                appState.commercial.actualCost += cost;
-            }
+            const matchedEquipment = findMatchingEquipment(item.name);
+            const vendor = matchedEquipment?.vendor || 'Vendor TBD';
+            const status = matchedEquipment?.status || 'Pending';
+            const rate = matchedEquipment?.rate || item.price || 0;
+            const cost = rate * planDuration;
+
+            pushTicket({
+                description: `Rental: ${item.name}`,
+                cost,
+                vendor,
+                status
+            });
         });
-        
+
+        const crewRoles = appState.generatedPlan.personnel || [];
+        crewRoles.forEach(roleName => {
+            const crewMember = personnelData.find(person => matchesPersonnelRole(roleName, person));
+            if (!crewMember) {
+                pushTicket({
+                    description: `Crew mobilisation: ${roleName}`,
+                    vendor: 'Crew TBD',
+                    status: 'Pending'
+                });
+                return;
+            }
+
+            const dailyRate = Number(crewMember.rate) || 0;
+            const perDiem = Number(crewMember.perDiem) || 0;
+            const totalCost = (dailyRate + perDiem) * planDuration;
+
+            pushTicket({
+                description: `Crew: ${crewMember.role}`,
+                cost: totalCost,
+                vendor: crewMember.company || 'Service Co.',
+                status: crewMember.status || 'Scheduled'
+            });
+        });
+
         renderCommercialView();
     };
+
 
     const renderCommercialView = () => {
         if (!appState.generatedPlan) {
             initializeCommercial();
             return;
         }
-        
-        const afe = appState.commercial.afe, 
-        actual = appState.commercial.actualCost;
+
+        const afe = Number(appState.commercial.afe) || 0,
+        actual = Number(appState.commercial.actualCost) || 0;
         const burnPercent = afe > 0 ? Math.min(100, (actual / afe) * 100) : 0;
         const burnColor = burnPercent > 90 ? 'bg-red-500' : burnPercent > 75 ? 'bg-yellow-500' : 'bg-teal-500';
-        
+
         commercialContent.innerHTML = `
             <div class="grid gap-8 lg:grid-cols-3">
                 <div class="lg:col-span-2 light-card p-6 rounded-lg">
@@ -1745,13 +2748,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="space-y-4">
                         <div class="flex justify-between font-bold text-lg">
                             <span>Actual Cost</span>
-                            <span>$${actual.toLocaleString()}</span>
+                            <span>${formatCurrency(actual)}</span>
                         </div>
                         <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
                             <div class="${burnColor} h-4 rounded-full" style="width: ${burnPercent}%"></div>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span>Budget (AFE): $${afe.toLocaleString()}</span>
+                            <span>Budget (AFE): ${formatCurrency(afe)}</span>
                             <span>${burnPercent.toFixed(1)}% Used</span>
                         </div>
                     </div>
@@ -1761,20 +2764,30 @@ document.addEventListener('DOMContentLoaded', function() {
                             <thead class="table-header sticky top-0">
                                 <tr>
                                     <th class="p-2">Description</th>
+                                    <th class="p-2">Vendor</th>
                                     <th class="p-2">Cost</th>
                                     <th class="p-2">Status</th>
                                 </tr>
                             </thead>
                             <tbody id="service-ticket-body">
-                                ${appState.commercial.serviceTickets.map(t => `
-                                    <tr class="border-b table-row-alt dark:border-gray-700">
-                                        <td class="p-2">${t.description}</td>
-                                        <td class="p-2">$${t.cost.toLocaleString()}</td>
-                                        <td class="p-2">
-                                            <span class="status-approved px-2 py-1 text-xs font-medium rounded-full">Validated</span>
-                                        </td>
+                                ${appState.commercial.serviceTickets.length ? appState.commercial.serviceTickets.map(t => {
+                                    const statusLabel = t.status || 'Pending';
+                                    const statusClass = toStatusClass(statusLabel || 'pending');
+                                    return `
+                                        <tr class="border-b table-row-alt dark:border-gray-700">
+                                            <td class="p-2">${t.description}</td>
+                                            <td class="p-2">${t.vendor || 'Vendor TBD'}</td>
+                                            <td class="p-2">${formatCurrency(t.cost)}</td>
+                                            <td class="p-2">
+                                                <span class="px-2 py-1 text-xs font-medium rounded-full status-${statusClass || 'pending'}">${statusLabel}</span>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('') : `
+                                    <tr>
+                                        <td colspan="4" class="p-4 text-center text-sm text-slate-400">Service tickets will appear after a plan is generated.</td>
                                     </tr>
-                                `).join('')}
+                                `}
                             </tbody>
                         </table>
                     </div>
@@ -1793,11 +2806,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         `;
-        
+
         document.getElementById('validate-invoice-btn').addEventListener('click', validateInvoice);
     };
 
-    const validateInvoice = () => {
+
+const validateInvoice = () => {
         const invoiceAmount = parseFloat(document.getElementById('invoice-amount').value);
         const validatedCost = appState.commercial.actualCost;
         const resultContainer = document.getElementById('invoice-result');
@@ -1858,8 +2872,96 @@ document.addEventListener('DOMContentLoaded', function() {
                 consequence: 'Environmental Spill', 
                 mitigation: 'Verify PCE integrity; function test all valves.', 
                 risk: 'High' 
-            } 
-        ];
+        }
+    ];
+
+    const dataScrubbingPipelines = {
+        W666: {
+            overview: 'Every raw drop from the operator or a Well-Tegra engineer is scrubbed the moment it lands. LangExtract runs against the intake to normalize barrier failures, obstruction depths, and recommended actions before the planner ever consumes the data.',
+            stages: [
+                {
+                    title: '1. Intake & Hashing',
+                    status: 'Completed',
+                    badgeClass: 'border-emerald-400 text-emerald-300',
+                    description: 'Encrypted SFTP drop validates checksums and timestamps each inbound artifact so the provenance is locked before parsing begins.',
+                    artifacts: [
+                        'Slickline DDR • 2024-04-10',
+                        'Vendor BaSO₄ Scale Survey • 2024-03-28',
+                        'TRSSV Negative Test Worksheet • 2024-04-10'
+                    ]
+                },
+                {
+                    title: '2. LangExtract Structuring',
+                    status: 'Completed',
+                    badgeClass: 'border-emerald-400 text-emerald-300',
+                    description: 'LangExtract prompt library extracts barrier failures, obstruction depths, annulus pressures, and recommended actions with direct citations back to the source sentences.',
+                    artifacts: [
+                        'Model: gemini-2.5-flash (dry-run sandbox)',
+                        'Prompt template: wtgr/w666/barrier_rules.json',
+                        'Output bundle: w666_ingest_2024-04-10.jsonl'
+                    ]
+                },
+                {
+                    title: '3. Engineer QA & Publish',
+                    status: 'Signed Off',
+                    badgeClass: 'border-sky-400 text-sky-300',
+                    description: 'Well-Tegra engineer cross-checks citations, resolves flagged anomalies, and publishes the normalized dataset to the planning workspace.',
+                    artifacts: [
+                        'Reviewer: M. Singh (Integrity SME)',
+                        'Anomalies resolved: 2 (unit mismatch & duplicated entry)',
+                        'Publish time: 2024-04-12 18:20 UTC'
+                    ]
+                }
+            ],
+            schema: [
+                {
+                    label: 'Prompt Goal',
+                    value: 'Extract barrier failures, obstruction or debris depths, annulus pressure excursions, and recommended mitigations for W666 with direct evidence spans.'
+                },
+                {
+                    label: 'Extraction Classes',
+                    value: 'well_summary, barrier_failure, obstruction, recommended_action, risk_alert, confidence_score'
+                },
+                {
+                    label: 'Output Controls',
+                    value: 'LangExtract enforces JSON schema + cite_range_id so every field references its originating document coordinates.'
+                }
+            ],
+            rawExcerpt: '“DHSV failed to close during negative test. Pressure at A-annulus climbed to 1,850 psi. Suspect scale at ~14,200 ft restricting travel.”',
+            rawSource: 'Slickline Daily Report — 2024-04-10',
+            normalizedFindings: [
+                {
+                    label: 'barrier_failure.event',
+                    value: 'Surface-controlled subsurface safety valve failed to seal on negative test.',
+                    evidence: 'TRSSV Negative Test Worksheet §4.1 (cite_range 201-242)',
+                    confidence: 0.94
+                },
+                {
+                    label: 'obstruction.depth_ft',
+                    value: '14,200',
+                    evidence: 'Slickline DDR 2024-04-10 line 57 (cite_range 871-896)',
+                    confidence: 0.91
+                },
+                {
+                    label: 'risk_alert.detail',
+                    value: 'A-annulus pressure sustained at 1,850 psi with no bleed-off path — flagged for immediate pressure management plan.',
+                    evidence: 'LangExtract merge across DDR + scale survey (cite_ranges 901-940, 1104-1130)',
+                    confidence: 0.89
+                },
+                {
+                    label: 'recommended_action',
+                    value: 'Execute expandable patch + chemical jetting train before TRSSV change-out; align with integrated plan W666-INT-24-01.',
+                    evidence: 'Engineer QA annotation referencing historical case M-21 (cite_range 1304-1350)',
+                    confidence: 0.93
+                }
+            ],
+            qaSummary: [
+                '12 of 13 high-priority statements grounded with citations (92% coverage).',
+                'Operator and vendor identifiers hashed; canonical asset preserved as W666 for traceability.',
+                'Sign-off recorded by Well-Tegra engineer M. Singh on 2024-04-12 18:20 UTC.'
+            ]
+        }
+    };
         
         renderHSEView();
     };
@@ -2033,7 +3135,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p class="font-bold text-lg">${h.operation} <span class="text-sm font-normal">- ${h.date}</span></p>
                 <div class="mt-3 space-y-3">
                     <div class="flex items-start">
-                        <span class="text-xl mr-3">âš ï¸</span>
+                        <span class="text-xl mr-3">⚠️</span>
                         <div>
                             <strong class="font-semibold text-red-600 dark:text-red-400">Problem:</strong>
                             <p class="text-sm">${h.problem}</p>
@@ -2242,9 +3344,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalSavingsValue = document.getElementById('totalSavings');
     const savingsChartCanvas = document.getElementById('savingsChart');
 
+    const announcePlannerStatus = (message) => {
+        if (!plannerStatusRegion || !message) return;
+        plannerStatusRegion.textContent = '';
+        requestAnimationFrame(() => {
+            plannerStatusRegion.textContent = message;
+        });
+    };
+
     const calculateROI = () => {
         if (!engineerCountSlider) return;
-        
+
         const engineers = parseInt(engineerCountSlider.value);
         const nptReduction = parseInt(nptReductionSlider.value) / 100;
         const timeSavings = parseInt(timeSavingsSlider.value) / 100;
@@ -2258,8 +3368,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalSavings = engineerSavings + nptSavings;
 
         engineerCountValue.textContent = engineers;
+        engineerCountSlider.setAttribute('aria-valuenow', engineers);
+        engineerCountSlider.setAttribute('aria-valuetext', `${engineers} well engineers`);
         nptReductionValue.textContent = `${nptReduction * 100}%`;
+        nptReductionSlider.setAttribute('aria-valuenow', nptReduction * 100);
+        nptReductionSlider.setAttribute('aria-valuetext', `${nptReduction * 100}% projected reduction`);
         timeSavingsValue.textContent = `${timeSavings * 100}%`;
+        timeSavingsSlider.setAttribute('aria-valuenow', timeSavings * 100);
+        timeSavingsSlider.setAttribute('aria-valuetext', `${timeSavings * 100}% engineering time reclaimed`);
         totalSavingsValue.textContent = `$${Math.round(totalSavings).toLocaleString()}`;
 
         updateSavingsChart(engineerSavings, nptSavings);
@@ -2274,10 +3390,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const initSavingsChart = () => {
         if (!savingsChartCanvas) return;
-        
+
         const ctx = savingsChartCanvas.getContext('2d');
         const isDark = body.classList.contains('theme-dark');
-        
+
         appState.savingsChartInstance = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -2321,6 +3437,70 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    const loadReferenceData = async () => {
+        try {
+            const [equipmentRes, personnelRes, serviceRes, catalogRes] = await Promise.allSettled([
+                fetch('data-equipment-tools.csv'),
+                fetch('data-personnel-rates.csv'),
+                fetch('service-line-templates.json'),
+                fetch('equipment-catalog.json')
+            ]);
+
+            if (equipmentRes.status === 'fulfilled' && equipmentRes.value.ok) {
+                const csv = await equipmentRes.value.text();
+                mergeEquipmentCsvData(csv);
+            }
+
+            if (personnelRes.status === 'fulfilled' && personnelRes.value.ok) {
+                const csv = await personnelRes.value.text();
+                mergePersonnelCsvData(csv);
+            }
+
+            if (serviceRes.status === 'fulfilled' && serviceRes.value.ok) {
+                const json = await serviceRes.value.json();
+                serviceLineTemplatesIndex = buildServiceLineIndex(json);
+            }
+
+            if (catalogRes.status === 'fulfilled' && catalogRes.value.ok) {
+                const json = await catalogRes.value.json();
+                equipmentCatalogIndex = buildEquipmentCatalogIndex(json);
+            }
+
+            appState.referenceDataLoaded = true;
+
+            if (appState.generatedPlan) {
+                renderAssetManagementViews(equipmentSearch ? equipmentSearch.value : '', personnelSearch ? personnelSearch.value : '');
+                initializeCommercial();
+                initializeHSE();
+                renderPOBView();
+            } else {
+                renderAssetManagementViews();
+            }
+        } catch (error) {
+            console.error('Failed to load reference data:', error);
+            appState.referenceDataLoaded = true;
+
+            if (logisticsSubtitle) {
+                logisticsSubtitle.textContent = 'Using offline reference datasets.';
+            }
+
+            if (logisticsReferenceCard) {
+                logisticsReferenceCard.innerHTML = `
+                    <h3 class="text-xl font-semibold mb-4">Service Line Reference</h3>
+                    <p class="text-sm text-slate-400">Offline mode active. Using bundled tooling and crew data.</p>
+                `;
+            }
+
+            renderAssetManagementViews(equipmentSearch ? equipmentSearch.value : '', personnelSearch ? personnelSearch.value : '');
+
+            if (appState.generatedPlan) {
+                initializeCommercial();
+                initializeHSE();
+                renderPOBView();
+            }
+        }
+    };
+
     const initializeApp = () => {
         if (appContainer) {
             appContainer.classList.remove('hidden');
@@ -2331,6 +3511,7 @@ document.addEventListener('DOMContentLoaded', function() {
         switchView('home');
     };
 
+    loadReferenceData();
     initializeApp();
 
     // --- EVENT LISTENERS ---
@@ -2351,43 +3532,37 @@ document.addEventListener('DOMContentLoaded', function() {
     // Well selection event listener
     wellSelectionGrid.addEventListener('click', (e) => {
         // Handle view details button
-        if (e.target.closest('.view-details-btn')) { 
-            e.stopPropagation(); 
-            openModal(e.target.closest('.view-details-btn').dataset.wellId); 
-            return; 
+        if (e.target.closest('.view-details-btn')) {
+            e.stopPropagation();
+            openModal(e.target.closest('.view-details-btn').dataset.wellId);
+            return;
         }
-        
+
         // Handle well card selection
-        const card = e.target.closest('.planner-card'); 
+        const card = e.target.closest('.planner-card');
         if (!card) return;
-        
+
         appState.selectedWell = wellData.find(w => w.id === card.dataset.wellId);
-        document.querySelectorAll('.planner-card').forEach(c => {
-            c.classList.remove('selected');
-            c.setAttribute('aria-pressed', 'false');
-        });
-        card.classList.add('selected');
-        card.setAttribute('aria-pressed', 'true');
+        renderDataScrubbingPipeline(appState.selectedWell?.id);
         document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
 
         renderProblems(); // Update the problems list based on selection
-        updatePlannerStepUI(2);
-    });
-
-    wellSelectionGrid.addEventListener('keydown', (e) => {
-        if (e.defaultPrevented) return;
-        const card = e.target.closest('.planner-card');
-        if (!card) return;
-
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            card.click();
+        if (step1ContinueBtn) step1ContinueBtn.disabled = false;
+        if (step2ContinueBtn) step2ContinueBtn.disabled = true;
+        if (generateProgramBtn) generateProgramBtn.disabled = true;
+        if (designBlueprintContainer) {
+            designBlueprintContainer.innerHTML = '<p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>';
         }
+        aiRecommendationsContainer.classList.add('hidden');
+        appState.selectedObjective = null;
+        appState.ai.selectedProblemId = null;
+        appState.ai.selectedRecommendation = null;
+        announcePlannerStatus(`${appState.selectedWell.name} selected. Review the well dossier and continue to objectives when ready.`);
     });
 
     // Objective selection event listener
-    objectivesFieldset.addEventListener('change', (e) => { 
+    objectivesFieldset.addEventListener('change', (e) => {
         // Find the selected objective card and update its styling
         document.querySelectorAll('.objective-card').forEach(card => {
             card.classList.remove('selected');
@@ -2397,9 +3572,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (selectedCard) {
             selectedCard.classList.add('selected');
         }
-        
-        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value); 
-        generatePlanBtnManual.disabled = !appState.selectedObjective; 
+
+        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value);
+        appState.ai.selectedRecommendation = null;
+        if (step2ContinueBtn) step2ContinueBtn.disabled = !appState.selectedObjective;
+        renderDesignBlueprint();
+        if (appState.selectedObjective) {
+            announcePlannerStatus(`${appState.selectedObjective.name} objective selected. Continue to the engineering blueprint.`);
+        }
     });
 
     // Problem selection event listener
@@ -2415,6 +3595,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         appState.ai.selectedProblemId = e.target.value;
+        announcePlannerStatus(`${problemsData.find(problem => problem.id === appState.ai.selectedProblemId)?.name || 'Problem'} selected. Review AI recommendations below.`);
         const recommendations = aiRecommendations[appState.ai.selectedProblemId] || [];
         
         aiRecommendationsContainer.innerHTML = `
@@ -2437,25 +3618,30 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         aiRecommendationsContainer.classList.remove('hidden');
-        
+
         // Add event listeners to recommendation cards
         document.querySelectorAll('.ai-recommendation-enhanced').forEach(card => card.addEventListener('click', (ev) => {
             const selectedCard = ev.target.closest('.ai-recommendation-enhanced');
             const recIndex = parseInt(selectedCard.dataset.recIndex);
             appState.ai.selectedRecommendation = aiRecommendations[appState.ai.selectedProblemId][recIndex];
-            
+            appState.selectedObjective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId);
+
             document.querySelectorAll('.ai-recommendation-enhanced').forEach(c => c.classList.remove('selected'));
             selectedCard.classList.add('selected');
-            
-            generatePlanBtnAi.disabled = false;
+
+            if (step2ContinueBtn) step2ContinueBtn.disabled = false;
+            renderDesignBlueprint();
+            announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Continue to the engineering blueprint.`);
         }));
     });
 
     // AI toggle event listener
-    aiToggle.addEventListener('change', (e) => { 
-        manualPlanningView.classList.toggle('hidden', e.target.checked); 
+    aiToggle.addEventListener('change', (e) => {
+        manualPlanningView.classList.toggle('hidden', e.target.checked);
         aiAdvisorView.classList.toggle('hidden', !e.target.checked);
-        
+
+        announcePlannerStatus(e.target.checked ? 'AI Advisor enabled. Select a problem to view recommendations.' : 'Manual planning enabled. Select an objective to continue.');
+
         if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== 'W666') {
              aiAdvisorView.innerHTML = `
                 <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
@@ -2464,28 +3650,110 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         } else {
              renderProblems(); // Re-render problems list
+             if (!e.target.checked) {
+                 aiRecommendationsContainer.classList.add('hidden');
+             }
         }
+        if (step2ContinueBtn) {
+            const hasSelection = e.target.checked ? !!appState.ai.selectedRecommendation : !!appState.selectedObjective;
+            step2ContinueBtn.disabled = !hasSelection;
+        }
+        renderDesignBlueprint();
     });
 
-    // Generate plan buttons event listeners
-    generatePlanBtnManual.addEventListener('click', () => { 
-        if (!appState.selectedWell || !appState.selectedObjective) return; 
-        appState.generatedPlan = proceduresData[appState.selectedObjective.id]; 
-        renderPlan(); 
-        updatePlannerStepUI(3); 
-    });
+    // Step progression controls
+    if (step1ContinueBtn) {
+        step1ContinueBtn.addEventListener('click', () => {
+            if (!appState.selectedWell) return;
+            updatePlannerStepUI(2);
+            announcePlannerStatus('Objective selection unlocked. Choose a manual objective or enable the AI Advisor.');
+        });
+    }
 
-    generatePlanBtnAi.addEventListener('click', () => { 
-        if (!appState.selectedWell || !appState.ai.selectedRecommendation) return; 
-        appState.selectedObjective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId); 
-        appState.generatedPlan = proceduresData[appState.selectedObjective.id]; 
-        renderPlan(); 
-        updatePlannerStepUI(3); 
-    });
+    if (step2ContinueBtn) {
+        step2ContinueBtn.addEventListener('click', () => {
+            if (!appState.selectedObjective) return;
+            updatePlannerStepUI(3);
+            renderDesignBlueprint();
+            if (generateProgramBtn) generateProgramBtn.disabled = !appState.selectedObjective;
+            announcePlannerStatus('Blueprint loaded. Validate the engineering design, then generate the integrated program.');
+        });
+    }
+
+    if (generateProgramBtn) {
+        generateProgramBtn.addEventListener('click', () => {
+            if (!appState.selectedWell) return;
+            let objectiveId = appState.selectedObjective?.id;
+            if (aiToggle.checked && appState.ai.selectedRecommendation) {
+                objectiveId = appState.ai.selectedRecommendation.objectiveId;
+            }
+            if (!objectiveId) return;
+
+            appState.selectedObjective = objectivesData.find(o => o.id === objectiveId);
+            appState.generatedPlan = proceduresData[objectiveId];
+            renderPlan();
+            updatePlannerStepUI(4);
+            announcePlannerStatus('Integrated program generated. Review procedure, risks, and cost in step four.');
+        });
+    }
+
+    if (step4ContinueBtn) {
+        step4ContinueBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            renderReadinessSummary();
+            updatePlannerStepUI(5);
+            announcePlannerStatus('Readiness package compiled. Resolve outstanding logistics or jump to execution prep.');
+        });
+    }
+
+    if (openLogisticsBtn) {
+        openLogisticsBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            switchView('logistics');
+        });
+    }
+
+    if (openCommercialBtn) {
+        openCommercialBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            switchView('commercial');
+        });
+    }
+
+    if (openHseBtn) {
+        openHseBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            switchView('hse');
+        });
+    }
+
+    if (step5ContinueBtn) {
+        step5ContinueBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            updatePlannerStepUI(6);
+            if (beginOpBtn) beginOpBtn.disabled = false;
+            announcePlannerStatus('Execution stage ready. Launch Live Operations or open the analysis workspace.');
+        });
+    }
+
+    if (reviewAnalysisBtnFinal) {
+        reviewAnalysisBtnFinal.addEventListener('click', () => {
+            switchView('analyzer');
+            if (typeof window.initializeAnalyzer === 'function') {
+                window.initializeAnalyzer();
+            } else {
+                initializeAnalyzer();
+                initializeVendorScorecard();
+            }
+        });
+    }
 
     // Control buttons event listeners
-    startOverBtn.addEventListener('click', () => resetApp(false));
-    beginOpBtn.addEventListener('click', () => { 
+    startOverBtn.addEventListener('click', () => {
+        resetApp(false);
+        announcePlannerStatus('Planner reset. Start by selecting a well.');
+    });
+    beginOpBtn.addEventListener('click', () => {
         if (!appState.generatedPlan) return; 
         switchView('performer'); 
     });
@@ -2769,6 +4037,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function generatePDFReport(event) {
     const evt = event || window.event;
     const button = evt?.currentTarget || evt?.target || document.getElementById('pdf-export-button');
+    const statusRegion = document.getElementById('pdf-export-status');
     if (!button) {
         console.warn('PDF export button reference not found.');
         return;
@@ -2779,6 +4048,10 @@ async function generatePDFReport(event) {
     // Show loading state
     button.innerHTML = '<span class="pdf-spinner"></span> Generating PDF...';
     button.classList.add('pdf-generating');
+    button.setAttribute('aria-busy', 'true');
+    if (statusRegion) {
+        statusRegion.textContent = 'Generating PDF report. Please wait.';
+    }
 
     try {
         // Check if jsPDF is loaded
@@ -2936,16 +4209,23 @@ async function generatePDFReport(event) {
 
         // Success feedback
         button.innerHTML = '✓ PDF Downloaded!';
+        if (statusRegion) {
+            statusRegion.textContent = 'PDF generated successfully. Download should begin shortly.';
+        }
         setTimeout(() => {
             button.innerHTML = originalText;
             button.classList.remove('pdf-generating');
+            button.removeAttribute('aria-busy');
         }, 3000);
 
     } catch (error) {
         console.error('PDF generation error:', error);
-        alert('Error generating PDF. Please try again.');
+        if (statusRegion) {
+            statusRegion.textContent = 'Error generating PDF. Please try again.';
+        }
         button.innerHTML = originalText;
         button.classList.remove('pdf-generating');
+        button.removeAttribute('aria-busy');
     }
 }
 
