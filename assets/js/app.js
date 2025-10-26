@@ -479,6 +479,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const headerNav = document.getElementById('header-nav');
     const heroVideo = document.getElementById('hero-video');
     const heroVideoToggle = document.getElementById('hero-video-toggle');
+    const heroVideoStatus = document.getElementById('hero-video-status');
     
     // Planner
 
@@ -584,6 +585,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (heroVideoToggleIcon) {
                 heroVideoToggleIcon.textContent = isPlaying ? '⏸' : '▶';
                 heroVideoToggleIcon.dataset.state = isPlaying ? 'playing' : 'paused';
+            }
+
+            if (heroVideoStatus) {
+                heroVideoStatus.textContent = isPlaying ? 'Background video playing' : 'Background video paused';
             }
         };
 

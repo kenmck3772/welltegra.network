@@ -82,20 +82,50 @@
     <main id="main-content" class="flex-1">
         <div id="home-view" class="view-container">
             <section class="hero-section py-20 px-4 relative">
-                <video autoplay loop muted playsinline preload="metadata" id="hero-video" poster="assets/logo.jpg" aria-hidden="true">
-                    <source src="assets/hero4.mp4" type="video/mp4">
-                </video>
-                <div class="hero-overlay"></div>
-                <div class="max-w-4xl mx-auto text-center relative z-10">
+                <!-- Hero video: informational. Uses preload="metadata", descriptions track, and an accessible toggle + status region -->
+                <div class="hero-wrapper">
+                    <div class="hero-media">
+                        <video id="hero-video"
+                               class="w-full h-auto"
+                               preload="metadata"
+                               playsinline
+                               muted
+                               loop
+                               controlslist="nodownload noremoteplayback"
+                               aria-describedby="hero-video-desc"
+                               tabindex="0">
+                            <source src="assets/hero.mp4" type="video/mp4">
+                            <!-- Descriptions track (visual description for assistive tech) -->
+                            <track kind="descriptions" srclang="en" label="Visual descriptions" src="assets/hero-video-descriptions.vtt">
+                            <!-- Placeholder for captions if added later -->
+                            <!-- <track kind="captions" srclang="en" label="English captions" src="assets/hero-captions.vtt"> -->
+                            Your browser does not support the video element.
+                        </video>
+                    </div>
+
+                    <div class="hero-controls mt-4 flex items-center gap-3">
+                        <button id="hero-video-toggle"
+                                class="hero-toggle inline-flex items-center gap-2 px-3 py-2 rounded-md bg-slate-800 text-white"
+                                type="button"
+                                aria-controls="hero-video"
+                                aria-pressed="false">
+                            <span class="hero-video-toggle-icon" aria-hidden="true">▶</span>
+                            <span class="hero-video-toggle-text">Play background video</span>
+                        </button>
+
+                        <!-- Polite live region for announcements about video state -->
+                        <div id="hero-video-status" class="sr-only" role="status" aria-live="polite"></div>
+                    </div>
+
+                    <!-- Optional description accessible to AT users (connected via aria-describedby) -->
+                    <div id="hero-video-desc" class="sr-only">
+                        Video: Engineers review drilling dashboards on large monitors, close-ups of hands sketching schematics, team collaborating around a digital twin model.
+                    </div>
+                </div>
+                <div class="max-w-4xl mx-auto text-center relative z-10 mt-12">
                     <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">From Data Chaos to Predictive Clarity.</h1>
                     <p class="mt-6 text-lg md:text-xl text-slate-100">The oil and gas industry loses over $38 million per asset annually to unplanned downtime. Your engineers spend more than 50% of their time wrangling data. The cause? A disconnected digital ecosystem.</p>
                     <p class="mt-4 text-lg md:text-xl font-semibold text-white">Well-Tegra: Engineering Insight, Amplified by Data.</p>
-                    <div class="mt-8 flex justify-center">
-                        <button id="hero-video-toggle" type="button" aria-controls="hero-video" aria-pressed="true" class="inline-flex items-center gap-2 rounded-full bg-black/60 px-5 py-2 text-sm font-semibold text-white backdrop-blur focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-400 focus-visible:ring-offset-slate-900 transition">
-                            <span class="hero-video-toggle-icon" aria-hidden="true">⏸</span>
-                            <span class="hero-video-toggle-text" aria-live="polite">Pause background video</span>
-                        </button>
-                    </div>
                 </div>
             </section>
             <section class="py-20 px-4 bg-white dark:bg-transparent">
