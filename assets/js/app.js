@@ -682,6 +682,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
 
         if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
+            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">&bull; LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
             headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">â— LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
             initializePerformer();
         } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
@@ -707,6 +708,10 @@ document.addEventListener('DOMContentLoaded', function() {
         appState.ai = { selectedProblemId: null, selectedRecommendation: null };
         
         // Reset well selection
+        document.querySelectorAll('.planner-card').forEach(c => {
+            c.classList.remove('selected');
+            c.setAttribute('aria-pressed', 'false');
+        });
         document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
         
         // Reset objective selection
@@ -763,6 +768,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const isWellFromHell = well.id === 'W666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
             const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
+
+            return `
+                <article class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}" role="button" tabindex="0" aria-pressed="false">
             
             return `
                 <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}">
@@ -785,6 +793,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold" data-well-id="${well.id}">View Details</button>
                         </div>
                     </div>
+                </article>
+            `;
+        }).join('');
                 </div>
             `;
         }).join(''); 
@@ -2351,11 +2362,28 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!card) return;
         
         appState.selectedWell = wellData.find(w => w.id === card.dataset.wellId);
+        document.querySelectorAll('.planner-card').forEach(c => {
+            c.classList.remove('selected');
+            c.setAttribute('aria-pressed', 'false');
+        });
+        card.classList.add('selected');
+        card.setAttribute('aria-pressed', 'true');
         document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
 
         renderProblems(); // Update the problems list based on selection
         updatePlannerStepUI(2);
+    });
+
+    wellSelectionGrid.addEventListener('keydown', (e) => {
+        if (e.defaultPrevented) return;
+        const card = e.target.closest('.planner-card');
+        if (!card) return;
+
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            card.click();
+        }
     });
 
     // Objective selection event listener
