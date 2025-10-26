@@ -30,3 +30,10 @@
 7. Use the arrow or tab keys to focus a well card in the planner grid and press `Enter` or `Space` to select it; the card should show the selected styling and announce `aria-pressed="true"` in devtools.
 8. Toggle the operating system's reduced-motion setting (or launch Playwright/Chrome DevTools with `prefers-reduced-motion: reduce`) and confirm the hero video starts paused until the user explicitly plays it.
 9. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.
+4. Visit `http://127.0.0.1:8000/index.html` and confirm the console is clean (no Tailwind CDN warning) and the hero toggle pauses/resumes playback.
+5. Use the `Tab` key to step through the header navigation; the focus ring should be visible, `Home/Planner` remain active, and gated tabs (e.g., Commercial) stay disabled until a plan exists.
+6. Toggle the operating system's reduced-motion setting (or launch Playwright/Chrome DevTools with `prefers-reduced-motion: reduce`) and confirm the hero video starts paused until the user explicitly plays it.
+7. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.
+3. Start a local preview: `python3 -m http.server 8080`.
+4. Visit `http://127.0.0.1:8080/index.html` and confirm the console is clean (no Tailwind CDN warning).
+5. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.

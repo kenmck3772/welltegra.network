@@ -683,6 +683,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
             headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">&bull; LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">â— LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
             initializePerformer();
         } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
             if(appState.selectedWell && appState.generatedPlan) {
@@ -711,6 +712,7 @@ document.addEventListener('DOMContentLoaded', function() {
             c.classList.remove('selected');
             c.setAttribute('aria-pressed', 'false');
         });
+        document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
         
         // Reset objective selection
         const checkedObjective = document.querySelector('input[name="objective"]:checked');
@@ -769,6 +771,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             return `
                 <article class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}" role="button" tabindex="0" aria-pressed="false">
+            
+            return `
+                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}">
                     <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
                         <div class="flex justify-between items-center">
                             <h3 class="text-xl font-bold text-white">${well.name}</h3>
@@ -791,6 +796,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 </article>
             `;
         }).join('');
+                </div>
+            `;
+        }).join(''); 
     };
 
     const renderObjectives = () => { 
@@ -2360,6 +2368,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         card.classList.add('selected');
         card.setAttribute('aria-pressed', 'true');
+        document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
 
         renderProblems(); // Update the problems list based on selection
         updatePlannerStepUI(2);
