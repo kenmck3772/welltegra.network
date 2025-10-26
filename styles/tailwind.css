@@ -45,6 +45,26 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; } /* Bolder headings */
     -webkit-text-fill-color: transparent;
 }
 
+/* --- Navigation Controls --- */
+.nav-link {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0.25rem 0.75rem;
+    font: inherit;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.nav-link:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+.theme-dark .nav-link:focus-visible {
+    outline-color: #60a5fa;
+}
+
 /* --- Light & Dark Theme Specific Styles --- */
 .theme-light .light-card { background-color: white; }
 .theme-dark .light-card { background-color: #1e293b; border: 1px solid #334155; }
@@ -54,7 +74,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; } /* Bolder headings */
 .theme-dark .nav-link { color: #94a3b8; }
 .theme-light .nav-link.active { color: #2563eb; border-bottom-color: #2563eb; }
 .theme-dark .nav-link.active { color: #60a5fa; border-bottom-color: #60a5fa; }
-.nav-link.disabled { color: #9ca3af !important; cursor: not-allowed; opacity: 0.5; }
+.nav-link.disabled, .nav-link[disabled] { color: #9ca3af !important; cursor: not-allowed; opacity: 0.5; }
 
 .theme-light h1, .theme-light h2, .theme-light h3, .theme-light h4 { color: #111827; } 
 .theme-dark h1, .theme-dark h2, .theme-dark h3, .theme-dark h4 { color: #f8fafc; }

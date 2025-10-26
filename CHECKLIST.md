@@ -4,12 +4,12 @@
 | Stage | Command | Result |
 | --- | --- | --- |
 | Historical (pre-CLI build) | `python3 -m http.server 8080` + Playwright console capture | `WARNING: cdn.tailwindcss.com should not be used in production…` |
-| Current (login + hero toggle) | `python -m http.server 8000` + Playwright scripted login + hero video toggle | `NO_CONSOLE_MESSAGES` |
+| Current (post-login removal + accessible nav) | `python -m http.server 8000` + Playwright hero toggle + nav traversal | `NO_CONSOLE_MESSAGES` |
 | Current (prefers-reduced-motion) | `python -m http.server 8000` + Playwright context with `reduced_motion='reduce'` | `NO_CONSOLE_MESSAGES` |
 
 ```bash
 python -m http.server 8000
-# Playwright script performs login + hero video pause/resume to surface runtime errors
+# Playwright script toggles the hero video and tabs through the primary navigation to surface runtime errors
 ```
 
 ```text
@@ -59,11 +59,11 @@ TOGGLE_ICON ▶
 ## Accessibility & SEO (Top 10 Fixes)
 | # | File:Line | Issue | Suggested Diff |
 | --- | --- | --- | --- |
-| 1 | `index.html` L44-L87 | Primary nav uses `<a>` elements without `href`, so keyboard users cannot focus the links. | Convert the controls to `<button type="button">` (or supply `href="#"` + keyboard handlers). |
-| 2 | `index.html` L90-L94 | Theme toggle button has no accessible label. | Add `aria-label="Toggle light and dark theme"` (and ensure icon swap stays decorative). |
+| 1 | `index.html` L35-L94; `assets/js/app.js` L654-L756 | ✅ Primary nav now uses `<button type="button">` controls with `aria-current` and gated views toggle `aria-disabled`/`disabled`. | Converted each nav item to a real button and taught `switchView()`/`updateNavLinks()` to manage `aria-current`, `aria-disabled`, and keyboard focus state. |
+| 2 | `index.html` L73-L77 | ✅ Theme toggle button now exposes an accessible label. | Added `aria-label="Toggle light and dark theme"` to the theme control while keeping the SVGs decorative. |
 | 3 | `index.html` L102-L104 | Hero video lacks textual description for screen readers. | Add `aria-label` or `aria-describedby` to describe the footage (or mark `aria-hidden="true"` if purely decorative). |
 | 4 | `assets/js/app.js` L706-L732 | Planner cards are clickable `<div>` elements with no keyboard support. | Add `tabindex="0"`, `role="button"`, and handle `Enter`/`Space` keypress events. |
-| 5 | `assets/js/app.js` view switching | Hidden views only toggle CSS classes; assistive tech still discovers the off-screen content. | Set `aria-hidden`/`inert` on inactive `.view-container` nodes during `switchView()`. |
+| 5 | `assets/js/app.js` L654-L662 | ✅ Hidden views are now marked `aria-hidden="true"` until activated. | `switchView()` tags every `.view-container` as `aria-hidden` before revealing the target view so screen readers ignore inactive sections. |
 | 6 | `index.html` L14-L18 | Document head lacks a meta description for search previews. | Add `<meta name="description" content="…">`. |
 | 7 | `index.html` L14-L18 | No canonical URL declared for the GitHub Pages deployment. | Add `<link rel="canonical" href="https://welltegra.network/">`. |
 | 8 | `index.html` L37-L43 | Login logo image omits `width`/`height`, causing layout shift. | Supply intrinsic dimensions (`width="96" height="96"`) or CSS aspect ratio. |

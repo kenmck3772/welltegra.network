@@ -651,13 +651,24 @@ document.addEventListener('DOMContentLoaded', function() {
             body.classList.add('theme-dark');
         }
 
-        views.forEach(v => v.classList.add('hidden'));
-        document.getElementById(`${viewName}-view`).classList.remove('hidden');
+        views.forEach(view => {
+            view.classList.add('hidden');
+            view.setAttribute('aria-hidden', 'true');
+        });
+        const targetView = document.getElementById(`${viewName}-view`);
+        if (targetView) {
+            targetView.classList.remove('hidden');
+            targetView.removeAttribute('aria-hidden');
+        }
 
-        navLinks.forEach(l => l.classList.remove('active'));
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            link.removeAttribute('aria-current');
+        });
         const activeLink = document.getElementById(`${viewName}-nav-link`);
         if (activeLink) {
             activeLink.classList.add('active');
+            activeLink.setAttribute('aria-current', 'page');
         }
         
         headerDetails.innerHTML = ''; 
@@ -727,11 +738,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const planExists = !!appState.generatedPlan;
         navLinks.forEach(link => {
             const id = link.id.replace('-nav-link', '');
-            if (id !== 'home' && id !== 'planner' && id !== 'about' && id !== 'faq' && id !== 'whitepaper') {
-                if (planExists) {
-                    link.classList.remove('disabled');
-                } else {
-                    link.classList.add('disabled');
+            const isGatedView = !['home', 'planner', 'about', 'faq', 'whitepaper'].includes(id);
+            if (isGatedView && !planExists) {
+                link.classList.add('disabled');
+                link.setAttribute('aria-disabled', 'true');
+                if (link.tagName === 'BUTTON') {
+                    link.disabled = true;
+                }
+            } else {
+                link.classList.remove('disabled');
+                link.removeAttribute('aria-disabled');
+                if (link.tagName === 'BUTTON') {
+                    link.disabled = false;
+                    link.removeAttribute('disabled');
                 }
             }
         });
