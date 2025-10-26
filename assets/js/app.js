@@ -400,25 +400,278 @@ document.addEventListener('DOMContentLoaded', function() {
         obj4: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Sand Screen & Expansion Tool", source: "Vendor", price: 600000 } ],
         obj5: [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Wax Dissolver Chemical", source: "Vendor", price: 50000 }, { name: "Mechanical Scraper BHA", source: "Vendor", price: 15000 } ]
     };
-    const equipmentData = [ 
-        { id: 'CTU-01', type: 'Coiled Tubing Unit', location: 'Onboard - Deck A', testStatus: 'Passed', nextMaint: '2025-09-15', rate: 25000, status: 'On Job' }, 
-        { id: 'CTU-02', type: 'Coiled Tubing Unit', location: 'Onshore Base', testStatus: 'Pending', nextMaint: '2025-07-10', rate: 25000, status: 'Maintenance' }, 
-        { id: 'WL-01', type: 'Wireline Truck/Skid', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-08-22', rate: 18000, status: 'Available' }, 
-        { id: 'SL-01', type: 'Slickline Unit', location: 'In Transit', testStatus: 'Passed', nextMaint: '2025-07-20', rate: 15000, status: 'In Transit' }, 
-        { id: 'PUMP-01', type: 'High-Pressure Pumps', location: 'Onboard - Pump Room', testStatus: 'Pending', nextMaint: '2025-10-01', rate: 8000, status: 'On Job' }, 
-        { id: 'PUMP-02', type: 'High-Pressure Pumps', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-11-05', rate: 8000, status: 'Available' }, 
-        { id: 'RIG-01', type: 'Workover Rig', location: 'Onboard - Drill Floor', testStatus: 'Passed', nextMaint: '2025-08-01', rate: 85000, status: 'On Job' }, 
+
+    const fallbackEquipmentData = [
+        { id: 'CTU-01', type: 'Coiled Tubing Unit', category: 'Coiled Tubing', vendor: 'Baker Hughes', location: 'Onboard - Deck A', testStatus: 'Passed', nextMaint: '2025-09-15', rate: 25000, status: 'On Job', notes: '1.75in OD, 15k psi rated spread' },
+        { id: 'CTU-02', type: 'Coiled Tubing Unit', category: 'Coiled Tubing', vendor: 'Archer', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-07-10', rate: 24000, status: 'Available', notes: '2.0in OD, 18kft reel' },
+        { id: 'WL-01', type: 'Wireline Unit', category: 'Wireline', vendor: 'Halliburton', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-08-22', rate: 18000, status: 'Available', notes: '7-conductor, deep HPHT spec' },
+        { id: 'SL-01', type: 'Slickline Unit', category: 'Wireline', vendor: 'SLB', location: 'In Transit', testStatus: 'Passed', nextMaint: '2025-07-20', rate: 15000, status: 'In Transit', notes: '0.108in alloy line, 18kft' },
+        { id: 'HWU-01', type: 'Hydraulic Workover Unit', category: 'Lifting', vendor: 'Key Energy', location: 'Onshore Base', testStatus: 'Pending', nextMaint: '2025-10-01', rate: 32000, status: 'Standby', notes: '350k lb jack, self-contained' },
+        { id: 'PUMP-01', type: 'High-Pressure Pumps', category: 'Pumping', vendor: 'NOV', location: 'Onboard - Pump Room', testStatus: 'Pending', nextMaint: '2025-10-01', rate: 8000, status: 'On Job', notes: '10k psi twin triplex' },
+        { id: 'PUMP-02', type: 'High-Pressure Pumps', category: 'Pumping', vendor: 'NOV', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-11-05', rate: 8200, status: 'Available', notes: 'Spare unit with full certification' },
+        { id: 'JET-01', type: 'Rotating Jetting Nozzle', category: 'Downhole Tools', vendor: 'NOV', location: 'Tool House', testStatus: 'Passed', nextMaint: '2025-07-30', rate: 4500, status: 'Available', notes: 'High-energy jetting head for CT scale removal' },
+        { id: 'SCR-01', type: 'Mechanical Scraper BHA', category: 'Downhole Tools', vendor: 'Weatherford', location: 'Tool House', testStatus: 'Passed', nextMaint: '2025-08-15', rate: 6000, status: 'Available', notes: '4.5in OD coil-ready scraper assembly' },
+        { id: 'CHEM-01', type: 'Wax Dissolver Chemical', category: 'Chemicals', vendor: 'ChampionX', location: 'Chemical Lab', testStatus: 'Passed', nextMaint: '2025-08-05', rate: 4200, status: 'Available', notes: 'High-temp solvent blend' },
+        { id: 'CHEM-02', type: 'DTPA Chemical', category: 'Chemicals', vendor: 'Baker Hughes', location: 'Chemical Lab', testStatus: 'Passed', nextMaint: '2025-08-20', rate: 5200, status: 'Available', notes: 'Chelating acid blend for scale removal' },
+        { id: 'WRSV-01', type: 'Insert Safety Valve (WRSV)', category: 'Well Control', vendor: 'Baker Hughes', location: 'Vendor - Houston', testStatus: 'Passed', nextMaint: '2025-12-01', rate: 42000, status: 'Available', notes: 'HPHT qualified 4.5in valve' },
+        { id: 'LOT-01', type: 'Lock-Open Tool', category: 'Wireline Tools', vendor: 'SLB', location: 'Tool House', testStatus: 'Passed', nextMaint: '2025-06-28', rate: 3200, status: 'Available', notes: 'Heavy-duty lock-open tool' },
+        { id: 'PATCH-01', type: 'Expandable Patch 9in', category: 'Mechanical', vendor: 'Enventure', location: 'Vendor Warehouse - Aberdeen', testStatus: 'Pending', nextMaint: '2025-09-30', rate: 0, status: 'Maintenance', notes: '80ft expandable casing patch' },
+        { id: 'PATCH-02', type: 'Expandable Steel Patch & Setting Tool', category: 'Mechanical', vendor: 'Enventure', location: 'Vendor Warehouse - Aberdeen', testStatus: 'Pending', nextMaint: '2025-10-12', rate: 0, status: 'Maintenance', notes: 'Requires vendor specialist crew' },
+        { id: 'ESS-01', type: 'Expandable Sand Screen', category: 'Sand Control', vendor: 'Halliburton', location: 'Vendor Warehouse - Stavanger', testStatus: 'Pending', nextMaint: '2025-09-12', rate: 0, status: 'Maintenance', notes: 'Through-tubing ESS assembly' },
+        { id: 'ESS-02', type: 'Expandable Sand Screen & Expansion Tool', category: 'Sand Control', vendor: 'Baker Hughes', location: 'Vendor Warehouse - Stavanger', testStatus: 'Pending', nextMaint: '2025-09-18', rate: 0, status: 'Maintenance', notes: 'Expansion tool requires mobilised crew' }
     ];
-    const personnelData = [ 
-        { id: 'P001', name: 'Bob Raker', role: 'Wellsite Engineer', company: 'Operator', status: 'Onboard', certsValid: true, rate: 2200, muster: 'A', lifeboat: 1 }, 
-        { id: 'P002', name: 'Jane Smith', role: 'Coiled Tubing Supervisor', company: 'Service Co.', status: 'Onboard', certsValid: true, rate: 2500, muster: 'A', lifeboat: 1 }, 
-        { id: 'P003', name: 'Mike Johnson', role: 'Wireline Supervisor', company: 'Service Co.', status: 'On Job', certsValid: true, rate: 2300, muster: 'B', lifeboat: 2 }, 
-        { id: 'P004', name: 'Emily White', role: 'Slickline Supervisor', company: 'Service Co.', status: 'Available', certsValid: false, rate: 2300, muster: 'B', lifeboat: 2 }, 
-        { id: 'P005', name: 'Chris Green', role: 'Pump Operator', company: 'Service Co.', status: 'In Transit', certsValid: true, rate: 1800, muster: 'A', lifeboat: 1 }, 
-        { id: 'P006', name: 'Alex Brown', role: 'Rig Supervisor', company: 'Operator', status: 'Onboard', certsValid: true, rate: 3000, muster: 'B', lifeboat: 2 }, 
-        { id: 'P007', name: 'David Chen', role: 'ESP Specialist', company: 'Service Co.', status: 'Standby', certsValid: true, rate: 3500, muster: 'A', lifeboat: 2 } 
+
+    const fallbackPersonnelData = [
+        { id: 'P001', name: 'Bob Raker', role: 'Wellsite Engineer', company: 'Operator', status: 'Onboard', certsValid: true, rate: 3600, perDiem: 200, muster: 'A', lifeboat: 1 },
+        { id: 'P002', name: 'Jane Smith', role: 'Coiled Tubing Supervisor', company: 'Service Co.', status: 'Onboard', certsValid: true, rate: 2280, perDiem: 180, muster: 'A', lifeboat: 1 },
+        { id: 'P003', name: 'Mike Johnson', role: 'Wireline Engineer', company: 'Service Co.', status: 'On Job', certsValid: true, rate: 2640, perDiem: 180, muster: 'B', lifeboat: 2 },
+        { id: 'P004', name: 'Emily White', role: 'Slickline Supervisor', company: 'Service Co.', status: 'Available', certsValid: false, rate: 2300, perDiem: 150, muster: 'B', lifeboat: 2 },
+        { id: 'P005', name: 'Chris Green', role: 'Pump Operator', company: 'Service Co.', status: 'In Transit', certsValid: true, rate: 1560, perDiem: 150, muster: 'A', lifeboat: 1 },
+        { id: 'P006', name: 'Alex Brown', role: 'HWU Supervisor', company: 'Service Co.', status: 'Standby', certsValid: true, rate: 2280, perDiem: 180, muster: 'C', lifeboat: 3 },
+        { id: 'P007', name: 'David Chen', role: 'Rig Supervisor', company: 'Operator', status: 'Onboard', certsValid: true, rate: 3000, perDiem: 200, muster: 'B', lifeboat: 2 }
     ];
-    const musterStations = [ { id: 'A', name: 'Muster Station A', capacity: 50, current: 0 }, { id: 'B', name: 'Muster Station B', capacity: 50, current: 0 } ];
+
+    let equipmentData = fallbackEquipmentData.map(item => ({ ...item }));
+    let personnelData = fallbackPersonnelData.map(person => ({ ...person }));
+    let serviceLineTemplatesIndex = {};
+    let equipmentCatalogIndex = {};
+
+    const objectiveTemplateMap = {
+        obj1: 'spec_multi_intervention',
+        obj2: 'ct_scale_removal',
+        obj3: 'whm_safety_valve',
+        obj4: 'whm_completion_standard',
+        obj5: 'ct_wellbore_cleanout'
+    };
+
+    const normalizeString = (value) => (value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+
+    const toStatusClass = (value) => normalizeString(value).replace(/\s+/g, '');
+
+    const formatCurrency = (value) => {
+        const number = Number(value);
+        if (!number || Number.isNaN(number)) return '—';
+        return `$${Math.round(number).toLocaleString()}`;
+    };
+
+    const equipmentSynonyms = new Map([
+        [normalizeString('Hydraulic Workover Unit (HWU)'), ['hydraulic workover unit', 'workover unit', 'hwu']],
+        [normalizeString('Expandable Steel Patch & Setting Tool'), ['expandable patch', 'setting tool']],
+        [normalizeString('Expandable Sand Screen & Expansion Tool'), ['expandable sand screen', 'ess']],
+        [normalizeString('Coiled Tubing Unit'), ['coiled tubing', 'ct unit']],
+        [normalizeString('Slickline Unit'), ['slickline', 'wireline']],
+        [normalizeString('Insert Safety Valve (WRSV)'), ['safety valve', 'wrs v', 'wireline retrievable safety valve']],
+        [normalizeString('Lock-Open Tool'), ['lock open', 'lockopen']],
+        [normalizeString('DTPA Chemical'), ['dtpa', 'chemical']],
+        [normalizeString('Wax Dissolver Chemical'), ['wax dissolver', 'chemical']],
+        [normalizeString('Mechanical Scraper BHA'), ['scraper', 'bha']],
+        [normalizeString('Rotating Jetting Nozzle'), ['jetting nozzle', 'rotary nozzle']],
+        [normalizeString('High-Pressure Pumps'), ['high pressure pump', 'pump']]
+    ]);
+
+    const personnelRoleSynonyms = new Map([
+        [normalizeString('Slickline Supervisor'), ['wireline supervisor', 'wireline engineer']],
+        [normalizeString('Wireline Supervisor'), ['wireline engineer', 'wireline operator']],
+        [normalizeString('Rig Supervisor'), ['toolpusher']],
+        [normalizeString('HWU Supervisor'), ['hydraulic workover', 'hwu supervisor']]
+    ]);
+
+    const matchesEquipmentRequirement = (requiredName, equipmentItem) => {
+        if (!requiredName || !equipmentItem) return false;
+        const normalizedRequired = normalizeString(requiredName);
+        const normalizedType = normalizeString(equipmentItem.type);
+        const normalizedCategory = normalizeString(equipmentItem.category);
+        if (normalizedType.includes(normalizedRequired) || normalizedRequired.includes(normalizedType)) return true;
+        if (normalizedCategory && (normalizedCategory.includes(normalizedRequired) || normalizedRequired.includes(normalizedCategory))) return true;
+        const synonyms = equipmentSynonyms.get(normalizedRequired);
+        if (synonyms) {
+            return synonyms.some(syn => normalizedType.includes(syn) || normalizedCategory.includes(syn));
+        }
+        return false;
+    };
+
+    const matchesPersonnelRole = (requiredRole, person) => {
+        if (!requiredRole || !person) return false;
+        const normalizedRequired = normalizeString(requiredRole);
+        const normalizedRole = normalizeString(person.role);
+        if (normalizedRequired === normalizedRole) return true;
+        if (normalizedRole.includes(normalizedRequired) || normalizedRequired.includes(normalizedRole)) return true;
+        const synonyms = personnelRoleSynonyms.get(normalizedRequired);
+        return synonyms ? synonyms.some(syn => normalizedRole.includes(syn)) : false;
+    };
+
+    const findMatchingEquipment = (requiredName) => {
+        const candidates = equipmentData.filter(item => matchesEquipmentRequirement(requiredName, item));
+        if (!candidates.length) return null;
+        return candidates.slice().sort((a, b) => {
+            const score = (item) => {
+                switch ((item.status || '').toLowerCase()) {
+                    case 'available':
+                        return 0;
+                    case 'standby':
+                        return 1;
+                    case 'on job':
+                        return 2;
+                    default:
+                        return 3;
+                }
+            };
+            return score(a) - score(b);
+        })[0];
+    };
+
+    const getServiceTemplateForObjective = (objectiveId) => {
+        const templateKey = objectiveTemplateMap[objectiveId];
+        if (!templateKey) return null;
+        return serviceLineTemplatesIndex[templateKey] || null;
+    };
+
+    const resolveVendor = (name) => {
+        const match = findMatchingEquipment(name);
+        return match && match.vendor ? match.vendor : 'Vendor TBD';
+    };
+
+    const parseCsv = (text) => {
+        const rows = [];
+        let current = '';
+        let currentRow = [];
+        let inQuotes = false;
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            if (char === '"') {
+                if (inQuotes && text[i + 1] === '"') {
+                    current += '"';
+                    i++;
+                } else {
+                    inQuotes = !inQuotes;
+                }
+            } else if (char === ',' && !inQuotes) {
+                currentRow.push(current.trim());
+                current = '';
+            } else if ((char === '\n' || char === '\r') && !inQuotes) {
+                if (char === '\r' && text[i + 1] === '\n') i++;
+                currentRow.push(current.trim());
+                if (currentRow.some(value => value !== '')) {
+                    rows.push(currentRow);
+                }
+                current = '';
+                currentRow = [];
+            } else {
+                current += char;
+            }
+        }
+        if (current !== '' || currentRow.length) {
+            currentRow.push(current.trim());
+            rows.push(currentRow);
+        }
+        if (!rows.length) return [];
+        const headers = rows.shift();
+        return rows.map(row => {
+            const record = {};
+            headers.forEach((header, index) => {
+                record[header] = row[index] || '';
+            });
+            return record;
+        });
+    };
+
+    const deriveMaintenanceDate = (index) => {
+        const base = new Date(Date.UTC(2025, 0, 15));
+        base.setDate(base.getDate() + (index + 1) * 11);
+        return base.toISOString().split('T')[0];
+    };
+
+    const mergeEquipmentCsvData = (csvText) => {
+        const records = parseCsv(csvText);
+        if (!records.length) return;
+        const statusCycle = ['Available', 'On Job', 'Maintenance', 'In Transit', 'Standby'];
+        const testCycle = ['Passed', 'Pending'];
+        records.forEach((row, index) => {
+            const record = {
+                id: row['Equipment_ID'] || `EQ-${index + 101}`,
+                type: row['Item_Name'] || row['Category'] || 'Equipment',
+                category: row['Category'] || 'General',
+                vendor: row['Vendor'] || 'Vendor TBD',
+                location: row['Vendor'] ? `Vendor - ${row['Vendor']}` : 'Warehouse',
+                testStatus: testCycle[index % testCycle.length],
+                nextMaint: deriveMaintenanceDate(index),
+                rate: Number(row['Daily_Rate_USD']) || 0,
+                status: statusCycle[index % statusCycle.length],
+                notes: row['Specifications'] || row['Typical_Use'] || ''
+            };
+            const normalizedType = normalizeString(record.type);
+            const existing = equipmentData.find(item => normalizeString(item.type) === normalizedType);
+            if (existing) {
+                Object.assign(existing, { ...record, id: existing.id || record.id });
+            } else {
+                equipmentData.push(record);
+            }
+        });
+    };
+
+    const mergePersonnelCsvData = (csvText) => {
+        const records = parseCsv(csvText);
+        if (!records.length) return;
+        const statusCycle = ['Onboard', 'Available', 'On Job', 'Standby', 'In Transit'];
+        const musterCycle = ['A', 'B', 'C'];
+        const lifeboatCycle = [1, 2, 3];
+        const sampleNames = [
+            'Jordan Chen', 'Priya Desai', 'Lucia Gomez', 'Amir Hassan',
+            'Morgan Lee', 'Noah Patel', 'Sofia Rossi', 'Theo Schmidt',
+            'Nora Williams', 'Ethan Young'
+        ];
+        records.forEach((row, index) => {
+            const normalizedRole = normalizeString(row['Role_Title']);
+            const existing = personnelData.find(person => normalizeString(person.role) === normalizedRole);
+            const record = {
+                id: row['Role_ID'] || `P-${index + 101}`,
+                role: row['Role_Title'] || 'Crew Member',
+                company: row['Category'] && row['Category'].toLowerCase().includes('engineering') ? 'Operator' : 'Service Co.',
+                status: statusCycle[index % statusCycle.length],
+                certsValid: ((index + normalizedRole.length) % 4) !== 0,
+                rate: Number(row['Daily_Rate_USD']) || 0,
+                perDiem: Number(row['Per_Diem_USD']) || 0,
+                muster: musterCycle[index % musterCycle.length],
+                lifeboat: lifeboatCycle[index % lifeboatCycle.length],
+                certifications: row['Certifications_Required'] || ''
+            };
+            if (existing) {
+                const preservedName = existing.name;
+                Object.assign(existing, record, { name: preservedName });
+            } else {
+                record.name = sampleNames[index % sampleNames.length];
+                personnelData.push(record);
+            }
+        });
+    };
+
+    const buildServiceLineIndex = (data) => {
+        const index = {};
+        Object.entries(data || {}).forEach(([categoryKey, payload]) => {
+            const categoryName = payload.name || categoryKey;
+            (payload.templates || []).forEach(template => {
+                index[template.id] = { ...template, category: categoryName };
+            });
+        });
+        return index;
+    };
+
+    const buildEquipmentCatalogIndex = (data) => {
+        const index = {};
+        Object.values(data || {}).forEach(category => {
+            const categoryName = category.name || 'Catalog';
+            (category.items || []).forEach(item => {
+                index[item.id] = { ...item, categoryName };
+            });
+        });
+        return index;
+    };
+
+    const musterStations = [
+        { id: 'A', name: 'Muster Station A', capacity: 50, current: 0 },
+        { id: 'B', name: 'Muster Station B', capacity: 50, current: 0 },
+        { id: 'C', name: 'Muster Station C', capacity: 40, current: 0 }
+    ];
     
     // --- FAQ DATA ---
 
@@ -452,21 +705,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- GLOBAL STATE ---
 
     let appState = {
-        currentView: 'home', 
-        selectedWell: null, 
-        selectedObjective: null, 
-        generatedPlan: null, 
-        liveData: null, 
-        logEntries: [], 
-        lessonsLearned: [], 
-        tfaChartInstance: null, 
-        nptChartInstance: null, 
-        savingsChartInstance: null, 
+        currentView: 'home',
+        selectedWell: null,
+        selectedObjective: null,
+        generatedPlan: null,
+        liveData: null,
+        logEntries: [],
+        lessonsLearned: [],
+        tfaChartInstance: null,
+        nptChartInstance: null,
+        savingsChartInstance: null,
         liveDataInterval: null,
         commercial: { afe: 0, actualCost: 0, serviceTickets: [] },
         ai: { selectedProblemId: null, selectedRecommendation: null },
         hse: { permits: [], riskRegister: [] },
-        pob: { musterActive: false, musterInterval: null, personnel: [] }
+        pob: { musterActive: false, musterInterval: null, personnel: [] },
+        referenceDataLoaded: false
     };
 
     // --- DOM ELEMENTS ---
@@ -538,7 +792,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const logisticsSubtitle = document.getElementById('logistics-subtitle');
     const logisticsContent = document.getElementById('logistics-content');
-    const equipmentTableBody = document.getElementById('equipment-table-body'), 
+    const logisticsReferenceCard = document.getElementById('logistics-reference-card');
+    const equipmentTableBody = document.getElementById('equipment-table-body'),
     personnelTableBody = document.getElementById('personnel-table-body');
     const equipmentSearch = document.getElementById('equipment-search'), 
     personnelSearch = document.getElementById('personnel-search');
@@ -873,35 +1128,106 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         ` : '';
-        
-        const equipmentList = equipmentRequirements[appState.selectedObjective.id];
-        let equipmentHtml = `
+
+        const equipmentList = equipmentRequirements[appState.selectedObjective.id] || [];
+        const enrichedEquipment = equipmentList.map(item => {
+            const matchedEquipment = findMatchingEquipment(item.name);
+            const vendor = matchedEquipment?.vendor || resolveVendor(item.name);
+            const location = matchedEquipment?.location || 'TBD';
+            const status = matchedEquipment?.status || 'Standby';
+            const rate = matchedEquipment?.rate || item.price || 0;
+            const notes = matchedEquipment?.notes || '';
+            const satisfied = item.source !== 'Vendor' || ['available', 'on job'].includes((matchedEquipment?.status || '').toLowerCase());
+            return {
+                ...item,
+                vendor,
+                location,
+                status,
+                rate,
+                notes,
+                checkboxAttr: satisfied ? 'checked disabled' : ''
+            };
+        });
+
+        const equipmentHtml = `
             <div class="plan-summary-card light-card overflow-hidden">
                 <div class="card-header bg-blue-500">
                     <h4 class="text-xl font-semibold text-white">Equipment Requirements</h4>
                 </div>
-                <div class="p-6">
-                    <div class="space-y-3">
-                        ${equipmentList.map(item => `
-                            <div class="equipment-card">
-                                <div class="flex justify-between items-center">
-                                    <div class="flex items-center">
-                                        <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500 mr-4" ${item.source !== 'Vendor' ? 'checked disabled' : ''}>
-                                        <div>
-                                            <p class="font-semibold">${item.name}</p>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">
-                                                Source: ${item.source}
-                                            </p>
-                                        </div>
+                <div class="p-6 space-y-3">
+                    ${enrichedEquipment.map(item => `
+                        <div class="equipment-card">
+                            <div class="flex justify-between items-start gap-4">
+                                <div class="flex items-start gap-3">
+                                    <input type="checkbox" class="h-4 w-4 mt-1 rounded border-gray-300 text-teal-600 focus:ring-teal-500" ${item.checkboxAttr}>
+                                    <div>
+                                        <p class="font-semibold">${item.name}</p>
+                                        <p class="text-xs text-slate-400">Source: ${item.source}</p>
+                                        <p class="text-xs text-slate-400">Vendor: ${item.vendor}</p>
+                                        <p class="text-xs text-slate-400">Location: ${item.location}</p>
+                                        ${item.notes ? `<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">${item.notes}</p>` : ''}
                                     </div>
-                                    <p class="font-semibold text-sm">${item.price > 0 ? `$${item.price.toLocaleString()}` : 'N/A'}</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="block text-sm font-semibold">${formatCurrency(item.rate)}</span>
+                                    <span class="inline-block mt-2 px-2 py-1 text-xs font-medium rounded-full status-${toStatusClass(item.status)}">${item.status}</span>
                                 </div>
                             </div>
-                        `).join('')}
-                    </div>
+                        </div>
+                    `).join('')}
                 </div>
             </div>
         `;
+
+        const serviceTemplate = getServiceTemplateForObjective(appState.selectedObjective.id);
+        let serviceTemplateHtml = '';
+        if (serviceTemplate) {
+            const toolingList = (serviceTemplate.equipment_ids || []).map(id => {
+                const catalogItem = equipmentCatalogIndex[id];
+                const matchedEquipment = catalogItem ? findMatchingEquipment(catalogItem.name) : null;
+                const vendorDetail = matchedEquipment?.vendor ? ` • Vendor: ${matchedEquipment.vendor}` : '';
+                const rateDetail = matchedEquipment?.rate ? ` • Rate: ${formatCurrency(matchedEquipment.rate)}` : '';
+                return `
+                    <li class="border-b border-slate-700/40 pb-2 last:border-0">
+                        <p class="font-semibold">${catalogItem ? catalogItem.name : id}</p>
+                        <p class="text-xs text-slate-400">${catalogItem ? catalogItem.categoryName : 'Tooling'}${vendorDetail}${rateDetail}</p>
+                    </li>
+                `;
+            }).join('') || '<li class="text-sm text-slate-400">Tooling catalog entry coming soon.</li>';
+
+            serviceTemplateHtml = `
+                <div class="plan-summary-card light-card overflow-hidden">
+                    <div class="card-header bg-emerald-500">
+                        <h4 class="text-xl font-semibold text-white">Service Line Template</h4>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Category</p>
+                            <p class="font-semibold">${serviceTemplate.category}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Package</p>
+                            <p class="font-semibold">${serviceTemplate.name}</p>
+                            <p class="text-sm text-slate-400">${serviceTemplate.description}</p>
+                            ${serviceTemplate.duration_hours ? `<p class="text-xs text-slate-400 mt-1">Estimated duration: ${serviceTemplate.duration_hours} hours</p>` : ''}
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Applications</p>
+                            <ul class="list-disc pl-5 text-sm space-y-1">${(serviceTemplate.applications || []).map(app => `<li>${app}</li>`).join('')}</ul>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Tooling Pull</p>
+                            <ul class="space-y-2">${toolingList}</ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        const supplementalCards = [];
+        if (serviceTemplateHtml) supplementalCards.push(serviceTemplateHtml);
+        if (logisticsHtml) supplementalCards.push(logisticsHtml);
+        const supplementalSection = supplementalCards.length ? `<div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">${supplementalCards.join('')}</div>` : '';
 
         // Create timeline for procedure steps
         const timelineHtml = `
@@ -1004,16 +1330,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 ${riskHtml}
                 ${costHtml}
             </div>
-            
-            ${logisticsHtml}
+
+            ${supplementalSection}
         `;
         
         // Initialize risk chart
         const riskChartCtx = document.getElementById('riskChart');
         if (riskChartCtx) {
             const chartTheme = getChartThemeOptions();
-            new Chart(riskChartCtx.getContext('2d'), { 
-                type: 'radar', 
+            new Chart(riskChartCtx.getContext('2d'), {
+                type: 'radar',
                 data: { 
                     labels: riskLabels, 
                     datasets: [{ 
@@ -1055,10 +1381,15 @@ document.addEventListener('DOMContentLoaded', function() {
                             display: false 
                         }
                     }
-                } 
+                }
             });
         }
-        
+
+        renderAssetManagementViews(equipmentSearch ? equipmentSearch.value : '', personnelSearch ? personnelSearch.value : '');
+        initializeCommercial();
+        initializeHSE();
+        renderPOBView();
+
         updateNavLinks();
     };
 
@@ -1485,45 +1816,154 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- ASSET & POB LOGIC ---
 
     const renderAssetManagementViews = (eqFilter = '', persFilter = '') => {
-        if (!appState.generatedPlan) {
-            logisticsSubtitle.textContent = "Please generate a plan in the Planner to view job-specific logistics.";
-            logisticsContent.innerHTML = `
-                <div class="text-center col-span-2 light-card p-8 rounded-lg">
-                    <p>No plan is currently active. Please use the Planner module to generate an intervention plan, and the required tooling and personnel will be displayed here.</p>
-                </div>
-            `;
+        if (!equipmentTableBody || !personnelTableBody) return;
+
+        const setEmptyTables = (message) => {
+            equipmentTableBody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-sm text-slate-400">${message}</td></tr>`;
+            personnelTableBody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-sm text-slate-400">${message}</td></tr>`;
+        };
+
+        if (!appState.referenceDataLoaded) {
+            logisticsSubtitle.textContent = "Loading catalog data...";
+            setEmptyTables('Loading reference datasets…');
+            if (logisticsReferenceCard) {
+                logisticsReferenceCard.innerHTML = `
+                    <h3 class="text-xl font-semibold mb-4">Service Line Reference</h3>
+                    <p class="text-sm text-slate-400">Fetching service-line templates and tooling catalog…</p>
+                `;
+            }
             return;
         }
-        
+
+        if (!appState.generatedPlan) {
+            logisticsSubtitle.textContent = "Please generate a plan in the Planner to view job-specific logistics.";
+            setEmptyTables('Generate a plan to load logistics data.');
+            if (logisticsReferenceCard) {
+                logisticsReferenceCard.innerHTML = `
+                    <h3 class="text-xl font-semibold mb-4">Service Line Reference</h3>
+                    <p class="text-sm text-slate-400">Generate a plan to view recommended templates and vendor pairings.</p>
+                `;
+            }
+            return;
+        }
+
         logisticsSubtitle.textContent = `Logistics for ${appState.generatedPlan.name} on ${appState.selectedWell.name}`;
-        
-        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id];
-        const requiredRoles = appState.generatedPlan.personnel;
+
+        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id] || [];
+        const requiredRoles = appState.generatedPlan.personnel || [];
 
         const eqF = eqFilter.toLowerCase();
-        const filteredEquipment = equipmentData.filter(e => 
-            requiredEquipment.some(req => req.name === e.type) && 
-            (e.id.toLowerCase().includes(eqF) || e.type.toLowerCase().includes(eqF))
-        );
-        
-        equipmentTableBody.innerHTML = filteredEquipment.map(e => `
-            <tr>
-                <td class="p-2">${e.id}</td>
-                <td class="p-2">${e.type}</td>
-                <td class="p-2">${e.location}</td>
-                <td class="p-2">
-                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${e.status.toLowerCase()}">${e.status}</span>
-                </td>
-                <td class="p-2">
-                    <button class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full hover:bg-blue-200 disabled:opacity-50" 
-                            ${e.location === 'Onboard - Pump Room' && e.testStatus === 'Pending' ? '' : 'disabled'}>
-                        Test
-                    </button>
-                </td>
-            </tr>
-        `).join('');
+        const filteredEquipment = equipmentData.filter(item => {
+            const matchesRequirement = requiredEquipment.some(req => matchesEquipmentRequirement(req.name, item));
+            if (!matchesRequirement) return false;
+            if (!eqF) return true;
+            return [item.id, item.type, item.vendor, item.location]
+                .filter(Boolean)
+                .some(val => val.toLowerCase().includes(eqF));
+        });
+
+        equipmentTableBody.innerHTML = filteredEquipment.length ? filteredEquipment.map(item => {
+            const testStatus = item.testStatus || 'Pending';
+            const statusClass = toStatusClass(testStatus || 'pending');
+            const testDisabled = testStatus !== 'Pending';
+            return `
+                <tr>
+                    <td class="p-2">${item.id}</td>
+                    <td class="p-2">${item.type}</td>
+                    <td class="p-2">${item.vendor || 'Vendor TBD'}</td>
+                    <td class="p-2">${item.location || 'TBD'}</td>
+                    <td class="p-2">${formatCurrency(item.rate)}</td>
+                    <td class="p-2">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full status-${statusClass || 'pending'}">${testStatus}</span>
+                    </td>
+                    <td class="p-2">
+                        <button class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full hover:bg-blue-200${testDisabled ? ' opacity-50 cursor-not-allowed' : ''}" ${testDisabled ? 'disabled' : ''}>Test</button>
+                    </td>
+                </tr>
+            `;
+        }).join('') : `<tr><td colspan="7" class="p-4 text-center text-sm text-slate-400">No matching equipment found.</td></tr>`;
 
         const persF = persFilter.toLowerCase();
+        const filteredPersonnel = personnelData.filter(person => {
+            const matchesRole = requiredRoles.some(role => matchesPersonnelRole(role, person));
+            if (!matchesRole) return false;
+            if (!persF) return true;
+            return [person.name, person.role, person.company]
+                .filter(Boolean)
+                .some(val => val.toLowerCase().includes(persF));
+        });
+
+        personnelTableBody.innerHTML = filteredPersonnel.length ? filteredPersonnel.map(person => {
+            const statusClass = toStatusClass(person.status || 'available');
+            const perDiem = person.perDiem ? `<span class="block text-xs text-slate-400">Per diem ${formatCurrency(person.perDiem)}</span>` : '';
+            return `
+                <tr>
+                    <td class="p-2">
+                        <div class="flex flex-col">
+                            <span class="font-semibold">${person.name}</span>
+                            <span class="text-xs text-slate-400">${person.id}</span>
+                        </div>
+                    </td>
+                    <td class="p-2">${person.role}</td>
+                    <td class="p-2">${person.company}</td>
+                    <td class="p-2">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full status-${statusClass || 'available'}">${person.status}</span>
+                    </td>
+                    <td class="p-2">
+                        ${formatCurrency(person.rate)}
+                        ${perDiem}
+                    </td>
+                    <td class="p-2">${person.certsValid ? '✅ Valid' : '⚠️ Needs Renewal'}</td>
+                </tr>
+            `;
+        }).join('') : `<tr><td colspan="6" class="p-4 text-center text-sm text-slate-400">No matching personnel found.</td></tr>`;
+
+        if (logisticsReferenceCard) {
+            const template = getServiceTemplateForObjective(appState.selectedObjective.id);
+            if (!template) {
+                logisticsReferenceCard.innerHTML = `
+                    <h3 class="text-xl font-semibold mb-4">Service Line Reference</h3>
+                    <p class="text-sm text-slate-400">No service template mapped to this objective yet.</p>
+                `;
+            } else {
+                const toolingList = (template.equipment_ids || []).map(id => {
+                    const catalogItem = equipmentCatalogIndex[id];
+                    const matchedEquipment = catalogItem ? findMatchingEquipment(catalogItem.name) : null;
+                    const vendorDetail = matchedEquipment?.vendor ? ` • Vendor: ${matchedEquipment.vendor}` : '';
+                    const rateDetail = matchedEquipment?.rate ? ` • Rate: ${formatCurrency(matchedEquipment.rate)}` : '';
+                    return `
+                        <li class="border-b border-slate-700/40 pb-2 last:border-0">
+                            <p class="font-semibold">${catalogItem ? catalogItem.name : id}</p>
+                            <p class="text-xs text-slate-400">${catalogItem ? catalogItem.categoryName : 'Tooling'}${vendorDetail}${rateDetail}</p>
+                        </li>
+                    `;
+                }).join('') || '<li class="text-sm text-slate-400">Tooling catalog entry coming soon.</li>';
+
+                logisticsReferenceCard.innerHTML = `
+                    <h3 class="text-xl font-semibold mb-4">Service Line Reference</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Category</p>
+                            <p class="font-semibold">${template.category}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Package</p>
+                            <p class="font-semibold">${template.name}</p>
+                            <p class="text-sm text-slate-400">${template.description}</p>
+                            ${template.duration_hours ? `<p class="text-xs text-slate-400 mt-1">Estimated duration: ${template.duration_hours} hours</p>` : ''}
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Applications</p>
+                            <ul class="list-disc pl-5 text-sm space-y-1">${(template.applications || []).map(app => `<li>${app}</li>`).join('')}</ul>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-slate-400">Tooling Pull</p>
+                            <ul class="space-y-2">${toolingList}</ul>
+                        </div>
+                    </div>
+                `;
+            }
+        }
         const filteredPersonnel = personnelData.filter(p => 
             requiredRoles.includes(p.role) && 
             (p.name.toLowerCase().includes(persF) || p.role.toLowerCase().includes(persF))
@@ -1543,26 +1983,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const checkLogistics = () => {
         const conflicts = [];
-        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id];
+        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id] || [];
 
         requiredEquipment.forEach(req => {
             if (req.source === 'Vendor') {
-                const availableTool = equipmentData.find(e => e.type === req.name && e.status === 'Available');
+                const availableTool = equipmentData.find(item => matchesEquipmentRequirement(req.name, item) && item.status === 'Available');
                 if (!availableTool) {
-                    conflicts.push(`No available equipment of type: <strong>${req.name}</strong>. Must be ordered from vendor.`);
+                    const vendor = resolveVendor(req.name);
+                    conflicts.push(`No available equipment of type: <strong>${req.name}</strong>. Coordinate with <strong>${vendor}</strong> for mobilisation.`);
                 }
             }
         });
 
-        appState.generatedPlan.personnel.forEach(roleName => {
-            const availablePerson = personnelData.find(p => p.role === roleName && p.status === 'Available');
+        (appState.generatedPlan.personnel || []).forEach(roleName => {
+            const availablePerson = personnelData.find(person => matchesPersonnelRole(roleName, person) && person.status === 'Available');
             if (!availablePerson) {
-                conflicts.push(`No available personnel for role: <strong>${roleName}</strong>.`);
-            } else if (!availablePerson.certsValid) {
-                conflicts.push(`Personnel <strong>${availablePerson.name} (${roleName})</strong> has expired certifications.`);
+                const candidate = personnelData.find(person => matchesPersonnelRole(roleName, person));
+                if (candidate && !candidate.certsValid) {
+                    conflicts.push(`Personnel <strong>${candidate.name} (${roleName})</strong> has certifications that require renewal.`);
+                } else {
+                    conflicts.push(`No available personnel for role: <strong>${roleName}</strong>.`);
+                }
             }
         });
-        
+
         return conflicts;
     };
 
@@ -1592,8 +2036,12 @@ document.addEventListener('DOMContentLoaded', function() {
             ms.current = appState.pob.personnel.filter(p => p.muster === ms.id && p.musterStatus === 'Mustered').length; 
         });
         
+        const unaccountedCount = totalPOB - musteredCount;
+        const totalDailyRate = appState.pob.personnel.reduce((sum, person) => sum + (Number(person.rate) || 0), 0);
+        const totalPerDiem = appState.pob.personnel.reduce((sum, person) => sum + (Number(person.perDiem) || 0), 0);
+
         const summaryHtml = `
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 <div class="light-card p-6 text-center rounded-lg">
                     <p class="text-sm font-medium">Total POB</p>
                     <p class="text-4xl font-bold">${totalPOB}</p>
@@ -1601,10 +2049,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="light-card p-6 text-center rounded-lg">
                     <p class="text-sm font-medium">Accounted For</p>
                     <p class="text-4xl font-bold text-green-600">${musteredCount}</p>
+                    <p class="mt-2 text-xs text-slate-400">Unaccounted: ${unaccountedCount}</p>
                 </div>
                 <div class="light-card p-6 text-center rounded-lg">
-                    <p class="text-sm font-medium">Unaccounted For</p>
-                    <p class="text-4xl font-bold text-red-600">${totalPOB - musteredCount}</p>
+                    <p class="text-sm font-medium">Daily Crew Rate</p>
+                    <p class="text-3xl font-bold">${formatCurrency(totalDailyRate)}</p>
+                </div>
+                <div class="light-card p-6 text-center rounded-lg">
+                    <p class="text-sm font-medium">Daily Per Diem</p>
+                    <p class="text-3xl font-bold">${formatCurrency(totalPerDiem)}</p>
                 </div>
             </div>
         `;
@@ -1627,6 +2080,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <th class="p-2">Name</th>
                                 <th class="p-2">Company</th>
                                 <th class="p-2">Role</th>
+                                <th class="p-2">Daily Rate</th>
+                                <th class="p-2">Per Diem</th>
                                 <th class="p-2">Muster Station</th>
                                 <th class="p-2">Status</th>
                             </tr>
@@ -1637,9 +2092,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <td class="p-2">${p.name}</td>
                                     <td class="p-2">${p.company}</td>
                                     <td class="p-2">${p.role}</td>
+                                    <td class="p-2">${formatCurrency(p.rate)}</td>
+                                    <td class="p-2">${formatCurrency(p.perDiem)}</td>
                                     <td class="p-2">${p.muster}</td>
                                     <td class="p-2">
-                                        <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.musterStatus.toLowerCase().replace(' ', '')}">${p.musterStatus}</span>
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full status-${toStatusClass(p.musterStatus || 'pending')}">${p.musterStatus}</span>
                                     </td>
                                 </tr>
                             `).join('')}
@@ -1695,48 +2152,89 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- COMMERCIAL & HSE LOGIC ---
 
     const initializeCommercial = () => {
-        if (!appState.generatedPlan) { 
+        if (!appState.generatedPlan) {
             commercialContent.innerHTML = `
                 <div class="text-center light-card p-8 rounded-lg">
                     <p>No plan is currently active. Please use the Planner module to generate an intervention plan, and the associated financial data will be displayed here.</p>
                 </div>
             `;
-            commercialSubtitle.textContent = "No active operation."
-            return; 
+            commercialSubtitle.textContent = "No active operation.";
+            return;
         }
-        
+
         commercialSubtitle.textContent = `Live financial tracking for ${appState.generatedPlan.name} on ${appState.selectedWell.name}`;
-        appState.commercial.afe = appState.generatedPlan.cost;
+
+        const planDuration = Math.max(1, Number(appState.generatedPlan.duration) || 1);
+        appState.commercial.afe = Number(appState.generatedPlan.cost) || 0;
         appState.commercial.actualCost = 0;
         appState.commercial.serviceTickets = [];
-        
+
+        const pushTicket = ({ description, cost = 0, vendor = 'Vendor TBD', status = 'Pending' }) => {
+            const ticketCost = Number(cost) || 0;
+            appState.commercial.serviceTickets.push({
+                description,
+                cost: ticketCost,
+                vendor,
+                status
+            });
+            appState.commercial.actualCost += ticketCost;
+        };
+
         const equipmentList = equipmentRequirements[appState.selectedObjective.id] || [];
         equipmentList.forEach(item => {
-            if (item.price > 0) {
-                const cost = item.price * appState.generatedPlan.duration;
-                appState.commercial.serviceTickets.push({ 
-                    description: `Rental: ${item.name}`, 
-                    cost: cost, 
-                    validated: true 
-                });
-                appState.commercial.actualCost += cost;
-            }
+            const matchedEquipment = findMatchingEquipment(item.name);
+            const vendor = matchedEquipment?.vendor || 'Vendor TBD';
+            const status = matchedEquipment?.status || 'Pending';
+            const rate = matchedEquipment?.rate || item.price || 0;
+            const cost = rate * planDuration;
+
+            pushTicket({
+                description: `Rental: ${item.name}`,
+                cost,
+                vendor,
+                status
+            });
         });
-        
+
+        const crewRoles = appState.generatedPlan.personnel || [];
+        crewRoles.forEach(roleName => {
+            const crewMember = personnelData.find(person => matchesPersonnelRole(roleName, person));
+            if (!crewMember) {
+                pushTicket({
+                    description: `Crew mobilisation: ${roleName}`,
+                    vendor: 'Crew TBD',
+                    status: 'Pending'
+                });
+                return;
+            }
+
+            const dailyRate = Number(crewMember.rate) || 0;
+            const perDiem = Number(crewMember.perDiem) || 0;
+            const totalCost = (dailyRate + perDiem) * planDuration;
+
+            pushTicket({
+                description: `Crew: ${crewMember.role}`,
+                cost: totalCost,
+                vendor: crewMember.company || 'Service Co.',
+                status: crewMember.status || 'Scheduled'
+            });
+        });
+
         renderCommercialView();
     };
+
 
     const renderCommercialView = () => {
         if (!appState.generatedPlan) {
             initializeCommercial();
             return;
         }
-        
-        const afe = appState.commercial.afe, 
-        actual = appState.commercial.actualCost;
+
+        const afe = Number(appState.commercial.afe) || 0,
+        actual = Number(appState.commercial.actualCost) || 0;
         const burnPercent = afe > 0 ? Math.min(100, (actual / afe) * 100) : 0;
         const burnColor = burnPercent > 90 ? 'bg-red-500' : burnPercent > 75 ? 'bg-yellow-500' : 'bg-teal-500';
-        
+
         commercialContent.innerHTML = `
             <div class="grid gap-8 lg:grid-cols-3">
                 <div class="lg:col-span-2 light-card p-6 rounded-lg">
@@ -1744,13 +2242,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="space-y-4">
                         <div class="flex justify-between font-bold text-lg">
                             <span>Actual Cost</span>
-                            <span>$${actual.toLocaleString()}</span>
+                            <span>${formatCurrency(actual)}</span>
                         </div>
                         <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
                             <div class="${burnColor} h-4 rounded-full" style="width: ${burnPercent}%"></div>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span>Budget (AFE): $${afe.toLocaleString()}</span>
+                            <span>Budget (AFE): ${formatCurrency(afe)}</span>
                             <span>${burnPercent.toFixed(1)}% Used</span>
                         </div>
                     </div>
@@ -1760,20 +2258,30 @@ document.addEventListener('DOMContentLoaded', function() {
                             <thead class="table-header sticky top-0">
                                 <tr>
                                     <th class="p-2">Description</th>
+                                    <th class="p-2">Vendor</th>
                                     <th class="p-2">Cost</th>
                                     <th class="p-2">Status</th>
                                 </tr>
                             </thead>
                             <tbody id="service-ticket-body">
-                                ${appState.commercial.serviceTickets.map(t => `
-                                    <tr class="border-b table-row-alt dark:border-gray-700">
-                                        <td class="p-2">${t.description}</td>
-                                        <td class="p-2">$${t.cost.toLocaleString()}</td>
-                                        <td class="p-2">
-                                            <span class="status-approved px-2 py-1 text-xs font-medium rounded-full">Validated</span>
-                                        </td>
+                                ${appState.commercial.serviceTickets.length ? appState.commercial.serviceTickets.map(t => {
+                                    const statusLabel = t.status || 'Pending';
+                                    const statusClass = toStatusClass(statusLabel || 'pending');
+                                    return `
+                                        <tr class="border-b table-row-alt dark:border-gray-700">
+                                            <td class="p-2">${t.description}</td>
+                                            <td class="p-2">${t.vendor || 'Vendor TBD'}</td>
+                                            <td class="p-2">${formatCurrency(t.cost)}</td>
+                                            <td class="p-2">
+                                                <span class="px-2 py-1 text-xs font-medium rounded-full status-${statusClass || 'pending'}">${statusLabel}</span>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('') : `
+                                    <tr>
+                                        <td colspan="4" class="p-4 text-center text-sm text-slate-400">Service tickets will appear after a plan is generated.</td>
                                     </tr>
-                                `).join('')}
+                                `}
                             </tbody>
                         </table>
                     </div>
@@ -1792,11 +2300,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         `;
-        
+
         document.getElementById('validate-invoice-btn').addEventListener('click', validateInvoice);
     };
 
-    const validateInvoice = () => {
+
+const validateInvoice = () => {
         const invoiceAmount = parseFloat(document.getElementById('invoice-amount').value);
         const validatedCost = appState.commercial.actualCost;
         const resultContainer = document.getElementById('invoice-result');
@@ -2287,10 +2796,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const initSavingsChart = () => {
         if (!savingsChartCanvas) return;
-        
+
         const ctx = savingsChartCanvas.getContext('2d');
         const isDark = body.classList.contains('theme-dark');
-        
+
         appState.savingsChartInstance = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -2334,6 +2843,70 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    const loadReferenceData = async () => {
+        try {
+            const [equipmentRes, personnelRes, serviceRes, catalogRes] = await Promise.allSettled([
+                fetch('data-equipment-tools.csv'),
+                fetch('data-personnel-rates.csv'),
+                fetch('service-line-templates.json'),
+                fetch('equipment-catalog.json')
+            ]);
+
+            if (equipmentRes.status === 'fulfilled' && equipmentRes.value.ok) {
+                const csv = await equipmentRes.value.text();
+                mergeEquipmentCsvData(csv);
+            }
+
+            if (personnelRes.status === 'fulfilled' && personnelRes.value.ok) {
+                const csv = await personnelRes.value.text();
+                mergePersonnelCsvData(csv);
+            }
+
+            if (serviceRes.status === 'fulfilled' && serviceRes.value.ok) {
+                const json = await serviceRes.value.json();
+                serviceLineTemplatesIndex = buildServiceLineIndex(json);
+            }
+
+            if (catalogRes.status === 'fulfilled' && catalogRes.value.ok) {
+                const json = await catalogRes.value.json();
+                equipmentCatalogIndex = buildEquipmentCatalogIndex(json);
+            }
+
+            appState.referenceDataLoaded = true;
+
+            if (appState.generatedPlan) {
+                renderAssetManagementViews(equipmentSearch ? equipmentSearch.value : '', personnelSearch ? personnelSearch.value : '');
+                initializeCommercial();
+                initializeHSE();
+                renderPOBView();
+            } else {
+                renderAssetManagementViews();
+            }
+        } catch (error) {
+            console.error('Failed to load reference data:', error);
+            appState.referenceDataLoaded = true;
+
+            if (logisticsSubtitle) {
+                logisticsSubtitle.textContent = 'Using offline reference datasets.';
+            }
+
+            if (logisticsReferenceCard) {
+                logisticsReferenceCard.innerHTML = `
+                    <h3 class="text-xl font-semibold mb-4">Service Line Reference</h3>
+                    <p class="text-sm text-slate-400">Offline mode active. Using bundled tooling and crew data.</p>
+                `;
+            }
+
+            renderAssetManagementViews(equipmentSearch ? equipmentSearch.value : '', personnelSearch ? personnelSearch.value : '');
+
+            if (appState.generatedPlan) {
+                initializeCommercial();
+                initializeHSE();
+                renderPOBView();
+            }
+        }
+    };
+
     const initializeApp = () => {
         if (appContainer) {
             appContainer.classList.remove('hidden');
@@ -2344,6 +2917,7 @@ document.addEventListener('DOMContentLoaded', function() {
         switchView('home');
     };
 
+    loadReferenceData();
     initializeApp();
 
     // --- EVENT LISTENERS ---

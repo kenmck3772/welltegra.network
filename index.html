@@ -92,11 +92,19 @@
                     <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">From Data Chaos to Predictive Clarity.</h1>
                     <p class="mt-6 text-lg md:text-xl text-slate-100">The oil and gas industry loses over $38 million per asset annually to unplanned downtime. Your engineers spend more than 50% of their time wrangling data. The cause? A disconnected digital ecosystem.</p>
                     <p class="mt-4 text-lg md:text-xl font-semibold text-white">Well-Tegra: Engineering Insight, Amplified by Data.</p>
-                    <div class="mt-8 flex justify-center">
+                    <div class="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                         <button id="hero-video-toggle" type="button" aria-controls="hero-video" aria-pressed="true" class="inline-flex items-center gap-2 rounded-full bg-black/60 px-5 py-2 text-sm font-semibold text-white backdrop-blur focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal-400 focus-visible:ring-offset-slate-900 transition">
                             <span class="hero-video-toggle-icon" aria-hidden="true">⏸</span>
                             <span class="hero-video-toggle-text" aria-live="polite">Pause background video</span>
                         </button>
+                        <a href="well-operations-planner.html" class="inline-flex items-center gap-2 rounded-full bg-cyan-500 px-5 py-2 text-sm font-semibold text-slate-900 shadow-lg transition hover:bg-cyan-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-slate-900">
+                            <span aria-hidden="true">🛠️</span>
+                            <span>Launch Well Operations Planner</span>
+                        </a>
+                        <a href="equipment-browser.html" class="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2 text-sm font-semibold text-slate-900 shadow-lg transition hover:bg-emerald-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-slate-900">
+                            <span aria-hidden="true">📦</span>
+                            <span>Explore Equipment Catalog</span>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -214,9 +222,52 @@
 
         <div id="logistics-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Logistics & Asset Management</h2><p id="logistics-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Manage equipment and personnel availability, certifications, and maintenance schedules.</p></div>
-            <div id="logistics-content" class="mt-10 grid gap-12 lg:grid-cols-2">
-                <div class="light-card p-6 rounded-lg"><h3 class="text-xl font-semibold mb-4">Equipment Hub</h3><input type="text" id="equipment-search" placeholder="Search equipment..." class="w-full p-2 rounded-md mb-4"><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="table-header"><tr><th class="p-2">Asset ID</th><th>Type</th><th>Location</th><th>Test Status</th><th>Actions</th></tr></thead><tbody id="equipment-table-body"></tbody></table></div></div>
-                <div class="light-card p-6 rounded-lg"><h3 class="text-xl font-semibold mb-4">Personnel Roster</h3><input type="text" id="personnel-search" placeholder="Search personnel..." class="w-full p-2 rounded-md mb-4"><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="table-header"><tr><th class="p-2">Name</th><th>Role</th><th>Status</th><th>Certs Valid</th></tr></thead><tbody id="personnel-table-body"></tbody></table></div></div>
+            <div id="logistics-content" class="mt-10 grid gap-12 lg:grid-cols-3">
+                <div class="light-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Equipment Hub</h3>
+                    <label for="equipment-search" class="sr-only">Search equipment</label>
+                    <input type="text" id="equipment-search" placeholder="Search equipment..." class="w-full p-2 rounded-md mb-4">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="p-2">Asset ID</th>
+                                    <th>Type</th>
+                                    <th>Vendor</th>
+                                    <th>Location</th>
+                                    <th>Daily Rate</th>
+                                    <th>Test Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="equipment-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="light-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Personnel Roster</h3>
+                    <label for="personnel-search" class="sr-only">Search personnel</label>
+                    <input type="text" id="personnel-search" placeholder="Search personnel..." class="w-full p-2 rounded-md mb-4">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="p-2">Name</th>
+                                    <th>Role</th>
+                                    <th>Company</th>
+                                    <th>Status</th>
+                                    <th>Daily Rate</th>
+                                    <th>Certs Valid</th>
+                                </tr>
+                            </thead>
+                            <tbody id="personnel-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="logistics-reference-card" class="light-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Service Line Reference</h3>
+                    <p class="text-sm text-slate-400">Generate a plan to view recommended service templates, vendor insights, and supporting tooling pulled from the Well-Tegra catalog.</p>
+                </div>
             </div>
         </div>
         
