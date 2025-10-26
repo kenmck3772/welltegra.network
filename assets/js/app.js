@@ -279,20 +279,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
     ];
-    const objectivesData = [ 
-        { id: 'obj1', name: 'Remediate Casing Deformation', description: 'Install an expandable steel patch to restore wellbore access.', icon: 'ðŸ”§' }, 
-        { id: 'obj2', name: 'Remove BaSO4 Scale', description: 'Use a chemical and mechanical method to clear tubing blockage.', icon: 'ðŸ§ª' }, 
-        { id: 'obj3', name: 'Restore Downhole Safety Valve', description: 'Lock open the failed TRSSV and install a new insert valve.', icon: 'ðŸ”’' }, 
-        { id: 'obj4', name: 'Repair Sand Control', description: 'Install a through-tubing expandable sand screen patch.', icon: 'ðŸ–ï¸' }, 
-        { id: 'obj5', name: 'Paraffin Wax Removal', description: 'Use CT with chemicals and tools to remove wax blockage.', icon: 'ðŸ•¯ï¸' } 
+    const objectivesData = [
+        { id: 'obj1', name: 'Remediate Casing Deformation', description: 'Install an expandable steel patch to restore wellbore access.', icon: '🔧' },
+        { id: 'obj2', name: 'Remove BaSO4 Scale', description: 'Use a chemical and mechanical method to clear tubing blockage.', icon: '🧪' },
+        { id: 'obj3', name: 'Restore Downhole Safety Valve', description: 'Lock open the failed TRSSV and install a new insert valve.', icon: '🔒' },
+        { id: 'obj4', name: 'Repair Sand Control', description: 'Install a through-tubing expandable sand screen patch.', icon: '🛠️' },
+        { id: 'obj5', name: 'Paraffin Wax Removal', description: 'Use CT with chemicals and tools to remove wax blockage.', icon: '🕯️' }
     ];
-    const problemsData = [ 
-        { id: 'prob1', name: 'Loss of Well Access (Casing Deformation)', description: 'Wellbore is restricted due to geomechanical forces.', linked_objectives: ['obj1'], icon: 'ðŸš«' }, 
-        { id: 'prob2', name: 'Severe Scale Blockage', description: 'Production is blocked by hard, insoluble scale.', linked_objectives: ['obj2'], icon: 'ðŸš°' }, 
-        { id: 'prob3', name: 'Failed Primary Safety Barrier (DHSV)', description: 'Well is legally shut-in due to a failed safety valve.', linked_objectives: ['obj3'], icon: 'âš ï¸' }, 
-        { id: 'prob4', name: 'Sand Control Failure', description: 'Excessive sand production is damaging equipment and limiting rates.', linked_objectives: ['obj4'], icon: 'ðŸœï¸' }, 
-        { id: 'prob5', name: 'Flow Assurance Blockage (Wax)', description: 'Production is severely restricted by paraffin deposits.', linked_objectives: ['obj5'], icon: 'ðŸ•¯ï¸' } 
+    const problemsData = [
+        { id: 'prob1', name: 'Loss of Well Access (Casing Deformation)', description: 'Wellbore is restricted due to geomechanical forces.', linked_objectives: ['obj1'], icon: '🚫' },
+        { id: 'prob2', name: 'Severe Scale Blockage', description: 'Production is blocked by hard, insoluble scale.', linked_objectives: ['obj2'], icon: '🚰' },
+        { id: 'prob3', name: 'Failed Primary Safety Barrier (DHSV)', description: 'Well is legally shut-in due to a failed safety valve.', linked_objectives: ['obj3'], icon: '⚠️' },
+        { id: 'prob4', name: 'Sand Control Failure', description: 'Excessive sand production is damaging equipment and limiting rates.', linked_objectives: ['obj4'], icon: '🏝️' },
+        { id: 'prob5', name: 'Flow Assurance Blockage (Wax)', description: 'Production is severely restricted by paraffin deposits.', linked_objectives: ['obj5'], icon: '🧊' }
     ];
+
     const aiRecommendations = {
         prob1: [ 
             { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis of case study <strong>M-21 (The Montrose Squeeze)</strong> confirms an expandable steel patch is the standard, high-success-rate rigless solution for this specific failure mode in this field.' } 
@@ -479,6 +480,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const headerNav = document.getElementById('header-nav');
     const heroVideo = document.getElementById('hero-video');
     const heroVideoToggle = document.getElementById('hero-video-toggle');
+    const plannerStatusRegion = document.getElementById('planner-status');
     
     // Planner
 
@@ -664,11 +666,15 @@ document.addEventListener('DOMContentLoaded', function() {
         navLinks.forEach(link => {
             link.classList.remove('active');
             link.removeAttribute('aria-current');
+            link.setAttribute('aria-selected', 'false');
+            link.setAttribute('tabindex', '-1');
         });
         const activeLink = document.getElementById(`${viewName}-nav-link`);
         if (activeLink) {
             activeLink.classList.add('active');
             activeLink.setAttribute('aria-current', 'page');
+            activeLink.setAttribute('aria-selected', 'true');
+            activeLink.removeAttribute('tabindex');
         }
         
         headerDetails.innerHTML = ''; 
@@ -682,8 +688,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
 
         if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
-            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">&bull; LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
-            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">â— LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">• LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
             initializePerformer();
         } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
             if(appState.selectedWell && appState.generatedPlan) {
@@ -708,10 +713,6 @@ document.addEventListener('DOMContentLoaded', function() {
         appState.ai = { selectedProblemId: null, selectedRecommendation: null };
         
         // Reset well selection
-        document.querySelectorAll('.planner-card').forEach(c => {
-            c.classList.remove('selected');
-            c.setAttribute('aria-pressed', 'false');
-        });
         document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
         
         // Reset objective selection
@@ -725,7 +726,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Reset buttons
         generatePlanBtnManual.disabled = true;
         generatePlanBtnAi.disabled = true;
-        
+
+        if (plannerStatusRegion) {
+            plannerStatusRegion.textContent = '';
+        }
+
         // Reset AI recommendations
         aiRecommendationsContainer.classList.add('hidden');
         
@@ -768,9 +773,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const isWellFromHell = well.id === 'W666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
             const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
-
-            return `
-                <article class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}" role="button" tabindex="0" aria-pressed="false">
             
             return `
                 <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}">
@@ -793,9 +795,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold" data-well-id="${well.id}">View Details</button>
                         </div>
                     </div>
-                </article>
-            `;
-        }).join('');
                 </div>
             `;
         }).join(''); 
@@ -866,7 +865,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <ul class="space-y-2">
                         ${logisticsConflicts.map(c => `
                             <li class="flex items-start p-3 rounded-md bg-red-50 dark:bg-red-900/50 border-l-4 border-red-400">
-                                <span class="text-red-600 mr-2 font-bold">âš ï¸</span>
+                                <span class="text-red-600 mr-2 font-bold">⚠️</span>
                                 <span class="text-red-800 dark:text-red-300">${c}</span>
                             </li>
                         `).join('')}
@@ -1375,7 +1374,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else { 
             appState.liveData.jobRunning = false; 
             addLogEntry('System', 'Job procedure complete.'); 
-            document.getElementById('job-status').textContent = "â— JOB COMPLETE"; 
+            document.getElementById('job-status').textContent = "• JOB COMPLETE"; 
             document.getElementById('job-status').classList.replace('text-emerald-400', 'text-gray-500'); 
             performerControls.classList.remove('hidden'); 
         }
@@ -1537,7 +1536,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td class="p-2">
                     <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.status.toLowerCase().replace(/\s/g, '')}">${p.status}</span>
                 </td>
-                <td class="p-2">${p.certsValid ? 'âœ… Valid' : 'âŒ Expired'}</td>
+                <td class="p-2">${p.certsValid ? '✅ Valid' : '⚠️ Expired'}</td>
             </tr>
         `).join('');
     };
@@ -2033,7 +2032,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p class="font-bold text-lg">${h.operation} <span class="text-sm font-normal">- ${h.date}</span></p>
                 <div class="mt-3 space-y-3">
                     <div class="flex items-start">
-                        <span class="text-xl mr-3">âš ï¸</span>
+                        <span class="text-xl mr-3">⚠️</span>
                         <div>
                             <strong class="font-semibold text-red-600 dark:text-red-400">Problem:</strong>
                             <p class="text-sm">${h.problem}</p>
@@ -2242,9 +2241,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalSavingsValue = document.getElementById('totalSavings');
     const savingsChartCanvas = document.getElementById('savingsChart');
 
+    const announcePlannerStatus = (message) => {
+        if (!plannerStatusRegion || !message) return;
+        plannerStatusRegion.textContent = '';
+        requestAnimationFrame(() => {
+            plannerStatusRegion.textContent = message;
+        });
+    };
+
     const calculateROI = () => {
         if (!engineerCountSlider) return;
-        
+
         const engineers = parseInt(engineerCountSlider.value);
         const nptReduction = parseInt(nptReductionSlider.value) / 100;
         const timeSavings = parseInt(timeSavingsSlider.value) / 100;
@@ -2258,8 +2265,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalSavings = engineerSavings + nptSavings;
 
         engineerCountValue.textContent = engineers;
+        engineerCountSlider.setAttribute('aria-valuenow', engineers);
+        engineerCountSlider.setAttribute('aria-valuetext', `${engineers} well engineers`);
         nptReductionValue.textContent = `${nptReduction * 100}%`;
+        nptReductionSlider.setAttribute('aria-valuenow', nptReduction * 100);
+        nptReductionSlider.setAttribute('aria-valuetext', `${nptReduction * 100}% projected reduction`);
         timeSavingsValue.textContent = `${timeSavings * 100}%`;
+        timeSavingsSlider.setAttribute('aria-valuenow', timeSavings * 100);
+        timeSavingsSlider.setAttribute('aria-valuetext', `${timeSavings * 100}% engineering time reclaimed`);
         totalSavingsValue.textContent = `$${Math.round(totalSavings).toLocaleString()}`;
 
         updateSavingsChart(engineerSavings, nptSavings);
@@ -2362,28 +2375,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!card) return;
         
         appState.selectedWell = wellData.find(w => w.id === card.dataset.wellId);
-        document.querySelectorAll('.planner-card').forEach(c => {
-            c.classList.remove('selected');
-            c.setAttribute('aria-pressed', 'false');
-        });
-        card.classList.add('selected');
-        card.setAttribute('aria-pressed', 'true');
         document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
 
         renderProblems(); // Update the problems list based on selection
         updatePlannerStepUI(2);
-    });
-
-    wellSelectionGrid.addEventListener('keydown', (e) => {
-        if (e.defaultPrevented) return;
-        const card = e.target.closest('.planner-card');
-        if (!card) return;
-
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            card.click();
-        }
+        announcePlannerStatus(`${appState.selectedWell.name} selected. Step two unlocked.`);
     });
 
     // Objective selection event listener
@@ -2398,8 +2395,11 @@ document.addEventListener('DOMContentLoaded', function() {
             selectedCard.classList.add('selected');
         }
         
-        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value); 
-        generatePlanBtnManual.disabled = !appState.selectedObjective; 
+        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value);
+        generatePlanBtnManual.disabled = !appState.selectedObjective;
+        if (appState.selectedObjective) {
+            announcePlannerStatus(`${appState.selectedObjective.name} objective selected. Generate plan when ready.`);
+        }
     });
 
     // Problem selection event listener
@@ -2415,6 +2415,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         appState.ai.selectedProblemId = e.target.value;
+        announcePlannerStatus(`${problemsData.find(problem => problem.id === appState.ai.selectedProblemId)?.name || 'Problem'} selected. Review AI recommendations below.`);
         const recommendations = aiRecommendations[appState.ai.selectedProblemId] || [];
         
         aiRecommendationsContainer.innerHTML = `
@@ -2446,16 +2447,19 @@ document.addEventListener('DOMContentLoaded', function() {
             
             document.querySelectorAll('.ai-recommendation-enhanced').forEach(c => c.classList.remove('selected'));
             selectedCard.classList.add('selected');
-            
+
             generatePlanBtnAi.disabled = false;
+            announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Generate plan when ready.`);
         }));
     });
 
     // AI toggle event listener
-    aiToggle.addEventListener('change', (e) => { 
-        manualPlanningView.classList.toggle('hidden', e.target.checked); 
+    aiToggle.addEventListener('change', (e) => {
+        manualPlanningView.classList.toggle('hidden', e.target.checked);
         aiAdvisorView.classList.toggle('hidden', !e.target.checked);
-        
+
+        announcePlannerStatus(e.target.checked ? 'AI Advisor enabled. Select a problem to view recommendations.' : 'Manual planning enabled. Select an objective to continue.');
+
         if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== 'W666') {
              aiAdvisorView.innerHTML = `
                 <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
@@ -2468,23 +2472,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Generate plan buttons event listeners
-    generatePlanBtnManual.addEventListener('click', () => { 
-        if (!appState.selectedWell || !appState.selectedObjective) return; 
-        appState.generatedPlan = proceduresData[appState.selectedObjective.id]; 
-        renderPlan(); 
-        updatePlannerStepUI(3); 
+    generatePlanBtnManual.addEventListener('click', () => {
+        if (!appState.selectedWell || !appState.selectedObjective) return;
+        appState.generatedPlan = proceduresData[appState.selectedObjective.id];
+        renderPlan();
+        updatePlannerStepUI(3);
+        announcePlannerStatus('Manual plan generated. Review the plan in step three.');
     });
 
-    generatePlanBtnAi.addEventListener('click', () => { 
-        if (!appState.selectedWell || !appState.ai.selectedRecommendation) return; 
-        appState.selectedObjective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId); 
-        appState.generatedPlan = proceduresData[appState.selectedObjective.id]; 
-        renderPlan(); 
-        updatePlannerStepUI(3); 
+    generatePlanBtnAi.addEventListener('click', () => {
+        if (!appState.selectedWell || !appState.ai.selectedRecommendation) return;
+        appState.selectedObjective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId);
+        appState.generatedPlan = proceduresData[appState.selectedObjective.id];
+        renderPlan();
+        updatePlannerStepUI(3);
+        announcePlannerStatus('AI-assisted plan generated. Review the plan in step three.');
     });
 
     // Control buttons event listeners
-    startOverBtn.addEventListener('click', () => resetApp(false));
+    startOverBtn.addEventListener('click', () => {
+        resetApp(false);
+        announcePlannerStatus('Planner reset. Start by selecting a well.');
+    });
     beginOpBtn.addEventListener('click', () => { 
         if (!appState.generatedPlan) return; 
         switchView('performer'); 
@@ -2769,6 +2778,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function generatePDFReport(event) {
     const evt = event || window.event;
     const button = evt?.currentTarget || evt?.target || document.getElementById('pdf-export-button');
+    const statusRegion = document.getElementById('pdf-export-status');
     if (!button) {
         console.warn('PDF export button reference not found.');
         return;
@@ -2779,6 +2789,10 @@ async function generatePDFReport(event) {
     // Show loading state
     button.innerHTML = '<span class="pdf-spinner"></span> Generating PDF...';
     button.classList.add('pdf-generating');
+    button.setAttribute('aria-busy', 'true');
+    if (statusRegion) {
+        statusRegion.textContent = 'Generating PDF report. Please wait.';
+    }
 
     try {
         // Check if jsPDF is loaded
@@ -2936,16 +2950,23 @@ async function generatePDFReport(event) {
 
         // Success feedback
         button.innerHTML = '✓ PDF Downloaded!';
+        if (statusRegion) {
+            statusRegion.textContent = 'PDF generated successfully. Download should begin shortly.';
+        }
         setTimeout(() => {
             button.innerHTML = originalText;
             button.classList.remove('pdf-generating');
+            button.removeAttribute('aria-busy');
         }, 3000);
 
     } catch (error) {
         console.error('PDF generation error:', error);
-        alert('Error generating PDF. Please try again.');
+        if (statusRegion) {
+            statusRegion.textContent = 'Error generating PDF. Please try again.';
+        }
         button.innerHTML = originalText;
         button.classList.remove('pdf-generating');
+        button.removeAttribute('aria-busy');
     }
 }
 
