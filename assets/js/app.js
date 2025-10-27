@@ -1039,7 +1039,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    const equipmentRequirements = {
+    const objectiveEquipmentRequirements = {
         obj1: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Steel Patch & Setting Tool", source: "Vendor", price: 500000 } ],
         obj2: [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Rotating Jetting Nozzle", source: "Vendor", price: 25000 }, { name: "DTPA Chemical", source: "Vendor", price: 80000 } ],
         obj3: [ { name: "Slickline Unit", source: "Vendor", price: 75000 }, { name: "Insert Safety Valve (WRSV)", source: "Vendor", price: 150000 }, { name: "Lock-Open Tool", source: "Vendor", price: 20000 } ],
@@ -1809,7 +1809,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         ` : '';
 
-        const equipmentList = equipmentRequirements[appState.selectedObjective.id] || [];
+        const equipmentList = objectiveEquipmentRequirements[appState.selectedObjective.id] || [];
         const enrichedEquipment = equipmentList.map(item => {
             const matchedEquipment = findMatchingEquipment(item.name);
             const vendor = matchedEquipment?.vendor || resolveVendor(item.name);
@@ -2131,7 +2131,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const plan = appState.generatedPlan;
-        const equipmentList = equipmentRequirements[appState.selectedObjective.id] || [];
+        const equipmentList = objectiveEquipmentRequirements[appState.selectedObjective.id] || [];
         const enrichedEquipment = equipmentList.map(item => {
             const matched = findMatchingEquipment(item.name);
             return {
@@ -2689,7 +2689,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         logisticsSubtitle.textContent = `Logistics for ${appState.generatedPlan.name} on ${appState.selectedWell.name}`;
 
-        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id] || [];
+        const requiredEquipment = objectiveEquipmentRequirements[appState.selectedObjective.id] || [];
         const requiredRoles = appState.generatedPlan.personnel || [];
 
         const eqF = eqFilter.toLowerCase();
@@ -2815,7 +2815,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const checkLogistics = () => {
         const conflicts = [];
-        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id] || [];
+        const requiredEquipment = objectiveEquipmentRequirements[appState.selectedObjective.id] || [];
 
         requiredEquipment.forEach(req => {
             if (req.source === 'Vendor') {
@@ -3019,7 +3019,7 @@ document.addEventListener('DOMContentLoaded', function() {
             appState.commercial.actualCost += ticketCost;
         };
 
-        const equipmentList = equipmentRequirements[appState.selectedObjective.id] || [];
+        const equipmentList = objectiveEquipmentRequirements[appState.selectedObjective.id] || [];
         equipmentList.forEach(item => {
             const matchedEquipment = findMatchingEquipment(item.name);
             const vendor = matchedEquipment?.vendor || 'Vendor TBD';
