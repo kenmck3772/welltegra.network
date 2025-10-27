@@ -2,6 +2,12 @@
 
 ## Summary
 
+- Introduced a dedicated **Data Export Hub** view across the marketing shells with direct download CTAs that now cover the W666, portfolio, activity cost, equipment rate, and personnel rate CSVs plus contextual usage guidance.【F:index.html†L459-L600】【F:index-v23-fresh.html†L892-L1033】【F:test-v23-1761097711.html†L892-L1033】
+- Hydrated the new view with live record counts, schema previews, inline preview tables, and file size estimates by streaming the CSV headers/rows at load time so analysts can verify dataset shape without leaving the site.【F:assets/js/app.js†L1385-L1573】【F:assets/js/app.js†L3827-L3988】
+- Added one-click pandas, <code>curl</code>, and SQL schema copy helpers inside the hub and captured the enhancement in the documentation so downstream teams can bootstrap analytics notebooks, CLI scripts, or warehouse tables faster.【F:index.html†L475-L597】【F:index-v23-fresh.html†L908-L1030】【F:test-v23-1761097711.html†L908-L1030】【F:assets/js/app.js†L3870-L3990】【F:README.md†L26-L35】
+- Surfaced inline data dictionary callouts with SQL type badges so analysts understand field intent before downloading, while keeping graceful fallbacks when schema metadata is unavailable.【F:index.html†L484-L590】【F:index-v23-fresh.html†L917-L1023】【F:test-v23-1761097711.html†L917-L1023】【F:assets/js/app.js†L1385-L1548】【F:assets/js/app.js†L3910-L3953】
+- Added a planner gating helper that announces plan requirements and routes CTAs back to the workflow so Live Ops, Logistics, Commercial, HSE, and Analysis buttons provide feedback instead of silently failing pre-plan.【F:assets/js/app.js†L1620-L1671】【F:assets/js/app.js†L4386-L4404】
+
 - Restored the missing planner DOM handles so marketing-only loads no longer throw `ReferenceError` exceptions when the scripted continue and workspace buttons initialize.【F:assets/js/app.js†L1405-L1420】【F:assets/js/app.js†L4079-L4146】
 - Added a defensive hero video toggle initializer to silence the undefined helper warning while keeping the button accessible if it returns.【F:assets/js/app.js†L4369-L4393】
 - Updated the audit checklist to capture the new console regression scope and the refreshed smoke-test command list.【F:CHECKLIST.md†L6-L35】【F:CHECKLIST.md†L37-L48】

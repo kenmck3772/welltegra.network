@@ -1365,7 +1365,8 @@ document.addEventListener('DOMContentLoaded', function() {
         commercial: { afe: 0, actualCost: 0, serviceTickets: [] },
         ai: { selectedProblemId: null, selectedRecommendation: null },
         hse: { permits: [], riskRegister: [] },
-        pob: { musterActive: false, musterInterval: null, personnel: [] }
+        pob: { musterActive: false, musterInterval: null, personnel: [] },
+        dataExportHandlersBound: false
     };
 
     // --- DOM ELEMENTS ---
@@ -1376,9 +1377,352 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginBtn = document.getElementById('login-btn');
     const views = document.querySelectorAll('.view-container');
     const navLinks = document.querySelectorAll('.nav-link');
+    const alwaysAccessibleViews = new Set(['home', 'planner', 'data', 'about', 'faq', 'whitepaper', 'security']);
     const headerTitle = document.getElementById('header-title');
     const headerDetails = document.getElementById('header-details');
     const headerNav = document.getElementById('header-nav');
+    const dataExportHub = document.getElementById('data-export-hub');
+    const dataExportSchemas = {
+        'data-well-666.csv': [
+            {
+                name: 'Section',
+                sqlType: 'TEXT',
+                description: 'Top-level grouping that distinguishes general attributes, historical events, and completion data.'
+            },
+            {
+                name: 'Category',
+                sqlType: 'TEXT',
+                description: 'Context-specific subcategory such as a specific date, equipment type, or tubing component.'
+            },
+            {
+                name: 'Attribute',
+                sqlType: 'TEXT',
+                description: 'Attribute name within the category (e.g., Operation, Problem, Equipment item).'
+            },
+            {
+                name: 'Value',
+                sqlType: 'TEXT',
+                description: 'Human-readable detail or measurement describing the attribute.'
+            }
+        ],
+        'data-well-portfolio.csv': [
+            {
+                name: 'ID',
+                sqlType: 'VARCHAR(10)',
+                description: 'Well identifier or case study reference code.'
+            },
+            {
+                name: 'Name',
+                sqlType: 'TEXT',
+                description: 'Well nickname or case study headline.'
+            },
+            {
+                name: 'Field',
+                sqlType: 'TEXT',
+                description: 'Field where the operation occurred.'
+            },
+            {
+                name: 'Region',
+                sqlType: 'TEXT',
+                description: 'Geographic basin or operating area.'
+            },
+            {
+                name: 'Well Type',
+                sqlType: 'TEXT',
+                description: 'Primary production type for the well (e.g., HPHT Gas Condensate).'
+            },
+            {
+                name: 'Measured Depth (ft)',
+                sqlType: 'INTEGER',
+                description: 'Reported measured depth of the wellbore in feet.'
+            },
+            {
+                name: 'Current Status',
+                sqlType: 'TEXT',
+                description: 'Operational state summarising if the well is active, shut-in, or restored.'
+            },
+            {
+                name: 'Primary Narrative',
+                sqlType: 'TEXT',
+                description: 'Summary of the dominant challenge or solution story.'
+            },
+            {
+                name: 'Key Lessons Learned',
+                sqlType: 'TEXT',
+                description: 'Distilled learnings or recommendations captured from the case study.'
+            }
+        ],
+        'data-activity-cost-rates.csv': [
+            {
+                name: 'Activity_Code',
+                sqlType: 'VARCHAR(12)',
+                description: 'Unique identifier that maps to the intervention activity catalog.'
+            },
+            {
+                name: 'Activity_Name',
+                sqlType: 'TEXT',
+                description: 'Human-readable description of the activity to schedule.'
+            },
+            {
+                name: 'Category',
+                sqlType: 'TEXT',
+                description: 'Operational grouping such as Surveillance, Barriers, or Evaluation.'
+            },
+            {
+                name: 'Typical_Duration_Hours',
+                sqlType: 'INTEGER',
+                description: 'Expected duration in hours for planning cycle estimates.'
+            },
+            {
+                name: 'Base_Cost_USD',
+                sqlType: 'INTEGER',
+                description: 'Baseline activity cost before contingency or risk multipliers.'
+            },
+            {
+                name: 'Equipment_Primary',
+                sqlType: 'TEXT',
+                description: 'Primary equipment identifier(s) required to execute the activity.'
+            },
+            {
+                name: 'Personnel_Primary',
+                sqlType: 'TEXT',
+                description: 'Key personnel identifiers typically assigned to the activity.'
+            },
+            {
+                name: 'Personnel_Count',
+                sqlType: 'INTEGER',
+                description: 'Total number of people expected on task.'
+            },
+            {
+                name: 'Consumables_Typical',
+                sqlType: 'TEXT',
+                description: 'Consumable IDs or notes that inform cost burn rates.'
+            },
+            {
+                name: 'Risk_Factor',
+                sqlType: 'TEXT',
+                description: 'Qualitative risk flag to guide contingency planning.'
+            },
+            {
+                name: 'NPT_Risk_Percent',
+                sqlType: 'INTEGER',
+                description: 'Non-productive time probability expressed as a percent.'
+            }
+        ],
+        'data-equipment-tools.csv': [
+            {
+                name: 'Equipment_ID',
+                sqlType: 'VARCHAR(12)',
+                description: 'Primary key for the equipment catalog entry.'
+            },
+            {
+                name: 'Category',
+                sqlType: 'TEXT',
+                description: 'Equipment grouping such as Wireline Unit or Coiled Tubing.'
+            },
+            {
+                name: 'Item_Name',
+                sqlType: 'TEXT',
+                description: 'Specific tool or equipment description.'
+            },
+            {
+                name: 'Vendor',
+                sqlType: 'TEXT',
+                description: 'Supplier or service company providing the asset.'
+            },
+            {
+                name: 'Daily_Rate_USD',
+                sqlType: 'INTEGER',
+                description: 'Standard daily rental rate in US dollars.'
+            },
+            {
+                name: 'Mobilization_USD',
+                sqlType: 'INTEGER',
+                description: 'Mobilization charge to move equipment to site.'
+            },
+            {
+                name: 'Demobilization_USD',
+                sqlType: 'INTEGER',
+                description: 'Demobilization charge to return equipment after operations.'
+            },
+            {
+                name: 'Standby_Rate_USD',
+                sqlType: 'INTEGER',
+                description: 'Daily standby cost when the asset is idle.'
+            },
+            {
+                name: 'Min_Rental_Days',
+                sqlType: 'INTEGER',
+                description: 'Minimum contractual rental period in days.'
+            },
+            {
+                name: 'Specifications',
+                sqlType: 'TEXT',
+                description: 'Key technical specifications such as capacity or limits.'
+            },
+            {
+                name: 'Typical_Use',
+                sqlType: 'TEXT',
+                description: 'Common operational scenarios for the equipment.'
+            }
+        ],
+        'data-personnel-rates.csv': [
+            {
+                name: 'Role_ID',
+                sqlType: 'VARCHAR(12)',
+                description: 'Primary key used to cross-reference planner staffing tables.'
+            },
+            {
+                name: 'Role_Title',
+                sqlType: 'TEXT',
+                description: 'Position title for the role or discipline.'
+            },
+            {
+                name: 'Category',
+                sqlType: 'TEXT',
+                description: 'Functional grouping such as Engineering or Technical.'
+            },
+            {
+                name: 'Hourly_Rate_USD',
+                sqlType: 'INTEGER',
+                description: 'Standard hourly billing rate in US dollars.'
+            },
+            {
+                name: 'Daily_Rate_USD',
+                sqlType: 'INTEGER',
+                description: 'Daily rate baseline for full-shift planning.'
+            },
+            {
+                name: 'Mobilization_USD',
+                sqlType: 'INTEGER',
+                description: 'Mobilization stipend typically invoiced per assignment.'
+            },
+            {
+                name: 'Per_Diem_USD',
+                sqlType: 'INTEGER',
+                description: 'Per diem allowance per day on location.'
+            },
+            {
+                name: 'Min_Call_Days',
+                sqlType: 'INTEGER',
+                description: 'Minimum guaranteed billing days per deployment.'
+            },
+            {
+                name: 'Certifications_Required',
+                sqlType: 'TEXT',
+                description: 'Licenses or credentials required before mobilization.'
+            },
+            {
+                name: 'Typical_Team_Size',
+                sqlType: 'TEXT',
+                description: 'Typical number of personnel mobilized per role.'
+            }
+        ]
+    };
+    const dataExportElements = {
+        w666: {
+            recordCount: document.getElementById('data-well-666-count'),
+            columnsList: document.getElementById('data-well-666-columns'),
+            size: document.getElementById('data-well-666-size'),
+            previewHead: document.getElementById('data-well-666-preview-head'),
+            previewBody: document.getElementById('data-well-666-preview-body'),
+            previewNotice: document.getElementById('data-well-666-preview-notice'),
+            copyButton: document.querySelector('[data-export-copy="data-well-666"]'),
+            copyStatus: document.getElementById('data-well-666-copy-status'),
+            curlButton: document.querySelector('[data-export-curl="data-well-666"]'),
+            curlStatus: document.getElementById('data-well-666-curl-status'),
+            sqlButton: document.querySelector('[data-export-sql="data-well-666"]'),
+            sqlStatus: document.getElementById('data-well-666-sql-status')
+        },
+        portfolio: {
+            recordCount: document.getElementById('data-well-portfolio-count'),
+            columnsList: document.getElementById('data-well-portfolio-columns'),
+            size: document.getElementById('data-well-portfolio-size'),
+            previewHead: document.getElementById('data-well-portfolio-preview-head'),
+            previewBody: document.getElementById('data-well-portfolio-preview-body'),
+            previewNotice: document.getElementById('data-well-portfolio-preview-notice'),
+            copyButton: document.querySelector('[data-export-copy="data-well-portfolio"]'),
+            copyStatus: document.getElementById('data-well-portfolio-copy-status'),
+            curlButton: document.querySelector('[data-export-curl="data-well-portfolio"]'),
+            curlStatus: document.getElementById('data-well-portfolio-curl-status'),
+            sqlButton: document.querySelector('[data-export-sql="data-well-portfolio"]'),
+            sqlStatus: document.getElementById('data-well-portfolio-sql-status')
+        },
+        activities: {
+            recordCount: document.getElementById('data-activity-count'),
+            columnsList: document.getElementById('data-activity-columns'),
+            size: document.getElementById('data-activity-size'),
+            previewHead: document.getElementById('data-activity-preview-head'),
+            previewBody: document.getElementById('data-activity-preview-body'),
+            previewNotice: document.getElementById('data-activity-preview-notice'),
+            copyButton: document.querySelector('[data-export-copy="data-activity-cost-rates"]'),
+            copyStatus: document.getElementById('data-activity-copy-status'),
+            curlButton: document.querySelector('[data-export-curl="data-activity-cost-rates"]'),
+            curlStatus: document.getElementById('data-activity-curl-status'),
+            sqlButton: document.querySelector('[data-export-sql="data-activity-cost-rates"]'),
+            sqlStatus: document.getElementById('data-activity-sql-status')
+        },
+        equipment: {
+            recordCount: document.getElementById('data-equipment-count'),
+            columnsList: document.getElementById('data-equipment-columns'),
+            size: document.getElementById('data-equipment-size'),
+            previewHead: document.getElementById('data-equipment-preview-head'),
+            previewBody: document.getElementById('data-equipment-preview-body'),
+            previewNotice: document.getElementById('data-equipment-preview-notice'),
+            copyButton: document.querySelector('[data-export-copy="data-equipment-tools"]'),
+            copyStatus: document.getElementById('data-equipment-copy-status'),
+            curlButton: document.querySelector('[data-export-curl="data-equipment-tools"]'),
+            curlStatus: document.getElementById('data-equipment-curl-status'),
+            sqlButton: document.querySelector('[data-export-sql="data-equipment-tools"]'),
+            sqlStatus: document.getElementById('data-equipment-sql-status')
+        },
+        personnel: {
+            recordCount: document.getElementById('data-personnel-count'),
+            columnsList: document.getElementById('data-personnel-columns'),
+            size: document.getElementById('data-personnel-size'),
+            previewHead: document.getElementById('data-personnel-preview-head'),
+            previewBody: document.getElementById('data-personnel-preview-body'),
+            previewNotice: document.getElementById('data-personnel-preview-notice'),
+            copyButton: document.querySelector('[data-export-copy="data-personnel-rates"]'),
+            copyStatus: document.getElementById('data-personnel-copy-status'),
+            curlButton: document.querySelector('[data-export-curl="data-personnel-rates"]'),
+            curlStatus: document.getElementById('data-personnel-curl-status'),
+            sqlButton: document.querySelector('[data-export-sql="data-personnel-rates"]'),
+            sqlStatus: document.getElementById('data-personnel-sql-status')
+        }
+        pob: { musterActive: false, musterInterval: null, personnel: [] }
+    };
+
+    const DATA_PREVIEW_MAX_ROWS = 3;
+    const DATA_PREVIEW_MAX_COLUMNS = 5;
+
+    const dataExportDatasets = [
+        {
+            file: 'data-well-666.csv',
+            elements: dataExportElements.w666,
+            schema: dataExportSchemas['data-well-666.csv']
+        },
+        {
+            file: 'data-well-portfolio.csv',
+            elements: dataExportElements.portfolio,
+            schema: dataExportSchemas['data-well-portfolio.csv']
+        },
+        {
+            file: 'data-activity-cost-rates.csv',
+            elements: dataExportElements.activities,
+            schema: dataExportSchemas['data-activity-cost-rates.csv']
+        },
+        {
+            file: 'data-equipment-tools.csv',
+            elements: dataExportElements.equipment,
+            schema: dataExportSchemas['data-equipment-tools.csv']
+        },
+        {
+            file: 'data-personnel-rates.csv',
+            elements: dataExportElements.personnel,
+            schema: dataExportSchemas['data-personnel-rates.csv']
+        }
+    ];
     
     // Planner
 
@@ -1412,6 +1756,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const aiAdvisorView = document.getElementById('ai-advisor-view');
     const aiRecommendationsContainer = document.getElementById('ai-recommendations');
     const plannerStatusRegion = document.getElementById('planner-status');
+
+    const announcePlannerStatus = (message) => {
+        if (!plannerStatusRegion || !message) return;
+        plannerStatusRegion.textContent = '';
+        requestAnimationFrame(() => {
+            plannerStatusRegion.textContent = message;
+        });
+    };
     const step1ContinueBtn = document.getElementById('step-1-continue');
     const step2ContinueBtn = document.getElementById('step-2-continue');
     const step4ContinueBtn = document.getElementById('step-4-continue');
@@ -1483,6 +1835,31 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // --- VIEW & STATE MANAGEMENT ---
 
+    const planRequiredMessages = {
+        analyzer: 'Generate a plan to unlock the analysis workspace.',
+        commercial: 'Generate a plan to review commercial readiness.',
+        hse: 'Generate a plan to review HSE & risk readiness.',
+        logistics: 'Generate a plan to orchestrate logistics & supply chain readiness.',
+        performer: 'Generate a plan to launch Live Operations.',
+        pob: 'Generate a plan to prepare POB & emergency response readiness.'
+    };
+
+    const enforcePlanAccess = (viewName, sourceLabel) => {
+        if (!viewName) return false;
+        if (alwaysAccessibleViews.has(viewName) || appState.generatedPlan) {
+            return false;
+        }
+
+        const normalizedView = viewName.toLowerCase();
+        const plannerMessage = planRequiredMessages[normalizedView]
+            || `Generate a plan to open the ${sourceLabel || 'selected'} workspace.`;
+        announcePlannerStatus(plannerMessage);
+        if (appState.currentView !== 'planner') {
+            switchView('planner');
+        }
+        return true;
+    };
+
     const switchView = (viewName) => {
         if (appState.liveDataInterval) {
             clearInterval(appState.liveDataInterval);
@@ -1530,6 +1907,14 @@ document.addEventListener('DOMContentLoaded', function() {
             initializeFaqAccordion();
         }
     };
+
+    window.showView = (viewName, sourceLabel) => {
+        if (!viewName) return;
+        if (enforcePlanAccess(viewName, sourceLabel)) {
+            return;
+        }
+        switchView(viewName);
+    };
     
     const resetApp = (switchToHome = false) => {
         appState.selectedWell = null; 
@@ -1571,12 +1956,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const planExists = !!appState.generatedPlan;
         navLinks.forEach(link => {
             const id = link.id.replace('-nav-link', '');
-            if (id !== 'home' && id !== 'planner' && id !== 'about' && id !== 'faq' && id !== 'whitepaper') {
-                if (planExists) {
-                    link.classList.remove('disabled');
-                } else {
-                    link.classList.add('disabled');
-                }
+            const isGatedView = !alwaysAccessibleViews.has(id);
+
+            if (isGatedView && !planExists) {
+                link.classList.add('disabled');
+                link.setAttribute('aria-disabled', 'true');
+                link.setAttribute('tabindex', '-1');
+            } else {
+                link.classList.remove('disabled');
+                link.removeAttribute('aria-disabled');
+                link.removeAttribute('tabindex');
             }
         });
     };
@@ -3689,14 +4078,6 @@ const validateInvoice = () => {
     const totalSavingsValue = document.getElementById('totalSavings');
     const savingsChartCanvas = document.getElementById('savingsChart');
 
-    const announcePlannerStatus = (message) => {
-        if (!plannerStatusRegion || !message) return;
-        plannerStatusRegion.textContent = '';
-        requestAnimationFrame(() => {
-            plannerStatusRegion.textContent = message;
-        });
-    };
-
     const calculateROI = () => {
         if (!engineerCountSlider) return;
 
@@ -3782,6 +4163,389 @@ const validateInvoice = () => {
             .forEach(slider => slider.addEventListener('input', calculateROI));
     }
 
+    const formatByteSize = (bytes) => {
+        if (!Number.isFinite(bytes) || bytes <= 0) return '—';
+
+        const units = ['B', 'KB', 'MB'];
+        let size = bytes;
+        let unitIndex = 0;
+
+        while (size >= 1024 && unitIndex < units.length - 1) {
+            size /= 1024;
+            unitIndex += 1;
+        }
+
+        const precision = size % 1 === 0 ? 0 : 1;
+        return `${size.toFixed(precision)} ${units[unitIndex]}`;
+    };
+
+    const copyToClipboard = async (text) => {
+        if (!text) return false;
+
+        try {
+            if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+                await navigator.clipboard.writeText(text);
+                return true;
+            }
+        } catch (_) {
+            // Fallback to execCommand path below
+        }
+
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        let succeeded = false;
+
+        try {
+            succeeded = document.execCommand('copy');
+        } catch (_) {
+            succeeded = false;
+        }
+
+        document.body.removeChild(textarea);
+        return succeeded;
+    };
+
+    const announceCopyStatus = (statusEl, message, isError = false) => {
+        if (!statusEl) return;
+
+        statusEl.textContent = message;
+        statusEl.classList.toggle('text-emerald-400', !isError);
+        statusEl.classList.toggle('text-rose-400', isError);
+
+        if (message) {
+            setTimeout(() => {
+                statusEl.textContent = '';
+                statusEl.classList.remove('text-emerald-400', 'text-rose-400');
+            }, 4000);
+        }
+    };
+
+    const buildPandasSnippet = (file) => {
+        const fileUrl = new URL(file, window.location.origin).href;
+        return [
+            'import pandas as pd',
+            `df = pd.read_csv("${fileUrl}", parse_dates=True)`,
+            'print(df.head())'
+        ].join('\n');
+    };
+
+    const buildCurlSnippet = (file) => {
+        const fileUrl = new URL(file, window.location.origin).href;
+        return `curl -L -o ${file} "${fileUrl}"`;
+    };
+
+    const buildSqlSchemaSnippet = (file) => {
+        const schema = dataExportSchemas[file];
+        if (!schema || !schema.length) return '';
+
+        const tableName = file
+            .replace(/\.csv$/i, '')
+            .replace(/[^a-zA-Z0-9_]+/g, '_');
+
+        const columnDefinitions = schema
+            .map((column) => `    "${column.name}" ${column.sqlType || 'TEXT'}`)
+            .join(',\n');
+
+        const columnList = schema
+            .map((column) => `"${column.name}"`)
+            .join(', ');
+
+        return [
+            `-- Quick-start table definition for ${file}`,
+            `CREATE TABLE ${tableName} (`,
+            `${columnDefinitions}`,
+            ');',
+            '',
+            `-- Bulk load from local CSV`,
+            `COPY ${tableName} (${columnList})`,
+            "FROM '/path/to/" + file + "'",
+            "DELIMITER ','",
+            "CSV HEADER" + ';'
+        ].join('\n');
+    };
+
+    const parseCsvLine = (line) => {
+        const values = [];
+        let current = '';
+        let inQuotes = false;
+
+        for (let i = 0; i < line.length; i += 1) {
+            const char = line[i];
+
+            if (char === '"') {
+                if (inQuotes && line[i + 1] === '"') {
+                    current += '"';
+                    i += 1;
+                } else {
+                    inQuotes = !inQuotes;
+                }
+            } else if (char === ',' && !inQuotes) {
+                values.push(current.trim());
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+
+        values.push(current.trim());
+        return values;
+    };
+
+    const renderDataPreview = (elements, headerColumns, dataLines) => {
+        if (!elements || !elements.previewBody || !elements.previewHead) return;
+
+        const previewColumns = headerColumns.slice(0, DATA_PREVIEW_MAX_COLUMNS);
+        const truncatedColumns = headerColumns.length > previewColumns.length;
+        const rowsToDisplay = dataLines.slice(0, DATA_PREVIEW_MAX_ROWS);
+
+        elements.previewHead.innerHTML = '';
+        const headerRow = document.createElement('tr');
+        previewColumns.forEach((columnName) => {
+            const th = document.createElement('th');
+            th.textContent = columnName;
+            th.className = 'px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-slate-400';
+            headerRow.appendChild(th);
+        });
+        elements.previewHead.appendChild(headerRow);
+        elements.previewHead.dataset.previewColumns = previewColumns.length.toString();
+
+        elements.previewBody.innerHTML = '';
+
+        if (rowsToDisplay.length === 0) {
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.className = 'px-3 py-2 text-slate-500';
+            cell.colSpan = Math.max(previewColumns.length, 1);
+            cell.textContent = 'No records available';
+            row.appendChild(cell);
+            elements.previewBody.appendChild(row);
+        } else {
+            rowsToDisplay.forEach((line) => {
+                const values = parseCsvLine(line);
+                const row = document.createElement('tr');
+                previewColumns.forEach((_, index) => {
+                    const cell = document.createElement('td');
+                    cell.textContent = values[index] || '';
+                    cell.className = 'px-3 py-2 whitespace-nowrap text-slate-200';
+                    row.appendChild(cell);
+                });
+                elements.previewBody.appendChild(row);
+            });
+        }
+
+        if (elements.previewNotice) {
+            if (rowsToDisplay.length === 0) {
+                elements.previewNotice.textContent = 'Preview unavailable — dataset is empty.';
+            } else {
+                const rowLabel = rowsToDisplay.length === 1 ? 'record' : 'records';
+                const columnDescriptor = truncatedColumns
+                    ? `first ${previewColumns.length} columns`
+                    : `${previewColumns.length} column${previewColumns.length === 1 ? '' : 's'}`;
+                const columnText = previewColumns.length === 0
+                    ? 'dataset metadata'
+                    : columnDescriptor;
+                elements.previewNotice.textContent = `Showing first ${rowsToDisplay.length} ${rowLabel} across ${columnText}.`;
+            }
+        }
+    };
+
+    const renderDataPreviewError = (elements, message) => {
+        if (!elements || !elements.previewBody || !elements.previewHead) return;
+
+        const storedColumnCount = parseInt(elements.previewHead.dataset.previewColumns || '0', 10);
+        elements.previewHead.innerHTML = '';
+        elements.previewHead.dataset.previewColumns = '0';
+        elements.previewBody.innerHTML = '';
+
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.className = 'px-3 py-2 text-slate-500';
+        const colSpan = Number.isNaN(storedColumnCount) ? DATA_PREVIEW_MAX_COLUMNS : Math.max(storedColumnCount, 1);
+        cell.colSpan = colSpan;
+        cell.textContent = message;
+        row.appendChild(cell);
+        elements.previewBody.appendChild(row);
+
+        if (elements.previewNotice) {
+            elements.previewNotice.textContent = message;
+        }
+    };
+
+    const bindDataExportCopyHandlers = () => {
+        if (!dataExportHub || appState.dataExportHandlersBound) return;
+
+        dataExportDatasets.forEach(({ file, elements }) => {
+            if (!elements || !elements.copyButton) return;
+
+            elements.copyButton.addEventListener('click', async () => {
+                const snippet = buildPandasSnippet(file);
+                const success = await copyToClipboard(snippet);
+
+                if (success) {
+                    announceCopyStatus(elements.copyStatus, 'Copied pandas import snippet to clipboard');
+                } else {
+                    announceCopyStatus(elements.copyStatus, 'Unable to copy. Select and copy the snippet manually.', true);
+                }
+            });
+        });
+
+        dataExportDatasets.forEach(({ file, elements }) => {
+            if (!elements || !elements.curlButton) return;
+
+            elements.curlButton.addEventListener('click', async () => {
+                const snippet = buildCurlSnippet(file);
+                const success = await copyToClipboard(snippet);
+
+                if (success) {
+                    announceCopyStatus(elements.curlStatus, 'Copied curl download command to clipboard');
+                } else {
+                    announceCopyStatus(elements.curlStatus, 'Unable to copy. Highlight and copy the command manually.', true);
+                }
+            });
+        });
+
+        dataExportDatasets.forEach(({ file, elements }) => {
+            if (!elements || !elements.sqlButton) return;
+
+            elements.sqlButton.addEventListener('click', async () => {
+                const snippet = buildSqlSchemaSnippet(file);
+
+                if (!snippet) {
+                    announceCopyStatus(elements.sqlStatus, 'SQL schema unavailable. Download the CSV to inspect the structure.', true);
+                    return;
+                }
+
+                const success = await copyToClipboard(snippet);
+
+                if (success) {
+                    announceCopyStatus(elements.sqlStatus, 'Copied SQL table definition to clipboard');
+                } else {
+                    announceCopyStatus(elements.sqlStatus, 'Unable to copy. Highlight the SQL snippet manually.', true);
+                }
+            });
+        });
+
+        appState.dataExportHandlersBound = true;
+    };
+
+    const hydrateDataExportMetadata = () => {
+        if (!dataExportHub) return;
+
+        dataExportDatasets.forEach(({ file, elements }) => {
+            if (!elements || (!elements.recordCount && !elements.columnsList && !elements.size)) return;
+
+            fetch(file)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to load ${file}`);
+                    }
+                    return response.text();
+                })
+                .then((text) => {
+                    const lines = text
+                        .split(/\r?\n/)
+                        .map((line) => line.trim())
+                        .filter((line) => line.length > 0);
+
+                    if (lines.length === 0) {
+                        return;
+                    }
+
+                    const headerColumns = parseCsvLine(lines[0]);
+                    const dataLines = lines.slice(1);
+                    const schema = dataExportSchemas[file];
+                    const schemaMatchesHeader = Array.isArray(schema)
+                        ? headerColumns.every((columnName) => schema.some((column) => column.name === columnName))
+                        : false;
+
+                    if (elements.recordCount) {
+                        const recordCount = Math.max(0, dataLines.length);
+                        elements.recordCount.textContent = recordCount.toString();
+                    }
+
+                    if (elements.columnsList) {
+                        elements.columnsList.innerHTML = '';
+
+                        if (schemaMatchesHeader) {
+                            headerColumns.forEach((columnName) => {
+                                const column = schema.find((entry) => entry.name === columnName);
+                                const item = document.createElement('li');
+                                item.className = 'space-y-1';
+
+                                const header = document.createElement('div');
+                                header.className = 'flex flex-wrap items-baseline gap-2';
+                                const nameEl = document.createElement('span');
+                                nameEl.className = 'font-semibold text-slate-200';
+                                nameEl.textContent = columnName;
+                                header.appendChild(nameEl);
+
+                                if (column && column.sqlType) {
+                                    const badge = document.createElement('span');
+                                    badge.className = 'text-[11px] uppercase tracking-wide text-slate-400 bg-slate-900/60 px-2 py-0.5 rounded-full';
+                                    badge.textContent = column.sqlType;
+                                    header.appendChild(badge);
+                                }
+
+                                item.appendChild(header);
+
+                                if (column && column.description) {
+                                    const description = document.createElement('p');
+                                    description.className = 'text-xs text-slate-400';
+                                    description.textContent = column.description;
+                                    item.appendChild(description);
+                                }
+
+                                elements.columnsList.appendChild(item);
+                            });
+                        } else {
+                            headerColumns.forEach((columnName) => {
+                                const item = document.createElement('li');
+                                item.textContent = columnName;
+                                elements.columnsList.appendChild(item);
+                            });
+                        }
+                    }
+
+                    if (elements.size) {
+                        const encoder = new TextEncoder();
+                        const sizeInBytes = encoder.encode(text).length;
+                        elements.size.textContent = formatByteSize(sizeInBytes);
+                    }
+
+                    renderDataPreview(elements, headerColumns, dataLines);
+                })
+                .catch(() => {
+                    if (elements.recordCount) {
+                        elements.recordCount.textContent = '—';
+                    }
+
+                    if (elements.columnsList) {
+                        elements.columnsList.innerHTML = '';
+                        const item = document.createElement('li');
+                        item.textContent = 'Unable to load metadata';
+                        elements.columnsList.appendChild(item);
+                    }
+
+                    if (elements.size) {
+                        elements.size.textContent = '—';
+                    }
+
+                    renderDataPreviewError(elements, 'Preview unavailable. Download the CSV to explore the full dataset.');
+                });
+        });
+    };
+    if (engineerCountSlider || nptReductionSlider || timeSavingsSlider) {
+        [engineerCountSlider, nptReductionSlider, timeSavingsSlider]
+            .filter(Boolean)
+            .forEach(slider => slider.addEventListener('input', calculateROI));
+    }
+
     const loadReferenceData = async () => {
         try {
             const [equipmentRes, personnelRes, serviceRes, catalogRes] = await Promise.allSettled([
@@ -3856,6 +4620,8 @@ const validateInvoice = () => {
         switchView('home');
     };
 
+    bindDataExportCopyHandlers();
+    hydrateDataExportMetadata();
     loadReferenceData();
     initializeApp();
 
@@ -3869,8 +4635,12 @@ const validateInvoice = () => {
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            if (link.classList.contains('disabled')) return;
-            switchView(e.currentTarget.id.replace('-nav-link', ''));
+            const targetView = e.currentTarget.id.replace('-nav-link', '');
+            const linkLabel = (e.currentTarget.textContent || '').trim();
+            if (enforcePlanAccess(targetView, linkLabel)) {
+                return;
+            }
+            switchView(targetView);
         });
     });
 
@@ -4081,6 +4851,16 @@ const validateInvoice = () => {
                 generatePlanBtnAi.disabled = useAiAdvisor ? !appState.ai.selectedRecommendation : true;
             }
 
+            }
+
+            if (generatePlanBtnManual) {
+                generatePlanBtnManual.disabled = useAiAdvisor ? true : !appState.selectedObjective;
+            }
+
+            if (generatePlanBtnAi) {
+                generatePlanBtnAi.disabled = useAiAdvisor ? !appState.ai.selectedRecommendation : true;
+            }
+
             renderDesignBlueprint();
         });
     }
@@ -4132,21 +4912,27 @@ const validateInvoice = () => {
 
     if (openLogisticsBtn) {
         openLogisticsBtn.addEventListener('click', () => {
-            if (!appState.generatedPlan) return;
+            if (enforcePlanAccess('logistics', 'Logistics orchestration')) {
+                return;
+            }
             switchView('logistics');
         });
     }
 
     if (openCommercialBtn) {
         openCommercialBtn.addEventListener('click', () => {
-            if (!appState.generatedPlan) return;
+            if (enforcePlanAccess('commercial', 'Commercial readiness')) {
+                return;
+            }
             switchView('commercial');
         });
     }
 
     if (openHseBtn) {
         openHseBtn.addEventListener('click', () => {
-            if (!appState.generatedPlan) return;
+            if (enforcePlanAccess('hse', 'HSE & Risk readiness')) {
+                return;
+            }
             switchView('hse');
         });
     }
@@ -4162,6 +4948,9 @@ const validateInvoice = () => {
 
     if (reviewAnalysisBtnFinal) {
         reviewAnalysisBtnFinal.addEventListener('click', () => {
+            if (enforcePlanAccess('analyzer', 'Analysis workspace')) {
+                return;
+            }
             switchView('analyzer');
             if (typeof window.initializeAnalyzer === 'function') {
                 window.initializeAnalyzer();
@@ -4196,6 +4985,9 @@ const validateInvoice = () => {
         announcePlannerStatus('Planner reset. Start by selecting a well.');
     });
     addListener(beginOpBtn, 'click', () => {
+        if (enforcePlanAccess('performer', 'Live Operations')) {
+            return;
+        }
         if (!appState.generatedPlan) return;
         switchView('performer');
     });
@@ -4218,6 +5010,9 @@ const validateInvoice = () => {
     });
 
     addListener(viewAnalysisBtn, 'click', () => {
+        if (enforcePlanAccess('analyzer', 'Analysis workspace')) {
+            return;
+        }
         switchView('analyzer');
         if (window.initializeAnalyzer) {
             window.initializeAnalyzer();
