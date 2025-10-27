@@ -2032,6 +2032,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Theme
 
     const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    const dataScrubbingPanel = document.getElementById('data-scrubbing-panel');
+    const dataScrubbingOverview = document.getElementById('data-scrubbing-overview');
+    const dataScrubbingStages = document.getElementById('data-scrubbing-stages');
+    const dataScrubbingSchema = document.getElementById('data-scrubbing-schema');
+    const dataScrubbingRaw = document.getElementById('data-scrubbing-raw');
+    const dataScrubbingNormalized = document.getElementById('data-scrubbing-normalized');
+    const dataScrubbingSummary = document.getElementById('data-scrubbing-summary');
+    const heroPlannerBtn = document.getElementById('hero-planner-btn');
 
     const addListener = (element, eventName, handler, options) => {
         if (element) {
@@ -2049,14 +2057,6 @@ document.addEventListener('DOMContentLoaded', function() {
         ['performer', 'Generate a plan to launch Live Operations.'],
         ['pob', 'Generate a plan to prepare POB & emergency response readiness.']
     ]);
-    const planRequiredMessages = {
-        analyzer: 'Generate a plan to unlock the analysis workspace.',
-        commercial: 'Generate a plan to review commercial readiness.',
-        hse: 'Generate a plan to review HSE & risk readiness.',
-        logistics: 'Generate a plan to orchestrate logistics & supply chain readiness.',
-        performer: 'Generate a plan to launch Live Operations.',
-        pob: 'Generate a plan to prepare POB & emergency response readiness.'
-    };
 
     const enforcePlanAccess = (viewName, sourceLabel) => {
         if (!viewName) return false;
@@ -2066,8 +2066,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const normalizedView = viewName.toLowerCase();
         const plannerMessage = planRequiredMessages.get(normalizedView)
-        const plannerMessage = planRequiredMessages[normalizedView]
-            || `Generate a plan to open the ${sourceLabel || 'selected'} workspace.`;
+            ?? `Generate a plan to open the ${sourceLabel || 'selected'} workspace.`;
         announcePlannerStatus(plannerMessage);
         if (appState.currentView !== 'planner') {
             switchView('planner');
@@ -6047,6 +6046,12 @@ const validateInvoice = () => {
             }
             switchView(targetView);
         });
+    });
+
+    addListener(heroPlannerBtn, 'click', () => {
+        if (!enforcePlanAccess('planner', 'Hero CTA')) {
+            switchView('planner');
+        }
     });
 
     // Well selection event listener
