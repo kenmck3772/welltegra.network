@@ -1690,6 +1690,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sqlButton: document.querySelector('[data-export-sql="data-personnel-rates"]'),
             sqlStatus: document.getElementById('data-personnel-sql-status')
         }
+        pob: { musterActive: false, musterInterval: null, personnel: [] }
     };
 
     const DATA_PREVIEW_MAX_ROWS = 3;
@@ -4539,6 +4540,11 @@ const validateInvoice = () => {
                 });
         });
     };
+    if (engineerCountSlider || nptReductionSlider || timeSavingsSlider) {
+        [engineerCountSlider, nptReductionSlider, timeSavingsSlider]
+            .filter(Boolean)
+            .forEach(slider => slider.addEventListener('input', calculateROI));
+    }
 
     const loadReferenceData = async () => {
         try {
@@ -4845,6 +4851,16 @@ const validateInvoice = () => {
                 generatePlanBtnAi.disabled = useAiAdvisor ? !appState.ai.selectedRecommendation : true;
             }
 
+            }
+
+            if (generatePlanBtnManual) {
+                generatePlanBtnManual.disabled = useAiAdvisor ? true : !appState.selectedObjective;
+            }
+
+            if (generatePlanBtnAi) {
+                generatePlanBtnAi.disabled = useAiAdvisor ? !appState.ai.selectedRecommendation : true;
+            }
+
             renderDesignBlueprint();
         });
     }
@@ -4972,6 +4988,7 @@ const validateInvoice = () => {
         if (enforcePlanAccess('performer', 'Live Operations')) {
             return;
         }
+        if (!appState.generatedPlan) return;
         switchView('performer');
     });
 
