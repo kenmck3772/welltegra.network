@@ -1039,7 +1039,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    const equipmentRequirements = {
+    const objectiveEquipmentRequirements = {
         obj1: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Steel Patch & Setting Tool", source: "Vendor", price: 500000 } ],
         obj2: [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Rotating Jetting Nozzle", source: "Vendor", price: 25000 }, { name: "DTPA Chemical", source: "Vendor", price: 80000 } ],
         obj3: [ { name: "Slickline Unit", source: "Vendor", price: 75000 }, { name: "Insert Safety Valve (WRSV)", source: "Vendor", price: 150000 }, { name: "Lock-Open Tool", source: "Vendor", price: 20000 } ],
@@ -1351,523 +1351,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- GLOBAL STATE ---
 
     let appState = {
-        currentView: 'home',
-        selectedWell: null,
-        selectedObjective: null,
-        generatedPlan: null,
-        liveData: null,
-        logEntries: [],
-        lessonsLearned: [],
-        tfaChartInstance: null,
-        nptChartInstance: null,
-        savingsChartInstance: null,
-        liveDataInterval: null,
-        commercial: { afe: 0, actualCost: 0, serviceTickets: [] },
-        ai: { selectedProblemId: null, selectedRecommendation: null },
-        hse: { permits: [], riskRegister: [] },
-        pob: { musterActive: false, musterInterval: null, personnel: [] },
-        referenceDataLoaded: false
-    };
-
-    // --- DOM ELEMENTS ---
-
-    const body = document.body;
-    const appContainer = document.getElementById('app-container');
-    const views = document.querySelectorAll('.view-container');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const headerTitle = document.getElementById('header-title');
-    const headerDetails = document.getElementById('header-details');
-    const headerNav = document.getElementById('header-nav');
-    const heroVideo = document.getElementById('hero-video');
-    const heroVideoToggle = document.getElementById('hero-video-toggle');
-    const plannerStatusRegion = document.getElementById('planner-status');
-    
-    // Planner
-
-    const stepIndicators = {
-        1: document.getElementById('step-1-indicator'),
-        2: document.getElementById('step-2-indicator'),
-        3: document.getElementById('step-3-indicator'),
-        4: document.getElementById('step-4-indicator'),
-        5: document.getElementById('step-5-indicator'),
-        6: document.getElementById('step-6-indicator')
-    };
-
-    const stepConnectors = {
-        1: document.getElementById('step-1-connector'),
-        2: document.getElementById('step-2-connector'),
-        3: document.getElementById('step-3-connector'),
-        4: document.getElementById('step-4-connector'),
-        5: document.getElementById('step-5-connector')
-    };
-
-    const stepSections = {
-        1: document.getElementById('step-1'),
-        2: document.getElementById('step-2'),
-        3: document.getElementById('step-3'),
-        4: document.getElementById('step-4'),
-        5: document.getElementById('step-5'),
-        6: document.getElementById('step-6')
-    };
-
-    const wellSelectionGrid = document.getElementById('well-selection-grid');
-    const objectivesFieldset = document.getElementById('objectives-fieldset');
-    const problemsFieldset = document.getElementById('problems-fieldset');
-    const step1ContinueBtn = document.getElementById('step-1-continue');
-    const step2ContinueBtn = document.getElementById('step-2-continue');
-    const designBlueprintContainer = document.getElementById('design-blueprint');
-    const generateProgramBtn = document.getElementById('generate-program-btn');
-    const planOutput = document.getElementById('plan-output');
-    const readinessOutput = document.getElementById('readiness-output');
-    const startOverBtn = document.getElementById('start-over-btn');
-    const step4ContinueBtn = document.getElementById('step-4-continue');
-    const openLogisticsBtn = document.getElementById('open-logistics-btn');
-    const openCommercialBtn = document.getElementById('open-commercial-btn');
-    const openHseBtn = document.getElementById('open-hse-btn');
-    const step5ContinueBtn = document.getElementById('step-5-continue');
-    const beginOpBtn = document.getElementById('begin-op-btn');
-    const reviewAnalysisBtnFinal = document.getElementById('review-analysis-btn-final');
-    const aiToggle = document.getElementById('ai-toggle');
-    const manualPlanningView = document.getElementById('manual-planning-view');
-    const aiAdvisorView = document.getElementById('ai-advisor-view');
-    const aiRecommendationsContainer = document.getElementById('ai-recommendations');
-    const dataScrubbingPanel = document.getElementById('data-scrubbing-panel');
-    const dataScrubbingOverview = document.getElementById('data-scrubbing-overview');
-    const dataScrubbingStages = document.getElementById('data-scrubbing-stages');
-    const dataScrubbingSchema = document.getElementById('data-scrubbing-schema');
-    const dataScrubbingRaw = document.getElementById('data-scrubbing-raw');
-    const dataScrubbingNormalized = document.getElementById('data-scrubbing-normalized');
-    const dataScrubbingSummary = document.getElementById('data-scrubbing-summary');
-
-    // Performer
-
-    const kpiGrid = document.getElementById('kpi-grid');
-    const procedureStepsContainer = document.getElementById('procedure-steps');
-    const logEntriesContainer = document.getElementById('log-entries'), 
-    logInput = document.getElementById('log-input'), 
-    addLogBtn = document.getElementById('add-log-btn');
-    const chartCard = document.getElementById('chart-card');
-    const performerControls = document.getElementById('performer-controls');
-    const viewAnalysisBtn = document.getElementById('view-analysis-btn');
-
-    // Analyzer
-
-    const analyzerSubtitle = document.getElementById('analyzer-subtitle'), 
-    summaryKpis = document.getElementById('summary-kpis'), 
-    lessonsLearnedList = document.getElementById('lessons-learned-list'), 
-    lessonInput = document.getElementById('lesson-input'), 
-    addLessonBtn = document.getElementById('add-lesson-btn'), 
-    planNewJobBtn = document.getElementById('plan-new-job-btn');
-
-    // Logistics
-
-    const logisticsSubtitle = document.getElementById('logistics-subtitle');
-    const logisticsContent = document.getElementById('logistics-content');
-    const logisticsReferenceCard = document.getElementById('logistics-reference-card');
-    const equipmentTableBody = document.getElementById('equipment-table-body'),
-    personnelTableBody = document.getElementById('personnel-table-body');
-    const equipmentSearch = document.getElementById('equipment-search'), 
-    personnelSearch = document.getElementById('personnel-search');
-
-    // Commercial
-
-    const commercialContent = document.getElementById('commercial-content'), 
-    commercialSubtitle = document.getElementById('commercial-subtitle');
-
-    // HSE & POB
-
-    const hseContent = document.getElementById('hse-content'), 
-    hseSubtitle = document.getElementById('hse-subtitle');
-    const pobContent = document.getElementById('pob-content'), 
-    pobSubtitle = document.getElementById('pob-subtitle');
-
-    // Modal
-
-    const modal = document.getElementById('well-history-modal'), 
-    modalTitle = document.getElementById('modal-title'), 
-    modalContent = document.getElementById('modal-content'), 
-    closeModalBtn = document.getElementById('close-modal-btn');
-    
-    // Theme
-
-    const themeToggleBtn = document.getElementById('theme-toggle-btn');
-    
-    const initializeHeroVideoToggle = () => {
-        if (!heroVideo || !heroVideoToggle) return;
-
-        const heroVideoToggleIcon = heroVideoToggle.querySelector('.hero-video-toggle-icon');
-        const heroVideoToggleText = heroVideoToggle.querySelector('.hero-video-toggle-text');
-
-        const updateToggleState = () => {
-            const isPlaying = !heroVideo.paused && !heroVideo.ended;
-            heroVideoToggle.setAttribute('aria-pressed', String(isPlaying));
-            heroVideoToggle.dataset.state = isPlaying ? 'playing' : 'paused';
-
-            if (heroVideoToggleText) {
-                heroVideoToggleText.textContent = isPlaying ? 'Pause background video' : 'Play background video';
-            } else {
-                heroVideoToggle.textContent = isPlaying ? 'Pause background video' : 'Play background video';
-            }
-
-            if (heroVideoToggleIcon) {
-                heroVideoToggleIcon.textContent = isPlaying ? '⏸' : '▶';
-                heroVideoToggleIcon.dataset.state = isPlaying ? 'playing' : 'paused';
-            }
-        };
-
-        const applyReducedMotionPreference = (prefersReducedMotion) => {
-            if (prefersReducedMotion) {
-                heroVideo.pause();
-                heroVideo.autoplay = false;
-                heroVideo.removeAttribute('autoplay');
-                heroVideoToggle.setAttribute('data-reduced-motion', 'true');
-            } else {
-                heroVideoToggle.removeAttribute('data-reduced-motion');
-            }
-
-            updateToggleState();
-        };
-
-        const bindReducedMotionListener = () => {
-            if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
-                updateToggleState();
-                return;
-            }
-
-            const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-            const handlePreferenceChange = (event) => applyReducedMotionPreference(event.matches);
-
-            applyReducedMotionPreference(motionQuery.matches);
-
-            if (typeof motionQuery.addEventListener === 'function') {
-                motionQuery.addEventListener('change', handlePreferenceChange);
-            } else if (typeof motionQuery.addListener === 'function') {
-                motionQuery.addListener(handlePreferenceChange);
-            }
-        };
-
-        heroVideoToggle.addEventListener('click', () => {
-            if (heroVideo.paused || heroVideo.ended) {
-                const playPromise = heroVideo.play();
-                if (playPromise && typeof playPromise.then === 'function') {
-                    playPromise.catch(() => {
-                        updateToggleState();
-                    });
-                }
-            } else {
-                heroVideo.pause();
-            }
-        });
-
-        heroVideo.addEventListener('play', updateToggleState);
-        heroVideo.addEventListener('pause', updateToggleState);
-
-        bindReducedMotionListener();
-    };
-
-    // --- VIEW & STATE MANAGEMENT ---
-
-    const switchView = (viewName) => {
-        if (appState.liveDataInterval) {
-            clearInterval(appState.liveDataInterval);
-            appState.liveDataInterval = null;
-        }
-
-        appState.currentView = viewName;
-        body.className = `theme-${localStorage.getItem('theme') || 'light'}`;
-        if (viewName === 'performer') {
-            body.classList.add('theme-dark');
-        }
-
-        views.forEach(view => {
-            view.classList.add('hidden');
-            view.setAttribute('aria-hidden', 'true');
-        });
-        const targetView = document.getElementById(`${viewName}-view`);
-        if (targetView) {
-            targetView.classList.remove('hidden');
-            targetView.removeAttribute('aria-hidden');
-        }
-
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            link.removeAttribute('aria-current');
-            link.setAttribute('aria-selected', 'false');
-            link.setAttribute('tabindex', '-1');
-        });
-        const activeLink = document.getElementById(`${viewName}-nav-link`);
-        if (activeLink) {
-            activeLink.classList.add('active');
-            activeLink.setAttribute('aria-current', 'page');
-            activeLink.setAttribute('aria-selected', 'true');
-            activeLink.removeAttribute('tabindex');
-        }
-        
-        headerDetails.innerHTML = ''; 
-        const theme = viewName === 'performer' ? 'dark' : localStorage.getItem('theme') || 'light';
-        setTheme(theme);
-
-        let viewTitle = viewName.charAt(0).toUpperCase() + viewName.slice(1);
-        if(viewName === 'pob') viewTitle = 'POB & ER';
-        if(viewName === 'hse') viewTitle = 'HSE & Risk';
-        if(viewName === 'whitepaper') viewTitle = 'White Paper';
-        headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
-
-        if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
-            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">• LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
-            initializePerformer();
-        } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
-            if(appState.selectedWell && appState.generatedPlan) {
-                headerDetails.innerHTML = `<div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
-            }
-            if (viewName === 'commercial') renderCommercialView();
-            if (viewName === 'hse') renderHSEView();
-            if (viewName === 'pob') renderPOBView();
-        } else if (viewName === 'logistics') {
-            renderAssetManagementViews();
-        } else if (viewName === 'faq') {
-            initializeFaqAccordion();
-        }
-    };
-    
-    const resetApp = (switchToHome = false) => {
-        appState.selectedWell = null; 
-        appState.selectedObjective = null; 
-        appState.generatedPlan = null;
-        appState.lessonsLearned = [];
-        appState.commercial = { afe: 0, actualCost: 0, serviceTickets: [] };
-        appState.ai = { selectedProblemId: null, selectedRecommendation: null };
-
-        renderDataScrubbingPipeline(null);
-
-        // Reset well selection
-        document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
-        
-        // Reset objective selection
-        const checkedObjective = document.querySelector('input[name="objective"]:checked');
-        if(checkedObjective) { checkedObjective.checked = false; }
-        
-        // Reset problem selection
-        const checkedProblem = document.querySelector('input[name="problem"]:checked');
-        if(checkedProblem) { checkedProblem.checked = false; }
-        
-        if (planOutput) {
-            planOutput.innerHTML = '';
-        }
-        if (readinessOutput) {
-            readinessOutput.innerHTML = '';
-        }
-
-        if (step1ContinueBtn) step1ContinueBtn.disabled = true;
-        if (step2ContinueBtn) step2ContinueBtn.disabled = true;
-        if (generateProgramBtn) generateProgramBtn.disabled = true;
-        if (step4ContinueBtn) step4ContinueBtn.disabled = true;
-        if (step5ContinueBtn) step5ContinueBtn.disabled = true;
-        if (beginOpBtn) beginOpBtn.disabled = true;
-
-        if (designBlueprintContainer) {
-            designBlueprintContainer.innerHTML = '<p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>';
-        }
-        // Reset buttons
-        generatePlanBtnManual.disabled = true;
-        generatePlanBtnAi.disabled = true;
-
-        if (plannerStatusRegion) {
-            plannerStatusRegion.textContent = '';
-        }
-
-        // Reset AI recommendations
-        aiRecommendationsContainer.classList.add('hidden');
-
-        // Reset AI toggle
-        aiToggle.checked = false;
-        manualPlanningView.classList.remove('hidden');
-        aiAdvisorView.classList.add('hidden');
-
-        switchView(switchToHome ? 'home' : 'planner');
-        updatePlannerStepUI(1);
-        updateNavLinks();
-    };
-
-    const updateNavLinks = () => {
-        const planExists = !!appState.generatedPlan;
-        navLinks.forEach(link => {
-            const id = link.id.replace('-nav-link', '');
-            const isGatedView = !['home', 'planner', 'about', 'faq', 'whitepaper'].includes(id);
-            if (isGatedView && !planExists) {
-                link.classList.add('disabled');
-                link.setAttribute('aria-disabled', 'true');
-                if (link.tagName === 'BUTTON') {
-                    link.disabled = true;
-                }
-            } else {
-                link.classList.remove('disabled');
-                link.removeAttribute('aria-disabled');
-                if (link.tagName === 'BUTTON') {
-                    link.disabled = false;
-                    link.removeAttribute('disabled');
-                }
-            }
-        });
-    };
-
-    // --- PLANNER LOGIC ---
-
-    const renderWellCards = () => { 
-        wellSelectionGrid.innerHTML = wellData.map(well => {
-            const isWellFromHell = well.id === 'W666';
-            const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
-            const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
-            
-            return `
-                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}">
-                    <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-xl font-bold text-white">${well.name}</h3>
-                            ${isWellFromHell ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full">CRITICAL</span>' : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full">CASE STUDY</span>'}
-                        </div>
-                        <p class="text-sm text-blue-100">${well.field} - ${well.type}</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
-                        </div>
-                        <p class="text-sm">${well.issue}</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
-                            <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold" data-well-id="${well.id}">View Details</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }).join(''); 
-    };
-
-    const renderObjectives = () => { 
-        objectivesFieldset.innerHTML = objectivesData.map(obj => `
-            <div class="objective-card light-card" data-objective-id="${obj.id}">
-                <input type="radio" name="objective" id="${obj.id}" value="${obj.id}" class="sr-only">
-                <label for="${obj.id}" class="cursor-pointer h-full">
-                    <div class="flex items-start">
-                        <span class="text-2xl mr-3">${obj.icon}</span>
-                        <div>
-                            <span class="font-semibold text-lg">${obj.name}</span>
-                            <p class="text-sm mt-1">${obj.description}</p>
-                        </div>
-                    </div>
-                </label>
-            </div>
-        `).join(''); 
-    };
-
-    const renderBulletList = (items, emptyText) => {
-        if (!items || items.length === 0) {
-            return `<p class="text-sm italic text-slate-500 dark:text-slate-400">${emptyText}</p>`;
-        }
-        return `
-            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
-                ${items.map(item => `<li>${item}</li>`).join('')}
-            </ul>
-        `;
-    };
-    const renderOptionalList = (title, items) => {
-        if (!items || items.length === 0) return '';
-        return `
-            <div class="mt-6">
-                <h6 class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">${title}</h6>
-                ${renderBulletList(items, '')}
-            </div>
-        `;
-    };
-    const renderCostCodeTable = (codes) => {
-        if (!codes || codes.length === 0) return '';
-        return `
-            <div class="mt-6">
-                <h6 class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">Cost Codes</h6>
-                <div class="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
-                    <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700 text-sm">
-                        <thead class="bg-slate-50 dark:bg-slate-800/60">
-                            <tr>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-600 dark:text-slate-300">Code</th>
-                                <th class="px-3 py-2 text-left font-semibold text-slate-600 dark:text-slate-300">Description</th>
-                                <th class="px-3 py-2 text-right font-semibold text-slate-600 dark:text-slate-300">Estimate</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
-                            ${codes.map(code => `
-                                <tr>
-                                    <td class="px-3 py-2 font-mono text-slate-700 dark:text-slate-200">${code.code}</td>
-                                    <td class="px-3 py-2 text-slate-600 dark:text-slate-300">${code.description}</td>
-                                    <td class="px-3 py-2 text-right text-slate-600 dark:text-slate-300">$${code.estimate.toLocaleString()}</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        `;
-    };
-    const equipmentRequirements = {
-        obj1: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Steel Patch & Setting Tool", source: "Vendor", price: 500000 } ],
-        obj2: [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Rotating Jetting Nozzle", source: "Vendor", price: 25000 }, { name: "DTPA Chemical", source: "Vendor", price: 80000 } ],
-        obj3: [ { name: "Slickline Unit", source: "Vendor", price: 75000 }, { name: "Insert Safety Valve (WRSV)", source: "Vendor", price: 150000 }, { name: "Lock-Open Tool", source: "Vendor", price: 20000 } ],
-        obj4: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Sand Screen & Expansion Tool", source: "Vendor", price: 600000 } ],
-        obj5: [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Wax Dissolver Chemical", source: "Vendor", price: 50000 }, { name: "Mechanical Scraper BHA", source: "Vendor", price: 15000 } ]
-    };
-    const equipmentData = [ 
-        { id: 'CTU-01', type: 'Coiled Tubing Unit', location: 'Onboard - Deck A', testStatus: 'Passed', nextMaint: '2025-09-15', rate: 25000, status: 'On Job' }, 
-        { id: 'CTU-02', type: 'Coiled Tubing Unit', location: 'Onshore Base', testStatus: 'Pending', nextMaint: '2025-07-10', rate: 25000, status: 'Maintenance' }, 
-        { id: 'WL-01', type: 'Wireline Truck/Skid', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-08-22', rate: 18000, status: 'Available' }, 
-        { id: 'SL-01', type: 'Slickline Unit', location: 'In Transit', testStatus: 'Passed', nextMaint: '2025-07-20', rate: 15000, status: 'In Transit' }, 
-        { id: 'PUMP-01', type: 'High-Pressure Pumps', location: 'Onboard - Pump Room', testStatus: 'Pending', nextMaint: '2025-10-01', rate: 8000, status: 'On Job' }, 
-        { id: 'PUMP-02', type: 'High-Pressure Pumps', location: 'Onshore Base', testStatus: 'Passed', nextMaint: '2025-11-05', rate: 8000, status: 'Available' }, 
-        { id: 'RIG-01', type: 'Workover Rig', location: 'Onboard - Drill Floor', testStatus: 'Passed', nextMaint: '2025-08-01', rate: 85000, status: 'On Job' }, 
-    ];
-    const personnelData = [ 
-        { id: 'P001', name: 'Bob Raker', role: 'Wellsite Engineer', company: 'Operator', status: 'Onboard', certsValid: true, rate: 2200, muster: 'A', lifeboat: 1 }, 
-        { id: 'P002', name: 'Jane Smith', role: 'Coiled Tubing Supervisor', company: 'Service Co.', status: 'Onboard', certsValid: true, rate: 2500, muster: 'A', lifeboat: 1 }, 
-        { id: 'P003', name: 'Mike Johnson', role: 'Wireline Supervisor', company: 'Service Co.', status: 'On Job', certsValid: true, rate: 2300, muster: 'B', lifeboat: 2 }, 
-        { id: 'P004', name: 'Emily White', role: 'Slickline Supervisor', company: 'Service Co.', status: 'Available', certsValid: false, rate: 2300, muster: 'B', lifeboat: 2 }, 
-        { id: 'P005', name: 'Chris Green', role: 'Pump Operator', company: 'Service Co.', status: 'In Transit', certsValid: true, rate: 1800, muster: 'A', lifeboat: 1 }, 
-        { id: 'P006', name: 'Alex Brown', role: 'Rig Supervisor', company: 'Operator', status: 'Onboard', certsValid: true, rate: 3000, muster: 'B', lifeboat: 2 }, 
-        { id: 'P007', name: 'David Chen', role: 'ESP Specialist', company: 'Service Co.', status: 'Standby', certsValid: true, rate: 3500, muster: 'A', lifeboat: 2 } 
-    ];
-    const musterStations = [ { id: 'A', name: 'Muster Station A', capacity: 50, current: 0 }, { id: 'B', name: 'Muster Station B', capacity: 50, current: 0 } ];
-    
-    // --- FAQ DATA ---
-
-    const faqData = [
-        {
-            question: "What is Well-Tegra?",
-            answer: `<p>Well-Tegra is an advanced technology platform designed to foster collaborative intelligence within the energy sector. It provides a comprehensive architectural blueprint that integrates privacy-preserving Artificial Intelligence (AI) and enterprise blockchain technology to solve long-standing challenges in energy operations.</p><p>Its primary mission is to transform the vast, fragmented, and often inaccessible data generated by oil and gas operations into a unified, analysis-ready asset, enabling competing firms to securely pool operational insights for mutual benefit.</p>`
-        },
-        {
-            question: "What fundamental problem does Well-Tegra solve?",
-            answer: `<p>The fundamental problem Well-Tegra addresses is the <strong>endemic data fragmentation</strong> that plagues the modern energy sector. Data is typically locked in isolated "silos," hindering the application of advanced analytics and machine learning.</p><p>This fragmentation comes from disparate sources, incompatible digital formats, and inaccessible physical data, meaning decades of invaluable operational knowledge remain locked away and unusable.</p>`
-        },
-        {
-            question: "Who is the target audience for the Well-Tegra platform?",
-            answer: `<p>The primary target audience consists of <strong>oil and gas operators</strong> and other firms within the energy industry's operational ecosystem. The platform is designed to serve both individual companies seeking to optimize their internal operations and consortia of competing firms aiming to achieve shared intelligence.</p>`
-        },
-        {
-            question: "Why does Well-Tegra use blockchain technology?",
-            answer: `<p>Well-Tegra uses a <strong>private, permissioned blockchain</strong> to create a trusted, transparent, and tamper-proof foundation for its multi-client collaborative ecosystem. This is not a public cryptocurrency blockchain, but a secure environment for vetted partners.</p><p>It provides three core guarantees:</p><ul><li><strong>Cryptographic Hashing:</strong> A unique digital fingerprint for data, making tampering obvious.</li><li><strong>Block Chaining:</strong> An unbreakable, interlocking chain where altering one block invalidates all subsequent blocks.</li><li><strong>Decentralization:</strong> The ledger is copied across all members, requiring majority consensus for changes, making fraudulent changes practically impossible.</li></ul>`
-        },
-        {
-            question: "How can competing companies share data without revealing confidential information?",
-            answer: `<p>Well-Tegra implements a sophisticated, multi-stage anonymization protocol. This "defense-in-depth" strategy layers several advanced privacy-enhancing technologies:</p><ul><li><strong>Stage 1: Identification and Suppression:</strong> Removing explicit identifiers like company and well names.</li><li><strong>Stage 2: Generalization for K-Anonymity and L-Diversity:</strong> Making records indistinguishable from others to prevent re-identification from combined attributes.</li><li><strong>Stage 3: Perturbation with Differential Privacy:</strong> Adding calibrated statistical "noise" to sensitive numerical data to provide a formal, mathematical guarantee of privacy.</li></ul><p>The platform's most innovative feature is <strong>"verifiable privacy,"</strong> where the anonymization rules are coded into a smart contract on the blockchain, allowing participants to cryptographically verify that the agreed-upon privacy protocol was executed.</p>`
-        },
-        {
-            question: "What is the 'network effect' and how does it benefit data providers?",
-            answer: `<p>The "network effect" is the principle that the value of the platform increases for every participant as more members join. This is achieved by securely leveraging the collective, anonymized data of the entire consortium to build predictive models that are far more powerful than any single organization could develop alone.</p><p>This creates a <strong>virtuous cycle</strong>: more data leads to better models, which provides a powerful incentive for new members to join, which in turn makes the models even more powerful for everyone.</p>`
-        },
-    ];
-
-    // --- GLOBAL STATE ---
-
-    let appState = {
         currentView: 'home', 
         selectedWell: null, 
         selectedObjective: null, 
@@ -1928,6 +1411,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const manualPlanningView = document.getElementById('manual-planning-view');
     const aiAdvisorView = document.getElementById('ai-advisor-view');
     const aiRecommendationsContainer = document.getElementById('ai-recommendations');
+    const plannerStatusRegion = document.getElementById('planner-status');
+    const step1ContinueBtn = document.getElementById('step-1-continue');
+    const step2ContinueBtn = document.getElementById('step-2-continue');
+    const step4ContinueBtn = document.getElementById('step-4-continue');
+    const step5ContinueBtn = document.getElementById('step-5-continue');
+    const generateProgramBtn = document.getElementById('generate-program-btn');
+    const openLogisticsBtn = document.getElementById('open-logistics-btn');
+    const openCommercialBtn = document.getElementById('open-commercial-btn');
+    const openHseBtn = document.getElementById('open-hse-btn');
+    const reviewAnalysisBtnFinal = document.getElementById('review-analysis-btn-final');
 
     // Performer
 
@@ -1952,8 +1445,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Logistics
 
     const logisticsSubtitle = document.getElementById('logistics-subtitle');
+    const logisticsReferenceCard = document.getElementById('logistics-reference-card');
     const logisticsContent = document.getElementById('logistics-content');
-    const equipmentTableBody = document.getElementById('equipment-table-body'), 
+    const equipmentTableBody = document.getElementById('equipment-table-body'),
     personnelTableBody = document.getElementById('personnel-table-body');
     const equipmentSearch = document.getElementById('equipment-search'), 
     personnelSearch = document.getElementById('personnel-search');
@@ -1980,6 +1474,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Theme
 
     const themeToggleBtn = document.getElementById('theme-toggle-btn');
+
+    const addListener = (element, eventName, handler, options) => {
+        if (element) {
+            element.addEventListener(eventName, handler, options);
+        }
+    };
     
     // --- VIEW & STATE MANAGEMENT ---
 
@@ -2015,7 +1515,7 @@ document.addEventListener('DOMContentLoaded', function() {
         headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
 
         if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
-            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">â— LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">● LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
             initializePerformer();
         } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
             if(appState.selectedWell && appState.generatedPlan) {
@@ -2051,16 +1551,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if(checkedProblem) { checkedProblem.checked = false; }
         
         // Reset buttons
-        generatePlanBtnManual.disabled = true;
-        generatePlanBtnAi.disabled = true;
-        
+        if (generatePlanBtnManual) generatePlanBtnManual.disabled = true;
+        if (generatePlanBtnAi) generatePlanBtnAi.disabled = true;
+
         // Reset AI recommendations
-        aiRecommendationsContainer.classList.add('hidden');
-        
+        if (aiRecommendationsContainer) aiRecommendationsContainer.classList.add('hidden');
+
         // Reset AI toggle
-        aiToggle.checked = false;
-        manualPlanningView.classList.remove('hidden');
-        aiAdvisorView.classList.add('hidden');
+        if (aiToggle) aiToggle.checked = false;
+        if (manualPlanningView) manualPlanningView.classList.remove('hidden');
+        if (aiAdvisorView) aiAdvisorView.classList.add('hidden');
         
         switchView(switchToHome ? 'home' : 'planner');
         updatePlannerStepUI(1);
@@ -2320,7 +1820,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         ` : '';
 
-        const equipmentList = equipmentRequirements[appState.selectedObjective.id] || [];
+        const equipmentList = objectiveEquipmentRequirements[appState.selectedObjective.id] || [];
         const enrichedEquipment = equipmentList.map(item => {
             const matchedEquipment = findMatchingEquipment(item.name);
             const vendor = matchedEquipment?.vendor || resolveVendor(item.name);
@@ -2642,7 +2142,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const plan = appState.generatedPlan;
-        const equipmentList = equipmentRequirements[appState.selectedObjective.id] || [];
+        const equipmentList = objectiveEquipmentRequirements[appState.selectedObjective.id] || [];
         const enrichedEquipment = equipmentList.map(item => {
             const matched = findMatchingEquipment(item.name);
             return {
@@ -3200,11 +2700,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         logisticsSubtitle.textContent = `Logistics for ${appState.generatedPlan.name} on ${appState.selectedWell.name}`;
 
-        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id] || [];
+        const requiredEquipment = objectiveEquipmentRequirements[appState.selectedObjective.id] || [];
         const requiredRoles = appState.generatedPlan.personnel || [];
 
         const eqF = eqFilter.toLowerCase();
-        const matchingEquipment = equipmentData.filter(item => {
         const filteredEquipment = equipmentData.filter(item => {
             const matchesRequirement = requiredEquipment.some(req => matchesEquipmentRequirement(req.name, item));
             if (!matchesRequirement) return false;
@@ -3214,7 +2713,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 .some(val => val.toLowerCase().includes(eqF));
         });
 
-        equipmentTableBody.innerHTML = matchingEquipment.length ? matchingEquipment.map(item => {
         equipmentTableBody.innerHTML = filteredEquipment.length ? filteredEquipment.map(item => {
             const testStatus = item.testStatus || 'Pending';
             const statusClass = toStatusClass(testStatus || 'pending');
@@ -3237,17 +2735,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }).join('') : `<tr><td colspan="7" class="p-4 text-center text-sm text-slate-400">No matching equipment found.</td></tr>`;
 
         const persF = persFilter.toLowerCase();
-        const matchingPersonnel = personnelData.filter(person => {
-        const filteredPersonnel = personnelData.filter(person => {
-            const matchesRole = requiredRoles.some(role => matchesPersonnelRole(role, person));
-            if (!matchesRole) return false;
-            if (!persF) return true;
-            return [person.name, person.role, person.company]
-                .filter(Boolean)
-                .some(val => val.toLowerCase().includes(persF));
-        });
 
-        personnelTableBody.innerHTML = matchingPersonnel.length ? matchingPersonnel.map(person => {
         personnelTableBody.innerHTML = filteredPersonnel.length ? filteredPersonnel.map(person => {
             const statusClass = toStatusClass(person.status || 'available');
             const perDiem = person.perDiem ? `<span class="block text-xs text-slate-400">Per diem ${formatCurrency(person.perDiem)}</span>` : '';
@@ -3338,7 +2826,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const checkLogistics = () => {
         const conflicts = [];
-        const requiredEquipment = equipmentRequirements[appState.selectedObjective.id] || [];
+        const requiredEquipment = objectiveEquipmentRequirements[appState.selectedObjective.id] || [];
 
         requiredEquipment.forEach(req => {
             if (req.source === 'Vendor') {
@@ -3485,7 +2973,8 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         
-        document.getElementById('muster-drill-btn').addEventListener('click', toggleMusterDrill);
+        const musterDrillBtn = document.getElementById('muster-drill-btn');
+        addListener(musterDrillBtn, 'click', toggleMusterDrill);
     };
 
     const toggleMusterDrill = () => {
@@ -3541,7 +3030,7 @@ document.addEventListener('DOMContentLoaded', function() {
             appState.commercial.actualCost += ticketCost;
         };
 
-        const equipmentList = equipmentRequirements[appState.selectedObjective.id] || [];
+        const equipmentList = objectiveEquipmentRequirements[appState.selectedObjective.id] || [];
         equipmentList.forEach(item => {
             const matchedEquipment = findMatchingEquipment(item.name);
             const vendor = matchedEquipment?.vendor || 'Vendor TBD';
@@ -3662,7 +3151,8 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        document.getElementById('validate-invoice-btn').addEventListener('click', validateInvoice);
+        const validateInvoiceBtn = document.getElementById('validate-invoice-btn');
+        addListener(validateInvoiceBtn, 'click', validateInvoice);
     };
 
 
@@ -4286,10 +3776,10 @@ const validateInvoice = () => {
         calculateROI();
     };
 
-    if (engineerCountSlider) {
-        [engineerCountSlider, nptReductionSlider, timeSavingsSlider].forEach(slider => {
-            slider.addEventListener('input', calculateROI);
-        });
+    if (engineerCountSlider || nptReductionSlider || timeSavingsSlider) {
+        [engineerCountSlider, nptReductionSlider, timeSavingsSlider]
+            .filter(Boolean)
+            .forEach(slider => slider.addEventListener('input', calculateROI));
     }
 
     const loadReferenceData = async () => {
@@ -4371,7 +3861,7 @@ const validateInvoice = () => {
 
     // --- EVENT LISTENERS ---
 
-    themeToggleBtn.addEventListener('click', () => {
+    addListener(themeToggleBtn, 'click', () => {
         const currentTheme = body.classList.contains('theme-dark') ? 'dark' : 'light';
         setTheme(currentTheme === 'dark' ? 'light' : 'dark');
     });
@@ -4385,7 +3875,7 @@ const validateInvoice = () => {
     });
 
     // Well selection event listener
-    wellSelectionGrid.addEventListener('click', (e) => {
+    addListener(wellSelectionGrid, 'click', (e) => {
         // Handle view details button
         if (e.target.closest('.view-details-btn')) {
             e.stopPropagation();
@@ -4409,7 +3899,9 @@ const validateInvoice = () => {
         if (designBlueprintContainer) {
             designBlueprintContainer.innerHTML = '<p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>';
         }
-        aiRecommendationsContainer.classList.add('hidden');
+        if (aiRecommendationsContainer) {
+            aiRecommendationsContainer.classList.add('hidden');
+        }
         appState.selectedObjective = null;
         appState.ai.selectedProblemId = null;
         appState.ai.selectedRecommendation = null;
@@ -4419,116 +3911,179 @@ const validateInvoice = () => {
     });
 
     // Objective selection event listener
-    objectivesFieldset.addEventListener('change', (e) => {
-        // Find the selected objective card and update its styling
-        document.querySelectorAll('.objective-card').forEach(card => {
-            card.classList.remove('selected');
-        });
-        
-        const selectedCard = document.querySelector(`input[name="objective"]:checked`).closest('.objective-card');
-        if (selectedCard) {
-            selectedCard.classList.add('selected');
-        }
+    if (objectivesFieldset) {
+        objectivesFieldset.addEventListener('change', () => {
+            const selectedInput = objectivesFieldset.querySelector('input[name="objective"]:checked');
 
-        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value);
-        appState.ai.selectedRecommendation = null;
-        if (step2ContinueBtn) step2ContinueBtn.disabled = !appState.selectedObjective;
-        renderDesignBlueprint();
-        if (appState.selectedObjective) {
-            announcePlannerStatus(`${appState.selectedObjective.name} objective selected. Continue to the engineering blueprint.`);
-        
-        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value);
-        generatePlanBtnManual.disabled = !appState.selectedObjective;
-        if (appState.selectedObjective) {
-            announcePlannerStatus(`${appState.selectedObjective.name} objective selected. Generate plan when ready.`);
-        }
-    });
+            objectivesFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
+
+            const selectedCard = selectedInput ? selectedInput.closest('.objective-card') : null;
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+
+            const objectiveId = selectedInput ? selectedInput.value : null;
+            appState.selectedObjective = objectiveId ? objectivesData.find(o => o.id === objectiveId) : null;
+            appState.ai.selectedRecommendation = null;
+            appState.ai.selectedProblemId = null;
+
+            if (problemsFieldset) {
+                problemsFieldset.querySelectorAll('input[name="problem"]').forEach(input => {
+                    input.checked = false;
+                });
+                problemsFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
+            }
+
+            if (aiRecommendationsContainer) {
+                aiRecommendationsContainer.classList.add('hidden');
+                aiRecommendationsContainer.querySelectorAll('.ai-recommendation-enhanced').forEach(card => card.classList.remove('selected'));
+            }
+
+            if (step2ContinueBtn) step2ContinueBtn.disabled = !appState.selectedObjective;
+            if (generatePlanBtnManual) generatePlanBtnManual.disabled = !appState.selectedObjective;
+            if (generatePlanBtnAi) generatePlanBtnAi.disabled = true;
+
+            if (appState.selectedObjective) {
+                renderDesignBlueprint();
+                announcePlannerStatus(`${appState.selectedObjective.name} objective selected. Continue to the engineering blueprint.`);
+            }
+        });
+    }
 
     // Problem selection event listener
-    problemsFieldset.addEventListener('change', (e) => {
-        // Find the selected problem card and update its styling
-        document.querySelectorAll('.objective-card').forEach(card => {
-            card.classList.remove('selected');
-        });
-        
-        const selectedCard = document.querySelector(`input[name="problem"]:checked`).closest('.objective-card');
-        if (selectedCard) {
-            selectedCard.classList.add('selected');
-        }
-        
-        appState.ai.selectedProblemId = e.target.value;
-        announcePlannerStatus(`${problemsData.find(problem => problem.id === appState.ai.selectedProblemId)?.name || 'Problem'} selected. Review AI recommendations below.`);
-        const recommendations = aiRecommendations[appState.ai.selectedProblemId] || [];
-        
-        aiRecommendationsContainer.innerHTML = `
-            <h3 class="text-lg font-semibold text-center mb-4 mt-6">AI Recommendations</h3>
-            <div class="space-y-4">
-                ${recommendations.map((rec, i) => { 
-                    const objective = objectivesData.find(o => o.id === rec.objectiveId); 
-                    return `
-                        <div class="ai-recommendation-enhanced" data-rec-index="${i}">
-                            <div class="confidence-badge">${rec.confidence}% Confidence</div>
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-bold text-lg text-teal-700 dark:text-teal-400">${objective.icon} ${objective.name}</h4>
-                            </div>
-                            <p class="text-sm mb-1"><strong>Projected Outcome:</strong> ${rec.outcome}</p>
-                            <p class="text-xs"><strong>Reasoning:</strong> ${rec.reason}</p>
+    if (problemsFieldset) {
+        problemsFieldset.addEventListener('change', () => {
+            const selectedInput = problemsFieldset.querySelector('input[name="problem"]:checked');
+
+            problemsFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
+            const selectedCard = selectedInput ? selectedInput.closest('.objective-card') : null;
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+
+            if (objectivesFieldset) {
+                objectivesFieldset.querySelectorAll('input[name="objective"]').forEach(input => {
+                    input.checked = false;
+                });
+                objectivesFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
+            }
+
+            const problemId = selectedInput ? selectedInput.value : null;
+            appState.ai.selectedProblemId = problemId;
+            appState.ai.selectedRecommendation = null;
+            appState.selectedObjective = null;
+
+            const problem = problemId ? problemsData.find(item => item.id === problemId) : null;
+            if (problem) {
+                announcePlannerStatus(`${problem.name} selected. Review AI recommendations below.`);
+            }
+
+            const recommendations = problemId ? (aiRecommendations[problemId] || []) : [];
+
+            if (aiRecommendationsContainer) {
+                if (recommendations.length) {
+                    aiRecommendationsContainer.innerHTML = `
+                        <h3 class="text-lg font-semibold text-center mb-4 mt-6">AI Recommendations</h3>
+                        <div class="space-y-4">
+                            ${recommendations.map((rec, index) => {
+                                const objective = objectivesData.find(o => o.id === rec.objectiveId) || {};
+                                const objectiveIcon = 'icon' in objective ? objective.icon : '';
+                                const objectiveName = 'name' in objective ? objective.name : 'Objective';
+                                return `
+                                    <div class="ai-recommendation-enhanced" data-rec-index="${index}">
+                                        <div class="confidence-badge">${rec.confidence}% Confidence</div>
+                                        <div class="flex justify-between items-start mb-2">
+                                            <h4 class="font-bold text-lg text-teal-700 dark:text-teal-400">${objectiveIcon} ${objectiveName}</h4>
+                                        </div>
+                                        <p class="text-sm mb-1"><strong>Projected Outcome:</strong> ${rec.outcome}</p>
+                                        <p class="text-xs"><strong>Reasoning:</strong> ${rec.reason}</p>
+                                    </div>
+                                `;
+                            }).join('')}
                         </div>
-                    `; 
-                }).join('')}
-            </div>
-        `;
-        
-        aiRecommendationsContainer.classList.remove('hidden');
+                    `;
+                    aiRecommendationsContainer.classList.remove('hidden');
+                } else {
+                    aiRecommendationsContainer.innerHTML = '<p class="text-sm text-center text-slate-400">No AI recommendations available for this problem yet.</p>';
+                    aiRecommendationsContainer.classList.remove('hidden');
+                }
+            }
 
-        // Add event listeners to recommendation cards
-        document.querySelectorAll('.ai-recommendation-enhanced').forEach(card => card.addEventListener('click', (ev) => {
-            const selectedCard = ev.target.closest('.ai-recommendation-enhanced');
-            const recIndex = parseInt(selectedCard.dataset.recIndex);
-            appState.ai.selectedRecommendation = aiRecommendations[appState.ai.selectedProblemId][recIndex];
-            appState.selectedObjective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId);
+            if (step2ContinueBtn) step2ContinueBtn.disabled = true;
+            if (generatePlanBtnManual) generatePlanBtnManual.disabled = true;
+            if (generatePlanBtnAi) generatePlanBtnAi.disabled = true;
 
-            document.querySelectorAll('.ai-recommendation-enhanced').forEach(c => c.classList.remove('selected'));
-            selectedCard.classList.add('selected');
+            if (aiRecommendationsContainer) {
+                aiRecommendationsContainer.querySelectorAll('.ai-recommendation-enhanced').forEach(card => {
+                    card.addEventListener('click', (event) => {
+                        const recommendationCard = event.currentTarget;
+                        const recIndex = Number.parseInt(recommendationCard.dataset.recIndex, 10);
+                        const selectedRecommendation = aiRecommendations[problemId]?.[recIndex];
+                        if (!selectedRecommendation) {
+                            announcePlannerStatus('Unable to load the selected AI recommendation. Please choose a different option.');
+                            return;
+                        }
 
-            if (step2ContinueBtn) step2ContinueBtn.disabled = false;
-            renderDesignBlueprint();
-            announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Continue to the engineering blueprint.`);
-            generatePlanBtnAi.disabled = false;
-            announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Generate plan when ready.`);
-        }));
-    });
+                        appState.ai.selectedRecommendation = selectedRecommendation;
+                        appState.selectedObjective = objectivesData.find(o => o.id === selectedRecommendation.objectiveId) || null;
+
+                        aiRecommendationsContainer.querySelectorAll('.ai-recommendation-enhanced').forEach(element => element.classList.remove('selected'));
+                        recommendationCard.classList.add('selected');
+
+                        if (step2ContinueBtn) step2ContinueBtn.disabled = false;
+                        if (generatePlanBtnAi) generatePlanBtnAi.disabled = false;
+                        if (generatePlanBtnManual) generatePlanBtnManual.disabled = true;
+
+                        renderDesignBlueprint();
+                        announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Continue to the engineering blueprint.`);
+                        announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Generate plan when ready.`);
+                    });
+                });
+            }
+        });
+    }
 
     // AI toggle event listener
-    aiToggle.addEventListener('change', (e) => {
-        manualPlanningView.classList.toggle('hidden', e.target.checked);
-        aiAdvisorView.classList.toggle('hidden', !e.target.checked);
+    if (aiToggle) {
+        aiToggle.addEventListener('change', (event) => {
+            const useAiAdvisor = event.target.checked;
 
-        announcePlannerStatus(e.target.checked ? 'AI Advisor enabled. Select a problem to view recommendations.' : 'Manual planning enabled. Select an objective to continue.');
+            if (manualPlanningView) manualPlanningView.classList.toggle('hidden', useAiAdvisor);
+            if (aiAdvisorView) aiAdvisorView.classList.toggle('hidden', !useAiAdvisor);
 
-        if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== 'W666') {
-             aiAdvisorView.innerHTML = `
-                <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
-                    <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (W666) scenario. Please select W666 to see AI recommendations.</p>
-                </div>
-            `;
-        } else {
-             renderProblems(); // Re-render problems list
-             if (!e.target.checked) {
-                 aiRecommendationsContainer.classList.add('hidden');
-             }
-        }
-        if (step2ContinueBtn) {
-            const hasSelection = e.target.checked ? !!appState.ai.selectedRecommendation : !!appState.selectedObjective;
-            step2ContinueBtn.disabled = !hasSelection;
-        }
-        }
-        if (step2ContinueBtn) {
-            const hasSelection = e.target.checked ? !!appState.ai.selectedRecommendation : !!appState.selectedObjective;
-            step2ContinueBtn.disabled = !hasSelection;
-        }
-        renderDesignBlueprint();
-    });
+            announcePlannerStatus(useAiAdvisor ? 'AI Advisor enabled. Select a problem to view recommendations.' : 'Manual planning enabled. Select an objective to continue.');
+
+            if (useAiAdvisor && appState.selectedWell && appState.selectedWell.id !== 'W666') {
+                if (aiAdvisorView) {
+                    aiAdvisorView.innerHTML = `
+                        <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
+                            <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (W666) scenario. Please select W666 to see AI recommendations.</p>
+                        </div>
+                    `;
+                }
+            } else {
+                renderProblems();
+                if (!useAiAdvisor && aiRecommendationsContainer) {
+                    aiRecommendationsContainer.classList.add('hidden');
+                }
+            }
+
+            if (step2ContinueBtn) {
+                const hasSelection = useAiAdvisor ? !!appState.ai.selectedRecommendation : !!appState.selectedObjective;
+                step2ContinueBtn.disabled = !hasSelection;
+            }
+
+            if (generatePlanBtnManual) {
+                generatePlanBtnManual.disabled = useAiAdvisor ? true : !appState.selectedObjective;
+            }
+
+            if (generatePlanBtnAi) {
+                generatePlanBtnAi.disabled = useAiAdvisor ? !appState.ai.selectedRecommendation : true;
+            }
+
+            renderDesignBlueprint();
+        });
+    }
 
     // Step progression controls
     if (step1ContinueBtn) {
@@ -4553,7 +4108,7 @@ const validateInvoice = () => {
         generateProgramBtn.addEventListener('click', () => {
             if (!appState.selectedWell) return;
             let objectiveId = appState.selectedObjective?.id;
-            if (aiToggle.checked && appState.ai.selectedRecommendation) {
+            if (aiToggle && aiToggle.checked && appState.ai.selectedRecommendation) {
                 objectiveId = appState.ai.selectedRecommendation.objectiveId;
             }
             if (!objectiveId) return;
@@ -4617,85 +4172,8 @@ const validateInvoice = () => {
         });
     }
 
-    if (step2ContinueBtn) {
-        step2ContinueBtn.addEventListener('click', () => {
-            if (!appState.selectedObjective) return;
-            updatePlannerStepUI(3);
-            renderDesignBlueprint();
-            if (generateProgramBtn) generateProgramBtn.disabled = !appState.selectedObjective;
-            announcePlannerStatus('Blueprint loaded. Validate the engineering design, then generate the integrated program.');
-        });
-    }
-
-    if (generateProgramBtn) {
-        generateProgramBtn.addEventListener('click', () => {
-            if (!appState.selectedWell) return;
-            let objectiveId = appState.selectedObjective?.id;
-            if (aiToggle.checked && appState.ai.selectedRecommendation) {
-                objectiveId = appState.ai.selectedRecommendation.objectiveId;
-            }
-            if (!objectiveId) return;
-
-            appState.selectedObjective = objectivesData.find(o => o.id === objectiveId);
-            appState.generatedPlan = proceduresData[objectiveId];
-            renderPlan();
-            updatePlannerStepUI(4);
-            announcePlannerStatus('Integrated program generated. Review procedure, risks, and cost in step four.');
-        });
-    }
-
-    if (step4ContinueBtn) {
-        step4ContinueBtn.addEventListener('click', () => {
-            if (!appState.generatedPlan) return;
-            renderReadinessSummary();
-            updatePlannerStepUI(5);
-            announcePlannerStatus('Readiness package compiled. Resolve outstanding logistics or jump to execution prep.');
-        });
-    }
-
-    if (openLogisticsBtn) {
-        openLogisticsBtn.addEventListener('click', () => {
-            if (!appState.generatedPlan) return;
-            switchView('logistics');
-        });
-    }
-
-    if (openCommercialBtn) {
-        openCommercialBtn.addEventListener('click', () => {
-            if (!appState.generatedPlan) return;
-            switchView('commercial');
-        });
-    }
-
-    if (openHseBtn) {
-        openHseBtn.addEventListener('click', () => {
-            if (!appState.generatedPlan) return;
-            switchView('hse');
-        });
-    }
-
-    if (step5ContinueBtn) {
-        step5ContinueBtn.addEventListener('click', () => {
-            if (!appState.generatedPlan) return;
-            updatePlannerStepUI(6);
-            if (beginOpBtn) beginOpBtn.disabled = false;
-            announcePlannerStatus('Execution stage ready. Launch Live Operations or open the analysis workspace.');
-        });
-    }
-
-    if (reviewAnalysisBtnFinal) {
-        reviewAnalysisBtnFinal.addEventListener('click', () => {
-            switchView('analyzer');
-            if (typeof window.initializeAnalyzer === 'function') {
-                window.initializeAnalyzer();
-            } else {
-                initializeAnalyzer();
-                initializeVendorScorecard();
-            }
-        });
-    }
     // Generate plan buttons event listeners
-    generatePlanBtnManual.addEventListener('click', () => {
+    addListener(generatePlanBtnManual, 'click', () => {
         if (!appState.selectedWell || !appState.selectedObjective) return;
         appState.generatedPlan = proceduresData[appState.selectedObjective.id];
         renderPlan();
@@ -4703,7 +4181,7 @@ const validateInvoice = () => {
         announcePlannerStatus('Manual plan generated. Review the plan in step three.');
     });
 
-    generatePlanBtnAi.addEventListener('click', () => {
+    addListener(generatePlanBtnAi, 'click', () => {
         if (!appState.selectedWell || !appState.ai.selectedRecommendation) return;
         appState.selectedObjective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId);
         appState.generatedPlan = proceduresData[appState.selectedObjective.id];
@@ -4713,34 +4191,33 @@ const validateInvoice = () => {
     });
 
     // Control buttons event listeners
-    startOverBtn.addEventListener('click', () => {
+    addListener(startOverBtn, 'click', () => {
         resetApp(false);
         announcePlannerStatus('Planner reset. Start by selecting a well.');
     });
-    beginOpBtn.addEventListener('click', () => {
-    beginOpBtn.addEventListener('click', () => { 
-        if (!appState.generatedPlan) return; 
-        switchView('performer'); 
+    addListener(beginOpBtn, 'click', () => {
+        if (!appState.generatedPlan) return;
+        switchView('performer');
     });
 
-    addLogBtn.addEventListener('click', () => { 
-        addLogEntry('Operator', logInput.value); 
-        logInput.value = ''; 
+    addListener(addLogBtn, 'click', () => {
+        addLogEntry('Operator', logInput.value);
+        logInput.value = '';
     });
 
-    procedureStepsContainer.addEventListener('click', (e) => {
+    addListener(procedureStepsContainer, 'click', (e) => {
         const stepDiv = e.target.closest('.procedure-step');
         if (!stepDiv || !appState.liveData.jobRunning) return;
 
         const targetStepId = parseInt(stepDiv.dataset.stepId);
         const currentStepId = appState.liveData.currentStep;
-        
+
         if (targetStepId > currentStepId) {
             jumpToStep(targetStepId);
         }
     });
 
-    viewAnalysisBtn.addEventListener('click', () => {
+    addListener(viewAnalysisBtn, 'click', () => {
         switchView('analyzer');
         if (window.initializeAnalyzer) {
             window.initializeAnalyzer();
@@ -4750,27 +4227,27 @@ const validateInvoice = () => {
         }
     });
 
-    addLessonBtn.addEventListener('click', () => { 
-        if(lessonInput.value.trim()){ 
-            appState.lessonsLearned.push(lessonInput.value.trim()); 
-            lessonInput.value = ''; 
-            renderLessons(); 
-        } 
+    addListener(addLessonBtn, 'click', () => {
+        if(lessonInput.value.trim()){
+            appState.lessonsLearned.push(lessonInput.value.trim());
+            lessonInput.value = '';
+            renderLessons();
+        }
     });
 
-    planNewJobBtn.addEventListener('click', () => resetApp(true));
+    addListener(planNewJobBtn, 'click', () => resetApp(true));
 
-    equipmentSearch.addEventListener('input', (e) => 
-        renderAssetManagementViews(e.target.value, personnelSearch.value)
+    addListener(equipmentSearch, 'input', (e) =>
+        renderAssetManagementViews(e.target.value, personnelSearch?.value || '')
     );
 
-    personnelSearch.addEventListener('input', (e) => 
-        renderAssetManagementViews(equipmentSearch.value, e.target.value)
+    addListener(personnelSearch, 'input', (e) =>
+        renderAssetManagementViews(equipmentSearch?.value || '', e.target.value)
     );
 
-    closeModalBtn.addEventListener('click', closeModal);
+    addListener(closeModalBtn, 'click', closeModal);
 
-    modal.addEventListener('click', (e) => {
+    addListener(modal, 'click', (e) => {
         if (e.target === modal) closeModal();
     });
 
@@ -4979,6 +4456,30 @@ const validateInvoice = () => {
     window.initializeAnalyzer = initializeAnalyzerWithVendor;
 
     // --- INITIALIZATION ---
+
+    const initializeHeroVideoToggle = () => {
+        const heroVideo = document.getElementById('hero-video');
+        const toggleButton = document.getElementById('hero-video-toggle');
+
+        if (!heroVideo || !toggleButton) return;
+
+        const setPlayingState = (isPlaying) => {
+            toggleButton.setAttribute('aria-pressed', String(isPlaying));
+            toggleButton.textContent = isPlaying ? 'Pause hero video' : 'Play hero video';
+        };
+
+        toggleButton.addEventListener('click', () => {
+            if (heroVideo.paused) {
+                heroVideo.play().catch(() => {});
+                setPlayingState(true);
+            } else {
+                heroVideo.pause();
+                setPlayingState(false);
+            }
+        });
+
+        setPlayingState(!heroVideo.paused);
+    };
 
     const init = () => {
         initializeHeroVideoToggle();
