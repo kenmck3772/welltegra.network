@@ -29,6 +29,10 @@ Well-Tegra is an interactive case study platform designed to demonstrate advance
 - **`data-activity-cost-rates.csv`** – Normalized intervention activity library with duration, cost, and NPT risk fields for budgeting simulations.
 - **`data-equipment-tools.csv`** – Rate card covering the intervention tool fleet with vendor assignments, standby economics, and technical specifications.
 - **`data-personnel-rates.csv`** – Staffing matrix outlining day rates, mobilization terms, and certification requirements for each role.
+- The in-app <strong>Data Export Hub</strong> view provides direct download links, live record counts, schema previews, approximate file sizes, and SHA-256 fingerprints (with copy helpers) so analysts can validate integrity before importing datasets into their pipelines.
+- Each dataset card now renders a 3-row preview table (first five columns) alongside inline data dictionary callouts so engineers understand field semantics immediately.
+- One-click pandas, <code>curl</code>, and SQL schema copy helpers remove boilerplate when loading the datasets into notebooks, CLI scripts, or data warehouses.
+- Copy helpers now drive screen-reader friendly status updates so keyboard and assistive tech users receive immediate feedback when snippets land on the clipboard.
 - The in-app <strong>Data Export Hub</strong> view provides direct download links, live record counts, schema previews, and approximate file sizes so analysts can confirm the shape of each dataset before importing it into their pipelines.
 - Each dataset card now renders a 3-row preview table (first five columns) alongside inline data dictionary callouts so engineers understand field semantics immediately.
 - One-click pandas, <code>curl</code>, and SQL schema copy helpers remove boilerplate when loading the datasets into notebooks, CLI scripts, or data warehouses.

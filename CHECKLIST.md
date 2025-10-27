@@ -22,6 +22,8 @@
 
 - `equipment-catalog.json` and `service-line-templates.json` continue to parse via `python -m json.tool`, confirming catalog references remain valid.【d86df0†L1-L3】
 - `npm run lint:links` reports no 4xx responses across the locally served marketing pages.【f0211f†L1-L1】
+- Data Export Hub now surfaces live record counts, schema previews, approximate file sizes, SHA-256 fingerprints, 3-row preview tables, inline data dictionary callouts, and copy-to-clipboard pandas/<code>curl</code>/SQL/fingerprint helpers so analytics teams can validate and ingest exports without manual prep.【F:assets/js/app.js†L1385-L1548】【F:assets/js/app.js†L3827-L4013】【F:index.html†L459-L612】
+- Clipboard helpers expose accessible status updates through dedicated live regions and message resets so repeated copy attempts speak their success or failure across the marketing shells.【F:assets/js/app.js†L4205-L4231】【F:index.html†L500-L597】【F:index-v23-fresh.html†L933-L1030】【F:test-v23-1761097711.html†L933-L1030】
 - Data Export Hub now surfaces live record counts, schema previews, approximate file sizes, 3-row preview tables, inline data dictionary callouts, and copy-to-clipboard pandas/<code>curl</code>/SQL helpers so analytics teams can validate and ingest exports without manual prep.【F:assets/js/app.js†L1385-L1548】【F:assets/js/app.js†L3827-L3990】【F:index.html†L459-L597】
 - Activity, equipment, and personnel datasets join the W666 and portfolio exports so downstream budgeting, logistics, and staffing models can consume the same CSVs the planner references.【F:index.html†L524-L597】【F:index-v23-fresh.html†L957-L1030】【F:test-v23-1761097711.html†L957-L1030】【F:README.md†L26-L35】
 
