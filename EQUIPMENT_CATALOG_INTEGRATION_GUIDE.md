@@ -305,7 +305,7 @@ This equipment catalog integration is part of the Well-Tegra v23 platform.
 ## Credits
 
 - Equipment data extracted from legacy Well-Tegra v11 application
-- Technical drawings from Tool_Eqp drawings.xls.xlsx
+- Technical drawings were previously captured in `assets/Tool_Eqp drawings.xls.xlsx` (archived during the 2025 repository clean-up)
 - Tool String Builder concept ported from v11
 - Integration created by Claude Code (2025-10-22)
 

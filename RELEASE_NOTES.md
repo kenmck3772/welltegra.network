@@ -1,6 +1,7 @@
 # Release Notes — Tailwind Build Pipeline Hardening
 
 ## Summary
+
 - Removed the Tailwind CDN bootstrap from `index.html` and rely solely on the minified CLI build (`assets/css/tailwind.css`).
 - Rehomed the large inline `<style>` block into `styles/tailwind.css` so custom theming ships alongside the Tailwind bundle.
 - Extracted the application logic into `assets/js/app.js`, tightened the CSP to `script-src 'self' …`, and rebound the PDF export trigger via `addEventListener`.
@@ -16,11 +17,14 @@
 - Marked the hero video as decorative, limited its preload to metadata, and added intrinsic dimensions to the masthead logo to prevent layout shift.
 - Converted planner well cards into keyboard-activatable buttons and now announce selection state with `aria-pressed`.
 - Converted the primary navigation into real buttons and wired `aria-current`/`aria-disabled` plus `aria-hidden` view toggles so keyboard and assistive users get accurate state changes.
+- Deduplicated the header tablist markup so only the button-based navigation remains, resolving the duplicate focus targets introduced by a bad merge.
 - Added an explicit screen-reader label to the theme toggle control.
 - Refined the FAQ accordion generation to emit `aria-expanded`/`aria-controls` wiring and maintain keyboard/assistive parity.
 - Normalized mojibake em dash characters in the hero copy to the proper `—` glyph.
+- Archived unused legacy demo HTML files and oversized video/Excel assets so only actively referenced media ship with the site and GitHub Pages stops flagging missing resources.
 
 ## Verification
+
 1. Install dependencies if missing: `npm install`.
 2. Build the production stylesheet: `npm run build:css`.
 3. Start a local preview: `python -m http.server 8000`.
@@ -30,10 +34,11 @@
 7. Use the arrow or tab keys to focus a well card in the planner grid and press `Enter` or `Space` to select it; the card should show the selected styling and announce `aria-pressed="true"` in devtools.
 8. Toggle the operating system's reduced-motion setting (or launch Playwright/Chrome DevTools with `prefers-reduced-motion: reduce`) and confirm the hero video starts paused until the user explicitly plays it.
 9. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.
-4. Visit `http://127.0.0.1:8000/index.html` and confirm the console is clean (no Tailwind CDN warning) and the hero toggle pauses/resumes playback.
-5. Use the `Tab` key to step through the header navigation; the focus ring should be visible, `Home/Planner` remain active, and gated tabs (e.g., Commercial) stay disabled until a plan exists.
-6. Toggle the operating system's reduced-motion setting (or launch Playwright/Chrome DevTools with `prefers-reduced-motion: reduce`) and confirm the hero video starts paused until the user explicitly plays it.
-7. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.
-3. Start a local preview: `python3 -m http.server 8080`.
-4. Visit `http://127.0.0.1:8080/index.html` and confirm the console is clean (no Tailwind CDN warning).
-5. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.
+10. Visit `http://127.0.0.1:8000/index.html` and confirm the console is clean (no Tailwind CDN warning) and the hero toggle pauses/resumes playback.
+11. Use the `Tab` key to step through the header navigation; the focus ring should be visible, `Home/Planner` remain active, and gated tabs (e.g., Commercial) stay disabled until a plan exists.
+12. Toggle the operating system's reduced-motion setting (or launch Playwright/Chrome DevTools with `prefers-reduced-motion: reduce`) and confirm the hero video starts paused until the user explicitly plays it.
+13. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.
+14. Start a local preview: `python3 -m http.server 8080`.
+15. Visit `http://127.0.0.1:8080/index.html` and confirm the console is clean (no Tailwind CDN warning).
+16. Optional: `npm run lint:links` (with the local server running) to verify link health remains green.
+17. With the preview running, reload `index.html` and confirm the network panel shows only 200 responses (legacy `hero4.mp4` / workbook assets should no longer 404).

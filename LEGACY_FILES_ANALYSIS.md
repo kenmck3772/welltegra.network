@@ -70,6 +70,9 @@ Organized by service lines:
 
 ## File 2: `assets/Tool_Eqp drawings.xls.xlsx`
 
+> **Repository status:** Archived from the tree during the 2025-03-?? filesystem clean-up. Retain a local copy if you need to r
+eview the drawings offline.
+
 **Type**: Microsoft Excel 2007+ Workbook
 **Size**: 820 KB
 **Sheets**: 13 worksheets with technical drawings
