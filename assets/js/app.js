@@ -1586,6 +1586,212 @@ document.addEventListener('DOMContentLoaded', function() {
                 name: 'Hourly_Rate_USD',
                 sqlType: 'INTEGER',
                 description: 'Standard hourly billing rate in US dollars.'
+            }
+        ],
+        'data-well-portfolio.csv': [
+            {
+                name: 'ID',
+                sqlType: 'VARCHAR(10)',
+                description: 'Well identifier or case study reference code.'
+            },
+            {
+                name: 'Name',
+                sqlType: 'TEXT',
+                description: 'Well nickname or case study headline.'
+            },
+            {
+                name: 'Field',
+                sqlType: 'TEXT',
+                description: 'Field where the operation occurred.'
+            },
+            {
+                name: 'Region',
+                sqlType: 'TEXT',
+                description: 'Geographic basin or operating area.'
+            },
+            {
+                name: 'Well Type',
+                sqlType: 'TEXT',
+                description: 'Primary production type for the well (e.g., HPHT Gas Condensate).'
+            },
+            {
+                name: 'Measured Depth (ft)',
+                sqlType: 'INTEGER',
+                description: 'Reported measured depth of the wellbore in feet.'
+            },
+            {
+                name: 'Current Status',
+                sqlType: 'TEXT',
+                description: 'Operational state summarising if the well is active, shut-in, or restored.'
+            },
+            {
+                name: 'Primary Narrative',
+                sqlType: 'TEXT',
+                description: 'Summary of the dominant challenge or solution story.'
+            },
+            {
+                name: 'Key Lessons Learned',
+                sqlType: 'TEXT',
+                description: 'Distilled learnings or recommendations captured from the case study.'
+            }
+        ],
+        'data-activity-cost-rates.csv': [
+            {
+                name: 'Activity_Code',
+                sqlType: 'VARCHAR(12)',
+                description: 'Unique identifier that maps to the intervention activity catalog.'
+            },
+            {
+                name: 'Activity_Name',
+                sqlType: 'TEXT',
+                description: 'Human-readable description of the activity to schedule.'
+            },
+            {
+                name: 'Category',
+                sqlType: 'TEXT',
+                description: 'Operational grouping such as Surveillance, Barriers, or Evaluation.'
+            },
+            {
+                name: 'Typical_Duration_Hours',
+                sqlType: 'INTEGER',
+                description: 'Expected duration in hours for planning cycle estimates.'
+            },
+            {
+                name: 'Base_Cost_USD',
+                sqlType: 'INTEGER',
+                description: 'Baseline activity cost before contingency or risk multipliers.'
+            },
+            {
+                name: 'Equipment_Primary',
+                sqlType: 'TEXT',
+                description: 'Primary equipment identifier(s) required to execute the activity.'
+            },
+            {
+                name: 'Personnel_Primary',
+                sqlType: 'TEXT',
+                description: 'Key personnel identifiers typically assigned to the activity.'
+            },
+            {
+                name: 'Personnel_Count',
+                sqlType: 'INTEGER',
+                description: 'Total number of people expected on task.'
+            },
+            {
+                name: 'Consumables_Typical',
+                sqlType: 'TEXT',
+                description: 'Consumable IDs or notes that inform cost burn rates.'
+            },
+            {
+                name: 'Risk_Factor',
+                sqlType: 'TEXT',
+                description: 'Qualitative risk flag to guide contingency planning.'
+            },
+            {
+                name: 'NPT_Risk_Percent',
+                sqlType: 'INTEGER',
+                description: 'Non-productive time probability expressed as a percent.'
+            }
+        ],
+        'data-equipment-tools.csv': [
+            {
+                name: 'Equipment_ID',
+                sqlType: 'VARCHAR(12)',
+                description: 'Primary key for the equipment catalog entry.'
+            },
+            {
+                name: 'Category',
+                sqlType: 'TEXT',
+                description: 'Equipment grouping such as Wireline Unit or Coiled Tubing.'
+            },
+            {
+                name: 'Item_Name',
+                sqlType: 'TEXT',
+                description: 'Specific tool or equipment description.'
+            },
+            {
+                name: 'Vendor',
+                sqlType: 'TEXT',
+                description: 'Supplier or service company providing the asset.'
+            },
+            {
+                name: 'Daily_Rate_USD',
+                sqlType: 'INTEGER',
+                description: 'Daily rate baseline for full-shift planning.'
+                description: 'Standard daily rental rate in US dollars.'
+            },
+            {
+                name: 'Mobilization_USD',
+                sqlType: 'INTEGER',
+                description: 'Mobilization stipend typically invoiced per assignment.'
+            },
+            {
+                name: 'Per_Diem_USD',
+                sqlType: 'INTEGER',
+                description: 'Per diem allowance per day on location.'
+            },
+            {
+                name: 'Min_Call_Days',
+                sqlType: 'INTEGER',
+                description: 'Minimum guaranteed billing days per deployment.'
+            },
+            {
+                name: 'Certifications_Required',
+                sqlType: 'TEXT',
+                description: 'Licenses or credentials required before mobilization.'
+            },
+            {
+                name: 'Typical_Team_Size',
+                sqlType: 'TEXT',
+                description: 'Typical number of personnel mobilized per role.'
+            }
+                description: 'Mobilization charge to move equipment to site.'
+            },
+            {
+                name: 'Demobilization_USD',
+                sqlType: 'INTEGER',
+                description: 'Demobilization charge to return equipment after operations.'
+            },
+            {
+                name: 'Standby_Rate_USD',
+                sqlType: 'INTEGER',
+                description: 'Daily standby cost when the asset is idle.'
+            },
+            {
+                name: 'Min_Rental_Days',
+                sqlType: 'INTEGER',
+                description: 'Minimum contractual rental period in days.'
+            },
+            {
+                name: 'Specifications',
+                sqlType: 'TEXT',
+                description: 'Key technical specifications such as capacity or limits.'
+            },
+            {
+                name: 'Typical_Use',
+                sqlType: 'TEXT',
+                description: 'Common operational scenarios for the equipment.'
+            }
+        ],
+        'data-personnel-rates.csv': [
+            {
+                name: 'Role_ID',
+                sqlType: 'VARCHAR(12)',
+                description: 'Primary key used to cross-reference planner staffing tables.'
+            },
+            {
+                name: 'Role_Title',
+                sqlType: 'TEXT',
+                description: 'Position title for the role or discipline.'
+            },
+            {
+                name: 'Category',
+                sqlType: 'TEXT',
+                description: 'Functional grouping such as Engineering or Technical.'
+            },
+            {
+                name: 'Hourly_Rate_USD',
+                sqlType: 'INTEGER',
+                description: 'Standard hourly billing rate in US dollars.'
             },
             {
                 name: 'Daily_Rate_USD',
@@ -1835,6 +2041,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // --- VIEW & STATE MANAGEMENT ---
 
+    const planRequiredMessages = new Map([
+        ['analyzer', 'Generate a plan to unlock the analysis workspace.'],
+        ['commercial', 'Generate a plan to review commercial readiness.'],
+        ['hse', 'Generate a plan to review HSE & risk readiness.'],
+        ['logistics', 'Generate a plan to orchestrate logistics & supply chain readiness.'],
+        ['performer', 'Generate a plan to launch Live Operations.'],
+        ['pob', 'Generate a plan to prepare POB & emergency response readiness.']
+    ]);
     const planRequiredMessages = {
         analyzer: 'Generate a plan to unlock the analysis workspace.',
         commercial: 'Generate a plan to review commercial readiness.',
@@ -1851,6 +2065,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const normalizedView = viewName.toLowerCase();
+        const plannerMessage = planRequiredMessages.get(normalizedView)
         const plannerMessage = planRequiredMessages[normalizedView]
             || `Generate a plan to open the ${sourceLabel || 'selected'} workspace.`;
         announcePlannerStatus(plannerMessage);
@@ -4532,6 +4747,449 @@ const validateInvoice = () => {
                         elements.columnsList.appendChild(item);
                     }
 
+        const engineerSavings = engineers * avgEngineerSalary * timeSavings;
+        const nptSavings = avgNptCostPerDay * avgNptDaysPerYear * nptReduction;
+        const totalSavings = engineerSavings + nptSavings;
+
+        engineerCountValue.textContent = engineers;
+        engineerCountSlider.setAttribute('aria-valuenow', engineers);
+        engineerCountSlider.setAttribute('aria-valuetext', `${engineers} well engineers`);
+        nptReductionValue.textContent = `${nptReduction * 100}%`;
+        nptReductionSlider.setAttribute('aria-valuenow', nptReduction * 100);
+        nptReductionSlider.setAttribute('aria-valuetext', `${nptReduction * 100}% projected reduction`);
+        timeSavingsValue.textContent = `${timeSavings * 100}%`;
+        timeSavingsSlider.setAttribute('aria-valuenow', timeSavings * 100);
+        timeSavingsSlider.setAttribute('aria-valuetext', `${timeSavings * 100}% engineering time reclaimed`);
+        totalSavingsValue.textContent = `$${Math.round(totalSavings).toLocaleString()}`;
+
+        updateSavingsChart(engineerSavings, nptSavings);
+    };
+
+    const updateSavingsChart = (engineerSavings, nptSavings) => {
+        if(appState.savingsChartInstance) {
+            appState.savingsChartInstance.data.datasets[0].data = [engineerSavings, nptSavings];
+            appState.savingsChartInstance.update();
+        }
+    };
+
+    const initSavingsChart = () => {
+        if (!savingsChartCanvas) return;
+
+        const ctx = savingsChartCanvas.getContext('2d');
+        const isDark = body.classList.contains('theme-dark');
+
+        appState.savingsChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Engineering Time', 'NPT Reduction'],
+                datasets: [{
+                    label: 'Annual Savings',
+                    data: [0, 0],
+                    backgroundColor: ['#0d9488', '#0891b2'],
+                    borderRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        ticks: {
+                            callback: (value) => `$${(value / 1000).toLocaleString()}k`,
+                            color: isDark ? '#d1d5db' : '#4b5563'
+                        },
+                        grid: { color: isDark ? 'rgba(255, 255, 255, 0.1)' : '#e5e7eb' }
+                    },
+                    y: { 
+                        ticks: { color: isDark ? '#d1d5db' : '#4b5563' }, 
+                        grid: { display: false } 
+                    }
+                },
+                plugins: { 
+                    legend: { display: false } 
+                }
+            }
+        });
+        
+        calculateROI();
+    };
+
+    if (engineerCountSlider || nptReductionSlider || timeSavingsSlider) {
+        [engineerCountSlider, nptReductionSlider, timeSavingsSlider]
+            .filter(Boolean)
+            .forEach(slider => slider.addEventListener('input', calculateROI));
+    }
+
+    const formatByteSize = (bytes) => {
+        if (!Number.isFinite(bytes) || bytes <= 0) return '—';
+
+        const units = ['B', 'KB', 'MB'];
+        let size = bytes;
+        let unitIndex = 0;
+
+        while (size >= 1024 && unitIndex < units.length - 1) {
+            size /= 1024;
+            unitIndex += 1;
+        }
+
+        const precision = size % 1 === 0 ? 0 : 1;
+        return `${size.toFixed(precision)} ${units[unitIndex]}`;
+    };
+
+    const copyToClipboard = async (text) => {
+        if (!text) return false;
+
+        try {
+            if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+                await navigator.clipboard.writeText(text);
+                return true;
+            }
+        } catch (_) {
+            // Fallback to execCommand path below
+        }
+
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'absolute';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        let succeeded = false;
+
+        try {
+            succeeded = document.execCommand('copy');
+        } catch (_) {
+            succeeded = false;
+        }
+
+        document.body.removeChild(textarea);
+        return succeeded;
+    };
+
+    const announceCopyStatus = (statusEl, message, isError = false) => {
+        if (!statusEl) return;
+
+        statusEl.textContent = message;
+        statusEl.classList.toggle('text-emerald-400', !isError);
+        statusEl.classList.toggle('text-rose-400', isError);
+
+        if (message) {
+            setTimeout(() => {
+                statusEl.textContent = '';
+                statusEl.classList.remove('text-emerald-400', 'text-rose-400');
+            }, 4000);
+        }
+    };
+
+    const buildPandasSnippet = (file) => {
+        const fileUrl = new URL(file, window.location.origin).href;
+        return [
+            'import pandas as pd',
+            `df = pd.read_csv("${fileUrl}", parse_dates=True)`,
+            'print(df.head())'
+        ].join('\n');
+    };
+
+    const buildCurlSnippet = (file) => {
+        const fileUrl = new URL(file, window.location.origin).href;
+        return `curl -L -o ${file} "${fileUrl}"`;
+    };
+
+    const buildSqlSchemaSnippet = (file) => {
+        const schema = dataExportSchemas[file];
+        if (!schema || !schema.length) return '';
+
+        const tableName = file
+            .replace(/\.csv$/i, '')
+            .replace(/[^a-zA-Z0-9_]+/g, '_');
+
+        const columnDefinitions = schema
+            .map((column) => `    "${column.name}" ${column.sqlType || 'TEXT'}`)
+            .join(',\n');
+
+        const columnList = schema
+            .map((column) => `"${column.name}"`)
+            .join(', ');
+
+        return [
+            `-- Quick-start table definition for ${file}`,
+            `CREATE TABLE ${tableName} (`,
+            `${columnDefinitions}`,
+            ');',
+            '',
+            `-- Bulk load from local CSV`,
+            `COPY ${tableName} (${columnList})`,
+            "FROM '/path/to/" + file + "'",
+            "DELIMITER ','",
+            "CSV HEADER" + ';'
+        ].join('\n');
+    };
+
+    const parseCsvLine = (line) => {
+        const values = [];
+        let current = '';
+        let inQuotes = false;
+
+        for (let i = 0; i < line.length; i += 1) {
+            const char = line[i];
+
+            if (char === '"') {
+                if (inQuotes && line[i + 1] === '"') {
+                    current += '"';
+                    i += 1;
+                } else {
+                    inQuotes = !inQuotes;
+                }
+            } else if (char === ',' && !inQuotes) {
+                values.push(current.trim());
+                current = '';
+            } else {
+                current += char;
+            }
+        }
+
+        values.push(current.trim());
+        return values;
+    };
+
+    const renderDataPreview = (elements, headerColumns, dataLines) => {
+        if (!elements || !elements.previewBody || !elements.previewHead) return;
+
+        const previewColumns = headerColumns.slice(0, DATA_PREVIEW_MAX_COLUMNS);
+        const truncatedColumns = headerColumns.length > previewColumns.length;
+        const rowsToDisplay = dataLines.slice(0, DATA_PREVIEW_MAX_ROWS);
+
+        elements.previewHead.innerHTML = '';
+        const headerRow = document.createElement('tr');
+        previewColumns.forEach((columnName) => {
+            const th = document.createElement('th');
+            th.textContent = columnName;
+            th.className = 'px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-slate-400';
+            headerRow.appendChild(th);
+        });
+        elements.previewHead.appendChild(headerRow);
+        elements.previewHead.dataset.previewColumns = previewColumns.length.toString();
+
+        elements.previewBody.innerHTML = '';
+
+        if (rowsToDisplay.length === 0) {
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.className = 'px-3 py-2 text-slate-500';
+            cell.colSpan = Math.max(previewColumns.length, 1);
+            cell.textContent = 'No records available';
+            row.appendChild(cell);
+            elements.previewBody.appendChild(row);
+        } else {
+            rowsToDisplay.forEach((line) => {
+                const values = parseCsvLine(line);
+                const row = document.createElement('tr');
+                previewColumns.forEach((_, index) => {
+                    const cell = document.createElement('td');
+                    cell.textContent = values[index] || '';
+                    cell.className = 'px-3 py-2 whitespace-nowrap text-slate-200';
+                    row.appendChild(cell);
+                });
+                elements.previewBody.appendChild(row);
+            });
+        }
+
+        if (elements.previewNotice) {
+            if (rowsToDisplay.length === 0) {
+                elements.previewNotice.textContent = 'Preview unavailable — dataset is empty.';
+            } else {
+                const rowLabel = rowsToDisplay.length === 1 ? 'record' : 'records';
+                const columnDescriptor = truncatedColumns
+                    ? `first ${previewColumns.length} columns`
+                    : `${previewColumns.length} column${previewColumns.length === 1 ? '' : 's'}`;
+                const columnText = previewColumns.length === 0
+                    ? 'dataset metadata'
+                    : columnDescriptor;
+                elements.previewNotice.textContent = `Showing first ${rowsToDisplay.length} ${rowLabel} across ${columnText}.`;
+            }
+        }
+    };
+
+    const renderDataPreviewError = (elements, message) => {
+        if (!elements || !elements.previewBody || !elements.previewHead) return;
+
+        const storedColumnCount = parseInt(elements.previewHead.dataset.previewColumns || '0', 10);
+        elements.previewHead.innerHTML = '';
+        elements.previewHead.dataset.previewColumns = '0';
+        elements.previewBody.innerHTML = '';
+
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.className = 'px-3 py-2 text-slate-500';
+        const colSpan = Number.isNaN(storedColumnCount) ? DATA_PREVIEW_MAX_COLUMNS : Math.max(storedColumnCount, 1);
+        cell.colSpan = colSpan;
+        cell.textContent = message;
+        row.appendChild(cell);
+        elements.previewBody.appendChild(row);
+
+        if (elements.previewNotice) {
+            elements.previewNotice.textContent = message;
+        }
+    };
+
+    const bindDataExportCopyHandlers = () => {
+        if (!dataExportHub || appState.dataExportHandlersBound) return;
+
+        dataExportDatasets.forEach(({ file, elements }) => {
+            if (!elements || !elements.copyButton) return;
+
+            elements.copyButton.addEventListener('click', async () => {
+                const snippet = buildPandasSnippet(file);
+                const success = await copyToClipboard(snippet);
+
+                if (success) {
+                    announceCopyStatus(elements.copyStatus, 'Copied pandas import snippet to clipboard');
+                } else {
+                    announceCopyStatus(elements.copyStatus, 'Unable to copy. Select and copy the snippet manually.', true);
+                }
+            });
+        });
+
+        dataExportDatasets.forEach(({ file, elements }) => {
+            if (!elements || !elements.curlButton) return;
+
+            elements.curlButton.addEventListener('click', async () => {
+                const snippet = buildCurlSnippet(file);
+                const success = await copyToClipboard(snippet);
+
+                if (success) {
+                    announceCopyStatus(elements.curlStatus, 'Copied curl download command to clipboard');
+                } else {
+                    announceCopyStatus(elements.curlStatus, 'Unable to copy. Highlight and copy the command manually.', true);
+                }
+            });
+        });
+
+        dataExportDatasets.forEach(({ file, elements }) => {
+            if (!elements || !elements.sqlButton) return;
+
+            elements.sqlButton.addEventListener('click', async () => {
+                const snippet = buildSqlSchemaSnippet(file);
+
+                if (!snippet) {
+                    announceCopyStatus(elements.sqlStatus, 'SQL schema unavailable. Download the CSV to inspect the structure.', true);
+                    return;
+                }
+
+                const success = await copyToClipboard(snippet);
+
+                if (success) {
+                    announceCopyStatus(elements.sqlStatus, 'Copied SQL table definition to clipboard');
+                } else {
+                    announceCopyStatus(elements.sqlStatus, 'Unable to copy. Highlight the SQL snippet manually.', true);
+                }
+            });
+        });
+
+        appState.dataExportHandlersBound = true;
+    };
+
+    const hydrateDataExportMetadata = () => {
+        if (!dataExportHub) return;
+
+        dataExportDatasets.forEach(({ file, elements }) => {
+            if (!elements || (!elements.recordCount && !elements.columnsList && !elements.size)) return;
+
+            fetch(file)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to load ${file}`);
+                    }
+                    return response.text();
+                })
+                .then((text) => {
+                    const lines = text
+                        .split(/\r?\n/)
+                        .map((line) => line.trim())
+                        .filter((line) => line.length > 0);
+
+                    if (lines.length === 0) {
+                        return;
+                    }
+
+                    const headerColumns = parseCsvLine(lines[0]);
+                    const dataLines = lines.slice(1);
+                    const schema = dataExportSchemas[file];
+                    const schemaMatchesHeader = Array.isArray(schema)
+                        ? headerColumns.every((columnName) => schema.some((column) => column.name === columnName))
+                        : false;
+
+                    if (elements.recordCount) {
+                        const recordCount = Math.max(0, dataLines.length);
+                        elements.recordCount.textContent = recordCount.toString();
+                    }
+
+                    if (elements.columnsList) {
+                        elements.columnsList.innerHTML = '';
+
+                        if (schemaMatchesHeader) {
+                            headerColumns.forEach((columnName) => {
+                                const column = schema.find((entry) => entry.name === columnName);
+                                const item = document.createElement('li');
+                                item.className = 'space-y-1';
+
+                                const header = document.createElement('div');
+                                header.className = 'flex flex-wrap items-baseline gap-2';
+                                const nameEl = document.createElement('span');
+                                nameEl.className = 'font-semibold text-slate-200';
+                                nameEl.textContent = columnName;
+                                header.appendChild(nameEl);
+
+                                if (column && column.sqlType) {
+                                    const badge = document.createElement('span');
+                                    badge.className = 'text-[11px] uppercase tracking-wide text-slate-400 bg-slate-900/60 px-2 py-0.5 rounded-full';
+                                    badge.textContent = column.sqlType;
+                                    header.appendChild(badge);
+                                }
+
+                                item.appendChild(header);
+
+                                if (column && column.description) {
+                                    const description = document.createElement('p');
+                                    description.className = 'text-xs text-slate-400';
+                                    description.textContent = column.description;
+                                    item.appendChild(description);
+                                }
+
+                                elements.columnsList.appendChild(item);
+                            });
+                        } else {
+                            headerColumns.forEach((columnName) => {
+                                const item = document.createElement('li');
+                                item.textContent = columnName;
+                                elements.columnsList.appendChild(item);
+                            });
+                        }
+                    }
+
+                    if (elements.size) {
+                        const encoder = new TextEncoder();
+                        const sizeInBytes = encoder.encode(text).length;
+                        elements.size.textContent = formatByteSize(sizeInBytes);
+                    }
+
+                    renderDataPreview(elements, headerColumns, dataLines);
+                })
+                .catch(() => {
+                    if (elements.recordCount) {
+                        elements.recordCount.textContent = '—';
+                    }
+
+                    if (elements.columnsList) {
+                        elements.columnsList.innerHTML = '';
+                        const item = document.createElement('li');
+                        item.textContent = 'Unable to load metadata';
+                        elements.columnsList.appendChild(item);
+                    }
+
                     if (elements.size) {
                         elements.size.textContent = '—';
                     }
@@ -4684,6 +5342,177 @@ const validateInvoice = () => {
     if (objectivesFieldset) {
         objectivesFieldset.addEventListener('change', () => {
             const selectedInput = objectivesFieldset.querySelector('input[name="objective"]:checked');
+
+            objectivesFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
+
+            const selectedCard = selectedInput ? selectedInput.closest('.objective-card') : null;
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+
+            const objectiveId = selectedInput ? selectedInput.value : null;
+            appState.selectedObjective = objectiveId ? objectivesData.find(o => o.id === objectiveId) : null;
+            appState.ai.selectedRecommendation = null;
+            appState.ai.selectedProblemId = null;
+
+            if (problemsFieldset) {
+                problemsFieldset.querySelectorAll('input[name="problem"]').forEach(input => {
+                    input.checked = false;
+                });
+                problemsFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
+            }
+
+            if (aiRecommendationsContainer) {
+                aiRecommendationsContainer.classList.add('hidden');
+                aiRecommendationsContainer.querySelectorAll('.ai-recommendation-enhanced').forEach(card => card.classList.remove('selected'));
+            }
+
+            if (step2ContinueBtn) step2ContinueBtn.disabled = !appState.selectedObjective;
+            if (generatePlanBtnManual) generatePlanBtnManual.disabled = !appState.selectedObjective;
+            if (generatePlanBtnAi) generatePlanBtnAi.disabled = true;
+
+            if (appState.selectedObjective) {
+                renderDesignBlueprint();
+                announcePlannerStatus(`${appState.selectedObjective.name} objective selected. Continue to the engineering blueprint.`);
+            }
+        });
+    }
+
+    // Problem selection event listener
+    if (problemsFieldset) {
+        problemsFieldset.addEventListener('change', () => {
+            const selectedInput = problemsFieldset.querySelector('input[name="problem"]:checked');
+
+            problemsFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
+            const selectedCard = selectedInput ? selectedInput.closest('.objective-card') : null;
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+
+            if (objectivesFieldset) {
+                objectivesFieldset.querySelectorAll('input[name="objective"]').forEach(input => {
+                    input.checked = false;
+                });
+                objectivesFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
+            }
+
+            const problemId = selectedInput ? selectedInput.value : null;
+            appState.ai.selectedProblemId = problemId;
+            appState.ai.selectedRecommendation = null;
+            appState.selectedObjective = null;
+
+            const problem = problemId ? problemsData.find(item => item.id === problemId) : null;
+            if (problem) {
+                announcePlannerStatus(`${problem.name} selected. Review AI recommendations below.`);
+            }
+
+            const recommendations = problemId ? (aiRecommendations[problemId] || []) : [];
+
+            if (aiRecommendationsContainer) {
+                if (recommendations.length) {
+                    aiRecommendationsContainer.innerHTML = `
+                        <h3 class="text-lg font-semibold text-center mb-4 mt-6">AI Recommendations</h3>
+                        <div class="space-y-4">
+                            ${recommendations.map((rec, index) => {
+                                const objective = objectivesData.find(o => o.id === rec.objectiveId) || {};
+                                const objectiveIcon = 'icon' in objective ? objective.icon : '';
+                                const objectiveName = 'name' in objective ? objective.name : 'Objective';
+                                return `
+                                    <div class="ai-recommendation-enhanced" data-rec-index="${index}">
+                                        <div class="confidence-badge">${rec.confidence}% Confidence</div>
+                                        <div class="flex justify-between items-start mb-2">
+                                            <h4 class="font-bold text-lg text-teal-700 dark:text-teal-400">${objectiveIcon} ${objectiveName}</h4>
+                                        </div>
+                                        <p class="text-sm mb-1"><strong>Projected Outcome:</strong> ${rec.outcome}</p>
+                                        <p class="text-xs"><strong>Reasoning:</strong> ${rec.reason}</p>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                    aiRecommendationsContainer.classList.remove('hidden');
+                } else {
+                    aiRecommendationsContainer.innerHTML = '<p class="text-sm text-center text-slate-400">No AI recommendations available for this problem yet.</p>';
+                    aiRecommendationsContainer.classList.remove('hidden');
+                }
+            }
+
+            if (step2ContinueBtn) step2ContinueBtn.disabled = true;
+            if (generatePlanBtnManual) generatePlanBtnManual.disabled = true;
+            if (generatePlanBtnAi) generatePlanBtnAi.disabled = true;
+
+            if (aiRecommendationsContainer) {
+                aiRecommendationsContainer.querySelectorAll('.ai-recommendation-enhanced').forEach(card => {
+                    card.addEventListener('click', (event) => {
+                        const recommendationCard = event.currentTarget;
+                        const recIndex = Number.parseInt(recommendationCard.dataset.recIndex, 10);
+                        const selectedRecommendation = aiRecommendations[problemId]?.[recIndex];
+                        if (!selectedRecommendation) {
+                            announcePlannerStatus('Unable to load the selected AI recommendation. Please choose a different option.');
+                            return;
+                        }
+
+                        appState.ai.selectedRecommendation = selectedRecommendation;
+                        appState.selectedObjective = objectivesData.find(o => o.id === selectedRecommendation.objectiveId) || null;
+
+                        aiRecommendationsContainer.querySelectorAll('.ai-recommendation-enhanced').forEach(element => element.classList.remove('selected'));
+                        recommendationCard.classList.add('selected');
+
+                        if (step2ContinueBtn) step2ContinueBtn.disabled = false;
+                        if (generatePlanBtnAi) generatePlanBtnAi.disabled = false;
+                        if (generatePlanBtnManual) generatePlanBtnManual.disabled = true;
+
+                        renderDesignBlueprint();
+                        announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Continue to the engineering blueprint.`);
+                        announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Generate plan when ready.`);
+                    });
+                });
+            }
+        });
+    }
+
+    // AI toggle event listener
+    if (aiToggle) {
+        aiToggle.addEventListener('change', (event) => {
+            const useAiAdvisor = event.target.checked;
+
+            if (manualPlanningView) manualPlanningView.classList.toggle('hidden', useAiAdvisor);
+            if (aiAdvisorView) aiAdvisorView.classList.toggle('hidden', !useAiAdvisor);
+
+            announcePlannerStatus(useAiAdvisor ? 'AI Advisor enabled. Select a problem to view recommendations.' : 'Manual planning enabled. Select an objective to continue.');
+
+            if (useAiAdvisor && appState.selectedWell && appState.selectedWell.id !== 'W666') {
+                if (aiAdvisorView) {
+                    aiAdvisorView.innerHTML = `
+                        <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
+                            <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (W666) scenario. Please select W666 to see AI recommendations.</p>
+                        </div>
+                    `;
+                }
+            } else {
+                renderProblems();
+                if (!useAiAdvisor && aiRecommendationsContainer) {
+                    aiRecommendationsContainer.classList.add('hidden');
+                }
+            }
+
+            if (step2ContinueBtn) {
+                const hasSelection = useAiAdvisor ? !!appState.ai.selectedRecommendation : !!appState.selectedObjective;
+                step2ContinueBtn.disabled = !hasSelection;
+            }
+
+            if (generatePlanBtnManual) {
+                generatePlanBtnManual.disabled = useAiAdvisor ? true : !appState.selectedObjective;
+            }
+
+            if (generatePlanBtnAi) {
+                generatePlanBtnAi.disabled = useAiAdvisor ? !appState.ai.selectedRecommendation : true;
+            }
+
+            renderDesignBlueprint();
+        });
+    }
+
 
             objectivesFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
 
