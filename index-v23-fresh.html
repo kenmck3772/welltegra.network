@@ -5,22 +5,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://welltegra.network; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data: https://welltegra.network;  base-uri 'self'; form-action 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://welltegra.network; font-src 'self' data:; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com; media-src 'self' data: https://welltegra.network;  base-uri 'self'; form-action 'self'">
     <title>v23 - Well-Tegra | The Well From Hell Case Study</title>
     <link rel="stylesheet" href="assets/css/tailwind.css">
     <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
-    
+    <script src="assets/vendor/chart.umd.min.js"></script>
     <!-- PDF Export Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="assets/vendor/jspdf.umd.min.js"></script>
+    <script src="assets/vendor/html2canvas.min.js"></script>
     
     <style>
         /* --- Base & Theme Setup --- */
-        body { font-family: 'Inter', sans-serif; font-weight: 500; }
+        body { font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; font-weight: 500; }
         h1, h2, h3, h4, h5, h6 { font-weight: 800; } /* Bolder headings */
         .theme-light { background-color: #f8fafc; }
         .theme-dark { background-color: #0f172a; color: #e2e8f0; }

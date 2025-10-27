@@ -1411,6 +1411,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const manualPlanningView = document.getElementById('manual-planning-view');
     const aiAdvisorView = document.getElementById('ai-advisor-view');
     const aiRecommendationsContainer = document.getElementById('ai-recommendations');
+    const plannerStatusRegion = document.getElementById('planner-status');
+    const step1ContinueBtn = document.getElementById('step-1-continue');
+    const step2ContinueBtn = document.getElementById('step-2-continue');
+    const step4ContinueBtn = document.getElementById('step-4-continue');
+    const step5ContinueBtn = document.getElementById('step-5-continue');
+    const generateProgramBtn = document.getElementById('generate-program-btn');
+    const openLogisticsBtn = document.getElementById('open-logistics-btn');
+    const openCommercialBtn = document.getElementById('open-commercial-btn');
+    const openHseBtn = document.getElementById('open-hse-btn');
+    const reviewAnalysisBtnFinal = document.getElementById('review-analysis-btn-final');
 
     // Performer
 
@@ -1435,8 +1445,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Logistics
 
     const logisticsSubtitle = document.getElementById('logistics-subtitle');
+    const logisticsReferenceCard = document.getElementById('logistics-reference-card');
     const logisticsContent = document.getElementById('logistics-content');
-    const equipmentTableBody = document.getElementById('equipment-table-body'), 
+    const equipmentTableBody = document.getElementById('equipment-table-body'),
     personnelTableBody = document.getElementById('personnel-table-body');
     const equipmentSearch = document.getElementById('equipment-search'), 
     personnelSearch = document.getElementById('personnel-search');
@@ -4445,6 +4456,30 @@ const validateInvoice = () => {
     window.initializeAnalyzer = initializeAnalyzerWithVendor;
 
     // --- INITIALIZATION ---
+
+    const initializeHeroVideoToggle = () => {
+        const heroVideo = document.getElementById('hero-video');
+        const toggleButton = document.getElementById('hero-video-toggle');
+
+        if (!heroVideo || !toggleButton) return;
+
+        const setPlayingState = (isPlaying) => {
+            toggleButton.setAttribute('aria-pressed', String(isPlaying));
+            toggleButton.textContent = isPlaying ? 'Pause hero video' : 'Play hero video';
+        };
+
+        toggleButton.addEventListener('click', () => {
+            if (heroVideo.paused) {
+                heroVideo.play().catch(() => {});
+                setPlayingState(true);
+            } else {
+                heroVideo.pause();
+                setPlayingState(false);
+            }
+        });
+
+        setPlayingState(!heroVideo.paused);
+    };
 
     const init = () => {
         initializeHeroVideoToggle();
