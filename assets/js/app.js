@@ -1451,6 +1451,172 @@ document.addEventListener('DOMContentLoaded', function() {
                 sqlType: 'TEXT',
                 description: 'Distilled learnings or recommendations captured from the case study.'
             }
+        ],
+        'data-activity-cost-rates.csv': [
+            {
+                name: 'Activity_Code',
+                sqlType: 'VARCHAR(12)',
+                description: 'Unique identifier that maps to the intervention activity catalog.'
+            },
+            {
+                name: 'Activity_Name',
+                sqlType: 'TEXT',
+                description: 'Human-readable description of the activity to schedule.'
+            },
+            {
+                name: 'Category',
+                sqlType: 'TEXT',
+                description: 'Operational grouping such as Surveillance, Barriers, or Evaluation.'
+            },
+            {
+                name: 'Typical_Duration_Hours',
+                sqlType: 'INTEGER',
+                description: 'Expected duration in hours for planning cycle estimates.'
+            },
+            {
+                name: 'Base_Cost_USD',
+                sqlType: 'INTEGER',
+                description: 'Baseline activity cost before contingency or risk multipliers.'
+            },
+            {
+                name: 'Equipment_Primary',
+                sqlType: 'TEXT',
+                description: 'Primary equipment identifier(s) required to execute the activity.'
+            },
+            {
+                name: 'Personnel_Primary',
+                sqlType: 'TEXT',
+                description: 'Key personnel identifiers typically assigned to the activity.'
+            },
+            {
+                name: 'Personnel_Count',
+                sqlType: 'INTEGER',
+                description: 'Total number of people expected on task.'
+            },
+            {
+                name: 'Consumables_Typical',
+                sqlType: 'TEXT',
+                description: 'Consumable IDs or notes that inform cost burn rates.'
+            },
+            {
+                name: 'Risk_Factor',
+                sqlType: 'TEXT',
+                description: 'Qualitative risk flag to guide contingency planning.'
+            },
+            {
+                name: 'NPT_Risk_Percent',
+                sqlType: 'INTEGER',
+                description: 'Non-productive time probability expressed as a percent.'
+            }
+        ],
+        'data-equipment-tools.csv': [
+            {
+                name: 'Equipment_ID',
+                sqlType: 'VARCHAR(12)',
+                description: 'Primary key for the equipment catalog entry.'
+            },
+            {
+                name: 'Category',
+                sqlType: 'TEXT',
+                description: 'Equipment grouping such as Wireline Unit or Coiled Tubing.'
+            },
+            {
+                name: 'Item_Name',
+                sqlType: 'TEXT',
+                description: 'Specific tool or equipment description.'
+            },
+            {
+                name: 'Vendor',
+                sqlType: 'TEXT',
+                description: 'Supplier or service company providing the asset.'
+            },
+            {
+                name: 'Daily_Rate_USD',
+                sqlType: 'INTEGER',
+                description: 'Standard daily rental rate in US dollars.'
+            },
+            {
+                name: 'Mobilization_USD',
+                sqlType: 'INTEGER',
+                description: 'Mobilization charge to move equipment to site.'
+            },
+            {
+                name: 'Demobilization_USD',
+                sqlType: 'INTEGER',
+                description: 'Demobilization charge to return equipment after operations.'
+            },
+            {
+                name: 'Standby_Rate_USD',
+                sqlType: 'INTEGER',
+                description: 'Daily standby cost when the asset is idle.'
+            },
+            {
+                name: 'Min_Rental_Days',
+                sqlType: 'INTEGER',
+                description: 'Minimum contractual rental period in days.'
+            },
+            {
+                name: 'Specifications',
+                sqlType: 'TEXT',
+                description: 'Key technical specifications such as capacity or limits.'
+            },
+            {
+                name: 'Typical_Use',
+                sqlType: 'TEXT',
+                description: 'Common operational scenarios for the equipment.'
+            }
+        ],
+        'data-personnel-rates.csv': [
+            {
+                name: 'Role_ID',
+                sqlType: 'VARCHAR(12)',
+                description: 'Primary key used to cross-reference planner staffing tables.'
+            },
+            {
+                name: 'Role_Title',
+                sqlType: 'TEXT',
+                description: 'Position title for the role or discipline.'
+            },
+            {
+                name: 'Category',
+                sqlType: 'TEXT',
+                description: 'Functional grouping such as Engineering or Technical.'
+            },
+            {
+                name: 'Hourly_Rate_USD',
+                sqlType: 'INTEGER',
+                description: 'Standard hourly billing rate in US dollars.'
+            },
+            {
+                name: 'Daily_Rate_USD',
+                sqlType: 'INTEGER',
+                description: 'Daily rate baseline for full-shift planning.'
+            },
+            {
+                name: 'Mobilization_USD',
+                sqlType: 'INTEGER',
+                description: 'Mobilization stipend typically invoiced per assignment.'
+            },
+            {
+                name: 'Per_Diem_USD',
+                sqlType: 'INTEGER',
+                description: 'Per diem allowance per day on location.'
+            },
+            {
+                name: 'Min_Call_Days',
+                sqlType: 'INTEGER',
+                description: 'Minimum guaranteed billing days per deployment.'
+            },
+            {
+                name: 'Certifications_Required',
+                sqlType: 'TEXT',
+                description: 'Licenses or credentials required before mobilization.'
+            },
+            {
+                name: 'Typical_Team_Size',
+                sqlType: 'TEXT',
+                description: 'Typical number of personnel mobilized per role.'
+            }
         ]
     };
     const dataExportElements = {
@@ -1481,6 +1647,48 @@ document.addEventListener('DOMContentLoaded', function() {
             curlStatus: document.getElementById('data-well-portfolio-curl-status'),
             sqlButton: document.querySelector('[data-export-sql="data-well-portfolio"]'),
             sqlStatus: document.getElementById('data-well-portfolio-sql-status')
+        },
+        activities: {
+            recordCount: document.getElementById('data-activity-count'),
+            columnsList: document.getElementById('data-activity-columns'),
+            size: document.getElementById('data-activity-size'),
+            previewHead: document.getElementById('data-activity-preview-head'),
+            previewBody: document.getElementById('data-activity-preview-body'),
+            previewNotice: document.getElementById('data-activity-preview-notice'),
+            copyButton: document.querySelector('[data-export-copy="data-activity-cost-rates"]'),
+            copyStatus: document.getElementById('data-activity-copy-status'),
+            curlButton: document.querySelector('[data-export-curl="data-activity-cost-rates"]'),
+            curlStatus: document.getElementById('data-activity-curl-status'),
+            sqlButton: document.querySelector('[data-export-sql="data-activity-cost-rates"]'),
+            sqlStatus: document.getElementById('data-activity-sql-status')
+        },
+        equipment: {
+            recordCount: document.getElementById('data-equipment-count'),
+            columnsList: document.getElementById('data-equipment-columns'),
+            size: document.getElementById('data-equipment-size'),
+            previewHead: document.getElementById('data-equipment-preview-head'),
+            previewBody: document.getElementById('data-equipment-preview-body'),
+            previewNotice: document.getElementById('data-equipment-preview-notice'),
+            copyButton: document.querySelector('[data-export-copy="data-equipment-tools"]'),
+            copyStatus: document.getElementById('data-equipment-copy-status'),
+            curlButton: document.querySelector('[data-export-curl="data-equipment-tools"]'),
+            curlStatus: document.getElementById('data-equipment-curl-status'),
+            sqlButton: document.querySelector('[data-export-sql="data-equipment-tools"]'),
+            sqlStatus: document.getElementById('data-equipment-sql-status')
+        },
+        personnel: {
+            recordCount: document.getElementById('data-personnel-count'),
+            columnsList: document.getElementById('data-personnel-columns'),
+            size: document.getElementById('data-personnel-size'),
+            previewHead: document.getElementById('data-personnel-preview-head'),
+            previewBody: document.getElementById('data-personnel-preview-body'),
+            previewNotice: document.getElementById('data-personnel-preview-notice'),
+            copyButton: document.querySelector('[data-export-copy="data-personnel-rates"]'),
+            copyStatus: document.getElementById('data-personnel-copy-status'),
+            curlButton: document.querySelector('[data-export-curl="data-personnel-rates"]'),
+            curlStatus: document.getElementById('data-personnel-curl-status'),
+            sqlButton: document.querySelector('[data-export-sql="data-personnel-rates"]'),
+            sqlStatus: document.getElementById('data-personnel-sql-status')
         }
     };
 
@@ -1497,6 +1705,21 @@ document.addEventListener('DOMContentLoaded', function() {
             file: 'data-well-portfolio.csv',
             elements: dataExportElements.portfolio,
             schema: dataExportSchemas['data-well-portfolio.csv']
+        },
+        {
+            file: 'data-activity-cost-rates.csv',
+            elements: dataExportElements.activities,
+            schema: dataExportSchemas['data-activity-cost-rates.csv']
+        },
+        {
+            file: 'data-equipment-tools.csv',
+            elements: dataExportElements.equipment,
+            schema: dataExportSchemas['data-equipment-tools.csv']
+        },
+        {
+            file: 'data-personnel-rates.csv',
+            elements: dataExportElements.personnel,
+            schema: dataExportSchemas['data-personnel-rates.csv']
         }
     ];
     

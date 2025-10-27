@@ -893,7 +893,7 @@
                 <p class="mt-2 max-w-3xl mx-auto text-lg">Direct access to the structured CSV datasets that feed the Well-Tegra planner, complete with inline data dictionaries plus one-click pandas, curl, and SQL snippets.</p>
             </div>
 
-            <div id="data-export-hub" class="mt-10 grid gap-6 lg:grid-cols-2">
+            <div id="data-export-hub" class="mt-10 grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
                 <article class="light-card p-6 rounded-lg flex flex-col h-full" aria-labelledby="data-well-666-heading">
                     <div>
                         <h3 id="data-well-666-heading" class="text-xl font-semibold mb-2">W666 Intervention Dataset</h3>
@@ -1007,6 +1007,180 @@
                         <p id="data-well-portfolio-copy-status"></p>
                         <p id="data-well-portfolio-curl-status"></p>
                         <p id="data-well-portfolio-sql-status"></p>
+                    </div>
+                </article>
+
+                <article class="light-card p-6 rounded-lg flex flex-col h-full" aria-labelledby="data-activity-heading">
+                    <div>
+                        <h3 id="data-activity-heading" class="text-xl font-semibold mb-2">Activity Cost Benchmarks</h3>
+                        <p class="text-sm text-slate-400">Normalized intervention activity catalogue with duration, cost, and risk markers ready for budgeting models.</p>
+                        <dl class="mt-4 space-y-3">
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Records</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-activity-count" aria-live="polite">—</span></dd>
+                            </div>
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Approx. Size</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-activity-size" aria-live="polite">—</span></dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Columns &amp; Data Dictionary</dt>
+                                <dd>
+                                    <ul id="data-activity-columns" class="mt-1 text-sm text-slate-300 list-disc list-inside space-y-1">
+                                        <li>Loading schema…</li>
+                                    </ul>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Preview</dt>
+                                <dd>
+                                    <div class="mt-2 overflow-x-auto rounded-md border border-slate-800 bg-slate-900/40">
+                                        <table id="data-activity-preview" class="min-w-full text-left text-xs text-slate-300">
+                                            <thead id="data-activity-preview-head" class="bg-slate-900/60"></thead>
+                                            <tbody id="data-activity-preview-body">
+                                                <tr>
+                                                    <td class="px-3 py-2 text-slate-500" colspan="4">Loading preview…</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p id="data-activity-preview-notice" class="mt-2 text-[11px] text-slate-500">Showing a quick look at the first 3 records.</p>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <a href="data-activity-cost-rates.csv" download class="mt-6 inline-flex items-center justify-center rounded-md bg-amber-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 transition-colors">
+                        Download Activity CSV
+                    </a>
+                    <button type="button" data-export-copy="data-activity-cost-rates" class="mt-3 inline-flex items-center justify-center rounded-md border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-200 hover:border-amber-500 hover:text-white transition-colors">
+                        Copy pandas import snippet
+                    </button>
+                    <button type="button" data-export-curl="data-activity-cost-rates" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-amber-500/80 hover:text-white transition-colors">
+                        Copy curl download command
+                    </button>
+                    <button type="button" data-export-sql="data-activity-cost-rates" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-amber-500/80 hover:text-white transition-colors">
+                        Copy SQL table schema
+                    </button>
+                    <div class="mt-2 space-y-1 text-xs text-slate-500" aria-live="polite">
+                        <p id="data-activity-copy-status"></p>
+                        <p id="data-activity-curl-status"></p>
+                        <p id="data-activity-sql-status"></p>
+                    </div>
+                </article>
+
+                <article class="light-card p-6 rounded-lg flex flex-col h-full" aria-labelledby="data-equipment-heading">
+                    <div>
+                        <h3 id="data-equipment-heading" class="text-xl font-semibold mb-2">Equipment Rate Card</h3>
+                        <p class="text-sm text-slate-400">Daily, standby, and mobilization economics for the intervention tool fleet with vendor attribution.</p>
+                        <dl class="mt-4 space-y-3">
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Records</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-equipment-count" aria-live="polite">—</span></dd>
+                            </div>
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Approx. Size</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-equipment-size" aria-live="polite">—</span></dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Columns &amp; Data Dictionary</dt>
+                                <dd>
+                                    <ul id="data-equipment-columns" class="mt-1 text-sm text-slate-300 list-disc list-inside space-y-1">
+                                        <li>Loading schema…</li>
+                                    </ul>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Preview</dt>
+                                <dd>
+                                    <div class="mt-2 overflow-x-auto rounded-md border border-slate-800 bg-slate-900/40">
+                                        <table id="data-equipment-preview" class="min-w-full text-left text-xs text-slate-300">
+                                            <thead id="data-equipment-preview-head" class="bg-slate-900/60"></thead>
+                                            <tbody id="data-equipment-preview-body">
+                                                <tr>
+                                                    <td class="px-3 py-2 text-slate-500" colspan="4">Loading preview…</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p id="data-equipment-preview-notice" class="mt-2 text-[11px] text-slate-500">Showing a quick look at the first 3 records.</p>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <a href="data-equipment-tools.csv" download class="mt-6 inline-flex items-center justify-center rounded-md bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors">
+                        Download Equipment CSV
+                    </a>
+                    <button type="button" data-export-copy="data-equipment-tools" class="mt-3 inline-flex items-center justify-center rounded-md border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-200 hover:border-indigo-500 hover:text-white transition-colors">
+                        Copy pandas import snippet
+                    </button>
+                    <button type="button" data-export-curl="data-equipment-tools" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-indigo-500/80 hover:text-white transition-colors">
+                        Copy curl download command
+                    </button>
+                    <button type="button" data-export-sql="data-equipment-tools" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-indigo-500/80 hover:text-white transition-colors">
+                        Copy SQL table schema
+                    </button>
+                    <div class="mt-2 space-y-1 text-xs text-slate-500" aria-live="polite">
+                        <p id="data-equipment-copy-status"></p>
+                        <p id="data-equipment-curl-status"></p>
+                        <p id="data-equipment-sql-status"></p>
+                    </div>
+                </article>
+
+                <article class="light-card p-6 rounded-lg flex flex-col h-full" aria-labelledby="data-personnel-heading">
+                    <div>
+                        <h3 id="data-personnel-heading" class="text-xl font-semibold mb-2">Personnel Rate Sheet</h3>
+                        <p class="text-sm text-slate-400">Role-based manpower catalogue with daily rates, certification flags, and team size signals.</p>
+                        <dl class="mt-4 space-y-3">
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Records</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-personnel-count" aria-live="polite">—</span></dd>
+                            </div>
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Approx. Size</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-personnel-size" aria-live="polite">—</span></dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Columns &amp; Data Dictionary</dt>
+                                <dd>
+                                    <ul id="data-personnel-columns" class="mt-1 text-sm text-slate-300 list-disc list-inside space-y-1">
+                                        <li>Loading schema…</li>
+                                    </ul>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Preview</dt>
+                                <dd>
+                                    <div class="mt-2 overflow-x-auto rounded-md border border-slate-800 bg-slate-900/40">
+                                        <table id="data-personnel-preview" class="min-w-full text-left text-xs text-slate-300">
+                                            <thead id="data-personnel-preview-head" class="bg-slate-900/60"></thead>
+                                            <tbody id="data-personnel-preview-body">
+                                                <tr>
+                                                    <td class="px-3 py-2 text-slate-500" colspan="4">Loading preview…</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p id="data-personnel-preview-notice" class="mt-2 text-[11px] text-slate-500">Showing a quick look at the first 3 records.</p>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <a href="data-personnel-rates.csv" download class="mt-6 inline-flex items-center justify-center rounded-md bg-rose-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-rose-500 transition-colors">
+                        Download Personnel CSV
+                    </a>
+                    <button type="button" data-export-copy="data-personnel-rates" class="mt-3 inline-flex items-center justify-center rounded-md border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-200 hover:border-rose-500 hover:text-white transition-colors">
+                        Copy pandas import snippet
+                    </button>
+                    <button type="button" data-export-curl="data-personnel-rates" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-rose-500/80 hover:text-white transition-colors">
+                        Copy curl download command
+                    </button>
+                    <button type="button" data-export-sql="data-personnel-rates" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-rose-500/80 hover:text-white transition-colors">
+                        Copy SQL table schema
+                    </button>
+                    <div class="mt-2 space-y-1 text-xs text-slate-500" aria-live="polite">
+                        <p id="data-personnel-copy-status"></p>
+                        <p id="data-personnel-curl-status"></p>
+                        <p id="data-personnel-sql-status"></p>
                     </div>
                 </article>
             </div>
