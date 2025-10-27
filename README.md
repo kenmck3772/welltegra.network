@@ -85,6 +85,7 @@ This project can be easily deployed using GitHub Pages:
 
 ### Navigation
 - Use the top navigation bar to switch between different sections
+- Plan-dependent workspaces (Live Operations, Analysis, Logistics, Commercial, HSE &amp; POB) announce why they are gated and re-route you back to the planner until a plan is generated.
 - Toggle dark/light mode using the theme button
 - Access detailed views through the "View Details" buttons on each well card
 

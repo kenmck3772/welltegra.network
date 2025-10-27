@@ -16,6 +16,7 @@
 - **Before:** Loading the homepage under Chromium surfaced a cascade of `ReferenceError` exceptions (`step1ContinueBtn`, `openLogisticsBtn`, `reviewAnalysisBtnFinal`, and `initializeHeroVideoToggle`) because the planner listeners executed before their DOM handles existed on the marketing shell.【9ba832†L1-L1】【3abfd1†L1-L1】【c4b8ff†L1-L1】【2e8671†L1-L1】
 - **Fix:** Declared the missing handles inside the guarded DOM snapshot and added a no-op hero video initializer so the planner script can safely boot on any page.【F:assets/js/app.js†L1405-L1420】【F:assets/js/app.js†L4369-L4393】
 - **After:** The Playwright sweep across the marketing and planner entry points now completes with no console output.【25f36a†L1-L16】
+- Added a navigation gating helper that announces why plan-dependent views remain locked and routes users back to the planner until a plan exists, so CTAs no longer appear unresponsive.【F:assets/js/app.js†L1620-L1671】【F:assets/js/app.js†L4386-L4404】
 
 ## Data Checks
 

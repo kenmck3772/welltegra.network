@@ -1532,6 +1532,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const aiAdvisorView = document.getElementById('ai-advisor-view');
     const aiRecommendationsContainer = document.getElementById('ai-recommendations');
     const plannerStatusRegion = document.getElementById('planner-status');
+
+    const announcePlannerStatus = (message) => {
+        if (!plannerStatusRegion || !message) return;
+        plannerStatusRegion.textContent = '';
+        requestAnimationFrame(() => {
+            plannerStatusRegion.textContent = message;
+        });
+    };
     const step1ContinueBtn = document.getElementById('step-1-continue');
     const step2ContinueBtn = document.getElementById('step-2-continue');
     const step4ContinueBtn = document.getElementById('step-4-continue');
@@ -1603,6 +1611,31 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // --- VIEW & STATE MANAGEMENT ---
 
+    const planRequiredMessages = {
+        analyzer: 'Generate a plan to unlock the analysis workspace.',
+        commercial: 'Generate a plan to review commercial readiness.',
+        hse: 'Generate a plan to review HSE & risk readiness.',
+        logistics: 'Generate a plan to orchestrate logistics & supply chain readiness.',
+        performer: 'Generate a plan to launch Live Operations.',
+        pob: 'Generate a plan to prepare POB & emergency response readiness.'
+    };
+
+    const enforcePlanAccess = (viewName, sourceLabel) => {
+        if (!viewName) return false;
+        if (alwaysAccessibleViews.has(viewName) || appState.generatedPlan) {
+            return false;
+        }
+
+        const normalizedView = viewName.toLowerCase();
+        const plannerMessage = planRequiredMessages[normalizedView]
+            || `Generate a plan to open the ${sourceLabel || 'selected'} workspace.`;
+        announcePlannerStatus(plannerMessage);
+        if (appState.currentView !== 'planner') {
+            switchView('planner');
+        }
+        return true;
+    };
+
     const switchView = (viewName) => {
         if (appState.liveDataInterval) {
             clearInterval(appState.liveDataInterval);
@@ -1651,9 +1684,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    window.showView = (viewName) => {
+    window.showView = (viewName, sourceLabel) => {
         if (!viewName) return;
-        if (!alwaysAccessibleViews?.has(viewName) && !appState.generatedPlan) {
+        if (enforcePlanAccess(viewName, sourceLabel)) {
             return;
         }
         switchView(viewName);
@@ -3821,14 +3854,6 @@ const validateInvoice = () => {
     const totalSavingsValue = document.getElementById('totalSavings');
     const savingsChartCanvas = document.getElementById('savingsChart');
 
-    const announcePlannerStatus = (message) => {
-        if (!plannerStatusRegion || !message) return;
-        plannerStatusRegion.textContent = '';
-        requestAnimationFrame(() => {
-            plannerStatusRegion.textContent = message;
-        });
-    };
-
     const calculateROI = () => {
         if (!engineerCountSlider) return;
 
@@ -4381,8 +4406,12 @@ const validateInvoice = () => {
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            if (link.classList.contains('disabled')) return;
-            switchView(e.currentTarget.id.replace('-nav-link', ''));
+            const targetView = e.currentTarget.id.replace('-nav-link', '');
+            const linkLabel = (e.currentTarget.textContent || '').trim();
+            if (enforcePlanAccess(targetView, linkLabel)) {
+                return;
+            }
+            switchView(targetView);
         });
     });
 
@@ -4644,21 +4673,27 @@ const validateInvoice = () => {
 
     if (openLogisticsBtn) {
         openLogisticsBtn.addEventListener('click', () => {
-            if (!appState.generatedPlan) return;
+            if (enforcePlanAccess('logistics', 'Logistics orchestration')) {
+                return;
+            }
             switchView('logistics');
         });
     }
 
     if (openCommercialBtn) {
         openCommercialBtn.addEventListener('click', () => {
-            if (!appState.generatedPlan) return;
+            if (enforcePlanAccess('commercial', 'Commercial readiness')) {
+                return;
+            }
             switchView('commercial');
         });
     }
 
     if (openHseBtn) {
         openHseBtn.addEventListener('click', () => {
-            if (!appState.generatedPlan) return;
+            if (enforcePlanAccess('hse', 'HSE & Risk readiness')) {
+                return;
+            }
             switchView('hse');
         });
     }
@@ -4674,6 +4709,9 @@ const validateInvoice = () => {
 
     if (reviewAnalysisBtnFinal) {
         reviewAnalysisBtnFinal.addEventListener('click', () => {
+            if (enforcePlanAccess('analyzer', 'Analysis workspace')) {
+                return;
+            }
             switchView('analyzer');
             if (typeof window.initializeAnalyzer === 'function') {
                 window.initializeAnalyzer();
@@ -4708,7 +4746,9 @@ const validateInvoice = () => {
         announcePlannerStatus('Planner reset. Start by selecting a well.');
     });
     addListener(beginOpBtn, 'click', () => {
-        if (!appState.generatedPlan) return;
+        if (enforcePlanAccess('performer', 'Live Operations')) {
+            return;
+        }
         switchView('performer');
     });
 
@@ -4730,6 +4770,9 @@ const validateInvoice = () => {
     });
 
     addListener(viewAnalysisBtn, 'click', () => {
+        if (enforcePlanAccess('analyzer', 'Analysis workspace')) {
+            return;
+        }
         switchView('analyzer');
         if (window.initializeAnalyzer) {
             window.initializeAnalyzer();
