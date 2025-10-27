@@ -23,6 +23,13 @@ Well-Tegra is an interactive case study platform designed to demonstrate advance
 - Interactive gauges for critical parameters (WOB, ROP, SPP, etc.)
 - Dynamic well schematic generation
 
+### 🗃️ Data Exports
+- **`data-well-666.csv`** – Structured breakout of the "Well from Hell" metadata, intervention history, and completion design for external analysis tools.
+- **`data-well-portfolio.csv`** – Portfolio snapshot covering all featured wells with status, challenge narrative, and distilled lessons learned for quick ingestion into planning software.
+- The in-app <strong>Data Export Hub</strong> view provides direct download links, live record counts, schema previews, and approximate file sizes so analysts can confirm the shape of each dataset before importing it into their pipelines.
+- Each dataset card now renders a 3-row preview table (first five columns) alongside inline data dictionary callouts so engineers understand field semantics immediately.
+- One-click pandas, <code>curl</code>, and SQL schema copy helpers remove boilerplate when loading the datasets into notebooks, CLI scripts, or data warehouses.
+
 ### 🎨 User Experience
 - Dark/Light theme toggle
 - Responsive design for all devices
