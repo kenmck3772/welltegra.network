@@ -227,7 +227,57 @@
                     <h3 class="text-2xl font-bold tracking-tight">Step 1: Ingest Portfolio Data</h3>
                     <p class="mt-4 max-w-3xl mx-auto text-sm">Welcome to the "Well From Hell" case study. The portfolio below contains one critical problem well, <strong>W666 - The Perfect Storm</strong>, which is shut-in with multiple, complex issues. The other wells are historical case studies from the same field, each representing a successful intervention that fixed one of the problems now facing W666. Start by selecting the target well so the platform can pull all relevant offset data, historical lessons, and completion architecture.</p>
                 </div>
-                <div id="well-selection-grid" class="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
+                <div class="mt-10 space-y-6">
+                    <section id="portfolio-signals" class="grid gap-4 md:grid-cols-2 xl:grid-cols-4" aria-label="Portfolio signals"></section>
+                    <section class="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 shadow-inner">
+                        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                            <div class="w-full lg:max-w-md">
+                                <label for="well-search-input" class="text-xs font-semibold uppercase tracking-wide text-slate-400">Search the portfolio</label>
+                                <input type="search" id="well-search-input" name="well-search-input" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/60 px-4 py-3 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Search by well name, field, issue, or equipment..." autocomplete="off">
+                            </div>
+                            <p id="well-filter-summary" class="text-sm text-slate-400" role="status" aria-live="polite">Showing 0 of 0 wells.</p>
+                        </div>
+                        <div class="mt-6">
+                            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Focus</p>
+                            <div id="well-focus-group" class="mt-3 flex flex-wrap gap-2" role="group" aria-label="Focus filters">
+                                <button type="button" class="filter-chip" data-focus-filter="all" aria-pressed="true">
+                                    All Wells
+                                    <span class="filter-chip__count" data-focus-count="all"></span>
+                                </button>
+                                <button type="button" class="filter-chip" data-focus-filter="critical" aria-pressed="false">
+                                    Critical Path
+                                    <span class="filter-chip__count" data-focus-count="critical"></span>
+                                </button>
+                                <button type="button" class="filter-chip" data-focus-filter="case" aria-pressed="false">
+                                    Case Studies
+                                    <span class="filter-chip__count" data-focus-count="case"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Themes</p>
+                            <div id="well-theme-group" class="mt-3 flex flex-wrap gap-2" role="group" aria-label="Theme filters">
+                                <button type="button" class="filter-chip" data-theme-filter="integrity" aria-pressed="false">
+                                    Integrity
+                                    <span class="filter-chip__count" data-theme-count="integrity"></span>
+                                </button>
+                                <button type="button" class="filter-chip" data-theme-filter="flow-assurance" aria-pressed="false">
+                                    Flow Assurance
+                                    <span class="filter-chip__count" data-theme-count="flow-assurance"></span>
+                                </button>
+                                <button type="button" class="filter-chip" data-theme-filter="controls" aria-pressed="false">
+                                    Controls &amp; Safety
+                                    <span class="filter-chip__count" data-theme-count="controls"></span>
+                                </button>
+                                <button type="button" class="filter-chip" data-theme-filter="productivity" aria-pressed="false">
+                                    Production Recovery
+                                    <span class="filter-chip__count" data-theme-count="productivity"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div id="well-selection-grid" class="mt-6 grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
                 <section id="data-scrubbing-panel" class="mt-12 hidden">
                     <div class="text-center mb-8">
                         <h4 class="text-xl font-semibold tracking-tight">How W666 Data Gets Scrubbed Before Planning</h4>
@@ -974,7 +1024,7 @@
 
     </main>
     
-    <div id="well-history-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 modal-overlay">
+    <div id="well-history-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 modal-overlay" aria-hidden="true">
         <div class="relative top-10 mx-auto p-5 border w-full max-w-5xl shadow-lg rounded-md modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title">
             <div class="flex justify-between items-center border-b pb-3 dark:border-gray-700">
                 <h3 id="modal-title" class="text-2xl font-bold"></h3>

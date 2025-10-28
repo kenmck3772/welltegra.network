@@ -1,3 +1,8 @@
+const { test, expect, chromium } = require('@playwright/test');
+const http = require('http');
+const path = require('path');
+const fs = require('fs');
+const { spawnSync } = require('child_process');
 const { test, expect } = require('@playwright/test');
 const http = require('http');
 const path = require('path');
@@ -23,6 +28,8 @@ const rootDir = path.resolve(__dirname, '..');
 
 let server;
 let baseURL;
+let launchSkipMessage;
+const shouldAutoInstallDependencies = process.env.PLAYWRIGHT_AUTO_INSTALL_DEPS === 'true';
 
 const createStaticServer = () => {
   return http.createServer(async (req, res) => {
@@ -60,6 +67,99 @@ const createStaticServer = () => {
   });
 };
 
+const runPlaywrightCLI = (args, failureMessage) => {
+  const npxCommand = process.platform === 'win32' ? 'npx.cmd' : 'npx';
+  const result = spawnSync(npxCommand, ['playwright', ...args], {
+    stdio: 'inherit'
+  });
+
+  if (result.status !== 0) {
+    throw new Error(failureMessage);
+  }
+};
+
+const downloadChromiumIfMissing = async () => {
+  runPlaywrightCLI(['install', 'chromium'], 'Playwright Chromium download failed');
+};
+
+const installChromiumDependenciesIfMissing = async () => {
+  if (!shouldAutoInstallDependencies) {
+    throw new Error('Automatic dependency installation is disabled.');
+  }
+
+  runPlaywrightCLI(['install-deps', 'chromium'], 'Playwright Chromium system dependency installation failed');
+};
+
+const verifyChromium = async () => {
+  try {
+    const browser = await chromium.launch();
+    await browser.close();
+    return;
+  } catch (error) {
+    const needsDownload =
+      /Executable doesn't exist/.test(error.message) ||
+      /run the following command to download/.test(error.message);
+    const missingDependencies = /Host system is missing dependencies/.test(error.message);
+
+    if (needsDownload) {
+      console.warn('Chromium binaries missing. Downloading with "npx playwright install chromium"...');
+      try {
+        await downloadChromiumIfMissing();
+      } catch (downloadError) {
+        throw new Error(
+          `Unable to download Chromium for Playwright. Original error: ${error.message}. Download error: ${downloadError.message}`
+        );
+      }
+
+      const browser = await chromium.launch();
+      await browser.close();
+      return;
+    }
+
+    if (missingDependencies) {
+      if (!shouldAutoInstallDependencies) {
+        throw error;
+      }
+
+      console.warn('Chromium dependencies missing. Installing with "npx playwright install-deps chromium"...');
+      try {
+        await installChromiumDependenciesIfMissing();
+      } catch (dependencyError) {
+        throw new Error(
+          `Unable to install Chromium system dependencies. Original error: ${error.message}. Dependency error: ${dependencyError.message}`
+        );
+      }
+
+      const browser = await chromium.launch();
+      await browser.close();
+      return;
+    }
+
+    throw error;
+  }
+};
+
+test.beforeAll(async () => {
+  try {
+    await verifyChromium();
+  } catch (error) {
+    const manualInstruction = shouldAutoInstallDependencies
+      ? 'Automatic dependency installation failed.'
+      : 'Re-run with PLAYWRIGHT_AUTO_INSTALL_DEPS=true to attempt an automatic apt install, or run "npx playwright install-deps chromium" manually.';
+
+    launchSkipMessage = [
+      'Playwright could not launch Chromium. Install the system dependencies',
+      'with "npx playwright install-deps" (or the equivalent apt packages)',
+      'before re-running smoke tests.',
+      manualInstruction,
+      'Original error:',
+      error.message
+    ].join(' ');
+    console.warn(launchSkipMessage);
+    test.skip(true, launchSkipMessage);
+    return;
+  }
+
 test.beforeAll(async () => {
   server = createStaticServer();
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
@@ -73,6 +173,14 @@ test.afterAll(async () => {
   }
 });
 
+const skipIfChromiumUnavailable = (testInfo) => {
+  if (launchSkipMessage) {
+    testInfo.skip(launchSkipMessage);
+  }
+};
+
+test('hero planner CTA opens the planner workspace without console errors', async ({ page }, testInfo) => {
+  skipIfChromiumUnavailable(testInfo);
 test('hero planner CTA opens the planner workspace without console errors', async ({ page }) => {
   const pageErrors = [];
   page.on('pageerror', (error) => {
@@ -116,4 +224,85 @@ test('hero planner CTA opens the planner workspace without console errors', asyn
   await expect(page.locator('.well-card-enhanced')).toHaveCount(7);
 
   expect(pageErrors, `Unexpected console errors: ${pageErrors.map((err) => err.message).join('\n')}`).toEqual([]);
+});
+
+test('selecting a planner well unlocks step two and opens the history modal', async ({ page }, testInfo) => {
+  skipIfChromiumUnavailable(testInfo);
+  await page.goto(`${baseURL}/index.html`);
+
+  await page.waitForFunction(() => {
+    const container = document.getElementById('app-container');
+    return container && container.classList.contains('flex');
+  });
+
+  await page.locator('#hero-planner-btn').click();
+
+  const plannerCards = page.locator('.planner-card');
+  await expect(plannerCards).toHaveCount(7);
+
+  const targetCard = page.locator('.planner-card[data-well-id="W666"]');
+  await targetCard.click();
+
+  await expect(page.locator('#step-2')).toBeVisible();
+  await expect(page.locator('#data-scrubbing-panel')).toBeVisible();
+  await expect(page.locator('#step-2-indicator')).toHaveClass(/active/);
+
+  const iconLocator = targetCard.locator('span[role="img"][aria-label="Critical intervention required"]');
+  await expect(iconLocator).toBeVisible();
+
+  await targetCard.locator('.view-details-btn').click();
+  const modal = page.locator('#well-history-modal');
+  await expect(modal).toBeVisible();
+  await expect(page.locator('#modal-content span[aria-label="Lesson learned"]')).toBeVisible();
+
+  await page.locator('#close-modal-btn').click();
+  await expect(modal).toBeHidden();
+});
+
+test('planner portfolio filters and search narrow the visible wells', async ({ page }, testInfo) => {
+  skipIfChromiumUnavailable(testInfo);
+  await page.goto(`${baseURL}/index.html`);
+
+  await page.waitForFunction(() => {
+    const container = document.getElementById('app-container');
+    return container && container.classList.contains('flex');
+  });
+
+  await page.locator('#hero-planner-btn').click();
+
+  const wellCards = page.locator('.planner-card');
+  await expect(wellCards).toHaveCount(7);
+
+  const summary = page.locator('#well-filter-summary');
+  await expect(summary).toContainText('Showing 7 of 7 wells');
+
+  const searchInput = page.locator('#well-search-input');
+  await searchInput.fill('Storm');
+  await expect(wellCards).toHaveCount(1);
+  await expect(summary).toContainText('Showing 1 of 7 wells');
+
+  await searchInput.fill('');
+  await expect(wellCards).toHaveCount(7);
+
+  const flowChip = page.locator('[data-theme-filter="flow-assurance"]');
+  await flowChip.click();
+  await expect(flowChip).toHaveAttribute('aria-pressed', 'true');
+  await expect(wellCards).toHaveCount(5);
+  await expect(summary).toContainText('Showing 5 of 7 wells');
+
+  const caseChip = page.locator('[data-focus-filter="case"]');
+  await caseChip.click();
+  await expect(caseChip).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('[data-focus-filter="all"]')).toHaveAttribute('aria-pressed', 'false');
+  await expect(wellCards).toHaveCount(4);
+  await expect(summary).toContainText('Filters active');
+
+  await flowChip.click();
+  await expect(flowChip).toHaveAttribute('aria-pressed', 'false');
+  await expect(wellCards).toHaveCount(6);
+
+  const allChip = page.locator('[data-focus-filter="all"]');
+  await allChip.click();
+  await expect(allChip).toHaveAttribute('aria-pressed', 'true');
+  await expect(wellCards).toHaveCount(7);
 });
