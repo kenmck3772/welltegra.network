@@ -1404,6 +1404,183 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     };
+    const handoverPackages = {
+        obj1: {
+            readiness: {
+                binderId: 'W666-INT-24-01',
+                operationsLead: 'Elena Marsh',
+                qaLead: 'M. Singh',
+                goLive: '18 Apr 2024',
+                closeout: '22 Apr 2024',
+                knowledgeSync: 'Digital twin + analyzer bundle queued',
+                summary: 'Expandable patch program handover is staged for integrity and production sign-off.',
+                metrics: [
+                    { label: 'Program Duration', value: '8 days', context: 'Matches approved readiness schedule.' },
+                    { label: 'AFE vs. Actual', value: '$1.20MM / $1.08MM', context: 'Projected 10% underrun before final tickets.' },
+                    { label: 'Lessons Logged', value: '5 entries', context: 'Auto-synced to the completions knowledge base.' }
+                ]
+            },
+            deliverables: [
+                { title: 'As-built expandable patch schematic', owner: 'Wellsite Engineer', due: '18 Apr 2024', status: 'Complete', channel: 'Engineering Vault' },
+                { title: 'Barrier restoration certificate', owner: 'Well Examiner', due: '19 Apr 2024', status: 'In Progress', channel: 'Integrity Hub' },
+                { title: 'Digital twin sync package', owner: 'Data Engineer', due: '20 Apr 2024', status: 'Scheduled', channel: 'AI Knowledge Base' }
+            ],
+            signoffs: [
+                { role: 'Operations Manager', name: 'L. Ramirez', status: 'Approved', timestamp: 'Signed 17 Apr 2024 09:20 UTC' },
+                { role: 'Integrity Authority', name: 'M. Singh', status: 'Pending', timestamp: 'Due after caliper validation' },
+                { role: 'Production Superintendent', name: 'I. Yamada', status: 'At Risk', timestamp: 'Awaiting rate stabilisation sample' }
+            ],
+            automations: [
+                { name: 'Vendor performance scorecard', status: 'Generated', detail: 'Export pushed to commercial dashboard for variance review.' },
+                { name: 'LangExtract citation bundle', status: 'In Progress', detail: 'Annotating final soak data prior to blockchain notarisation.' }
+            ],
+            notes: [
+                'Schedule final caliper validation before integrity sign-off.',
+                'Synchronise live operations log with analyzer prior to archiving.',
+                'Share torque-turn learnings with completions community channel.'
+            ]
+        },
+        obj2: {
+            readiness: {
+                binderId: 'W666-INT-24-02',
+                operationsLead: 'Noor Patel',
+                qaLead: 'R. Gallagher',
+                goLive: '21 Apr 2024',
+                closeout: '25 Apr 2024',
+                knowledgeSync: 'Chemical usage ledger reconciled with finance',
+                summary: 'Scale removal closeout emphasises solvent reconciliation and flow assurance monitoring.',
+                metrics: [
+                    { label: 'Program Duration', value: '6 days', context: 'Includes 36 hr soak and QA window.' },
+                    { label: 'Waste Recovery', value: '18.4 t captured', context: 'Closed-loop handling verified by ESG office.' },
+                    { label: 'Return to Production', value: '+165% uplift', context: 'Post-job test logged for economics team.' }
+                ]
+            },
+            deliverables: [
+                { title: 'Tubing condition & drift report', owner: 'Flow Assurance Engineer', due: '22 Apr 2024', status: 'Complete', channel: 'Production Fileshare' },
+                { title: 'Chemical reconciliation workbook', owner: 'Finance Analyst', due: '23 Apr 2024', status: 'In Progress', channel: 'Commercial Ledger' },
+                { title: 'Lessons learned submission', owner: 'CT Supervisor', due: '24 Apr 2024', status: 'Pending', channel: 'Knowledge Base' }
+            ],
+            signoffs: [
+                { role: 'HSE Advisor', name: 'K. Okoye', status: 'Approved', timestamp: 'Safety log cleared 21 Apr 2024' },
+                { role: 'Production Engineer', name: 'S. Thorsen', status: 'Pending', timestamp: 'Awaiting 72 hr stabilised data' },
+                { role: 'Sustainability Lead', name: 'G. Alvarez', status: 'Scheduled', timestamp: 'ESG review on 24 Apr 2024' }
+            ],
+            automations: [
+                { name: 'Solvent disposal compliance check', status: 'In Progress', detail: 'Regulatory upload pending final lab certs.' },
+                { name: 'Digital twin flow regime replay', status: 'Generated', detail: 'Simulator snapshots exported to AI advisor for benchmarking.' }
+            ],
+            notes: [
+                'Confirm inhibitor dosing schedule is live before production ramp-up.',
+                'Upload jetting telemetry to anomaly detection model training set.',
+                'Coordinate CT crew debrief with wax removal task force.'
+            ]
+        },
+        obj3: {
+            readiness: {
+                binderId: 'W666-INT-24-03',
+                operationsLead: 'Mateo Rojas',
+                qaLead: 'P. Chidike',
+                goLive: '16 Apr 2024',
+                closeout: '18 Apr 2024',
+                knowledgeSync: 'Barrier compliance ledger waiting final regulator note',
+                summary: 'Insert safety valve installation focuses on compliance evidence and remote monitoring setup.',
+                metrics: [
+                    { label: 'Program Duration', value: '3 days', context: 'Single-run slickline campaign verified.' },
+                    { label: 'Barrier Assurance', value: '95% confidence', context: 'Matches sustainability readiness card.' },
+                    { label: 'Remote Coverage', value: '100% telemetry', context: 'Valve linked to blockchain control contract.' }
+                ]
+            },
+            deliverables: [
+                { title: 'Barrier reinstatement package', owner: 'Integrity Engineer', due: '17 Apr 2024', status: 'Complete', channel: 'Integrity Hub' },
+                { title: 'Regulatory notification letter', owner: 'Compliance Lead', due: '18 Apr 2024', status: 'Awaiting QA', channel: 'Regulatory Workspace' },
+                { title: 'Telemetry onboarding checklist', owner: 'Controls Engineer', due: '18 Apr 2024', status: 'In Progress', channel: 'Controls Portal' }
+            ],
+            signoffs: [
+                { role: 'Well Examiner', name: 'A. Fraser', status: 'Approved', timestamp: 'Barrier sign-off logged 16 Apr 2024' },
+                { role: 'Regulator Liaison', name: 'H. Biswas', status: 'Pending', timestamp: 'Submission queued for 18 Apr 2024' },
+                { role: 'Operations Superintendent', name: 'C. Wells', status: 'Approved', timestamp: 'Operational acceptance recorded' }
+            ],
+            automations: [
+                { name: 'Valve telemetry heartbeat', status: 'Generated', detail: 'Smart valve reporting cadence synced with AI advisor.' },
+                { name: 'Barrier compliance notarisation', status: 'In Progress', detail: 'Blockchain contract awaiting regulator acknowledgement.' }
+            ],
+            notes: [
+                'Confirm remote control handshake before returning well to autonomous mode.',
+                'Archive negative test trace with annotations in analyzer workspace.',
+                'Brief regulator on blockchain verification dashboard access.'
+            ]
+        },
+        obj4: {
+            readiness: {
+                binderId: 'W666-INT-24-04',
+                operationsLead: 'Renee Dupont',
+                qaLead: 'D. Sato',
+                goLive: '24 Apr 2024',
+                closeout: '30 Apr 2024',
+                knowledgeSync: 'Sand control model merged with simulator baseline',
+                summary: 'Expandable sand screen closeout aligns production restart, ESG metrics, and logistics demob.',
+                metrics: [
+                    { label: 'Program Duration', value: '10 days', context: 'Includes sand cleanout contingency buffer.' },
+                    { label: 'Material Reuse', value: '81%', context: 'Matches sustainability material retention metric.' },
+                    { label: 'Vendor Scorecards', value: '3 issued', context: 'Shared with commercial and ESG liaisons.' }
+                ]
+            },
+            deliverables: [
+                { title: 'ESS expansion verification log', owner: 'Completion Engineer', due: '26 Apr 2024', status: 'In Progress', channel: 'Completion Vault' },
+                { title: 'Sand management restart plan', owner: 'Production Engineer', due: '27 Apr 2024', status: 'Pending', channel: 'Production Workspace' },
+                { title: 'Vendor debrief minutes', owner: 'Operations Coordinator', due: '28 Apr 2024', status: 'Scheduled', channel: 'Collaboration Hub' }
+            ],
+            signoffs: [
+                { role: 'Production Manager', name: 'S. Idris', status: 'Pending', timestamp: 'Restart review booked 27 Apr 2024' },
+                { role: 'ESG Office', name: 'L. Navarro', status: 'Scheduled', timestamp: 'Sustainability audit on 29 Apr 2024' },
+                { role: 'Operations Manager', name: 'W. Chen', status: 'In Progress', timestamp: 'Monitoring sand trend delta vs. model' }
+            ],
+            automations: [
+                { name: 'Anomaly model retraining', status: 'In Progress', detail: 'Feeding sand rate data into live simulator guardrails.' },
+                { name: 'Logistics demob tracker', status: 'Generated', detail: 'Auto-updates vessel and HWU release in logistics workspace.' }
+            ],
+            notes: [
+                'Ensure flowback team reviews updated sand threshold guardrails.',
+                'Capture thermal cycling data for future expandable hardware campaigns.',
+                'Confirm demobilisation aligns with marine slot to avoid standby fees.'
+            ]
+        },
+        obj5: {
+            readiness: {
+                binderId: 'W666-INT-24-05',
+                operationsLead: 'Chiara Rossi',
+                qaLead: 'N. Beaumont',
+                goLive: '12 Apr 2024',
+                closeout: '15 Apr 2024',
+                knowledgeSync: 'Wax analytics pushed to AI advisor',
+                summary: 'Wax removal handover captures thermal learnings and inhibitor strategy updates.',
+                metrics: [
+                    { label: 'Program Duration', value: '4 days', context: 'Thermal soak and scraper passes completed as planned.' },
+                    { label: 'Energy Intensity', value: '−18%', context: 'Aligns with sustainability energy reduction target.' },
+                    { label: 'Recovered Wax', value: '7.4 t', context: 'Prepared for reuse in inhibitor blend.' }
+                ]
+            },
+            deliverables: [
+                { title: 'Thermal profile & heater runtime log', owner: 'CT Engineer', due: '13 Apr 2024', status: 'Complete', channel: 'Thermal Lab' },
+                { title: 'Inhibitor program update', owner: 'Flow Assurance Lead', due: '14 Apr 2024', status: 'In Progress', channel: 'Production Workspace' },
+                { title: 'Recovered wax disposition form', owner: 'ESG Analyst', due: '15 Apr 2024', status: 'Pending', channel: 'ESG Vault' }
+            ],
+            signoffs: [
+                { role: 'Production Superintendent', name: 'J. Rahman', status: 'Approved', timestamp: 'Ramp-up authorised 13 Apr 2024' },
+                { role: 'ESG Coordinator', name: 'F. Ogun', status: 'Pending', timestamp: 'Awaiting waste tracking upload' },
+                { role: 'Chemicals Vendor', name: 'A. Duarte', status: 'Approved', timestamp: 'Performance warranty accepted' }
+            ],
+            automations: [
+                { name: 'Heater efficiency replay', status: 'Generated', detail: 'Energy analytics exported to sustainability dashboard.' },
+                { name: 'Wax recovery ledger', status: 'In Progress', detail: 'Final weights validating before blockchain notarisation.' }
+            ],
+            notes: [
+                'Confirm inhibitor storage temperature sensors are recalibrated post-job.',
+                'Share heater efficiency curves with operations simulator library.',
+                'Notify ESG partners once recovered wax shipment is manifested.'
+            ]
+        }
+    };
 
     const objectiveEquipmentRequirements = {
         obj1: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Steel Patch & Setting Tool", source: "Vendor", price: 500000 } ],
@@ -1733,7 +1910,8 @@ document.addEventListener('DOMContentLoaded', function() {
         hse: { permits: [], riskRegister: [] },
         pob: { musterActive: false, musterInterval: null, personnel: [] },
         dataExportHandlersBound: false,
-        wellFilters: { query: '', focus: 'all', themes: new Set() }
+        wellFilters: { query: '', focus: 'all', themes: new Set() },
+        handoverReady: false
     };
 
     // --- DOM ELEMENTS ---
@@ -2439,6 +2617,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const openCommercialBtn = document.getElementById('open-commercial-btn');
     const openHseBtn = document.getElementById('open-hse-btn');
     const reviewAnalysisBtnFinal = document.getElementById('review-analysis-btn-final');
+    const handoverOutput = document.getElementById('handover-output');
 
     // Performer
 
@@ -2584,13 +2763,14 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     const resetApp = (switchToHome = false) => {
-        appState.selectedWell = null; 
-        appState.selectedObjective = null; 
-        appState.generatedPlan = null; 
+        appState.selectedWell = null;
+        appState.selectedObjective = null;
+        appState.generatedPlan = null;
         appState.lessonsLearned = [];
         appState.commercial = { afe: 0, actualCost: 0, serviceTickets: [] };
         appState.ai = { selectedProblemId: null, selectedRecommendation: null };
-        
+        appState.handoverReady = false;
+
         // Reset well selection
         document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
         
@@ -3385,6 +3565,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         updateNavLinks();
 
+        appState.handoverReady = false;
+        renderHandoverPackage();
+
         if (step4ContinueBtn) step4ContinueBtn.disabled = false;
         if (step5ContinueBtn) step5ContinueBtn.disabled = true;
         if (beginOpBtn) beginOpBtn.disabled = true;
@@ -3555,6 +3738,206 @@ document.addEventListener('DOMContentLoaded', function() {
         if (step5ContinueBtn) step5ContinueBtn.disabled = false;
     };
 
+    const renderHandoverPackage = () => {
+        if (!handoverOutput) return;
+
+        if (!appState.generatedPlan || !appState.selectedObjective || !appState.selectedWell) {
+            handoverOutput.innerHTML = `
+                <div class="light-card p-6 rounded-lg text-sm text-slate-400 text-center">
+                    Generate an integrated program to populate the digital handover binder.
+                </div>
+            `;
+            return;
+        }
+
+        if (!appState.handoverReady) {
+            handoverOutput.innerHTML = `
+                <div class="light-card p-6 rounded-lg text-sm text-slate-400 text-center">
+                    Complete the readiness review to unlock the execution handover package.
+                </div>
+            `;
+            return;
+        }
+
+        const packageData = handoverPackages[appState.selectedObjective.id];
+        if (!packageData) {
+            handoverOutput.innerHTML = `
+                <div class="light-card p-6 rounded-lg text-sm text-slate-400 text-center">
+                    Handover template coming soon for this intervention objective.
+                </div>
+            `;
+            return;
+        }
+
+        const {
+            readiness = {},
+            deliverables = [],
+            signoffs = [],
+            automations = [],
+            notes = []
+        } = packageData;
+
+        const metadata = [
+            ['Binder ID', readiness.binderId],
+            ['Operations Lead', readiness.operationsLead],
+            ['QA Lead', readiness.qaLead],
+            ['Go-Live', readiness.goLive],
+            ['Close-Out Review', readiness.closeout],
+            ['Knowledge Sync', readiness.knowledgeSync]
+        ].filter(([, value]) => Boolean(value));
+
+        const metadataHtml = metadata.length
+            ? `<div class="grid gap-4 text-sm sm:grid-cols-2 lg:w-1/2">${metadata.map(([label, value]) => `
+                    <div>
+                        <dt class="text-xs uppercase tracking-wide text-slate-400">${escapeHtml(label)}</dt>
+                        <dd class="mt-1 font-semibold text-slate-100">${escapeHtml(value)}</dd>
+                    </div>
+                `).join('')}</div>`
+            : '';
+
+        const metrics = Array.isArray(readiness.metrics) ? readiness.metrics : [];
+        const metricColumns = Math.max(1, Math.min(metrics.length, 3));
+        const metricsHtml = metrics.length
+            ? `<div class="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-${metricColumns}">${metrics.map(metric => `
+                    <div class="rounded-lg border border-slate-800 bg-slate-900/40 p-4">
+                        <p class="text-xs uppercase tracking-wide text-slate-400">${escapeHtml(metric.label || '')}</p>
+                        <p class="mt-2 text-xl font-semibold text-slate-100">${escapeHtml(metric.value || '—')}</p>
+                        ${metric.context ? `<p class="mt-1 text-xs text-slate-400">${escapeHtml(metric.context)}</p>` : ''}
+                    </div>
+                `).join('')}</div>`
+            : '';
+
+        const binderSummaryCard = `
+            <div class="light-card p-5 rounded-lg">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                    <div class="lg:w-1/2">
+                        <h4 class="text-lg font-semibold">Digital Handover Binder</h4>
+                        <p class="text-sm text-slate-400 mt-2">${escapeHtml(readiness.summary || `Closeout package staged for ${appState.selectedWell.name}.`)}</p>
+                    </div>
+                    ${metadataHtml}
+                </div>
+                ${metricsHtml}
+            </div>
+        `;
+
+        const deliverableRows = deliverables.length
+            ? deliverables.map(item => {
+                const statusLabel = item.status || 'Pending';
+                const statusClass = toStatusClass(statusLabel);
+                return `
+                    <tr class="border-b border-slate-800/60 last:border-0">
+                        <td class="p-2 align-top">
+                            <p class="font-semibold">${escapeHtml(item.title)}</p>
+                            ${item.channel ? `<p class="text-xs text-slate-400 mt-1">${escapeHtml(item.channel)}</p>` : ''}
+                        </td>
+                        <td class="p-2 align-top">${escapeHtml(item.owner || '—')}</td>
+                        <td class="p-2 align-top">${escapeHtml(item.due || '—')}</td>
+                        <td class="p-2 text-right align-top">
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full status-${statusClass}">${escapeHtml(statusLabel)}</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('')
+            : '<tr><td colspan="4" class="p-4 text-sm text-slate-400 text-center">No deliverables have been captured yet.</td></tr>';
+
+        const deliverablesCard = `
+            <div class="light-card p-5 rounded-lg">
+                <h4 class="text-lg font-semibold mb-4">Close-Out Deliverables</h4>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="p-2">Deliverable</th>
+                                <th class="p-2">Owner</th>
+                                <th class="p-2">Due</th>
+                                <th class="p-2 text-right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>${deliverableRows}</tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+
+        const signoffItems = signoffs.length
+            ? signoffs.map(entry => {
+                const statusLabel = entry.status || 'Pending';
+                const statusClass = toStatusClass(statusLabel);
+                return `
+                    <li class="rounded-lg border border-slate-800 bg-slate-900/40 p-4 flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-semibold">${escapeHtml(entry.role || 'Sign-off')}</p>
+                            <p class="text-xs text-slate-400 mt-1">${escapeHtml(entry.name || 'Owner pending')}</p>
+                            ${entry.timestamp ? `<p class="text-xs text-slate-500 mt-1">${escapeHtml(entry.timestamp)}</p>` : ''}
+                        </div>
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full status-${statusClass}">${escapeHtml(statusLabel)}</span>
+                    </li>
+                `;
+            }).join('')
+            : '<li class="text-sm text-slate-400">No sign-offs have been requested yet.</li>';
+
+        const signoffCard = `
+            <div class="light-card p-5 rounded-lg">
+                <h4 class="text-lg font-semibold mb-4">Sign-Off Trail</h4>
+                <ul class="space-y-3">${signoffItems}</ul>
+            </div>
+        `;
+
+        const automationItems = automations.length
+            ? automations.map(task => {
+                const statusLabel = task.status || 'Pending';
+                const statusClass = toStatusClass(statusLabel);
+                return `
+                    <li class="rounded-lg border border-slate-800 bg-slate-900/40 p-4">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <p class="text-sm font-semibold">${escapeHtml(task.name || 'Automation')}</p>
+                                ${task.detail ? `<p class="text-xs text-slate-400 mt-1">${escapeHtml(task.detail)}</p>` : ''}
+                            </div>
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full status-${statusClass}">${escapeHtml(statusLabel)}</span>
+                        </div>
+                    </li>
+                `;
+            }).join('')
+            : '<li class="text-sm text-slate-400">No automation hooks have been triggered for this handover.</li>';
+
+        const automationCard = `
+            <div class="light-card p-5 rounded-lg">
+                <h4 class="text-lg font-semibold mb-4">Automation & Ledger Updates</h4>
+                <ul class="space-y-3">${automationItems}</ul>
+            </div>
+        `;
+
+        const notesList = notes.length
+            ? `<ul class="mt-4 space-y-2 text-sm">${notes.map(note => `
+                    <li class="flex items-start gap-2">
+                        <span class="mt-1 text-emerald-400">✔</span>
+                        <span>${escapeHtml(note)}</span>
+                    </li>
+                `).join('')}</ul>`
+            : '<p class="text-sm text-slate-400 mt-2">No additional reminders captured for this handover.</p>';
+
+        const notesCard = `
+            <div class="light-card p-5 rounded-lg">
+                <h4 class="text-lg font-semibold">Final Reminders</h4>
+                <p class="text-sm text-slate-400">Ensure these actions are logged before the handover is archived.</p>
+                ${notesList}
+            </div>
+        `;
+
+        handoverOutput.innerHTML = [
+            binderSummaryCard,
+            `<div class="grid gap-6 lg:grid-cols-2">
+                ${deliverablesCard}
+                <div class="space-y-6">
+                    ${signoffCard}
+                    ${automationCard}
+                </div>
+            </div>`,
+            notesCard
+        ].join('');
+    };
+
     const updatePlannerStepUI = (currentStep) => { 
         // Reset all step indicators and connectors
         Object.values(stepIndicators).forEach(ind => {
@@ -3588,6 +3971,10 @@ document.addEventListener('DOMContentLoaded', function() {
         Object.keys(stepSections).forEach(key => {
             stepSections[key].classList.toggle('hidden', Number(key) !== currentStep);
         });
+
+        if (currentStep === 6) {
+            renderHandoverPackage();
+        }
     };
 
     // --- PERFORMER LOGIC ---
@@ -5787,7 +6174,9 @@ const validateInvoice = () => {
         step5ContinueBtn.addEventListener('click', () => {
             if (!appState.generatedPlan) return;
             updatePlannerStepUI(6);
+            appState.handoverReady = true;
             if (beginOpBtn) beginOpBtn.disabled = false;
+            renderHandoverPackage();
             announcePlannerStatus('Execution stage ready. Launch Live Operations or open the analysis workspace.');
         });
     }

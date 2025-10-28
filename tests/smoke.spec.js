@@ -345,3 +345,53 @@ test('readiness summary surfaces sustainability metrics for generated plan', asy
   await expect(sustainabilityCard).toContainText('CO₂e Avoided');
   await expect(sustainabilityCard).toContainText('Digital Twin Coverage');
 });
+
+test('handover package lists deliverables and sign-offs once execution is unlocked', async ({ page }, testInfo) => {
+  skipIfChromiumUnavailable(testInfo);
+  await page.goto(`${baseURL}/index.html`);
+
+  await page.waitForFunction(() => {
+    const container = document.getElementById('app-container');
+    return container && container.classList.contains('flex');
+  });
+
+  await page.locator('#hero-planner-btn').click();
+
+  const targetCard = page.locator('.planner-card[data-well-id="W666"]');
+  await targetCard.click();
+
+  const stepOneContinue = page.locator('#step-1-continue');
+  await expect(stepOneContinue).toBeEnabled();
+  await stepOneContinue.click();
+
+  await page.locator('[data-objective-id="obj1"] label').click();
+
+  const stepTwoContinue = page.locator('#step-2-continue');
+  await expect(stepTwoContinue).toBeEnabled();
+  await stepTwoContinue.click();
+
+  const generateProgram = page.locator('#generate-program-btn');
+  await expect(generateProgram).toBeEnabled();
+  await generateProgram.click();
+
+  const stepFourContinue = page.locator('#step-4-continue');
+  await expect(stepFourContinue).toBeEnabled();
+  await stepFourContinue.click();
+
+  const stepFiveContinue = page.locator('#step-5-continue');
+  await expect(stepFiveContinue).toBeEnabled();
+  await stepFiveContinue.click();
+
+  await expect(page.locator('#step-6')).toBeVisible();
+
+  const handoverBinder = page.locator('#handover-output');
+  await expect(handoverBinder).toBeVisible();
+  await expect(handoverBinder).toContainText('Digital Handover Binder');
+  await expect(handoverBinder).toContainText('As-built expandable patch schematic');
+  await expect(handoverBinder).toContainText('Barrier restoration certificate');
+  await expect(handoverBinder.locator('.status-inprogress').first()).toBeVisible();
+  await expect(handoverBinder.locator('.status-atrisk').first()).toBeVisible();
+
+  const launchButton = page.locator('#begin-op-btn');
+  await expect(launchButton).toBeEnabled();
+});
