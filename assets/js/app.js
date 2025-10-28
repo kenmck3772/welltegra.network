@@ -411,8 +411,8 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
 
     const aiRecommendations = {
-        prob1: [ 
-            { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis of case study <strong>M-21 (The Montrose Squeeze)</strong> confirms an expandable steel patch is the standard, high-success-rate rigless solution for this specific failure mode in this field.' } 
+        prob1: [
+            { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis of case study <strong>M-21 (The Montrose Squeeze)</strong> confirms an expandable steel patch is the standard, high-success-rate rigless solution for this specific failure mode in this field.' }
         ],
         prob2: [ 
             { objectiveId: 'obj2', confidence: 92, outcome: 'Blockage cleared, production restored', reason: 'Based on the successful intervention on case study <strong>S-15 (The Scale Trap)</strong>, a two-stage chemical (DTPA) and mechanical (jetting) intervention has the highest probability of success. This avoids the high risk of stuck pipe associated with milling.' } 
@@ -427,6 +427,96 @@ document.addEventListener('DOMContentLoaded', function() {
             { objectiveId: 'obj5', confidence: 90, outcome: 'Wax blockage removed, production increased by >400%', reason: 'The case study from <strong>P-12 (The Wax Plug)</strong> shows that a Coiled Tubing intervention with both heated chemical dissolvers and a mechanical scraper tool is the most effective procedure.' }
         ]
     };
+
+    const dataScrubbingPipelines = Object.freeze({
+        W666: {
+            overview: 'Every raw drop from the operator or a Well-Tegra engineer is scrubbed the moment it lands. LangExtract runs against the intake to normalize barrier failures, obstruction depths, and recommended actions before the planner ever consumes the data.',
+            stages: [
+                {
+                    title: '1. Intake & Hashing',
+                    status: 'Completed',
+                    badgeClass: 'border-emerald-400 text-emerald-300',
+                    description: 'Encrypted SFTP drop validates checksums and timestamps each inbound artifact so the provenance is locked before parsing begins.',
+                    artifacts: [
+                        'Slickline DDR • 2024-04-10',
+                        'Vendor BaSO₄ Scale Survey • 2024-03-28',
+                        'TRSSV Negative Test Worksheet • 2024-04-10'
+                    ]
+                },
+                {
+                    title: '2. LangExtract Structuring',
+                    status: 'Completed',
+                    badgeClass: 'border-emerald-400 text-emerald-300',
+                    description: 'LangExtract prompt library extracts barrier failures, obstruction depths, annulus pressures, and recommended actions with direct citations back to the source sentences.',
+                    artifacts: [
+                        'Model: gemini-2.5-flash (dry-run sandbox)',
+                        'Prompt template: wtgr/w666/barrier_rules.json',
+                        'Output bundle: w666_ingest_2024-04-10.jsonl'
+                    ]
+                },
+                {
+                    title: '3. Engineer QA & Publish',
+                    status: 'Signed Off',
+                    badgeClass: 'border-sky-400 text-sky-300',
+                    description: 'Well-Tegra engineer cross-checks citations, resolves flagged anomalies, and publishes the normalized dataset to the planning workspace.',
+                    artifacts: [
+                        'Reviewer: M. Singh (Integrity SME)',
+                        'Anomalies resolved: 2 (unit mismatch & duplicated entry)',
+                        'Publish time: 2024-04-12 18:20 UTC'
+                    ]
+                }
+            ],
+            schema: [
+                {
+                    label: 'Prompt Goal',
+                    value: 'Extract barrier failures, obstruction or debris depths, annulus pressure excursions, and recommended mitigations for W666 with direct evidence spans.'
+                },
+                {
+                    label: 'Extraction Classes',
+                    value: 'well_summary, barrier_failure, obstruction, recommended_action, risk_alert, confidence_score'
+                },
+                {
+                    label: 'Output Controls',
+                    value: 'LangExtract enforces JSON schema + cite_range_id so every field references its originating document coordinates.'
+                }
+            ],
+            rawExcerpt: '“DHSV failed to close during negative test. Pressure at A-annulus climbed to 1,850 psi. Suspect scale at ~14,200 ft restricting travel.”',
+            rawSource: 'Slickline Daily Report — 2024-04-10',
+            normalizedFindings: [
+                {
+                    label: 'barrier_failure.event',
+                    value: 'Surface-controlled subsurface safety valve failed to seal on negative test.',
+                    evidence: 'TRSSV Negative Test Worksheet §4.1 (cite_range 201-242)',
+                    confidence: 0.94
+                },
+                {
+                    label: 'obstruction.depth_ft',
+                    value: '14,200',
+                    evidence: 'Slickline DDR 2024-04-10 line 57 (cite_range 871-896)',
+                    confidence: 0.91
+                },
+                {
+                    label: 'risk_alert.detail',
+                    value: 'A-annulus pressure sustained at 1,850 psi with no bleed-off path — flagged for immediate pressure management plan.',
+                    evidence: 'LangExtract merge across DDR + scale survey (cite_ranges 901-940, 1104-1130)',
+                    confidence: 0.89
+                },
+                {
+                    label: 'recommended_action',
+                    value: 'Execute expandable patch + chemical jetting train before TRSSV change-out; align with integrated plan W666-INT-24-01.',
+                    evidence: 'Engineer QA annotation referencing historical case M-21 (cite_range 1304-1350)',
+                    confidence: 0.93
+                }
+            ],
+            qaSummary: [
+                '12 of 13 high-priority statements grounded with citations (92% coverage).',
+                'Operator and vendor identifiers hashed; canonical asset preserved as W666 for traceability.',
+                'Sign-off recorded by Well-Tegra engineer M. Singh on 2024-04-12 18:20 UTC.'
+            ]
+        }
+    });
+
+    window.dataScrubbingPipelines = dataScrubbingPipelines;
     const proceduresData = {
         obj1: {
             name: "Expandable Casing Patch Installation",
@@ -2738,7 +2828,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const pipeline = dataScrubbingPipelines[wellId];
+        const pipelineRegistry = window.dataScrubbingPipelines || dataScrubbingPipelines || {};
+        const pipeline = pipelineRegistry[wellId];
 
         if (!pipeline) {
             dataScrubbingPanel.classList.add('hidden');
@@ -4229,95 +4320,7 @@ const validateInvoice = () => {
         }
     ];
 
-    const dataScrubbingPipelines = {
-        W666: {
-            overview: 'Every raw drop from the operator or a Well-Tegra engineer is scrubbed the moment it lands. LangExtract runs against the intake to normalize barrier failures, obstruction depths, and recommended actions before the planner ever consumes the data.',
-            stages: [
-                {
-                    title: '1. Intake & Hashing',
-                    status: 'Completed',
-                    badgeClass: 'border-emerald-400 text-emerald-300',
-                    description: 'Encrypted SFTP drop validates checksums and timestamps each inbound artifact so the provenance is locked before parsing begins.',
-                    artifacts: [
-                        'Slickline DDR • 2024-04-10',
-                        'Vendor BaSO₄ Scale Survey • 2024-03-28',
-                        'TRSSV Negative Test Worksheet • 2024-04-10'
-                    ]
-                },
-                {
-                    title: '2. LangExtract Structuring',
-                    status: 'Completed',
-                    badgeClass: 'border-emerald-400 text-emerald-300',
-                    description: 'LangExtract prompt library extracts barrier failures, obstruction depths, annulus pressures, and recommended actions with direct citations back to the source sentences.',
-                    artifacts: [
-                        'Model: gemini-2.5-flash (dry-run sandbox)',
-                        'Prompt template: wtgr/w666/barrier_rules.json',
-                        'Output bundle: w666_ingest_2024-04-10.jsonl'
-                    ]
-                },
-                {
-                    title: '3. Engineer QA & Publish',
-                    status: 'Signed Off',
-                    badgeClass: 'border-sky-400 text-sky-300',
-                    description: 'Well-Tegra engineer cross-checks citations, resolves flagged anomalies, and publishes the normalized dataset to the planning workspace.',
-                    artifacts: [
-                        'Reviewer: M. Singh (Integrity SME)',
-                        'Anomalies resolved: 2 (unit mismatch & duplicated entry)',
-                        'Publish time: 2024-04-12 18:20 UTC'
-                    ]
-                }
-            ],
-            schema: [
-                {
-                    label: 'Prompt Goal',
-                    value: 'Extract barrier failures, obstruction or debris depths, annulus pressure excursions, and recommended mitigations for W666 with direct evidence spans.'
-                },
-                {
-                    label: 'Extraction Classes',
-                    value: 'well_summary, barrier_failure, obstruction, recommended_action, risk_alert, confidence_score'
-                },
-                {
-                    label: 'Output Controls',
-                    value: 'LangExtract enforces JSON schema + cite_range_id so every field references its originating document coordinates.'
-                }
-            ],
-            rawExcerpt: '“DHSV failed to close during negative test. Pressure at A-annulus climbed to 1,850 psi. Suspect scale at ~14,200 ft restricting travel.”',
-            rawSource: 'Slickline Daily Report — 2024-04-10',
-            normalizedFindings: [
-                {
-                    label: 'barrier_failure.event',
-                    value: 'Surface-controlled subsurface safety valve failed to seal on negative test.',
-                    evidence: 'TRSSV Negative Test Worksheet §4.1 (cite_range 201-242)',
-                    confidence: 0.94
-                },
-                {
-                    label: 'obstruction.depth_ft',
-                    value: '14,200',
-                    evidence: 'Slickline DDR 2024-04-10 line 57 (cite_range 871-896)',
-                    confidence: 0.91
-                },
-                {
-                    label: 'risk_alert.detail',
-                    value: 'A-annulus pressure sustained at 1,850 psi with no bleed-off path — flagged for immediate pressure management plan.',
-                    evidence: 'LangExtract merge across DDR + scale survey (cite_ranges 901-940, 1104-1130)',
-                    confidence: 0.89
-                },
-                {
-                    label: 'recommended_action',
-                    value: 'Execute expandable patch + chemical jetting train before TRSSV change-out; align with integrated plan W666-INT-24-01.',
-                    evidence: 'Engineer QA annotation referencing historical case M-21 (cite_range 1304-1350)',
-                    confidence: 0.93
-                }
-            ],
-            qaSummary: [
-                '12 of 13 high-priority statements grounded with citations (92% coverage).',
-                'Operator and vendor identifiers hashed; canonical asset preserved as W666 for traceability.',
-                'Sign-off recorded by Well-Tegra engineer M. Singh on 2024-04-12 18:20 UTC.'
-            ]
-        }
-    };
-        
-        renderHSEView();
+    renderHSEView();
     };
 
     const renderHSEView = () => {
