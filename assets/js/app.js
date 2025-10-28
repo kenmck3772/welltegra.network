@@ -1912,7 +1912,6 @@ document.addEventListener('DOMContentLoaded', function() {
         dataExportHandlersBound: false,
         wellFilters: { query: '', focus: 'all', themes: new Set() },
         handoverReady: false
-        wellFilters: { query: '', focus: 'all', themes: new Set() }
     };
 
     // --- DOM ELEMENTS ---
