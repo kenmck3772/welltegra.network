@@ -6,7 +6,8 @@
   "scripts": {
     "build:css": "tailwindcss -c tailwind.config.js -i styles/tailwind.css -o assets/css/tailwind.css --minify",
     "format": "prettier --write CHECKLIST.md RELEASE_NOTES.md",
-    "lint:links": "linkinator http://127.0.0.1:8000 --silent --skip 'mailto:*' --skip 'https://github.com/*' --timeout 3000"
+    "lint:links": "linkinator http://127.0.0.1:8000 --silent --skip 'mailto:*' --skip 'https://github.com/*' --timeout 3000",
+    "test:smoke": "playwright test"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,7 @@
   "devDependencies": {
     "@fontsource/inter": "^5.1.0",
     "@fontsource/roboto-mono": "^5.1.0",
+    "@playwright/test": "^1.56.1",
     "autoprefixer": "^10.4.19",
     "linkinator": "^4.0.2",
     "playwright": "^1.56.1",
