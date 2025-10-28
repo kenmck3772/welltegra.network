@@ -1912,6 +1912,7 @@ document.addEventListener('DOMContentLoaded', function() {
         dataExportHandlersBound: false,
         wellFilters: { query: '', focus: 'all', themes: new Set() },
         handoverReady: false
+        wellFilters: { query: '', focus: 'all', themes: new Set() }
     };
 
     // --- DOM ELEMENTS ---
@@ -2532,6 +2533,49 @@ document.addEventListener('DOMContentLoaded', function() {
         return themeFilter ? !!themeFilter.predicate(well) : false;
     };
 
+    };
+
+    const wellFocusFilters = [
+        { id: 'all', label: 'All Wells', predicate: () => true },
+        { id: 'critical', label: 'Critical Path', predicate: (well) => well.kind === 'critical' },
+        { id: 'case', label: 'Case Studies', predicate: (well) => well.kind === 'case' }
+    ];
+
+    const wellThemeFilters = [
+        {
+            id: 'integrity',
+            label: 'Integrity',
+            description: 'Casing deformation, barrier failures, or structural threats',
+            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('integrity')
+        },
+        {
+            id: 'flow-assurance',
+            label: 'Flow Assurance',
+            description: 'Scale, sand, wax, or production-blocking deposition',
+            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('flow-assurance')
+        },
+        {
+            id: 'controls',
+            label: 'Controls & Safety',
+            description: 'Safety valves, automation, or control system reliability',
+            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('controls')
+        },
+        {
+            id: 'productivity',
+            label: 'Production Recovery',
+            description: 'Demonstrated uplift in production or uptime',
+            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('productivity')
+        }
+    ];
+
+    const wellFocusFilterMap = new Map(wellFocusFilters.map((filter) => [filter.id, filter]));
+    const wellThemeFilterMap = new Map(wellThemeFilters.map((filter) => [filter.id, filter]));
+
+    const evaluateTheme = (themeId, well) => {
+        const themeFilter = wellThemeFilterMap.get(themeId);
+        return themeFilter ? !!themeFilter.predicate(well) : false;
+    };
+
     const totalFocusCounts = new Map(
         wellFocusFilters.map((filter) => [filter.id, wellData.filter((well) => filter.predicate(well)).length])
     );
@@ -2759,6 +2803,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (enforcePlanAccess(viewName, sourceLabel)) {
             return;
         }
+        }
         switchView(viewName);
     };
     
@@ -2860,6 +2905,307 @@ document.addEventListener('DOMContentLoaded', function() {
 
             return true;
         });
+    };
+
+    const syncFocusChipStates = () => {
+        if (!wellFocusGroup) return;
+        const activeFocus = (appState.wellFilters && appState.wellFilters.focus) || 'all';
+        wellFocusGroup.querySelectorAll('[data-focus-filter]').forEach((button) => {
+            const isActive = button.dataset.focusFilter === activeFocus;
+            button.classList.toggle('filter-chip--active', isActive);
+            button.setAttribute('aria-pressed', String(isActive));
+        });
+    };
+
+    const syncThemeChipStates = () => {
+        if (!wellThemeGroup) return;
+        const activeThemes = (appState.wellFilters && appState.wellFilters.themes instanceof Set)
+            ? appState.wellFilters.themes
+            : new Set();
+        wellThemeGroup.querySelectorAll('[data-theme-filter]').forEach((button) => {
+            const themeId = button.dataset.themeFilter;
+            const isActive = activeThemes.has(themeId);
+            button.classList.toggle('filter-chip--active', isActive);
+            button.setAttribute('aria-pressed', String(isActive));
+        });
+    };
+
+    const updateFocusCounts = (filteredWells) => {
+        if (!wellFocusGroup) return;
+        const filteredCounts = new Map();
+        filteredWells.forEach((well) => {
+            wellFocusFilters.forEach((filter) => {
+                if (filter.predicate(well)) {
+                    filteredCounts.set(filter.id, (filteredCounts.get(filter.id) || 0) + 1);
+                }
+            });
+        });
+
+        wellFocusFilters.forEach((filter) => {
+            const countElement = wellFocusGroup.querySelector(`[data-focus-count="${filter.id}"]`);
+            if (!countElement) return;
+            const visible = filteredCounts.get(filter.id) || 0;
+            const total = totalFocusCounts.get(filter.id) || 0;
+            countElement.textContent = `${visible}/${total}`;
+        });
+    };
+
+    const updateThemeCounts = (filteredWells) => {
+        if (!wellThemeGroup) return;
+        const filteredThemeCounts = new Map();
+        filteredWells.forEach((well) => {
+            (well.themes || []).forEach((themeId) => {
+                filteredThemeCounts.set(themeId, (filteredThemeCounts.get(themeId) || 0) + 1);
+            });
+        });
+
+        wellThemeFilters.forEach((filter) => {
+            const countElement = wellThemeGroup.querySelector(`[data-theme-count="${filter.id}"]`);
+            if (!countElement) return;
+            const visible = filteredThemeCounts.get(filter.id) || 0;
+            const total = totalThemeCounts.get(filter.id) || 0;
+            countElement.textContent = `${visible}/${total}`;
+        });
+    };
+
+    const updateWellFilterSummary = (filteredWells) => {
+        if (!wellFilterSummary) return;
+        const total = wellData.length;
+        const filtered = filteredWells.length;
+        const filters = appState.wellFilters || { query: '', focus: 'all', themes: new Set() };
+        const descriptors = [];
+
+        if (filters.focus && filters.focus !== 'all') {
+            const focusLabel = wellFocusFilterMap.get(filters.focus)?.label;
+            if (focusLabel) descriptors.push(focusLabel);
+        }
+
+        if (filters.themes instanceof Set && filters.themes.size > 0) {
+            const themeLabels = Array.from(filters.themes)
+                .map((themeId) => wellThemeFilterMap.get(themeId)?.label)
+                .filter(Boolean);
+            if (themeLabels.length) {
+                descriptors.push(`Themes: ${themeLabels.join(', ')}`);
+            }
+        }
+
+        if (filters.query) {
+            descriptors.push(`Search: “${filters.query.trim()}”`);
+        }
+
+        const selectedHidden = appState.selectedWell
+            ? !filteredWells.some((well) => well.id === appState.selectedWell.id)
+            : false;
+
+        const filterDescription = descriptors.length ? `Filters active — ${descriptors.join(' · ')}` : 'No filters applied.';
+        const hiddenNotice = selectedHidden ? ' The selected well is hidden by the current filters.' : '';
+
+        wellFilterSummary.textContent = `Showing ${filtered} of ${total} wells. ${filterDescription}${hiddenNotice}`;
+    };
+
+    const renderPortfolioSignals = (filteredWells) => {
+        if (!wellPortfolioSignals) return;
+        const cards = portfolioSignalDefinitions.map((signal) => {
+            const predicate = signal.predicate || (() => false);
+            const total = wellData.filter(predicate).length;
+            const visible = filteredWells.filter(predicate).length;
+            const percent = total === 0 ? 0 : Math.round((visible / total) * 100);
+
+            return `
+                <article class="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-inner ${signal.cardClass}" data-signal-id="${signal.id}">
+                    <div class="flex items-center gap-3">
+                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900/70 text-lg">${signal.icon}</span>
+                        <div>
+                            <p class="text-sm font-semibold uppercase tracking-wide text-slate-300">${signal.label}</p>
+                            <p class="text-xs text-slate-400">${signal.description}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-baseline gap-2">
+                        <span class="text-3xl font-bold text-white">${visible}</span>
+                        <span class="text-xs uppercase tracking-wide text-slate-400">visible now</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Portfolio total: ${total}</p>
+                    <div class="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-800/70">
+                        <div class="h-full ${signal.progressClass}" style="width: ${percent}%;"></div>
+                    </div>
+                </article>
+            `;
+        });
+
+        wellPortfolioSignals.innerHTML = cards.join('');
+    };
+
+    const renderWellCards = () => {
+        if (!wellSelectionGrid) return;
+        const filteredWells = filterWellPortfolio();
+
+        syncFocusChipStates();
+        syncThemeChipStates();
+        updateFocusCounts(filteredWells);
+        updateThemeCounts(filteredWells);
+        updateWellFilterSummary(filteredWells);
+        renderPortfolioSignals(filteredWells);
+
+        if (!filteredWells.length) {
+            wellSelectionGrid.innerHTML = `
+                <div class="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-10 text-center text-sm text-slate-400">
+                    No wells match the current filters. Adjust your search or theme filters to continue planning.
+                </div>
+            `;
+            return;
+        }
+
+        wellSelectionGrid.innerHTML = filteredWells.map(well => {
+    window.showView = (viewName, sourceLabel) => {
+        if (!viewName) return;
+        if (enforcePlanAccess(viewName, sourceLabel)) {
+            return;
+        }
+        switchView(viewName);
+    };
+    
+    const resetApp = (switchToHome = false) => {
+        appState.selectedWell = null; 
+        appState.selectedObjective = null; 
+        appState.generatedPlan = null; 
+        appState.lessonsLearned = [];
+        appState.commercial = { afe: 0, actualCost: 0, serviceTickets: [] };
+        appState.ai = { selectedProblemId: null, selectedRecommendation: null };
+        
+        // Reset well selection
+        document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
+        
+        // Reset objective selection
+        const checkedObjective = document.querySelector('input[name="objective"]:checked');
+        if(checkedObjective) { checkedObjective.checked = false; }
+        
+        // Reset problem selection
+        const checkedProblem = document.querySelector('input[name="problem"]:checked');
+        if(checkedProblem) { checkedProblem.checked = false; }
+        
+        // Reset buttons
+        if (generatePlanBtnManual) generatePlanBtnManual.disabled = true;
+        if (generatePlanBtnAi) generatePlanBtnAi.disabled = true;
+
+        // Reset AI recommendations
+        if (aiRecommendationsContainer) aiRecommendationsContainer.classList.add('hidden');
+
+        // Reset AI toggle
+        if (aiToggle) aiToggle.checked = false;
+        if (manualPlanningView) manualPlanningView.classList.remove('hidden');
+        if (aiAdvisorView) aiAdvisorView.classList.add('hidden');
+
+        switchView(switchToHome ? 'home' : 'planner');
+        renderWellCards();
+        
+        switchView(switchToHome ? 'home' : 'planner');
+        updatePlannerStepUI(1);
+        updateNavLinks();
+    };
+
+    const updateNavLinks = () => {
+        const planExists = !!appState.generatedPlan;
+        navLinks.forEach(link => {
+            const id = link.id.replace('-nav-link', '');
+            const isGatedView = !alwaysAccessibleViews.has(id);
+
+            if (isGatedView && !planExists) {
+                link.classList.add('disabled');
+                link.setAttribute('aria-disabled', 'true');
+                link.setAttribute('tabindex', '-1');
+            } else {
+                link.classList.remove('disabled');
+                link.removeAttribute('aria-disabled');
+                link.removeAttribute('tabindex');
+            }
+        });
+    };
+
+    // --- PLANNER LOGIC ---
+
+    const filterWellPortfolio = () => {
+        const filters = appState.wellFilters || { query: '', focus: 'all', themes: new Set() };
+        const query = (filters.query || '').trim().toLowerCase();
+        const focusFilter = wellFocusFilterMap.get(filters.focus) || wellFocusFilterMap.get('all');
+        const activeThemes = filters.themes instanceof Set ? filters.themes : new Set();
+
+        return wellData.filter((well) => {
+            if (focusFilter && !focusFilter.predicate(well)) {
+                return false;
+            }
+
+            if (activeThemes.size > 0) {
+                const wellThemes = new Set(well.themes || []);
+                for (const themeId of activeThemes) {
+                    if (!wellThemes.has(themeId)) {
+                        return false;
+                    }
+                }
+            }
+
+            if (query) {
+                const haystack = [
+                    well.id,
+                    well.name,
+                    well.field,
+                    well.region,
+                    well.type,
+                    well.status,
+                    well.issue,
+                    ...(well.themes || []),
+                    ...((well.history || []).map((entry) => `${entry.operation} ${entry.problem} ${entry.lesson}`))
+                ].join(' ').toLowerCase();
+
+                if (!haystack.includes(query)) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+    const renderWellCards = () => { 
+        wellSelectionGrid.innerHTML = wellData.map(well => {
+            const isWellFromHell = well.id === 'W666';
+            const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
+            const iconMarkup = renderPlannerIcon(
+                well.icon || {},
+                `${well.name} insight icon`,
+                isWellFromHell ? 'critical' : 'case'
+            );
+            const badgeMarkup = isWellFromHell
+                ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Critical intervention focus well">CRITICAL</span>'
+                : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Case study well">CASE STUDY</span>';
+            const isSelected = appState.selectedWell && appState.selectedWell.id === well.id;
+
+            return `
+                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'} ${isSelected ? 'selected' : ''}" data-well-id="${well.id}">
+                    <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex items-start gap-3">
+                                ${iconMarkup}
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">${well.name}</h3>
+                                    <p class="mt-1 text-blue-100 text-sm">${well.field} — ${well.type}</p>
+                                </div>
+                            </div>
+                            ${badgeMarkup}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
+                        </div>
+                        <p class="text-sm">${well.issue}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
+                            <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold" data-well-id="${well.id}">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
     };
 
     const syncFocusChipStates = () => {
@@ -5708,6 +6054,53 @@ const validateInvoice = () => {
 
                     if (elements.columnsList) {
                         elements.columnsList.innerHTML = '';
+
+                        if (schemaMatchesHeader) {
+                            headerColumns.forEach((columnName) => {
+                                const column = schema.find((entry) => entry.name === columnName);
+                                const item = document.createElement('li');
+                                item.className = 'space-y-1';
+
+                                const header = document.createElement('div');
+                                header.className = 'flex flex-wrap items-baseline gap-2';
+                                const nameEl = document.createElement('span');
+                                nameEl.className = 'font-semibold text-slate-200';
+                                nameEl.textContent = columnName;
+                                header.appendChild(nameEl);
+
+                                if (column && column.sqlType) {
+                                    const badge = document.createElement('span');
+                                    badge.className = 'text-[11px] uppercase tracking-wide text-slate-400 bg-slate-900/60 px-2 py-0.5 rounded-full';
+                                    badge.textContent = column.sqlType;
+                                    header.appendChild(badge);
+                                }
+
+                                item.appendChild(header);
+
+                                if (column && column.description) {
+                                    const description = document.createElement('p');
+                                    description.className = 'text-xs text-slate-400';
+                                    description.textContent = column.description;
+                                    item.appendChild(description);
+                                }
+
+                                elements.columnsList.appendChild(item);
+                            });
+                        } else {
+                            headerColumns.forEach((columnName) => {
+                                const item = document.createElement('li');
+                                item.textContent = columnName;
+                                elements.columnsList.appendChild(item);
+                            });
+                        }
+                    }
+
+                    if (elements.size) {
+                        const encoder = new TextEncoder();
+                        const sizeInBytes = encoder.encode(text).length;
+                        elements.size.textContent = formatByteSize(sizeInBytes);
+                    }
+
 
                         if (schemaMatchesHeader) {
                             headerColumns.forEach((columnName) => {
