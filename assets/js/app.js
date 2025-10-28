@@ -2420,6 +2420,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (enforcePlanAccess(viewName, sourceLabel)) {
             return;
         }
+        }
+    };
+    window.showView = (viewName, sourceLabel) => {
+        if (!viewName) return;
+        if (enforcePlanAccess(viewName, sourceLabel)) {
+            return;
+        }
         switchView(viewName);
     };
     
@@ -2456,6 +2463,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         switchView(switchToHome ? 'home' : 'planner');
         renderWellCards();
+        
+        switchView(switchToHome ? 'home' : 'planner');
         updatePlannerStepUI(1);
         updateNavLinks();
     };
@@ -2520,6 +2529,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
             return true;
         });
+    const renderWellCards = () => { 
+        wellSelectionGrid.innerHTML = wellData.map(well => {
+            const isWellFromHell = well.id === 'W666';
+            const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
+            const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
+            
+            return `
+                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}">
+                    <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xl font-bold text-white">${well.name}</h3>
+                            ${isWellFromHell ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full">CRITICAL</span>' : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full">CASE STUDY</span>'}
+                        </div>
+                        <p class="text-sm text-blue-100">${well.field} - ${well.type}</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
+                        </div>
+                        <p class="text-sm">${well.issue}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
+                            <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold" data-well-id="${well.id}">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join(''); 
     };
 
     const syncFocusChipStates = () => {
@@ -5110,6 +5149,53 @@ const validateInvoice = () => {
 
                     if (elements.columnsList) {
                         elements.columnsList.innerHTML = '';
+
+                        if (schemaMatchesHeader) {
+                            headerColumns.forEach((columnName) => {
+                                const column = schema.find((entry) => entry.name === columnName);
+                                const item = document.createElement('li');
+                                item.className = 'space-y-1';
+
+                                const header = document.createElement('div');
+                                header.className = 'flex flex-wrap items-baseline gap-2';
+                                const nameEl = document.createElement('span');
+                                nameEl.className = 'font-semibold text-slate-200';
+                                nameEl.textContent = columnName;
+                                header.appendChild(nameEl);
+
+                                if (column && column.sqlType) {
+                                    const badge = document.createElement('span');
+                                    badge.className = 'text-[11px] uppercase tracking-wide text-slate-400 bg-slate-900/60 px-2 py-0.5 rounded-full';
+                                    badge.textContent = column.sqlType;
+                                    header.appendChild(badge);
+                                }
+
+                                item.appendChild(header);
+
+                                if (column && column.description) {
+                                    const description = document.createElement('p');
+                                    description.className = 'text-xs text-slate-400';
+                                    description.textContent = column.description;
+                                    item.appendChild(description);
+                                }
+
+                                elements.columnsList.appendChild(item);
+                            });
+                        } else {
+                            headerColumns.forEach((columnName) => {
+                                const item = document.createElement('li');
+                                item.textContent = columnName;
+                                elements.columnsList.appendChild(item);
+                            });
+                        }
+                    }
+
+                    if (elements.size) {
+                        const encoder = new TextEncoder();
+                        const sizeInBytes = encoder.encode(text).length;
+                        elements.size.textContent = formatByteSize(sizeInBytes);
+                    }
+
 
                         if (schemaMatchesHeader) {
                             headerColumns.forEach((columnName) => {

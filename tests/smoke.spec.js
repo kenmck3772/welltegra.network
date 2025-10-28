@@ -3,6 +3,10 @@ const http = require('http');
 const path = require('path');
 const fs = require('fs');
 const { spawnSync } = require('child_process');
+const { test, expect } = require('@playwright/test');
+const http = require('http');
+const path = require('path');
+const fs = require('fs');
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -156,6 +160,7 @@ test.beforeAll(async () => {
     return;
   }
 
+test.beforeAll(async () => {
   server = createStaticServer();
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   const address = server.address();
@@ -176,6 +181,7 @@ const skipIfChromiumUnavailable = (testInfo) => {
 
 test('hero planner CTA opens the planner workspace without console errors', async ({ page }, testInfo) => {
   skipIfChromiumUnavailable(testInfo);
+test('hero planner CTA opens the planner workspace without console errors', async ({ page }) => {
   const pageErrors = [];
   page.on('pageerror', (error) => {
     console.error('PAGE ERROR:', error);
