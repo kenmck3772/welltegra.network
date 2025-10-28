@@ -63,6 +63,10 @@ welltegra.network/
 └── README.md          # Project documentation
 ```
 
+## Asset Inventory
+
+Legacy demos and unused media have been removed under the lean inventory initiative (#46). Consult `LEAN_INVENTORY.md` for the rationale, remaining asset list, and follow-up actions.
+
 ## Getting Started
 
 ### Local Development

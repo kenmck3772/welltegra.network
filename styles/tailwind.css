@@ -703,3 +703,96 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; } /* Bolder headings */
     background: rgba(15, 23, 42, 0.4);
     border: 1px solid rgba(71, 85, 105, 0.3);
 }
+
+/* Planner well icon badges */
+.planner-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    background: rgba(59, 130, 246, 0.18);
+    color: #0f172a;
+    font-size: 1.35rem;
+    line-height: 1;
+}
+
+.planner-icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.planner-icon--case {
+    background: rgba(59, 130, 246, 0.18);
+    color: #0f172a;
+}
+
+.planner-icon--critical {
+    background: rgba(248, 113, 113, 0.18);
+    color: #7f1d1d;
+}
+
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    background: rgba(15, 23, 42, 0.5);
+    color: #e2e8f0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-chip:hover {
+    background: rgba(30, 41, 59, 0.7);
+    border-color: rgba(148, 163, 184, 0.6);
+}
+
+.filter-chip--active {
+    background: #22d3ee;
+    color: #0f172a;
+    border-color: transparent;
+    box-shadow: 0 12px 30px rgba(34, 211, 238, 0.35);
+}
+
+.filter-chip__count {
+    font-size: 0.7rem;
+    font-weight: 600;
+    opacity: 0.85;
+}
+
+.theme-light .filter-chip {
+    background: rgba(226, 232, 240, 0.6);
+    color: #0f172a;
+    border-color: rgba(15, 23, 42, 0.12);
+}
+
+.theme-light .filter-chip:hover {
+    background: rgba(226, 232, 240, 0.9);
+    border-color: rgba(15, 23, 42, 0.2);
+}
+
+.theme-light .filter-chip--active {
+    background: #0891b2;
+    color: #f8fafc;
+    box-shadow: 0 14px 36px rgba(8, 145, 178, 0.35);
+}
+
+.theme-dark .planner-icon { 
+    color: #e0f2fe;
+}
+
+.theme-dark .planner-icon--case {
+    background: rgba(37, 99, 235, 0.32);
+    color: #7dd3fc;
+}
+
+.theme-dark .planner-icon--critical {
+    background: rgba(239, 68, 68, 0.32);
+    color: #fecaca;
+}
