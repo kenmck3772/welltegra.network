@@ -119,16 +119,23 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'W666',
             name: 'The Perfect Storm',
             field: 'Montrose',
-            region: 'UKCS', 
-            type: 'HPHT Gas Condensate', 
-            depth: '18,500ft', 
-            status: 'Shut-in - Well Integrity Issues', 
-            issue: 'A nightmare well with multiple, compounding failures: severe casing deformation, a hard scale blockage, and a failed primary safety valve. Requires a complex, multi-stage intervention plan.', 
-            history: [ 
+            region: 'UKCS',
+            type: 'HPHT Gas Condensate',
+            depth: '18,500ft',
+            status: 'Shut-in - Well Integrity Issues',
+            issue: 'A nightmare well with multiple, compounding failures: severe casing deformation, a hard scale blockage, and a failed primary safety valve. Requires a complex, multi-stage intervention plan.',
+            icon: {
+                id: 'critical-alert',
+                glyph: '🚨',
+                label: 'Critical intervention required'
+            },
+            kind: 'critical',
+            themes: ['integrity', 'flow-assurance', 'controls'],
+            history: [
                 { date: '2024-03-15', operation: 'Slickline Surveillance', problem: 'Unable to pass 8,500ft due to casing restriction.', lesson: 'This well combines multiple known failure modes from this field into a single asset.' },
                 { date: '2024-04-01', operation: 'Production Test', problem: 'Well died after brief flow period. Pressure analysis suggests deep blockage.', lesson: 'Suspect combination of scale and integrity issues.' },
                 { date: '2024-04-10', operation: 'DHSV Test', problem: 'TRSSV failed to close on command. Well shut-in on annulus valves.', lesson: 'Well integrity is critically compromised.' }
-            ], 
+            ],
             dailyReports: [], 
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 18500, isProblem: true}], 
@@ -142,19 +149,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 perforations: [{top: 18350, bottom: 18450}] 
             } 
         },
-        { 
-            id: 'M-21', 
-            name: 'CASE STUDY: The Montrose Squeeze', 
-            field: 'Montrose', 
-            region: 'UKCS', 
-            type: 'HPHT Gas Condensate', 
-            depth: '9,000ft', 
-            status: 'Active - Restored Production', 
-            issue: 'SOLUTION: Casing deformation was successfully remediated with an expandable patch.', 
-            history: [ 
+        {
+            id: 'M-21',
+            name: 'CASE STUDY: The Montrose Squeeze',
+            field: 'Montrose',
+            region: 'UKCS',
+            type: 'HPHT Gas Condensate',
+            depth: '9,000ft',
+            status: 'Active - Restored Production',
+            issue: 'SOLUTION: Casing deformation was successfully remediated with an expandable patch.',
+            icon: {
+                id: 'wrench',
+                glyph: '🛠️',
+                label: 'Expandable patch success story'
+            },
+            kind: 'case',
+            themes: ['integrity', 'productivity'],
+            history: [
                 { date: '2023-11-10', operation: 'Slickline Surveillance', problem: 'Standard 2.313" OD toolstring unable to pass 8,500ft, encountering a hard stop.', lesson: 'Significant reservoir depletion in this area is causing geomechanical stresses leading to casing deformation, a known regional risk. MFC log confirms this is ovalization, not collapse.' },
                 { date: '2023-12-05', operation: 'Expandable Casing Patch', problem: 'Successfully installed a 60ft expandable steel patch across the deformed section.', lesson: 'This operation proves that an expandable patch is a viable, rigless solution for restoring full-bore access in this field, restoring production and well access.' }
-            ], 
+            ],
             dailyReports: [], 
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 9000}], 
@@ -167,19 +181,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 perforations: [{top: 8850, bottom: 8950}] 
             } 
         },
-        { 
-            id: 'S-15', 
-            name: 'CASE STUDY: The Scale Trap', 
-            field: 'Montrose', 
-            region: 'UKCS', 
-            type: 'HPHT Gas Condensate', 
-            depth: '11,000ft', 
-            status: 'Active - Restored Production', 
-            issue: 'SOLUTION: Severe BaSO4 scale was successfully removed with a chemical/jetting treatment.', 
-            history: [ 
+        {
+            id: 'S-15',
+            name: 'CASE STUDY: The Scale Trap',
+            field: 'Montrose',
+            region: 'UKCS',
+            type: 'HPHT Gas Condensate',
+            depth: '11,000ft',
+            status: 'Active - Restored Production',
+            issue: 'SOLUTION: Severe BaSO4 scale was successfully removed with a chemical/jetting treatment.',
+            icon: {
+                id: 'chemistry',
+                glyph: '🧪',
+                label: 'Chemical treatment case study'
+            },
+            kind: 'case',
+            themes: ['flow-assurance', 'productivity'],
+            history: [
                 { date: '2024-01-05', operation: 'Production Logging', problem: 'PLT toolstring unable to pass 9,200ft due to a hard obstruction. Produced water analysis confirmed high Barium and Sulfate content.', lesson: 'Commingling of injected seawater and formation water is causing severe, insoluble scale deposition. A previous attempt to mill scale on a nearby well resulted in stuck pipe.'},
                 { date: '2024-02-12', operation: 'CT Chemical/Jetting', problem: 'A 48hr soak with DTPA dissolver followed by a run with a high-pressure rotating jetting tool successfully cleared the blockage.', lesson: 'This two-stage approach is a proven, lower-risk method for removing hard scale compared to aggressive milling.' }
-            ], 
+            ],
             dailyReports: [], 
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 11000}], 
@@ -188,16 +209,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 perforations: [{top: 10850, bottom: 10950}] 
             } 
         },
-        { 
-            id: 'F-11', 
-            name: 'CASE STUDY: The Broken Barrier', 
-            field: 'Montrose', 
-            region: 'UKCS', 
-            type: 'HPHT Gas Condensate', 
-            depth: '9,800ft', 
-            status: 'Active - Restored Production', 
-            issue: 'SOLUTION: Failed TRSSV was locked open and replaced with a slickline-retrievable insert valve.', 
-            history: [ 
+        {
+            id: 'F-11',
+            name: 'CASE STUDY: The Broken Barrier',
+            field: 'Montrose',
+            region: 'UKCS',
+            type: 'HPHT Gas Condensate',
+            depth: '9,800ft',
+            status: 'Active - Restored Production',
+            issue: 'SOLUTION: Failed TRSSV was locked open and replaced with a slickline-retrievable insert valve.',
+            icon: {
+                id: 'lock',
+                glyph: '🔐',
+                label: 'Barrier integrity restored'
+            },
+            kind: 'case',
+            themes: ['integrity', 'controls'],
+            history: [
                 { date: '2024-02-18', operation: 'Routine DHSV Test', problem: 'Valve failed to close reliably during routine 6-month test. Well was mandatorily shut-in by regulatory authority.', lesson: 'An attempted repair on a similar well with a hydraulic tool failed; a mechanical lock-open tool is more reliable.' },
                 { date: '2024-03-20', operation: 'Slickline Insert Valve Job', problem: 'Successfully locked open the failed valve with a mechanical tool and installed a new wireline-retrievable insert valve.', lesson: 'This standard slickline operation is a proven, cost-effective method for restoring the primary safety barrier without a rig.' }
             ], 
@@ -209,16 +237,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 perforations: [{top: 9650, bottom: 9750}] 
             } 
         },
-        { 
-            id: 'C-08', 
-            name: 'CASE STUDY: The Sandstorm', 
-            field: 'Montrose', 
-            region: 'UKCS', 
-            type: 'HPHT Gas Condensate', 
-            depth: '10,000ft', 
-            status: 'Active - Restored Production', 
-            issue: 'SOLUTION: Failed sand screen was repaired with a through-tubing patch.', 
-            history: [ 
+        {
+            id: 'C-08',
+            name: 'CASE STUDY: The Sandstorm',
+            field: 'Montrose',
+            region: 'UKCS',
+            type: 'HPHT Gas Condensate',
+            depth: '10,000ft',
+            status: 'Active - Restored Production',
+            issue: 'SOLUTION: Failed sand screen was repaired with a through-tubing patch.',
+            icon: {
+                id: 'layers',
+                glyph: '🏖️',
+                label: 'Sand control remediation'
+            },
+            kind: 'case',
+            themes: ['flow-assurance', 'productivity'],
+            history: [
                 { date: '2023-08-15', operation: 'Surface Choke Replacement', problem: 'Replaced choke for the 3rd time in 6 months due to severe erosional wear from high sand content.', lesson: 'Choking back the well is a temporary fix; the root cause of sand control failure must be addressed. Downhole video confirmed screen erosion.' },
                 { date: '2023-09-10', operation: 'Through-Tubing Patch', problem: 'Successfully installed an expandable patch across the failed sand screen, restoring sand control.', lesson: 'This confirms that a through-tubing patch is a viable rigless repair for this failure mode in this field.'}
             ], 
@@ -239,6 +274,13 @@ document.addEventListener('DOMContentLoaded', function() {
             depth: '7,500ft',
             status: 'Active - Restored Production',
             issue: 'SOLUTION: Severe paraffin wax blockage was cleared using CT with a chemical/mechanical approach.',
+            icon: {
+                id: 'thermal',
+                glyph: '🧊',
+                label: 'Wax blockage cleared'
+            },
+            kind: 'case',
+            themes: ['flow-assurance', 'productivity'],
             history: [
                 { date: '2024-01-15', operation: 'Slickline Gauge Ring Run', problem: 'Gauge ring tagged a soft, waxy obstruction at 6,000ft. Unable to pass.', lesson: 'A previous attempt on another well with only chemicals was slow and ineffective; a combined approach is needed.' },
                 { date: '2024-02-01', operation: 'CT Wax Cleanout', problem: 'Successfully removed wax blockage using a combination of heated chemical dissolvers and a mechanical scraper tool on Coiled Tubing.', lesson: 'The dual chemical/mechanical approach is highly effective for severe paraffin blockages.' }
@@ -260,6 +302,13 @@ document.addEventListener('DOMContentLoaded', function() {
             depth: '19,200ft',
             status: 'Active - Peak Performance',
             issue: 'SOLUTION: Multi-barrier failure resolution - Combined lessons from all interventions delivered exceptional results.',
+            icon: {
+                id: 'rocket',
+                glyph: '🚀',
+                label: 'Integrated multi-discipline win'
+            },
+            kind: 'case',
+            themes: ['integrity', 'flow-assurance', 'controls', 'productivity'],
             history: [
                 { date: '2023-08-20', operation: 'Complex Multi-Stage Intervention', problem: 'Well experiencing compound failures: partial casing restriction, minor scale buildup, aging safety systems, and intermittent sand production.', lesson: 'This well demonstrated that multiple smaller issues, if left unaddressed, compound into major operational challenges requiring comprehensive intervention planning.' },
                 { date: '2023-09-15', operation: 'Integrated Solution Deployment', problem: 'Successfully executed a staged intervention combining expandable patch technology, chemical scale treatment, safety valve replacement, and sand control installation - all in a single campaign.', lesson: 'Integrated multi-discipline approach saved 45 days vs. sequential interventions. This became the blueprint for tackling W666.' },
@@ -279,6 +328,73 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
     ];
+    const plannerIconLibrary = {
+        'critical-alert': {
+            svg: `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M11.9998 9.00006V12.7501M2.69653 16.1257C1.83114 17.6257 2.91371 19.5001 4.64544 19.5001H19.3541C21.0858 19.5001 22.1684 17.6257 21.303 16.1257L13.9487 3.37819C13.0828 1.87736 10.9167 1.87736 10.0509 3.37819L2.69653 16.1257ZM11.9998 15.7501H12.0073V15.7576H11.9998V15.7501Z"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`
+        },
+        'wrench': {
+            svg: `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M11.4194 15.1694L17.25 21C18.2855 22.0355 19.9645 22.0355 21 21C22.0355 19.9645 22.0355 18.2855 21 17.25L15.1233 11.3733M11.4194 15.1694L13.9155 12.1383C14.2315 11.7546 14.6542 11.5132 15.1233 11.3733M11.4194 15.1694L6.76432 20.8219C6.28037 21.4096 5.55897 21.75 4.79768 21.75C3.39064 21.75 2.25 20.6094 2.25 19.2023C2.25 18.441 2.59044 17.7196 3.1781 17.2357L10.0146 11.6056M15.1233 11.3733C15.6727 11.2094 16.2858 11.1848 16.8659 11.2338C16.9925 11.2445 17.1206 11.25 17.25 11.25C19.7353 11.25 21.75 9.23528 21.75 6.75C21.75 6.08973 21.6078 5.46268 21.3523 4.89779L18.0762 8.17397C16.9605 7.91785 16.0823 7.03963 15.8262 5.92397L19.1024 2.64774C18.5375 2.39223 17.9103 2.25 17.25 2.25C14.7647 2.25 12.75 4.26472 12.75 6.75C12.75 6.87938 12.7555 7.00749 12.7662 7.13411C12.8571 8.20956 12.6948 9.39841 11.8617 10.0845L11.7596 10.1686M10.0146 11.6056L5.90901 7.5H4.5L2.25 3.75L3.75 2.25L7.5 4.5V5.90901L11.7596 10.1686M10.0146 11.6056L11.7596 10.1686M18.375 18.375L15.75 15.75M4.86723 19.125H4.87473V19.1325H4.86723V19.125Z"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`
+        },
+        'chemistry': {
+            svg: `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9.75001 3.10408V8.81802C9.75001 9.41476 9.51295 9.98705 9.091 10.409L5.00001 14.5M9.75001 3.10408C9.49886 3.12743 9.24884 3.15465 9.00001 3.18568M9.75001 3.10408C10.4908 3.03521 11.2413 3 12 3C12.7587 3 13.5093 3.03521 14.25 3.10408M14.25 3.10408V8.81802C14.25 9.41476 14.4871 9.98705 14.909 10.409L19.8 15.3M14.25 3.10408C14.5011 3.12743 14.7512 3.15465 15 3.18568M19.8 15.3L18.2299 15.6925C16.1457 16.2136 13.9216 15.9608 12 15C10.0784 14.0392 7.85435 13.7864 5.7701 14.3075L5.00001 14.5M19.8 15.3L21.2022 16.7022C22.4341 17.9341 21.8527 20.0202 20.1354 20.3134C17.4911 20.7649 14.773 21 12 21C9.227 21 6.50891 20.7649 3.86459 20.3134C2.14728 20.0202 1.56591 17.9341 2.7978 16.7022L5.00001 14.5"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`
+        },
+        'lock': {
+            svg: `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M16.5 10.5V6.75C16.5 4.26472 14.4853 2.25 12 2.25C9.51472 2.25 7.5 4.26472 7.5 6.75V10.5M6.75 21.75H17.25C18.4926 21.75 19.5 20.7426 19.5 19.5V12.75C19.5 11.5074 18.4926 10.5 17.25 10.5H6.75C5.50736 10.5 4.5 11.5074 4.5 12.75V19.5C4.5 20.7426 5.50736 21.75 6.75 21.75Z"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`
+        },
+        'layers': {
+            svg: `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 6.87803V6C6 4.75736 7.00736 3.75 8.25 3.75H15.75C16.9926 3.75 18 4.75736 18 6V6.87803M6 6.87803C6.23458 6.79512 6.48702 6.75 6.75 6.75H17.25C17.513 6.75 17.7654 6.79512 18 6.87803M6 6.87803C5.12611 7.18691 4.5 8.02034 4.5 9V9.87803M18 6.87803C18.8739 7.18691 19.5 8.02034 19.5 9V9.87803M19.5 9.87803C19.2654 9.79512 19.013 9.75 18.75 9.75H5.25C4.98702 9.75 4.73458 9.79512 4.5 9.87803M19.5 9.87803C20.3739 10.1869 21 11.0203 21 12V18C21 19.2426 19.9926 20.25 18.75 20.25H5.25C4.00736 20.25 3 19.2426 3 18V12C3 11.0203 3.62611 10.1869 4.5 9.87803"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`
+        },
+        'thermal': {
+            svg: `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M15.3622 5.21361C18.2427 6.50069 20.25 9.39075 20.25 12.7497C20.25 17.306 16.5563 20.9997 12 20.9997C7.44365 20.9997 3.75 17.306 3.75 12.7497C3.75 10.5376 4.62058 8.52889 6.03781 7.04746C6.8043 8.11787 7.82048 8.99731 9.00121 9.60064C9.04632 6.82497 10.348 4.35478 12.3621 2.73413C13.1255 3.75788 14.1379 4.61821 15.3622 5.21361Z"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 18C14.0711 18 15.75 16.3211 15.75 14.25C15.75 12.3467 14.3321 10.7746 12.4949 10.5324C11.4866 11.437 10.7862 12.6779 10.5703 14.0787C9.78769 13.8874 9.06529 13.5425 8.43682 13.0779C8.31559 13.4467 8.25 13.8407 8.25 14.25C8.25 16.3211 9.92893 18 12 18Z"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`
+        },
+        'rocket': {
+            svg: `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M15.5904 14.3696C15.6948 14.8128 15.75 15.275 15.75 15.75C15.75 19.0637 13.0637 21.75 9.75 21.75V16.9503M15.5904 14.3696C19.3244 11.6411 21.75 7.22874 21.75 2.25C16.7715 2.25021 12.3595 4.67586 9.63122 8.40975M15.5904 14.3696C13.8819 15.6181 11.8994 16.514 9.75 16.9503M9.63122 8.40975C9.18777 8.30528 8.72534 8.25 8.25 8.25C4.93629 8.25 2.25 10.9363 2.25 14.25H7.05072M9.63122 8.40975C8.38285 10.1183 7.48701 12.1007 7.05072 14.25M9.75 16.9503C9.64659 16.9713 9.54279 16.9912 9.43862 17.0101C8.53171 16.291 7.70991 15.4692 6.99079 14.5623C7.00969 14.4578 7.02967 14.3537 7.05072 14.25M4.81191 16.6408C3.71213 17.4612 3 18.7724 3 20.25C3 20.4869 3.0183 20.7195 3.05356 20.9464C3.28054 20.9817 3.51313 21 3.75 21C5.22758 21 6.53883 20.2879 7.35925 19.1881M16.5 9C16.5 9.82843 15.8284 10.5 15 10.5C14.1716 10.5 13.5 9.82843 13.5 9C13.5 8.17157 14.1716 7.5 15 7.5C15.8284 7.5 16.5 8.17157 16.5 9Z"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`
+        }
+    };
+
+    const escapeHtml = (value = '') => String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+    const renderPlannerIcon = (icon = {}, fallbackLabel = 'Well insight', tone = 'case') => {
+        const iconEntry = icon.id ? plannerIconLibrary[icon.id] : null;
+        const label = escapeHtml(icon.label || fallbackLabel);
+        const wrapperClass = tone === 'critical' ? 'planner-icon planner-icon--critical' : 'planner-icon planner-icon--case';
+
+        if (iconEntry?.svg) {
+            return `<span class="${wrapperClass}" role="img" aria-label="${label}">${iconEntry.svg.trim()}</span>`;
+        }
+
+        const glyph = escapeHtml(icon.glyph || iconEntry?.glyph || '🛢️');
+        return `<span class="${wrapperClass}" role="img" aria-label="${label}">${glyph}</span>`;
+    };
+
     const objectivesData = [
         { id: 'obj1', name: 'Remediate Casing Deformation', description: 'Install an expandable steel patch to restore wellbore access.', icon: '🔧' },
         { id: 'obj2', name: 'Remove BaSO4 Scale', description: 'Use a chemical and mechanical method to clear tubing blockage.', icon: '🧪' },
@@ -295,8 +411,8 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
 
     const aiRecommendations = {
-        prob1: [ 
-            { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis of case study <strong>M-21 (The Montrose Squeeze)</strong> confirms an expandable steel patch is the standard, high-success-rate rigless solution for this specific failure mode in this field.' } 
+        prob1: [
+            { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis of case study <strong>M-21 (The Montrose Squeeze)</strong> confirms an expandable steel patch is the standard, high-success-rate rigless solution for this specific failure mode in this field.' }
         ],
         prob2: [ 
             { objectiveId: 'obj2', confidence: 92, outcome: 'Blockage cleared, production restored', reason: 'Based on the successful intervention on case study <strong>S-15 (The Scale Trap)</strong>, a two-stage chemical (DTPA) and mechanical (jetting) intervention has the highest probability of success. This avoids the high risk of stuck pipe associated with milling.' } 
@@ -307,10 +423,100 @@ document.addEventListener('DOMContentLoaded', function() {
         prob4: [ 
             { objectiveId: 'obj4', confidence: 88, outcome: 'Sand-free production at >80% potential', reason: 'The success on case study <strong>C-08 (The Sandstorm)</strong> proves a through-tubing expandable sand screen is the optimal rigless solution. This avoids a costly workover.' } 
         ],
-        prob5: [ 
-            { objectiveId: 'obj5', confidence: 90, outcome: 'Wax blockage removed, production increased by >400%', reason: 'The case study from <strong>P-12 (The Wax Plug)</strong> shows that a Coiled Tubing intervention with both heated chemical dissolvers and a mechanical scraper tool is the most effective procedure.' } 
+        prob5: [
+            { objectiveId: 'obj5', confidence: 90, outcome: 'Wax blockage removed, production increased by >400%', reason: 'The case study from <strong>P-12 (The Wax Plug)</strong> shows that a Coiled Tubing intervention with both heated chemical dissolvers and a mechanical scraper tool is the most effective procedure.' }
         ]
     };
+
+    const dataScrubbingPipelines = Object.freeze({
+        W666: {
+            overview: 'Every raw drop from the operator or a Well-Tegra engineer is scrubbed the moment it lands. LangExtract runs against the intake to normalize barrier failures, obstruction depths, and recommended actions before the planner ever consumes the data.',
+            stages: [
+                {
+                    title: '1. Intake & Hashing',
+                    status: 'Completed',
+                    badgeClass: 'border-emerald-400 text-emerald-300',
+                    description: 'Encrypted SFTP drop validates checksums and timestamps each inbound artifact so the provenance is locked before parsing begins.',
+                    artifacts: [
+                        'Slickline DDR • 2024-04-10',
+                        'Vendor BaSO₄ Scale Survey • 2024-03-28',
+                        'TRSSV Negative Test Worksheet • 2024-04-10'
+                    ]
+                },
+                {
+                    title: '2. LangExtract Structuring',
+                    status: 'Completed',
+                    badgeClass: 'border-emerald-400 text-emerald-300',
+                    description: 'LangExtract prompt library extracts barrier failures, obstruction depths, annulus pressures, and recommended actions with direct citations back to the source sentences.',
+                    artifacts: [
+                        'Model: gemini-2.5-flash (dry-run sandbox)',
+                        'Prompt template: wtgr/w666/barrier_rules.json',
+                        'Output bundle: w666_ingest_2024-04-10.jsonl'
+                    ]
+                },
+                {
+                    title: '3. Engineer QA & Publish',
+                    status: 'Signed Off',
+                    badgeClass: 'border-sky-400 text-sky-300',
+                    description: 'Well-Tegra engineer cross-checks citations, resolves flagged anomalies, and publishes the normalized dataset to the planning workspace.',
+                    artifacts: [
+                        'Reviewer: M. Singh (Integrity SME)',
+                        'Anomalies resolved: 2 (unit mismatch & duplicated entry)',
+                        'Publish time: 2024-04-12 18:20 UTC'
+                    ]
+                }
+            ],
+            schema: [
+                {
+                    label: 'Prompt Goal',
+                    value: 'Extract barrier failures, obstruction or debris depths, annulus pressure excursions, and recommended mitigations for W666 with direct evidence spans.'
+                },
+                {
+                    label: 'Extraction Classes',
+                    value: 'well_summary, barrier_failure, obstruction, recommended_action, risk_alert, confidence_score'
+                },
+                {
+                    label: 'Output Controls',
+                    value: 'LangExtract enforces JSON schema + cite_range_id so every field references its originating document coordinates.'
+                }
+            ],
+            rawExcerpt: '“DHSV failed to close during negative test. Pressure at A-annulus climbed to 1,850 psi. Suspect scale at ~14,200 ft restricting travel.”',
+            rawSource: 'Slickline Daily Report — 2024-04-10',
+            normalizedFindings: [
+                {
+                    label: 'barrier_failure.event',
+                    value: 'Surface-controlled subsurface safety valve failed to seal on negative test.',
+                    evidence: 'TRSSV Negative Test Worksheet §4.1 (cite_range 201-242)',
+                    confidence: 0.94
+                },
+                {
+                    label: 'obstruction.depth_ft',
+                    value: '14,200',
+                    evidence: 'Slickline DDR 2024-04-10 line 57 (cite_range 871-896)',
+                    confidence: 0.91
+                },
+                {
+                    label: 'risk_alert.detail',
+                    value: 'A-annulus pressure sustained at 1,850 psi with no bleed-off path — flagged for immediate pressure management plan.',
+                    evidence: 'LangExtract merge across DDR + scale survey (cite_ranges 901-940, 1104-1130)',
+                    confidence: 0.89
+                },
+                {
+                    label: 'recommended_action',
+                    value: 'Execute expandable patch + chemical jetting train before TRSSV change-out; align with integrated plan W666-INT-24-01.',
+                    evidence: 'Engineer QA annotation referencing historical case M-21 (cite_range 1304-1350)',
+                    confidence: 0.93
+                }
+            ],
+            qaSummary: [
+                '12 of 13 high-priority statements grounded with citations (92% coverage).',
+                'Operator and vendor identifiers hashed; canonical asset preserved as W666 for traceability.',
+                'Sign-off recorded by Well-Tegra engineer M. Singh on 2024-04-12 18:20 UTC.'
+            ]
+        }
+    });
+
+    window.dataScrubbingPipelines = dataScrubbingPipelines;
     const proceduresData = {
         obj1: {
             name: "Expandable Casing Patch Installation",
@@ -323,14 +529,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Pressure test patch to verify seal.",
                 "POOH and return well to service."
             ], 
-            risks: { operational: 4, geological: 2, equipment: 4, hse: 3, financial: 3 }, 
-            cost: 1200000, 
-            duration: 8, 
-            tfaModel: { pickUp: [[0,0], [9000, 60]], slackOff: [[0,0], [9000, -60]], alarmUpper: [[0,10], [9000, 70]], alarmLower: [[0,-10], [9000, -70]] } 
+            risks: { operational: 4, geological: 2, equipment: 4, hse: 3, financial: 3 },
+            cost: 1200000,
+            duration: 8,
+            tfaModel: { pickUp: [[0,0], [9000, 60]], slackOff: [[0,0], [9000, -60]], alarmUpper: [[0,10], [9000, 70]], alarmLower: [[0,-10], [9000, -70]] },
+            sustainability: {
+                badge: 'AI Verified Impact',
+                highlight: 'Rigless expandable patch avoids a 40-day workover and keeps the deformed casing in a certified recycling loop.',
+                metrics: [
+                    {
+                        label: 'CO₂e Avoided',
+                        value: '280 t',
+                        context: 'Versus a heavy workover rig campaign',
+                        trend: '▼ 36% vs. baseline',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Diesel Eliminated',
+                        value: '42,000 L',
+                        context: 'Electrified hydraulic units on location',
+                        trend: '▼ 41% fuel burn',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Recovered Steel',
+                        value: '12.5 t',
+                        context: 'Returned to circular supply chain',
+                        trend: '▲ 18% reuse uplift',
+                        direction: 'up'
+                    }
+                ],
+                assurance: {
+                    label: 'Digital Twin Coverage',
+                    value: '92%',
+                    context: 'Downhole/mechanical states mirrored in simulator for execution handoff'
+                }
+            }
         },
-        obj2: { 
-            name: "CT Chemical & Mechanical Scale Removal", 
-            personnel: ["Coiled Tubing Supervisor", "Pump Operator"], 
+        obj2: {
+            name: "CT Chemical & Mechanical Scale Removal",
+            personnel: ["Coiled Tubing Supervisor", "Pump Operator"],
             steps: [
                 "RIH with CT and spot DTPA chemical dissolver across scale.",
                 "POOH with CT and let chemical soak for 36 hours.",
@@ -339,14 +577,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Circulate well clean and POOH.",
                 "Return well to production."
             ], 
-            risks: { operational: 5, geological: 2, equipment: 4, hse: 4, financial: 3 }, 
-            cost: 950000, 
-            duration: 6, 
-            tfaModel: { pickUp: [[0,0], [14500, 35]], slackOff: [[0,0], [14500, -35]], alarmUpper: [[0,2], [14500, 37]], alarmLower: [[0,-2], [14500, -37]] } 
+            risks: { operational: 5, geological: 2, equipment: 4, hse: 4, financial: 3 },
+            cost: 950000,
+            duration: 6,
+            tfaModel: { pickUp: [[0,0], [14500, 35]], slackOff: [[0,0], [14500, -35]], alarmUpper: [[0,2], [14500, 37]], alarmLower: [[0,-2], [14500, -37]] },
+            sustainability: {
+                badge: 'Low-Carbon CT Campaign',
+                highlight: 'Closed-loop chemical handling slashes trucking miles and captures spent solvents for reprocessing.',
+                metrics: [
+                    {
+                        label: 'Hazardous Waste Avoided',
+                        value: '18.4 t',
+                        context: 'On-site neutralisation & recovery skid',
+                        trend: '▼ 52% disposal volume',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'AI Optimised Pump Time',
+                        value: '−11 hrs',
+                        context: 'Adaptive soak modelling',
+                        trend: '▼ 14% runtime',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Water Recycled',
+                        value: '68%',
+                        context: 'Filtration loop for jetting returns',
+                        trend: '▲ 9 pts from 2023',
+                        direction: 'up'
+                    }
+                ],
+                assurance: {
+                    label: 'AI Confidence Envelope',
+                    value: '89%',
+                    context: 'Confidence that emissions stay within sustainability guardrails'
+                }
+            }
         },
-        obj3: { 
-            name: "Slickline Insert Safety Valve Installation", 
-            personnel: ["Slickline Supervisor"], 
+        obj3: {
+            name: "Slickline Insert Safety Valve Installation",
+            personnel: ["Slickline Supervisor"],
             steps: [
                 "RIH with heavy-duty toolstring and mechanically lock open the failed TRSSV.",
                 "POOH and confirm lock-open.",
@@ -356,14 +626,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Perform full inflow and function test of new valve to certify.",
                 "Return well to production."
             ], 
-            risks: { operational: 3, geological: 1, equipment: 4, hse: 3, financial: 2 }, 
-            cost: 350000, 
-            duration: 3, 
-            tfaModel: { pickUp: [[0, 100], [9800, 160]], slackOff: [[0, 100], [9800, 40]], alarmUpper: [[0, 110], [9800, 170]], alarmLower: [[0, 90], [9800, 30]] } 
+            risks: { operational: 3, geological: 1, equipment: 4, hse: 3, financial: 2 },
+            cost: 350000,
+            duration: 3,
+            tfaModel: { pickUp: [[0, 100], [9800, 160]], slackOff: [[0, 100], [9800, 40]], alarmUpper: [[0, 110], [9800, 170]], alarmLower: [[0, 90], [9800, 30]] },
+            sustainability: {
+                badge: 'Barrier Reinstated, Carbon Lite',
+                highlight: 'Single-run slickline repair restores compliance without mobilising a workover rig or flaring events.',
+                metrics: [
+                    {
+                        label: 'CO₂e Avoided',
+                        value: '96 t',
+                        context: 'No standby rig or flaring required',
+                        trend: '▼ 44% vs. historical fix',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Site Visits Eliminated',
+                        value: '5 trips',
+                        context: 'Remote barrier verification pack',
+                        trend: '▼ 62% travel emissions',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Smart Valve Telemetry',
+                        value: '100%',
+                        context: 'Continuous monitoring via blockchain contract',
+                        trend: '▲ Full remote assurance',
+                        direction: 'up'
+                    }
+                ],
+                assurance: {
+                    label: 'Safety Envelope Confidence',
+                    value: '95%',
+                    context: 'AI confirms regulatory readiness post job'
+                }
+            }
         },
-        obj4: { 
-            name: "Through-Tubing ESS Patch Installation", 
-            personnel: ["Wellsite Engineer", "HWU Supervisor"], 
+        obj4: {
+            name: "Through-Tubing ESS Patch Installation",
+            personnel: ["Wellsite Engineer", "HWU Supervisor"],
             steps: [
                 "Perform CT cleanout of sand from inside existing screen.",
                 "RIH with Expandable Sand Screen (ESS) patch on jointed pipe.",
@@ -371,14 +673,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Expand patch using mechanical expansion tool.",
                 "POOH and slowly bring well back online, monitoring sand production."
             ], 
-            risks: { operational: 4, geological: 3, equipment: 5, hse: 3, financial: 4 }, 
-            cost: 1500000, 
-            duration: 10, 
-            tfaModel: { pickUp: [[0,0], [10000, 50]], slackOff: [[0,0], [10000, -50]], alarmUpper: [[0,5], [10000, 55]], alarmLower: [[0,-5], [10000, -55]] } 
+            risks: { operational: 4, geological: 3, equipment: 5, hse: 3, financial: 4 },
+            cost: 1500000,
+            duration: 10,
+            tfaModel: { pickUp: [[0,0], [10000, 50]], slackOff: [[0,0], [10000, -50]], alarmUpper: [[0,5], [10000, 55]], alarmLower: [[0,-5], [10000, -55]] },
+            sustainability: {
+                badge: 'Circular Sand Control',
+                highlight: 'Through-tubing repair extends completion life while keeping 80% of legacy hardware in service.',
+                metrics: [
+                    {
+                        label: 'Material Reuse',
+                        value: '81%',
+                        context: 'Legacy completion components retained',
+                        trend: '▲ 12 pts retention',
+                        direction: 'up'
+                    },
+                    {
+                        label: 'Flaring Avoided',
+                        value: '18 hrs',
+                        context: 'Live flowback managed via simulator envelope',
+                        trend: '▼ 100% routine flaring',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Logistics Miles Saved',
+                        value: '1,120 km',
+                        context: 'Regional vendor pooling',
+                        trend: '▼ 27% transport footprint',
+                        direction: 'down'
+                    }
+                ],
+                assurance: {
+                    label: 'Digital Twin Fidelity',
+                    value: '90%',
+                    context: 'AI anomaly detection coverage across sand control envelope'
+                }
+            }
         },
-        obj5: { 
-            name: "CT Wax Removal", 
-            personnel: ["Coiled Tubing Supervisor", "Pump Operator"], 
+        obj5: {
+            name: "CT Wax Removal",
+            personnel: ["Coiled Tubing Supervisor", "Pump Operator"],
             steps: [
                 "Rig up Coiled Tubing unit.",
                 "Pump heated solvent to dissolve wax.",
@@ -387,10 +721,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 "POOH with CT.",
                 "Return well to production."
             ], 
-            risks: { operational: 4, geological: 2, equipment: 3, hse: 3, financial: 2 }, 
-            cost: 650000, 
-            duration: 4, 
-            tfaModel: { pickUp: [[0,0], [7500, 20]], slackOff: [[0,0], [7500, -20]], alarmUpper: [[0,2], [7500, 22]], alarmLower: [[0,-2], [7500, -22]] }
+            risks: { operational: 4, geological: 2, equipment: 3, hse: 3, financial: 2 },
+            cost: 650000,
+            duration: 4,
+            tfaModel: { pickUp: [[0,0], [7500, 20]], slackOff: [[0,0], [7500, -20]], alarmUpper: [[0,2], [7500, 22]], alarmLower: [[0,-2], [7500, -22]] },
+            sustainability: {
+                badge: 'Thermal Efficiency Boost',
+                highlight: 'Integrated thermal modelling minimises heater runtime and captures wax for reuse in additives.',
+                metrics: [
+                    {
+                        label: 'Energy Intensity',
+                        value: '−18%',
+                        context: 'Versus baseline wax removal',
+                        trend: '▼ 18% power demand',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Recovered Wax Blend',
+                        value: '7.4 t',
+                        context: 'Repurposed into inhibitor stock',
+                        trend: '▲ 24% recovery',
+                        direction: 'up'
+                    },
+                    {
+                        label: 'Remote Supervision',
+                        value: '45%',
+                        context: 'Live digital twin oversight',
+                        trend: '▲ 45% virtual coverage',
+                        direction: 'up'
+                    }
+                ],
+                assurance: {
+                    label: 'AI Emissions Guardrail',
+                    value: '91%',
+                    context: 'Probability of staying under carbon budget with current design'
+                }
+            }
         }
     };
     const designBlueprints = {
@@ -1366,7 +1732,8 @@ document.addEventListener('DOMContentLoaded', function() {
         ai: { selectedProblemId: null, selectedRecommendation: null },
         hse: { permits: [], riskRegister: [] },
         pob: { musterActive: false, musterInterval: null, personnel: [] },
-        dataExportHandlersBound: false
+        dataExportHandlersBound: false,
+        wellFilters: { query: '', focus: 'all', themes: new Set() }
     };
 
     // --- DOM ELEMENTS ---
@@ -1716,8 +2083,7 @@ document.addEventListener('DOMContentLoaded', function() {
             {
                 name: 'Daily_Rate_USD',
                 sqlType: 'INTEGER',
-                description: 'Daily rate baseline for full-shift planning.'
-                description: 'Standard daily rental rate in US dollars.'
+                description: 'Standard daily rental rate in US dollars, used as the baseline for full-shift planning.'
             },
             {
                 name: 'Mobilization_USD',
@@ -1743,8 +2109,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 name: 'Typical_Team_Size',
                 sqlType: 'TEXT',
                 description: 'Typical number of personnel mobilized per role.'
-            }
-                description: 'Mobilization charge to move equipment to site.'
             },
             {
                 name: 'Demobilization_USD',
@@ -1895,7 +2259,7 @@ document.addEventListener('DOMContentLoaded', function() {
             curlStatus: document.getElementById('data-personnel-curl-status'),
             sqlButton: document.querySelector('[data-export-sql="data-personnel-rates"]'),
             sqlStatus: document.getElementById('data-personnel-sql-status')
-        }
+        },
         pob: { musterActive: false, musterInterval: null, personnel: [] }
     };
 
@@ -1943,317 +2307,109 @@ document.addEventListener('DOMContentLoaded', function() {
         2: document.getElementById('step-2-connector')
     };
     
-    const stepSections = { 
-        1: document.getElementById('step-1'), 
-        2: document.getElementById('step-2'), 
-        3: document.getElementById('step-3') 
-    };
-    
-    const wellSelectionGrid = document.getElementById('well-selection-grid');
-    const objectivesFieldset = document.getElementById('objectives-fieldset');
-    const problemsFieldset = document.getElementById('problems-fieldset');
-    const generatePlanBtnManual = document.getElementById('generate-plan-btn-manual');
-    const generatePlanBtnAi = document.getElementById('generate-plan-btn-ai');
-    const planOutput = document.getElementById('plan-output');
-    const startOverBtn = document.getElementById('start-over-btn');
-    const beginOpBtn = document.getElementById('begin-op-btn');
-    const aiToggle = document.getElementById('ai-toggle');
-    const manualPlanningView = document.getElementById('manual-planning-view');
-    const aiAdvisorView = document.getElementById('ai-advisor-view');
-    const aiRecommendationsContainer = document.getElementById('ai-recommendations');
-    const plannerStatusRegion = document.getElementById('planner-status');
-
-    const announcePlannerStatus = (message) => {
-        if (!plannerStatusRegion || !message) return;
-        plannerStatusRegion.textContent = '';
-        requestAnimationFrame(() => {
-            plannerStatusRegion.textContent = message;
-        });
-    };
-    const step1ContinueBtn = document.getElementById('step-1-continue');
-    const step2ContinueBtn = document.getElementById('step-2-continue');
-    const step4ContinueBtn = document.getElementById('step-4-continue');
-    const step5ContinueBtn = document.getElementById('step-5-continue');
-    const generateProgramBtn = document.getElementById('generate-program-btn');
-    const openLogisticsBtn = document.getElementById('open-logistics-btn');
-    const openCommercialBtn = document.getElementById('open-commercial-btn');
-    const openHseBtn = document.getElementById('open-hse-btn');
-    const reviewAnalysisBtnFinal = document.getElementById('review-analysis-btn-final');
-
-    // Performer
-
-    const kpiGrid = document.getElementById('kpi-grid');
-    const procedureStepsContainer = document.getElementById('procedure-steps');
-    const logEntriesContainer = document.getElementById('log-entries'), 
-    logInput = document.getElementById('log-input'), 
-    addLogBtn = document.getElementById('add-log-btn');
-    const chartCard = document.getElementById('chart-card');
-    const performerControls = document.getElementById('performer-controls');
-    const viewAnalysisBtn = document.getElementById('view-analysis-btn');
-
-    // Analyzer
-
-    const analyzerSubtitle = document.getElementById('analyzer-subtitle'), 
-    summaryKpis = document.getElementById('summary-kpis'), 
-    lessonsLearnedList = document.getElementById('lessons-learned-list'), 
-    lessonInput = document.getElementById('lesson-input'), 
-    addLessonBtn = document.getElementById('add-lesson-btn'), 
-    planNewJobBtn = document.getElementById('plan-new-job-btn');
-
-    // Logistics
-
-    const logisticsSubtitle = document.getElementById('logistics-subtitle');
-    const logisticsReferenceCard = document.getElementById('logistics-reference-card');
-    const logisticsContent = document.getElementById('logistics-content');
-    const equipmentTableBody = document.getElementById('equipment-table-body'),
-    personnelTableBody = document.getElementById('personnel-table-body');
-    const equipmentSearch = document.getElementById('equipment-search'), 
-    personnelSearch = document.getElementById('personnel-search');
-
-    // Commercial
-
-    const commercialContent = document.getElementById('commercial-content'), 
-    commercialSubtitle = document.getElementById('commercial-subtitle');
-
-    // HSE & POB
-
-    const hseContent = document.getElementById('hse-content'), 
-    hseSubtitle = document.getElementById('hse-subtitle');
-    const pobContent = document.getElementById('pob-content'), 
-    pobSubtitle = document.getElementById('pob-subtitle');
-
-    // Modal
-
-    const modal = document.getElementById('well-history-modal'), 
-    modalTitle = document.getElementById('modal-title'), 
-    modalContent = document.getElementById('modal-content'), 
-    closeModalBtn = document.getElementById('close-modal-btn');
-    
-    // Theme
-
-    const themeToggleBtn = document.getElementById('theme-toggle-btn');
-
-    const addListener = (element, eventName, handler, options) => {
-        if (element) {
-            element.addEventListener(eventName, handler, options);
-        }
-    };
-    
-    // --- VIEW & STATE MANAGEMENT ---
-
-    const planRequiredMessages = new Map([
-        ['analyzer', 'Generate a plan to unlock the analysis workspace.'],
-        ['commercial', 'Generate a plan to review commercial readiness.'],
-        ['hse', 'Generate a plan to review HSE & risk readiness.'],
-        ['logistics', 'Generate a plan to orchestrate logistics & supply chain readiness.'],
-        ['performer', 'Generate a plan to launch Live Operations.'],
-        ['pob', 'Generate a plan to prepare POB & emergency response readiness.']
-    ]);
-    const planRequiredMessages = {
-        analyzer: 'Generate a plan to unlock the analysis workspace.',
-        commercial: 'Generate a plan to review commercial readiness.',
-        hse: 'Generate a plan to review HSE & risk readiness.',
-        logistics: 'Generate a plan to orchestrate logistics & supply chain readiness.',
-        performer: 'Generate a plan to launch Live Operations.',
-        pob: 'Generate a plan to prepare POB & emergency response readiness.'
+    const stepSections = {
+        1: document.getElementById('step-1'),
+        2: document.getElementById('step-2'),
+        3: document.getElementById('step-3')
     };
 
-    const enforcePlanAccess = (viewName, sourceLabel) => {
-        if (!viewName) return false;
-        if (alwaysAccessibleViews.has(viewName) || appState.generatedPlan) {
-            return false;
-        }
+    const wellFocusFilters = [
+        { id: 'all', label: 'All Wells', predicate: () => true },
+        { id: 'critical', label: 'Critical Path', predicate: (well) => well.kind === 'critical' },
+        { id: 'case', label: 'Case Studies', predicate: (well) => well.kind === 'case' }
+    ];
 
-        const normalizedView = viewName.toLowerCase();
-        const plannerMessage = planRequiredMessages.get(normalizedView)
-        const plannerMessage = planRequiredMessages[normalizedView]
-            || `Generate a plan to open the ${sourceLabel || 'selected'} workspace.`;
-        announcePlannerStatus(plannerMessage);
-        if (appState.currentView !== 'planner') {
-            switchView('planner');
-        }
-        return true;
-    };
-
-    const switchView = (viewName) => {
-        if (appState.liveDataInterval) {
-            clearInterval(appState.liveDataInterval);
-            appState.liveDataInterval = null;
-        }
-
-        appState.currentView = viewName;
-        body.className = `theme-${localStorage.getItem('theme') || 'light'}`;
-        if (viewName === 'performer') {
-            body.classList.add('theme-dark');
-        }
-
-        views.forEach(v => v.classList.add('hidden'));
-        document.getElementById(`${viewName}-view`).classList.remove('hidden');
-
-        navLinks.forEach(l => l.classList.remove('active'));
-        const activeLink = document.getElementById(`${viewName}-nav-link`);
-        if (activeLink) {
-            activeLink.classList.add('active');
-        }
-        
-        headerDetails.innerHTML = ''; 
-        const theme = viewName === 'performer' ? 'dark' : localStorage.getItem('theme') || 'light';
-        setTheme(theme);
-
-        let viewTitle = viewName.charAt(0).toUpperCase() + viewName.slice(1);
-        if(viewName === 'pob') viewTitle = 'POB & ER';
-        if(viewName === 'hse') viewTitle = 'HSE & Risk';
-        if(viewName === 'whitepaper') viewTitle = 'White Paper';
-        headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
-
-        if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
-            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">● LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
-            initializePerformer();
-        } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
-            if(appState.selectedWell && appState.generatedPlan) {
-                headerDetails.innerHTML = `<div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
-            }
-        ]
-    };
-    const dataExportElements = {
-        w666: {
-            recordCount: document.getElementById('data-well-666-count'),
-            columnsList: document.getElementById('data-well-666-columns'),
-            size: document.getElementById('data-well-666-size'),
-            previewHead: document.getElementById('data-well-666-preview-head'),
-            previewBody: document.getElementById('data-well-666-preview-body'),
-            previewNotice: document.getElementById('data-well-666-preview-notice'),
-            copyButton: document.querySelector('[data-export-copy="data-well-666"]'),
-            copyStatus: document.getElementById('data-well-666-copy-status'),
-            curlButton: document.querySelector('[data-export-curl="data-well-666"]'),
-            curlStatus: document.getElementById('data-well-666-curl-status'),
-            sqlButton: document.querySelector('[data-export-sql="data-well-666"]'),
-            sqlStatus: document.getElementById('data-well-666-sql-status'),
-            hashButton: document.querySelector('[data-export-hash="data-well-666"]'),
-            hashStatus: document.getElementById('data-well-666-hash-status'),
-            hashValue: document.getElementById('data-well-666-hash')
-        },
-        portfolio: {
-            recordCount: document.getElementById('data-well-portfolio-count'),
-            columnsList: document.getElementById('data-well-portfolio-columns'),
-            size: document.getElementById('data-well-portfolio-size'),
-            previewHead: document.getElementById('data-well-portfolio-preview-head'),
-            previewBody: document.getElementById('data-well-portfolio-preview-body'),
-            previewNotice: document.getElementById('data-well-portfolio-preview-notice'),
-            copyButton: document.querySelector('[data-export-copy="data-well-portfolio"]'),
-            copyStatus: document.getElementById('data-well-portfolio-copy-status'),
-            curlButton: document.querySelector('[data-export-curl="data-well-portfolio"]'),
-            curlStatus: document.getElementById('data-well-portfolio-curl-status'),
-            sqlButton: document.querySelector('[data-export-sql="data-well-portfolio"]'),
-            sqlStatus: document.getElementById('data-well-portfolio-sql-status'),
-            hashButton: document.querySelector('[data-export-hash="data-well-portfolio"]'),
-            hashStatus: document.getElementById('data-well-portfolio-hash-status'),
-            hashValue: document.getElementById('data-well-portfolio-hash')
-        },
-        activities: {
-            recordCount: document.getElementById('data-activity-count'),
-            columnsList: document.getElementById('data-activity-columns'),
-            size: document.getElementById('data-activity-size'),
-            previewHead: document.getElementById('data-activity-preview-head'),
-            previewBody: document.getElementById('data-activity-preview-body'),
-            previewNotice: document.getElementById('data-activity-preview-notice'),
-            copyButton: document.querySelector('[data-export-copy="data-activity-cost-rates"]'),
-            copyStatus: document.getElementById('data-activity-copy-status'),
-            curlButton: document.querySelector('[data-export-curl="data-activity-cost-rates"]'),
-            curlStatus: document.getElementById('data-activity-curl-status'),
-            sqlButton: document.querySelector('[data-export-sql="data-activity-cost-rates"]'),
-            sqlStatus: document.getElementById('data-activity-sql-status'),
-            hashButton: document.querySelector('[data-export-hash="data-activity-cost-rates"]'),
-            hashStatus: document.getElementById('data-activity-hash-status'),
-            hashValue: document.getElementById('data-activity-hash')
-        },
-        equipment: {
-            recordCount: document.getElementById('data-equipment-count'),
-            columnsList: document.getElementById('data-equipment-columns'),
-            size: document.getElementById('data-equipment-size'),
-            previewHead: document.getElementById('data-equipment-preview-head'),
-            previewBody: document.getElementById('data-equipment-preview-body'),
-            previewNotice: document.getElementById('data-equipment-preview-notice'),
-            copyButton: document.querySelector('[data-export-copy="data-equipment-tools"]'),
-            copyStatus: document.getElementById('data-equipment-copy-status'),
-            curlButton: document.querySelector('[data-export-curl="data-equipment-tools"]'),
-            curlStatus: document.getElementById('data-equipment-curl-status'),
-            sqlButton: document.querySelector('[data-export-sql="data-equipment-tools"]'),
-            sqlStatus: document.getElementById('data-equipment-sql-status'),
-            hashButton: document.querySelector('[data-export-hash="data-equipment-tools"]'),
-            hashStatus: document.getElementById('data-equipment-hash-status'),
-            hashValue: document.getElementById('data-equipment-hash')
-        },
-        personnel: {
-            recordCount: document.getElementById('data-personnel-count'),
-            columnsList: document.getElementById('data-personnel-columns'),
-            size: document.getElementById('data-personnel-size'),
-            previewHead: document.getElementById('data-personnel-preview-head'),
-            previewBody: document.getElementById('data-personnel-preview-body'),
-            previewNotice: document.getElementById('data-personnel-preview-notice'),
-            copyButton: document.querySelector('[data-export-copy="data-personnel-rates"]'),
-            copyStatus: document.getElementById('data-personnel-copy-status'),
-            curlButton: document.querySelector('[data-export-curl="data-personnel-rates"]'),
-            curlStatus: document.getElementById('data-personnel-curl-status'),
-            sqlButton: document.querySelector('[data-export-sql="data-personnel-rates"]'),
-            sqlStatus: document.getElementById('data-personnel-sql-status'),
-            hashButton: document.querySelector('[data-export-hash="data-personnel-rates"]'),
-            hashStatus: document.getElementById('data-personnel-hash-status'),
-            hashValue: document.getElementById('data-personnel-hash')
-        }
-    };
-
-    const DATA_PREVIEW_MAX_ROWS = 3;
-    const DATA_PREVIEW_MAX_COLUMNS = 5;
-
-    const dataExportDatasets = [
+    const wellThemeFilters = [
         {
-            file: 'data-well-666.csv',
-            elements: dataExportElements.w666,
-            schema: dataExportSchemas['data-well-666.csv']
+            id: 'integrity',
+            label: 'Integrity',
+            description: 'Casing deformation, barrier failures, or structural threats',
+            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('integrity')
         },
         {
-            file: 'data-well-portfolio.csv',
-            elements: dataExportElements.portfolio,
-            schema: dataExportSchemas['data-well-portfolio.csv']
+            id: 'flow-assurance',
+            label: 'Flow Assurance',
+            description: 'Scale, sand, wax, or production-blocking deposition',
+            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('flow-assurance')
         },
         {
-            file: 'data-activity-cost-rates.csv',
-            elements: dataExportElements.activities,
-            schema: dataExportSchemas['data-activity-cost-rates.csv']
+            id: 'controls',
+            label: 'Controls & Safety',
+            description: 'Safety valves, automation, or control system reliability',
+            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('controls')
         },
         {
-            file: 'data-equipment-tools.csv',
-            elements: dataExportElements.equipment,
-            schema: dataExportSchemas['data-equipment-tools.csv']
+            id: 'productivity',
+            label: 'Production Recovery',
+            description: 'Demonstrated uplift in production or uptime',
+            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('productivity')
+        }
+    ];
+
+    const wellFocusFilterMap = new Map(wellFocusFilters.map((filter) => [filter.id, filter]));
+    const wellThemeFilterMap = new Map(wellThemeFilters.map((filter) => [filter.id, filter]));
+
+    const evaluateTheme = (themeId, well) => {
+        const themeFilter = wellThemeFilterMap.get(themeId);
+        return themeFilter ? !!themeFilter.predicate(well) : false;
+    };
+
+    const totalFocusCounts = new Map(
+        wellFocusFilters.map((filter) => [filter.id, wellData.filter((well) => filter.predicate(well)).length])
+    );
+
+    const totalThemeCounts = new Map(
+        wellThemeFilters.map((filter) => [filter.id, wellData.filter((well) => filter.predicate(well)).length])
+    );
+
+    const portfolioSignalDefinitions = [
+        {
+            id: 'critical',
+            label: 'Critical Path Wells',
+            icon: '🚨',
+            description: 'Assets requiring immediate intervention.',
+            predicate: (well) => {
+                const focusFilter = wellFocusFilterMap.get('critical');
+                return focusFilter ? focusFilter.predicate(well) : false;
+            },
+            cardClass: 'border-red-500/40 bg-red-500/10',
+            progressClass: 'bg-red-500'
         },
         {
-            file: 'data-personnel-rates.csv',
-            elements: dataExportElements.personnel,
-            schema: dataExportSchemas['data-personnel-rates.csv']
+            id: 'integrity',
+            label: 'Integrity Threats',
+            icon: '🛡️',
+            description: 'Casing & barrier risks captured across the portfolio.',
+            predicate: (well) => evaluateTheme('integrity', well),
+            cardClass: 'border-amber-500/40 bg-amber-500/10',
+            progressClass: 'bg-amber-500'
+        },
+        {
+            id: 'flow-assurance',
+            label: 'Flow Assurance Risks',
+            icon: '💧',
+            description: 'Scale, wax, and sand threats to production continuity.',
+            predicate: (well) => evaluateTheme('flow-assurance', well),
+            cardClass: 'border-blue-500/40 bg-blue-500/10',
+            progressClass: 'bg-sky-500'
+        },
+        {
+            id: 'productivity',
+            label: 'Production Recovery Wins',
+            icon: '📈',
+            description: 'Demonstrated uplift after intervention.',
+            predicate: (well) => evaluateTheme('productivity', well),
+            cardClass: 'border-emerald-500/40 bg-emerald-500/10',
+            progressClass: 'bg-emerald-500'
         }
     ];
     
-    // Planner
-
-    const stepIndicators = { 
-        1: document.getElementById('step-1-indicator'), 
-        2: document.getElementById('step-2-indicator'), 
-        3: document.getElementById('step-3-indicator') 
-    };
-    
-    const stepConnectors = {
-        1: document.getElementById('step-1-connector'),
-        2: document.getElementById('step-2-connector')
-    };
-    
-    const stepSections = { 
-        1: document.getElementById('step-1'), 
-        2: document.getElementById('step-2'), 
-        3: document.getElementById('step-3') 
-    };
-    
     const wellSelectionGrid = document.getElementById('well-selection-grid');
+    const wellPortfolioSignals = document.getElementById('portfolio-signals');
+    const wellFilterSummary = document.getElementById('well-filter-summary');
+    const wellSearchInput = document.getElementById('well-search-input');
+    const wellFocusGroup = document.getElementById('well-focus-group');
+    const wellThemeGroup = document.getElementById('well-theme-group');
     const objectivesFieldset = document.getElementById('objectives-fieldset');
     const problemsFieldset = document.getElementById('problems-fieldset');
     const generatePlanBtnManual = document.getElementById('generate-plan-btn-manual');
@@ -2328,14 +2484,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Modal
 
-    const modal = document.getElementById('well-history-modal'), 
-    modalTitle = document.getElementById('modal-title'), 
-    modalContent = document.getElementById('modal-content'), 
+    const modal = document.getElementById('well-history-modal'),
+    modalTitle = document.getElementById('modal-title'),
+    modalContent = document.getElementById('modal-content'),
     closeModalBtn = document.getElementById('close-modal-btn');
+    let lastFocusedElement = null;
     
     // Theme
 
     const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    const dataScrubbingPanel = document.getElementById('data-scrubbing-panel');
+    const dataScrubbingOverview = document.getElementById('data-scrubbing-overview');
+    const dataScrubbingStages = document.getElementById('data-scrubbing-stages');
+    const dataScrubbingSchema = document.getElementById('data-scrubbing-schema');
+    const dataScrubbingRaw = document.getElementById('data-scrubbing-raw');
+    const dataScrubbingNormalized = document.getElementById('data-scrubbing-normalized');
+    const dataScrubbingSummary = document.getElementById('data-scrubbing-summary');
+    const heroPlannerBtn = document.getElementById('hero-planner-btn');
 
     const addListener = (element, eventName, handler, options) => {
         if (element) {
@@ -2362,7 +2527,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const normalizedView = viewName.toLowerCase();
         const plannerMessage = planRequiredMessages.get(normalizedView)
-            || `Generate a plan to open the ${sourceLabel || 'selected'} workspace.`;
+            ?? `Generate a plan to open the ${sourceLabel || 'selected'} workspace.`;
         announcePlannerStatus(plannerMessage);
         if (appState.currentView !== 'planner') {
             switchView('planner');
@@ -2408,16 +2573,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if(appState.selectedWell && appState.generatedPlan) {
                 headerDetails.innerHTML = `<div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
             }
-            if (viewName === 'commercial') renderCommercialView();
-            if (viewName === 'hse') renderHSEView();
-            if (viewName === 'pob') renderPOBView();
-        } else if (viewName === 'logistics') {
-            renderAssetManagementViews();
-        } else if (viewName === 'faq') {
-            initializeFaqAccordion();
         }
     };
-
     window.showView = (viewName, sourceLabel) => {
         if (!viewName) return;
         if (enforcePlanAccess(viewName, sourceLabel)) {
@@ -2456,8 +2613,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (aiToggle) aiToggle.checked = false;
         if (manualPlanningView) manualPlanningView.classList.remove('hidden');
         if (aiAdvisorView) aiAdvisorView.classList.add('hidden');
-        
+
         switchView(switchToHome ? 'home' : 'planner');
+        renderWellCards();
         updatePlannerStepUI(1);
         updateNavLinks();
     };
@@ -2482,20 +2640,222 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- PLANNER LOGIC ---
 
-    const renderWellCards = () => { 
-        wellSelectionGrid.innerHTML = wellData.map(well => {
+    const filterWellPortfolio = () => {
+        const filters = appState.wellFilters || { query: '', focus: 'all', themes: new Set() };
+        const query = (filters.query || '').trim().toLowerCase();
+        const focusFilter = wellFocusFilterMap.get(filters.focus) || wellFocusFilterMap.get('all');
+        const activeThemes = filters.themes instanceof Set ? filters.themes : new Set();
+
+        return wellData.filter((well) => {
+            if (focusFilter && !focusFilter.predicate(well)) {
+                return false;
+            }
+
+            if (activeThemes.size > 0) {
+                const wellThemes = new Set(well.themes || []);
+                for (const themeId of activeThemes) {
+                    if (!wellThemes.has(themeId)) {
+                        return false;
+                    }
+                }
+            }
+
+            if (query) {
+                const haystack = [
+                    well.id,
+                    well.name,
+                    well.field,
+                    well.region,
+                    well.type,
+                    well.status,
+                    well.issue,
+                    ...(well.themes || []),
+                    ...((well.history || []).map((entry) => `${entry.operation} ${entry.problem} ${entry.lesson}`))
+                ].join(' ').toLowerCase();
+
+                if (!haystack.includes(query)) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+    };
+
+    const syncFocusChipStates = () => {
+        if (!wellFocusGroup) return;
+        const activeFocus = (appState.wellFilters && appState.wellFilters.focus) || 'all';
+        wellFocusGroup.querySelectorAll('[data-focus-filter]').forEach((button) => {
+            const isActive = button.dataset.focusFilter === activeFocus;
+            button.classList.toggle('filter-chip--active', isActive);
+            button.setAttribute('aria-pressed', String(isActive));
+        });
+    };
+
+    const syncThemeChipStates = () => {
+        if (!wellThemeGroup) return;
+        const activeThemes = (appState.wellFilters && appState.wellFilters.themes instanceof Set)
+            ? appState.wellFilters.themes
+            : new Set();
+        wellThemeGroup.querySelectorAll('[data-theme-filter]').forEach((button) => {
+            const themeId = button.dataset.themeFilter;
+            const isActive = activeThemes.has(themeId);
+            button.classList.toggle('filter-chip--active', isActive);
+            button.setAttribute('aria-pressed', String(isActive));
+        });
+    };
+
+    const updateFocusCounts = (filteredWells) => {
+        if (!wellFocusGroup) return;
+        const filteredCounts = new Map();
+        filteredWells.forEach((well) => {
+            wellFocusFilters.forEach((filter) => {
+                if (filter.predicate(well)) {
+                    filteredCounts.set(filter.id, (filteredCounts.get(filter.id) || 0) + 1);
+                }
+            });
+        });
+
+        wellFocusFilters.forEach((filter) => {
+            const countElement = wellFocusGroup.querySelector(`[data-focus-count="${filter.id}"]`);
+            if (!countElement) return;
+            const visible = filteredCounts.get(filter.id) || 0;
+            const total = totalFocusCounts.get(filter.id) || 0;
+            countElement.textContent = `${visible}/${total}`;
+        });
+    };
+
+    const updateThemeCounts = (filteredWells) => {
+        if (!wellThemeGroup) return;
+        const filteredThemeCounts = new Map();
+        filteredWells.forEach((well) => {
+            (well.themes || []).forEach((themeId) => {
+                filteredThemeCounts.set(themeId, (filteredThemeCounts.get(themeId) || 0) + 1);
+            });
+        });
+
+        wellThemeFilters.forEach((filter) => {
+            const countElement = wellThemeGroup.querySelector(`[data-theme-count="${filter.id}"]`);
+            if (!countElement) return;
+            const visible = filteredThemeCounts.get(filter.id) || 0;
+            const total = totalThemeCounts.get(filter.id) || 0;
+            countElement.textContent = `${visible}/${total}`;
+        });
+    };
+
+    const updateWellFilterSummary = (filteredWells) => {
+        if (!wellFilterSummary) return;
+        const total = wellData.length;
+        const filtered = filteredWells.length;
+        const filters = appState.wellFilters || { query: '', focus: 'all', themes: new Set() };
+        const descriptors = [];
+
+        if (filters.focus && filters.focus !== 'all') {
+            const focusLabel = wellFocusFilterMap.get(filters.focus)?.label;
+            if (focusLabel) descriptors.push(focusLabel);
+        }
+
+        if (filters.themes instanceof Set && filters.themes.size > 0) {
+            const themeLabels = Array.from(filters.themes)
+                .map((themeId) => wellThemeFilterMap.get(themeId)?.label)
+                .filter(Boolean);
+            if (themeLabels.length) {
+                descriptors.push(`Themes: ${themeLabels.join(', ')}`);
+            }
+        }
+
+        if (filters.query) {
+            descriptors.push(`Search: “${filters.query.trim()}”`);
+        }
+
+        const selectedHidden = appState.selectedWell
+            ? !filteredWells.some((well) => well.id === appState.selectedWell.id)
+            : false;
+
+        const filterDescription = descriptors.length ? `Filters active — ${descriptors.join(' · ')}` : 'No filters applied.';
+        const hiddenNotice = selectedHidden ? ' The selected well is hidden by the current filters.' : '';
+
+        wellFilterSummary.textContent = `Showing ${filtered} of ${total} wells. ${filterDescription}${hiddenNotice}`;
+    };
+
+    const renderPortfolioSignals = (filteredWells) => {
+        if (!wellPortfolioSignals) return;
+        const cards = portfolioSignalDefinitions.map((signal) => {
+            const predicate = signal.predicate || (() => false);
+            const total = wellData.filter(predicate).length;
+            const visible = filteredWells.filter(predicate).length;
+            const percent = total === 0 ? 0 : Math.round((visible / total) * 100);
+
+            return `
+                <article class="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-inner ${signal.cardClass}" data-signal-id="${signal.id}">
+                    <div class="flex items-center gap-3">
+                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900/70 text-lg">${signal.icon}</span>
+                        <div>
+                            <p class="text-sm font-semibold uppercase tracking-wide text-slate-300">${signal.label}</p>
+                            <p class="text-xs text-slate-400">${signal.description}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-baseline gap-2">
+                        <span class="text-3xl font-bold text-white">${visible}</span>
+                        <span class="text-xs uppercase tracking-wide text-slate-400">visible now</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Portfolio total: ${total}</p>
+                    <div class="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-800/70">
+                        <div class="h-full ${signal.progressClass}" style="width: ${percent}%;"></div>
+                    </div>
+                </article>
+            `;
+        });
+
+        wellPortfolioSignals.innerHTML = cards.join('');
+    };
+
+    const renderWellCards = () => {
+        if (!wellSelectionGrid) return;
+        const filteredWells = filterWellPortfolio();
+
+        syncFocusChipStates();
+        syncThemeChipStates();
+        updateFocusCounts(filteredWells);
+        updateThemeCounts(filteredWells);
+        updateWellFilterSummary(filteredWells);
+        renderPortfolioSignals(filteredWells);
+
+        if (!filteredWells.length) {
+            wellSelectionGrid.innerHTML = `
+                <div class="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-10 text-center text-sm text-slate-400">
+                    No wells match the current filters. Adjust your search or theme filters to continue planning.
+                </div>
+            `;
+            return;
+        }
+
+        wellSelectionGrid.innerHTML = filteredWells.map(well => {
             const isWellFromHell = well.id === 'W666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
-            const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
-            
+            const iconMarkup = renderPlannerIcon(
+                well.icon || {},
+                `${well.name} insight icon`,
+                isWellFromHell ? 'critical' : 'case'
+            );
+            const badgeMarkup = isWellFromHell
+                ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Critical intervention focus well">CRITICAL</span>'
+                : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Case study well">CASE STUDY</span>';
+            const isSelected = appState.selectedWell && appState.selectedWell.id === well.id;
+
             return `
-                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}">
+                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'} ${isSelected ? 'selected' : ''}" data-well-id="${well.id}">
                     <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-xl font-bold text-white">${well.name}</h3>
-                            ${isWellFromHell ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full">CRITICAL</span>' : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full">CASE STUDY</span>'}
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex items-start gap-3">
+                                ${iconMarkup}
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">${well.name}</h3>
+                                    <p class="mt-1 text-blue-100 text-sm">${well.field} — ${well.type}</p>
+                                </div>
+                            </div>
+                            ${badgeMarkup}
                         </div>
-                        <p class="text-sm text-blue-100">${well.field} - ${well.type}</p>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
@@ -2511,7 +2871,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             `;
-        }).join(''); 
+        }).join('');
     };
 
     const renderObjectives = () => { 
@@ -2628,7 +2988,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const pipeline = dataScrubbingPipelines[wellId];
+        const pipelineRegistry = window.dataScrubbingPipelines || dataScrubbingPipelines || {};
+        const pipeline = pipelineRegistry[wellId];
 
         if (!pipeline) {
             dataScrubbingPanel.classList.add('hidden');
@@ -3097,6 +3458,62 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p class="text-sm text-emerald-100">No resource conflicts detected. Mobilisation can proceed when approvals are complete.</p>
             </div>
         `;
+        const getTrendClass = (direction) => direction === 'up' ? 'sustainability-trend--up' : 'sustainability-trend--down';
+        const sustainability = plan.sustainability;
+        const sustainabilityMetricsMarkup = sustainability && Array.isArray(sustainability.metrics)
+            ? sustainability.metrics.map(metric => {
+                const context = metric.context ? `<span class="sustainability-context">${metric.context}</span>` : '';
+                const trend = metric.trend
+                    ? `<span class="sustainability-trend ${getTrendClass(metric.direction)}">${metric.trend}</span>`
+                    : '';
+                return `
+                    <dt class="sustainability-metric__label">${metric.label}</dt>
+                    <dd class="sustainability-metric__value">
+                        <span class="sustainability-value">${metric.value}</span>
+                        ${context}
+                        ${trend}
+                    </dd>
+                `;
+            }).join('')
+            : '';
+        const sustainabilityAssuranceHtml = sustainability && sustainability.assurance
+            ? `
+                <div class="sustainability-assurance mt-5">
+                    <span class="sustainability-assurance__label">${sustainability.assurance.label}</span>
+                    <span class="sustainability-assurance__value">${sustainability.assurance.value}</span>
+                    ${sustainability.assurance.context ? `<p class="sustainability-assurance__context">${sustainability.assurance.context}</p>` : ''}
+                </div>
+            `
+            : '';
+        const sustainabilityHighlightHtml = sustainability && sustainability.highlight
+            ? `<p class="text-sm text-slate-400">${sustainability.highlight}</p>`
+            : '';
+        const sustainabilityBadgeHtml = sustainability && sustainability.badge
+            ? `<span class="sustainability-badge">${sustainability.badge}</span>`
+            : '';
+        const sustainabilityCard = sustainability
+            ? `
+                <div class="light-card p-5 rounded-lg sustainability-card" data-test-sustainability-card="true">
+                    <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                            <h4 class="text-lg font-semibold mb-1">Energy &amp; Emissions Impact</h4>
+                            ${sustainabilityHighlightHtml}
+                        </div>
+                        ${sustainabilityBadgeHtml}
+                    </div>
+                    ${sustainabilityMetricsMarkup ? `<dl class="sustainability-metric-grid mt-5">${sustainabilityMetricsMarkup}</dl>` : ''}
+                    ${sustainabilityAssuranceHtml}
+                </div>
+            `
+            : '';
+        const crewCard = `
+            <div class="light-card p-5 rounded-lg">
+                <h4 class="text-lg font-semibold mb-2">Crew Line-Up</h4>
+                <ul>${personnelHtml}</ul>
+                <p class="text-xs text-slate-500 mt-3">Detailed certifications and travel plans are managed in the Logistics workspace.</p>
+            </div>
+        `;
+        const rightColumnCards = [crewCard, conflictHtml, sustainabilityCard].filter(Boolean).join('');
 
         readinessOutput.innerHTML = `
             <div class="grid gap-6 lg:grid-cols-2">
@@ -3130,12 +3547,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
                 <div class="space-y-6">
-                    <div class="light-card p-5 rounded-lg">
-                        <h4 class="text-lg font-semibold mb-2">Crew Line-Up</h4>
-                        <ul>${personnelHtml}</ul>
-                        <p class="text-xs text-slate-500 mt-3">Detailed certifications and travel plans are managed in the Logistics workspace.</p>
-                    </div>
-                    ${conflictHtml}
+                    ${rightColumnCards}
                 </div>
             </div>
         `;
@@ -4119,95 +4531,7 @@ const validateInvoice = () => {
         }
     ];
 
-    const dataScrubbingPipelines = {
-        W666: {
-            overview: 'Every raw drop from the operator or a Well-Tegra engineer is scrubbed the moment it lands. LangExtract runs against the intake to normalize barrier failures, obstruction depths, and recommended actions before the planner ever consumes the data.',
-            stages: [
-                {
-                    title: '1. Intake & Hashing',
-                    status: 'Completed',
-                    badgeClass: 'border-emerald-400 text-emerald-300',
-                    description: 'Encrypted SFTP drop validates checksums and timestamps each inbound artifact so the provenance is locked before parsing begins.',
-                    artifacts: [
-                        'Slickline DDR • 2024-04-10',
-                        'Vendor BaSO₄ Scale Survey • 2024-03-28',
-                        'TRSSV Negative Test Worksheet • 2024-04-10'
-                    ]
-                },
-                {
-                    title: '2. LangExtract Structuring',
-                    status: 'Completed',
-                    badgeClass: 'border-emerald-400 text-emerald-300',
-                    description: 'LangExtract prompt library extracts barrier failures, obstruction depths, annulus pressures, and recommended actions with direct citations back to the source sentences.',
-                    artifacts: [
-                        'Model: gemini-2.5-flash (dry-run sandbox)',
-                        'Prompt template: wtgr/w666/barrier_rules.json',
-                        'Output bundle: w666_ingest_2024-04-10.jsonl'
-                    ]
-                },
-                {
-                    title: '3. Engineer QA & Publish',
-                    status: 'Signed Off',
-                    badgeClass: 'border-sky-400 text-sky-300',
-                    description: 'Well-Tegra engineer cross-checks citations, resolves flagged anomalies, and publishes the normalized dataset to the planning workspace.',
-                    artifacts: [
-                        'Reviewer: M. Singh (Integrity SME)',
-                        'Anomalies resolved: 2 (unit mismatch & duplicated entry)',
-                        'Publish time: 2024-04-12 18:20 UTC'
-                    ]
-                }
-            ],
-            schema: [
-                {
-                    label: 'Prompt Goal',
-                    value: 'Extract barrier failures, obstruction or debris depths, annulus pressure excursions, and recommended mitigations for W666 with direct evidence spans.'
-                },
-                {
-                    label: 'Extraction Classes',
-                    value: 'well_summary, barrier_failure, obstruction, recommended_action, risk_alert, confidence_score'
-                },
-                {
-                    label: 'Output Controls',
-                    value: 'LangExtract enforces JSON schema + cite_range_id so every field references its originating document coordinates.'
-                }
-            ],
-            rawExcerpt: '“DHSV failed to close during negative test. Pressure at A-annulus climbed to 1,850 psi. Suspect scale at ~14,200 ft restricting travel.”',
-            rawSource: 'Slickline Daily Report — 2024-04-10',
-            normalizedFindings: [
-                {
-                    label: 'barrier_failure.event',
-                    value: 'Surface-controlled subsurface safety valve failed to seal on negative test.',
-                    evidence: 'TRSSV Negative Test Worksheet §4.1 (cite_range 201-242)',
-                    confidence: 0.94
-                },
-                {
-                    label: 'obstruction.depth_ft',
-                    value: '14,200',
-                    evidence: 'Slickline DDR 2024-04-10 line 57 (cite_range 871-896)',
-                    confidence: 0.91
-                },
-                {
-                    label: 'risk_alert.detail',
-                    value: 'A-annulus pressure sustained at 1,850 psi with no bleed-off path — flagged for immediate pressure management plan.',
-                    evidence: 'LangExtract merge across DDR + scale survey (cite_ranges 901-940, 1104-1130)',
-                    confidence: 0.89
-                },
-                {
-                    label: 'recommended_action',
-                    value: 'Execute expandable patch + chemical jetting train before TRSSV change-out; align with integrated plan W666-INT-24-01.',
-                    evidence: 'Engineer QA annotation referencing historical case M-21 (cite_range 1304-1350)',
-                    confidence: 0.93
-                }
-            ],
-            qaSummary: [
-                '12 of 13 high-priority statements grounded with citations (92% coverage).',
-                'Operator and vendor identifiers hashed; canonical asset preserved as W666 for traceability.',
-                'Sign-off recorded by Well-Tegra engineer M. Singh on 2024-04-12 18:20 UTC.'
-            ]
-        }
-    };
-        
-        renderHSEView();
+    renderHSEView();
     };
 
     const renderHSEView = () => {
@@ -4327,9 +4651,12 @@ const validateInvoice = () => {
     // --- MODAL LOGIC ---
 
     const openModal = (wellId) => {
-        const well = wellData.find(w => w.id === wellId); 
-        if (!well) return;
-        
+        const well = wellData.find(w => w.id === wellId);
+        if (!well || !modal || !modalTitle || !modalContent) return;
+
+        const activeElement = document.activeElement;
+        lastFocusedElement = activeElement instanceof HTMLElement ? activeElement : null;
+
         modalTitle.textContent = `Well History & Schematic: ${well.name}`;
         modalContent.innerHTML = `
             <div class="mb-4 border-b dark:border-gray-700">
@@ -4369,8 +4696,12 @@ const validateInvoice = () => {
                 document.getElementById('modal-tab-reports').classList.toggle('hidden', e.target.dataset.tab !== 'reports');
             });
         });
-        
+
         modal.classList.remove('hidden');
+        modal.removeAttribute('aria-hidden');
+        requestAnimationFrame(() => {
+            closeModalBtn?.focus();
+        });
     };
 
     const renderModalTabs = (well) => {
@@ -4386,7 +4717,7 @@ const validateInvoice = () => {
                         </div>
                     </div>
                     <div class="flex items-start">
-                        <span class="text-xl mr-3">ðŸ’¡</span>
+                        <span class="text-xl mr-3" role="img" aria-label="Lesson learned">💡</span>
                         <div>
                             <strong class="font-semibold text-green-600 dark:text-green-400">Lesson Learned:</strong>
                             <p class="text-sm">${h.lesson}</p>
@@ -4424,7 +4755,16 @@ const validateInvoice = () => {
         ` : '<p>No daily reports available.</p>';
     };
 
-    const closeModal = () => modal.classList.add('hidden');
+    const closeModal = () => {
+        if (!modal) return;
+        modal.classList.add('hidden');
+        modal.setAttribute('aria-hidden', 'true');
+        if (lastFocusedElement) {
+            requestAnimationFrame(() => {
+                lastFocusedElement?.focus();
+            });
+        }
+    };
 
     const renderWellSchematic = (well) => {
         const isDark = body.classList.contains('theme-dark');
@@ -4950,901 +5290,6 @@ const validateInvoice = () => {
         dataExportDatasets.forEach(({ file, elements }) => {
             if (!elements || (!elements.recordCount && !elements.columnsList && !elements.size)) return;
 
-    const calculateROI = () => {
-        if (!engineerCountSlider) return;
-            fetch(file)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(`Failed to load ${file}`);
-                    }
-                    return response.text();
-                })
-                .then((text) => {
-                    const lines = text
-                        .split(/\r?\n/)
-                        .map((line) => line.trim())
-                        .filter((line) => line.length > 0);
-
-                    if (lines.length === 0) {
-                        return;
-                    }
-
-                    const headerColumns = parseCsvLine(lines[0]);
-                    const dataLines = lines.slice(1);
-                    const schema = dataExportSchemas[file];
-                    const schemaMatchesHeader = Array.isArray(schema)
-                        ? headerColumns.every((columnName) => schema.some((column) => column.name === columnName))
-                        : false;
-
-                    if (elements.recordCount) {
-                        const recordCount = Math.max(0, dataLines.length);
-                        elements.recordCount.textContent = recordCount.toString();
-                    }
-
-        const avgEngineerSalary = 120000;
-        const avgNptCostPerDay = 250000;
-        const avgNptDaysPerYear = 15;
-
-        const engineerSavings = engineers * avgEngineerSalary * timeSavings;
-        const nptSavings = avgNptCostPerDay * avgNptDaysPerYear * nptReduction;
-        const totalSavings = engineerSavings + nptSavings;
-
-        engineerCountValue.textContent = engineers;
-        engineerCountSlider.setAttribute('aria-valuenow', engineers);
-        engineerCountSlider.setAttribute('aria-valuetext', `${engineers} well engineers`);
-        nptReductionValue.textContent = `${nptReduction * 100}%`;
-        nptReductionSlider.setAttribute('aria-valuenow', nptReduction * 100);
-        nptReductionSlider.setAttribute('aria-valuetext', `${nptReduction * 100}% projected reduction`);
-        timeSavingsValue.textContent = `${timeSavings * 100}%`;
-        timeSavingsSlider.setAttribute('aria-valuenow', timeSavings * 100);
-        timeSavingsSlider.setAttribute('aria-valuetext', `${timeSavings * 100}% engineering time reclaimed`);
-        totalSavingsValue.textContent = `$${Math.round(totalSavings).toLocaleString()}`;
-
-        updateSavingsChart(engineerSavings, nptSavings);
-    };
-
-    const updateSavingsChart = (engineerSavings, nptSavings) => {
-        if(appState.savingsChartInstance) {
-            appState.savingsChartInstance.data.datasets[0].data = [engineerSavings, nptSavings];
-            appState.savingsChartInstance.update();
-        }
-    };
-
-    const initSavingsChart = () => {
-        if (!savingsChartCanvas) return;
-
-        const ctx = savingsChartCanvas.getContext('2d');
-        const isDark = body.classList.contains('theme-dark');
-
-        appState.savingsChartInstance = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Engineering Time', 'NPT Reduction'],
-                datasets: [{
-                    label: 'Annual Savings',
-                    data: [0, 0],
-                    backgroundColor: ['#0d9488', '#0891b2'],
-                    borderRadius: 4,
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                indexAxis: 'y',
-                scales: {
-                    x: {
-                        ticks: {
-                            callback: (value) => `$${(value / 1000).toLocaleString()}k`,
-                            color: isDark ? '#d1d5db' : '#4b5563'
-                        },
-                        grid: { color: isDark ? 'rgba(255, 255, 255, 0.1)' : '#e5e7eb' }
-                    },
-                    y: { 
-                        ticks: { color: isDark ? '#d1d5db' : '#4b5563' }, 
-                        grid: { display: false } 
-                    }
-                },
-                plugins: { 
-                    legend: { display: false } 
-                }
-            }
-        });
-        
-        calculateROI();
-    };
-
-    if (engineerCountSlider || nptReductionSlider || timeSavingsSlider) {
-        [engineerCountSlider, nptReductionSlider, timeSavingsSlider]
-            .filter(Boolean)
-            .forEach(slider => slider.addEventListener('input', calculateROI));
-    }
-
-    const formatByteSize = (bytes) => {
-        if (!Number.isFinite(bytes) || bytes <= 0) return '—';
-
-        const units = ['B', 'KB', 'MB'];
-        let size = bytes;
-        let unitIndex = 0;
-
-        while (size >= 1024 && unitIndex < units.length - 1) {
-            size /= 1024;
-            unitIndex += 1;
-        }
-
-        const precision = size % 1 === 0 ? 0 : 1;
-        return `${size.toFixed(precision)} ${units[unitIndex]}`;
-    };
-
-    const arrayBufferToHex = (buffer) => Array
-        .from(new Uint8Array(buffer))
-        .map((byte) => byte.toString(16).padStart(2, '0'))
-        .join('');
-
-    const copyToClipboard = async (text) => {
-        if (!text) return false;
-
-        try {
-            if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
-                await navigator.clipboard.writeText(text);
-                return true;
-            }
-        } catch (_) {
-            // Fallback to execCommand path below
-        }
-
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.setAttribute('readonly', '');
-        textarea.style.position = 'absolute';
-        textarea.style.left = '-9999px';
-        document.body.appendChild(textarea);
-        textarea.select();
-
-        let succeeded = false;
-
-        try {
-            succeeded = document.execCommand('copy');
-        } catch (_) {
-            succeeded = false;
-        }
-
-        document.body.removeChild(textarea);
-        return succeeded;
-    };
-
-    const announceCopyStatus = (statusEl, message, isError = false) => {
-        if (!statusEl) return;
-
-        if (statusEl.copyStatusTimeout) {
-            clearTimeout(statusEl.copyStatusTimeout);
-            statusEl.copyStatusTimeout = null;
-        }
-
-        statusEl.textContent = '';
-        statusEl.classList.remove('text-emerald-400', 'text-rose-400');
-
-        if (!message) {
-            return;
-        }
-
-        requestAnimationFrame(() => {
-            statusEl.textContent = message;
-            statusEl.classList.toggle('text-emerald-400', !isError);
-            statusEl.classList.toggle('text-rose-400', isError);
-
-            statusEl.copyStatusTimeout = setTimeout(() => {
-                statusEl.textContent = '';
-                statusEl.classList.remove('text-emerald-400', 'text-rose-400');
-                statusEl.copyStatusTimeout = null;
-            }, 4000);
-        });
-    };
-
-    const buildPandasSnippet = (file) => {
-        const fileUrl = new URL(file, window.location.origin).href;
-        return [
-            'import pandas as pd',
-            `df = pd.read_csv("${fileUrl}", parse_dates=True)`,
-            'print(df.head())'
-        ].join('\n');
-    };
-
-    const buildCurlSnippet = (file) => {
-        const fileUrl = new URL(file, window.location.origin).href;
-        return `curl -L -o ${file} "${fileUrl}"`;
-    };
-
-    const buildSqlSchemaSnippet = (file) => {
-        const schema = dataExportSchemas[file];
-        if (!schema || !schema.length) return '';
-
-        const tableName = file
-            .replace(/\.csv$/i, '')
-            .replace(/[^a-zA-Z0-9_]+/g, '_');
-
-        const columnDefinitions = schema
-            .map((column) => `    "${column.name}" ${column.sqlType || 'TEXT'}`)
-            .join(',\n');
-
-        const columnList = schema
-            .map((column) => `"${column.name}"`)
-            .join(', ');
-
-        return [
-            `-- Quick-start table definition for ${file}`,
-            `CREATE TABLE ${tableName} (`,
-            `${columnDefinitions}`,
-            ');',
-            '',
-            `-- Bulk load from local CSV`,
-            `COPY ${tableName} (${columnList})`,
-            "FROM '/path/to/" + file + "'",
-            "DELIMITER ','",
-            "CSV HEADER" + ';'
-        ].join('\n');
-    };
-
-    const parseCsvLine = (line) => {
-        const values = [];
-        let current = '';
-        let inQuotes = false;
-
-        for (let i = 0; i < line.length; i += 1) {
-            const char = line[i];
-
-            if (char === '"') {
-                if (inQuotes && line[i + 1] === '"') {
-                    current += '"';
-                    i += 1;
-                } else {
-                    inQuotes = !inQuotes;
-                }
-            } else if (char === ',' && !inQuotes) {
-                values.push(current.trim());
-                current = '';
-            } else {
-                current += char;
-            }
-        }
-
-        values.push(current.trim());
-        return values;
-    };
-
-    const renderDataPreview = (elements, headerColumns, dataLines) => {
-        if (!elements || !elements.previewBody || !elements.previewHead) return;
-
-        const previewColumns = headerColumns.slice(0, DATA_PREVIEW_MAX_COLUMNS);
-        const truncatedColumns = headerColumns.length > previewColumns.length;
-        const rowsToDisplay = dataLines.slice(0, DATA_PREVIEW_MAX_ROWS);
-
-        elements.previewHead.innerHTML = '';
-        const headerRow = document.createElement('tr');
-        previewColumns.forEach((columnName) => {
-            const th = document.createElement('th');
-            th.textContent = columnName;
-            th.className = 'px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-slate-400';
-            headerRow.appendChild(th);
-        });
-        elements.previewHead.appendChild(headerRow);
-        elements.previewHead.dataset.previewColumns = previewColumns.length.toString();
-
-        elements.previewBody.innerHTML = '';
-
-        if (rowsToDisplay.length === 0) {
-            const row = document.createElement('tr');
-            const cell = document.createElement('td');
-            cell.className = 'px-3 py-2 text-slate-500';
-            cell.colSpan = Math.max(previewColumns.length, 1);
-            cell.textContent = 'No records available';
-            row.appendChild(cell);
-            elements.previewBody.appendChild(row);
-        } else {
-            rowsToDisplay.forEach((line) => {
-                const values = parseCsvLine(line);
-                const row = document.createElement('tr');
-                previewColumns.forEach((_, index) => {
-                    const cell = document.createElement('td');
-                    cell.textContent = values[index] || '';
-                    cell.className = 'px-3 py-2 whitespace-nowrap text-slate-200';
-                    row.appendChild(cell);
-                });
-                elements.previewBody.appendChild(row);
-            });
-        }
-
-        if (elements.previewNotice) {
-            if (rowsToDisplay.length === 0) {
-                elements.previewNotice.textContent = 'Preview unavailable — dataset is empty.';
-            } else {
-                const rowLabel = rowsToDisplay.length === 1 ? 'record' : 'records';
-                const columnDescriptor = truncatedColumns
-                    ? `first ${previewColumns.length} columns`
-                    : `${previewColumns.length} column${previewColumns.length === 1 ? '' : 's'}`;
-                const columnText = previewColumns.length === 0
-                    ? 'dataset metadata'
-                    : columnDescriptor;
-                elements.previewNotice.textContent = `Showing first ${rowsToDisplay.length} ${rowLabel} across ${columnText}.`;
-            }
-        }
-    };
-
-    const renderDataPreviewError = (elements, message) => {
-        if (!elements || !elements.previewBody || !elements.previewHead) return;
-
-        const storedColumnCount = parseInt(elements.previewHead.dataset.previewColumns || '0', 10);
-        elements.previewHead.innerHTML = '';
-        elements.previewHead.dataset.previewColumns = '0';
-        elements.previewBody.innerHTML = '';
-
-        const row = document.createElement('tr');
-        const cell = document.createElement('td');
-        cell.className = 'px-3 py-2 text-slate-500';
-        const colSpan = Number.isNaN(storedColumnCount) ? DATA_PREVIEW_MAX_COLUMNS : Math.max(storedColumnCount, 1);
-        cell.colSpan = colSpan;
-        cell.textContent = message;
-        row.appendChild(cell);
-        elements.previewBody.appendChild(row);
-
-        if (elements.previewNotice) {
-            elements.previewNotice.textContent = message;
-        }
-    };
-
-    const bindDataExportCopyHandlers = () => {
-        if (!dataExportHub || appState.dataExportHandlersBound) return;
-
-        dataExportDatasets.forEach(({ file, elements }) => {
-            if (!elements || !elements.copyButton) return;
-
-            elements.copyButton.addEventListener('click', async () => {
-                const snippet = buildPandasSnippet(file);
-                const success = await copyToClipboard(snippet);
-
-                if (success) {
-                    announceCopyStatus(elements.copyStatus, 'Copied pandas import snippet to clipboard');
-                } else {
-                    announceCopyStatus(elements.copyStatus, 'Unable to copy. Select and copy the snippet manually.', true);
-                }
-            });
-        });
-
-        dataExportDatasets.forEach(({ file, elements }) => {
-            if (!elements || !elements.curlButton) return;
-
-            elements.curlButton.addEventListener('click', async () => {
-                const snippet = buildCurlSnippet(file);
-                const success = await copyToClipboard(snippet);
-
-                if (success) {
-                    announceCopyStatus(elements.curlStatus, 'Copied curl download command to clipboard');
-                } else {
-                    announceCopyStatus(elements.curlStatus, 'Unable to copy. Highlight and copy the command manually.', true);
-                }
-            });
-        });
-
-        dataExportDatasets.forEach(({ file, elements }) => {
-            if (!elements || !elements.sqlButton) return;
-
-            elements.sqlButton.addEventListener('click', async () => {
-                const snippet = buildSqlSchemaSnippet(file);
-
-                if (!snippet) {
-                    announceCopyStatus(elements.sqlStatus, 'SQL schema unavailable. Download the CSV to inspect the structure.', true);
-                    return;
-                }
-
-                const success = await copyToClipboard(snippet);
-
-                if (success) {
-                    announceCopyStatus(elements.sqlStatus, 'Copied SQL table definition to clipboard');
-                } else {
-                    announceCopyStatus(elements.sqlStatus, 'Unable to copy. Highlight the SQL snippet manually.', true);
-                }
-            });
-        });
-
-        dataExportDatasets.forEach(({ elements }) => {
-            if (!elements || !elements.hashButton) return;
-
-            elements.hashButton.addEventListener('click', async () => {
-                const fingerprint = elements.hashValue ? elements.hashValue.textContent.trim() : '';
-                const fingerprintAvailable = elements.hashValue && elements.hashValue.dataset.fingerprintAvailable === 'true';
-
-                if (!fingerprintAvailable || !fingerprint || fingerprint === '—') {
-                    announceCopyStatus(elements.hashStatus, 'Fingerprint unavailable. Refresh the hub or download the CSV to verify manually.', true);
-                    return;
-                }
-
-                const success = await copyToClipboard(fingerprint);
-
-                if (success) {
-                    announceCopyStatus(elements.hashStatus, 'Copied SHA-256 fingerprint to clipboard');
-                } else {
-                    announceCopyStatus(elements.hashStatus, 'Unable to copy. Highlight the fingerprint manually.', true);
-                }
-            });
-        });
-
-        appState.dataExportHandlersBound = true;
-    };
-
-    const hydrateDataExportMetadata = () => {
-        if (!dataExportHub) return;
-
-        dataExportDatasets.forEach(({ file, elements }) => {
-            if (!elements || (!elements.recordCount && !elements.columnsList && !elements.size)) return;
-
-            fetch(file)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(`Failed to load ${file}`);
-                    }
-                    return response.text();
-                })
-                .then(async (text) => {
-                    if (elements.hashValue) {
-                        elements.hashValue.textContent = 'Computing fingerprint…';
-                        elements.hashValue.dataset.fingerprintAvailable = 'false';
-                        elements.hashValue.removeAttribute('title');
-                    }
-
-                    const encoder = new TextEncoder();
-                    const encoded = encoder.encode(text);
-
-                    if (elements.size) {
-                        elements.size.textContent = formatByteSize(encoded.length);
-                    }
-
-                    let hashHex = null;
-                    if (window.crypto && window.crypto.subtle) {
-                        try {
-                            const digest = await window.crypto.subtle.digest('SHA-256', encoded);
-                            hashHex = arrayBufferToHex(digest);
-                        } catch (error) {
-                            console.error(`Failed to compute fingerprint for ${file}`, error);
-                        }
-                    }
-
-                    if (elements.hashValue) {
-                        if (hashHex) {
-                            elements.hashValue.textContent = hashHex;
-                            elements.hashValue.dataset.fingerprintAvailable = 'true';
-                            elements.hashValue.title = hashHex;
-                        } else if (!window.crypto || !window.crypto.subtle) {
-                            elements.hashValue.textContent = 'Fingerprint unavailable in this browser.';
-                            elements.hashValue.dataset.fingerprintAvailable = 'false';
-                        } else {
-                            elements.hashValue.textContent = 'Fingerprint unavailable. Download the CSV to verify manually.';
-                            elements.hashValue.dataset.fingerprintAvailable = 'false';
-                        }
-                    }
-
-                    const lines = text
-                        .split(/\r?\n/)
-                        .map((line) => line.trim())
-                        .filter((line) => line.length > 0);
-
-                    if (lines.length === 0) {
-                        if (elements.recordCount) {
-                            elements.recordCount.textContent = '0';
-                        }
-                        renderDataPreviewError(elements, 'Dataset is empty. Download the CSV to explore the headers.');
-                        return;
-                    }
-
-                    const headerColumns = parseCsvLine(lines[0]);
-                    const dataLines = lines.slice(1);
-                    const schema = dataExportSchemas[file];
-                    const schemaMatchesHeader = Array.isArray(schema)
-                        ? headerColumns.every((columnName) => schema.some((column) => column.name === columnName))
-                        : false;
-
-                    if (elements.recordCount) {
-                        const recordCount = Math.max(0, dataLines.length);
-                        elements.recordCount.textContent = recordCount.toString();
-                    }
-
-                    if (elements.columnsList) {
-                        elements.columnsList.innerHTML = '';
-
-                        if (schemaMatchesHeader) {
-                            headerColumns.forEach((columnName) => {
-                                const column = schema.find((entry) => entry.name === columnName);
-                                const item = document.createElement('li');
-                                item.className = 'space-y-1';
-
-                                const header = document.createElement('div');
-                                header.className = 'flex flex-wrap items-baseline gap-2';
-                                const nameEl = document.createElement('span');
-                                nameEl.className = 'font-semibold text-slate-200';
-                                nameEl.textContent = columnName;
-                                header.appendChild(nameEl);
-
-                                if (column && column.sqlType) {
-                                    const badge = document.createElement('span');
-                                    badge.className = 'text-[11px] uppercase tracking-wide text-slate-400 bg-slate-900/60 px-2 py-0.5 rounded-full';
-                                    badge.textContent = column.sqlType;
-                                    header.appendChild(badge);
-                                }
-
-                                item.appendChild(header);
-
-                                if (column && column.description) {
-                                    const description = document.createElement('p');
-                                    description.className = 'text-xs text-slate-400';
-                                    description.textContent = column.description;
-                                    item.appendChild(description);
-                                }
-
-                                elements.columnsList.appendChild(item);
-                            });
-                        } else {
-                            headerColumns.forEach((columnName) => {
-                                const item = document.createElement('li');
-                                item.textContent = columnName;
-                                elements.columnsList.appendChild(item);
-                            });
-                        }
-                    }
-
-                    if (elements.size) {
-                        const encoder = new TextEncoder();
-                        const sizeInBytes = encoder.encode(text).length;
-                        elements.size.textContent = formatByteSize(sizeInBytes);
-                    }
-
-                    renderDataPreview(elements, headerColumns, dataLines);
-                })
-                .catch(() => {
-                    if (elements.recordCount) {
-                        elements.recordCount.textContent = '—';
-                    }
-
-                    if (elements.columnsList) {
-                        elements.columnsList.innerHTML = '';
-                        const item = document.createElement('li');
-                        item.textContent = 'Unable to load metadata';
-                        elements.columnsList.appendChild(item);
-                    }
-
-                                item.appendChild(header);
-
-                                if (column && column.description) {
-                                    const description = document.createElement('p');
-                                    description.className = 'text-xs text-slate-400';
-                                    description.textContent = column.description;
-                                    item.appendChild(description);
-                                }
-
-                                elements.columnsList.appendChild(item);
-                            });
-                        } else {
-                            headerColumns.forEach((columnName) => {
-                                const item = document.createElement('li');
-                                item.textContent = columnName;
-                                elements.columnsList.appendChild(item);
-                            });
-                        }
-                    }
-
-                    renderDataPreview(elements, headerColumns, dataLines);
-                })
-                .catch(() => {
-                    if (elements.recordCount) {
-                        elements.recordCount.textContent = '—';
-                    }
-
-                    if (elements.columnsList) {
-                        elements.columnsList.innerHTML = '';
-                        const item = document.createElement('li');
-                        item.textContent = 'Unable to load metadata';
-                        elements.columnsList.appendChild(item);
-                    }
-
-                    if (elements.size) {
-                        elements.size.textContent = '—';
-                    }
-
-                    if (elements.hashValue) {
-                        elements.hashValue.textContent = '—';
-                        elements.hashValue.dataset.fingerprintAvailable = 'false';
-                        elements.hashValue.removeAttribute('title');
-                    }
-                },
-                plugins: { 
-                    legend: { display: false } 
-                }
-            }
-        });
-        
-        calculateROI();
-    };
-
-    if (engineerCountSlider || nptReductionSlider || timeSavingsSlider) {
-        [engineerCountSlider, nptReductionSlider, timeSavingsSlider]
-            .filter(Boolean)
-            .forEach(slider => slider.addEventListener('input', calculateROI));
-    }
-
-    const formatByteSize = (bytes) => {
-        if (!Number.isFinite(bytes) || bytes <= 0) return '—';
-
-        const units = ['B', 'KB', 'MB'];
-        let size = bytes;
-        let unitIndex = 0;
-
-        while (size >= 1024 && unitIndex < units.length - 1) {
-            size /= 1024;
-            unitIndex += 1;
-        }
-
-        const precision = size % 1 === 0 ? 0 : 1;
-        return `${size.toFixed(precision)} ${units[unitIndex]}`;
-    };
-
-    const copyToClipboard = async (text) => {
-        if (!text) return false;
-
-        try {
-            if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
-                await navigator.clipboard.writeText(text);
-                return true;
-            }
-        } catch (_) {
-            // Fallback to execCommand path below
-        }
-
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.setAttribute('readonly', '');
-        textarea.style.position = 'absolute';
-        textarea.style.left = '-9999px';
-        document.body.appendChild(textarea);
-        textarea.select();
-
-        let succeeded = false;
-
-        try {
-            succeeded = document.execCommand('copy');
-        } catch (_) {
-            succeeded = false;
-        }
-
-        document.body.removeChild(textarea);
-        return succeeded;
-    };
-
-    const announceCopyStatus = (statusEl, message, isError = false) => {
-        if (!statusEl) return;
-
-        statusEl.textContent = message;
-        statusEl.classList.toggle('text-emerald-400', !isError);
-        statusEl.classList.toggle('text-rose-400', isError);
-
-        if (message) {
-            setTimeout(() => {
-                statusEl.textContent = '';
-                statusEl.classList.remove('text-emerald-400', 'text-rose-400');
-            }, 4000);
-        }
-    };
-
-    const buildPandasSnippet = (file) => {
-        const fileUrl = new URL(file, window.location.origin).href;
-        return [
-            'import pandas as pd',
-            `df = pd.read_csv("${fileUrl}", parse_dates=True)`,
-            'print(df.head())'
-        ].join('\n');
-    };
-
-    const buildCurlSnippet = (file) => {
-        const fileUrl = new URL(file, window.location.origin).href;
-        return `curl -L -o ${file} "${fileUrl}"`;
-    };
-
-    const buildSqlSchemaSnippet = (file) => {
-        const schema = dataExportSchemas[file];
-        if (!schema || !schema.length) return '';
-
-        const tableName = file
-            .replace(/\.csv$/i, '')
-            .replace(/[^a-zA-Z0-9_]+/g, '_');
-
-        const columnDefinitions = schema
-            .map((column) => `    "${column.name}" ${column.sqlType || 'TEXT'}`)
-            .join(',\n');
-
-        const columnList = schema
-            .map((column) => `"${column.name}"`)
-            .join(', ');
-
-        return [
-            `-- Quick-start table definition for ${file}`,
-            `CREATE TABLE ${tableName} (`,
-            `${columnDefinitions}`,
-            ');',
-            '',
-            `-- Bulk load from local CSV`,
-            `COPY ${tableName} (${columnList})`,
-            "FROM '/path/to/" + file + "'",
-            "DELIMITER ','",
-            "CSV HEADER" + ';'
-        ].join('\n');
-    };
-
-    const parseCsvLine = (line) => {
-        const values = [];
-        let current = '';
-        let inQuotes = false;
-
-        for (let i = 0; i < line.length; i += 1) {
-            const char = line[i];
-
-            if (char === '"') {
-                if (inQuotes && line[i + 1] === '"') {
-                    current += '"';
-                    i += 1;
-                } else {
-                    inQuotes = !inQuotes;
-                }
-            } else if (char === ',' && !inQuotes) {
-                values.push(current.trim());
-                current = '';
-            } else {
-                current += char;
-            }
-        }
-
-        values.push(current.trim());
-        return values;
-    };
-
-    const renderDataPreview = (elements, headerColumns, dataLines) => {
-        if (!elements || !elements.previewBody || !elements.previewHead) return;
-
-        const previewColumns = headerColumns.slice(0, DATA_PREVIEW_MAX_COLUMNS);
-        const truncatedColumns = headerColumns.length > previewColumns.length;
-        const rowsToDisplay = dataLines.slice(0, DATA_PREVIEW_MAX_ROWS);
-
-        elements.previewHead.innerHTML = '';
-        const headerRow = document.createElement('tr');
-        previewColumns.forEach((columnName) => {
-            const th = document.createElement('th');
-            th.textContent = columnName;
-            th.className = 'px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-slate-400';
-            headerRow.appendChild(th);
-        });
-        elements.previewHead.appendChild(headerRow);
-        elements.previewHead.dataset.previewColumns = previewColumns.length.toString();
-
-        elements.previewBody.innerHTML = '';
-
-        if (rowsToDisplay.length === 0) {
-            const row = document.createElement('tr');
-            const cell = document.createElement('td');
-            cell.className = 'px-3 py-2 text-slate-500';
-            cell.colSpan = Math.max(previewColumns.length, 1);
-            cell.textContent = 'No records available';
-            row.appendChild(cell);
-            elements.previewBody.appendChild(row);
-        } else {
-            rowsToDisplay.forEach((line) => {
-                const values = parseCsvLine(line);
-                const row = document.createElement('tr');
-                previewColumns.forEach((_, index) => {
-                    const cell = document.createElement('td');
-                    cell.textContent = values[index] || '';
-                    cell.className = 'px-3 py-2 whitespace-nowrap text-slate-200';
-                    row.appendChild(cell);
-                });
-                elements.previewBody.appendChild(row);
-            });
-        }
-
-        if (elements.previewNotice) {
-            if (rowsToDisplay.length === 0) {
-                elements.previewNotice.textContent = 'Preview unavailable — dataset is empty.';
-            } else {
-                const rowLabel = rowsToDisplay.length === 1 ? 'record' : 'records';
-                const columnDescriptor = truncatedColumns
-                    ? `first ${previewColumns.length} columns`
-                    : `${previewColumns.length} column${previewColumns.length === 1 ? '' : 's'}`;
-                const columnText = previewColumns.length === 0
-                    ? 'dataset metadata'
-                    : columnDescriptor;
-                elements.previewNotice.textContent = `Showing first ${rowsToDisplay.length} ${rowLabel} across ${columnText}.`;
-            }
-        }
-    };
-
-    const renderDataPreviewError = (elements, message) => {
-        if (!elements || !elements.previewBody || !elements.previewHead) return;
-
-        const storedColumnCount = parseInt(elements.previewHead.dataset.previewColumns || '0', 10);
-        elements.previewHead.innerHTML = '';
-        elements.previewHead.dataset.previewColumns = '0';
-        elements.previewBody.innerHTML = '';
-
-        const row = document.createElement('tr');
-        const cell = document.createElement('td');
-        cell.className = 'px-3 py-2 text-slate-500';
-        const colSpan = Number.isNaN(storedColumnCount) ? DATA_PREVIEW_MAX_COLUMNS : Math.max(storedColumnCount, 1);
-        cell.colSpan = colSpan;
-        cell.textContent = message;
-        row.appendChild(cell);
-        elements.previewBody.appendChild(row);
-
-        if (elements.previewNotice) {
-            elements.previewNotice.textContent = message;
-        }
-    };
-
-    const bindDataExportCopyHandlers = () => {
-        if (!dataExportHub || appState.dataExportHandlersBound) return;
-
-        dataExportDatasets.forEach(({ file, elements }) => {
-            if (!elements || !elements.copyButton) return;
-
-            elements.copyButton.addEventListener('click', async () => {
-                const snippet = buildPandasSnippet(file);
-                const success = await copyToClipboard(snippet);
-
-                if (success) {
-                    announceCopyStatus(elements.copyStatus, 'Copied pandas import snippet to clipboard');
-                } else {
-                    announceCopyStatus(elements.copyStatus, 'Unable to copy. Select and copy the snippet manually.', true);
-                }
-            });
-        });
-
-        dataExportDatasets.forEach(({ file, elements }) => {
-            if (!elements || !elements.curlButton) return;
-
-            elements.curlButton.addEventListener('click', async () => {
-                const snippet = buildCurlSnippet(file);
-                const success = await copyToClipboard(snippet);
-
-                if (success) {
-                    announceCopyStatus(elements.curlStatus, 'Copied curl download command to clipboard');
-                } else {
-                    announceCopyStatus(elements.curlStatus, 'Unable to copy. Highlight and copy the command manually.', true);
-                }
-            });
-        });
-
-        dataExportDatasets.forEach(({ file, elements }) => {
-            if (!elements || !elements.sqlButton) return;
-
-            elements.sqlButton.addEventListener('click', async () => {
-                const snippet = buildSqlSchemaSnippet(file);
-
-                if (!snippet) {
-                    announceCopyStatus(elements.sqlStatus, 'SQL schema unavailable. Download the CSV to inspect the structure.', true);
-                    return;
-                }
-
-                const success = await copyToClipboard(snippet);
-
-                if (success) {
-                    announceCopyStatus(elements.sqlStatus, 'Copied SQL table definition to clipboard');
-                } else {
-                    announceCopyStatus(elements.sqlStatus, 'Unable to copy. Highlight the SQL snippet manually.', true);
-                }
-            });
-        });
-
-        appState.dataExportHandlersBound = true;
-    };
-
-    const hydrateDataExportMetadata = () => {
-        if (!dataExportHub) return;
-
-        dataExportDatasets.forEach(({ file, elements }) => {
-            if (!elements || (!elements.recordCount && !elements.columnsList && !elements.size)) return;
-
             fetch(file)
                 .then((response) => {
                     if (!response.ok) {
@@ -6049,6 +5494,12 @@ const validateInvoice = () => {
         });
     });
 
+    addListener(heroPlannerBtn, 'click', () => {
+        if (!enforcePlanAccess('planner', 'Hero CTA')) {
+            switchView('planner');
+        }
+    });
+
     // Well selection event listener
     addListener(wellSelectionGrid, 'click', (e) => {
         // Handle view details button
@@ -6202,119 +5653,6 @@ const validateInvoice = () => {
                         appState.ai.selectedRecommendation = selectedRecommendation;
                         appState.selectedObjective = objectivesData.find(o => o.id === selectedRecommendation.objectiveId) || null;
 
-
-            objectivesFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
-
-            const selectedCard = selectedInput ? selectedInput.closest('.objective-card') : null;
-            if (selectedCard) {
-                selectedCard.classList.add('selected');
-            }
-
-            const objectiveId = selectedInput ? selectedInput.value : null;
-            appState.selectedObjective = objectiveId ? objectivesData.find(o => o.id === objectiveId) : null;
-            appState.ai.selectedRecommendation = null;
-            appState.ai.selectedProblemId = null;
-
-            if (problemsFieldset) {
-                problemsFieldset.querySelectorAll('input[name="problem"]').forEach(input => {
-                    input.checked = false;
-                });
-                problemsFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
-            }
-
-            if (aiRecommendationsContainer) {
-                aiRecommendationsContainer.classList.add('hidden');
-                aiRecommendationsContainer.querySelectorAll('.ai-recommendation-enhanced').forEach(card => card.classList.remove('selected'));
-            }
-
-            if (step2ContinueBtn) step2ContinueBtn.disabled = !appState.selectedObjective;
-            if (generatePlanBtnManual) generatePlanBtnManual.disabled = !appState.selectedObjective;
-            if (generatePlanBtnAi) generatePlanBtnAi.disabled = true;
-
-            if (appState.selectedObjective) {
-                renderDesignBlueprint();
-                announcePlannerStatus(`${appState.selectedObjective.name} objective selected. Continue to the engineering blueprint.`);
-            }
-        });
-    }
-
-    // Problem selection event listener
-    if (problemsFieldset) {
-        problemsFieldset.addEventListener('change', () => {
-            const selectedInput = problemsFieldset.querySelector('input[name="problem"]:checked');
-
-            problemsFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
-            const selectedCard = selectedInput ? selectedInput.closest('.objective-card') : null;
-            if (selectedCard) {
-                selectedCard.classList.add('selected');
-            }
-
-            if (objectivesFieldset) {
-                objectivesFieldset.querySelectorAll('input[name="objective"]').forEach(input => {
-                    input.checked = false;
-                });
-                objectivesFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
-            }
-
-            const problemId = selectedInput ? selectedInput.value : null;
-            appState.ai.selectedProblemId = problemId;
-            appState.ai.selectedRecommendation = null;
-            appState.selectedObjective = null;
-
-            const problem = problemId ? problemsData.find(item => item.id === problemId) : null;
-            if (problem) {
-                announcePlannerStatus(`${problem.name} selected. Review AI recommendations below.`);
-            }
-
-            const recommendations = problemId ? (aiRecommendations[problemId] || []) : [];
-
-            if (aiRecommendationsContainer) {
-                if (recommendations.length) {
-                    aiRecommendationsContainer.innerHTML = `
-                        <h3 class="text-lg font-semibold text-center mb-4 mt-6">AI Recommendations</h3>
-                        <div class="space-y-4">
-                            ${recommendations.map((rec, index) => {
-                                const objective = objectivesData.find(o => o.id === rec.objectiveId) || {};
-                                const objectiveIcon = 'icon' in objective ? objective.icon : '';
-                                const objectiveName = 'name' in objective ? objective.name : 'Objective';
-                                return `
-                                    <div class="ai-recommendation-enhanced" data-rec-index="${index}">
-                                        <div class="confidence-badge">${rec.confidence}% Confidence</div>
-                                        <div class="flex justify-between items-start mb-2">
-                                            <h4 class="font-bold text-lg text-teal-700 dark:text-teal-400">${objectiveIcon} ${objectiveName}</h4>
-                                        </div>
-                                        <p class="text-sm mb-1"><strong>Projected Outcome:</strong> ${rec.outcome}</p>
-                                        <p class="text-xs"><strong>Reasoning:</strong> ${rec.reason}</p>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                    `;
-                    aiRecommendationsContainer.classList.remove('hidden');
-                } else {
-                    aiRecommendationsContainer.innerHTML = '<p class="text-sm text-center text-slate-400">No AI recommendations available for this problem yet.</p>';
-                    aiRecommendationsContainer.classList.remove('hidden');
-                }
-            }
-
-            if (step2ContinueBtn) step2ContinueBtn.disabled = true;
-            if (generatePlanBtnManual) generatePlanBtnManual.disabled = true;
-            if (generatePlanBtnAi) generatePlanBtnAi.disabled = true;
-
-            if (aiRecommendationsContainer) {
-                aiRecommendationsContainer.querySelectorAll('.ai-recommendation-enhanced').forEach(card => {
-                    card.addEventListener('click', (event) => {
-                        const recommendationCard = event.currentTarget;
-                        const recIndex = Number.parseInt(recommendationCard.dataset.recIndex, 10);
-                        const selectedRecommendation = aiRecommendations[problemId]?.[recIndex];
-                        if (!selectedRecommendation) {
-                            announcePlannerStatus('Unable to load the selected AI recommendation. Please choose a different option.');
-                            return;
-                        }
-
-                        appState.ai.selectedRecommendation = selectedRecommendation;
-                        appState.selectedObjective = objectivesData.find(o => o.id === selectedRecommendation.objectiveId) || null;
-
                         aiRecommendationsContainer.querySelectorAll('.ai-recommendation-enhanced').forEach(element => element.classList.remove('selected'));
                         recommendationCard.classList.add('selected');
 
@@ -6359,187 +5697,6 @@ const validateInvoice = () => {
             if (step2ContinueBtn) {
                 const hasSelection = useAiAdvisor ? !!appState.ai.selectedRecommendation : !!appState.selectedObjective;
                 step2ContinueBtn.disabled = !hasSelection;
-            }
-
-            if (generatePlanBtnManual) {
-                generatePlanBtnManual.disabled = useAiAdvisor ? true : !appState.selectedObjective;
-            }
-
-            if (generatePlanBtnAi) {
-                generatePlanBtnAi.disabled = useAiAdvisor ? !appState.ai.selectedRecommendation : true;
-            }
-
-            renderDesignBlueprint();
-        });
-    }
-
-
-            objectivesFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
-
-            const selectedCard = selectedInput ? selectedInput.closest('.objective-card') : null;
-            if (selectedCard) {
-                selectedCard.classList.add('selected');
-            }
-
-            const objectiveId = selectedInput ? selectedInput.value : null;
-            appState.selectedObjective = objectiveId ? objectivesData.find(o => o.id === objectiveId) : null;
-            appState.ai.selectedRecommendation = null;
-            appState.ai.selectedProblemId = null;
-
-            if (problemsFieldset) {
-                problemsFieldset.querySelectorAll('input[name="problem"]').forEach(input => {
-                    input.checked = false;
-                });
-                problemsFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
-            }
-
-            if (aiRecommendationsContainer) {
-                aiRecommendationsContainer.classList.add('hidden');
-                aiRecommendationsContainer.querySelectorAll('.ai-recommendation-enhanced').forEach(card => card.classList.remove('selected'));
-            }
-
-            if (step2ContinueBtn) step2ContinueBtn.disabled = !appState.selectedObjective;
-            if (generatePlanBtnManual) generatePlanBtnManual.disabled = !appState.selectedObjective;
-            if (generatePlanBtnAi) generatePlanBtnAi.disabled = true;
-
-            if (appState.selectedObjective) {
-                renderDesignBlueprint();
-                announcePlannerStatus(`${appState.selectedObjective.name} objective selected. Continue to the engineering blueprint.`);
-            }
-        });
-    }
-
-    // Problem selection event listener
-    if (problemsFieldset) {
-        problemsFieldset.addEventListener('change', () => {
-            const selectedInput = problemsFieldset.querySelector('input[name="problem"]:checked');
-
-            problemsFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
-            const selectedCard = selectedInput ? selectedInput.closest('.objective-card') : null;
-            if (selectedCard) {
-                selectedCard.classList.add('selected');
-            }
-
-            if (objectivesFieldset) {
-                objectivesFieldset.querySelectorAll('input[name="objective"]').forEach(input => {
-                    input.checked = false;
-                });
-                objectivesFieldset.querySelectorAll('.objective-card').forEach(card => card.classList.remove('selected'));
-            }
-
-            const problemId = selectedInput ? selectedInput.value : null;
-            appState.ai.selectedProblemId = problemId;
-            appState.ai.selectedRecommendation = null;
-            appState.selectedObjective = null;
-
-            const problem = problemId ? problemsData.find(item => item.id === problemId) : null;
-            if (problem) {
-                announcePlannerStatus(`${problem.name} selected. Review AI recommendations below.`);
-            }
-
-            const recommendations = problemId ? (aiRecommendations[problemId] || []) : [];
-
-            if (aiRecommendationsContainer) {
-                if (recommendations.length) {
-                    aiRecommendationsContainer.innerHTML = `
-                        <h3 class="text-lg font-semibold text-center mb-4 mt-6">AI Recommendations</h3>
-                        <div class="space-y-4">
-                            ${recommendations.map((rec, index) => {
-                                const objective = objectivesData.find(o => o.id === rec.objectiveId) || {};
-                                const objectiveIcon = 'icon' in objective ? objective.icon : '';
-                                const objectiveName = 'name' in objective ? objective.name : 'Objective';
-                                return `
-                                    <div class="ai-recommendation-enhanced" data-rec-index="${index}">
-                                        <div class="confidence-badge">${rec.confidence}% Confidence</div>
-                                        <div class="flex justify-between items-start mb-2">
-                                            <h4 class="font-bold text-lg text-teal-700 dark:text-teal-400">${objectiveIcon} ${objectiveName}</h4>
-                                        </div>
-                                        <p class="text-sm mb-1"><strong>Projected Outcome:</strong> ${rec.outcome}</p>
-                                        <p class="text-xs"><strong>Reasoning:</strong> ${rec.reason}</p>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                    `;
-                    aiRecommendationsContainer.classList.remove('hidden');
-                } else {
-                    aiRecommendationsContainer.innerHTML = '<p class="text-sm text-center text-slate-400">No AI recommendations available for this problem yet.</p>';
-                    aiRecommendationsContainer.classList.remove('hidden');
-                }
-            }
-
-            if (step2ContinueBtn) step2ContinueBtn.disabled = true;
-            if (generatePlanBtnManual) generatePlanBtnManual.disabled = true;
-            if (generatePlanBtnAi) generatePlanBtnAi.disabled = true;
-
-            if (aiRecommendationsContainer) {
-                aiRecommendationsContainer.querySelectorAll('.ai-recommendation-enhanced').forEach(card => {
-                    card.addEventListener('click', (event) => {
-                        const recommendationCard = event.currentTarget;
-                        const recIndex = Number.parseInt(recommendationCard.dataset.recIndex, 10);
-                        const selectedRecommendation = aiRecommendations[problemId]?.[recIndex];
-                        if (!selectedRecommendation) {
-                            announcePlannerStatus('Unable to load the selected AI recommendation. Please choose a different option.');
-                            return;
-                        }
-
-                        appState.ai.selectedRecommendation = selectedRecommendation;
-                        appState.selectedObjective = objectivesData.find(o => o.id === selectedRecommendation.objectiveId) || null;
-
-                        aiRecommendationsContainer.querySelectorAll('.ai-recommendation-enhanced').forEach(element => element.classList.remove('selected'));
-                        recommendationCard.classList.add('selected');
-
-                        if (step2ContinueBtn) step2ContinueBtn.disabled = false;
-                        if (generatePlanBtnAi) generatePlanBtnAi.disabled = false;
-                        if (generatePlanBtnManual) generatePlanBtnManual.disabled = true;
-
-                        renderDesignBlueprint();
-                        announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Continue to the engineering blueprint.`);
-                        announcePlannerStatus(`AI recommendation ${recIndex + 1} selected. Generate plan when ready.`);
-                    });
-                });
-            }
-        });
-    }
-
-    // AI toggle event listener
-    if (aiToggle) {
-        aiToggle.addEventListener('change', (event) => {
-            const useAiAdvisor = event.target.checked;
-
-            if (manualPlanningView) manualPlanningView.classList.toggle('hidden', useAiAdvisor);
-            if (aiAdvisorView) aiAdvisorView.classList.toggle('hidden', !useAiAdvisor);
-
-            announcePlannerStatus(useAiAdvisor ? 'AI Advisor enabled. Select a problem to view recommendations.' : 'Manual planning enabled. Select an objective to continue.');
-
-            if (useAiAdvisor && appState.selectedWell && appState.selectedWell.id !== 'W666') {
-                if (aiAdvisorView) {
-                    aiAdvisorView.innerHTML = `
-                        <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
-                            <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (W666) scenario. Please select W666 to see AI recommendations.</p>
-                        </div>
-                    `;
-                }
-            } else {
-                renderProblems();
-                if (!useAiAdvisor && aiRecommendationsContainer) {
-                    aiRecommendationsContainer.classList.add('hidden');
-                }
-            }
-
-            if (step2ContinueBtn) {
-                const hasSelection = useAiAdvisor ? !!appState.ai.selectedRecommendation : !!appState.selectedObjective;
-                step2ContinueBtn.disabled = !hasSelection;
-            }
-
-            if (generatePlanBtnManual) {
-                generatePlanBtnManual.disabled = useAiAdvisor ? true : !appState.selectedObjective;
-            }
-
-            if (generatePlanBtnAi) {
-                generatePlanBtnAi.disabled = useAiAdvisor ? !appState.ai.selectedRecommendation : true;
-            }
-
             }
 
             if (generatePlanBtnManual) {
@@ -6730,9 +5887,16 @@ const validateInvoice = () => {
     );
 
     addListener(closeModalBtn, 'click', closeModal);
+    addListener(modal, 'click', (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
 
-    addListener(modal, 'click', (e) => {
-        if (e.target === modal) closeModal();
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
     });
 
     /* ========================================
@@ -6965,8 +6129,51 @@ const validateInvoice = () => {
         setPlayingState(!heroVideo.paused);
     };
 
+    const initializeWellFilters = () => {
+        if (!wellSelectionGrid) return;
+
+        if (!appState.wellFilters || !(appState.wellFilters.themes instanceof Set)) {
+            appState.wellFilters = { query: '', focus: 'all', themes: new Set() };
+        }
+
+        if (wellSearchInput) {
+            wellSearchInput.addEventListener('input', (event) => {
+                appState.wellFilters.query = event.target.value;
+                renderWellCards();
+            });
+        }
+
+        if (wellFocusGroup) {
+            wellFocusGroup.querySelectorAll('[data-focus-filter]').forEach((button) => {
+                button.addEventListener('click', () => {
+                    const focusId = button.dataset.focusFilter || 'all';
+                    if (appState.wellFilters.focus === focusId) return;
+                    appState.wellFilters.focus = focusId;
+                    renderWellCards();
+                });
+            });
+        }
+
+        if (wellThemeGroup) {
+            wellThemeGroup.querySelectorAll('[data-theme-filter]').forEach((button) => {
+                button.addEventListener('click', () => {
+                    const themeId = button.dataset.themeFilter;
+                    if (!themeId) return;
+                    const themes = appState.wellFilters.themes;
+                    if (themes.has(themeId)) {
+                        themes.delete(themeId);
+                    } else {
+                        themes.add(themeId);
+                    }
+                    renderWellCards();
+                });
+            });
+        }
+    };
+
     const init = () => {
         initializeHeroVideoToggle();
+        initializeWellFilters();
         renderWellCards();
         renderObjectives();
         renderProblems();
