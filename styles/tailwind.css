@@ -217,9 +217,10 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; } /* Bolder headings */
 .risk-low { background-color: #dcfce7; color: #166534; }
 .risk-medium { background-color: #fef9c3; color: #854d0e; }
 .risk-high { background-color: #fee2e2; color: #991b1b; }
-.status-available, .status-active-underperforming, .status-active-lowinjectivity, .status-approved, .status-mustered, .status-passed, .status-active-restoredproduction, .status-pa-successful { background-color: #dcfce7; color: #166534; }
-.status-maintenance, .status-pending, .status-intransit, .status-standby { background-color: #fef9c3; color: #854d0e; }
-.status-unavailable, .status-onjob, .status-expired, .status-unaccounted, .status-failed, .status-drilling-criticalsection, .status-shut-in, .status-shut-in-wellintegrityissues, .status-pacandidate { background-color: #fee2e2; color: #991b1b; }
+.status-available, .status-active-underperforming, .status-active-lowinjectivity, .status-approved, .status-complete, .status-generated, .status-mustered, .status-passed, .status-active-restoredproduction, .status-pa-successful { background-color: #dcfce7; color: #166534; }
+.status-maintenance, .status-pending, .status-intransit, .status-standby, .status-scheduled, .status-awaitingqa { background-color: #fef9c3; color: #854d0e; }
+.status-unavailable, .status-onjob, .status-expired, .status-unaccounted, .status-failed, .status-drilling-criticalsection, .status-shut-in, .status-shut-in-wellintegrityissues, .status-pacandidate, .status-atrisk { background-color: #fee2e2; color: #991b1b; }
+.status-inprogress, .status-tracking { background-color: #dbeafe; color: #1e40af; }
 .status-onboard { background-color: #cffafe; color: #0e7490; }
 
 /* --- Performer View Styles --- */
@@ -795,4 +796,160 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; } /* Bolder headings */
 .theme-dark .planner-icon--critical {
     background: rgba(239, 68, 68, 0.32);
     color: #fecaca;
+}
+
+/* Sustainability readiness styling */
+.sustainability-card {
+    background: rgba(12, 74, 110, 0.25);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    box-shadow: 0 20px 45px rgba(15, 118, 110, 0.18);
+}
+
+.theme-light .sustainability-card {
+    background: rgba(191, 219, 254, 0.55);
+    border-color: rgba(59, 130, 246, 0.3);
+    box-shadow: 0 20px 45px rgba(14, 165, 233, 0.15);
+}
+
+.sustainability-badge {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    background: rgba(12, 74, 110, 0.4);
+    color: #bae6fd;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.theme-light .sustainability-badge {
+    background: rgba(3, 105, 161, 0.12);
+    color: #0369a1;
+}
+
+.sustainability-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 1.5rem 1rem;
+    margin: 0;
+}
+
+.sustainability-metric__label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #94a3b8;
+}
+
+.theme-light .sustainability-metric__label {
+    color: #475569;
+}
+
+.sustainability-metric__value {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    color: #e2e8f0;
+}
+
+.theme-light .sustainability-metric__value {
+    color: #0f172a;
+}
+
+.sustainability-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #38bdf8;
+}
+
+.theme-light .sustainability-value {
+    color: #0e7490;
+}
+
+.sustainability-context {
+    font-size: 0.8rem;
+    color: #94a3b8;
+}
+
+.theme-light .sustainability-context {
+    color: #475569;
+}
+
+.sustainability-trend {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.sustainability-trend--down {
+    background: rgba(16, 185, 129, 0.16);
+    color: #5eead4;
+}
+
+.theme-light .sustainability-trend--down {
+    color: #0f766e;
+    background: rgba(16, 185, 129, 0.18);
+}
+
+.sustainability-trend--up {
+    background: rgba(249, 115, 22, 0.16);
+    color: #fb923c;
+}
+
+.theme-light .sustainability-trend--up {
+    color: #c2410c;
+    background: rgba(249, 115, 22, 0.2);
+}
+
+.sustainability-assurance {
+    background: linear-gradient(135deg, rgba(14, 116, 144, 0.24), rgba(2, 132, 199, 0.24));
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    display: grid;
+    gap: 0.35rem;
+}
+
+.theme-light .sustainability-assurance {
+    background: linear-gradient(135deg, rgba(224, 242, 254, 0.75), rgba(191, 219, 254, 0.55));
+    border-color: rgba(2, 132, 199, 0.3);
+}
+
+.sustainability-assurance__label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #38bdf8;
+}
+
+.theme-light .sustainability-assurance__label {
+    color: #0284c7;
+}
+
+.sustainability-assurance__value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #bae6fd;
+}
+
+.theme-light .sustainability-assurance__value {
+    color: #0369a1;
+}
+
+.sustainability-assurance__context {
+    font-size: 0.85rem;
+    color: #cbd5f5;
+}
+
+.theme-light .sustainability-assurance__context {
+    color: #1e3a8a;
 }

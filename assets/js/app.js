@@ -529,14 +529,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Pressure test patch to verify seal.",
                 "POOH and return well to service."
             ], 
-            risks: { operational: 4, geological: 2, equipment: 4, hse: 3, financial: 3 }, 
-            cost: 1200000, 
-            duration: 8, 
-            tfaModel: { pickUp: [[0,0], [9000, 60]], slackOff: [[0,0], [9000, -60]], alarmUpper: [[0,10], [9000, 70]], alarmLower: [[0,-10], [9000, -70]] } 
+            risks: { operational: 4, geological: 2, equipment: 4, hse: 3, financial: 3 },
+            cost: 1200000,
+            duration: 8,
+            tfaModel: { pickUp: [[0,0], [9000, 60]], slackOff: [[0,0], [9000, -60]], alarmUpper: [[0,10], [9000, 70]], alarmLower: [[0,-10], [9000, -70]] },
+            sustainability: {
+                badge: 'AI Verified Impact',
+                highlight: 'Rigless expandable patch avoids a 40-day workover and keeps the deformed casing in a certified recycling loop.',
+                metrics: [
+                    {
+                        label: 'CO₂e Avoided',
+                        value: '280 t',
+                        context: 'Versus a heavy workover rig campaign',
+                        trend: '▼ 36% vs. baseline',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Diesel Eliminated',
+                        value: '42,000 L',
+                        context: 'Electrified hydraulic units on location',
+                        trend: '▼ 41% fuel burn',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Recovered Steel',
+                        value: '12.5 t',
+                        context: 'Returned to circular supply chain',
+                        trend: '▲ 18% reuse uplift',
+                        direction: 'up'
+                    }
+                ],
+                assurance: {
+                    label: 'Digital Twin Coverage',
+                    value: '92%',
+                    context: 'Downhole/mechanical states mirrored in simulator for execution handoff'
+                }
+            }
         },
-        obj2: { 
-            name: "CT Chemical & Mechanical Scale Removal", 
-            personnel: ["Coiled Tubing Supervisor", "Pump Operator"], 
+        obj2: {
+            name: "CT Chemical & Mechanical Scale Removal",
+            personnel: ["Coiled Tubing Supervisor", "Pump Operator"],
             steps: [
                 "RIH with CT and spot DTPA chemical dissolver across scale.",
                 "POOH with CT and let chemical soak for 36 hours.",
@@ -545,14 +577,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Circulate well clean and POOH.",
                 "Return well to production."
             ], 
-            risks: { operational: 5, geological: 2, equipment: 4, hse: 4, financial: 3 }, 
-            cost: 950000, 
-            duration: 6, 
-            tfaModel: { pickUp: [[0,0], [14500, 35]], slackOff: [[0,0], [14500, -35]], alarmUpper: [[0,2], [14500, 37]], alarmLower: [[0,-2], [14500, -37]] } 
+            risks: { operational: 5, geological: 2, equipment: 4, hse: 4, financial: 3 },
+            cost: 950000,
+            duration: 6,
+            tfaModel: { pickUp: [[0,0], [14500, 35]], slackOff: [[0,0], [14500, -35]], alarmUpper: [[0,2], [14500, 37]], alarmLower: [[0,-2], [14500, -37]] },
+            sustainability: {
+                badge: 'Low-Carbon CT Campaign',
+                highlight: 'Closed-loop chemical handling slashes trucking miles and captures spent solvents for reprocessing.',
+                metrics: [
+                    {
+                        label: 'Hazardous Waste Avoided',
+                        value: '18.4 t',
+                        context: 'On-site neutralisation & recovery skid',
+                        trend: '▼ 52% disposal volume',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'AI Optimised Pump Time',
+                        value: '−11 hrs',
+                        context: 'Adaptive soak modelling',
+                        trend: '▼ 14% runtime',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Water Recycled',
+                        value: '68%',
+                        context: 'Filtration loop for jetting returns',
+                        trend: '▲ 9 pts from 2023',
+                        direction: 'up'
+                    }
+                ],
+                assurance: {
+                    label: 'AI Confidence Envelope',
+                    value: '89%',
+                    context: 'Confidence that emissions stay within sustainability guardrails'
+                }
+            }
         },
-        obj3: { 
-            name: "Slickline Insert Safety Valve Installation", 
-            personnel: ["Slickline Supervisor"], 
+        obj3: {
+            name: "Slickline Insert Safety Valve Installation",
+            personnel: ["Slickline Supervisor"],
             steps: [
                 "RIH with heavy-duty toolstring and mechanically lock open the failed TRSSV.",
                 "POOH and confirm lock-open.",
@@ -562,14 +626,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Perform full inflow and function test of new valve to certify.",
                 "Return well to production."
             ], 
-            risks: { operational: 3, geological: 1, equipment: 4, hse: 3, financial: 2 }, 
-            cost: 350000, 
-            duration: 3, 
-            tfaModel: { pickUp: [[0, 100], [9800, 160]], slackOff: [[0, 100], [9800, 40]], alarmUpper: [[0, 110], [9800, 170]], alarmLower: [[0, 90], [9800, 30]] } 
+            risks: { operational: 3, geological: 1, equipment: 4, hse: 3, financial: 2 },
+            cost: 350000,
+            duration: 3,
+            tfaModel: { pickUp: [[0, 100], [9800, 160]], slackOff: [[0, 100], [9800, 40]], alarmUpper: [[0, 110], [9800, 170]], alarmLower: [[0, 90], [9800, 30]] },
+            sustainability: {
+                badge: 'Barrier Reinstated, Carbon Lite',
+                highlight: 'Single-run slickline repair restores compliance without mobilising a workover rig or flaring events.',
+                metrics: [
+                    {
+                        label: 'CO₂e Avoided',
+                        value: '96 t',
+                        context: 'No standby rig or flaring required',
+                        trend: '▼ 44% vs. historical fix',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Site Visits Eliminated',
+                        value: '5 trips',
+                        context: 'Remote barrier verification pack',
+                        trend: '▼ 62% travel emissions',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Smart Valve Telemetry',
+                        value: '100%',
+                        context: 'Continuous monitoring via blockchain contract',
+                        trend: '▲ Full remote assurance',
+                        direction: 'up'
+                    }
+                ],
+                assurance: {
+                    label: 'Safety Envelope Confidence',
+                    value: '95%',
+                    context: 'AI confirms regulatory readiness post job'
+                }
+            }
         },
-        obj4: { 
-            name: "Through-Tubing ESS Patch Installation", 
-            personnel: ["Wellsite Engineer", "HWU Supervisor"], 
+        obj4: {
+            name: "Through-Tubing ESS Patch Installation",
+            personnel: ["Wellsite Engineer", "HWU Supervisor"],
             steps: [
                 "Perform CT cleanout of sand from inside existing screen.",
                 "RIH with Expandable Sand Screen (ESS) patch on jointed pipe.",
@@ -577,14 +673,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 "Expand patch using mechanical expansion tool.",
                 "POOH and slowly bring well back online, monitoring sand production."
             ], 
-            risks: { operational: 4, geological: 3, equipment: 5, hse: 3, financial: 4 }, 
-            cost: 1500000, 
-            duration: 10, 
-            tfaModel: { pickUp: [[0,0], [10000, 50]], slackOff: [[0,0], [10000, -50]], alarmUpper: [[0,5], [10000, 55]], alarmLower: [[0,-5], [10000, -55]] } 
+            risks: { operational: 4, geological: 3, equipment: 5, hse: 3, financial: 4 },
+            cost: 1500000,
+            duration: 10,
+            tfaModel: { pickUp: [[0,0], [10000, 50]], slackOff: [[0,0], [10000, -50]], alarmUpper: [[0,5], [10000, 55]], alarmLower: [[0,-5], [10000, -55]] },
+            sustainability: {
+                badge: 'Circular Sand Control',
+                highlight: 'Through-tubing repair extends completion life while keeping 80% of legacy hardware in service.',
+                metrics: [
+                    {
+                        label: 'Material Reuse',
+                        value: '81%',
+                        context: 'Legacy completion components retained',
+                        trend: '▲ 12 pts retention',
+                        direction: 'up'
+                    },
+                    {
+                        label: 'Flaring Avoided',
+                        value: '18 hrs',
+                        context: 'Live flowback managed via simulator envelope',
+                        trend: '▼ 100% routine flaring',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Logistics Miles Saved',
+                        value: '1,120 km',
+                        context: 'Regional vendor pooling',
+                        trend: '▼ 27% transport footprint',
+                        direction: 'down'
+                    }
+                ],
+                assurance: {
+                    label: 'Digital Twin Fidelity',
+                    value: '90%',
+                    context: 'AI anomaly detection coverage across sand control envelope'
+                }
+            }
         },
-        obj5: { 
-            name: "CT Wax Removal", 
-            personnel: ["Coiled Tubing Supervisor", "Pump Operator"], 
+        obj5: {
+            name: "CT Wax Removal",
+            personnel: ["Coiled Tubing Supervisor", "Pump Operator"],
             steps: [
                 "Rig up Coiled Tubing unit.",
                 "Pump heated solvent to dissolve wax.",
@@ -593,10 +721,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 "POOH with CT.",
                 "Return well to production."
             ], 
-            risks: { operational: 4, geological: 2, equipment: 3, hse: 3, financial: 2 }, 
-            cost: 650000, 
-            duration: 4, 
-            tfaModel: { pickUp: [[0,0], [7500, 20]], slackOff: [[0,0], [7500, -20]], alarmUpper: [[0,2], [7500, 22]], alarmLower: [[0,-2], [7500, -22]] }
+            risks: { operational: 4, geological: 2, equipment: 3, hse: 3, financial: 2 },
+            cost: 650000,
+            duration: 4,
+            tfaModel: { pickUp: [[0,0], [7500, 20]], slackOff: [[0,0], [7500, -20]], alarmUpper: [[0,2], [7500, 22]], alarmLower: [[0,-2], [7500, -22]] },
+            sustainability: {
+                badge: 'Thermal Efficiency Boost',
+                highlight: 'Integrated thermal modelling minimises heater runtime and captures wax for reuse in additives.',
+                metrics: [
+                    {
+                        label: 'Energy Intensity',
+                        value: '−18%',
+                        context: 'Versus baseline wax removal',
+                        trend: '▼ 18% power demand',
+                        direction: 'down'
+                    },
+                    {
+                        label: 'Recovered Wax Blend',
+                        value: '7.4 t',
+                        context: 'Repurposed into inhibitor stock',
+                        trend: '▲ 24% recovery',
+                        direction: 'up'
+                    },
+                    {
+                        label: 'Remote Supervision',
+                        value: '45%',
+                        context: 'Live digital twin oversight',
+                        trend: '▲ 45% virtual coverage',
+                        direction: 'up'
+                    }
+                ],
+                assurance: {
+                    label: 'AI Emissions Guardrail',
+                    value: '91%',
+                    context: 'Probability of staying under carbon budget with current design'
+                }
+            }
         }
     };
     const designBlueprints = {
@@ -1244,6 +1404,183 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     };
+    const handoverPackages = {
+        obj1: {
+            readiness: {
+                binderId: 'W666-INT-24-01',
+                operationsLead: 'Elena Marsh',
+                qaLead: 'M. Singh',
+                goLive: '18 Apr 2024',
+                closeout: '22 Apr 2024',
+                knowledgeSync: 'Digital twin + analyzer bundle queued',
+                summary: 'Expandable patch program handover is staged for integrity and production sign-off.',
+                metrics: [
+                    { label: 'Program Duration', value: '8 days', context: 'Matches approved readiness schedule.' },
+                    { label: 'AFE vs. Actual', value: '$1.20MM / $1.08MM', context: 'Projected 10% underrun before final tickets.' },
+                    { label: 'Lessons Logged', value: '5 entries', context: 'Auto-synced to the completions knowledge base.' }
+                ]
+            },
+            deliverables: [
+                { title: 'As-built expandable patch schematic', owner: 'Wellsite Engineer', due: '18 Apr 2024', status: 'Complete', channel: 'Engineering Vault' },
+                { title: 'Barrier restoration certificate', owner: 'Well Examiner', due: '19 Apr 2024', status: 'In Progress', channel: 'Integrity Hub' },
+                { title: 'Digital twin sync package', owner: 'Data Engineer', due: '20 Apr 2024', status: 'Scheduled', channel: 'AI Knowledge Base' }
+            ],
+            signoffs: [
+                { role: 'Operations Manager', name: 'L. Ramirez', status: 'Approved', timestamp: 'Signed 17 Apr 2024 09:20 UTC' },
+                { role: 'Integrity Authority', name: 'M. Singh', status: 'Pending', timestamp: 'Due after caliper validation' },
+                { role: 'Production Superintendent', name: 'I. Yamada', status: 'At Risk', timestamp: 'Awaiting rate stabilisation sample' }
+            ],
+            automations: [
+                { name: 'Vendor performance scorecard', status: 'Generated', detail: 'Export pushed to commercial dashboard for variance review.' },
+                { name: 'LangExtract citation bundle', status: 'In Progress', detail: 'Annotating final soak data prior to blockchain notarisation.' }
+            ],
+            notes: [
+                'Schedule final caliper validation before integrity sign-off.',
+                'Synchronise live operations log with analyzer prior to archiving.',
+                'Share torque-turn learnings with completions community channel.'
+            ]
+        },
+        obj2: {
+            readiness: {
+                binderId: 'W666-INT-24-02',
+                operationsLead: 'Noor Patel',
+                qaLead: 'R. Gallagher',
+                goLive: '21 Apr 2024',
+                closeout: '25 Apr 2024',
+                knowledgeSync: 'Chemical usage ledger reconciled with finance',
+                summary: 'Scale removal closeout emphasises solvent reconciliation and flow assurance monitoring.',
+                metrics: [
+                    { label: 'Program Duration', value: '6 days', context: 'Includes 36 hr soak and QA window.' },
+                    { label: 'Waste Recovery', value: '18.4 t captured', context: 'Closed-loop handling verified by ESG office.' },
+                    { label: 'Return to Production', value: '+165% uplift', context: 'Post-job test logged for economics team.' }
+                ]
+            },
+            deliverables: [
+                { title: 'Tubing condition & drift report', owner: 'Flow Assurance Engineer', due: '22 Apr 2024', status: 'Complete', channel: 'Production Fileshare' },
+                { title: 'Chemical reconciliation workbook', owner: 'Finance Analyst', due: '23 Apr 2024', status: 'In Progress', channel: 'Commercial Ledger' },
+                { title: 'Lessons learned submission', owner: 'CT Supervisor', due: '24 Apr 2024', status: 'Pending', channel: 'Knowledge Base' }
+            ],
+            signoffs: [
+                { role: 'HSE Advisor', name: 'K. Okoye', status: 'Approved', timestamp: 'Safety log cleared 21 Apr 2024' },
+                { role: 'Production Engineer', name: 'S. Thorsen', status: 'Pending', timestamp: 'Awaiting 72 hr stabilised data' },
+                { role: 'Sustainability Lead', name: 'G. Alvarez', status: 'Scheduled', timestamp: 'ESG review on 24 Apr 2024' }
+            ],
+            automations: [
+                { name: 'Solvent disposal compliance check', status: 'In Progress', detail: 'Regulatory upload pending final lab certs.' },
+                { name: 'Digital twin flow regime replay', status: 'Generated', detail: 'Simulator snapshots exported to AI advisor for benchmarking.' }
+            ],
+            notes: [
+                'Confirm inhibitor dosing schedule is live before production ramp-up.',
+                'Upload jetting telemetry to anomaly detection model training set.',
+                'Coordinate CT crew debrief with wax removal task force.'
+            ]
+        },
+        obj3: {
+            readiness: {
+                binderId: 'W666-INT-24-03',
+                operationsLead: 'Mateo Rojas',
+                qaLead: 'P. Chidike',
+                goLive: '16 Apr 2024',
+                closeout: '18 Apr 2024',
+                knowledgeSync: 'Barrier compliance ledger waiting final regulator note',
+                summary: 'Insert safety valve installation focuses on compliance evidence and remote monitoring setup.',
+                metrics: [
+                    { label: 'Program Duration', value: '3 days', context: 'Single-run slickline campaign verified.' },
+                    { label: 'Barrier Assurance', value: '95% confidence', context: 'Matches sustainability readiness card.' },
+                    { label: 'Remote Coverage', value: '100% telemetry', context: 'Valve linked to blockchain control contract.' }
+                ]
+            },
+            deliverables: [
+                { title: 'Barrier reinstatement package', owner: 'Integrity Engineer', due: '17 Apr 2024', status: 'Complete', channel: 'Integrity Hub' },
+                { title: 'Regulatory notification letter', owner: 'Compliance Lead', due: '18 Apr 2024', status: 'Awaiting QA', channel: 'Regulatory Workspace' },
+                { title: 'Telemetry onboarding checklist', owner: 'Controls Engineer', due: '18 Apr 2024', status: 'In Progress', channel: 'Controls Portal' }
+            ],
+            signoffs: [
+                { role: 'Well Examiner', name: 'A. Fraser', status: 'Approved', timestamp: 'Barrier sign-off logged 16 Apr 2024' },
+                { role: 'Regulator Liaison', name: 'H. Biswas', status: 'Pending', timestamp: 'Submission queued for 18 Apr 2024' },
+                { role: 'Operations Superintendent', name: 'C. Wells', status: 'Approved', timestamp: 'Operational acceptance recorded' }
+            ],
+            automations: [
+                { name: 'Valve telemetry heartbeat', status: 'Generated', detail: 'Smart valve reporting cadence synced with AI advisor.' },
+                { name: 'Barrier compliance notarisation', status: 'In Progress', detail: 'Blockchain contract awaiting regulator acknowledgement.' }
+            ],
+            notes: [
+                'Confirm remote control handshake before returning well to autonomous mode.',
+                'Archive negative test trace with annotations in analyzer workspace.',
+                'Brief regulator on blockchain verification dashboard access.'
+            ]
+        },
+        obj4: {
+            readiness: {
+                binderId: 'W666-INT-24-04',
+                operationsLead: 'Renee Dupont',
+                qaLead: 'D. Sato',
+                goLive: '24 Apr 2024',
+                closeout: '30 Apr 2024',
+                knowledgeSync: 'Sand control model merged with simulator baseline',
+                summary: 'Expandable sand screen closeout aligns production restart, ESG metrics, and logistics demob.',
+                metrics: [
+                    { label: 'Program Duration', value: '10 days', context: 'Includes sand cleanout contingency buffer.' },
+                    { label: 'Material Reuse', value: '81%', context: 'Matches sustainability material retention metric.' },
+                    { label: 'Vendor Scorecards', value: '3 issued', context: 'Shared with commercial and ESG liaisons.' }
+                ]
+            },
+            deliverables: [
+                { title: 'ESS expansion verification log', owner: 'Completion Engineer', due: '26 Apr 2024', status: 'In Progress', channel: 'Completion Vault' },
+                { title: 'Sand management restart plan', owner: 'Production Engineer', due: '27 Apr 2024', status: 'Pending', channel: 'Production Workspace' },
+                { title: 'Vendor debrief minutes', owner: 'Operations Coordinator', due: '28 Apr 2024', status: 'Scheduled', channel: 'Collaboration Hub' }
+            ],
+            signoffs: [
+                { role: 'Production Manager', name: 'S. Idris', status: 'Pending', timestamp: 'Restart review booked 27 Apr 2024' },
+                { role: 'ESG Office', name: 'L. Navarro', status: 'Scheduled', timestamp: 'Sustainability audit on 29 Apr 2024' },
+                { role: 'Operations Manager', name: 'W. Chen', status: 'In Progress', timestamp: 'Monitoring sand trend delta vs. model' }
+            ],
+            automations: [
+                { name: 'Anomaly model retraining', status: 'In Progress', detail: 'Feeding sand rate data into live simulator guardrails.' },
+                { name: 'Logistics demob tracker', status: 'Generated', detail: 'Auto-updates vessel and HWU release in logistics workspace.' }
+            ],
+            notes: [
+                'Ensure flowback team reviews updated sand threshold guardrails.',
+                'Capture thermal cycling data for future expandable hardware campaigns.',
+                'Confirm demobilisation aligns with marine slot to avoid standby fees.'
+            ]
+        },
+        obj5: {
+            readiness: {
+                binderId: 'W666-INT-24-05',
+                operationsLead: 'Chiara Rossi',
+                qaLead: 'N. Beaumont',
+                goLive: '12 Apr 2024',
+                closeout: '15 Apr 2024',
+                knowledgeSync: 'Wax analytics pushed to AI advisor',
+                summary: 'Wax removal handover captures thermal learnings and inhibitor strategy updates.',
+                metrics: [
+                    { label: 'Program Duration', value: '4 days', context: 'Thermal soak and scraper passes completed as planned.' },
+                    { label: 'Energy Intensity', value: '−18%', context: 'Aligns with sustainability energy reduction target.' },
+                    { label: 'Recovered Wax', value: '7.4 t', context: 'Prepared for reuse in inhibitor blend.' }
+                ]
+            },
+            deliverables: [
+                { title: 'Thermal profile & heater runtime log', owner: 'CT Engineer', due: '13 Apr 2024', status: 'Complete', channel: 'Thermal Lab' },
+                { title: 'Inhibitor program update', owner: 'Flow Assurance Lead', due: '14 Apr 2024', status: 'In Progress', channel: 'Production Workspace' },
+                { title: 'Recovered wax disposition form', owner: 'ESG Analyst', due: '15 Apr 2024', status: 'Pending', channel: 'ESG Vault' }
+            ],
+            signoffs: [
+                { role: 'Production Superintendent', name: 'J. Rahman', status: 'Approved', timestamp: 'Ramp-up authorised 13 Apr 2024' },
+                { role: 'ESG Coordinator', name: 'F. Ogun', status: 'Pending', timestamp: 'Awaiting waste tracking upload' },
+                { role: 'Chemicals Vendor', name: 'A. Duarte', status: 'Approved', timestamp: 'Performance warranty accepted' }
+            ],
+            automations: [
+                { name: 'Heater efficiency replay', status: 'Generated', detail: 'Energy analytics exported to sustainability dashboard.' },
+                { name: 'Wax recovery ledger', status: 'In Progress', detail: 'Final weights validating before blockchain notarisation.' }
+            ],
+            notes: [
+                'Confirm inhibitor storage temperature sensors are recalibrated post-job.',
+                'Share heater efficiency curves with operations simulator library.',
+                'Notify ESG partners once recovered wax shipment is manifested.'
+            ]
+        }
+    };
 
     const objectiveEquipmentRequirements = {
         obj1: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Steel Patch & Setting Tool", source: "Vendor", price: 500000 } ],
@@ -1573,6 +1910,8 @@ document.addEventListener('DOMContentLoaded', function() {
         hse: { permits: [], riskRegister: [] },
         pob: { musterActive: false, musterInterval: null, personnel: [] },
         dataExportHandlersBound: false,
+        wellFilters: { query: '', focus: 'all', themes: new Set() },
+        handoverReady: false
         wellFilters: { query: '', focus: 'all', themes: new Set() }
     };
 
@@ -2194,6 +2533,49 @@ document.addEventListener('DOMContentLoaded', function() {
         return themeFilter ? !!themeFilter.predicate(well) : false;
     };
 
+    };
+
+    const wellFocusFilters = [
+        { id: 'all', label: 'All Wells', predicate: () => true },
+        { id: 'critical', label: 'Critical Path', predicate: (well) => well.kind === 'critical' },
+        { id: 'case', label: 'Case Studies', predicate: (well) => well.kind === 'case' }
+    ];
+
+    const wellThemeFilters = [
+        {
+            id: 'integrity',
+            label: 'Integrity',
+            description: 'Casing deformation, barrier failures, or structural threats',
+            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('integrity')
+        },
+        {
+            id: 'flow-assurance',
+            label: 'Flow Assurance',
+            description: 'Scale, sand, wax, or production-blocking deposition',
+            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('flow-assurance')
+        },
+        {
+            id: 'controls',
+            label: 'Controls & Safety',
+            description: 'Safety valves, automation, or control system reliability',
+            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('controls')
+        },
+        {
+            id: 'productivity',
+            label: 'Production Recovery',
+            description: 'Demonstrated uplift in production or uptime',
+            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('productivity')
+        }
+    ];
+
+    const wellFocusFilterMap = new Map(wellFocusFilters.map((filter) => [filter.id, filter]));
+    const wellThemeFilterMap = new Map(wellThemeFilters.map((filter) => [filter.id, filter]));
+
+    const evaluateTheme = (themeId, well) => {
+        const themeFilter = wellThemeFilterMap.get(themeId);
+        return themeFilter ? !!themeFilter.predicate(well) : false;
+    };
+
     const totalFocusCounts = new Map(
         wellFocusFilters.map((filter) => [filter.id, wellData.filter((well) => filter.predicate(well)).length])
     );
@@ -2279,6 +2661,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const openCommercialBtn = document.getElementById('open-commercial-btn');
     const openHseBtn = document.getElementById('open-hse-btn');
     const reviewAnalysisBtnFinal = document.getElementById('review-analysis-btn-final');
+    const handoverOutput = document.getElementById('handover-output');
 
     // Performer
 
@@ -2421,7 +2804,258 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         }
+        switchView(viewName);
     };
+    
+    const resetApp = (switchToHome = false) => {
+        appState.selectedWell = null;
+        appState.selectedObjective = null;
+        appState.generatedPlan = null;
+        appState.lessonsLearned = [];
+        appState.commercial = { afe: 0, actualCost: 0, serviceTickets: [] };
+        appState.ai = { selectedProblemId: null, selectedRecommendation: null };
+        appState.handoverReady = false;
+
+        // Reset well selection
+        document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
+        
+        // Reset objective selection
+        const checkedObjective = document.querySelector('input[name="objective"]:checked');
+        if(checkedObjective) { checkedObjective.checked = false; }
+        
+        // Reset problem selection
+        const checkedProblem = document.querySelector('input[name="problem"]:checked');
+        if(checkedProblem) { checkedProblem.checked = false; }
+        
+        // Reset buttons
+        if (generatePlanBtnManual) generatePlanBtnManual.disabled = true;
+        if (generatePlanBtnAi) generatePlanBtnAi.disabled = true;
+
+        // Reset AI recommendations
+        if (aiRecommendationsContainer) aiRecommendationsContainer.classList.add('hidden');
+
+        // Reset AI toggle
+        if (aiToggle) aiToggle.checked = false;
+        if (manualPlanningView) manualPlanningView.classList.remove('hidden');
+        if (aiAdvisorView) aiAdvisorView.classList.add('hidden');
+
+        switchView(switchToHome ? 'home' : 'planner');
+        renderWellCards();
+        updatePlannerStepUI(1);
+        updateNavLinks();
+    };
+
+    const updateNavLinks = () => {
+        const planExists = !!appState.generatedPlan;
+        navLinks.forEach(link => {
+            const id = link.id.replace('-nav-link', '');
+            const isGatedView = !alwaysAccessibleViews.has(id);
+
+            if (isGatedView && !planExists) {
+                link.classList.add('disabled');
+                link.setAttribute('aria-disabled', 'true');
+                link.setAttribute('tabindex', '-1');
+            } else {
+                link.classList.remove('disabled');
+                link.removeAttribute('aria-disabled');
+                link.removeAttribute('tabindex');
+            }
+        });
+    };
+
+    // --- PLANNER LOGIC ---
+
+    const filterWellPortfolio = () => {
+        const filters = appState.wellFilters || { query: '', focus: 'all', themes: new Set() };
+        const query = (filters.query || '').trim().toLowerCase();
+        const focusFilter = wellFocusFilterMap.get(filters.focus) || wellFocusFilterMap.get('all');
+        const activeThemes = filters.themes instanceof Set ? filters.themes : new Set();
+
+        return wellData.filter((well) => {
+            if (focusFilter && !focusFilter.predicate(well)) {
+                return false;
+            }
+
+            if (activeThemes.size > 0) {
+                const wellThemes = new Set(well.themes || []);
+                for (const themeId of activeThemes) {
+                    if (!wellThemes.has(themeId)) {
+                        return false;
+                    }
+                }
+            }
+
+            if (query) {
+                const haystack = [
+                    well.id,
+                    well.name,
+                    well.field,
+                    well.region,
+                    well.type,
+                    well.status,
+                    well.issue,
+                    ...(well.themes || []),
+                    ...((well.history || []).map((entry) => `${entry.operation} ${entry.problem} ${entry.lesson}`))
+                ].join(' ').toLowerCase();
+
+                if (!haystack.includes(query)) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+    };
+
+    const syncFocusChipStates = () => {
+        if (!wellFocusGroup) return;
+        const activeFocus = (appState.wellFilters && appState.wellFilters.focus) || 'all';
+        wellFocusGroup.querySelectorAll('[data-focus-filter]').forEach((button) => {
+            const isActive = button.dataset.focusFilter === activeFocus;
+            button.classList.toggle('filter-chip--active', isActive);
+            button.setAttribute('aria-pressed', String(isActive));
+        });
+    };
+
+    const syncThemeChipStates = () => {
+        if (!wellThemeGroup) return;
+        const activeThemes = (appState.wellFilters && appState.wellFilters.themes instanceof Set)
+            ? appState.wellFilters.themes
+            : new Set();
+        wellThemeGroup.querySelectorAll('[data-theme-filter]').forEach((button) => {
+            const themeId = button.dataset.themeFilter;
+            const isActive = activeThemes.has(themeId);
+            button.classList.toggle('filter-chip--active', isActive);
+            button.setAttribute('aria-pressed', String(isActive));
+        });
+    };
+
+    const updateFocusCounts = (filteredWells) => {
+        if (!wellFocusGroup) return;
+        const filteredCounts = new Map();
+        filteredWells.forEach((well) => {
+            wellFocusFilters.forEach((filter) => {
+                if (filter.predicate(well)) {
+                    filteredCounts.set(filter.id, (filteredCounts.get(filter.id) || 0) + 1);
+                }
+            });
+        });
+
+        wellFocusFilters.forEach((filter) => {
+            const countElement = wellFocusGroup.querySelector(`[data-focus-count="${filter.id}"]`);
+            if (!countElement) return;
+            const visible = filteredCounts.get(filter.id) || 0;
+            const total = totalFocusCounts.get(filter.id) || 0;
+            countElement.textContent = `${visible}/${total}`;
+        });
+    };
+
+    const updateThemeCounts = (filteredWells) => {
+        if (!wellThemeGroup) return;
+        const filteredThemeCounts = new Map();
+        filteredWells.forEach((well) => {
+            (well.themes || []).forEach((themeId) => {
+                filteredThemeCounts.set(themeId, (filteredThemeCounts.get(themeId) || 0) + 1);
+            });
+        });
+
+        wellThemeFilters.forEach((filter) => {
+            const countElement = wellThemeGroup.querySelector(`[data-theme-count="${filter.id}"]`);
+            if (!countElement) return;
+            const visible = filteredThemeCounts.get(filter.id) || 0;
+            const total = totalThemeCounts.get(filter.id) || 0;
+            countElement.textContent = `${visible}/${total}`;
+        });
+    };
+
+    const updateWellFilterSummary = (filteredWells) => {
+        if (!wellFilterSummary) return;
+        const total = wellData.length;
+        const filtered = filteredWells.length;
+        const filters = appState.wellFilters || { query: '', focus: 'all', themes: new Set() };
+        const descriptors = [];
+
+        if (filters.focus && filters.focus !== 'all') {
+            const focusLabel = wellFocusFilterMap.get(filters.focus)?.label;
+            if (focusLabel) descriptors.push(focusLabel);
+        }
+
+        if (filters.themes instanceof Set && filters.themes.size > 0) {
+            const themeLabels = Array.from(filters.themes)
+                .map((themeId) => wellThemeFilterMap.get(themeId)?.label)
+                .filter(Boolean);
+            if (themeLabels.length) {
+                descriptors.push(`Themes: ${themeLabels.join(', ')}`);
+            }
+        }
+
+        if (filters.query) {
+            descriptors.push(`Search: “${filters.query.trim()}”`);
+        }
+
+        const selectedHidden = appState.selectedWell
+            ? !filteredWells.some((well) => well.id === appState.selectedWell.id)
+            : false;
+
+        const filterDescription = descriptors.length ? `Filters active — ${descriptors.join(' · ')}` : 'No filters applied.';
+        const hiddenNotice = selectedHidden ? ' The selected well is hidden by the current filters.' : '';
+
+        wellFilterSummary.textContent = `Showing ${filtered} of ${total} wells. ${filterDescription}${hiddenNotice}`;
+    };
+
+    const renderPortfolioSignals = (filteredWells) => {
+        if (!wellPortfolioSignals) return;
+        const cards = portfolioSignalDefinitions.map((signal) => {
+            const predicate = signal.predicate || (() => false);
+            const total = wellData.filter(predicate).length;
+            const visible = filteredWells.filter(predicate).length;
+            const percent = total === 0 ? 0 : Math.round((visible / total) * 100);
+
+            return `
+                <article class="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-inner ${signal.cardClass}" data-signal-id="${signal.id}">
+                    <div class="flex items-center gap-3">
+                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900/70 text-lg">${signal.icon}</span>
+                        <div>
+                            <p class="text-sm font-semibold uppercase tracking-wide text-slate-300">${signal.label}</p>
+                            <p class="text-xs text-slate-400">${signal.description}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-baseline gap-2">
+                        <span class="text-3xl font-bold text-white">${visible}</span>
+                        <span class="text-xs uppercase tracking-wide text-slate-400">visible now</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Portfolio total: ${total}</p>
+                    <div class="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-800/70">
+                        <div class="h-full ${signal.progressClass}" style="width: ${percent}%;"></div>
+                    </div>
+                </article>
+            `;
+        });
+
+        wellPortfolioSignals.innerHTML = cards.join('');
+    };
+
+    const renderWellCards = () => {
+        if (!wellSelectionGrid) return;
+        const filteredWells = filterWellPortfolio();
+
+        syncFocusChipStates();
+        syncThemeChipStates();
+        updateFocusCounts(filteredWells);
+        updateThemeCounts(filteredWells);
+        updateWellFilterSummary(filteredWells);
+        renderPortfolioSignals(filteredWells);
+
+        if (!filteredWells.length) {
+            wellSelectionGrid.innerHTML = `
+                <div class="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-10 text-center text-sm text-slate-400">
+                    No wells match the current filters. Adjust your search or theme filters to continue planning.
+                </div>
+            `;
+            return;
+        }
+
+        wellSelectionGrid.innerHTML = filteredWells.map(well => {
     window.showView = (viewName, sourceLabel) => {
         if (!viewName) return;
         if (enforcePlanAccess(viewName, sourceLabel)) {
@@ -2533,16 +3167,29 @@ document.addEventListener('DOMContentLoaded', function() {
         wellSelectionGrid.innerHTML = wellData.map(well => {
             const isWellFromHell = well.id === 'W666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
-            const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
-            
+            const iconMarkup = renderPlannerIcon(
+                well.icon || {},
+                `${well.name} insight icon`,
+                isWellFromHell ? 'critical' : 'case'
+            );
+            const badgeMarkup = isWellFromHell
+                ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Critical intervention focus well">CRITICAL</span>'
+                : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Case study well">CASE STUDY</span>';
+            const isSelected = appState.selectedWell && appState.selectedWell.id === well.id;
+
             return `
-                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}">
+                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'} ${isSelected ? 'selected' : ''}" data-well-id="${well.id}">
                     <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-xl font-bold text-white">${well.name}</h3>
-                            ${isWellFromHell ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full">CRITICAL</span>' : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full">CASE STUDY</span>'}
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex items-start gap-3">
+                                ${iconMarkup}
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">${well.name}</h3>
+                                    <p class="mt-1 text-blue-100 text-sm">${well.field} — ${well.type}</p>
+                                </div>
+                            </div>
+                            ${badgeMarkup}
                         </div>
-                        <p class="text-sm text-blue-100">${well.field} - ${well.type}</p>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
@@ -2558,7 +3205,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             `;
-        }).join(''); 
+        }).join('');
     };
 
     const syncFocusChipStates = () => {
@@ -3264,6 +3911,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         updateNavLinks();
 
+        appState.handoverReady = false;
+        renderHandoverPackage();
+
         if (step4ContinueBtn) step4ContinueBtn.disabled = false;
         if (step5ContinueBtn) step5ContinueBtn.disabled = true;
         if (beginOpBtn) beginOpBtn.disabled = true;
@@ -3337,6 +3987,62 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p class="text-sm text-emerald-100">No resource conflicts detected. Mobilisation can proceed when approvals are complete.</p>
             </div>
         `;
+        const getTrendClass = (direction) => direction === 'up' ? 'sustainability-trend--up' : 'sustainability-trend--down';
+        const sustainability = plan.sustainability;
+        const sustainabilityMetricsMarkup = sustainability && Array.isArray(sustainability.metrics)
+            ? sustainability.metrics.map(metric => {
+                const context = metric.context ? `<span class="sustainability-context">${metric.context}</span>` : '';
+                const trend = metric.trend
+                    ? `<span class="sustainability-trend ${getTrendClass(metric.direction)}">${metric.trend}</span>`
+                    : '';
+                return `
+                    <dt class="sustainability-metric__label">${metric.label}</dt>
+                    <dd class="sustainability-metric__value">
+                        <span class="sustainability-value">${metric.value}</span>
+                        ${context}
+                        ${trend}
+                    </dd>
+                `;
+            }).join('')
+            : '';
+        const sustainabilityAssuranceHtml = sustainability && sustainability.assurance
+            ? `
+                <div class="sustainability-assurance mt-5">
+                    <span class="sustainability-assurance__label">${sustainability.assurance.label}</span>
+                    <span class="sustainability-assurance__value">${sustainability.assurance.value}</span>
+                    ${sustainability.assurance.context ? `<p class="sustainability-assurance__context">${sustainability.assurance.context}</p>` : ''}
+                </div>
+            `
+            : '';
+        const sustainabilityHighlightHtml = sustainability && sustainability.highlight
+            ? `<p class="text-sm text-slate-400">${sustainability.highlight}</p>`
+            : '';
+        const sustainabilityBadgeHtml = sustainability && sustainability.badge
+            ? `<span class="sustainability-badge">${sustainability.badge}</span>`
+            : '';
+        const sustainabilityCard = sustainability
+            ? `
+                <div class="light-card p-5 rounded-lg sustainability-card" data-test-sustainability-card="true">
+                    <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                            <h4 class="text-lg font-semibold mb-1">Energy &amp; Emissions Impact</h4>
+                            ${sustainabilityHighlightHtml}
+                        </div>
+                        ${sustainabilityBadgeHtml}
+                    </div>
+                    ${sustainabilityMetricsMarkup ? `<dl class="sustainability-metric-grid mt-5">${sustainabilityMetricsMarkup}</dl>` : ''}
+                    ${sustainabilityAssuranceHtml}
+                </div>
+            `
+            : '';
+        const crewCard = `
+            <div class="light-card p-5 rounded-lg">
+                <h4 class="text-lg font-semibold mb-2">Crew Line-Up</h4>
+                <ul>${personnelHtml}</ul>
+                <p class="text-xs text-slate-500 mt-3">Detailed certifications and travel plans are managed in the Logistics workspace.</p>
+            </div>
+        `;
+        const rightColumnCards = [crewCard, conflictHtml, sustainabilityCard].filter(Boolean).join('');
 
         readinessOutput.innerHTML = `
             <div class="grid gap-6 lg:grid-cols-2">
@@ -3370,17 +4076,212 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
                 <div class="space-y-6">
-                    <div class="light-card p-5 rounded-lg">
-                        <h4 class="text-lg font-semibold mb-2">Crew Line-Up</h4>
-                        <ul>${personnelHtml}</ul>
-                        <p class="text-xs text-slate-500 mt-3">Detailed certifications and travel plans are managed in the Logistics workspace.</p>
-                    </div>
-                    ${conflictHtml}
+                    ${rightColumnCards}
                 </div>
             </div>
         `;
 
         if (step5ContinueBtn) step5ContinueBtn.disabled = false;
+    };
+
+    const renderHandoverPackage = () => {
+        if (!handoverOutput) return;
+
+        if (!appState.generatedPlan || !appState.selectedObjective || !appState.selectedWell) {
+            handoverOutput.innerHTML = `
+                <div class="light-card p-6 rounded-lg text-sm text-slate-400 text-center">
+                    Generate an integrated program to populate the digital handover binder.
+                </div>
+            `;
+            return;
+        }
+
+        if (!appState.handoverReady) {
+            handoverOutput.innerHTML = `
+                <div class="light-card p-6 rounded-lg text-sm text-slate-400 text-center">
+                    Complete the readiness review to unlock the execution handover package.
+                </div>
+            `;
+            return;
+        }
+
+        const packageData = handoverPackages[appState.selectedObjective.id];
+        if (!packageData) {
+            handoverOutput.innerHTML = `
+                <div class="light-card p-6 rounded-lg text-sm text-slate-400 text-center">
+                    Handover template coming soon for this intervention objective.
+                </div>
+            `;
+            return;
+        }
+
+        const {
+            readiness = {},
+            deliverables = [],
+            signoffs = [],
+            automations = [],
+            notes = []
+        } = packageData;
+
+        const metadata = [
+            ['Binder ID', readiness.binderId],
+            ['Operations Lead', readiness.operationsLead],
+            ['QA Lead', readiness.qaLead],
+            ['Go-Live', readiness.goLive],
+            ['Close-Out Review', readiness.closeout],
+            ['Knowledge Sync', readiness.knowledgeSync]
+        ].filter(([, value]) => Boolean(value));
+
+        const metadataHtml = metadata.length
+            ? `<div class="grid gap-4 text-sm sm:grid-cols-2 lg:w-1/2">${metadata.map(([label, value]) => `
+                    <div>
+                        <dt class="text-xs uppercase tracking-wide text-slate-400">${escapeHtml(label)}</dt>
+                        <dd class="mt-1 font-semibold text-slate-100">${escapeHtml(value)}</dd>
+                    </div>
+                `).join('')}</div>`
+            : '';
+
+        const metrics = Array.isArray(readiness.metrics) ? readiness.metrics : [];
+        const metricColumns = Math.max(1, Math.min(metrics.length, 3));
+        const metricsHtml = metrics.length
+            ? `<div class="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-${metricColumns}">${metrics.map(metric => `
+                    <div class="rounded-lg border border-slate-800 bg-slate-900/40 p-4">
+                        <p class="text-xs uppercase tracking-wide text-slate-400">${escapeHtml(metric.label || '')}</p>
+                        <p class="mt-2 text-xl font-semibold text-slate-100">${escapeHtml(metric.value || '—')}</p>
+                        ${metric.context ? `<p class="mt-1 text-xs text-slate-400">${escapeHtml(metric.context)}</p>` : ''}
+                    </div>
+                `).join('')}</div>`
+            : '';
+
+        const binderSummaryCard = `
+            <div class="light-card p-5 rounded-lg">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                    <div class="lg:w-1/2">
+                        <h4 class="text-lg font-semibold">Digital Handover Binder</h4>
+                        <p class="text-sm text-slate-400 mt-2">${escapeHtml(readiness.summary || `Closeout package staged for ${appState.selectedWell.name}.`)}</p>
+                    </div>
+                    ${metadataHtml}
+                </div>
+                ${metricsHtml}
+            </div>
+        `;
+
+        const deliverableRows = deliverables.length
+            ? deliverables.map(item => {
+                const statusLabel = item.status || 'Pending';
+                const statusClass = toStatusClass(statusLabel);
+                return `
+                    <tr class="border-b border-slate-800/60 last:border-0">
+                        <td class="p-2 align-top">
+                            <p class="font-semibold">${escapeHtml(item.title)}</p>
+                            ${item.channel ? `<p class="text-xs text-slate-400 mt-1">${escapeHtml(item.channel)}</p>` : ''}
+                        </td>
+                        <td class="p-2 align-top">${escapeHtml(item.owner || '—')}</td>
+                        <td class="p-2 align-top">${escapeHtml(item.due || '—')}</td>
+                        <td class="p-2 text-right align-top">
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full status-${statusClass}">${escapeHtml(statusLabel)}</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('')
+            : '<tr><td colspan="4" class="p-4 text-sm text-slate-400 text-center">No deliverables have been captured yet.</td></tr>';
+
+        const deliverablesCard = `
+            <div class="light-card p-5 rounded-lg">
+                <h4 class="text-lg font-semibold mb-4">Close-Out Deliverables</h4>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="table-header">
+                            <tr>
+                                <th class="p-2">Deliverable</th>
+                                <th class="p-2">Owner</th>
+                                <th class="p-2">Due</th>
+                                <th class="p-2 text-right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>${deliverableRows}</tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+
+        const signoffItems = signoffs.length
+            ? signoffs.map(entry => {
+                const statusLabel = entry.status || 'Pending';
+                const statusClass = toStatusClass(statusLabel);
+                return `
+                    <li class="rounded-lg border border-slate-800 bg-slate-900/40 p-4 flex items-start justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-semibold">${escapeHtml(entry.role || 'Sign-off')}</p>
+                            <p class="text-xs text-slate-400 mt-1">${escapeHtml(entry.name || 'Owner pending')}</p>
+                            ${entry.timestamp ? `<p class="text-xs text-slate-500 mt-1">${escapeHtml(entry.timestamp)}</p>` : ''}
+                        </div>
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full status-${statusClass}">${escapeHtml(statusLabel)}</span>
+                    </li>
+                `;
+            }).join('')
+            : '<li class="text-sm text-slate-400">No sign-offs have been requested yet.</li>';
+
+        const signoffCard = `
+            <div class="light-card p-5 rounded-lg">
+                <h4 class="text-lg font-semibold mb-4">Sign-Off Trail</h4>
+                <ul class="space-y-3">${signoffItems}</ul>
+            </div>
+        `;
+
+        const automationItems = automations.length
+            ? automations.map(task => {
+                const statusLabel = task.status || 'Pending';
+                const statusClass = toStatusClass(statusLabel);
+                return `
+                    <li class="rounded-lg border border-slate-800 bg-slate-900/40 p-4">
+                        <div class="flex items-start justify-between gap-3">
+                            <div>
+                                <p class="text-sm font-semibold">${escapeHtml(task.name || 'Automation')}</p>
+                                ${task.detail ? `<p class="text-xs text-slate-400 mt-1">${escapeHtml(task.detail)}</p>` : ''}
+                            </div>
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full status-${statusClass}">${escapeHtml(statusLabel)}</span>
+                        </div>
+                    </li>
+                `;
+            }).join('')
+            : '<li class="text-sm text-slate-400">No automation hooks have been triggered for this handover.</li>';
+
+        const automationCard = `
+            <div class="light-card p-5 rounded-lg">
+                <h4 class="text-lg font-semibold mb-4">Automation & Ledger Updates</h4>
+                <ul class="space-y-3">${automationItems}</ul>
+            </div>
+        `;
+
+        const notesList = notes.length
+            ? `<ul class="mt-4 space-y-2 text-sm">${notes.map(note => `
+                    <li class="flex items-start gap-2">
+                        <span class="mt-1 text-emerald-400">✔</span>
+                        <span>${escapeHtml(note)}</span>
+                    </li>
+                `).join('')}</ul>`
+            : '<p class="text-sm text-slate-400 mt-2">No additional reminders captured for this handover.</p>';
+
+        const notesCard = `
+            <div class="light-card p-5 rounded-lg">
+                <h4 class="text-lg font-semibold">Final Reminders</h4>
+                <p class="text-sm text-slate-400">Ensure these actions are logged before the handover is archived.</p>
+                ${notesList}
+            </div>
+        `;
+
+        handoverOutput.innerHTML = [
+            binderSummaryCard,
+            `<div class="grid gap-6 lg:grid-cols-2">
+                ${deliverablesCard}
+                <div class="space-y-6">
+                    ${signoffCard}
+                    ${automationCard}
+                </div>
+            </div>`,
+            notesCard
+        ].join('');
     };
 
     const updatePlannerStepUI = (currentStep) => { 
@@ -3416,6 +4317,10 @@ document.addEventListener('DOMContentLoaded', function() {
         Object.keys(stepSections).forEach(key => {
             stepSections[key].classList.toggle('hidden', Number(key) !== currentStep);
         });
+
+        if (currentStep === 6) {
+            renderHandoverPackage();
+        }
     };
 
     // --- PERFORMER LOGIC ---
@@ -5662,7 +6567,9 @@ const validateInvoice = () => {
         step5ContinueBtn.addEventListener('click', () => {
             if (!appState.generatedPlan) return;
             updatePlannerStepUI(6);
+            appState.handoverReady = true;
             if (beginOpBtn) beginOpBtn.disabled = false;
+            renderHandoverPackage();
             announcePlannerStatus('Execution stage ready. Launch Live Operations or open the analysis workspace.');
         });
     }
