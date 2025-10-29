@@ -2615,6 +2615,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const aiAdvisorView = document.getElementById('ai-advisor-view');
     const aiRecommendationsContainer = document.getElementById('ai-recommendations');
     const getDesignBlueprintContainer = () => document.getElementById('design-blueprint');
+    const designBlueprintContainer = document.getElementById('design-blueprint');
     const plannerStatusRegion = document.getElementById('planner-status');
     const plannerToast = document.getElementById('planner-toast');
 
@@ -3117,6 +3118,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     function renderObjectives() {
+    const renderObjectives = () => {
         if (!objectivesFieldset) return;
 
         if (!Array.isArray(objectivesData) || objectivesData.length === 0) {
@@ -3155,6 +3157,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderProblems() {
+    };
+
+    const renderProblems = () => {
         if (!problemsFieldset) return;
 
         const selectedWellId = appState.selectedWell?.id || null;
@@ -3244,6 +3249,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // expose planners so other modules (e.g., PDF export, analytics replay) can re-render when datasets update
     window.renderObjectives = renderObjectives;
     window.renderProblems = renderProblems;
+    };
 
     const renderDesignBlueprint = () => {
         const designBlueprintContainer = getDesignBlueprintContainer();
