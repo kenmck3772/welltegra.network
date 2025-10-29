@@ -1896,7 +1896,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const createWellFilters = () => ({ query: '', focus: 'all', themes: new Set() });
 
     const createInitialAppState = () => ({
-    let appState = {
         currentView: 'home',
         selectedWell: null,
         selectedObjective: null,
@@ -1919,11 +1918,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const appState = createInitialAppState();
-        wellFilters: { query: '', focus: 'all', themes: new Set() },
-        handoverReady: false,
-        planBroadcastKey: null
-        handoverReady: false
-    };
 
     // --- DOM ELEMENTS ---
 
@@ -2485,21 +2479,30 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Planner
 
-    const stepIndicators = { 
-        1: document.getElementById('step-1-indicator'), 
-        2: document.getElementById('step-2-indicator'), 
-        3: document.getElementById('step-3-indicator') 
+    const stepIndicators = {
+        1: document.getElementById('step-1-indicator'),
+        2: document.getElementById('step-2-indicator'),
+        3: document.getElementById('step-3-indicator'),
+        4: document.getElementById('step-4-indicator'),
+        5: document.getElementById('step-5-indicator'),
+        6: document.getElementById('step-6-indicator')
     };
-    
+
     const stepConnectors = {
         1: document.getElementById('step-1-connector'),
-        2: document.getElementById('step-2-connector')
+        2: document.getElementById('step-2-connector'),
+        3: document.getElementById('step-3-connector'),
+        4: document.getElementById('step-4-connector'),
+        5: document.getElementById('step-5-connector')
     };
-    
+
     const stepSections = {
         1: document.getElementById('step-1'),
         2: document.getElementById('step-2'),
-        3: document.getElementById('step-3')
+        3: document.getElementById('step-3'),
+        4: document.getElementById('step-4'),
+        5: document.getElementById('step-5'),
+        6: document.getElementById('step-6')
     };
 
     const wellFocusFilters = [
@@ -2605,11 +2608,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const generatePlanBtnAi = document.getElementById('generate-plan-btn-ai');
     const planOutput = document.getElementById('plan-output');
     const startOverBtn = document.getElementById('start-over-btn');
+    const readinessOutput = document.getElementById('readiness-output');
     const beginOpBtn = document.getElementById('begin-op-btn');
     const aiToggle = document.getElementById('ai-toggle');
     const manualPlanningView = document.getElementById('manual-planning-view');
     const aiAdvisorView = document.getElementById('ai-advisor-view');
     const aiRecommendationsContainer = document.getElementById('ai-recommendations');
+    const getDesignBlueprintContainer = () => document.getElementById('design-blueprint');
     const plannerStatusRegion = document.getElementById('planner-status');
     const plannerToast = document.getElementById('planner-toast');
 
@@ -2855,6 +2860,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- PLANNER LOGIC ---
 
+    const assetCodePattern = /^[a-z]{1,3}-?\d{2,}$/;
+
     const filterWellPortfolio = () => {
         const filters = appState.wellFilters || { query: '', focus: 'all', themes: new Set() };
         const query = (filters.query || '').trim().toLowerCase();
@@ -2876,7 +2883,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if (query) {
-                const haystack = [
+                const coreHaystack = [
                     well.id,
                     well.name,
                     well.field,
@@ -2884,11 +2891,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     well.type,
                     well.status,
                     well.issue,
-                    ...(well.themes || []),
-                    ...((well.history || []).map((entry) => `${entry.operation} ${entry.problem} ${entry.lesson}`))
+                    ...(well.themes || [])
                 ].join(' ').toLowerCase();
 
-                if (!haystack.includes(query)) {
+                const matchesCoreFields = coreHaystack.includes(query);
+                let matchesExtendedFields = false;
+
+                if (!matchesCoreFields && !assetCodePattern.test(query)) {
+                    matchesExtendedFields = (well.history || []).some((entry) => {
+                        const historyText = `${entry.operation} ${entry.problem} ${entry.lesson}`.toLowerCase();
+                        return historyText.includes(query);
+                    });
+                }
+
+                if (!matchesCoreFields && !matchesExtendedFields) {
                     return false;
                 }
             }
@@ -3074,104 +3090,6 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     };
 
-    const getWellCardMarkup = (well, isSelected) => {
-        const isWellFromHell = well.id === 'W666';
-        const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
-        const iconMarkup = renderPlannerIcon(
-            well.icon || {},
-            `${well.name} insight icon`,
-            isWellFromHell ? 'critical' : 'case'
-        );
-        const badgeMarkup = isWellFromHell
-            ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Critical intervention focus well">CRITICAL</span>'
-            : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Case study well">CASE STUDY</span>';
-
-        return `
-            <article class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'} ${isSelected ? 'selected' : ''}"
-                data-well-id="${well.id}"
-                role="button"
-                tabindex="0"
-                aria-pressed="${isSelected}">
-                <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
-                    <div class="flex items-start justify-between gap-4">
-                        <div class="flex items-start gap-3">
-                            ${iconMarkup}
-                            <div>
-                                <h3 class="text-xl font-bold text-white">${well.name}</h3>
-                                <p class="mt-1 text-blue-100 text-sm">${well.field} — ${well.type}</p>
-                            </div>
-                        </div>
-                        ${badgeMarkup}
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
-                    </div>
-                    <p class="text-sm">${well.issue}</p>
-                </div>
-                <div class="card-footer">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
-                        <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold"
-                            type="button"
-                            data-well-id="${well.id}"
-                            aria-label="View historical dossier for ${well.name}">View Details</button>
-                    </div>
-                </div>
-            </article>
-        `;
-    };
-
-    const getWellCardMarkup = (well, isSelected) => {
-        const isWellFromHell = well.id === 'W666';
-        const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
-        const iconMarkup = renderPlannerIcon(
-            well.icon || {},
-            `${well.name} insight icon`,
-            isWellFromHell ? 'critical' : 'case'
-        );
-        const badgeMarkup = isWellFromHell
-            ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Critical intervention focus well">CRITICAL</span>'
-            : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Case study well">CASE STUDY</span>';
-
-        return `
-            <article class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'} ${isSelected ? 'selected' : ''}"
-                data-well-id="${well.id}"
-                role="button"
-                tabindex="0"
-                aria-pressed="${isSelected}">
-                <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
-                    <div class="flex items-start justify-between gap-4">
-                        <div class="flex items-start gap-3">
-                            ${iconMarkup}
-                            <div>
-                                <h3 class="text-xl font-bold text-white">${well.name}</h3>
-                                <p class="mt-1 text-blue-100 text-sm">${well.field} — ${well.type}</p>
-                            </div>
-                        </div>
-                        ${badgeMarkup}
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
-                    </div>
-                    <p class="text-sm">${well.issue}</p>
-                </div>
-                <div class="card-footer">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
-                        <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold"
-                            type="button"
-                            data-well-id="${well.id}"
-                            aria-label="View historical dossier for ${well.name}">View Details</button>
-                    </div>
-                </div>
-            </article>
-        `;
-    };
-
     const renderWellCards = () => {
         if (!wellSelectionGrid) return;
         const filteredWells = filterWellPortfolio();
@@ -3198,7 +3116,137 @@ document.addEventListener('DOMContentLoaded', function() {
             .join('');
     };
     
+    function renderObjectives() {
+        if (!objectivesFieldset) return;
+
+        if (!Array.isArray(objectivesData) || objectivesData.length === 0) {
+            objectivesFieldset.innerHTML = `
+                <div class="rounded-lg border border-dashed border-slate-700 bg-slate-900/50 p-6 text-center text-sm text-slate-400">
+                    Objective catalog unavailable. Load a scenario to continue planning.
+                </div>
+            `;
+            return;
+        }
+
+        const selectedId = appState.selectedObjective?.id || null;
+
+        objectivesFieldset.innerHTML = objectivesData.map((objective) => {
+            const objectiveId = escapeHtml(objective.id);
+            const isSelected = selectedId === objective.id;
+            const selectedClass = isSelected ? ' selected' : '';
+            const checkedAttribute = isSelected ? 'checked' : '';
+            const iconMarkup = escapeHtml(objective.icon || '🎯');
+            const nameMarkup = escapeHtml(objective.name || 'Objective');
+            const descriptionMarkup = escapeHtml(objective.description || '');
+
+            return `
+                <div class="objective-card light-card${selectedClass}" data-objective-id="${objectiveId}">
+                    <input type="radio" name="objective" id="${objectiveId}" value="${objectiveId}" class="sr-only" ${checkedAttribute}>
+                    <label for="${objectiveId}" class="flex h-full cursor-pointer flex-col gap-3 p-4">
+                        <span class="text-2xl" aria-hidden="true">${iconMarkup}</span>
+                        <div>
+                            <span class="block text-lg font-semibold text-slate-100">${nameMarkup}</span>
+                            <p class="mt-2 text-sm text-slate-300">${descriptionMarkup}</p>
+                        </div>
+                    </label>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderProblems() {
+        if (!problemsFieldset) return;
+
+        const selectedWellId = appState.selectedWell?.id || null;
+
+        if (!selectedWellId) {
+            appState.ai.selectedProblemId = null;
+            appState.ai.selectedRecommendation = null;
+            if (aiRecommendationsContainer) {
+                aiRecommendationsContainer.classList.add('hidden');
+            }
+            problemsFieldset.innerHTML = `
+                <div class="rounded-lg border border-dashed border-slate-700 bg-slate-900/50 p-6 text-center text-sm text-slate-400">
+                    Select a well to unlock AI-assisted problem diagnostics.
+                </div>
+            `;
+            return;
+        }
+
+        if (selectedWellId !== 'W666') {
+            appState.ai.selectedProblemId = null;
+            appState.ai.selectedRecommendation = null;
+            if (aiRecommendationsContainer) {
+                aiRecommendationsContainer.classList.add('hidden');
+            }
+            problemsFieldset.innerHTML = `
+                <div class="rounded-lg border border-amber-400/40 bg-amber-500/10 p-6 text-center text-sm text-amber-200">
+                    The AI Advisor is currently tuned for the W666 critical well scenario. Switch to W666 to see curated problem insights.
+                </div>
+            `;
+            return;
+        }
+
+        if (!Array.isArray(problemsData) || problemsData.length === 0) {
+            problemsFieldset.innerHTML = `
+                <div class="rounded-lg border border-dashed border-slate-700 bg-slate-900/50 p-6 text-center text-sm text-slate-400">
+                    Problem catalog unavailable. Check back after data sync completes.
+                </div>
+            `;
+            return;
+        }
+
+        const selectedProblemId = appState.ai.selectedProblemId || null;
+
+        problemsFieldset.innerHTML = problemsData.map((problem) => {
+            const problemId = escapeHtml(problem.id);
+            const isSelected = selectedProblemId === problem.id;
+            const selectedClass = isSelected ? ' selected' : '';
+            const checkedAttribute = isSelected ? 'checked' : '';
+            const iconMarkup = escapeHtml(problem.icon || '⚠️');
+            const nameMarkup = escapeHtml(problem.name || 'Problem');
+            const descriptionMarkup = escapeHtml(problem.description || '');
+
+            const linkedObjectives = Array.isArray(problem.linked_objectives)
+                ? problem.linked_objectives
+                    .map((objectiveId) => objectivesData.find((objective) => objective.id === objectiveId))
+                    .filter(Boolean)
+                : [];
+
+            const linkedMarkup = linkedObjectives.length
+                ? `
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        ${linkedObjectives.map((objective) => `
+                            <span class="rounded-full bg-slate-900/70 px-3 py-1 text-xs font-medium text-slate-200" data-linked-objective="${escapeHtml(objective.id)}">
+                                ${escapeHtml(objective.icon || '🎯')} ${escapeHtml(objective.name)}
+                            </span>
+                        `).join('')}
+                    </div>
+                `
+                : '';
+
+            return `
+                <div class="objective-card light-card${selectedClass}" data-problem-id="${problemId}">
+                    <input type="radio" name="problem" id="${problemId}" value="${problemId}" class="sr-only" ${checkedAttribute}>
+                    <label for="${problemId}" class="flex h-full cursor-pointer flex-col gap-3 p-4">
+                        <span class="text-2xl" aria-hidden="true">${iconMarkup}</span>
+                        <div>
+                            <span class="block text-lg font-semibold text-slate-100">${nameMarkup}</span>
+                            <p class="mt-2 text-sm text-slate-300">${descriptionMarkup}</p>
+                            ${linkedMarkup}
+                        </div>
+                    </label>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // expose planners so other modules (e.g., PDF export, analytics replay) can re-render when datasets update
+    window.renderObjectives = renderObjectives;
+    window.renderProblems = renderProblems;
+
     const renderDesignBlueprint = () => {
+        const designBlueprintContainer = getDesignBlueprintContainer();
         if (!designBlueprintContainer) return;
         if (!appState.selectedObjective) {
             designBlueprintContainer.innerHTML = '<p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>';
@@ -3421,6 +3469,77 @@ document.addEventListener('DOMContentLoaded', function() {
 
         window.dispatchEvent(new CustomEvent('welltegra:plan-saved', { detail }));
         showPlannerToast('Integrated program synced to Mobile Communicator');
+    };
+
+    const renderBulletList = (items, emptyMessage = '') => {
+        if (!Array.isArray(items) || items.length === 0) {
+            if (!emptyMessage) {
+                return '';
+            }
+            return `<p class="text-sm italic text-slate-500 dark:text-slate-400">${escapeHtml(emptyMessage)}</p>`;
+        }
+
+        return `
+            <ul class="space-y-2 text-sm text-slate-300">
+                ${items
+                    .map(item => `
+                        <li class="flex items-start gap-2">
+                            <span class="mt-1 text-blue-400">•</span>
+                            <span>${escapeHtml(item)}</span>
+                        </li>
+                    `)
+                    .join('')}
+            </ul>
+        `;
+    };
+
+    const renderOptionalList = (title, items) => {
+        if (!Array.isArray(items) || items.length === 0) {
+            return '';
+        }
+
+        return `
+            <div class="mt-6">
+                <h5 class="text-sm font-semibold text-slate-600 dark:text-slate-300 mb-2">${escapeHtml(title)}</h5>
+                ${renderBulletList(items)}
+            </div>
+        `;
+    };
+
+    const renderCostCodeTable = (costCodes) => {
+        if (!Array.isArray(costCodes) || costCodes.length === 0) {
+            return '';
+        }
+
+        const rows = costCodes
+            .map(code => {
+                const estimate = typeof code.estimate === 'number' ? code.estimate : Number(code.estimate) || 0;
+                return `
+                    <tr>
+                        <td class="px-3 py-2 text-sm text-slate-200">${escapeHtml(code.code || '')}</td>
+                        <td class="px-3 py-2 text-sm text-slate-300">${escapeHtml(code.description || '')}</td>
+                        <td class="px-3 py-2 text-sm text-right text-slate-200">$${estimate.toLocaleString()}</td>
+                    </tr>
+                `;
+            })
+            .join('');
+
+        return `
+            <div class="mt-6 overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-700 text-left">
+                    <thead>
+                        <tr class="text-xs uppercase tracking-wide text-slate-400">
+                            <th class="px-3 py-2 font-semibold">Cost Code</th>
+                            <th class="px-3 py-2 font-semibold">Description</th>
+                            <th class="px-3 py-2 font-semibold text-right">Estimate (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        ${rows}
+                    </tbody>
+                </table>
+            </div>
+        `;
     };
 
     const renderPlan = () => {
@@ -4137,38 +4256,52 @@ document.addEventListener('DOMContentLoaded', function() {
         ].join('');
     };
 
-    const updatePlannerStepUI = (currentStep) => { 
+    const updatePlannerStepUI = (currentStep) => {
         // Reset all step indicators and connectors
-        Object.values(stepIndicators).forEach(ind => {
-            ind.classList.remove('active', 'completed');
-            ind.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
+        Object.values(stepIndicators).forEach(indicator => {
+            if (!indicator) return;
+            indicator.classList.remove('active', 'completed', 'bg-blue-600', 'text-white');
+            indicator.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
         });
-        
-        Object.values(stepConnectors).forEach(conn => {
-            conn.classList.remove('active', 'completed');
+
+        Object.values(stepConnectors).forEach(connector => {
+            if (!connector) return;
+            connector.classList.remove('active', 'completed', 'bg-blue-600');
+            connector.classList.add('bg-gray-200');
         });
-        
+
         // Mark completed steps
         for (let i = 1; i < currentStep; i++) {
-            stepIndicators[i].classList.add('completed');
-            stepIndicators[i].classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
-            stepIndicators[i].classList.add('bg-blue-600', 'text-white');
-            
-            if (stepConnectors[i]) {
-                stepConnectors[i].classList.add('completed');
-                stepConnectors[i].classList.remove('bg-gray-200');
-                stepConnectors[i].classList.add('bg-blue-600');
+            const indicator = stepIndicators[i];
+            if (indicator) {
+                indicator.classList.add('completed', 'bg-blue-600', 'text-white');
+                indicator.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
+            }
+
+            const connector = stepConnectors[i];
+            if (connector) {
+                connector.classList.add('completed', 'bg-blue-600');
+                connector.classList.remove('bg-gray-200');
             }
         }
-        
-        // Mark active step
-        stepIndicators[currentStep].classList.add('active');
-        stepIndicators[currentStep].classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
-        stepIndicators[currentStep].classList.add('bg-blue-600', 'text-white');
 
-        // Show/hide step sections
-        Object.keys(stepSections).forEach(key => {
-            stepSections[key].classList.toggle('hidden', Number(key) !== currentStep);
+        // Mark active step
+        const activeIndicator = stepIndicators[currentStep];
+        if (activeIndicator) {
+            activeIndicator.classList.add('active', 'bg-blue-600', 'text-white');
+            activeIndicator.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
+        }
+
+        // Show all completed sections and hide future ones
+        Object.entries(stepSections).forEach(([key, section]) => {
+            if (!section) return;
+            const stepNumber = Number(key);
+            if (Number.isNaN(stepNumber)) return;
+            if (stepNumber <= currentStep) {
+                section.classList.remove('hidden');
+            } else {
+                section.classList.add('hidden');
+            }
         });
 
         if (currentStep === 6) {
@@ -4633,6 +4766,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const persF = persFilter.toLowerCase();
 
+        const filteredPersonnel = personnelData.filter(person => {
+            const matchesRole = requiredRoles.some(role => matchesPersonnelRole(role, person));
+            if (!matchesRole) return false;
+            if (!persF) return true;
+            return [person.name, person.role, person.company, person.id]
+                .filter(Boolean)
+                .some(val => val.toLowerCase().includes(persF));
+        });
+
         personnelTableBody.innerHTML = filteredPersonnel.length ? filteredPersonnel.map(person => {
             const statusClass = toStatusClass(person.status || 'available');
             const perDiem = person.perDiem ? `<span class="block text-xs text-slate-400">Per diem ${formatCurrency(person.perDiem)}</span>` : '';
@@ -4704,21 +4846,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             }
         }
-        const filteredPersonnel = personnelData.filter(p => 
-            requiredRoles.includes(p.role) && 
-            (p.name.toLowerCase().includes(persF) || p.role.toLowerCase().includes(persF))
-        );
-        
-        personnelTableBody.innerHTML = filteredPersonnel.map(p => `
-            <tr>
-                <td class="p-2">${p.name}</td>
-                <td class="p-2">${p.role}</td>
-                <td class="p-2">
-                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.status.toLowerCase().replace(/\s/g, '')}">${p.status}</span>
-                </td>
-                <td class="p-2">${p.certsValid ? '✅ Valid' : '⚠️ Expired'}</td>
-            </tr>
-        `).join('');
     };
 
     const checkLogistics = () => {
@@ -6111,6 +6238,7 @@ const validateInvoice = () => {
         if (step1ContinueBtn) step1ContinueBtn.disabled = false;
         if (step2ContinueBtn) step2ContinueBtn.disabled = true;
         if (generateProgramBtn) generateProgramBtn.disabled = true;
+        const designBlueprintContainer = getDesignBlueprintContainer();
         if (designBlueprintContainer) {
             designBlueprintContainer.innerHTML = '<p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>';
         }
@@ -6139,6 +6267,7 @@ const validateInvoice = () => {
         }
         if (touchSelectionGesture && touchSelectionGesture.card) {
             return touchSelectionGesture.card;
+        }
         if (activeTouchGesture && activeTouchGesture.card) {
             return activeTouchGesture.card;
         }
@@ -6160,7 +6289,6 @@ const validateInvoice = () => {
             return;
         }
 
-    addListener(wellSelectionGrid, 'click', (e) => {
         const detailsBtn = e.target.closest('.view-details-btn');
         if (detailsBtn) {
             e.stopPropagation();
@@ -6169,7 +6297,6 @@ const validateInvoice = () => {
         }
 
         const card = resolvePlannerCardFromEvent(e);
-        const card = e.target.closest('.planner-card');
         if (!card) return;
         handleWellCardSelection(card);
     });
@@ -6358,10 +6485,6 @@ const validateInvoice = () => {
         activeTouchGesture = null;
     }, { passive: true });
 
-    addListener(wellSelectionGrid, 'keydown', (e) => {
-        if (e.defaultPrevented) return;
-        if (e.key !== 'Enter' && e.key !== ' ') return;
-        const card = resolvePlannerCardFromEvent(e);
     addListener(wellSelectionGrid, 'keydown', (e) => {
         if (e.defaultPrevented) return;
         if (e.key !== 'Enter' && e.key !== ' ') return;
@@ -7027,6 +7150,16 @@ const validateInvoice = () => {
     }
 
     init();
+
+    window.welltegraPlanner = {
+        getState: () => ({
+            selectedWell: appState.selectedWell,
+            selectedObjective: appState.selectedObjective,
+            generatedPlan: appState.generatedPlan,
+            referenceDataLoaded: appState.referenceDataLoaded,
+            handoverReady: appState.handoverReady
+        })
+    };
 });
 
 // --- PDF EXPORT SYSTEM ---
