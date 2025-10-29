@@ -65,6 +65,10 @@ welltegra.network/
 
 Legacy demos and unused media have been removed under the lean inventory initiative (#46). Consult `LEAN_INVENTORY.md` for the rationale, remaining asset list, and follow-up actions.
 
+## Strategic References
+
+- [Old Pie Embassy White Paper Integration Notes](WHITE_PAPER_INSIGHTS.md) – distilled guidance from the external "Architectural Blueprint for the 'well-tegra' Master Program" paper with concrete actions for the platform roadmap.
+
 ## Getting Started
 
 ### Local Development

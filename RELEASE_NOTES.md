@@ -9,6 +9,17 @@
 
 1. `node --check assets/js/app.js`
 
+# Release Notes — Old Pie Embassy White Paper Synthesis
+
+## Summary
+
+- Captured actionable insights from the Old Pie Embassy “Architectural Blueprint for the 'well-tegra' Master Program” white paper, mapping its master data architecture and phased rollout to our current backlog priorities.【F:WHITE_PAPER_INSIGHTS.md†L1-L63】
+- Linked the synthesis into the public README so stakeholders can review the guidance alongside other strategic planning collateral.【F:README.md†L96-L101】
+
+## Verification
+
+1. Documentation review only
+
 # Release Notes — Mobile Communicator Accessibility Hardening
 
 ## Summary
