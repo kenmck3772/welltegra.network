@@ -3094,6 +3094,131 @@ document.addEventListener('DOMContentLoaded', function() {
             .join('');
     };
     
+    const renderObjectives = () => {
+        if (!objectivesFieldset) return;
+
+        if (!Array.isArray(objectivesData) || objectivesData.length === 0) {
+            objectivesFieldset.innerHTML = `
+                <div class="rounded-lg border border-dashed border-slate-700 bg-slate-900/50 p-6 text-center text-sm text-slate-400">
+                    Objective catalog unavailable. Load a scenario to continue planning.
+                </div>
+            `;
+            return;
+        }
+
+        const selectedId = appState.selectedObjective?.id || null;
+
+        objectivesFieldset.innerHTML = objectivesData.map((objective) => {
+            const objectiveId = escapeHtml(objective.id);
+            const isSelected = selectedId === objective.id;
+            const selectedClass = isSelected ? ' selected' : '';
+            const checkedAttribute = isSelected ? 'checked' : '';
+            const iconMarkup = escapeHtml(objective.icon || '🎯');
+            const nameMarkup = escapeHtml(objective.name || 'Objective');
+            const descriptionMarkup = escapeHtml(objective.description || '');
+
+            return `
+                <div class="objective-card light-card${selectedClass}" data-objective-id="${objectiveId}">
+                    <input type="radio" name="objective" id="${objectiveId}" value="${objectiveId}" class="sr-only" ${checkedAttribute}>
+                    <label for="${objectiveId}" class="flex h-full cursor-pointer flex-col gap-3 p-4">
+                        <span class="text-2xl" aria-hidden="true">${iconMarkup}</span>
+                        <div>
+                            <span class="block text-lg font-semibold text-slate-100">${nameMarkup}</span>
+                            <p class="mt-2 text-sm text-slate-300">${descriptionMarkup}</p>
+                        </div>
+                    </label>
+                </div>
+            `;
+        }).join('');
+    };
+
+    const renderProblems = () => {
+        if (!problemsFieldset) return;
+
+        const selectedWellId = appState.selectedWell?.id || null;
+
+        if (!selectedWellId) {
+            appState.ai.selectedProblemId = null;
+            appState.ai.selectedRecommendation = null;
+            if (aiRecommendationsContainer) {
+                aiRecommendationsContainer.classList.add('hidden');
+            }
+            problemsFieldset.innerHTML = `
+                <div class="rounded-lg border border-dashed border-slate-700 bg-slate-900/50 p-6 text-center text-sm text-slate-400">
+                    Select a well to unlock AI-assisted problem diagnostics.
+                </div>
+            `;
+            return;
+        }
+
+        if (selectedWellId !== 'W666') {
+            appState.ai.selectedProblemId = null;
+            appState.ai.selectedRecommendation = null;
+            if (aiRecommendationsContainer) {
+                aiRecommendationsContainer.classList.add('hidden');
+            }
+            problemsFieldset.innerHTML = `
+                <div class="rounded-lg border border-amber-400/40 bg-amber-500/10 p-6 text-center text-sm text-amber-200">
+                    The AI Advisor is currently tuned for the W666 critical well scenario. Switch to W666 to see curated problem insights.
+                </div>
+            `;
+            return;
+        }
+
+        if (!Array.isArray(problemsData) || problemsData.length === 0) {
+            problemsFieldset.innerHTML = `
+                <div class="rounded-lg border border-dashed border-slate-700 bg-slate-900/50 p-6 text-center text-sm text-slate-400">
+                    Problem catalog unavailable. Check back after data sync completes.
+                </div>
+            `;
+            return;
+        }
+
+        const selectedProblemId = appState.ai.selectedProblemId || null;
+
+        problemsFieldset.innerHTML = problemsData.map((problem) => {
+            const problemId = escapeHtml(problem.id);
+            const isSelected = selectedProblemId === problem.id;
+            const selectedClass = isSelected ? ' selected' : '';
+            const checkedAttribute = isSelected ? 'checked' : '';
+            const iconMarkup = escapeHtml(problem.icon || '⚠️');
+            const nameMarkup = escapeHtml(problem.name || 'Problem');
+            const descriptionMarkup = escapeHtml(problem.description || '');
+
+            const linkedObjectives = Array.isArray(problem.linked_objectives)
+                ? problem.linked_objectives
+                    .map((objectiveId) => objectivesData.find((objective) => objective.id === objectiveId))
+                    .filter(Boolean)
+                : [];
+
+            const linkedMarkup = linkedObjectives.length
+                ? `
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        ${linkedObjectives.map((objective) => `
+                            <span class="rounded-full bg-slate-900/70 px-3 py-1 text-xs font-medium text-slate-200" data-linked-objective="${escapeHtml(objective.id)}">
+                                ${escapeHtml(objective.icon || '🎯')} ${escapeHtml(objective.name)}
+                            </span>
+                        `).join('')}
+                    </div>
+                `
+                : '';
+
+            return `
+                <div class="objective-card light-card${selectedClass}" data-problem-id="${problemId}">
+                    <input type="radio" name="problem" id="${problemId}" value="${problemId}" class="sr-only" ${checkedAttribute}>
+                    <label for="${problemId}" class="flex h-full cursor-pointer flex-col gap-3 p-4">
+                        <span class="text-2xl" aria-hidden="true">${iconMarkup}</span>
+                        <div>
+                            <span class="block text-lg font-semibold text-slate-100">${nameMarkup}</span>
+                            <p class="mt-2 text-sm text-slate-300">${descriptionMarkup}</p>
+                            ${linkedMarkup}
+                        </div>
+                    </label>
+                </div>
+            `;
+        }).join('');
+    };
+
     const renderDesignBlueprint = () => {
         if (!designBlueprintContainer) return;
         if (!appState.selectedObjective) {
