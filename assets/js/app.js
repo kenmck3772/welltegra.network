@@ -2479,21 +2479,30 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Planner
 
-    const stepIndicators = { 
-        1: document.getElementById('step-1-indicator'), 
-        2: document.getElementById('step-2-indicator'), 
-        3: document.getElementById('step-3-indicator') 
+    const stepIndicators = {
+        1: document.getElementById('step-1-indicator'),
+        2: document.getElementById('step-2-indicator'),
+        3: document.getElementById('step-3-indicator'),
+        4: document.getElementById('step-4-indicator'),
+        5: document.getElementById('step-5-indicator'),
+        6: document.getElementById('step-6-indicator')
     };
-    
+
     const stepConnectors = {
         1: document.getElementById('step-1-connector'),
-        2: document.getElementById('step-2-connector')
+        2: document.getElementById('step-2-connector'),
+        3: document.getElementById('step-3-connector'),
+        4: document.getElementById('step-4-connector'),
+        5: document.getElementById('step-5-connector')
     };
-    
+
     const stepSections = {
         1: document.getElementById('step-1'),
         2: document.getElementById('step-2'),
-        3: document.getElementById('step-3')
+        3: document.getElementById('step-3'),
+        4: document.getElementById('step-4'),
+        5: document.getElementById('step-5'),
+        6: document.getElementById('step-6')
     };
 
     const wellFocusFilters = [
@@ -2599,11 +2608,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const generatePlanBtnAi = document.getElementById('generate-plan-btn-ai');
     const planOutput = document.getElementById('plan-output');
     const startOverBtn = document.getElementById('start-over-btn');
+    const readinessOutput = document.getElementById('readiness-output');
     const beginOpBtn = document.getElementById('begin-op-btn');
     const aiToggle = document.getElementById('ai-toggle');
     const manualPlanningView = document.getElementById('manual-planning-view');
     const aiAdvisorView = document.getElementById('ai-advisor-view');
     const aiRecommendationsContainer = document.getElementById('ai-recommendations');
+    const getDesignBlueprintContainer = () => document.getElementById('design-blueprint');
     const designBlueprintContainer = document.getElementById('design-blueprint');
     const plannerStatusRegion = document.getElementById('planner-status');
     const plannerToast = document.getElementById('planner-toast');
@@ -2850,6 +2861,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- PLANNER LOGIC ---
 
+    const assetCodePattern = /^[a-z]{1,3}-?\d{2,}$/;
+
     const filterWellPortfolio = () => {
         const filters = appState.wellFilters || { query: '', focus: 'all', themes: new Set() };
         const query = (filters.query || '').trim().toLowerCase();
@@ -2871,7 +2884,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if (query) {
-                const haystack = [
+                const coreHaystack = [
                     well.id,
                     well.name,
                     well.field,
@@ -2879,11 +2892,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     well.type,
                     well.status,
                     well.issue,
-                    ...(well.themes || []),
-                    ...((well.history || []).map((entry) => `${entry.operation} ${entry.problem} ${entry.lesson}`))
+                    ...(well.themes || [])
                 ].join(' ').toLowerCase();
 
-                if (!haystack.includes(query)) {
+                const matchesCoreFields = coreHaystack.includes(query);
+                let matchesExtendedFields = false;
+
+                if (!matchesCoreFields && !assetCodePattern.test(query)) {
+                    matchesExtendedFields = (well.history || []).some((entry) => {
+                        const historyText = `${entry.operation} ${entry.problem} ${entry.lesson}`.toLowerCase();
+                        return historyText.includes(query);
+                    });
+                }
+
+                if (!matchesCoreFields && !matchesExtendedFields) {
                     return false;
                 }
             }
@@ -3230,6 +3252,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     const renderDesignBlueprint = () => {
+        const designBlueprintContainer = getDesignBlueprintContainer();
         if (!designBlueprintContainer) return;
         if (!appState.selectedObjective) {
             designBlueprintContainer.innerHTML = '<p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>';
@@ -3452,6 +3475,77 @@ document.addEventListener('DOMContentLoaded', function() {
 
         window.dispatchEvent(new CustomEvent('welltegra:plan-saved', { detail }));
         showPlannerToast('Integrated program synced to Mobile Communicator');
+    };
+
+    const renderBulletList = (items, emptyMessage = '') => {
+        if (!Array.isArray(items) || items.length === 0) {
+            if (!emptyMessage) {
+                return '';
+            }
+            return `<p class="text-sm italic text-slate-500 dark:text-slate-400">${escapeHtml(emptyMessage)}</p>`;
+        }
+
+        return `
+            <ul class="space-y-2 text-sm text-slate-300">
+                ${items
+                    .map(item => `
+                        <li class="flex items-start gap-2">
+                            <span class="mt-1 text-blue-400">•</span>
+                            <span>${escapeHtml(item)}</span>
+                        </li>
+                    `)
+                    .join('')}
+            </ul>
+        `;
+    };
+
+    const renderOptionalList = (title, items) => {
+        if (!Array.isArray(items) || items.length === 0) {
+            return '';
+        }
+
+        return `
+            <div class="mt-6">
+                <h5 class="text-sm font-semibold text-slate-600 dark:text-slate-300 mb-2">${escapeHtml(title)}</h5>
+                ${renderBulletList(items)}
+            </div>
+        `;
+    };
+
+    const renderCostCodeTable = (costCodes) => {
+        if (!Array.isArray(costCodes) || costCodes.length === 0) {
+            return '';
+        }
+
+        const rows = costCodes
+            .map(code => {
+                const estimate = typeof code.estimate === 'number' ? code.estimate : Number(code.estimate) || 0;
+                return `
+                    <tr>
+                        <td class="px-3 py-2 text-sm text-slate-200">${escapeHtml(code.code || '')}</td>
+                        <td class="px-3 py-2 text-sm text-slate-300">${escapeHtml(code.description || '')}</td>
+                        <td class="px-3 py-2 text-sm text-right text-slate-200">$${estimate.toLocaleString()}</td>
+                    </tr>
+                `;
+            })
+            .join('');
+
+        return `
+            <div class="mt-6 overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-700 text-left">
+                    <thead>
+                        <tr class="text-xs uppercase tracking-wide text-slate-400">
+                            <th class="px-3 py-2 font-semibold">Cost Code</th>
+                            <th class="px-3 py-2 font-semibold">Description</th>
+                            <th class="px-3 py-2 font-semibold text-right">Estimate (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        ${rows}
+                    </tbody>
+                </table>
+            </div>
+        `;
     };
 
     const renderPlan = () => {
@@ -4168,38 +4262,52 @@ document.addEventListener('DOMContentLoaded', function() {
         ].join('');
     };
 
-    const updatePlannerStepUI = (currentStep) => { 
+    const updatePlannerStepUI = (currentStep) => {
         // Reset all step indicators and connectors
-        Object.values(stepIndicators).forEach(ind => {
-            ind.classList.remove('active', 'completed');
-            ind.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
+        Object.values(stepIndicators).forEach(indicator => {
+            if (!indicator) return;
+            indicator.classList.remove('active', 'completed', 'bg-blue-600', 'text-white');
+            indicator.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
         });
-        
-        Object.values(stepConnectors).forEach(conn => {
-            conn.classList.remove('active', 'completed');
+
+        Object.values(stepConnectors).forEach(connector => {
+            if (!connector) return;
+            connector.classList.remove('active', 'completed', 'bg-blue-600');
+            connector.classList.add('bg-gray-200');
         });
-        
+
         // Mark completed steps
         for (let i = 1; i < currentStep; i++) {
-            stepIndicators[i].classList.add('completed');
-            stepIndicators[i].classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
-            stepIndicators[i].classList.add('bg-blue-600', 'text-white');
-            
-            if (stepConnectors[i]) {
-                stepConnectors[i].classList.add('completed');
-                stepConnectors[i].classList.remove('bg-gray-200');
-                stepConnectors[i].classList.add('bg-blue-600');
+            const indicator = stepIndicators[i];
+            if (indicator) {
+                indicator.classList.add('completed', 'bg-blue-600', 'text-white');
+                indicator.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
+            }
+
+            const connector = stepConnectors[i];
+            if (connector) {
+                connector.classList.add('completed', 'bg-blue-600');
+                connector.classList.remove('bg-gray-200');
             }
         }
-        
-        // Mark active step
-        stepIndicators[currentStep].classList.add('active');
-        stepIndicators[currentStep].classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
-        stepIndicators[currentStep].classList.add('bg-blue-600', 'text-white');
 
-        // Show/hide step sections
-        Object.keys(stepSections).forEach(key => {
-            stepSections[key].classList.toggle('hidden', Number(key) !== currentStep);
+        // Mark active step
+        const activeIndicator = stepIndicators[currentStep];
+        if (activeIndicator) {
+            activeIndicator.classList.add('active', 'bg-blue-600', 'text-white');
+            activeIndicator.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
+        }
+
+        // Show all completed sections and hide future ones
+        Object.entries(stepSections).forEach(([key, section]) => {
+            if (!section) return;
+            const stepNumber = Number(key);
+            if (Number.isNaN(stepNumber)) return;
+            if (stepNumber <= currentStep) {
+                section.classList.remove('hidden');
+            } else {
+                section.classList.add('hidden');
+            }
         });
 
         if (currentStep === 6) {
@@ -4664,6 +4772,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const persF = persFilter.toLowerCase();
 
+        const filteredPersonnel = personnelData.filter(person => {
+            const matchesRole = requiredRoles.some(role => matchesPersonnelRole(role, person));
+            if (!matchesRole) return false;
+            if (!persF) return true;
+            return [person.name, person.role, person.company, person.id]
+                .filter(Boolean)
+                .some(val => val.toLowerCase().includes(persF));
+        });
+
         personnelTableBody.innerHTML = filteredPersonnel.length ? filteredPersonnel.map(person => {
             const statusClass = toStatusClass(person.status || 'available');
             const perDiem = person.perDiem ? `<span class="block text-xs text-slate-400">Per diem ${formatCurrency(person.perDiem)}</span>` : '';
@@ -4735,21 +4852,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             }
         }
-        const filteredPersonnel = personnelData.filter(p => 
-            requiredRoles.includes(p.role) && 
-            (p.name.toLowerCase().includes(persF) || p.role.toLowerCase().includes(persF))
-        );
-        
-        personnelTableBody.innerHTML = filteredPersonnel.map(p => `
-            <tr>
-                <td class="p-2">${p.name}</td>
-                <td class="p-2">${p.role}</td>
-                <td class="p-2">
-                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.status.toLowerCase().replace(/\s/g, '')}">${p.status}</span>
-                </td>
-                <td class="p-2">${p.certsValid ? '✅ Valid' : '⚠️ Expired'}</td>
-            </tr>
-        `).join('');
     };
 
     const checkLogistics = () => {
@@ -6142,6 +6244,7 @@ const validateInvoice = () => {
         if (step1ContinueBtn) step1ContinueBtn.disabled = false;
         if (step2ContinueBtn) step2ContinueBtn.disabled = true;
         if (generateProgramBtn) generateProgramBtn.disabled = true;
+        const designBlueprintContainer = getDesignBlueprintContainer();
         if (designBlueprintContainer) {
             designBlueprintContainer.innerHTML = '<p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>';
         }
@@ -7053,6 +7156,16 @@ const validateInvoice = () => {
     }
 
     init();
+
+    window.welltegraPlanner = {
+        getState: () => ({
+            selectedWell: appState.selectedWell,
+            selectedObjective: appState.selectedObjective,
+            generatedPlan: appState.generatedPlan,
+            referenceDataLoaded: appState.referenceDataLoaded,
+            handoverReady: appState.handoverReady
+        })
+    };
 });
 
 // --- PDF EXPORT SYSTEM ---
