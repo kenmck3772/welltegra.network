@@ -342,6 +342,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
     console.table(plan);
+    window.dispatchEvent(
+      new CustomEvent('welltegra:plan-saved', {
+        detail: {
+          plan,
+          timestamp: Date.now()
+        }
+      })
+    );
     showToast('Job plan saved');
   });
 
