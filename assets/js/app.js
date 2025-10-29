@@ -5896,6 +5896,8 @@ const validateInvoice = () => {
     };
 
     // Well selection event listener
+    let touchSelectionGesture = null;
+    let suppressClickFromTouch = false;
     let activeTouchGesture = null;
 
     const resolvePlannerCardFromEvent = (event) => {
@@ -5903,6 +5905,8 @@ const validateInvoice = () => {
         if (targetCard) {
             return targetCard;
         }
+        if (touchSelectionGesture && touchSelectionGesture.card) {
+            return touchSelectionGesture.card;
         if (activeTouchGesture && activeTouchGesture.card) {
             return activeTouchGesture.card;
         }
@@ -5910,6 +5914,13 @@ const validateInvoice = () => {
     };
 
     addListener(wellSelectionGrid, 'click', (e) => {
+        if (suppressClickFromTouch) {
+            e.stopPropagation();
+            e.preventDefault();
+            suppressClickFromTouch = false;
+            return;
+        }
+
         if (activeTouchGesture && activeTouchGesture.preventClick) {
             e.stopPropagation();
             e.preventDefault();
@@ -5931,6 +5942,131 @@ const validateInvoice = () => {
         handleWellCardSelection(card);
     });
 
+    const gesturePointerTypes = new Set(['touch', 'pen']);
+
+    const resetTouchGesture = () => {
+        touchSelectionGesture = null;
+    };
+
+    const shouldHandlePointer = (event) => gesturePointerTypes.has(event.pointerType || '');
+
+    if (window.PointerEvent) {
+        addListener(wellSelectionGrid, 'pointerdown', (e) => {
+            if (!shouldHandlePointer(e)) return;
+            touchSelectionGesture = {
+                id: e.pointerId,
+                startX: e.clientX,
+                startY: e.clientY,
+                moved: false,
+                card: e.target.closest('.planner-card')
+            };
+        });
+
+        addListener(wellSelectionGrid, 'pointermove', (e) => {
+            if (!touchSelectionGesture || touchSelectionGesture.id !== e.pointerId) return;
+            const deltaX = Math.abs(e.clientX - touchSelectionGesture.startX);
+            const deltaY = Math.abs(e.clientY - touchSelectionGesture.startY);
+            if (deltaX > 12 || deltaY > 12) {
+                touchSelectionGesture.moved = true;
+            }
+        }, { passive: true });
+
+        addListener(wellSelectionGrid, 'pointerup', (e) => {
+            if (!touchSelectionGesture || touchSelectionGesture.id !== e.pointerId) return;
+
+            const gesture = touchSelectionGesture;
+            resetTouchGesture();
+
+            if (gesture.moved) {
+                return;
+            }
+
+            const detailsBtn = e.target.closest('.view-details-btn');
+            if (detailsBtn) {
+                e.preventDefault();
+                openModal(detailsBtn.dataset.wellId);
+                suppressClickFromTouch = true;
+                return;
+            }
+
+            const card = resolvePlannerCardFromEvent(e);
+            if (!card) {
+                suppressClickFromTouch = true;
+                e.preventDefault();
+                return;
+            }
+
+            e.preventDefault();
+            handleWellCardSelection(card);
+            suppressClickFromTouch = true;
+        }, { passive: false });
+
+        addListener(wellSelectionGrid, 'pointercancel', (e) => {
+            if (touchSelectionGesture && touchSelectionGesture.id === e.pointerId) {
+                resetTouchGesture();
+            }
+        });
+    } else {
+        addListener(wellSelectionGrid, 'touchstart', (e) => {
+            const touch = e.changedTouches && e.changedTouches[0];
+            if (!touch) return;
+            touchSelectionGesture = {
+                id: touch.identifier,
+                startX: touch.clientX,
+                startY: touch.clientY,
+                moved: false,
+                card: e.target.closest('.planner-card')
+            };
+        }, { passive: true });
+
+        addListener(wellSelectionGrid, 'touchmove', (e) => {
+            if (!touchSelectionGesture) return;
+            const touch = Array.from(e.changedTouches || []).find((t) => t.identifier === touchSelectionGesture.id);
+            if (!touch) return;
+            const deltaX = Math.abs(touch.clientX - touchSelectionGesture.startX);
+            const deltaY = Math.abs(touch.clientY - touchSelectionGesture.startY);
+            if (deltaX > 12 || deltaY > 12) {
+                touchSelectionGesture.moved = true;
+            }
+        }, { passive: true });
+
+        addListener(wellSelectionGrid, 'touchend', (e) => {
+            if (!touchSelectionGesture) return;
+            const touch = Array.from(e.changedTouches || []).find((t) => t.identifier === touchSelectionGesture.id);
+            if (!touch) {
+                resetTouchGesture();
+                return;
+            }
+
+            const gesture = touchSelectionGesture;
+            resetTouchGesture();
+
+            if (gesture.moved) {
+                return;
+            }
+
+            const detailsBtn = e.target.closest('.view-details-btn');
+            if (detailsBtn) {
+                e.preventDefault();
+                openModal(detailsBtn.dataset.wellId);
+                suppressClickFromTouch = true;
+                return;
+            }
+
+            const card = resolvePlannerCardFromEvent(e);
+            if (!card) {
+                suppressClickFromTouch = true;
+                e.preventDefault();
+                return;
+            }
+
+            e.preventDefault();
+            handleWellCardSelection(card);
+            suppressClickFromTouch = true;
+        }, { passive: false });
+
+        addListener(wellSelectionGrid, 'touchcancel', resetTouchGesture, { passive: true });
+    }
     addListener(wellSelectionGrid, 'touchstart', (e) => {
         const touch = e.changedTouches && e.changedTouches[0];
         if (!touch) return;
