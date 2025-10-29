@@ -5898,6 +5898,7 @@ const validateInvoice = () => {
     // Well selection event listener
     let touchSelectionGesture = null;
     let suppressClickFromTouch = false;
+    let activeTouchGesture = null;
 
     const resolvePlannerCardFromEvent = (event) => {
         const targetCard = event.target ? event.target.closest('.planner-card') : null;
@@ -5906,6 +5907,8 @@ const validateInvoice = () => {
         }
         if (touchSelectionGesture && touchSelectionGesture.card) {
             return touchSelectionGesture.card;
+        if (activeTouchGesture && activeTouchGesture.card) {
+            return activeTouchGesture.card;
         }
         return null;
     };
@@ -5918,6 +5921,14 @@ const validateInvoice = () => {
             return;
         }
 
+        if (activeTouchGesture && activeTouchGesture.preventClick) {
+            e.stopPropagation();
+            e.preventDefault();
+            activeTouchGesture = null;
+            return;
+        }
+
+    addListener(wellSelectionGrid, 'click', (e) => {
         const detailsBtn = e.target.closest('.view-details-btn');
         if (detailsBtn) {
             e.stopPropagation();
@@ -5926,6 +5937,7 @@ const validateInvoice = () => {
         }
 
         const card = resolvePlannerCardFromEvent(e);
+        const card = e.target.closest('.planner-card');
         if (!card) return;
         handleWellCardSelection(card);
     });
@@ -6055,11 +6067,73 @@ const validateInvoice = () => {
 
         addListener(wellSelectionGrid, 'touchcancel', resetTouchGesture, { passive: true });
     }
+    addListener(wellSelectionGrid, 'touchstart', (e) => {
+        const touch = e.changedTouches && e.changedTouches[0];
+        if (!touch) return;
+        activeTouchGesture = {
+            id: touch.identifier,
+            startX: touch.clientX,
+            startY: touch.clientY,
+            moved: false,
+            card: e.target.closest('.planner-card')
+        };
+    }, { passive: true });
+
+    addListener(wellSelectionGrid, 'touchmove', (e) => {
+        if (!activeTouchGesture) return;
+        const touch = Array.from(e.changedTouches || []).find((t) => t.identifier === activeTouchGesture.id);
+        if (!touch) return;
+        const deltaX = Math.abs(touch.clientX - activeTouchGesture.startX);
+        const deltaY = Math.abs(touch.clientY - activeTouchGesture.startY);
+        if (deltaX > 10 || deltaY > 10) {
+            activeTouchGesture.moved = true;
+        }
+    }, { passive: true });
+
+    addListener(wellSelectionGrid, 'touchend', (e) => {
+        if (!activeTouchGesture) return;
+        const touch = Array.from(e.changedTouches || []).find((t) => t.identifier === activeTouchGesture.id);
+        if (!touch) {
+            activeTouchGesture = null;
+            return;
+        }
+
+        if (activeTouchGesture.moved) {
+            activeTouchGesture = null;
+            return;
+        }
+
+        const detailsBtn = e.target.closest('.view-details-btn');
+        if (detailsBtn) {
+            e.preventDefault();
+            openModal(detailsBtn.dataset.wellId);
+            activeTouchGesture = { preventClick: true };
+            return;
+        }
+
+        const card = resolvePlannerCardFromEvent(e);
+        if (!card) {
+            activeTouchGesture = { preventClick: true };
+            return;
+        }
+
+        e.preventDefault();
+        handleWellCardSelection(card);
+        activeTouchGesture = { preventClick: true };
+    }, { passive: false });
+
+    addListener(wellSelectionGrid, 'touchcancel', () => {
+        activeTouchGesture = null;
+    }, { passive: true });
 
     addListener(wellSelectionGrid, 'keydown', (e) => {
         if (e.defaultPrevented) return;
         if (e.key !== 'Enter' && e.key !== ' ') return;
         const card = resolvePlannerCardFromEvent(e);
+    addListener(wellSelectionGrid, 'keydown', (e) => {
+        if (e.defaultPrevented) return;
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const card = e.target.closest('.planner-card');
         if (!card) return;
         e.preventDefault();
         handleWellCardSelection(card);
