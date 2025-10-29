@@ -2743,8 +2743,14 @@ document.addEventListener('DOMContentLoaded', function() {
             body.classList.add('theme-dark');
         }
 
+        const targetView = document.getElementById(`${viewName}-view`);
+        if (!targetView) {
+            console.warn(`Requested view "${viewName}" is not available in the DOM.`);
+            return;
+        }
+
         views.forEach(v => v.classList.add('hidden'));
-        document.getElementById(`${viewName}-view`).classList.remove('hidden');
+        targetView.classList.remove('hidden');
 
         navLinks.forEach(l => l.classList.remove('active'));
         const activeLink = document.getElementById(`${viewName}-nav-link`);
@@ -3007,6 +3013,55 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         wellPortfolioSignals.innerHTML = cards.join('');
+    };
+
+    const getWellCardMarkup = (well, isSelected) => {
+        const isWellFromHell = well.id === 'W666';
+        const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
+        const iconMarkup = renderPlannerIcon(
+            well.icon || {},
+            `${well.name} insight icon`,
+            isWellFromHell ? 'critical' : 'case'
+        );
+        const badgeMarkup = isWellFromHell
+            ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Critical intervention focus well">CRITICAL</span>'
+            : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Case study well">CASE STUDY</span>';
+
+        return `
+            <article class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'} ${isSelected ? 'selected' : ''}"
+                data-well-id="${well.id}"
+                role="button"
+                tabindex="0"
+                aria-pressed="${isSelected}">
+                <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex items-start gap-3">
+                            ${iconMarkup}
+                            <div>
+                                <h3 class="text-xl font-bold text-white">${well.name}</h3>
+                                <p class="mt-1 text-blue-100 text-sm">${well.field} — ${well.type}</p>
+                            </div>
+                        </div>
+                        ${badgeMarkup}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
+                    </div>
+                    <p class="text-sm">${well.issue}</p>
+                </div>
+                <div class="card-footer">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
+                        <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold"
+                            type="button"
+                            data-well-id="${well.id}"
+                            aria-label="View historical dossier for ${well.name}">View Details</button>
+                    </div>
+                </div>
+            </article>
+        `;
     };
 
     const getWellCardMarkup = (well, isSelected) => {

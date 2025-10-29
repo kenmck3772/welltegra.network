@@ -1031,13 +1031,60 @@
                     </div>
                 </div>
 
-                <!-- Contact -->
+            </div>
+        </div>
+
+        <div id="security-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight">Security &amp; Data Protection</h2>
+                <p class="mt-2 max-w-2xl mx-auto text-lg text-slate-300">Enterprise-grade controls keep well programs, Gemini prompts, and live operational telemetry secured from the planning office to the rig floor.</p>
+            </div>
+
+            <div class="mt-10 grid gap-6">
+                <section class="light-card p-6 rounded-lg space-y-4">
+                    <h3 class="text-2xl font-semibold">Defense-in-Depth Architecture</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-slate-300">
+                        <li><strong>Zero Trust perimeter.</strong> Planner and Mobile Communicator sessions are brokered with short-lived OAuth tokens and conditional access tied to rig site geofences.</li>
+                        <li><strong>Encryption everywhere.</strong> TLS 1.3 for all traffic, FIPS 140-2 validated KMS for data at rest, and client-side sealing on every Management of Change approval.</li>
+                        <li><strong>Separation of duties.</strong> Immutable audit trails on Gemini prompt edits, procedure generation, and supervisor sign-off prevent unauthorized workflow changes.</li>
+                    </ul>
+                </section>
+
+                <section class="light-card p-6 rounded-lg space-y-4">
+                    <h3 class="text-2xl font-semibold">Data Governance Pipeline</h3>
+                    <dl class="grid gap-4 sm:grid-cols-2 text-sm text-slate-300">
+                        <div>
+                            <dt class="text-xs uppercase tracking-wide text-slate-400">Identity</dt>
+                            <dd>Enterprise Managed Users with SCIM lifecycle management ensure only certified personnel access active wells.</dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs uppercase tracking-wide text-slate-400">Segmentation</dt>
+                            <dd>Program data, AI embeddings, and live operations streams reside in isolated tenants with per-operator encryption domains.</dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs uppercase tracking-wide text-slate-400">Integrity</dt>
+                            <dd>Automated hash stamping on every import plus dual attestation before procedures are released to the field.</dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs uppercase tracking-wide text-slate-400">Retention</dt>
+                            <dd>Configurable retention schedules with defensible deletion aligned to regional regulation and contract terms.</dd>
+                        </div>
+                    </dl>
+                </section>
+
+                <section class="light-card p-6 rounded-lg space-y-4">
+                    <h3 class="text-2xl font-semibold">Response &amp; Assurance</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-slate-300">
+                        <li>24/7 managed detection with playbooks mapped to rig cyber incidents and cross-domain API anomalies.</li>
+                        <li>Quarterly tabletop drills that include Mobile Communicator escalation paths and connectivity failover.</li>
+                        <li>Exportable compliance packets covering SOC 2 Type II, ISO/IEC 27001, and NIS2 readiness for operator audits.</li>
+                    </ul>
+                </section>
+
                 <div class="light-card p-8 rounded-lg text-center">
-                    <h2 class="text-2xl font-bold mb-4">Have Security Questions?</h2>
-                    <p class="text-lg text-slate-400 mb-6">Our security team is here to help</p>
-                    <a href="mailto:security@welltegra.network" class="inline-block px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
-                        Contact Security Team
-                    </a>
+                    <h3 class="text-2xl font-bold">Need a security briefing?</h3>
+                    <p class="text-lg text-slate-400 mb-6">Coordinate a deep dive into identity, audit, and disaster recovery posture tailored to your intervention campaign.</p>
+                    <a href="mailto:security@welltegra.network" class="inline-block px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">Contact Security Team</a>
                 </div>
             </div>
         </div>
@@ -1080,6 +1127,22 @@
                     </svg>
                 </button>
             </header>
+            <details id="mobile-communicator-howto" class="mx-6 mt-4 space-y-4 rounded-2xl border border-slate-800 bg-slate-900/70 p-5 text-sm text-slate-300">
+                <summary class="flex cursor-pointer items-center justify-between text-base font-semibold text-slate-100">
+                    <span>How to use the Mobile Communicator</span>
+                    <span class="ml-3 text-xs font-semibold uppercase tracking-wide text-cyan-300">Step-by-step</span>
+                </summary>
+                <p>
+                    The communicator mirrors the latest saved programme and lets authorised supervisors review change requests, evidence, and impact before releasing work.
+                </p>
+                <ol class="list-decimal space-y-2 pl-5">
+                    <li><strong>Open the channel.</strong> Tap the Mobile Communicator badge in the planner header. Pending items are flagged in amber.</li>
+                    <li><strong>Select a request.</strong> Choose a card in the left column to load the justification, plan snapshot, and decision trail.</li>
+                    <li><strong>Validate the context.</strong> Check risk badges, first execution steps, and the on-call crew in the plan snapshot. Review evidence attachments and watchers if escalation is required.</li>
+                    <li><strong>Approve or reject.</strong> Enter your WellTegra email and secure PIN, add an optional comment for the log, then submit a decision. A digital seal is generated and the audit feed updates instantly.</li>
+                </ol>
+                <p class="text-xs text-slate-500">All approvals are stored locally for this demo build. In production, the communicator would synchronise with the WellTegra control plane over an encrypted channel.</p>
+            </details>
             <div class="grid gap-6 px-6 py-6 lg:grid-cols-[17rem_1fr]">
                 <section class="flex flex-col gap-5">
                     <div class="grid gap-3 text-sm text-slate-200 sm:grid-cols-3">

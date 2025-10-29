@@ -65,6 +65,10 @@ welltegra.network/
 
 Legacy demos and unused media have been removed under the lean inventory initiative (#46). Consult `LEAN_INVENTORY.md` for the rationale, remaining asset list, and follow-up actions.
 
+## Strategic References
+
+- [Old Pie Embassy White Paper Integration Notes](WHITE_PAPER_INSIGHTS.md) – distilled guidance from the external "Architectural Blueprint for the 'well-tegra' Master Program" paper with concrete actions for the platform roadmap.
+
 ## Getting Started
 
 ### Local Development
@@ -103,6 +107,14 @@ This project can be easily deployed using GitHub Pages:
 2. Review objectives, problems, and generated plans
 3. Monitor live data through interactive gauges and charts
 4. Manage assets and equipment through the Asset Management tab
+
+### Mobile Communicator Quick Start
+1. **Open the communicator:** Click the Mobile Communicator badge in the planner header. The amber counter shows how many requests still require a decision.
+2. **Review a request:** Select any card on the left to load the justification, risk profile, and full decision trail. The right-hand pane surfaces supporting evidence, watchers, and plan context from the latest saved programme.
+3. **Verify plan alignment:** Confirm budget, duration, crew roster, and the first execution steps in the “Latest plan snapshot” module. Risk badges highlight HSE, integrity, or commercial impacts that need escalation.
+4. **Approve or reject:** Enter an authorised WellTegra email, the secure PIN, and an optional comment. Your decision generates a digital seal and updates the audit feed so the rest of the team can track remote sign-off activity.
+
+> _Demo note_: The trial build stores approvals locally in the browser. The production deployment synchronises with the WellTegra control plane over an encrypted channel and enforces SSO-backed identity checks.
 
 ### Problem Analysis
 - The system automatically identifies potential problems based on drilling parameters
