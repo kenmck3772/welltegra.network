@@ -470,6 +470,7 @@
         pendingBadge.textContent = String(pendingCount);
         pendingBadge.classList.toggle('hidden', pendingCount === 0);
       }
+      if (pendingBadge) pendingBadge.textContent = String(pendingCount);
       if (openBtn) {
         const labelBase = 'Open mobile communicator';
         const badge = pendingCount === 1 ? '1 request awaiting sign-off' : `${pendingCount} requests awaiting sign-off`;
@@ -891,6 +892,8 @@
       renderAll();
       if (releaseFocusTrap) releaseFocusTrap();
       releaseFocusTrap = trapFocusWithin(overlay);
+      document.body.classList.add('overflow-hidden');
+      renderAll();
       closeBtn.focus();
     };
 
@@ -906,6 +909,7 @@
         releaseFocusTrap();
         releaseFocusTrap = null;
       }
+      document.body.classList.remove('overflow-hidden');
       if (state.previousFocus && document.body.contains(state.previousFocus)) {
         state.previousFocus.focus();
       }
@@ -981,6 +985,7 @@
       };
       persistPlanContext(state.planContext);
 
+      const metrics = detail?.plan?.metrics || {};
       const entry = {
         id: `feed-plan-${timestamp}`,
         type: 'plan-snapshot',
@@ -994,6 +999,7 @@
       const snapshotMessage = `Planner synced — budget ${metrics.totalDaily || 'n/a'}, duration ${
         metrics.length || 'n/a'
       }, crew ${metrics.equipmentDaily || 'n/a'}.`;
+      const snapshotMessage = `Planner saved — total ${metrics.totalDaily || 'n/a'}, toolstring ${metrics.length || 'n/a'}.`;
       const isoTime = new Date(timestamp).toISOString();
       state.requests.forEach((req) => {
         if ((req.status || '').toLowerCase() === 'pending') {
