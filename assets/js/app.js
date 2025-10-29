@@ -1896,7 +1896,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const createWellFilters = () => ({ query: '', focus: 'all', themes: new Set() });
 
     const createInitialAppState = () => ({
-    let appState = {
         currentView: 'home',
         selectedWell: null,
         selectedObjective: null,
@@ -1919,11 +1918,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const appState = createInitialAppState();
-        wellFilters: { query: '', focus: 'all', themes: new Set() },
-        handoverReady: false,
-        planBroadcastKey: null
-        handoverReady: false
-    };
 
     // --- DOM ELEMENTS ---
 
