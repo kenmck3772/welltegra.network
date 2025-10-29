@@ -15,6 +15,7 @@ Well-Tegra is an interactive case study platform designed to demonstrate advance
 - **Asset Management**: Track equipment, inventory, and resources
 - **Schematic Visualization**: Interactive well bore schematics with depth markers
 - **Multi-Well Management**: Handle multiple wells simultaneously with detailed tracking
+- **Mobile Communicator**: Capture remote Management of Change approvals with digital seals, synced plan context, and evidence review from any connected device.
 
 ### 📊 Data Visualization
 - Real-time hookload monitoring with alert thresholds
@@ -33,9 +34,6 @@ Well-Tegra is an interactive case study platform designed to demonstrate advance
 - Each dataset card now renders a 3-row preview table (first five columns) alongside inline data dictionary callouts so engineers understand field semantics immediately.
 - One-click pandas, <code>curl</code>, and SQL schema copy helpers remove boilerplate when loading the datasets into notebooks, CLI scripts, or data warehouses.
 - Copy helpers now drive screen-reader friendly status updates so keyboard and assistive tech users receive immediate feedback when snippets land on the clipboard.
-- The in-app <strong>Data Export Hub</strong> view provides direct download links, live record counts, schema previews, and approximate file sizes so analysts can confirm the shape of each dataset before importing it into their pipelines.
-- Each dataset card now renders a 3-row preview table (first five columns) alongside inline data dictionary callouts so engineers understand field semantics immediately.
-- One-click pandas, <code>curl</code>, and SQL schema copy helpers remove boilerplate when loading the datasets into notebooks, CLI scripts, or data warehouses.
 
 ### 🎨 User Experience
 - Dark/Light theme toggle
@@ -66,6 +64,10 @@ welltegra.network/
 ## Asset Inventory
 
 Legacy demos and unused media have been removed under the lean inventory initiative (#46). Consult `LEAN_INVENTORY.md` for the rationale, remaining asset list, and follow-up actions.
+
+## Strategic References
+
+Strategic alignment briefs will be added alongside future roadmap updates. Contact the WellTegra program office for the latest executive guidance packs.
 
 ## Getting Started
 
@@ -105,6 +107,14 @@ This project can be easily deployed using GitHub Pages:
 2. Review objectives, problems, and generated plans
 3. Monitor live data through interactive gauges and charts
 4. Manage assets and equipment through the Asset Management tab
+
+### Mobile Communicator Quick Start
+1. **Open the communicator:** Click the Mobile Communicator badge in the planner header. The amber counter shows how many requests still require a decision.
+2. **Review a request:** Select any card on the left to load the justification, risk profile, and full decision trail. The right-hand pane surfaces supporting evidence, watchers, and plan context from the latest saved programme.
+3. **Verify plan alignment:** Confirm budget, duration, crew roster, and the first execution steps in the “Latest plan snapshot” module. Risk badges highlight HSE, integrity, or commercial impacts that need escalation.
+4. **Approve or reject:** Enter an authorised WellTegra email, the secure PIN, and an optional comment. Your decision generates a digital seal and updates the audit feed so the rest of the team can track remote sign-off activity.
+
+> _Demo note_: The trial build stores approvals locally in the browser. The production deployment synchronises with the WellTegra control plane over an encrypted channel and enforces SSO-backed identity checks.
 
 ### Problem Analysis
 - The system automatically identifies potential problems based on drilling parameters
