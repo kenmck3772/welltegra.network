@@ -1912,7 +1912,6 @@ document.addEventListener('DOMContentLoaded', function() {
         dataExportHandlersBound: false,
         wellFilters: { query: '', focus: 'all', themes: new Set() },
         handoverReady: false
-        wellFilters: { query: '', focus: 'all', themes: new Set() }
     };
 
     // --- DOM ELEMENTS ---
@@ -2533,49 +2532,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return themeFilter ? !!themeFilter.predicate(well) : false;
     };
 
-    };
-
-    const wellFocusFilters = [
-        { id: 'all', label: 'All Wells', predicate: () => true },
-        { id: 'critical', label: 'Critical Path', predicate: (well) => well.kind === 'critical' },
-        { id: 'case', label: 'Case Studies', predicate: (well) => well.kind === 'case' }
-    ];
-
-    const wellThemeFilters = [
-        {
-            id: 'integrity',
-            label: 'Integrity',
-            description: 'Casing deformation, barrier failures, or structural threats',
-            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('integrity')
-        },
-        {
-            id: 'flow-assurance',
-            label: 'Flow Assurance',
-            description: 'Scale, sand, wax, or production-blocking deposition',
-            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('flow-assurance')
-        },
-        {
-            id: 'controls',
-            label: 'Controls & Safety',
-            description: 'Safety valves, automation, or control system reliability',
-            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('controls')
-        },
-        {
-            id: 'productivity',
-            label: 'Production Recovery',
-            description: 'Demonstrated uplift in production or uptime',
-            predicate: (well) => Array.isArray(well.themes) && well.themes.includes('productivity')
-        }
-    ];
-
-    const wellFocusFilterMap = new Map(wellFocusFilters.map((filter) => [filter.id, filter]));
-    const wellThemeFilterMap = new Map(wellThemeFilters.map((filter) => [filter.id, filter]));
-
-    const evaluateTheme = (themeId, well) => {
-        const themeFilter = wellThemeFilterMap.get(themeId);
-        return themeFilter ? !!themeFilter.predicate(well) : false;
-    };
-
     const totalFocusCounts = new Map(
         wellFocusFilters.map((filter) => [filter.id, wellData.filter((well) => filter.predicate(well)).length])
     );
@@ -2802,7 +2758,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!viewName) return;
         if (enforcePlanAccess(viewName, sourceLabel)) {
             return;
-        }
         }
         switchView(viewName);
     };
@@ -3035,6 +2990,55 @@ document.addEventListener('DOMContentLoaded', function() {
         wellPortfolioSignals.innerHTML = cards.join('');
     };
 
+    const getWellCardMarkup = (well, isSelected) => {
+        const isWellFromHell = well.id === 'W666';
+        const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
+        const iconMarkup = renderPlannerIcon(
+            well.icon || {},
+            `${well.name} insight icon`,
+            isWellFromHell ? 'critical' : 'case'
+        );
+        const badgeMarkup = isWellFromHell
+            ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Critical intervention focus well">CRITICAL</span>'
+            : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Case study well">CASE STUDY</span>';
+
+        return `
+            <article class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'} ${isSelected ? 'selected' : ''}"
+                data-well-id="${well.id}"
+                role="button"
+                tabindex="0"
+                aria-pressed="${isSelected}">
+                <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex items-start gap-3">
+                            ${iconMarkup}
+                            <div>
+                                <h3 class="text-xl font-bold text-white">${well.name}</h3>
+                                <p class="mt-1 text-blue-100 text-sm">${well.field} — ${well.type}</p>
+                            </div>
+                        </div>
+                        ${badgeMarkup}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
+                    </div>
+                    <p class="text-sm">${well.issue}</p>
+                </div>
+                <div class="card-footer">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
+                        <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold"
+                            type="button"
+                            data-well-id="${well.id}"
+                            aria-label="View historical dossier for ${well.name}">View Details</button>
+                    </div>
+                </div>
+            </article>
+        `;
+    };
+
     const renderWellCards = () => {
         if (!wellSelectionGrid) return;
         const filteredWells = filterWellPortfolio();
@@ -3055,395 +3059,12 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        wellSelectionGrid.innerHTML = filteredWells.map(well => {
-    window.showView = (viewName, sourceLabel) => {
-        if (!viewName) return;
-        if (enforcePlanAccess(viewName, sourceLabel)) {
-            return;
-        }
-        switchView(viewName);
+        const selectedWellId = appState.selectedWell?.id || null;
+        wellSelectionGrid.innerHTML = filteredWells
+            .map((well) => getWellCardMarkup(well, well.id === selectedWellId))
+            .join('');
     };
     
-    const resetApp = (switchToHome = false) => {
-        appState.selectedWell = null; 
-        appState.selectedObjective = null; 
-        appState.generatedPlan = null; 
-        appState.lessonsLearned = [];
-        appState.commercial = { afe: 0, actualCost: 0, serviceTickets: [] };
-        appState.ai = { selectedProblemId: null, selectedRecommendation: null };
-        
-        // Reset well selection
-        document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
-        
-        // Reset objective selection
-        const checkedObjective = document.querySelector('input[name="objective"]:checked');
-        if(checkedObjective) { checkedObjective.checked = false; }
-        
-        // Reset problem selection
-        const checkedProblem = document.querySelector('input[name="problem"]:checked');
-        if(checkedProblem) { checkedProblem.checked = false; }
-        
-        // Reset buttons
-        if (generatePlanBtnManual) generatePlanBtnManual.disabled = true;
-        if (generatePlanBtnAi) generatePlanBtnAi.disabled = true;
-
-        // Reset AI recommendations
-        if (aiRecommendationsContainer) aiRecommendationsContainer.classList.add('hidden');
-
-        // Reset AI toggle
-        if (aiToggle) aiToggle.checked = false;
-        if (manualPlanningView) manualPlanningView.classList.remove('hidden');
-        if (aiAdvisorView) aiAdvisorView.classList.add('hidden');
-
-        switchView(switchToHome ? 'home' : 'planner');
-        renderWellCards();
-        
-        switchView(switchToHome ? 'home' : 'planner');
-        updatePlannerStepUI(1);
-        updateNavLinks();
-    };
-
-    const updateNavLinks = () => {
-        const planExists = !!appState.generatedPlan;
-        navLinks.forEach(link => {
-            const id = link.id.replace('-nav-link', '');
-            const isGatedView = !alwaysAccessibleViews.has(id);
-
-            if (isGatedView && !planExists) {
-                link.classList.add('disabled');
-                link.setAttribute('aria-disabled', 'true');
-                link.setAttribute('tabindex', '-1');
-            } else {
-                link.classList.remove('disabled');
-                link.removeAttribute('aria-disabled');
-                link.removeAttribute('tabindex');
-            }
-        });
-    };
-
-    // --- PLANNER LOGIC ---
-
-    const filterWellPortfolio = () => {
-        const filters = appState.wellFilters || { query: '', focus: 'all', themes: new Set() };
-        const query = (filters.query || '').trim().toLowerCase();
-        const focusFilter = wellFocusFilterMap.get(filters.focus) || wellFocusFilterMap.get('all');
-        const activeThemes = filters.themes instanceof Set ? filters.themes : new Set();
-
-        return wellData.filter((well) => {
-            if (focusFilter && !focusFilter.predicate(well)) {
-                return false;
-            }
-
-            if (activeThemes.size > 0) {
-                const wellThemes = new Set(well.themes || []);
-                for (const themeId of activeThemes) {
-                    if (!wellThemes.has(themeId)) {
-                        return false;
-                    }
-                }
-            }
-
-            if (query) {
-                const haystack = [
-                    well.id,
-                    well.name,
-                    well.field,
-                    well.region,
-                    well.type,
-                    well.status,
-                    well.issue,
-                    ...(well.themes || []),
-                    ...((well.history || []).map((entry) => `${entry.operation} ${entry.problem} ${entry.lesson}`))
-                ].join(' ').toLowerCase();
-
-                if (!haystack.includes(query)) {
-                    return false;
-                }
-            }
-
-            return true;
-        });
-    const renderWellCards = () => { 
-        wellSelectionGrid.innerHTML = wellData.map(well => {
-            const isWellFromHell = well.id === 'W666';
-            const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
-            const iconMarkup = renderPlannerIcon(
-                well.icon || {},
-                `${well.name} insight icon`,
-                isWellFromHell ? 'critical' : 'case'
-            );
-            const badgeMarkup = isWellFromHell
-                ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Critical intervention focus well">CRITICAL</span>'
-                : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Case study well">CASE STUDY</span>';
-            const isSelected = appState.selectedWell && appState.selectedWell.id === well.id;
-
-            return `
-                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'} ${isSelected ? 'selected' : ''}" data-well-id="${well.id}">
-                    <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
-                        <div class="flex items-start justify-between gap-4">
-                            <div class="flex items-start gap-3">
-                                ${iconMarkup}
-                                <div>
-                                    <h3 class="text-xl font-bold text-white">${well.name}</h3>
-                                    <p class="mt-1 text-blue-100 text-sm">${well.field} — ${well.type}</p>
-                                </div>
-                            </div>
-                            ${badgeMarkup}
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
-                        </div>
-                        <p class="text-sm">${well.issue}</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
-                            <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold" data-well-id="${well.id}">View Details</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    };
-
-    const syncFocusChipStates = () => {
-        if (!wellFocusGroup) return;
-        const activeFocus = (appState.wellFilters && appState.wellFilters.focus) || 'all';
-        wellFocusGroup.querySelectorAll('[data-focus-filter]').forEach((button) => {
-            const isActive = button.dataset.focusFilter === activeFocus;
-            button.classList.toggle('filter-chip--active', isActive);
-            button.setAttribute('aria-pressed', String(isActive));
-        });
-    };
-
-    const syncThemeChipStates = () => {
-        if (!wellThemeGroup) return;
-        const activeThemes = (appState.wellFilters && appState.wellFilters.themes instanceof Set)
-            ? appState.wellFilters.themes
-            : new Set();
-        wellThemeGroup.querySelectorAll('[data-theme-filter]').forEach((button) => {
-            const themeId = button.dataset.themeFilter;
-            const isActive = activeThemes.has(themeId);
-            button.classList.toggle('filter-chip--active', isActive);
-            button.setAttribute('aria-pressed', String(isActive));
-        });
-    };
-
-    const updateFocusCounts = (filteredWells) => {
-        if (!wellFocusGroup) return;
-        const filteredCounts = new Map();
-        filteredWells.forEach((well) => {
-            wellFocusFilters.forEach((filter) => {
-                if (filter.predicate(well)) {
-                    filteredCounts.set(filter.id, (filteredCounts.get(filter.id) || 0) + 1);
-                }
-            });
-        });
-
-        wellFocusFilters.forEach((filter) => {
-            const countElement = wellFocusGroup.querySelector(`[data-focus-count="${filter.id}"]`);
-            if (!countElement) return;
-            const visible = filteredCounts.get(filter.id) || 0;
-            const total = totalFocusCounts.get(filter.id) || 0;
-            countElement.textContent = `${visible}/${total}`;
-        });
-    };
-
-    const updateThemeCounts = (filteredWells) => {
-        if (!wellThemeGroup) return;
-        const filteredThemeCounts = new Map();
-        filteredWells.forEach((well) => {
-            (well.themes || []).forEach((themeId) => {
-                filteredThemeCounts.set(themeId, (filteredThemeCounts.get(themeId) || 0) + 1);
-            });
-        });
-
-        wellThemeFilters.forEach((filter) => {
-            const countElement = wellThemeGroup.querySelector(`[data-theme-count="${filter.id}"]`);
-            if (!countElement) return;
-            const visible = filteredThemeCounts.get(filter.id) || 0;
-            const total = totalThemeCounts.get(filter.id) || 0;
-            countElement.textContent = `${visible}/${total}`;
-        });
-    };
-
-    const updateWellFilterSummary = (filteredWells) => {
-        if (!wellFilterSummary) return;
-        const total = wellData.length;
-        const filtered = filteredWells.length;
-        const filters = appState.wellFilters || { query: '', focus: 'all', themes: new Set() };
-        const descriptors = [];
-
-        if (filters.focus && filters.focus !== 'all') {
-            const focusLabel = wellFocusFilterMap.get(filters.focus)?.label;
-            if (focusLabel) descriptors.push(focusLabel);
-        }
-
-        if (filters.themes instanceof Set && filters.themes.size > 0) {
-            const themeLabels = Array.from(filters.themes)
-                .map((themeId) => wellThemeFilterMap.get(themeId)?.label)
-                .filter(Boolean);
-            if (themeLabels.length) {
-                descriptors.push(`Themes: ${themeLabels.join(', ')}`);
-            }
-        }
-
-        if (filters.query) {
-            descriptors.push(`Search: “${filters.query.trim()}”`);
-        }
-
-        const selectedHidden = appState.selectedWell
-            ? !filteredWells.some((well) => well.id === appState.selectedWell.id)
-            : false;
-
-        const filterDescription = descriptors.length ? `Filters active — ${descriptors.join(' · ')}` : 'No filters applied.';
-        const hiddenNotice = selectedHidden ? ' The selected well is hidden by the current filters.' : '';
-
-        wellFilterSummary.textContent = `Showing ${filtered} of ${total} wells. ${filterDescription}${hiddenNotice}`;
-    };
-
-    const renderPortfolioSignals = (filteredWells) => {
-        if (!wellPortfolioSignals) return;
-        const cards = portfolioSignalDefinitions.map((signal) => {
-            const predicate = signal.predicate || (() => false);
-            const total = wellData.filter(predicate).length;
-            const visible = filteredWells.filter(predicate).length;
-            const percent = total === 0 ? 0 : Math.round((visible / total) * 100);
-
-            return `
-                <article class="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-inner ${signal.cardClass}" data-signal-id="${signal.id}">
-                    <div class="flex items-center gap-3">
-                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900/70 text-lg">${signal.icon}</span>
-                        <div>
-                            <p class="text-sm font-semibold uppercase tracking-wide text-slate-300">${signal.label}</p>
-                            <p class="text-xs text-slate-400">${signal.description}</p>
-                        </div>
-                    </div>
-                    <div class="mt-4 flex items-baseline gap-2">
-                        <span class="text-3xl font-bold text-white">${visible}</span>
-                        <span class="text-xs uppercase tracking-wide text-slate-400">visible now</span>
-                    </div>
-                    <p class="text-xs text-slate-400">Portfolio total: ${total}</p>
-                    <div class="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-800/70">
-                        <div class="h-full ${signal.progressClass}" style="width: ${percent}%;"></div>
-                    </div>
-                </article>
-            `;
-        });
-
-        wellPortfolioSignals.innerHTML = cards.join('');
-    };
-
-    const renderWellCards = () => {
-        if (!wellSelectionGrid) return;
-        const filteredWells = filterWellPortfolio();
-
-        syncFocusChipStates();
-        syncThemeChipStates();
-        updateFocusCounts(filteredWells);
-        updateThemeCounts(filteredWells);
-        updateWellFilterSummary(filteredWells);
-        renderPortfolioSignals(filteredWells);
-
-        if (!filteredWells.length) {
-            wellSelectionGrid.innerHTML = `
-                <div class="rounded-2xl border border-dashed border-slate-700 bg-slate-900/40 p-10 text-center text-sm text-slate-400">
-                    No wells match the current filters. Adjust your search or theme filters to continue planning.
-                </div>
-            `;
-            return;
-        }
-
-        wellSelectionGrid.innerHTML = filteredWells.map(well => {
-            const isWellFromHell = well.id === 'W666';
-            const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
-            const iconMarkup = renderPlannerIcon(
-                well.icon || {},
-                `${well.name} insight icon`,
-                isWellFromHell ? 'critical' : 'case'
-            );
-            const badgeMarkup = isWellFromHell
-                ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Critical intervention focus well">CRITICAL</span>'
-                : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Case study well">CASE STUDY</span>';
-            const isSelected = appState.selectedWell && appState.selectedWell.id === well.id;
-
-            return `
-                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'} ${isSelected ? 'selected' : ''}" data-well-id="${well.id}">
-                    <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
-                        <div class="flex items-start justify-between gap-4">
-                            <div class="flex items-start gap-3">
-                                ${iconMarkup}
-                                <div>
-                                    <h3 class="text-xl font-bold text-white">${well.name}</h3>
-                                    <p class="mt-1 text-blue-100 text-sm">${well.field} — ${well.type}</p>
-                                </div>
-                            </div>
-                            ${badgeMarkup}
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
-                        </div>
-                        <p class="text-sm">${well.issue}</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
-                            <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold" data-well-id="${well.id}">View Details</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    };
-
-    const renderObjectives = () => { 
-        objectivesFieldset.innerHTML = objectivesData.map(obj => `
-            <div class="objective-card light-card" data-objective-id="${obj.id}">
-                <input type="radio" name="objective" id="${obj.id}" value="${obj.id}" class="sr-only">
-                <label for="${obj.id}" class="cursor-pointer h-full">
-                    <div class="flex items-start">
-                        <span class="text-2xl mr-3">${obj.icon}</span>
-                        <div>
-                            <span class="font-semibold text-lg">${obj.name}</span>
-                            <p class="text-sm mt-1">${obj.description}</p>
-                        </div>
-                    </div>
-                </label>
-            </div>
-        `).join(''); 
-    };
-
-
-    const renderProblems = () => {
-        // Only show problems relevant to the "Well From Hell"
-        if (appState.selectedWell && appState.selectedWell.id === 'W666') {
-             problemsFieldset.innerHTML = problemsData.map(prob => `
-                <div class="objective-card light-card" data-problem-id="${prob.id}">
-                    <input type="radio" name="problem" id="${prob.id}" value="${prob.id}" class="sr-only">
-                    <label for="${prob.id}" class="cursor-pointer h-full">
-                        <div class="flex items-start">
-                            <span class="text-2xl mr-3">${prob.icon}</span>
-                            <div>
-                                <span class="font-semibold text-lg">${prob.name}</span>
-                                <p class="text-sm mt-1">${prob.description}</p>
-                            </div>
-                        </div>
-                    </label>
-                </div>
-            `).join('');
-        } else {
-            problemsFieldset.innerHTML = `
-                <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
-                    <p class="text-yellow-800 dark:text-yellow-200">Please select the 'Well From Hell' (W666) to use the AI Advisor.</p>
-                </div>
-            `;
-        }
-    };
-
     const renderDesignBlueprint = () => {
         if (!designBlueprintContainer) return;
         if (!appState.selectedObjective) {
@@ -6021,7 +5642,9 @@ const validateInvoice = () => {
         if (!dataExportHub) return;
 
         dataExportDatasets.forEach(({ file, elements }) => {
-            if (!elements || (!elements.recordCount && !elements.columnsList && !elements.size)) return;
+            if (!elements || (!elements.recordCount && !elements.columnsList && !elements.size)) {
+                return;
+            }
 
             fetch(file)
                 .then((response) => {
@@ -6036,7 +5659,7 @@ const validateInvoice = () => {
                         .map((line) => line.trim())
                         .filter((line) => line.length > 0);
 
-                    if (lines.length === 0) {
+                    if (!lines.length) {
                         return;
                     }
 
@@ -6048,8 +5671,7 @@ const validateInvoice = () => {
                         : false;
 
                     if (elements.recordCount) {
-                        const recordCount = Math.max(0, dataLines.length);
-                        elements.recordCount.textContent = recordCount.toString();
+                        elements.recordCount.textContent = Math.max(0, dataLines.length).toString();
                     }
 
                     if (elements.columnsList) {
@@ -6063,12 +5685,13 @@ const validateInvoice = () => {
 
                                 const header = document.createElement('div');
                                 header.className = 'flex flex-wrap items-baseline gap-2';
+
                                 const nameEl = document.createElement('span');
                                 nameEl.className = 'font-semibold text-slate-200';
                                 nameEl.textContent = columnName;
                                 header.appendChild(nameEl);
 
-                                if (column && column.sqlType) {
+                                if (column?.sqlType) {
                                     const badge = document.createElement('span');
                                     badge.className = 'text-[11px] uppercase tracking-wide text-slate-400 bg-slate-900/60 px-2 py-0.5 rounded-full';
                                     badge.textContent = column.sqlType;
@@ -6077,54 +5700,7 @@ const validateInvoice = () => {
 
                                 item.appendChild(header);
 
-                                if (column && column.description) {
-                                    const description = document.createElement('p');
-                                    description.className = 'text-xs text-slate-400';
-                                    description.textContent = column.description;
-                                    item.appendChild(description);
-                                }
-
-                                elements.columnsList.appendChild(item);
-                            });
-                        } else {
-                            headerColumns.forEach((columnName) => {
-                                const item = document.createElement('li');
-                                item.textContent = columnName;
-                                elements.columnsList.appendChild(item);
-                            });
-                        }
-                    }
-
-                    if (elements.size) {
-                        const encoder = new TextEncoder();
-                        const sizeInBytes = encoder.encode(text).length;
-                        elements.size.textContent = formatByteSize(sizeInBytes);
-                    }
-
-
-                        if (schemaMatchesHeader) {
-                            headerColumns.forEach((columnName) => {
-                                const column = schema.find((entry) => entry.name === columnName);
-                                const item = document.createElement('li');
-                                item.className = 'space-y-1';
-
-                                const header = document.createElement('div');
-                                header.className = 'flex flex-wrap items-baseline gap-2';
-                                const nameEl = document.createElement('span');
-                                nameEl.className = 'font-semibold text-slate-200';
-                                nameEl.textContent = columnName;
-                                header.appendChild(nameEl);
-
-                                if (column && column.sqlType) {
-                                    const badge = document.createElement('span');
-                                    badge.className = 'text-[11px] uppercase tracking-wide text-slate-400 bg-slate-900/60 px-2 py-0.5 rounded-full';
-                                    badge.textContent = column.sqlType;
-                                    header.appendChild(badge);
-                                }
-
-                                item.appendChild(header);
-
-                                if (column && column.description) {
+                                if (column?.description) {
                                     const description = document.createElement('p');
                                     description.className = 'text-xs text-slate-400';
                                     description.textContent = column.description;
@@ -6170,6 +5746,7 @@ const validateInvoice = () => {
                 });
         });
     };
+
     if (engineerCountSlider || nptReductionSlider || timeSavingsSlider) {
         [engineerCountSlider, nptReductionSlider, timeSavingsSlider]
             .filter(Boolean)
@@ -6280,25 +5857,25 @@ const validateInvoice = () => {
         }
     });
 
-    // Well selection event listener
-    addListener(wellSelectionGrid, 'click', (e) => {
-        // Handle view details button
-        if (e.target.closest('.view-details-btn')) {
-            e.stopPropagation();
-            openModal(e.target.closest('.view-details-btn').dataset.wellId);
-            return;
-        }
-
-        // Handle well card selection
-        const card = e.target.closest('.planner-card');
+    const handleWellCardSelection = (card) => {
         if (!card) return;
+        const wellId = card.dataset.wellId;
+        if (!wellId) return;
 
-        appState.selectedWell = wellData.find(w => w.id === card.dataset.wellId);
-        renderDataScrubbingPipeline(appState.selectedWell?.id);
-        document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
+        const selectedWell = wellData.find((w) => w.id === wellId);
+        if (!selectedWell) return;
+
+        appState.selectedWell = selectedWell;
+        renderDataScrubbingPipeline(selectedWell.id);
+
+        document.querySelectorAll('.planner-card').forEach((element) => {
+            element.classList.remove('selected');
+            element.setAttribute('aria-pressed', 'false');
+        });
         card.classList.add('selected');
+        card.setAttribute('aria-pressed', 'true');
 
-        renderProblems(); // Update the problems list based on selection
+        renderProblems();
         if (step1ContinueBtn) step1ContinueBtn.disabled = false;
         if (step2ContinueBtn) step2ContinueBtn.disabled = true;
         if (generateProgramBtn) generateProgramBtn.disabled = true;
@@ -6308,12 +5885,116 @@ const validateInvoice = () => {
         if (aiRecommendationsContainer) {
             aiRecommendationsContainer.classList.add('hidden');
         }
+
         appState.selectedObjective = null;
         appState.ai.selectedProblemId = null;
         appState.ai.selectedRecommendation = null;
-        announcePlannerStatus(`${appState.selectedWell.name} selected. Review the well dossier and continue to objectives when ready.`);
+
+        announcePlannerStatus(`${selectedWell.name} selected. Review the well dossier and continue to objectives when ready.`);
         updatePlannerStepUI(2);
-        announcePlannerStatus(`${appState.selectedWell.name} selected. Step two unlocked.`);
+        announcePlannerStatus(`${selectedWell.name} selected. Step two unlocked.`);
+    };
+
+    // Well selection event listener
+    let activeTouchGesture = null;
+
+    const resolvePlannerCardFromEvent = (event) => {
+        const targetCard = event.target ? event.target.closest('.planner-card') : null;
+        if (targetCard) {
+            return targetCard;
+        }
+        if (activeTouchGesture && activeTouchGesture.card) {
+            return activeTouchGesture.card;
+        }
+        return null;
+    };
+
+    addListener(wellSelectionGrid, 'click', (e) => {
+        if (activeTouchGesture && activeTouchGesture.preventClick) {
+            e.stopPropagation();
+            e.preventDefault();
+            activeTouchGesture = null;
+            return;
+        }
+
+        const detailsBtn = e.target.closest('.view-details-btn');
+        if (detailsBtn) {
+            e.stopPropagation();
+            openModal(detailsBtn.dataset.wellId);
+            return;
+        }
+
+        const card = resolvePlannerCardFromEvent(e);
+        if (!card) return;
+        handleWellCardSelection(card);
+    });
+
+    addListener(wellSelectionGrid, 'touchstart', (e) => {
+        const touch = e.changedTouches && e.changedTouches[0];
+        if (!touch) return;
+        activeTouchGesture = {
+            id: touch.identifier,
+            startX: touch.clientX,
+            startY: touch.clientY,
+            moved: false,
+            card: e.target.closest('.planner-card')
+        };
+    }, { passive: true });
+
+    addListener(wellSelectionGrid, 'touchmove', (e) => {
+        if (!activeTouchGesture) return;
+        const touch = Array.from(e.changedTouches || []).find((t) => t.identifier === activeTouchGesture.id);
+        if (!touch) return;
+        const deltaX = Math.abs(touch.clientX - activeTouchGesture.startX);
+        const deltaY = Math.abs(touch.clientY - activeTouchGesture.startY);
+        if (deltaX > 10 || deltaY > 10) {
+            activeTouchGesture.moved = true;
+        }
+    }, { passive: true });
+
+    addListener(wellSelectionGrid, 'touchend', (e) => {
+        if (!activeTouchGesture) return;
+        const touch = Array.from(e.changedTouches || []).find((t) => t.identifier === activeTouchGesture.id);
+        if (!touch) {
+            activeTouchGesture = null;
+            return;
+        }
+
+        if (activeTouchGesture.moved) {
+            activeTouchGesture = null;
+            return;
+        }
+
+        const detailsBtn = e.target.closest('.view-details-btn');
+        if (detailsBtn) {
+            e.preventDefault();
+            openModal(detailsBtn.dataset.wellId);
+            activeTouchGesture = { preventClick: true };
+            return;
+        }
+
+        const card = resolvePlannerCardFromEvent(e);
+        if (!card) {
+            activeTouchGesture = { preventClick: true };
+            return;
+        }
+
+        e.preventDefault();
+        handleWellCardSelection(card);
+        activeTouchGesture = { preventClick: true };
+    }, { passive: false });
+
+    addListener(wellSelectionGrid, 'touchcancel', () => {
+        activeTouchGesture = null;
+    }, { passive: true });
+
+    addListener(wellSelectionGrid, 'keydown', (e) => {
+        if (e.defaultPrevented) return;
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const card = resolvePlannerCardFromEvent(e);
+        if (!card) return;
+        e.preventDefault();
+        handleWellCardSelection(card);
     });
 
     // Objective selection event listener
