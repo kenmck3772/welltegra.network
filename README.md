@@ -68,6 +68,7 @@ Legacy demos and unused media have been removed under the lean inventory initiat
 ## Strategic References
 
 Strategic alignment briefs will be added alongside future roadmap updates. Contact the WellTegra program office for the latest executive guidance packs.
+- [Old Pie Embassy White Paper Integration Notes](WHITE_PAPER_INSIGHTS.md) – distilled guidance from the external "Architectural Blueprint for the 'well-tegra' Master Program" paper with concrete actions for the platform roadmap.
 
 ## Getting Started
 

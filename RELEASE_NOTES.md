@@ -3,6 +3,12 @@
 ## Summary
 
 - Surfaced a toast notification when users click gated navigation without a generated plan so the hero CTA and header buttons explain the requirement and route supervisors back to the planner instead of appearing unresponsive.【F:assets/js/app.js†L2723-L2729】
+# Release Notes — Mobile Communicator Onboarding Guide
+
+## Summary
+
+- Added an inline “How to use the Mobile Communicator” collapsible guide so engineers can learn the approval workflow without leaving the planner. The panel walks through opening the channel, validating plan context, and issuing secure approvals with digital seals.【F:index.html†L1051-L1070】【F:well-operations-planner.html†L173-L192】
+- Documented the quick-start sequence in the public README so new users understand how change requests, plan snapshots, and audit trails work together in the demo build.【F:README.md†L108-L129】
 
 ## Verification
 
@@ -18,6 +24,16 @@
 ## Verification
 
 1. `node --check assets/js/app.js`
+# Release Notes — Old Pie Embassy White Paper Synthesis
+
+## Summary
+
+- Captured actionable insights from the Old Pie Embassy “Architectural Blueprint for the 'well-tegra' Master Program” white paper, mapping its master data architecture and phased rollout to our current backlog priorities.【F:WHITE_PAPER_INSIGHTS.md†L1-L63】
+- Linked the synthesis into the public README so stakeholders can review the guidance alongside other strategic planning collateral.【F:README.md†L96-L101】
+
+## Verification
+
+1. Documentation review only
 
 # Release Notes — Mobile Communicator Accessibility Hardening
 
