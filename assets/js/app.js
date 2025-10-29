@@ -2604,6 +2604,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const manualPlanningView = document.getElementById('manual-planning-view');
     const aiAdvisorView = document.getElementById('ai-advisor-view');
     const aiRecommendationsContainer = document.getElementById('ai-recommendations');
+    const designBlueprintContainer = document.getElementById('design-blueprint');
     const plannerStatusRegion = document.getElementById('planner-status');
     const plannerToast = document.getElementById('planner-toast');
 
