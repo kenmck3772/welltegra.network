@@ -3,10 +3,6 @@ const http = require('http');
 const path = require('path');
 const fs = require('fs');
 const { spawnSync } = require('child_process');
-const { test, expect } = require('@playwright/test');
-const http = require('http');
-const path = require('path');
-const fs = require('fs');
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -37,12 +33,10 @@ const createStaticServer = () => {
       const requestPath = decodeURIComponent((req.url || '/').split('?')[0]);
       const normalizedPath = path
         .normalize(requestPath)
-        .replace(/^([.]{2}[\/])+/, '')
+        .replace(/^([.]{2}[\\/])+/, '')
         .replace(/^\/+/, '');
 
-      let filePath = normalizedPath
-        ? path.join(rootDir, normalizedPath)
-        : path.join(rootDir, 'index.html');
+      let filePath = normalizedPath ? path.join(rootDir, normalizedPath) : path.join(rootDir, 'index.html');
 
       const stats = await fs.promises.stat(filePath).catch(async (error) => {
         if (error.code === 'ENOENT' && normalizedPath.endsWith('/')) {
@@ -94,11 +88,9 @@ const verifyChromium = async () => {
   try {
     const browser = await chromium.launch();
     await browser.close();
-    return;
   } catch (error) {
     const needsDownload =
-      /Executable doesn't exist/.test(error.message) ||
-      /run the following command to download/.test(error.message);
+      /Executable doesn't exist/.test(error.message) || /run the following command to download/.test(error.message);
     const missingDependencies = /Host system is missing dependencies/.test(error.message);
 
     if (needsDownload) {
@@ -156,11 +148,14 @@ test.beforeAll(async () => {
       error.message
     ].join(' ');
     console.warn(launchSkipMessage);
-    test.skip(true, launchSkipMessage);
+  }
+});
+
+test.beforeAll(async () => {
+  if (launchSkipMessage) {
     return;
   }
 
-test.beforeAll(async () => {
   server = createStaticServer();
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   const address = server.address();
@@ -181,7 +176,7 @@ const skipIfChromiumUnavailable = (testInfo) => {
 
 test('hero planner CTA opens the planner workspace without console errors', async ({ page }, testInfo) => {
   skipIfChromiumUnavailable(testInfo);
-test('hero planner CTA opens the planner workspace without console errors', async ({ page }) => {
+
   const pageErrors = [];
   page.on('pageerror', (error) => {
     console.error('PAGE ERROR:', error);
