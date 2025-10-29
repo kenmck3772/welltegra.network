@@ -941,6 +941,7 @@
         (typeof planDetail.personnelCount === 'number' && planDetail.personnelCount > 0
           ? `${planDetail.personnelCount} roles`
           : null);
+      const planMetrics = {
       const metrics = {
         totalDaily: fallbackCost,
         length: fallbackLength,
@@ -970,6 +971,9 @@
         wellName: planDetail.wellName || null,
         objectiveName: planDetail.objectiveName || null,
         objectiveDescription: planDetail.objectiveDescription || null,
+        cost: planMetrics.totalDaily || '—',
+        duration: planMetrics.length || '—',
+        crew: planMetrics.equipmentDaily || '—',
         cost: metrics.totalDaily || '—',
         duration: metrics.length || '—',
         crew: metrics.equipmentDaily || '—',
@@ -990,12 +994,16 @@
         id: `feed-plan-${timestamp}`,
         type: 'plan-snapshot',
         timestamp,
+        metrics: planMetrics
         metrics
       };
       state.feed.unshift(entry);
       trimFeed();
       persistFeed(state.feed);
 
+      const snapshotMessage = `Planner synced — budget ${planMetrics.totalDaily || 'n/a'}, duration ${
+        planMetrics.length || 'n/a'
+      }, crew ${planMetrics.equipmentDaily || 'n/a'}.`;
       const snapshotMessage = `Planner synced — budget ${metrics.totalDaily || 'n/a'}, duration ${
         metrics.length || 'n/a'
       }, crew ${metrics.equipmentDaily || 'n/a'}.`;
