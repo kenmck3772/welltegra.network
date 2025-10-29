@@ -3094,6 +3094,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .join('');
     };
     
+    function renderObjectives() {
     const renderObjectives = () => {
         if (!objectivesFieldset) return;
 
@@ -3130,6 +3131,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
         }).join('');
+    }
+
+    function renderProblems() {
     };
 
     const renderProblems = () => {
@@ -3217,6 +3221,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
         }).join('');
+    }
+
+    // expose planners so other modules (e.g., PDF export, analytics replay) can re-render when datasets update
+    window.renderObjectives = renderObjectives;
+    window.renderProblems = renderProblems;
     };
 
     const renderDesignBlueprint = () => {
