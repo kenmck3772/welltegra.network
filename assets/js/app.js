@@ -3096,6 +3096,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     function renderObjectives() {
+    const renderObjectives = () => {
         if (!objectivesFieldset) return;
 
         if (!Array.isArray(objectivesData) || objectivesData.length === 0) {
@@ -3134,6 +3135,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderProblems() {
+    };
+
+    const renderProblems = () => {
         if (!problemsFieldset) return;
 
         const selectedWellId = appState.selectedWell?.id || null;
@@ -3223,6 +3227,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // expose planners so other modules (e.g., PDF export, analytics replay) can re-render when datasets update
     window.renderObjectives = renderObjectives;
     window.renderProblems = renderProblems;
+    };
 
     const renderDesignBlueprint = () => {
         if (!designBlueprintContainer) return;
