@@ -5917,6 +5917,7 @@ const validateInvoice = () => {
             return;
         }
 
+    addListener(wellSelectionGrid, 'click', (e) => {
         const detailsBtn = e.target.closest('.view-details-btn');
         if (detailsBtn) {
             e.stopPropagation();
@@ -5925,6 +5926,7 @@ const validateInvoice = () => {
         }
 
         const card = resolvePlannerCardFromEvent(e);
+        const card = e.target.closest('.planner-card');
         if (!card) return;
         handleWellCardSelection(card);
     });
@@ -5992,6 +5994,10 @@ const validateInvoice = () => {
         if (e.defaultPrevented) return;
         if (e.key !== 'Enter' && e.key !== ' ') return;
         const card = resolvePlannerCardFromEvent(e);
+    addListener(wellSelectionGrid, 'keydown', (e) => {
+        if (e.defaultPrevented) return;
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        const card = e.target.closest('.planner-card');
         if (!card) return;
         e.preventDefault();
         handleWellCardSelection(card);
