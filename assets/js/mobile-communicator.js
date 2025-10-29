@@ -892,8 +892,6 @@
       renderAll();
       if (releaseFocusTrap) releaseFocusTrap();
       releaseFocusTrap = trapFocusWithin(overlay);
-      document.body.classList.add('overflow-hidden');
-      renderAll();
       closeBtn.focus();
     };
 
@@ -909,7 +907,6 @@
         releaseFocusTrap();
         releaseFocusTrap = null;
       }
-      document.body.classList.remove('overflow-hidden');
       if (state.previousFocus && document.body.contains(state.previousFocus)) {
         state.previousFocus.focus();
       }
@@ -941,7 +938,6 @@
         (typeof planDetail.personnelCount === 'number' && planDetail.personnelCount > 0
           ? `${planDetail.personnelCount} roles`
           : null);
-      const planMetrics = {
       const metrics = {
         totalDaily: fallbackCost,
         length: fallbackLength,
@@ -971,9 +967,6 @@
         wellName: planDetail.wellName || null,
         objectiveName: planDetail.objectiveName || null,
         objectiveDescription: planDetail.objectiveDescription || null,
-        cost: planMetrics.totalDaily || '—',
-        duration: planMetrics.length || '—',
-        crew: planMetrics.equipmentDaily || '—',
         cost: metrics.totalDaily || '—',
         duration: metrics.length || '—',
         crew: metrics.equipmentDaily || '—',
@@ -989,25 +982,19 @@
       };
       persistPlanContext(state.planContext);
 
-      const metrics = detail?.plan?.metrics || {};
       const entry = {
         id: `feed-plan-${timestamp}`,
         type: 'plan-snapshot',
         timestamp,
-        metrics: planMetrics
         metrics
       };
       state.feed.unshift(entry);
       trimFeed();
       persistFeed(state.feed);
 
-      const snapshotMessage = `Planner synced — budget ${planMetrics.totalDaily || 'n/a'}, duration ${
-        planMetrics.length || 'n/a'
-      }, crew ${planMetrics.equipmentDaily || 'n/a'}.`;
       const snapshotMessage = `Planner synced — budget ${metrics.totalDaily || 'n/a'}, duration ${
         metrics.length || 'n/a'
       }, crew ${metrics.equipmentDaily || 'n/a'}.`;
-      const snapshotMessage = `Planner saved — total ${metrics.totalDaily || 'n/a'}, toolstring ${metrics.length || 'n/a'}.`;
       const isoTime = new Date(timestamp).toISOString();
       state.requests.forEach((req) => {
         if ((req.status || '').toLowerCase() === 'pending') {

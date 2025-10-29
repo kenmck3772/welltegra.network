@@ -1896,7 +1896,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const createWellFilters = () => ({ query: '', focus: 'all', themes: new Set() });
 
     const createInitialAppState = () => ({
-    let appState = {
         currentView: 'home',
         selectedWell: null,
         selectedObjective: null,
@@ -1919,11 +1918,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const appState = createInitialAppState();
-        wellFilters: { query: '', focus: 'all', themes: new Set() },
-        handoverReady: false,
-        planBroadcastKey: null
-        handoverReady: false
-    };
 
     // --- DOM ELEMENTS ---
 
@@ -3074,104 +3068,6 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     };
 
-    const getWellCardMarkup = (well, isSelected) => {
-        const isWellFromHell = well.id === 'W666';
-        const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
-        const iconMarkup = renderPlannerIcon(
-            well.icon || {},
-            `${well.name} insight icon`,
-            isWellFromHell ? 'critical' : 'case'
-        );
-        const badgeMarkup = isWellFromHell
-            ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Critical intervention focus well">CRITICAL</span>'
-            : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Case study well">CASE STUDY</span>';
-
-        return `
-            <article class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'} ${isSelected ? 'selected' : ''}"
-                data-well-id="${well.id}"
-                role="button"
-                tabindex="0"
-                aria-pressed="${isSelected}">
-                <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
-                    <div class="flex items-start justify-between gap-4">
-                        <div class="flex items-start gap-3">
-                            ${iconMarkup}
-                            <div>
-                                <h3 class="text-xl font-bold text-white">${well.name}</h3>
-                                <p class="mt-1 text-blue-100 text-sm">${well.field} — ${well.type}</p>
-                            </div>
-                        </div>
-                        ${badgeMarkup}
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
-                    </div>
-                    <p class="text-sm">${well.issue}</p>
-                </div>
-                <div class="card-footer">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
-                        <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold"
-                            type="button"
-                            data-well-id="${well.id}"
-                            aria-label="View historical dossier for ${well.name}">View Details</button>
-                    </div>
-                </div>
-            </article>
-        `;
-    };
-
-    const getWellCardMarkup = (well, isSelected) => {
-        const isWellFromHell = well.id === 'W666';
-        const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
-        const iconMarkup = renderPlannerIcon(
-            well.icon || {},
-            `${well.name} insight icon`,
-            isWellFromHell ? 'critical' : 'case'
-        );
-        const badgeMarkup = isWellFromHell
-            ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Critical intervention focus well">CRITICAL</span>'
-            : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Case study well">CASE STUDY</span>';
-
-        return `
-            <article class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'} ${isSelected ? 'selected' : ''}"
-                data-well-id="${well.id}"
-                role="button"
-                tabindex="0"
-                aria-pressed="${isSelected}">
-                <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
-                    <div class="flex items-start justify-between gap-4">
-                        <div class="flex items-start gap-3">
-                            ${iconMarkup}
-                            <div>
-                                <h3 class="text-xl font-bold text-white">${well.name}</h3>
-                                <p class="mt-1 text-blue-100 text-sm">${well.field} — ${well.type}</p>
-                            </div>
-                        </div>
-                        ${badgeMarkup}
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
-                    </div>
-                    <p class="text-sm">${well.issue}</p>
-                </div>
-                <div class="card-footer">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
-                        <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold"
-                            type="button"
-                            data-well-id="${well.id}"
-                            aria-label="View historical dossier for ${well.name}">View Details</button>
-                    </div>
-                </div>
-            </article>
-        `;
-    };
-
     const renderWellCards = () => {
         if (!wellSelectionGrid) return;
         const filteredWells = filterWellPortfolio();
@@ -3198,6 +3094,135 @@ document.addEventListener('DOMContentLoaded', function() {
             .join('');
     };
     
+    function renderObjectives() {
+        if (!objectivesFieldset) return;
+
+        if (!Array.isArray(objectivesData) || objectivesData.length === 0) {
+            objectivesFieldset.innerHTML = `
+                <div class="rounded-lg border border-dashed border-slate-700 bg-slate-900/50 p-6 text-center text-sm text-slate-400">
+                    Objective catalog unavailable. Load a scenario to continue planning.
+                </div>
+            `;
+            return;
+        }
+
+        const selectedId = appState.selectedObjective?.id || null;
+
+        objectivesFieldset.innerHTML = objectivesData.map((objective) => {
+            const objectiveId = escapeHtml(objective.id);
+            const isSelected = selectedId === objective.id;
+            const selectedClass = isSelected ? ' selected' : '';
+            const checkedAttribute = isSelected ? 'checked' : '';
+            const iconMarkup = escapeHtml(objective.icon || '🎯');
+            const nameMarkup = escapeHtml(objective.name || 'Objective');
+            const descriptionMarkup = escapeHtml(objective.description || '');
+
+            return `
+                <div class="objective-card light-card${selectedClass}" data-objective-id="${objectiveId}">
+                    <input type="radio" name="objective" id="${objectiveId}" value="${objectiveId}" class="sr-only" ${checkedAttribute}>
+                    <label for="${objectiveId}" class="flex h-full cursor-pointer flex-col gap-3 p-4">
+                        <span class="text-2xl" aria-hidden="true">${iconMarkup}</span>
+                        <div>
+                            <span class="block text-lg font-semibold text-slate-100">${nameMarkup}</span>
+                            <p class="mt-2 text-sm text-slate-300">${descriptionMarkup}</p>
+                        </div>
+                    </label>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderProblems() {
+        if (!problemsFieldset) return;
+
+        const selectedWellId = appState.selectedWell?.id || null;
+
+        if (!selectedWellId) {
+            appState.ai.selectedProblemId = null;
+            appState.ai.selectedRecommendation = null;
+            if (aiRecommendationsContainer) {
+                aiRecommendationsContainer.classList.add('hidden');
+            }
+            problemsFieldset.innerHTML = `
+                <div class="rounded-lg border border-dashed border-slate-700 bg-slate-900/50 p-6 text-center text-sm text-slate-400">
+                    Select a well to unlock AI-assisted problem diagnostics.
+                </div>
+            `;
+            return;
+        }
+
+        if (selectedWellId !== 'W666') {
+            appState.ai.selectedProblemId = null;
+            appState.ai.selectedRecommendation = null;
+            if (aiRecommendationsContainer) {
+                aiRecommendationsContainer.classList.add('hidden');
+            }
+            problemsFieldset.innerHTML = `
+                <div class="rounded-lg border border-amber-400/40 bg-amber-500/10 p-6 text-center text-sm text-amber-200">
+                    The AI Advisor is currently tuned for the W666 critical well scenario. Switch to W666 to see curated problem insights.
+                </div>
+            `;
+            return;
+        }
+
+        if (!Array.isArray(problemsData) || problemsData.length === 0) {
+            problemsFieldset.innerHTML = `
+                <div class="rounded-lg border border-dashed border-slate-700 bg-slate-900/50 p-6 text-center text-sm text-slate-400">
+                    Problem catalog unavailable. Check back after data sync completes.
+                </div>
+            `;
+            return;
+        }
+
+        const selectedProblemId = appState.ai.selectedProblemId || null;
+
+        problemsFieldset.innerHTML = problemsData.map((problem) => {
+            const problemId = escapeHtml(problem.id);
+            const isSelected = selectedProblemId === problem.id;
+            const selectedClass = isSelected ? ' selected' : '';
+            const checkedAttribute = isSelected ? 'checked' : '';
+            const iconMarkup = escapeHtml(problem.icon || '⚠️');
+            const nameMarkup = escapeHtml(problem.name || 'Problem');
+            const descriptionMarkup = escapeHtml(problem.description || '');
+
+            const linkedObjectives = Array.isArray(problem.linked_objectives)
+                ? problem.linked_objectives
+                    .map((objectiveId) => objectivesData.find((objective) => objective.id === objectiveId))
+                    .filter(Boolean)
+                : [];
+
+            const linkedMarkup = linkedObjectives.length
+                ? `
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        ${linkedObjectives.map((objective) => `
+                            <span class="rounded-full bg-slate-900/70 px-3 py-1 text-xs font-medium text-slate-200" data-linked-objective="${escapeHtml(objective.id)}">
+                                ${escapeHtml(objective.icon || '🎯')} ${escapeHtml(objective.name)}
+                            </span>
+                        `).join('')}
+                    </div>
+                `
+                : '';
+
+            return `
+                <div class="objective-card light-card${selectedClass}" data-problem-id="${problemId}">
+                    <input type="radio" name="problem" id="${problemId}" value="${problemId}" class="sr-only" ${checkedAttribute}>
+                    <label for="${problemId}" class="flex h-full cursor-pointer flex-col gap-3 p-4">
+                        <span class="text-2xl" aria-hidden="true">${iconMarkup}</span>
+                        <div>
+                            <span class="block text-lg font-semibold text-slate-100">${nameMarkup}</span>
+                            <p class="mt-2 text-sm text-slate-300">${descriptionMarkup}</p>
+                            ${linkedMarkup}
+                        </div>
+                    </label>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // expose planners so other modules (e.g., PDF export, analytics replay) can re-render when datasets update
+    window.renderObjectives = renderObjectives;
+    window.renderProblems = renderProblems;
+
     const renderDesignBlueprint = () => {
         if (!designBlueprintContainer) return;
         if (!appState.selectedObjective) {
@@ -6139,6 +6164,7 @@ const validateInvoice = () => {
         }
         if (touchSelectionGesture && touchSelectionGesture.card) {
             return touchSelectionGesture.card;
+        }
         if (activeTouchGesture && activeTouchGesture.card) {
             return activeTouchGesture.card;
         }
@@ -6160,7 +6186,6 @@ const validateInvoice = () => {
             return;
         }
 
-    addListener(wellSelectionGrid, 'click', (e) => {
         const detailsBtn = e.target.closest('.view-details-btn');
         if (detailsBtn) {
             e.stopPropagation();
@@ -6169,7 +6194,6 @@ const validateInvoice = () => {
         }
 
         const card = resolvePlannerCardFromEvent(e);
-        const card = e.target.closest('.planner-card');
         if (!card) return;
         handleWellCardSelection(card);
     });
@@ -6358,10 +6382,6 @@ const validateInvoice = () => {
         activeTouchGesture = null;
     }, { passive: true });
 
-    addListener(wellSelectionGrid, 'keydown', (e) => {
-        if (e.defaultPrevented) return;
-        if (e.key !== 'Enter' && e.key !== ' ') return;
-        const card = resolvePlannerCardFromEvent(e);
     addListener(wellSelectionGrid, 'keydown', (e) => {
         if (e.defaultPrevented) return;
         if (e.key !== 'Enter' && e.key !== ' ') return;
