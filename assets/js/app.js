@@ -1894,16 +1894,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- GLOBAL STATE ---
 
     let appState = {
-        currentView: 'home', 
-        selectedWell: null, 
-        selectedObjective: null, 
-        generatedPlan: null, 
-        liveData: null, 
-        logEntries: [], 
-        lessonsLearned: [], 
-        tfaChartInstance: null, 
-        nptChartInstance: null, 
-        savingsChartInstance: null, 
+        currentView: 'home',
+        selectedWell: null,
+        selectedObjective: null,
+        generatedPlan: null,
+        liveData: null,
+        logEntries: [],
+        lessonsLearned: [],
+        tfaChartInstance: null,
+        nptChartInstance: null,
+        savingsChartInstance: null,
         liveDataInterval: null,
         commercial: { afe: 0, actualCost: 0, serviceTickets: [] },
         ai: { selectedProblemId: null, selectedRecommendation: null },
@@ -1911,6 +1911,8 @@ document.addEventListener('DOMContentLoaded', function() {
         pob: { musterActive: false, musterInterval: null, personnel: [] },
         dataExportHandlersBound: false,
         wellFilters: { query: '', focus: 'all', themes: new Set() },
+        handoverReady: false,
+        planBroadcastKey: null
         handoverReady: false
     };
 
@@ -2600,6 +2602,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const aiAdvisorView = document.getElementById('ai-advisor-view');
     const aiRecommendationsContainer = document.getElementById('ai-recommendations');
     const plannerStatusRegion = document.getElementById('planner-status');
+    const plannerToast = document.getElementById('planner-toast');
+
+    let plannerToastTimeout = null;
 
     const announcePlannerStatus = (message) => {
         if (!plannerStatusRegion || !message) return;
@@ -2607,6 +2612,18 @@ document.addEventListener('DOMContentLoaded', function() {
         requestAnimationFrame(() => {
             plannerStatusRegion.textContent = message;
         });
+    };
+
+    const showPlannerToast = (message) => {
+        if (!plannerToast || !message) return;
+        plannerToast.textContent = message;
+        plannerToast.classList.remove('hidden');
+        if (plannerToastTimeout) {
+            clearTimeout(plannerToastTimeout);
+        }
+        plannerToastTimeout = setTimeout(() => {
+            plannerToast.classList.add('hidden');
+        }, 2600);
     };
     const step1ContinueBtn = document.getElementById('step-1-continue');
     const step2ContinueBtn = document.getElementById('step-2-continue');
@@ -2770,6 +2787,8 @@ document.addEventListener('DOMContentLoaded', function() {
         appState.commercial = { afe: 0, actualCost: 0, serviceTickets: [] };
         appState.ai = { selectedProblemId: null, selectedRecommendation: null };
         appState.handoverReady = false;
+        appState.planBroadcastKey = null;
+        window.dispatchEvent(new CustomEvent('welltegra:plan-reset'));
 
         // Reset well selection
         document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
@@ -3196,7 +3215,104 @@ document.addEventListener('DOMContentLoaded', function() {
         `).join('');
     };
 
+    const describeRiskLevel = (value) => {
+        if (value <= 1) return 'Minimal';
+        if (value <= 2) return 'Low';
+        if (value <= 3) return 'Moderate';
+        if (value <= 4) return 'High';
+        return 'Severe';
+    };
+
+    const buildRiskSummary = (risks) => {
+        if (!risks || typeof risks !== 'object') return [];
+        return Object.entries(risks).map(([category, level]) => {
+            const numericLevel = Number(level) || 0;
+            return {
+                category,
+                level: numericLevel,
+                label: describeRiskLevel(numericLevel)
+            };
+        });
+    };
+
+    const broadcastPlanSnapshot = (plan) => {
+        if (!plan || !appState.selectedObjective || !appState.selectedWell) return;
+        const keyParts = [
+            appState.selectedWell.id,
+            appState.selectedObjective.id,
+            plan.name,
+            Number(plan.cost) || 0,
+            Number(plan.duration) || 0,
+            Array.isArray(plan.steps) ? plan.steps.length : 0
+        ];
+        const snapshotKey = keyParts.join('|');
+        if (appState.planBroadcastKey === snapshotKey) {
+            return;
+        }
+        appState.planBroadcastKey = snapshotKey;
+
+        const timestamp = Date.now();
+        const personnel = Array.isArray(plan.personnel) ? plan.personnel.slice() : [];
+        const costValue = Number(plan.cost) || 0;
+        const durationValue = Number(plan.duration) || 0;
+        const metrics = {
+            totalDaily: costValue ? formatCurrency(costValue) : null,
+            length: durationValue ? `${durationValue} hrs` : null,
+            equipmentDaily: personnel.length ? `${personnel.length} roles` : null
+        };
+
+        const rawSteps = Array.isArray(plan.steps) ? plan.steps : [];
+        const topSteps = rawSteps
+            .slice(0, 4)
+            .map((step, index) => {
+                if (typeof step === 'string') {
+                    return { order: index + 1, text: step };
+                }
+                if (step && typeof step === 'object') {
+                    const text = step.text || step.title || step.description || '';
+                    if (!text) {
+                        return null;
+                    }
+                    return { order: step.order || index + 1, text };
+                }
+                return null;
+            })
+            .filter(Boolean);
+
+        const detail = {
+            plan: {
+                name: plan.name,
+                objectiveId: appState.selectedObjective.id,
+                objectiveName: appState.selectedObjective.name,
+                objectiveDescription: appState.selectedObjective.description || null,
+                wellId: appState.selectedWell.id,
+                wellName: appState.selectedWell.name,
+                wellField: appState.selectedWell.field || null,
+                wellRegion: appState.selectedWell.region || null,
+                costUSD: Number(plan.cost) || 0,
+                costFormatted: typeof plan.cost !== 'undefined' ? formatCurrency(Number(plan.cost) || 0) : null,
+                durationHours: Number(plan.duration) || 0,
+                personnel,
+                personnelCount: personnel.length,
+                risks: plan.risks ? { ...plan.risks } : {},
+                riskSummary: buildRiskSummary(plan.risks),
+                sustainabilityBadge: plan.sustainability?.badge || null,
+                sustainabilityHighlight: plan.sustainability?.highlight || null,
+                stepCount: Array.isArray(plan.steps) ? plan.steps.length : 0,
+                topSteps,
+                metrics
+            },
+            timestamp
+        };
+
+        window.dispatchEvent(new CustomEvent('welltegra:plan-saved', { detail }));
+        showPlannerToast('Integrated program synced to Mobile Communicator');
+    };
+
     const renderPlan = () => {
+        if (!appState.selectedWell || !appState.generatedPlan || !appState.selectedObjective) {
+            return;
+        }
         const well = appState.selectedWell,
         procedure = appState.generatedPlan,
         riskLabels = ['Operational', 'Geological', 'Equipment', 'HSE', 'Financial'],
@@ -3529,6 +3645,8 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeCommercial();
         initializeHSE();
         renderPOBView();
+
+        broadcastPlanSnapshot(procedure);
 
         updateNavLinks();
 
@@ -6344,6 +6462,7 @@ const validateInvoice = () => {
 
             appState.selectedObjective = objectivesData.find(o => o.id === objectiveId);
             appState.generatedPlan = proceduresData[objectiveId];
+            appState.planBroadcastKey = null;
             renderPlan();
             updatePlannerStepUI(4);
             announcePlannerStatus('Integrated program generated. Review procedure, risks, and cost in step four.');
@@ -6416,6 +6535,7 @@ const validateInvoice = () => {
     addListener(generatePlanBtnManual, 'click', () => {
         if (!appState.selectedWell || !appState.selectedObjective) return;
         appState.generatedPlan = proceduresData[appState.selectedObjective.id];
+        appState.planBroadcastKey = null;
         renderPlan();
         updatePlannerStepUI(3);
         announcePlannerStatus('Manual plan generated. Review the plan in step three.');
@@ -6425,6 +6545,7 @@ const validateInvoice = () => {
         if (!appState.selectedWell || !appState.ai.selectedRecommendation) return;
         appState.selectedObjective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId);
         appState.generatedPlan = proceduresData[appState.selectedObjective.id];
+        appState.planBroadcastKey = null;
         renderPlan();
         updatePlannerStepUI(3);
         announcePlannerStatus('AI-assisted plan generated. Review the plan in step three.');

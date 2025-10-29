@@ -1,3 +1,15 @@
+# Release Notes — Mobile Communicator Accessibility Hardening
+
+## Summary
+
+- Added an internal focus trap, aria-hidden toggles, and button expanded states so the Mobile Communicator dialog now keeps keyboard users inside the approval workflow and returns focus to the launch control after closing.【F:assets/js/mobile-communicator.js†L153-L221】【F:index.html†L214-L234】【F:well-operations-planner.html†L33-L53】
+- Hid the pending badge when no approvals are queued and synchronized the launcher’s announcement text so screen readers only surface actionable counts.【F:assets/js/mobile-communicator.js†L287-L304】【F:index.html†L230-L233】【F:well-operations-planner.html†L49-L52】
+- Declared the communicator overlay as aria-hidden by default to prevent it from appearing in the browse tree until activated.【F:index.html†L1048-L1055】【F:well-operations-planner.html†L170-L177】
+
+## Verification
+
+1. `node --check assets/js/mobile-communicator.js`
+
 # Release Notes — Planner Console Guardrails
 
 ## Summary
@@ -31,3 +43,11 @@
 4. `python -m json.tool service-line-templates.json`
 5. `npm run lint:links`
 6. Playwright console sweep (`node - <<'NODE' …` across `index.html`, `well-operations-planner.html`, `sustainability-calculator.html`)
+# Release Notes — Mobile Communicator Plan Context
+
+## Summary
+
+- Embedded a "Latest plan snapshot" card inside the Mobile Communicator dialog so supervisors see budget, duration, crew, risk badges, first execution steps, and on-call personnel before granting remote approval.【F:index.html†L1055-L1164】【F:well-operations-planner.html†L182-L241】
+- Persisted the most recent planner broadcast (with objective description, sustainability highlight, and top-step preview) to local storage and reset it when the workflow is cleared, keeping mobile sign-off context synchronized with the planner state.【F:assets/js/mobile-communicator.js†L231-L260】【F:assets/js/mobile-communicator.js†L851-L944】【F:assets/js/app.js†L3243-L3305】【F:assets/js/app.js†L2781-L2790】
+- Surfaced supporting evidence badges for each change request so engineers can confirm attachments from the deck during the approval review.【F:assets/js/mobile-communicator.js†L673-L688】
+

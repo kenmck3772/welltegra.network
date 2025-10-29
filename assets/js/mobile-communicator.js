@@ -3,6 +3,7 @@
 
   const REQUESTS_KEY = 'welltegra.mobileCommunicator.requests';
   const FEED_KEY = 'welltegra.mobileCommunicator.feed';
+  const PLAN_KEY = 'welltegra.mobileCommunicator.plan';
   const MAX_FEED_ITEMS = 30;
 
   const deepClone = (value) => JSON.parse(JSON.stringify(value));
@@ -149,6 +150,15 @@
     rejected: 3
   };
 
+  const FOCUSABLE_SELECTORS = [
+    'a[href]',
+    'button:not([disabled])',
+    'textarea:not([disabled])',
+    'input:not([disabled])',
+    'select:not([disabled])',
+    '[tabindex]:not([tabindex="-1"])'
+  ].join(', ');
+
   const storageAvailable = (() => {
     try {
       const key = '__welltegra_mc__';
@@ -159,6 +169,50 @@
       return false;
     }
   })();
+
+  const trapFocusWithin = (container) => {
+    if (!container) return () => {};
+
+    const isElementVisible = (element) => {
+      if (!element) return false;
+      if (element.hasAttribute('disabled')) return false;
+      if (element.getAttribute('aria-hidden') === 'true') return false;
+      const style = window.getComputedStyle(element);
+      if (style.visibility === 'hidden' || style.display === 'none') return false;
+      return true;
+    };
+
+    const getFocusableElements = () =>
+      Array.from(container.querySelectorAll(FOCUSABLE_SELECTORS)).filter((element) => isElementVisible(element));
+
+    const handleKeyDown = (event) => {
+      if (event.key !== 'Tab') return;
+      const focusable = getFocusableElements();
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey) {
+        if (document.activeElement === first || !container.contains(document.activeElement)) {
+          event.preventDefault();
+          last.focus();
+        }
+        return;
+      }
+
+      if (document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    container.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      container.removeEventListener('keydown', handleKeyDown);
+    };
+  };
 
   const safeParse = (raw, fallback) => {
     if (!raw) return fallback;
@@ -227,6 +281,17 @@
     return stored;
   };
 
+  const loadPlanContext = () => {
+    if (!storageAvailable) {
+      return null;
+    }
+    const stored = safeParse(window.localStorage.getItem(PLAN_KEY), null);
+    if (!stored || typeof stored !== 'object') {
+      return null;
+    }
+    return stored;
+  };
+
   const persistRequests = (requests) => {
     if (!storageAvailable) return;
     try {
@@ -242,6 +307,19 @@
       window.localStorage.setItem(FEED_KEY, JSON.stringify(feed));
     } catch (error) {
       console.error('Failed to persist communicator feed', error);
+    }
+  };
+
+  const persistPlanContext = (planContext) => {
+    if (!storageAvailable) return;
+    try {
+      if (!planContext) {
+        window.localStorage.removeItem(PLAN_KEY);
+        return;
+      }
+      window.localStorage.setItem(PLAN_KEY, JSON.stringify(planContext));
+    } catch (error) {
+      console.error('Failed to persist communicator plan context', error);
     }
   };
 
@@ -334,6 +412,18 @@
     const summaryApproved = document.getElementById('communicator-summary-approved');
     const lastSync = document.getElementById('communicator-last-sync');
     const pendingBadge = document.getElementById('communicator-pending-badge');
+    const planContextCard = document.getElementById('communicator-plan-context');
+    const planName = document.getElementById('communicator-plan-name');
+    const planMeta = document.getElementById('communicator-plan-meta');
+    const planCost = document.getElementById('communicator-plan-cost');
+    const planDuration = document.getElementById('communicator-plan-duration');
+    const planCrew = document.getElementById('communicator-plan-crew');
+    const planHighlight = document.getElementById('communicator-plan-highlight');
+    const planRisks = document.getElementById('communicator-plan-risks');
+    const planSteps = document.getElementById('communicator-plan-steps');
+    const planCrewList = document.getElementById('communicator-plan-crew-list');
+    const planEmpty = document.getElementById('communicator-plan-empty');
+    const attachmentsList = document.getElementById('communicator-detail-attachments');
 
     if (!overlay || !openBtn || !closeBtn || !requestList || !form) {
       return;
@@ -342,9 +432,12 @@
     const state = {
       requests: loadRequests(),
       feed: loadFeed(),
+      planContext: loadPlanContext(),
       selectedId: null,
       previousFocus: null
     };
+
+    let releaseFocusTrap = null;
 
     const ensureSelection = () => {
       if (state.selectedId && state.requests.some((req) => req.id === state.selectedId)) {
@@ -373,11 +466,16 @@
       if (summaryTotal) summaryTotal.textContent = String(total);
       if (summaryPending) summaryPending.textContent = String(pendingCount);
       if (summaryApproved) summaryApproved.textContent = String(approvedCount);
+      if (pendingBadge) {
+        pendingBadge.textContent = String(pendingCount);
+        pendingBadge.classList.toggle('hidden', pendingCount === 0);
+      }
       if (pendingBadge) pendingBadge.textContent = String(pendingCount);
       if (openBtn) {
         const labelBase = 'Open mobile communicator';
         const badge = pendingCount === 1 ? '1 request awaiting sign-off' : `${pendingCount} requests awaiting sign-off`;
         openBtn.setAttribute('aria-label', `${labelBase} (${badge})`);
+        openBtn.setAttribute('aria-expanded', overlay.classList.contains('hidden') ? 'false' : 'true');
       }
       const updatedAt = computeLastUpdated(state.requests, state.feed);
       if (lastSync) {
@@ -400,6 +498,117 @@
       if (normalized === 'high') return 'border border-rose-500/40 bg-rose-500/15 text-rose-200';
       if (normalized === 'medium') return 'border border-amber-500/40 bg-amber-500/15 text-amber-200';
       return 'border border-emerald-500/40 bg-emerald-500/15 text-emerald-200';
+    };
+
+    const renderPlanContext = () => {
+      if (!planContextCard) return;
+      planContextCard.classList.remove('hidden');
+
+      const context = state.planContext;
+      if (!context) {
+        if (planName) planName.textContent = 'No plan synced';
+        if (planMeta) planMeta.textContent = 'Generate a program to expose plan context for sign-off.';
+        if (planCost) planCost.textContent = '—';
+        if (planDuration) planDuration.textContent = '—';
+        if (planCrew) planCrew.textContent = '—';
+        if (planHighlight) {
+          planHighlight.textContent = '';
+          planHighlight.classList.add('hidden');
+        }
+        if (planRisks) {
+          planRisks.innerHTML = '';
+          planRisks.classList.add('hidden');
+        }
+        if (planSteps) {
+          planSteps.innerHTML = '';
+          planSteps.classList.add('hidden');
+        }
+        if (planCrewList) {
+          planCrewList.innerHTML = '';
+          planCrewList.classList.add('hidden');
+        }
+        if (planEmpty) planEmpty.classList.remove('hidden');
+        return;
+      }
+
+      const metaParts = [];
+      if (context.wellName) metaParts.push(context.wellName);
+      if (context.objectiveName) metaParts.push(`Objective: ${context.objectiveName}`);
+      if (context.timestamp) metaParts.push(`Synced ${formatDateTime(context.timestamp)}`);
+      if (planName) planName.textContent = context.name || 'Generated program';
+      if (planMeta) planMeta.textContent = metaParts.join(' • ') || '—';
+      if (planCost) planCost.textContent = context.cost || '—';
+      if (planDuration) planDuration.textContent = context.duration || '—';
+      if (planCrew) planCrew.textContent = context.crew || '—';
+
+      if (planHighlight) {
+        const highlightParts = [];
+        if (context.objectiveDescription) highlightParts.push(context.objectiveDescription);
+        if (context.sustainabilityHighlight) highlightParts.push(context.sustainabilityHighlight);
+        const highlightText = highlightParts.join(' ');
+        planHighlight.textContent = highlightText;
+        planHighlight.classList.toggle('hidden', highlightText.length === 0);
+      }
+
+      if (planRisks) {
+        if (Array.isArray(context.riskSummary) && context.riskSummary.length > 0) {
+          planRisks.innerHTML = context.riskSummary
+            .map((risk) => {
+              const label = risk?.label || 'Moderate';
+              const category = risk?.category ? risk.category.replace(/_/g, ' ') : 'Risk';
+              return `
+                <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 font-semibold ${badgeClassForRisk(label)}">
+                  <span class="text-[0.65rem] uppercase tracking-wide text-slate-200">${category}</span>
+                  <span class="text-xs text-slate-100">${label}</span>
+                </span>
+              `;
+            })
+            .join('');
+          planRisks.classList.remove('hidden');
+        } else {
+          planRisks.innerHTML = '';
+          planRisks.classList.add('hidden');
+        }
+      }
+
+      if (planSteps) {
+        if (Array.isArray(context.topSteps) && context.topSteps.length > 0) {
+          planSteps.innerHTML = context.topSteps
+            .map(
+              (step) => `
+                <li class="rounded-xl border border-slate-800 bg-slate-950/60 p-3 text-sm text-slate-200">
+                  <span class="mr-2 font-semibold text-cyan-300">${step.order || 1}.</span>
+                  ${step.text || ''}
+                </li>
+              `
+            )
+            .join('');
+          planSteps.classList.remove('hidden');
+        } else {
+          planSteps.innerHTML = '';
+          planSteps.classList.add('hidden');
+        }
+      }
+
+      if (planCrewList) {
+        if (Array.isArray(context.personnel) && context.personnel.length > 0) {
+          planCrewList.innerHTML = context.personnel
+            .map(
+              (person) => `
+                <li class="rounded-full border border-slate-700/70 bg-slate-900/60 px-3 py-1 text-xs font-semibold text-slate-200">
+                  ${person}
+                </li>
+              `
+            )
+            .join('');
+          planCrewList.classList.remove('hidden');
+        } else {
+          planCrewList.innerHTML = '';
+          planCrewList.classList.add('hidden');
+        }
+      }
+
+      if (planEmpty) planEmpty.classList.add('hidden');
     };
 
     const renderRequestList = () => {
@@ -457,6 +666,7 @@
         if (summaryEl) summaryEl.textContent = 'Choose a request from the list to review the justification, impact, and supporting evidence before granting remote approval.';
         if (impactList) impactList.innerHTML = '';
         if (watchersList) watchersList.innerHTML = '';
+        if (attachmentsList) attachmentsList.innerHTML = '';
         if (timelineList) timelineList.innerHTML = '';
         setFeedback('');
         return;
@@ -517,6 +727,24 @@
                 </li>
               `
             )
+            .join('');
+        }
+      }
+      if (attachmentsList) {
+        if (!Array.isArray(current.attachments) || current.attachments.length === 0) {
+          attachmentsList.innerHTML = '<li class="rounded-full border border-slate-800 bg-slate-900/40 px-3 py-1 text-xs text-slate-500">No supporting files uploaded.</li>';
+        } else {
+          attachmentsList.innerHTML = current.attachments
+            .map((attachment) => {
+              const label = attachment?.label || 'Attachment';
+              const type = (attachment?.type || 'file').toUpperCase();
+              return `
+                <li class="inline-flex items-center gap-2 rounded-full border border-cyan-500/40 bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-100">
+                  <span class="text-[0.65rem] uppercase tracking-wide text-cyan-200">${type}</span>
+                  <span>${label}</span>
+                </li>
+              `;
+            })
             .join('');
         }
       }
@@ -645,6 +873,7 @@
     const renderAll = () => {
       ensureSelection();
       updateSummary();
+      renderPlanContext();
       renderRequestList();
       renderDetail();
       renderFeed();
@@ -657,6 +886,12 @@
       overlay.classList.add('grid');
       overlay.classList.remove('pointer-events-none');
       overlay.classList.add('pointer-events-auto');
+      overlay.setAttribute('aria-hidden', 'false');
+      openBtn.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('overflow-hidden');
+      renderAll();
+      if (releaseFocusTrap) releaseFocusTrap();
+      releaseFocusTrap = trapFocusWithin(overlay);
       document.body.classList.add('overflow-hidden');
       renderAll();
       closeBtn.focus();
@@ -667,6 +902,13 @@
       overlay.classList.remove('grid');
       overlay.classList.add('pointer-events-none');
       overlay.classList.remove('pointer-events-auto');
+      overlay.setAttribute('aria-hidden', 'true');
+      openBtn.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('overflow-hidden');
+      if (releaseFocusTrap) {
+        releaseFocusTrap();
+        releaseFocusTrap = null;
+      }
       document.body.classList.remove('overflow-hidden');
       if (state.previousFocus && document.body.contains(state.previousFocus)) {
         state.previousFocus.focus();
@@ -681,6 +923,68 @@
 
     const recordPlanSnapshot = (detail) => {
       const timestamp = detail?.timestamp || Date.now();
+      const planDetail = detail?.plan || {};
+      const rawMetrics = planDetail.metrics || {};
+      const fallbackCost =
+        rawMetrics.totalDaily ||
+        planDetail.costFormatted ||
+        (typeof planDetail.costUSD === 'number' && !Number.isNaN(planDetail.costUSD)
+          ? `$${Math.round(planDetail.costUSD).toLocaleString()}`
+          : null);
+      const fallbackLength =
+        rawMetrics.length ||
+        (typeof planDetail.durationHours === 'number' && !Number.isNaN(planDetail.durationHours)
+          ? `${planDetail.durationHours} hrs`
+          : null);
+      const fallbackEquipment =
+        rawMetrics.equipmentDaily ||
+        (typeof planDetail.personnelCount === 'number' && planDetail.personnelCount > 0
+          ? `${planDetail.personnelCount} roles`
+          : null);
+      const metrics = {
+        totalDaily: fallbackCost,
+        length: fallbackLength,
+        equipmentDaily: fallbackEquipment
+      };
+
+      const normalizedPersonnel = Array.isArray(planDetail.personnel)
+        ? planDetail.personnel
+            .map((person) => (typeof person === 'string' ? person : person?.name || ''))
+            .filter(Boolean)
+        : [];
+      const rawTopSteps = Array.isArray(planDetail.topSteps) ? planDetail.topSteps : [];
+      const normalizedSteps = rawTopSteps
+        .map((step, index) => {
+          if (typeof step === 'string') {
+            return { order: index + 1, text: step };
+          }
+          return {
+            order: step?.order || index + 1,
+            text: step?.text || ''
+          };
+        })
+        .filter((step) => step.text);
+
+      state.planContext = {
+        name: planDetail.name || 'Generated program',
+        wellName: planDetail.wellName || null,
+        objectiveName: planDetail.objectiveName || null,
+        objectiveDescription: planDetail.objectiveDescription || null,
+        cost: metrics.totalDaily || '—',
+        duration: metrics.length || '—',
+        crew: metrics.equipmentDaily || '—',
+        personnel: normalizedPersonnel,
+        personnelCount:
+          typeof planDetail.personnelCount === 'number'
+            ? planDetail.personnelCount
+            : normalizedPersonnel.length,
+        riskSummary: Array.isArray(planDetail.riskSummary) ? planDetail.riskSummary : [],
+        sustainabilityHighlight: planDetail.sustainabilityHighlight || null,
+        timestamp,
+        topSteps: normalizedSteps
+      };
+      persistPlanContext(state.planContext);
+
       const metrics = detail?.plan?.metrics || {};
       const entry = {
         id: `feed-plan-${timestamp}`,
@@ -692,6 +996,9 @@
       trimFeed();
       persistFeed(state.feed);
 
+      const snapshotMessage = `Planner synced — budget ${metrics.totalDaily || 'n/a'}, duration ${
+        metrics.length || 'n/a'
+      }, crew ${metrics.equipmentDaily || 'n/a'}.`;
       const snapshotMessage = `Planner saved — total ${metrics.totalDaily || 'n/a'}, toolstring ${metrics.length || 'n/a'}.`;
       const isoTime = new Date(timestamp).toISOString();
       state.requests.forEach((req) => {
@@ -807,6 +1114,12 @@
 
     window.addEventListener('welltegra:plan-saved', (event) => {
       recordPlanSnapshot(event.detail || {});
+    });
+
+    window.addEventListener('welltegra:plan-reset', () => {
+      state.planContext = null;
+      persistPlanContext(null);
+      renderAll();
     });
 
     renderAll();
