@@ -3,8 +3,10 @@ module.exports = {
   content: [
     './*.html',
     './**/*.html',
+    './assets/js/**/*.js',
     './module-loader.js',
-    '!./node_modules/**'
+    '!./node_modules/**',
+    '!./assets/vendor/**'
   ],
   theme: {
     extend: {
