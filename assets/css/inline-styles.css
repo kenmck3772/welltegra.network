@@ -21,3 +21,23 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; }
     z-index: -1;
     pointer-events: none;
 }
+
+/* --- Error Toast Animations --- */
+@keyframes slide-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+}
+
+#global-error-toast {
+    transition: opacity 0.3s, transform 0.3s;
+}

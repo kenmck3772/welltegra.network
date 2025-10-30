@@ -213,30 +213,6 @@ function getUserFriendlyErrorMessage(error) {
     return 'An unexpected error occurred. Please try again.';
 }
 
-// Add CSS for toast animations
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slide-in {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-
-    .animate-slide-in {
-        animation: slide-in 0.3s ease-out;
-    }
-
-    #global-error-toast {
-        transition: opacity 0.3s, transform 0.3s;
-    }
-`;
-document.head.appendChild(style);
-
 // Export functions for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {

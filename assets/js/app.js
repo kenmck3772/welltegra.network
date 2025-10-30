@@ -3156,9 +3156,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }).join('');
     }
 
-    function renderProblems() {
-    };
-
     const renderProblems = () => {
         if (!problemsFieldset) return;
 

@@ -3,21 +3,24 @@
  * Provides offline support, caching, and performance improvements
  */
 
-const CACHE_VERSION = 'v23.0.0';
+const CACHE_VERSION = 'v23.0.3';
 const CACHE_NAME = `welltegra-${CACHE_VERSION}`;
 
 // Assets to cache immediately on install
 const PRECACHE_ASSETS = [
     '/',
     '/index.html',
-    '/assets/css/tailwind.css',
-    '/assets/css/inline-styles.css',
-    '/assets/js/security-utils.js',
-    '/assets/js/fetch-utils.js',
-    '/assets/js/performance-utils.js',
-    '/assets/js/error-handler.js',
-    '/assets/js/app.js',
-    '/assets/js/mobile-communicator.js',
+    '/assets/css/tailwind.css?v=23.0.3',
+    '/assets/css/inline-styles.css?v=23.0.3',
+    '/assets/js/security-utils.js?v=23.0.3',
+    '/assets/js/fetch-utils.js?v=23.0.3',
+    '/assets/js/performance-utils.js?v=23.0.3',
+    '/assets/js/error-handler.js?v=23.0.3',
+    '/assets/js/app.js?v=23.0.3',
+    '/assets/js/mobile-communicator.js?v=23.0.3',
+    '/assets/js/crypto-utils.js?v=23.0.3',
+    '/assets/js/image-utils.js?v=23.0.3',
+    '/assets/js/sw-register.js?v=23.0.3',
     '/assets/logo.jpg',
     '/assets/watermark.jpg'
 ];
@@ -134,7 +137,8 @@ function getCacheStrategy(request) {
  * Returns cached response if available, otherwise fetches from network
  */
 async function cacheFirst(request, cacheName) {
-    const cached = await caches.match(request);
+    // Match with query parameters - don't ignore ?v=version
+    const cached = await caches.match(request, { ignoreSearch: false });
 
     if (cached) {
         console.log(`[SW] Cache hit: ${request.url}`);
@@ -144,8 +148,8 @@ async function cacheFirst(request, cacheName) {
     console.log(`[SW] Cache miss, fetching: ${request.url}`);
     const response = await fetch(request);
 
-    // Cache successful responses
-    if (response.ok) {
+    // Cache successful responses (but not partial responses)
+    if (response.ok && response.status !== 206) {
         const cache = await caches.open(cacheName);
         cache.put(request, response.clone());
     }
@@ -162,8 +166,8 @@ async function networkFirst(request, cacheName) {
         console.log(`[SW] Network fetch: ${request.url}`);
         const response = await fetch(request);
 
-        // Cache successful responses
-        if (response.ok) {
+        // Cache successful responses (but not partial responses)
+        if (response.ok && response.status !== 206) {
             const cache = await caches.open(cacheName);
             cache.put(request, response.clone());
         }
@@ -171,7 +175,8 @@ async function networkFirst(request, cacheName) {
         return response;
     } catch (error) {
         console.log(`[SW] Network failed, trying cache: ${request.url}`);
-        const cached = await caches.match(request);
+        // Match with query parameters - don't ignore ?v=version
+        const cached = await caches.match(request, { ignoreSearch: false });
 
         if (cached) {
             return cached;
