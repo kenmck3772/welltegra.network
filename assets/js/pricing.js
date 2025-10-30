@@ -3,6 +3,37 @@ function toggleFAQ(element) {
     element.classList.toggle('active');
 }
 
+// Toggle PAYG vs Subscription pricing model
+function togglePricingModel(model) {
+    const paygBtn = document.getElementById('payg-toggle');
+    const subscriptionBtn = document.getElementById('subscription-toggle');
+    const paygSection = document.getElementById('payg-pricing');
+    const subscriptionSection = document.getElementById('subscription-pricing');
+    const billingToggleContainer = document.getElementById('billing-toggle-container');
+
+    if (model === 'payg') {
+        // Show PAYG, hide subscription
+        paygBtn.classList.add('bg-cyan-600', 'text-white');
+        paygBtn.classList.remove('bg-gray-700', 'text-gray-300');
+        subscriptionBtn.classList.remove('bg-cyan-600', 'text-white');
+        subscriptionBtn.classList.add('bg-gray-700', 'text-gray-300');
+
+        if (paygSection) paygSection.style.display = 'block';
+        if (subscriptionSection) subscriptionSection.style.display = 'none';
+        if (billingToggleContainer) billingToggleContainer.style.display = 'none';
+    } else {
+        // Show subscription, hide PAYG
+        subscriptionBtn.classList.add('bg-cyan-600', 'text-white');
+        subscriptionBtn.classList.remove('bg-gray-700', 'text-gray-300');
+        paygBtn.classList.remove('bg-cyan-600', 'text-white');
+        paygBtn.classList.add('bg-gray-700', 'text-gray-300');
+
+        if (paygSection) paygSection.style.display = 'none';
+        if (subscriptionSection) subscriptionSection.style.display = 'block';
+        if (billingToggleContainer) billingToggleContainer.style.display = 'flex';
+    }
+}
+
 // Toggle monthly/annual billing
 function toggleBilling(period) {
     const monthlyBtn = document.getElementById('monthly-toggle');
