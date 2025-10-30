@@ -44,6 +44,7 @@
     <script src="assets/vendor/html2canvas.min.js" defer></script>
     <script src="assets/js/security-utils.js"></script>
     <script src="assets/js/fetch-utils.js"></script>
+    <script src="assets/js/performance-utils.js"></script>
 </head>
 
 <body class="theme-dark">
@@ -123,8 +124,8 @@
     <main id="main-content" class="flex-1" role="main">
         <div id="home-view" class="view-container">
             <section class="hero-section py-20 px-4 relative" aria-describedby="hero-video-description">
-                <video autoplay loop muted playsinline id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description">
-                    <source src="assets/hero.mp4" type="video/mp4">
+                <video loop muted playsinline preload="none" id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description" data-lazy-video="assets/hero.mp4">
+                    <source data-src="assets/hero.mp4" type="video/mp4">
                     <track kind="descriptions" srclang="en" label="English descriptions" src="assets/hero-video-descriptions.vtt" default>
                 </video>
                 <div class="hero-overlay"></div>
