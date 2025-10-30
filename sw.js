@@ -3,24 +3,24 @@
  * Provides offline support, caching, and performance improvements
  */
 
-const CACHE_VERSION = 'v23.0.2';
+const CACHE_VERSION = 'v23.0.3';
 const CACHE_NAME = `welltegra-${CACHE_VERSION}`;
 
 // Assets to cache immediately on install
 const PRECACHE_ASSETS = [
     '/',
     '/index.html',
-    '/assets/css/tailwind.css?v=23.0.2',
-    '/assets/css/inline-styles.css?v=23.0.2',
-    '/assets/js/security-utils.js?v=23.0.2',
-    '/assets/js/fetch-utils.js?v=23.0.2',
-    '/assets/js/performance-utils.js?v=23.0.2',
-    '/assets/js/error-handler.js?v=23.0.2',
-    '/assets/js/app.js?v=23.0.2',
-    '/assets/js/mobile-communicator.js?v=23.0.2',
-    '/assets/js/crypto-utils.js?v=23.0.2',
-    '/assets/js/image-utils.js?v=23.0.2',
-    '/assets/js/sw-register.js?v=23.0.2',
+    '/assets/css/tailwind.css?v=23.0.3',
+    '/assets/css/inline-styles.css?v=23.0.3',
+    '/assets/js/security-utils.js?v=23.0.3',
+    '/assets/js/fetch-utils.js?v=23.0.3',
+    '/assets/js/performance-utils.js?v=23.0.3',
+    '/assets/js/error-handler.js?v=23.0.3',
+    '/assets/js/app.js?v=23.0.3',
+    '/assets/js/mobile-communicator.js?v=23.0.3',
+    '/assets/js/crypto-utils.js?v=23.0.3',
+    '/assets/js/image-utils.js?v=23.0.3',
+    '/assets/js/sw-register.js?v=23.0.3',
     '/assets/logo.jpg',
     '/assets/watermark.jpg'
 ];
@@ -137,7 +137,8 @@ function getCacheStrategy(request) {
  * Returns cached response if available, otherwise fetches from network
  */
 async function cacheFirst(request, cacheName) {
-    const cached = await caches.match(request);
+    // Match with query parameters - don't ignore ?v=version
+    const cached = await caches.match(request, { ignoreSearch: false });
 
     if (cached) {
         console.log(`[SW] Cache hit: ${request.url}`);
@@ -174,7 +175,8 @@ async function networkFirst(request, cacheName) {
         return response;
     } catch (error) {
         console.log(`[SW] Network failed, trying cache: ${request.url}`);
-        const cached = await caches.match(request);
+        // Match with query parameters - don't ignore ?v=version
+        const cached = await caches.match(request, { ignoreSearch: false });
 
         if (cached) {
             return cached;
