@@ -147,6 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'critical',
             themes: ['integrity', 'flow-assurance', 'controls'],
+            dataQuality: 92,
             history: [
                 { date: '2024-03-15', operation: 'Slickline Surveillance', problem: 'Unable to pass 8,500ft due to casing restriction.', lesson: 'This well combines multiple known failure modes from this field into a single asset.' },
                 { date: '2024-04-01', operation: 'Production Test', problem: 'Well died after brief flow period. Pressure analysis suggests deep blockage.', lesson: 'Suspect combination of scale and integrity issues.' },
@@ -181,6 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'case',
             themes: ['integrity', 'productivity'],
+            dataQuality: 88,
             history: [
                 { date: '2023-11-10', operation: 'Slickline Surveillance', problem: 'Standard 2.313" OD toolstring unable to pass 8,500ft, encountering a hard stop.', lesson: 'Significant reservoir depletion in this area is causing geomechanical stresses leading to casing deformation, a known regional risk. MFC log confirms this is ovalization, not collapse.' },
                 { date: '2023-12-05', operation: 'Expandable Casing Patch', problem: 'Successfully installed a 60ft expandable steel patch across the deformed section.', lesson: 'This operation proves that an expandable patch is a viable, rigless solution for restoring full-bore access in this field, restoring production and well access.' }
@@ -213,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'case',
             themes: ['flow-assurance', 'productivity'],
+            dataQuality: 85,
             history: [
                 { date: '2024-01-05', operation: 'Production Logging', problem: 'PLT toolstring unable to pass 9,200ft due to a hard obstruction. Produced water analysis confirmed high Barium and Sulfate content.', lesson: 'Commingling of injected seawater and formation water is causing severe, insoluble scale deposition. A previous attempt to mill scale on a nearby well resulted in stuck pipe.'},
                 { date: '2024-02-12', operation: 'CT Chemical/Jetting', problem: 'A 48hr soak with DTPA dissolver followed by a run with a high-pressure rotating jetting tool successfully cleared the blockage.', lesson: 'This two-stage approach is a proven, lower-risk method for removing hard scale compared to aggressive milling.' }
@@ -241,6 +244,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'case',
             themes: ['integrity', 'controls'],
+            dataQuality: 82,
             history: [
                 { date: '2024-02-18', operation: 'Routine DHSV Test', problem: 'Valve failed to close reliably during routine 6-month test. Well was mandatorily shut-in by regulatory authority.', lesson: 'An attempted repair on a similar well with a hydraulic tool failed; a mechanical lock-open tool is more reliable.' },
                 { date: '2024-03-20', operation: 'Slickline Insert Valve Job', problem: 'Successfully locked open the failed valve with a mechanical tool and installed a new wireline-retrievable insert valve.', lesson: 'This standard slickline operation is a proven, cost-effective method for restoring the primary safety barrier without a rig.' }
@@ -269,6 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'case',
             themes: ['flow-assurance', 'productivity'],
+            dataQuality: 78,
             history: [
                 { date: '2023-08-15', operation: 'Surface Choke Replacement', problem: 'Replaced choke for the 3rd time in 6 months due to severe erosional wear from high sand content.', lesson: 'Choking back the well is a temporary fix; the root cause of sand control failure must be addressed. Downhole video confirmed screen erosion.' },
                 { date: '2023-09-10', operation: 'Through-Tubing Patch', problem: 'Successfully installed an expandable patch across the failed sand screen, restoring sand control.', lesson: 'This confirms that a through-tubing patch is a viable rigless repair for this failure mode in this field.'}
@@ -297,6 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'case',
             themes: ['flow-assurance', 'productivity'],
+            dataQuality: 76,
             history: [
                 { date: '2024-01-15', operation: 'Slickline Gauge Ring Run', problem: 'Gauge ring tagged a soft, waxy obstruction at 6,000ft. Unable to pass.', lesson: 'A previous attempt on another well with only chemicals was slow and ineffective; a combined approach is needed.' },
                 { date: '2024-02-01', operation: 'CT Wax Cleanout', problem: 'Successfully removed wax blockage using a combination of heated chemical dissolvers and a mechanical scraper tool on Coiled Tubing.', lesson: 'The dual chemical/mechanical approach is highly effective for severe paraffin blockages.' }
@@ -325,6 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'case',
             themes: ['integrity', 'flow-assurance', 'controls', 'productivity'],
+            dataQuality: 95,
             history: [
                 { date: '2023-08-20', operation: 'Complex Multi-Stage Intervention', problem: 'Well experiencing compound failures: partial casing restriction, minor scale buildup, aging safety systems, and intermittent sand production.', lesson: 'This well demonstrated that multiple smaller issues, if left unaddressed, compound into major operational challenges requiring comprehensive intervention planning.' },
                 { date: '2023-09-15', operation: 'Integrated Solution Deployment', problem: 'Successfully executed a staged intervention combining expandable patch technology, chemical scale treatment, safety valve replacement, and sand control installation - all in a single campaign.', lesson: 'Integrated multi-discipline approach saved 45 days vs. sequential interventions. This became the blueprint for tackling W666.' },
@@ -3078,6 +3085,31 @@ document.addEventListener('DOMContentLoaded', function() {
             ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Critical intervention focus well">CRITICAL</span>'
             : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Case study well">CASE STUDY</span>';
 
+        // Data quality badge
+        const dataQuality = well.dataQuality || 0;
+        let qualityColor, qualityLabel, qualityBgClass;
+        if (dataQuality >= 90) {
+            qualityColor = 'emerald';
+            qualityLabel = 'Excellent';
+            qualityBgClass = 'bg-emerald-600';
+        } else if (dataQuality >= 80) {
+            qualityColor = 'blue';
+            qualityLabel = 'Good';
+            qualityBgClass = 'bg-blue-600';
+        } else if (dataQuality >= 70) {
+            qualityColor = 'yellow';
+            qualityLabel = 'Fair';
+            qualityBgClass = 'bg-yellow-600';
+        } else if (dataQuality >= 60) {
+            qualityColor = 'orange';
+            qualityLabel = 'Poor';
+            qualityBgClass = 'bg-orange-600';
+        } else {
+            qualityColor = 'red';
+            qualityLabel = 'Critical';
+            qualityBgClass = 'bg-red-600';
+        }
+
         return `
             <article class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'} ${isSelected ? 'selected' : ''}"
                 data-well-id="${well.id}"
@@ -3097,8 +3129,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="mb-3">
+                    <div class="mb-3 flex items-center gap-2">
                         <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
+                        <span class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold text-white rounded ${qualityBgClass}"
+                              aria-label="Data quality score: ${dataQuality}% - ${qualityLabel}"
+                              title="Data Quality: ${dataQuality}% (${qualityLabel})">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                            ${dataQuality}%
+                        </span>
                     </div>
                     <p class="text-sm">${well.issue}</p>
                 </div>
