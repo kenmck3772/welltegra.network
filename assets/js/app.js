@@ -6649,12 +6649,70 @@ const validateInvoice = () => {
                                 const objective = objectivesData.find(o => o.id === rec.objectiveId) || {};
                                 const objectiveIcon = 'icon' in objective ? objective.icon : '';
                                 const objectiveName = 'name' in objective ? objective.name : 'Objective';
+
+                                // Confidence level determination
+                                const confidence = rec.confidence || 0;
+                                let confidenceColor, confidenceBg, confidenceLabel, confidenceIcon, uncertaintyLevel;
+                                if (confidence >= 95) {
+                                    confidenceColor = 'emerald';
+                                    confidenceBg = 'bg-emerald-600';
+                                    confidenceLabel = 'Very High Confidence';
+                                    confidenceIcon = '✓';
+                                    uncertaintyLevel = 'Minimal subsurface uncertainty';
+                                } else if (confidence >= 90) {
+                                    confidenceColor = 'green';
+                                    confidenceBg = 'bg-green-600';
+                                    confidenceLabel = 'High Confidence';
+                                    confidenceIcon = '✓';
+                                    uncertaintyLevel = 'Low subsurface uncertainty';
+                                } else if (confidence >= 85) {
+                                    confidenceColor = 'blue';
+                                    confidenceBg = 'bg-blue-600';
+                                    confidenceLabel = 'Good Confidence';
+                                    confidenceIcon = '○';
+                                    uncertaintyLevel = 'Moderate uncertainty - additional validation recommended';
+                                } else if (confidence >= 80) {
+                                    confidenceColor = 'yellow';
+                                    confidenceBg = 'bg-yellow-600';
+                                    confidenceLabel = 'Moderate Confidence';
+                                    confidenceIcon = '△';
+                                    uncertaintyLevel = 'Notable uncertainty - expert review advised';
+                                } else {
+                                    confidenceColor = 'orange';
+                                    confidenceBg = 'bg-orange-600';
+                                    confidenceLabel = 'Lower Confidence';
+                                    confidenceIcon = '!';
+                                    uncertaintyLevel = 'Significant uncertainty - thorough validation required';
+                                }
+
                                 return `
-                                    <div class="ai-recommendation-enhanced" data-rec-index="${index}">
-                                        <div class="confidence-badge">${rec.confidence}% Confidence</div>
+                                    <div class="ai-recommendation-enhanced relative" data-rec-index="${index}">
+                                        <div class="flex items-start justify-between gap-3 mb-3">
+                                            <div class="flex items-center gap-2">
+                                                <span class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-white rounded ${confidenceBg}"
+                                                      aria-label="Confidence: ${confidence}% - ${confidenceLabel}"
+                                                      title="${confidenceLabel}: ${uncertaintyLevel}">
+                                                    <span class="text-sm">${confidenceIcon}</span>
+                                                    ${confidence}%
+                                                </span>
+                                                <span class="text-xs text-slate-400 italic">${confidenceLabel}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="w-full bg-slate-700 rounded-full h-1.5 mb-3">
+                                            <div class="${confidenceBg} h-1.5 rounded-full confidence-bar" data-width="${confidence}"></div>
+                                        </div>
+
                                         <div class="flex justify-between items-start mb-2">
                                             <h4 class="font-bold text-lg text-teal-700 dark:text-teal-400">${objectiveIcon} ${objectiveName}</h4>
                                         </div>
+
+                                        <div class="mb-3 p-2 bg-slate-800/50 rounded border-l-2 border-${confidenceColor}-500">
+                                            <p class="text-xs text-slate-300">
+                                                <strong>Uncertainty Assessment:</strong> ${uncertaintyLevel}
+                                            </p>
+                                        </div>
+
                                         <p class="text-sm mb-1"><strong>Projected Outcome:</strong> ${rec.outcome}</p>
                                         <p class="text-xs"><strong>Reasoning:</strong> ${rec.reason}</p>
                                     </div>
@@ -6663,6 +6721,14 @@ const validateInvoice = () => {
                         </div>
                     `;
                     aiRecommendationsContainer.classList.remove('hidden');
+
+                    // Apply confidence bar widths (CSP compliant)
+                    aiRecommendationsContainer.querySelectorAll('.confidence-bar').forEach(bar => {
+                        const width = bar.getAttribute('data-width');
+                        if (width !== null) {
+                            bar.style.width = `${width}%`;
+                        }
+                    });
                 } else {
                     aiRecommendationsContainer.innerHTML = '<p class="text-sm text-center text-slate-400">No AI recommendations available for this problem yet.</p>';
                     aiRecommendationsContainer.classList.remove('hidden');
