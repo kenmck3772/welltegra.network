@@ -3,7 +3,7 @@
  * Provides offline support, caching, and performance improvements
  */
 
-const CACHE_VERSION = 'v23.0.0';
+const CACHE_VERSION = 'v23.0.1';
 const CACHE_NAME = `welltegra-${CACHE_VERSION}`;
 
 // Assets to cache immediately on install
@@ -144,8 +144,8 @@ async function cacheFirst(request, cacheName) {
     console.log(`[SW] Cache miss, fetching: ${request.url}`);
     const response = await fetch(request);
 
-    // Cache successful responses
-    if (response.ok) {
+    // Cache successful responses (but not partial responses)
+    if (response.ok && response.status !== 206) {
         const cache = await caches.open(cacheName);
         cache.put(request, response.clone());
     }
@@ -162,8 +162,8 @@ async function networkFirst(request, cacheName) {
         console.log(`[SW] Network fetch: ${request.url}`);
         const response = await fetch(request);
 
-        // Cache successful responses
-        if (response.ok) {
+        // Cache successful responses (but not partial responses)
+        if (response.ok && response.status !== 206) {
             const cache = await caches.open(cacheName);
             cache.put(request, response.clone());
         }
