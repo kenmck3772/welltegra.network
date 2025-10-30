@@ -622,8 +622,49 @@ function renderSavedToolStrings() {
 // Use a tool string (add to current plan)
 function useToolString(index) {
     const toolString = savedToolStrings[index];
-    showToast(`Tool string "${toolString.name}" added to your plan! (Feature integration pending)`);
-    // TODO: Integrate with the main planner to add these components to the active intervention plan
+
+    // Get current plan equipment from localStorage (or initialize if not exists)
+    let planEquipment = [];
+    const savedPlan = localStorage.getItem('welltegra_plan_equipment');
+    if (savedPlan) {
+        try {
+            planEquipment = JSON.parse(savedPlan);
+        } catch (e) {
+            console.error('Failed to parse plan equipment:', e);
+            planEquipment = [];
+        }
+    }
+
+    // Create a plan entry for this tool string
+    const planEntry = {
+        id: `plan_${Date.now()}`,
+        toolStringId: toolString.id,
+        toolStringName: toolString.name,
+        serviceLine: toolString.serviceLine,
+        components: toolString.components.map(comp => ({...comp})),
+        addedAt: new Date().toISOString()
+    };
+
+    // Add to plan equipment
+    planEquipment.push(planEntry);
+
+    // Save to localStorage
+    localStorage.setItem('welltegra_plan_equipment', JSON.stringify(planEquipment));
+
+    // Create detailed success message
+    const componentList = toolString.components.map(c => c.name).join(', ');
+    showToast(`✓ Tool string "${toolString.name}" added to plan! Components: ${componentList}`);
+
+    // Log to console for debugging/integration
+    console.log('Tool string added to plan:', planEntry);
+    console.log('Current plan equipment:', planEquipment);
+
+    // Optional: Trigger custom event for integration with main planner
+    const event = new CustomEvent('welltegra:toolstring:added', {
+        detail: planEntry,
+        bubbles: true
+    });
+    document.dispatchEvent(event);
 }
 
 // Delete a tool string
@@ -693,8 +734,89 @@ function renderServiceTemplates() {
 
 // Load a template into builder
 function loadTemplate(templateKey) {
-    showToast('Template loading feature coming soon!');
-    // TODO: Load template into the builder
+    const templates = {
+        ct: {
+            name: 'Coiled Tubing Standard Package',
+            description: 'Standard CT package for wellbore cleanout and circulation',
+            serviceLine: 'CT',
+            components: ['CT Reel', 'Injector Head', 'BHA Assembly', 'Jetting Tools']
+        },
+        els_fishing: {
+            name: 'E-Line Fishing Assembly',
+            description: 'Complete fishing assembly for wireline operations',
+            serviceLine: 'ELS',
+            components: ['Rope Socket', 'Power Jar', 'Internal Spear', 'Pressure Gauge']
+        },
+        slk_gaslift: {
+            name: 'Slickline Gas Lift Service',
+            description: 'Standard slickline setup for gas lift valve operations',
+            serviceLine: 'SLK',
+            components: ['Running Tool', 'Gas Lift Valve', 'Lock Mandrel', 'Equalizing Prong']
+        },
+        whm_completion: {
+            name: 'WHM Completion Assembly',
+            description: 'Wireline completion tools package',
+            serviceLine: 'WHM',
+            components: ['Setting Tool', 'Plug Assembly', 'Bridge Plug', 'Tubing Cutter']
+        }
+    };
+
+    const template = templates[templateKey];
+    if (!template) {
+        showToast('Template not found');
+        return;
+    }
+
+    // Clear current builder
+    builderComponents = [];
+
+    // Set template name and service line
+    document.getElementById('new-toolstring-name').value = template.name;
+    document.getElementById('new-toolstring-service').value = template.serviceLine;
+
+    // Try to match template components with equipment catalog
+    let matchedCount = 0;
+    template.components.forEach(componentName => {
+        // Search through equipment catalog for matching items
+        let matched = false;
+        Object.keys(equipmentCatalog).forEach(categoryKey => {
+            if (matched) return;
+            const category = equipmentCatalog[categoryKey];
+            const matchingItem = category.items.find(item =>
+                item.name.toLowerCase().includes(componentName.toLowerCase()) ||
+                componentName.toLowerCase().includes(item.name.toLowerCase())
+            );
+            if (matchingItem) {
+                builderComponents.push(matchingItem);
+                matched = true;
+                matchedCount++;
+            }
+        });
+
+        // If no exact match found, create a generic component
+        if (!matched) {
+            builderComponents.push({
+                id: `template_${Date.now()}_${Math.random()}`,
+                name: componentName,
+                category: 'template',
+                manufacturer: 'Template',
+                applications: [template.description]
+            });
+        }
+    });
+
+    // Update the builder preview
+    updateBuilderPreview();
+
+    // Switch to builder tab
+    switchEquipmentTab('builder');
+
+    // Show success message
+    if (matchedCount === template.components.length) {
+        showToast(`Template "${template.name}" loaded successfully!`);
+    } else {
+        showToast(`Template loaded! ${matchedCount}/${template.components.length} components matched from catalog.`);
+    }
 }
 
 // Equipment search
@@ -703,7 +825,74 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchBox) {
         searchBox.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase();
-            // TODO: Implement search filtering
+
+            if (!query) {
+                renderEquipmentCatalog();
+                return;
+            }
+
+            // Filter equipment catalog based on search query
+            const grid = document.getElementById('equipment-catalog-grid');
+            grid.innerHTML = '';
+
+            Object.keys(equipmentCatalog).forEach(categoryKey => {
+                const category = equipmentCatalog[categoryKey];
+
+                // Filter items that match the search query
+                const matchingItems = category.items.filter(item => {
+                    const nameMatch = item.name.toLowerCase().includes(query);
+                    const manufacturerMatch = item.manufacturer && item.manufacturer.toLowerCase().includes(query);
+                    const applicationMatch = item.applications && item.applications.some(app =>
+                        app.toLowerCase().includes(query)
+                    );
+                    const categoryMatch = item.category && item.category.toLowerCase().includes(query);
+
+                    return nameMatch || manufacturerMatch || applicationMatch || categoryMatch;
+                });
+
+                // Only show category if it has matching items
+                if (matchingItems.length === 0) return;
+
+                // Apply additional category filter if set
+                const filteredItems = currentEquipmentFilter === 'all'
+                    ? matchingItems
+                    : matchingItems.filter(item => item.category === currentEquipmentFilter);
+
+                if (filteredItems.length === 0) return;
+
+                const card = document.createElement('div');
+                card.className = 'equipment-category-card';
+
+                const itemsHTML = filteredItems.map(item => `
+                    <div class="equipment-item">
+                        <div>
+                            <div class="equipment-item-name">
+                                ${item.name}
+                                ${item.manufacturer ? `<span class="manufacturer-badge">${item.manufacturer}</span>` : ''}
+                            </div>
+                            <div class="equipment-item-meta">
+                                ${item.applications ? item.applications.slice(0, 2).map(app => `<span class="application-tag">${app}</span>`).join('') : ''}
+                            </div>
+                        </div>
+                        <button class="btn-add-equipment" onclick='addEquipmentToBuilderDirect(${JSON.stringify(item)})'>
+                            Add
+                        </button>
+                    </div>
+                `).join('');
+
+                card.innerHTML = `
+                    <h4 class="text-lg font-bold mb-4 text-cyan-400">${category.name}</h4>
+                    <p class="text-sm text-gray-400 mb-4">${category.description}</p>
+                    <div>${itemsHTML}</div>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            // Show message if no results
+            if (grid.children.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-text">No equipment found matching your search</div></div>';
+            }
         });
     }
 
