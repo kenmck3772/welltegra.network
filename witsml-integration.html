@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none'">
+    <title>WITSML/ETP Integration - Well-Tegra</title>
+    <meta name="description" content="Comprehensive WITSML and ETP integration guide for Well-Tegra. Connect your WITSML stores, enable real-time data streaming, and leverage industry-standard protocols.">
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #06b6d4, #14b8a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .code-block {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+        }
+        .feature-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="py-6 px-4 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="/" class="text-2xl font-black gradient-text">Well-Tegra</a>
+            <nav class="hidden md:flex gap-6 text-sm">
+                <a href="/" class="hover:text-cyan-400 transition">Home</a>
+                <a href="/pricing.html" class="hover:text-cyan-400 transition">Pricing</a>
+                <a href="/witsml-integration.html" class="text-cyan-400 font-bold">Integrations</a>
+            </nav>
+            <a href="mailto:integrations@welltegra.network" class="bg-cyan-600 hover:bg-cyan-500 px-4 py-2 rounded-lg font-bold transition text-sm">
+                Contact Integration Team
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="py-16 px-4">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-5xl md:text-6xl font-black mb-6">
+                <span class="gradient-text">WITSML/ETP</span> Integration
+            </h1>
+            <p class="text-xl text-gray-400 mb-8">
+                Connect Well-Tegra with industry-standard data protocols for seamless well data exchange
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <span class="feature-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400">
+                        <path d="M9 11l3 3L22 4"/>
+                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                    </svg>
+                    WITSML v1.4.1.1 – v2.1
+                </span>
+                <span class="feature-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                    Real-Time ETP v1.2
+                </span>
+                <span class="feature-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-cyan-400">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0110 0v4"/>
+                    </svg>
+                    Enterprise-Grade Security
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+
+            <!-- Overview -->
+            <div class="card rounded-2xl p-8 mb-12">
+                <h2 class="text-3xl font-bold mb-6">Why WITSML/ETP Integration?</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold text-cyan-400 mb-3">Industry Standard</h3>
+                        <p class="text-gray-300 mb-4">
+                            WITSML and ETP are universally adopted protocols for well data exchange, supported by major operators, service companies, and software vendors worldwide.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-cyan-400 mb-3">Vendor Neutral</h3>
+                        <p class="text-gray-300 mb-4">
+                            Avoid vendor lock-in with open, standardized data formats. Connect Well-Tegra to any WITSML-compliant system without proprietary adapters.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-cyan-400 mb-3">Real-Time Data</h3>
+                        <p class="text-gray-300 mb-4">
+                            ETP enables streaming data from wellsite to office instantly. Monitor 20+ active rigs simultaneously with sub-second latency.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-cyan-400 mb-3">Data Quality</h3>
+                        <p class="text-gray-300 mb-4">
+                            Built-in validation ensures consistent, high-quality data ingestion. Automatic schema validation, unit conversion, and quality scoring.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Supported Standards -->
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold mb-6">Supported Standards</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="card rounded-xl p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-cyan-400">WITSML</h3>
+                        <p class="text-gray-300 mb-4">Versions: v1.4.1.1, v2.0, v2.1</p>
+                        <p class="text-sm text-gray-400 mb-4">Batch import/export of well data objects</p>
+                        <ul class="text-sm space-y-2">
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-400 mt-1">✓</span>
+                                <span><strong>Well</strong>: Header information, location, status</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-400 mt-1">✓</span>
+                                <span><strong>Wellbore</strong>: Trajectory, geometry, completion</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-400 mt-1">✓</span>
+                                <span><strong>Log</strong>: Time and depth-based logs</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-400 mt-1">✓</span>
+                                <span><strong>Trajectory</strong>: Survey data, inclination, azimuth</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-400 mt-1">✓</span>
+                                <span><strong>Risk</strong>: Operational risks, NPT tracking</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-400 mt-1">✓</span>
+                                <span><strong>Message</strong>: Daily reports, operational messages</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-400 mt-1">✓</span>
+                                <span>+ 8 more object types</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card rounded-xl p-6">
+                        <h3 class="text-2xl font-bold mb-4 text-cyan-400">ETP (Energistics Transfer Protocol)</h3>
+                        <p class="text-gray-300 mb-4">Version: v1.2</p>
+                        <p class="text-sm text-gray-400 mb-4">Real-time WebSocket-based data streaming</p>
+                        <ul class="text-sm space-y-2">
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-400 mt-1">✓</span>
+                                <span><strong>Discovery</strong>: Browse available data objects</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-400 mt-1">✓</span>
+                                <span><strong>Store</strong>: Read/write data objects</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-400 mt-1">✓</span>
+                                <span><strong>Streaming</strong>: Real-time data subscription</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-400 mt-1">✓</span>
+                                <span><strong>Notification</strong>: Change notifications</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-emerald-400 mt-1">✓</span>
+                                <span><strong>Data Array</strong>: Efficient log/time-series transfer</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integration Capabilities -->
+            <div class="card rounded-2xl p-8 mb-12">
+                <h2 class="text-3xl font-bold mb-6">Integration Capabilities</h2>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-400">1. Data Ingestion</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-bold mb-2">Real-Time Streaming (ETP)</h4>
+                            <ul class="text-sm space-y-1 text-gray-300">
+                                <li>• Subscribe to live drilling data feeds</li>
+                                <li>• Automatic well selection and filtering</li>
+                                <li>• Real-time data quality validation</li>
+                                <li>• Configurable sampling rates (1-60s)</li>
+                                <li>• Automatic reconnection on interruption</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2">Batch Import (WITSML)</h4>
+                            <ul class="text-sm space-y-1 text-gray-300">
+                                <li>• Import historical well data</li>
+                                <li>• Bulk import of multiple wells</li>
+                                <li>• Incremental updates only</li>
+                                <li>• Scheduled imports (hourly/daily/weekly)</li>
+                                <li>• Detailed validation error reporting</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-400">2. Data Export</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-bold mb-2">Push to WITSML Store</h4>
+                            <ul class="text-sm space-y-1 text-gray-300">
+                                <li>• Export analysis results to external stores</li>
+                                <li>• Intervention plans as Risk objects</li>
+                                <li>• Daily reports as Message objects</li>
+                                <li>• Custom data mappings</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2">ETP Publishing</h4>
+                            <ul class="text-sm space-y-1 text-gray-300">
+                                <li>• Publish Well-Tegra insights to subscribers</li>
+                                <li>• Real-time analysis results streaming</li>
+                                <li>• AI recommendation notifications</li>
+                                <li>• Alert/alarm publishing</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-400">3. Bidirectional Sync</h3>
+                    <ul class="text-sm space-y-1 text-gray-300">
+                        <li>• Keep Well-Tegra in sync with corporate WITSML stores</li>
+                        <li>• Automatic conflict resolution</li>
+                        <li>• Change tracking and audit trails</li>
+                        <li>• Rollback capabilities for data integrity</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Use Cases -->
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold mb-6">Use Cases</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="card rounded-xl p-6">
+                        <div class="text-3xl mb-3">📊</div>
+                        <h3 class="text-xl font-bold mb-3">Real-Time Drilling Surveillance</h3>
+                        <p class="text-sm text-gray-300 mb-4">
+                            Monitor 20 active drilling rigs, receive real-time data, trigger alerts for anomalies.
+                        </p>
+                        <p class="text-xs text-cyan-400 font-bold">Result: 15% NPT reduction</p>
+                    </div>
+
+                    <div class="card rounded-xl p-6">
+                        <div class="text-3xl mb-3">🔧</div>
+                        <h3 class="text-xl font-bold mb-3">Intervention Planning</h3>
+                        <p class="text-sm text-gray-300 mb-4">
+                            Import 5 years of well history to inform intervention strategy with complete data lineage.
+                        </p>
+                        <p class="text-xs text-cyan-400 font-bold">Result: 92% data quality score</p>
+                    </div>
+
+                    <div class="card rounded-xl p-6">
+                        <div class="text-3xl mb-3">📋</div>
+                        <h3 class="text-xl font-bold mb-3">Regulatory Reporting</h3>
+                        <p class="text-sm text-gray-300 mb-4">
+                            Export Well-Tegra analysis results to regulatory WITSML store for compliance.
+                        </p>
+                        <p class="text-xs text-cyan-400 font-bold">Result: 80% manual reporting reduction</p>
+                    </div>
+
+                    <div class="card rounded-xl p-6">
+                        <div class="text-3xl mb-3">🔄</div>
+                        <h3 class="text-xl font-bold mb-3">Multi-Vendor Integration</h3>
+                        <p class="text-sm text-gray-300 mb-4">
+                            Integrate drilling data from 3 different software systems into unified well view.
+                        </p>
+                        <p class="text-xs text-cyan-400 font-bold">Result: Single source of truth</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Example -->
+            <div class="card rounded-2xl p-8 mb-12">
+                <h2 class="text-3xl font-bold mb-6">Quick Start API Example</h2>
+
+                <h3 class="text-xl font-bold mb-3 text-cyan-400">Import from WITSML Store</h3>
+                <div class="code-block mb-6">
+POST /api/v1/integrations/witsml/import
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+
+{
+  "connection_id": "corp-witsml-prod",
+  "wells": ["uid-1234", "uid-5678"],
+  "objects": ["well", "wellbore", "log"],
+  "validation": true
+}
+                </div>
+
+                <h3 class="text-xl font-bold mb-3 text-cyan-400">ETP Real-Time Subscription</h3>
+                <div class="code-block">
+const etpClient = new ETPClient({
+  url: 'wss://etp.yourcompany.com/api/etp',
+  applicationName: 'Well-Tegra',
+  applicationVersion: '23.0.8'
+});
+
+await etpClient.connect();
+await etpClient.subscribeToChannels([
+  'well/W666/log/GR',
+  'well/W666/log/ROP'
+]);
+                </div>
+            </div>
+
+            <!-- Data Quality -->
+            <div class="card rounded-2xl p-8 mb-12 bg-gradient-to-br from-cyan-900/20 to-teal-900/20 border-cyan-500/30">
+                <div class="flex items-start gap-4 mb-6">
+                    <div class="text-4xl">✅</div>
+                    <div>
+                        <h2 class="text-3xl font-bold mb-2">Automatic Data Quality Validation</h2>
+                        <p class="text-gray-300">
+                            Every WITSML import is validated against industry standards with automatic quality scoring
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div>
+                        <h4 class="font-bold text-cyan-400 mb-2">Schema Validation</h4>
+                        <p class="text-sm text-gray-300">Ensures data conforms to WITSML XSD schemas</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-cyan-400 mb-2">Unit Consistency</h4>
+                        <p class="text-sm text-gray-300">Converts units to SI, flags mismatches</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-cyan-400 mb-2">Range Validation</h4>
+                        <p class="text-sm text-gray-300">Checks for physically impossible values</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-4 bg-slate-900/60 rounded-lg border border-cyan-500/20">
+                    <p class="text-sm text-gray-300">
+                        <strong>Quality scores are visible in the Data Quality Dashboard</strong> introduced in v23.0.5,
+                        providing transparency into data completeness, consistency, and reliability.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Security -->
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold mb-6">Security & Compliance</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="card rounded-xl p-4 text-center">
+                        <div class="text-2xl mb-2">🔐</div>
+                        <h4 class="font-bold text-sm mb-1">TLS 1.2+</h4>
+                        <p class="text-xs text-gray-400">Encrypted in transit</p>
+                    </div>
+                    <div class="card rounded-xl p-4 text-center">
+                        <div class="text-2xl mb-2">🔒</div>
+                        <h4 class="font-bold text-sm mb-1">AES-256</h4>
+                        <p class="text-xs text-gray-400">Encrypted at rest</p>
+                    </div>
+                    <div class="card rounded-xl p-4 text-center">
+                        <div class="text-2xl mb-2">✅</div>
+                        <h4 class="font-bold text-sm mb-1">SOC 2 Type II</h4>
+                        <p class="text-xs text-gray-400">Certified</p>
+                    </div>
+                    <div class="card rounded-xl p-4 text-center">
+                        <div class="text-2xl mb-2">📋</div>
+                        <h4 class="font-bold text-sm mb-1">ISO 27001</h4>
+                        <p class="text-xs text-gray-400">Compliant</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="card rounded-2xl p-8 text-center bg-gradient-to-r from-cyan-900/30 to-teal-900/30 border-cyan-500/30">
+                <h2 class="text-3xl font-bold mb-4">Ready to Integrate?</h2>
+                <p class="text-xl text-gray-300 mb-8">
+                    WITSML/ETP integration requires Enterprise plan. Contact our integration team to get started.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="mailto:integrations@welltegra.network" class="inline-block px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
+                        Contact Integration Team
+                    </a>
+                    <a href="/WITSML_ETP_INTEGRATION.md" class="inline-block px-8 py-4 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-lg transition" download>
+                        Download Full Documentation
+                    </a>
+                </div>
+                <p class="mt-6 text-sm text-gray-400">
+                    Includes professional services for custom integrations
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 border-t border-gray-800 mt-20">
+        <div class="max-w-7xl mx-auto text-center text-gray-500">
+            <p>&copy; 2025 Well-Tegra. All rights reserved.</p>
+            <div class="mt-4 flex justify-center gap-6 text-sm">
+                <a href="/" class="hover:text-cyan-400 transition">Home</a>
+                <a href="/pricing.html" class="hover:text-cyan-400 transition">Pricing</a>
+                <a href="mailto:integrations@welltegra.network" class="hover:text-cyan-400 transition">Integration Support</a>
+                <a href="https://www.energistics.org/witsml" target="_blank" rel="noopener" class="hover:text-cyan-400 transition">WITSML Standards</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
