@@ -16,12 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const circumference = radius * 2 * Math.PI;
 
         container.innerHTML = `
-            <div class="relative" style="width:${size}px; height:${size}px;">
+            <div class="relative gauge-container">
                 <svg class="w-full h-full" viewBox="0 0 ${size} ${size}">
                     <circle class="gauge-bg" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"></circle>
-                    <circle class="gauge-fg stroke-normal" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"
-                            stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"
-                            style="transition: stroke-dashoffset 0.5s;"></circle>
+                    <circle class="gauge-fg stroke-normal gauge-circle" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"
+                            stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"></circle>
                 </svg>
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
                     <span class="gauge-value text-2xl font-bold gauge-text text-normal">0</span>
@@ -30,6 +29,17 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <h4 class="mt-2 text-sm font-semibold text-slate-300">${label}</h4>
         `;
+
+        // Apply styles via JavaScript (CSP compliant)
+        const gaugeContainer = container.querySelector('.gauge-container');
+        if (gaugeContainer) {
+            gaugeContainer.style.width = `${size}px`;
+            gaugeContainer.style.height = `${size}px`;
+        }
+        const gaugeCircle = container.querySelector('.gauge-circle');
+        if (gaugeCircle) {
+            gaugeCircle.style.transition = 'stroke-dashoffset 0.5s';
+        }
     }
 
     /**
@@ -76,13 +86,19 @@ document.addEventListener('DOMContentLoaded', function() {
         container.innerHTML = `
             <h4 class="text-sm font-semibold text-slate-300">${label}</h4>
             <div class="w-full bar-bg rounded-full h-2.5 my-2">
-                <div class="bar-fg bg-normal h-2.5 rounded-full" style="width: 0%"></div>
+                <div class="bar-fg bg-normal h-2.5 rounded-full"></div>
             </div>
             <div class="text-center">
                 <span class="bar-value text-2xl font-bold gauge-text text-normal">0</span>
                 <span class="bar-units text-xs text-slate-400">${units}</span>
             </div>
         `;
+
+        // Apply initial width via JavaScript (CSP compliant)
+        const barFg = container.querySelector('.bar-fg');
+        if (barFg) {
+            barFg.style.width = '0%';
+        }
     }
 
     /**
@@ -3033,13 +3049,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <p class="text-xs text-slate-400">Portfolio total: ${total}</p>
                     <div class="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-800/70">
-                        <div class="h-full ${signal.progressClass}" style="width: ${percent}%;"></div>
+                        <div class="h-full ${signal.progressClass} portfolio-progress-bar" data-width="${percent}"></div>
                     </div>
                 </article>
             `;
         });
 
         wellPortfolioSignals.innerHTML = cards.join('');
+
+        // Apply widths via JavaScript (CSP compliant)
+        wellPortfolioSignals.querySelectorAll('.portfolio-progress-bar').forEach(bar => {
+            const width = bar.getAttribute('data-width');
+            if (width !== null) {
+                bar.style.width = `${width}%`;
+            }
+        });
     };
 
     const getWellCardMarkup = (well, isSelected) => {
@@ -5122,7 +5146,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <span>${formatCurrency(actual)}</span>
                         </div>
                         <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
-                            <div class="${burnColor} h-4 rounded-full" style="width: ${burnPercent}%"></div>
+                            <div class="${burnColor} h-4 rounded-full burn-rate-progress" data-width="${burnPercent}"></div>
                         </div>
                         <div class="flex justify-between text-sm">
                             <span>Budget (AFE): ${formatCurrency(afe)}</span>
@@ -5177,6 +5201,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         `;
+
+        // Apply burn rate width via JavaScript (CSP compliant)
+        const burnRateBar = commercialContent.querySelector('.burn-rate-progress');
+        if (burnRateBar) {
+            const width = burnRateBar.getAttribute('data-width');
+            if (width !== null) {
+                burnRateBar.style.width = `${width}%`;
+            }
+        }
 
         const validateInvoiceBtn = document.getElementById('validate-invoice-btn');
         addListener(validateInvoiceBtn, 'click', validateInvoice);
