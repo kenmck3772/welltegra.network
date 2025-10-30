@@ -7170,6 +7170,29 @@ const validateInvoice = () => {
         }
     };
 
+    /**
+     * Initialize Data Quality Dashboard
+     * Applies width styles to progress bars (CSP compliant)
+     */
+    function initializeDataQuality() {
+        // Apply widths to all data quality progress bars
+        document.querySelectorAll('#data-quality-view .data-quality-bar').forEach(bar => {
+            const width = bar.getAttribute('data-width');
+            if (width !== null) {
+                bar.style.width = `${width}%`;
+            }
+        });
+
+        // Apply portfolio health bar width
+        const portfolioHealthBar = document.getElementById('portfolio-health-bar');
+        if (portfolioHealthBar) {
+            const width = portfolioHealthBar.getAttribute('data-width');
+            if (width !== null) {
+                portfolioHealthBar.style.width = `${width}%`;
+            }
+        }
+    }
+
     const init = () => {
         initializeHeroVideoToggle();
         initializeWellFilters();
@@ -7177,6 +7200,7 @@ const validateInvoice = () => {
         renderObjectives();
         renderProblems();
         initSavingsChart();
+        initializeDataQuality();
         updateNavLinks();
     };
 

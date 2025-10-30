@@ -3,24 +3,24 @@
  * Provides offline support, caching, and performance improvements
  */
 
-const CACHE_VERSION = 'v23.0.4';
+const CACHE_VERSION = 'v23.0.5';
 const CACHE_NAME = `welltegra-${CACHE_VERSION}`;
 
 // Assets to cache immediately on install
 const PRECACHE_ASSETS = [
     '/',
     '/index.html',
-    '/assets/css/tailwind.css?v=23.0.4',
-    '/assets/css/inline-styles.css?v=23.0.4',
-    '/assets/js/security-utils.js?v=23.0.4',
-    '/assets/js/fetch-utils.js?v=23.0.4',
-    '/assets/js/performance-utils.js?v=23.0.4',
-    '/assets/js/error-handler.js?v=23.0.4',
-    '/assets/js/app.js?v=23.0.4',
-    '/assets/js/mobile-communicator.js?v=23.0.4',
-    '/assets/js/crypto-utils.js?v=23.0.4',
-    '/assets/js/image-utils.js?v=23.0.4',
-    '/assets/js/sw-register.js?v=23.0.4',
+    '/assets/css/tailwind.css?v=23.0.5',
+    '/assets/css/inline-styles.css?v=23.0.5',
+    '/assets/js/security-utils.js?v=23.0.5',
+    '/assets/js/fetch-utils.js?v=23.0.5',
+    '/assets/js/performance-utils.js?v=23.0.5',
+    '/assets/js/error-handler.js?v=23.0.5',
+    '/assets/js/app.js?v=23.0.5',
+    '/assets/js/mobile-communicator.js?v=23.0.5',
+    '/assets/js/crypto-utils.js?v=23.0.5',
+    '/assets/js/image-utils.js?v=23.0.5',
+    '/assets/js/sw-register.js?v=23.0.5',
     '/assets/logo.jpg',
     '/assets/watermark.jpg'
 ];
