@@ -5,8 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' file:; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; font-src 'self' data: file:; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com; media-src 'self' data: file:; base-uri 'self'; form-action 'self'">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data: file:; base-uri 'self'; form-action 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' file: https://fonts.googleapis.com; img-src 'self' data: file: https:; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data: file:; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
 
     <!-- SEO Meta Tags -->
     <title>Well-Tegra | AI-Powered Well Engineering Platform - Reduce NPT by 30%</title>
@@ -38,36 +37,13 @@
 
     <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
     <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="stylesheet" href="assets/css/inline-styles.css">
 
     <script src="assets/vendor/chart.umd.min.js" defer></script>
     <script src="assets/vendor/jspdf.umd.min.js" defer></script>
     <script src="assets/vendor/html2canvas.min.js" defer></script>
-
-    <style>
-        /* --- Base & Theme Setup --- */
-        body { font-family: 'Inter', sans-serif; font-weight: 500; }
-        h1, h2, h3, h4, h5, h6 { font-weight: 800; }
-        .theme-light { background-color: #f8fafc; }
-        .theme-dark { background-color: #0f172a; color: #e2e8f0; }
-
-        /* --- Watermark Background --- */
-        #main-content {
-            position: relative;
-            z-index: 1;
-        }
-        .theme-light #main-content::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('assets/watermark.jpg');
-            background-repeat: repeat;
-            background-position: center;
-            background-size: 350px;
-            opacity: 0.02;
-            z-index: -1;
-            pointer-events: none;
-        }
-    </style>
+    <script src="assets/js/security-utils.js"></script>
+    <script src="assets/js/fetch-utils.js"></script>
 </head>
 
 <body class="theme-dark">

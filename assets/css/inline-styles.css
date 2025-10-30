@@ -1,0 +1,23 @@
+/* --- Base & Theme Setup --- */
+body { font-family: 'Inter', sans-serif; font-weight: 500; }
+h1, h2, h3, h4, h5, h6 { font-weight: 800; }
+.theme-light { background-color: #f8fafc; }
+.theme-dark { background-color: #0f172a; color: #e2e8f0; }
+
+/* --- Watermark Background --- */
+#main-content {
+    position: relative;
+    z-index: 1;
+}
+.theme-light #main-content::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('../watermark.jpg');
+    background-repeat: repeat;
+    background-position: center;
+    background-size: 350px;
+    opacity: 0.02;
+    z-index: -1;
+    pointer-events: none;
+}
