@@ -1,0 +1,232 @@
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    background: linear-gradient(180deg, #0b1220 0%, #020617 100%);
+}
+
+.pricing-card {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.8));
+    border: 2px solid #334155;
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.pricing-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(20, 184, 166, 0.2);
+    border-color: #14b8a6;
+}
+
+.pricing-card.featured {
+    border-color: #14b8a6;
+    box-shadow: 0 12px 40px rgba(20, 184, 166, 0.3);
+    transform: scale(1.02);
+}
+
+.pricing-card.featured:hover {
+    transform: scale(1.02) translateY(-8px);
+}
+
+.popular-badge {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+    color: #0b1220;
+    padding: 8px 24px;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);
+}
+
+.price {
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #14b8a6, #22d3ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+}
+
+.price-period {
+    font-size: 1.125rem;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    flex-grow: 1;
+}
+
+.feature-list li {
+    padding: 0.875rem 0;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+    color: #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.feature-list li:last-child {
+    border-bottom: none;
+}
+
+.feature-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, #14b8a6, #22d3ee);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0b1220;
+    font-weight: 900;
+    font-size: 0.75rem;
+}
+
+.cta-button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.cta-button-secondary {
+    background: #475569;
+    color: #e2e8f0;
+    border-color: #64748b;
+}
+
+.cta-button-secondary:hover {
+    background: #64748b;
+    transform: scale(1.02);
+}
+
+.cta-button-primary {
+    background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+    color: #0b1220;
+    box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3);
+}
+
+.cta-button-primary:hover {
+    box-shadow: 0 12px 30px rgba(20, 184, 166, 0.5);
+    transform: scale(1.05);
+}
+
+.cta-button-enterprise {
+    background: transparent;
+    color: #14b8a6;
+    border-color: #14b8a6;
+}
+
+.cta-button-enterprise:hover {
+    background: rgba(20, 184, 166, 0.1);
+    transform: scale(1.02);
+}
+
+.comparison-table {
+    overflow-x: auto;
+}
+
+.comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.comparison-table th {
+    background: rgba(15, 23, 42, 0.9);
+    color: #14b8a6;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 800;
+    border-bottom: 2px solid #14b8a6;
+}
+
+.comparison-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #334155;
+    color: #e2e8f0;
+}
+
+.comparison-table tr:hover {
+    background: rgba(20, 184, 166, 0.05);
+}
+
+.check-icon {
+    color: #14b8a6;
+    font-weight: 900;
+    font-size: 1.25rem;
+}
+
+.faq-item {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    border-color: #14b8a6;
+    background: rgba(20, 184, 166, 0.05);
+}
+
+.faq-question {
+    font-weight: 700;
+    color: #e2e8f0;
+    font-size: 1.125rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-answer {
+    color: #94a3b8;
+    margin-top: 1rem;
+    line-height: 1.6;
+    display: none;
+}
+
+.faq-item.active .faq-answer {
+    display: block;
+}
+
+.faq-item.active .faq-icon {
+    transform: rotate(180deg);
+}
+
+.faq-icon {
+    transition: transform 0.3s ease;
+    color: #14b8a6;
+}
+
+.savings-badge {
+    display: inline-block;
+    background: #10b981;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: 8px;
+}
