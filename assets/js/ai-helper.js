@@ -502,6 +502,44 @@ async function initializeAiAssistant() {
     window.aiAssistantInitialized = true;
 }
 
+/**
+ * Navigate to AI Assistant view
+ */
+function openAiAssistant() {
+    // Navigate to AI Helper view
+    const aiHelperLink = document.getElementById('ai-helper-nav-link');
+    if (aiHelperLink) {
+        aiHelperLink.click();
+    } else {
+        // Fallback: directly navigate using hash
+        window.location.hash = '#ai-helper-view';
+    }
+
+    // Focus on input after a short delay
+    setTimeout(() => {
+        const input = document.getElementById('ai-user-input');
+        if (input) {
+            input.focus();
+        }
+    }, 300);
+}
+
+/**
+ * Check if this is the user's first visit and open AI Assistant
+ */
+function checkFirstVisit() {
+    const hasVisited = localStorage.getItem('welltegra-visited');
+
+    if (!hasVisited) {
+        // First visit - open AI Assistant after a short delay
+        setTimeout(() => {
+            openAiAssistant();
+            // Mark as visited
+            localStorage.setItem('welltegra-visited', 'true');
+        }, 500);
+    }
+}
+
 // Initialize when the AI Helper view is first shown
 document.addEventListener('DOMContentLoaded', () => {
     const observer = new MutationObserver((mutations) => {
@@ -524,23 +562,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Floating AI Button - Navigate to AI Assistant
     const floatingButton = document.getElementById('floating-ai-button');
     if (floatingButton) {
-        floatingButton.addEventListener('click', () => {
-            // Navigate to AI Helper view
-            const aiHelperLink = document.getElementById('ai-helper-nav-link');
-            if (aiHelperLink) {
-                aiHelperLink.click();
-            } else {
-                // Fallback: directly navigate using hash
-                window.location.hash = '#ai-helper';
-            }
-
-            // Focus on input after a short delay
-            setTimeout(() => {
-                const input = document.getElementById('ai-user-input');
-                if (input) {
-                    input.focus();
-                }
-            }, 300);
-        });
+        floatingButton.addEventListener('click', openAiAssistant);
     }
+
+    // Check for first visit and auto-open AI Assistant
+    checkFirstVisit();
 });

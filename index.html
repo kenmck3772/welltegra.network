@@ -1401,7 +1401,7 @@
             <div class="max-w-5xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-6">
                     <h2 class="text-3xl font-bold tracking-tight">Welltegra AI Assistant</h2>
-                    <p class="mt-2 text-lg text-slate-400">Ask me anything about Welltegra Network services and operations</p>
+                    <p class="mt-2 text-lg text-slate-400">Your personal guide to understanding and navigating the platform</p>
                 </div>
 
                 <!-- Chat Container -->
@@ -1417,26 +1417,41 @@
                     <div id="ai-chat-messages" class="flex-grow p-4 overflow-y-auto space-y-4 bg-slate-900/50">
                         <!-- Initial Message -->
                         <div class="flex justify-start">
-                            <div class="bg-slate-800/90 p-3 rounded-xl max-w-lg shadow">
-                                <p class="font-semibold text-purple-400 mb-1">AI Assistant</p>
-                                <p>👋 Welcome to Welltegra! I'm your AI guide to help you navigate and understand the platform.</p>
-                                <p class="mt-2 text-sm">I can help you with:</p>
-                                <ul class="mt-1 text-sm list-disc list-inside space-y-1">
-                                    <li>Understanding platform features</li>
-                                    <li>Navigating the Well Intervention Planner</li>
-                                    <li>Using the Well Performer simulation</li>
-                                    <li>Data quality tools and best practices</li>
-                                    <li>Any questions about Welltegra services</li>
-                                </ul>
-                                <p class="mt-2 text-sm text-slate-400">How can I assist you today?</p>
+                            <div class="bg-gradient-to-br from-purple-900/90 to-slate-800/90 p-4 rounded-xl max-w-2xl shadow-lg border border-purple-700/50">
+                                <p class="font-semibold text-purple-300 mb-2 text-lg">👋 Welcome to Welltegra!</p>
+                                <p class="mb-3">I'm your AI guide to help you navigate and understand the platform. Whether you're planning a well intervention, monitoring operations, or exploring our features - I'm here to help!</p>
+
+                                <div class="bg-slate-900/50 rounded-lg p-3 mb-3">
+                                    <p class="text-sm font-semibold text-purple-300 mb-2">💡 Quick Start - Try asking:</p>
+                                    <ul class="text-sm space-y-1 text-slate-300">
+                                        <li>• "What is Welltegra and how can it help me?"</li>
+                                        <li>• "How do I plan a well intervention?"</li>
+                                        <li>• "What features does the platform have?"</li>
+                                        <li>• "Show me how to use the Well Performer"</li>
+                                    </ul>
+                                </div>
+
+                                <p class="text-sm text-slate-400">Type your question below or click the buttons to explore the platform!</p>
+
+                                <div class="mt-3 flex gap-2 flex-wrap">
+                                    <button onclick="window.location.hash='#home-view'" class="text-xs bg-blue-600 hover:bg-blue-500 px-3 py-1.5 rounded-lg transition">
+                                        🏠 Go to Home
+                                    </button>
+                                    <button onclick="window.location.hash='#planner-view'" class="text-xs bg-green-600 hover:bg-green-500 px-3 py-1.5 rounded-lg transition">
+                                        📋 Well Planner
+                                    </button>
+                                    <button onclick="window.location.hash='#performer-view'" class="text-xs bg-orange-600 hover:bg-orange-500 px-3 py-1.5 rounded-lg transition">
+                                        ⚡ Well Performer
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Input Area -->
                     <div class="p-4 bg-slate-800/90 rounded-b-xl border-t border-slate-700 flex space-x-3">
-                        <input type="text" id="ai-user-input" placeholder="Ask a question about welltegra.network..."
-                               class="flex-grow p-3 rounded-lg border border-slate-600 bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        <input type="text" id="ai-user-input" placeholder="Type your question here... (e.g., 'What is Welltegra?')"
+                               class="flex-grow p-3 rounded-lg border border-slate-600 bg-slate-900 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
                                onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); document.getElementById('ai-send-button').click(); }">
                         <button id="ai-send-button" onclick="if(window.sendAiMessage) window.sendAiMessage()"
                                 class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow transition duration-200 disabled:bg-slate-500 disabled:cursor-not-allowed">
