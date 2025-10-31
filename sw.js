@@ -80,22 +80,56 @@ self.addEventListener('activate', (event) => {
     console.log(`[SW] Activating version ${CACHE_VERSION}`);
 
     event.waitUntil(
-        caches.keys()
-            .then((cacheNames) => {
-                return Promise.all(
-                    cacheNames
-                        .filter((name) => name.startsWith('welltegra-') && name !== CACHE_NAME)
-                        .map((name) => {
-                            console.log(`[SW] Deleting old cache: ${name}`);
-                            return caches.delete(name);
+        Promise.all([
+            // Delete old cache versions
+            caches.keys()
+                .then((cacheNames) => {
+                    return Promise.all(
+                        cacheNames
+                            .filter((name) => name.startsWith('welltegra-') && name !== CACHE_NAME)
+                            .map((name) => {
+                                console.log(`[SW] Deleting old cache: ${name}`);
+                                return caches.delete(name);
+                            })
+                    );
+                }),
+            // Clean up orphaned enhanced files from current cache
+            caches.open(CACHE_NAME)
+                .then((cache) => {
+                    const orphanedFiles = [
+                        '/assets/js/enhanced-simulation.js',
+                        '/assets/js/enhanced-ui.js',
+                        '/assets/js/enhanced-integration.js'
+                    ];
+                    return Promise.all(
+                        orphanedFiles.map((url) => {
+                            // Try multiple variations with different version params
+                            const variations = [
+                                url,
+                                `${url}?v=23.0.10`,
+                                `${url}?v=23.0.9`,
+                                `${url}?v=23.0.8`,
+                                `https://welltegra.network${url}`,
+                                `https://welltegra.network${url}?v=23.0.10`
+                            ];
+                            return Promise.all(
+                                variations.map((variant) => {
+                                    return cache.delete(variant).then((deleted) => {
+                                        if (deleted) {
+                                            console.log(`[SW] Deleted orphaned file: ${variant}`);
+                                        }
+                                    });
+                                })
+                            );
                         })
-                );
-            })
-            .then(() => {
-                console.log('[SW] Activation complete');
-                // Take control of all pages immediately
-                return self.clients.claim();
-            })
+                    );
+                })
+        ])
+        .then(() => {
+            console.log('[SW] Activation complete');
+            // Take control of all pages immediately
+            return self.clients.claim();
+        })
     );
 });
 
@@ -106,6 +140,20 @@ self.addEventListener('activate', (event) => {
  */
 function getCacheStrategy(request) {
     const url = request.url;
+
+    // Blocklist: Never cache these orphaned files (should not exist)
+    const blocklist = [
+        'enhanced-simulation.js',
+        'enhanced-ui.js',
+        'enhanced-integration.js'
+    ];
+
+    for (const blocked of blocklist) {
+        if (url.includes(blocked)) {
+            console.log(`[SW] Blocked orphaned file: ${url}`);
+            return 'network-only';
+        }
+    }
 
     // Check network-only patterns
     for (const pattern of CACHE_STRATEGIES['network-only']) {
