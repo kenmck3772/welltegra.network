@@ -115,7 +115,8 @@
             // Show target view
             const viewElement = document.getElementById(`${viewName}-view`);
             if (viewElement) {
-                viewElement.style.display = 'block';
+                viewElement.classList.remove('csp-hidden');
+                viewElement.classList.add('csp-block');
                 viewElement.setAttribute('aria-hidden', 'false');
             }
 
@@ -146,7 +147,8 @@
          */
         hideAllViews() {
             this.elements.viewContainers.forEach(view => {
-                view.style.display = 'none';
+                view.classList.add('csp-hidden');
+                view.classList.remove('csp-block');
                 view.setAttribute('aria-hidden', 'true');
             });
         },

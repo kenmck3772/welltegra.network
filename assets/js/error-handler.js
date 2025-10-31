@@ -76,8 +76,7 @@ function showGlobalError(message, options = {}) {
     if (duration > 0) {
         setTimeout(() => {
             if (toast.parentElement) {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(100%)';
+                toast.classList.add('toast-fade-out');
                 setTimeout(() => toast.remove(), 300);
             }
         }, duration);
