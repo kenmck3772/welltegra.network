@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' file:; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; font-src 'self' data: file:; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com; media-src 'self' data: file:; base-uri 'self'; form-action 'self'">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data: file:; base-uri 'self'; form-action 'self'">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' file: https://fonts.googleapis.com; img-src 'self' data: file: https:; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data: file:; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.tailwindcss.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' file: https://fonts.googleapis.com https://cdn.tailwindcss.com; img-src 'self' data: file: https:; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://www.gstatic.com https://generativelanguage.googleapis.com https://firestore.googleapis.com https://identitytoolkit.googleapis.com; media-src 'self' data: file:; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
 
     <!-- SEO Meta Tags -->
     <title>Well-Tegra | AI-Powered Well Engineering Platform - Reduce NPT by 30%</title>
@@ -71,19 +71,19 @@
     <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=23.0.15">
-    <link rel="stylesheet" href="assets/css/inline-styles.css?v=23.0.15">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=23.0.18">
+    <link rel="stylesheet" href="assets/css/inline-styles.css?v=23.0.18">
 
     <script src="assets/vendor/chart.umd.min.js" defer></script>
     <script src="assets/vendor/jspdf.umd.min.js" defer></script>
     <script src="assets/vendor/html2canvas.min.js" defer></script>
-    <script src="assets/js/security-utils.js?v=23.0.15"></script>
-    <script src="assets/js/fetch-utils.js?v=23.0.15"></script>
-    <script src="assets/js/performance-utils.js?v=23.0.15"></script>
-    <script src="assets/js/error-handler.js?v=23.0.15"></script>
-    <script src="assets/js/crypto-utils.js?v=23.0.15"></script>
-    <script src="assets/js/image-utils.js?v=23.0.15"></script>
-    <script src="assets/js/sw-register.js?v=23.0.15"></script>
+    <script src="assets/js/security-utils.js?v=23.0.18"></script>
+    <script src="assets/js/fetch-utils.js?v=23.0.18"></script>
+    <script src="assets/js/performance-utils.js?v=23.0.18"></script>
+    <script src="assets/js/error-handler.js?v=23.0.18"></script>
+    <script src="assets/js/crypto-utils.js?v=23.0.18"></script>
+    <script src="assets/js/image-utils.js?v=23.0.18"></script>
+    <script src="assets/js/sw-register.js?v=23.0.18"></script>
 </head>
 
 <body class="theme-dark">
@@ -158,6 +158,10 @@
                 <a id="security-nav-link" href="#security-view" role="tab" aria-selected="false" aria-controls="security-view" title="Security & Data Protection" class="nav-link flex items-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                     <span>Security</span>
+                </a>
+                <a id="ai-helper-nav-link" href="#ai-helper-view" role="tab" aria-selected="false" aria-controls="ai-helper-view" title="AI Assistant - Ask questions about Welltegra" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                    <span>AI Assistant</span>
                 </a>
                 <a id="about-nav-link" href="#about-view" role="tab" aria-selected="false" aria-controls="about-view" title="About the Founder" class="nav-link flex items-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
@@ -399,6 +403,181 @@
                 <div id="design-blueprint" class="mt-10 space-y-6 light-card p-6 rounded-lg">
                     <p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>
                 </div>
+
+                <!-- Deviation Survey & Toolstring Planning -->
+                <div class="mt-10 grid gap-6 lg:grid-cols-2">
+                    <!-- Wellbore Deviation Survey -->
+                    <div class="light-card p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                            <span>📐</span>
+                            <span>Wellbore Deviation Survey</span>
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="grid grid-cols-4 gap-2 text-xs font-semibold text-slate-600 dark:text-slate-300 border-b border-slate-300 dark:border-slate-700 pb-2">
+                                <div>Depth (ft)</div>
+                                <div>Incl. (°)</div>
+                                <div>Azim. (°)</div>
+                                <div>DLS (°/100ft)</div>
+                            </div>
+                            <div class="space-y-1 max-h-96 overflow-y-auto text-xs" id="planner-survey-points">
+                                <div class="grid grid-cols-4 gap-2 py-1 text-slate-600 dark:text-slate-400">
+                                    <div>0</div>
+                                    <div>0.0</div>
+                                    <div>0.0</div>
+                                    <div>0.0</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 py-1 text-slate-600 dark:text-slate-400">
+                                    <div>1,000</div>
+                                    <div>2.3</div>
+                                    <div>45.2</div>
+                                    <div>0.23</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 py-1 text-slate-600 dark:text-slate-400">
+                                    <div>2,000</div>
+                                    <div>5.8</div>
+                                    <div>48.7</div>
+                                    <div>0.35</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 py-1 text-slate-600 dark:text-slate-400">
+                                    <div>3,000</div>
+                                    <div>12.4</div>
+                                    <div>52.1</div>
+                                    <div>0.66</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 py-1 text-slate-600 dark:text-slate-400">
+                                    <div>4,000</div>
+                                    <div>18.9</div>
+                                    <div>55.8</div>
+                                    <div>0.65</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 py-1 text-slate-600 dark:text-slate-400">
+                                    <div>5,000</div>
+                                    <div>25.2</div>
+                                    <div>58.4</div>
+                                    <div>0.63</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 py-1 text-slate-600 dark:text-slate-400">
+                                    <div>6,000</div>
+                                    <div>31.8</div>
+                                    <div>61.2</div>
+                                    <div>0.66</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 py-1 text-slate-600 dark:text-slate-400">
+                                    <div>7,000</div>
+                                    <div>38.5</div>
+                                    <div>63.9</div>
+                                    <div>0.67</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 py-1 text-slate-600 dark:text-slate-400">
+                                    <div>8,000</div>
+                                    <div>45.3</div>
+                                    <div>66.5</div>
+                                    <div>0.68</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 py-1 text-slate-600 dark:text-slate-400 bg-emerald-500/20 font-semibold">
+                                    <div>8,536</div>
+                                    <div>48.2</div>
+                                    <div>67.8</div>
+                                    <div>0.54</div>
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-300 dark:border-slate-700 space-y-2">
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-slate-600 dark:text-slate-400">Target Depth:</span>
+                                    <span class="font-semibold text-emerald-600 dark:text-emerald-400">8,536 ft MD</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-slate-600 dark:text-slate-400">Max Inclination:</span>
+                                    <span class="font-semibold text-cyan-600 dark:text-cyan-400">48.2°</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-slate-600 dark:text-slate-400">Max DLS:</span>
+                                    <span class="font-semibold text-yellow-600 dark:text-yellow-400">0.68°/100ft</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-slate-600 dark:text-slate-400">Trajectory Type:</span>
+                                    <span class="font-semibold text-blue-600 dark:text-blue-400">Build & Hold</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Toolstring Builder -->
+                    <div class="light-card p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                            <span>🔧</span>
+                            <span>Toolstring Configuration</span>
+                        </h4>
+                        <div class="space-y-3">
+                            <p class="text-xs text-slate-600 dark:text-slate-400 mb-4">Bottom-hole assembly optimized for the selected intervention objective.</p>
+
+                            <div class="space-y-2 max-h-96 overflow-y-auto">
+                                <!-- Tool items -->
+                                <div class="border border-slate-300 dark:border-slate-700 rounded-md p-3 bg-slate-50 dark:bg-slate-800/50">
+                                    <div class="flex items-start justify-between mb-1">
+                                        <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">Bridge Plug</span>
+                                        <span class="text-xs px-2 py-0.5 bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded">Primary</span>
+                                    </div>
+                                    <div class="text-xs text-slate-600 dark:text-slate-400">Type: Composite, retrievable</div>
+                                    <div class="text-xs text-slate-600 dark:text-slate-400">Setting Depth: 8,536 ft MD</div>
+                                </div>
+
+                                <div class="border border-slate-300 dark:border-slate-700 rounded-md p-3 bg-slate-50 dark:bg-slate-800/50">
+                                    <div class="flex items-start justify-between mb-1">
+                                        <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">Running Tool</span>
+                                        <span class="text-xs px-2 py-0.5 bg-blue-500/20 text-blue-700 dark:text-blue-400 rounded">Required</span>
+                                    </div>
+                                    <div class="text-xs text-slate-600 dark:text-slate-400">Type: Mechanical setting tool</div>
+                                    <div class="text-xs text-slate-600 dark:text-slate-400">OD: 2.875"</div>
+                                </div>
+
+                                <div class="border border-slate-300 dark:border-slate-700 rounded-md p-3 bg-slate-50 dark:bg-slate-800/50">
+                                    <div class="flex items-start justify-between mb-1">
+                                        <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">Tubing String</span>
+                                        <span class="text-xs px-2 py-0.5 bg-blue-500/20 text-blue-700 dark:text-blue-400 rounded">Required</span>
+                                    </div>
+                                    <div class="text-xs text-slate-600 dark:text-slate-400">Size: 2-3/8" EUE</div>
+                                    <div class="text-xs text-slate-600 dark:text-slate-400">Length: 8,536 ft</div>
+                                    <div class="text-xs text-slate-600 dark:text-slate-400">Weight: 4.7 lb/ft</div>
+                                </div>
+
+                                <div class="border border-slate-300 dark:border-slate-700 rounded-md p-3 bg-slate-50 dark:bg-slate-800/50">
+                                    <div class="flex items-start justify-between mb-1">
+                                        <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">Safety Joint</span>
+                                        <span class="text-xs px-2 py-0.5 bg-yellow-500/20 text-yellow-700 dark:text-yellow-400 rounded">Contingency</span>
+                                    </div>
+                                    <div class="text-xs text-slate-600 dark:text-slate-400">Type: Mechanical disconnect</div>
+                                    <div class="text-xs text-slate-600 dark:text-slate-400">Position: Above running tool</div>
+                                </div>
+
+                                <div class="border border-slate-300 dark:border-slate-700 rounded-md p-3 bg-slate-50 dark:bg-slate-800/50">
+                                    <div class="flex items-start justify-between mb-1">
+                                        <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">Centralizers</span>
+                                        <span class="text-xs px-2 py-0.5 bg-blue-500/20 text-blue-700 dark:text-blue-400 rounded">Required</span>
+                                    </div>
+                                    <div class="text-xs text-slate-600 dark:text-slate-400">Quantity: 12 units</div>
+                                    <div class="text-xs text-slate-600 dark:text-slate-400">Spacing: Every 500 ft in build section</div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t border-slate-300 dark:border-slate-700 space-y-2">
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-slate-600 dark:text-slate-400">Total String Length:</span>
+                                    <span class="font-semibold">8,536 ft</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-slate-600 dark:text-slate-400">String Weight:</span>
+                                    <span class="font-semibold">40,119 lbs</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-slate-600 dark:text-slate-400">Max Hookload:</span>
+                                    <span class="font-semibold text-orange-600 dark:text-orange-400">52,800 lbs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="mt-8 flex justify-center">
                     <button id="generate-program-btn" class="rounded-md bg-teal-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-teal-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Generate Integrated Program</button>
                 </div>
@@ -1217,6 +1396,60 @@
                 </div>
         </div>
 
+        <!-- AI Helper View -->
+        <div id="ai-helper-view" class="view-container hidden">
+            <div class="max-w-5xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-6">
+                    <h2 class="text-3xl font-bold tracking-tight">Welltegra AI Assistant</h2>
+                    <p class="mt-2 text-lg text-slate-400">Ask me anything about Welltegra Network services and operations</p>
+                </div>
+
+                <!-- Chat Container -->
+                <div class="light-card rounded-xl shadow-2xl flex flex-col h-[70vh] min-h-[500px] overflow-hidden">
+
+                    <!-- Header -->
+                    <div class="p-4 bg-purple-700 text-white shadow-lg flex justify-between items-center rounded-t-xl">
+                        <h3 class="text-xl font-bold">AI Assistant</h3>
+                        <span id="ai-user-id-display" class="text-xs opacity-75">Initializing...</span>
+                    </div>
+
+                    <!-- Message Container -->
+                    <div id="ai-chat-messages" class="flex-grow p-4 overflow-y-auto space-y-4 bg-slate-900/50">
+                        <!-- Initial Message -->
+                        <div class="flex justify-start">
+                            <div class="bg-slate-800/90 p-3 rounded-xl max-w-lg shadow">
+                                <p class="font-semibold text-purple-400 mb-1">AI Assistant</p>
+                                <p>Hello! I am the Welltegra Network Assistant. I can search the web for the latest information on Welltegra's services, status, or documentation. How can I help you today?</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="p-4 bg-slate-800/90 rounded-b-xl border-t border-slate-700 flex space-x-3">
+                        <input type="text" id="ai-user-input" placeholder="Ask a question about welltegra.network..."
+                               class="flex-grow p-3 rounded-lg border border-slate-600 bg-slate-900 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                               onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); document.getElementById('ai-send-button').click(); }">
+                        <button id="ai-send-button" onclick="if(window.sendAiMessage) window.sendAiMessage()"
+                                class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg shadow transition duration-200 disabled:bg-slate-500 disabled:cursor-not-allowed">
+                            Send
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Configuration Notice -->
+                <div class="mt-6 p-4 bg-blue-900/30 border border-blue-700/50 rounded-lg">
+                    <h4 class="font-semibold text-blue-400 mb-2">ℹ️ Configuration Required</h4>
+                    <p class="text-sm text-slate-300">To activate the AI Assistant, you need to configure:</p>
+                    <ul class="list-disc list-inside text-sm text-slate-400 mt-2 space-y-1">
+                        <li>Firebase configuration (for message persistence)</li>
+                        <li>Gemini API key (for AI responses with Google Search grounding)</li>
+                    </ul>
+                    <p class="text-xs text-slate-500 mt-2">See the <code class="bg-slate-800 px-1 rounded">ai-helper.js</code> file for configuration details.</p>
+                </div>
+            </div>
+        </div>
+
         <div id="about-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">About Me & The Mission</h2></div>
             <div class="mt-10 light-card p-8 rounded-lg space-y-8">
@@ -1264,6 +1497,99 @@
                         <div id="anomaly-alerts" class="space-y-3">
                             <div class="text-slate-400 text-center py-8 text-sm">
                                 Monitoring for anomalies... All systems normal.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- V23: Deviation Survey Display -->
+                    <div id="deviation-survey-container" class="bg-slate-800/50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                            <span>📐</span>
+                            <span>Wellbore Deviation Survey</span>
+                        </h3>
+                        <div id="deviation-survey-data" class="space-y-3">
+                            <div class="grid grid-cols-4 gap-2 text-xs font-semibold text-slate-300 border-b border-slate-700 pb-2">
+                                <div>Depth (ft)</div>
+                                <div>Inclination (°)</div>
+                                <div>Azimuth (°)</div>
+                                <div>DLS (°/100ft)</div>
+                            </div>
+                            <div class="space-y-2 max-h-64 overflow-y-auto" id="survey-points">
+                                <!-- Survey points will be populated by JavaScript -->
+                                <div class="grid grid-cols-4 gap-2 text-xs text-slate-400 py-1">
+                                    <div>0</div>
+                                    <div>0.0</div>
+                                    <div>0.0</div>
+                                    <div>0.0</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 text-xs text-slate-400 py-1">
+                                    <div>1,000</div>
+                                    <div>2.3</div>
+                                    <div>45.2</div>
+                                    <div>0.23</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 text-xs text-slate-400 py-1">
+                                    <div>2,000</div>
+                                    <div>5.8</div>
+                                    <div>48.7</div>
+                                    <div>0.35</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 text-xs text-slate-400 py-1">
+                                    <div>3,000</div>
+                                    <div>12.4</div>
+                                    <div>52.1</div>
+                                    <div>0.66</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 text-xs text-slate-400 py-1">
+                                    <div>4,000</div>
+                                    <div>18.9</div>
+                                    <div>55.8</div>
+                                    <div>0.65</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 text-xs text-slate-400 py-1">
+                                    <div>5,000</div>
+                                    <div>25.2</div>
+                                    <div>58.4</div>
+                                    <div>0.63</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 text-xs text-slate-400 py-1">
+                                    <div>6,000</div>
+                                    <div>31.8</div>
+                                    <div>61.2</div>
+                                    <div>0.66</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 text-xs text-slate-400 py-1">
+                                    <div>7,000</div>
+                                    <div>38.5</div>
+                                    <div>63.9</div>
+                                    <div>0.67</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 text-xs text-slate-400 py-1">
+                                    <div>8,000</div>
+                                    <div>45.3</div>
+                                    <div>66.5</div>
+                                    <div>0.68</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 text-xs text-slate-400 py-1 bg-emerald-500/20 font-semibold">
+                                    <div>8,536</div>
+                                    <div>48.2</div>
+                                    <div>67.8</div>
+                                    <div>0.54</div>
+                                </div>
+                            </div>
+                            <div class="mt-3 pt-3 border-t border-slate-700">
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-slate-400">Current Depth:</span>
+                                    <span class="font-semibold text-emerald-400" id="current-survey-depth">8,536 ft MD</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs mt-1">
+                                    <span class="text-slate-400">Max Inclination:</span>
+                                    <span class="font-semibold text-cyan-400">48.2°</span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs mt-1">
+                                    <span class="text-slate-400">Max DLS:</span>
+                                    <span class="font-semibold text-yellow-400">0.68°/100ft</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1579,13 +1905,16 @@
 
 </div>
 
-    <script src="assets/js/app.js?v=23.0.15" defer></script>
-    <script src="assets/js/mobile-communicator.js?v=23.0.15" defer></script>
+    <script src="assets/js/app.js?v=23.0.18" defer></script>
+    <script src="assets/js/mobile-communicator.js?v=23.0.18" defer></script>
 
-    <!-- Enhanced Simulation System (v23.0.10+) -->
-    <script src="assets/js/enhanced-simulation.js?v=23.0.10" defer></script>
-    <script src="assets/js/enhanced-ui.js?v=23.0.15" defer></script>
-    <script src="assets/js/enhanced-integration.js?v=23.0.10" defer></script>
+    <!-- Enhanced Simulation System (v23.0.18+) -->
+    <script src="assets/js/enhanced-simulation.js?v=23.0.18" defer></script>
+    <script src="assets/js/enhanced-ui.js?v=23.0.18" defer></script>
+    <script src="assets/js/enhanced-integration.js?v=23.0.18" defer></script>
+
+    <!-- AI Assistant (v23.0.18+) -->
+    <script src="assets/js/ai-helper.js?v=23.0.18" type="module" defer></script>
 
 </body>
 </html>
