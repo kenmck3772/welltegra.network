@@ -71,19 +71,19 @@
     <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
-    <link rel="stylesheet" href="assets/css/tailwind.css?v=23.0.13">
-    <link rel="stylesheet" href="assets/css/inline-styles.css?v=23.0.13">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=23.0.14">
+    <link rel="stylesheet" href="assets/css/inline-styles.css?v=23.0.14">
 
     <script src="assets/vendor/chart.umd.min.js" defer></script>
     <script src="assets/vendor/jspdf.umd.min.js" defer></script>
     <script src="assets/vendor/html2canvas.min.js" defer></script>
-    <script src="assets/js/security-utils.js?v=23.0.13"></script>
-    <script src="assets/js/fetch-utils.js?v=23.0.13"></script>
-    <script src="assets/js/performance-utils.js?v=23.0.13"></script>
-    <script src="assets/js/error-handler.js?v=23.0.13"></script>
-    <script src="assets/js/crypto-utils.js?v=23.0.13"></script>
-    <script src="assets/js/image-utils.js?v=23.0.13"></script>
-    <script src="assets/js/sw-register.js?v=23.0.13"></script>
+    <script src="assets/js/security-utils.js?v=23.0.14"></script>
+    <script src="assets/js/fetch-utils.js?v=23.0.14"></script>
+    <script src="assets/js/performance-utils.js?v=23.0.14"></script>
+    <script src="assets/js/error-handler.js?v=23.0.14"></script>
+    <script src="assets/js/crypto-utils.js?v=23.0.14"></script>
+    <script src="assets/js/image-utils.js?v=23.0.14"></script>
+    <script src="assets/js/sw-register.js?v=23.0.14"></script>
 </head>
 
 <body class="theme-dark">
@@ -98,69 +98,72 @@
     </a>
 
     <header id="app-header" class="header sticky top-0 z-30 transition-colors" role="banner">
-        <div class="max-w-full mx-auto py-3 px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between">
+        <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Row 1: Logo and Theme Toggle -->
+            <div class="flex items-center justify-between py-3 border-b border-slate-700/50">
                 <div class="flex items-center">
                     <img src="assets/logo.jpg" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" loading="lazy">
-                    <h1 id="header-title" class="text-xl font-bold hidden md:block">Well-Tegra Data Solutions</h1>
+                    <h1 id="header-title" class="text-xl font-bold">Well-Tegra Data Solutions</h1>
                 </div>
-                <nav id="header-nav" class="flex-1 flex items-center justify-center space-x-1 md:space-x-4" role="navigation" aria-label="Main navigation">
-                    <a id="home-nav-link" href="#home-view" role="tab" aria-selected="true" aria-controls="home-view" title="Return to the Home Page" class="nav-link active flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                        <span>Home</span>
-                    </a>
-                    <a id="planner-nav-link" href="#planner-view" role="tab" aria-selected="false" aria-controls="planner-view" title="Go to the Well Intervention Planner" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
-                        <span>Planner</span>
-                    </a>
-                    <a id="logistics-nav-link" href="#logistics-view" role="tab" aria-selected="false" aria-controls="logistics-view" title="Manage Equipment and Personnel" class="nav-link flex items-center space-x-2">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/><path d="M18 18h-1.3c-.5 0-.9-.3-1.1-.7l-2.6-5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
-                        <span>Logistics</span>
-                    </a>
-                    <a id="commercial-nav-link" href="#commercial-view" role="tab" aria-selected="false" aria-controls="commercial-view" title="View Financial Dashboards" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                        <span>Commercial</span>
-                    </a>
-                    <a id="hse-nav-link" href="#hse-view" role="tab" aria-selected="false" aria-controls="hse-view" title="View Health, Safety, and Environment Data" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        <span>HSE & Risk</span>
-                    </a>
-                    <a id="pob-nav-link" href="#pob-view" role="tab" aria-selected="false" aria-controls="pob-view" title="View Personnel on Board and Emergency Response" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        <span>POB & ER</span>
-                    </a>
-                    <a id="whitepaper-nav-link" href="#whitepaper-view" role="tab" aria-selected="false" aria-controls="whitepaper-view" title="Download the White Paper" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        <span>White Paper</span>
-                    </a>
-                    <a id="data-nav-link" href="#data-view" role="tab" aria-selected="false" aria-controls="data-view" title="Download structured Well-Tegra datasets" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"></path><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"></path></svg>
-                        <span>Data Exports</span>
-                    </a>
-                    <a id="data-quality-nav-link" href="#data-quality-view" role="tab" aria-selected="false" aria-controls="data-quality-view" title="View Data Quality & Integrity Metrics" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                        <span>Data Quality</span>
-                    </a>
-                     <a id="faq-nav-link" href="#faq-view" role="tab" aria-selected="false" aria-controls="faq-view" title="Frequently Asked Questions" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
-                        <span>FAQ</span>
-                    </a>
-                    <a id="security-nav-link" href="#security-view" role="tab" aria-selected="false" aria-controls="security-view" title="Security & Data Protection" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        <span>Security</span>
-                    </a>
-                    <a id="about-nav-link" href="#about-view" role="tab" aria-selected="false" aria-controls="about-view" title="About the Founder" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
-                        <span>About</span>
-                    </a>
-                </nav>
-                <div id="header-details" class="flex items-center space-x-4">
+                <div id="header-details" class="flex items-center">
                     <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700" aria-label="Toggle dark mode">
                         <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                         <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
                     </button>
                 </div>
             </div>
+
+            <!-- Row 2: Navigation -->
+            <nav id="header-nav" class="flex items-center justify-center space-x-1 md:space-x-3 py-3 overflow-x-auto" role="navigation" aria-label="Main navigation">
+                <a id="home-nav-link" href="#home-view" role="tab" aria-selected="true" aria-controls="home-view" title="Return to the Home Page" class="nav-link active flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span>Home</span>
+                </a>
+                <a id="planner-nav-link" href="#planner-view" role="tab" aria-selected="false" aria-controls="planner-view" title="Go to the Well Intervention Planner" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+                    <span>Planner</span>
+                </a>
+                <a id="logistics-nav-link" href="#logistics-view" role="tab" aria-selected="false" aria-controls="logistics-view" title="Manage Equipment and Personnel" class="nav-link flex items-center space-x-2">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/><path d="M18 18h-1.3c-.5 0-.9-.3-1.1-.7l-2.6-5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+                    <span>Logistics</span>
+                </a>
+                <a id="commercial-nav-link" href="#commercial-view" role="tab" aria-selected="false" aria-controls="commercial-view" title="View Financial Dashboards" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    <span>Commercial</span>
+                </a>
+                <a id="hse-nav-link" href="#hse-view" role="tab" aria-selected="false" aria-controls="hse-view" title="View Health, Safety, and Environment Data" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>HSE & Risk</span>
+                </a>
+                <a id="pob-nav-link" href="#pob-view" role="tab" aria-selected="false" aria-controls="pob-view" title="View Personnel on Board and Emergency Response" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>POB & ER</span>
+                </a>
+                <a id="whitepaper-nav-link" href="#whitepaper-view" role="tab" aria-selected="false" aria-controls="whitepaper-view" title="Download the White Paper" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    <span>White Paper</span>
+                </a>
+                <a id="data-nav-link" href="#data-view" role="tab" aria-selected="false" aria-controls="data-view" title="Download structured Well-Tegra datasets" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"></path><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"></path></svg>
+                    <span>Data Exports</span>
+                </a>
+                <a id="data-quality-nav-link" href="#data-quality-view" role="tab" aria-selected="false" aria-controls="data-quality-view" title="View Data Quality & Integrity Metrics" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    <span>Data Quality</span>
+                </a>
+                 <a id="faq-nav-link" href="#faq-view" role="tab" aria-selected="false" aria-controls="faq-view" title="Frequently Asked Questions" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
+                    <span>FAQ</span>
+                </a>
+                <a id="security-nav-link" href="#security-view" role="tab" aria-selected="false" aria-controls="security-view" title="Security & Data Protection" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span>Security</span>
+                </a>
+                <a id="about-nav-link" href="#about-view" role="tab" aria-selected="false" aria-controls="about-view" title="About the Founder" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
+                    <span>About</span>
+                </a>
+            </nav>
         </div>
     </header>
 
@@ -1576,12 +1579,12 @@
 
 </div>
 
-    <script src="assets/js/app.js?v=23.0.13" defer></script>
-    <script src="assets/js/mobile-communicator.js?v=23.0.13" defer></script>
+    <script src="assets/js/app.js?v=23.0.14" defer></script>
+    <script src="assets/js/mobile-communicator.js?v=23.0.14" defer></script>
 
     <!-- Enhanced Simulation System (v23.0.10+) -->
     <script src="assets/js/enhanced-simulation.js?v=23.0.10" defer></script>
-    <script src="assets/js/enhanced-ui.js?v=23.0.13" defer></script>
+    <script src="assets/js/enhanced-ui.js?v=23.0.14" defer></script>
     <script src="assets/js/enhanced-integration.js?v=23.0.10" defer></script>
 
 </body>
