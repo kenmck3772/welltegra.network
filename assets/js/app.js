@@ -30,15 +30,10 @@ document.addEventListener('DOMContentLoaded', function() {
             <h4 class="mt-2 text-sm font-semibold text-slate-300">${label}</h4>
         `;
 
-        // Apply styles via JavaScript (CSP compliant)
+        // Apply styles via JavaScript (CSP compliant with CSS custom properties)
         const gaugeContainer = container.querySelector('.gauge-container');
         if (gaugeContainer) {
-            gaugeContainer.style.width = `${size}px`;
-            gaugeContainer.style.height = `${size}px`;
-        }
-        const gaugeCircle = container.querySelector('.gauge-circle');
-        if (gaugeCircle) {
-            gaugeCircle.style.transition = 'stroke-dashoffset 0.5s';
+            gaugeContainer.style.setProperty('--gauge-size', `${size}px`);
         }
     }
 
@@ -58,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const radius = gaugeFg.r.baseVal.value;
         const circumference = radius * 2 * Math.PI;
         const offset = circumference - (value / maxValue) * circumference;
-        gaugeFg.style.strokeDashoffset = Math.max(0, Math.min(circumference, offset));
+        gaugeFg.style.setProperty('--gauge-offset', Math.max(0, Math.min(circumference, offset)));
 
         gaugeValue.textContent = value.toFixed(0);
 
@@ -94,10 +89,10 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        // Apply initial width via JavaScript (CSP compliant)
+        // Apply initial width via CSS custom property (CSP compliant)
         const barFg = container.querySelector('.bar-fg');
         if (barFg) {
-            barFg.style.width = '0%';
+            barFg.style.setProperty('--bar-width', '0%');
         }
     }
 
@@ -116,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const absValue = Math.abs(value);
         const percentage = Math.min(100, (absValue / maxValue) * 100);
-        barFg.style.width = `${percentage}%`;
+        barFg.style.setProperty('--bar-width', `${percentage}%`);
         barValue.textContent = value.toFixed(0);
 
         let colorClass = 'normal';
@@ -3068,7 +3063,7 @@ document.addEventListener('DOMContentLoaded', function() {
         wellPortfolioSignals.querySelectorAll('.portfolio-progress-bar').forEach(bar => {
             const width = bar.getAttribute('data-width');
             if (width !== null) {
-                bar.style.width = `${width}%`;
+                bar.style.setProperty('--bar-width', `${width}%`);
             }
         });
     };
@@ -4392,8 +4387,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (isSlickline) {
             createRadialGauge('kpi-weight-card', 'Weight', 'lbs', 2000);
-            document.getElementById('kpi-pressure-card').style.display = 'none';
-            document.getElementById('kpi-annulus-card').style.display = 'none';
+            const pressureCard = document.getElementById('kpi-pressure-card');
+            const annulusCard = document.getElementById('kpi-annulus-card');
+            if (pressureCard) pressureCard.classList.add('csp-hidden');
+            if (annulusCard) annulusCard.classList.add('csp-hidden');
             kpiGrid.className = 'grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6';
         } else {
             createRadialGauge('kpi-weight-card', 'Hookload', 'klbf', 100);
@@ -4435,9 +4432,15 @@ document.addEventListener('DOMContentLoaded', function() {
             appState.tfaChartInstance.destroy();
             appState.tfaChartInstance = null;
         }
-        
-        chartCard.style.display = isSlickline ? 'none' : 'flex';
-        
+
+        if (isSlickline) {
+            chartCard.classList.add('csp-hidden');
+            chartCard.classList.remove('csp-flex');
+        } else {
+            chartCard.classList.remove('csp-hidden');
+            chartCard.classList.add('csp-flex');
+        }
+
         if (!isSlickline) {
             const chartCtx = document.getElementById('tfaChart').getContext('2d');
             const chartThemeOptions = getChartThemeOptions();
@@ -5247,7 +5250,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (burnRateBar) {
             const width = burnRateBar.getAttribute('data-width');
             if (width !== null) {
-                burnRateBar.style.width = `${width}%`;
+                burnRateBar.style.setProperty('--bar-width', `${width}%`);
             }
         }
 
@@ -5833,8 +5836,7 @@ const validateInvoice = () => {
         const textarea = document.createElement('textarea');
         textarea.value = text;
         textarea.setAttribute('readonly', '');
-        textarea.style.position = 'absolute';
-        textarea.style.left = '-9999px';
+        textarea.classList.add('csp-offscreen');
         document.body.appendChild(textarea);
         textarea.select();
 
@@ -6726,7 +6728,7 @@ const validateInvoice = () => {
                     aiRecommendationsContainer.querySelectorAll('.confidence-bar').forEach(bar => {
                         const width = bar.getAttribute('data-width');
                         if (width !== null) {
-                            bar.style.width = `${width}%`;
+                            bar.style.setProperty('--bar-width', `${width}%`);
                         }
                     });
                 } else {
@@ -7285,7 +7287,7 @@ const validateInvoice = () => {
         document.querySelectorAll('#data-quality-view .data-quality-bar').forEach(bar => {
             const width = bar.getAttribute('data-width');
             if (width !== null) {
-                bar.style.width = `${width}%`;
+                bar.style.setProperty('--bar-width', `${width}%`);
             }
         });
 
@@ -7294,7 +7296,7 @@ const validateInvoice = () => {
         if (portfolioHealthBar) {
             const width = portfolioHealthBar.getAttribute('data-width');
             if (width !== null) {
-                portfolioHealthBar.style.width = `${width}%`;
+                portfolioHealthBar.style.setProperty('--bar-width', `${width}%`);
             }
         }
     }

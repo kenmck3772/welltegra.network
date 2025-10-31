@@ -18,9 +18,18 @@ function togglePricingModel(model) {
         subscriptionBtn.classList.remove('bg-cyan-600', 'text-white');
         subscriptionBtn.classList.add('bg-gray-700', 'text-gray-300');
 
-        if (paygSection) paygSection.style.display = 'block';
-        if (subscriptionSection) subscriptionSection.style.display = 'none';
-        if (billingToggleContainer) billingToggleContainer.style.display = 'none';
+        if (paygSection) {
+            paygSection.classList.remove('csp-hidden');
+            paygSection.classList.add('csp-block');
+        }
+        if (subscriptionSection) {
+            subscriptionSection.classList.add('csp-hidden');
+            subscriptionSection.classList.remove('csp-block');
+        }
+        if (billingToggleContainer) {
+            billingToggleContainer.classList.add('csp-hidden');
+            billingToggleContainer.classList.remove('csp-flex');
+        }
     } else {
         // Show subscription, hide PAYG
         subscriptionBtn.classList.add('bg-cyan-600', 'text-white');
@@ -28,9 +37,18 @@ function togglePricingModel(model) {
         paygBtn.classList.remove('bg-cyan-600', 'text-white');
         paygBtn.classList.add('bg-gray-700', 'text-gray-300');
 
-        if (paygSection) paygSection.style.display = 'none';
-        if (subscriptionSection) subscriptionSection.style.display = 'block';
-        if (billingToggleContainer) billingToggleContainer.style.display = 'flex';
+        if (paygSection) {
+            paygSection.classList.add('csp-hidden');
+            paygSection.classList.remove('csp-block');
+        }
+        if (subscriptionSection) {
+            subscriptionSection.classList.remove('csp-hidden');
+            subscriptionSection.classList.add('csp-block');
+        }
+        if (billingToggleContainer) {
+            billingToggleContainer.classList.remove('csp-hidden');
+            billingToggleContainer.classList.add('csp-flex');
+        }
     }
 }
 
@@ -48,18 +66,36 @@ function toggleBilling(period) {
         annualBtn.classList.remove('bg-cyan-600', 'text-white');
         annualBtn.classList.add('bg-gray-700', 'text-gray-300');
 
-        monthlyPrices.forEach(el => el.style.display = 'block');
-        annualPrices.forEach(el => el.style.display = 'none');
-        savingsBadges.forEach(el => el.style.display = 'none');
+        monthlyPrices.forEach(el => {
+            el.classList.remove('csp-hidden');
+            el.classList.add('csp-block');
+        });
+        annualPrices.forEach(el => {
+            el.classList.add('csp-hidden');
+            el.classList.remove('csp-block');
+        });
+        savingsBadges.forEach(el => {
+            el.classList.add('csp-hidden');
+            el.classList.remove('csp-block');
+        });
     } else {
         annualBtn.classList.add('bg-cyan-600', 'text-white');
         annualBtn.classList.remove('bg-gray-700', 'text-gray-300');
         monthlyBtn.classList.remove('bg-cyan-600', 'text-white');
         monthlyBtn.classList.add('bg-gray-700', 'text-gray-300');
 
-        monthlyPrices.forEach(el => el.style.display = 'none');
-        annualPrices.forEach(el => el.style.display = 'block');
-        savingsBadges.forEach(el => el.style.display = 'block');
+        monthlyPrices.forEach(el => {
+            el.classList.add('csp-hidden');
+            el.classList.remove('csp-block');
+        });
+        annualPrices.forEach(el => {
+            el.classList.remove('csp-hidden');
+            el.classList.add('csp-block');
+        });
+        savingsBadges.forEach(el => {
+            el.classList.remove('csp-hidden');
+            el.classList.add('csp-block');
+        });
     }
 }
 

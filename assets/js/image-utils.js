@@ -227,7 +227,8 @@ async function optimizeBackgroundImages() {
     elements.forEach(element => {
         const webpUrl = element.dataset.bgWebp;
         if (webpUrl) {
-            element.style.backgroundImage = `url('${webpUrl}')`;
+            element.style.setProperty('--bg-image', `url('${webpUrl}')`);
+            element.classList.add('bg-loaded');
         }
     });
 }
