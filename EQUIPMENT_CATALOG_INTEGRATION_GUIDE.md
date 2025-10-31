@@ -86,10 +86,11 @@ Complete HTML/CSS/JavaScript code for:
 ## Feature Overview
 
 ### 1. Equipment Catalog
-- **Search**: Full-text search across equipment names, manufacturers, and applications
-- **Filter**: Category filtering (fishing, running, wireline, completion, gas lift)
+- **Search**: Full-text search across equipment names, manufacturers, applications, and categories with real-time filtering
+- **Filter**: Category filtering (fishing, running, wireline, completion, gas lift) that works in combination with search
 - **Details**: Each item shows name, manufacturer, applications, and quick-add button
 - **Organization**: Grouped by logical categories with descriptions
+- **Empty State**: Shows a helpful message when no equipment matches search criteria
 
 ### 2. Tool String Builder
 - **Create**: Build custom tool string assemblies from equipment catalog
@@ -106,6 +107,9 @@ Complete HTML/CSS/JavaScript code for:
 ### 4. Service Templates
 - **Pre-configured**: 20+ ready-to-use templates
 - **Service-specific**: Templates organized by service line
+- **One-click loading**: Templates can be loaded directly into the builder with intelligent component matching
+- **Smart matching**: Automatically matches template components with equipment catalog items when available
+- **Fallback components**: Creates generic components for items not found in the catalog
 - **Difficulty rating**: Simple/Standard/Complex/Expert ratings
 - **Time estimates**: Duration estimates for planning
 - **Manufacturer-specific**: Templates for Baker, Otis, Camco equipment
@@ -154,6 +158,27 @@ Complete HTML/CSS/JavaScript code for:
 }
 ```
 
+## Storage & Integration
+
+### Plan Equipment Storage
+Tool strings added to the plan are stored in localStorage under the key `welltegra_plan_equipment`. Each entry includes:
+- Unique plan entry ID
+- Reference to original tool string ID
+- Tool string name and service line
+- Complete list of components
+- Timestamp of when added to plan
+
+### Custom Events
+The system dispatches a custom event `welltegra:toolstring:added` when a tool string is added to the plan, allowing the main planner to listen and respond:
+
+```javascript
+document.addEventListener('welltegra:toolstring:added', (event) => {
+    const planEntry = event.detail;
+    // Integrate with main planner UI
+    console.log('New tool string added:', planEntry);
+});
+```
+
 ## API Reference
 
 ### Main Functions:
@@ -171,7 +196,10 @@ Filter equipment by category: 'all', 'fishing', 'running', 'wireline', etc.
 Add selected equipment from dropdown to builder
 
 #### `addEquipmentToBuilderDirect(item)`
-Add equipment item directly (from catalog click)
+Add equipment item directly (from catalog click), switches to builder tab automatically
+
+#### `loadTemplate(templateKey)`
+Load a service template into the builder. Performs smart matching to find equipment catalog items that correspond to template components, and creates generic placeholders for unmatched items
 
 #### `saveToolString()`
 Save current builder assembly to localStorage
@@ -180,7 +208,7 @@ Save current builder assembly to localStorage
 Delete saved tool string
 
 #### `useToolString(index)`
-Load tool string into active plan (TODO: integrate with main planner)
+Load tool string into active plan. Stores the tool string and its components in localStorage under 'welltegra_plan_equipment' and triggers a custom event 'welltegra:toolstring:added' for integration with the main planner.
 
 ## Customization
 
@@ -215,6 +243,13 @@ All styles are scoped to prevent conflicts:
 - Efficient DOM manipulation (minimal reflows)
 - Lazy loading of tab content (only render active tab)
 
+## Completed Features (Latest Updates)
+
+### Recently Implemented:
+1. ✅ **Search Filtering**: Full-text search across equipment names, manufacturers, applications, and categories
+2. ✅ **Template Loading**: One-click template loading into builder with smart component matching
+3. ✅ **Planner Integration**: Tool strings can be added to the plan with localStorage persistence and custom event dispatching
+
 ## Future Enhancements
 
 ### Planned Features:
@@ -226,8 +261,8 @@ All styles are scoped to prevent conflicts:
 6. **Export**: Export tool strings to PDF/Excel
 7. **Import**: Import tool strings from files
 8. **Version Control**: Track changes to tool strings
-9. **Advanced Search**: Fuzzy search, filters by manufacturer
-10. **Mobile Optimization**: Responsive design improvements
+9. **Mobile Optimization**: Responsive design improvements
+10. **Deep Planner Integration**: Visual representation of tool strings in the main planner UI
 
 ### Integration Points:
 - **Planner**: Auto-add equipment to procedures
@@ -311,5 +346,17 @@ This equipment catalog integration is part of the Well-Tegra v23 platform.
 
 ---
 
-*Last Updated: 2025-10-22*
-*Version: 1.0*
+*Last Updated: 2025-10-30*
+*Version: 1.1*
+
+## Changelog
+
+### Version 1.1 (2025-10-30)
+- ✅ Implemented real-time equipment search filtering
+- ✅ Implemented template loading into builder with smart matching
+- ✅ Implemented planner integration with localStorage and custom events
+- Updated API documentation to reflect new features
+- Added Storage & Integration section to documentation
+
+### Version 1.0 (2025-10-22)
+- Initial release with equipment catalog and tool string builder
