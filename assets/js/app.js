@@ -2800,6 +2800,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if(viewName === 'pob') viewTitle = 'POB & ER';
         if(viewName === 'hse') viewTitle = 'HSE & Risk';
         if(viewName === 'whitepaper') viewTitle = 'White Paper';
+        if(viewName === 'ai-helper') viewTitle = 'AI Assistant';
         headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
 
         if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
