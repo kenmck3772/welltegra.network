@@ -57,7 +57,7 @@ class EnhancedUI {
                 <div class="mt-2">
                     <div class="text-xs text-slate-400 mb-1">Impact</div>
                     <div class="w-full bg-slate-700 rounded-full h-2">
-                        <div id="weather-impact-bar" class="bg-blue-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        <div id="weather-impact-bar" class="bg-blue-500 h-2 rounded-full transition-all duration-300" data-width="0"></div>
                     </div>
                 </div>
             </div>
@@ -194,7 +194,7 @@ class EnhancedUI {
 
         const impactBar = document.getElementById('weather-impact-bar');
         const impactPercent = weatherData.impact * 100;
-        impactBar.style.width = `${impactPercent}%`;
+        impactBar.style.setProperty('--bar-width', `${impactPercent}%`);
         impactBar.className = `h-2 rounded-full transition-all duration-300 ${
             impactPercent > 70 ? 'bg-red-500' :
             impactPercent > 40 ? 'bg-yellow-500' :
@@ -216,12 +216,12 @@ class EnhancedUI {
                 <div class="text-xs text-slate-400 capitalize">${name}</div>
                 <div class="flex items-center gap-2 mt-1">
                     <div class="flex-1 bg-slate-700 rounded-full h-2">
-                        <div class="h-2 rounded-full transition-all duration-300 ${
+                        <div class="equipment-health-bar h-2 rounded-full transition-all duration-300 ${
                             health > 90 ? 'bg-green-500' :
                             health > 75 ? 'bg-yellow-500' :
                             health > 60 ? 'bg-orange-500' :
                             'bg-red-500'
-                        }" style="width: ${health}%"></div>
+                        }" data-width="${health}"></div>
                     </div>
                     <span class="text-xs font-semibold ${
                         health > 90 ? 'text-green-400' :
@@ -232,6 +232,14 @@ class EnhancedUI {
                 </div>
             </div>
         `).join('');
+
+        // Apply widths using CSS custom properties (CSP compliant)
+        container.querySelectorAll('.equipment-health-bar').forEach(bar => {
+            const width = bar.getAttribute('data-width');
+            if (width !== null) {
+                bar.style.setProperty('--bar-width', `${width}%`);
+            }
+        });
     }
 
     /**
