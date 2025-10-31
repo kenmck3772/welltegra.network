@@ -136,67 +136,9 @@
     }
 
     /**
-     * Add CSS for enhanced components
+     * Enhanced styles are now loaded from inline-styles.css
+     * to comply with CSP (Content Security Policy)
      */
-    function addEnhancedStyles() {
-        const style = document.createElement('style');
-        style.textContent = `
-            .anomaly-alert {
-                animation: fadeIn 0.3s ease-in;
-            }
-
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(-10px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            .sensor-item {
-                padding: 0.5rem;
-                background: rgba(15, 23, 42, 0.5);
-                border-radius: 0.5rem;
-                border: 1px solid rgba(71, 85, 105, 0.5);
-            }
-
-            .equipment-health-item {
-                padding: 0.5rem;
-                background: rgba(15, 23, 42, 0.5);
-                border-radius: 0.5rem;
-            }
-
-            #weather-card {
-                background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(14, 165, 233, 0.05));
-                border: 1px solid rgba(6, 182, 212, 0.3);
-            }
-
-            #equipment-health-card {
-                border-left: 3px solid rgba(234, 179, 8, 0.5);
-            }
-
-            #additional-sensors-card {
-                border-left: 3px solid rgba(59, 130, 246, 0.5);
-            }
-
-            #data-quality-indicator {
-                padding: 0.5rem;
-                background: rgba(15, 23, 42, 0.5);
-                border-radius: 0.375rem;
-                border: 1px solid rgba(71, 85, 105, 0.3);
-            }
-
-            @media (max-width: 768px) {
-                #weather-card {
-                    grid-column: span 2;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
 
     /**
      * Public API for manual control
@@ -204,7 +146,6 @@
     window.WellTegraEnhanced = {
         initialize: function() {
             patchPerformerInitialization();
-            addEnhancedStyles();
             console.log('🚀 Well-Tegra Enhanced Simulation ready');
         },
 
