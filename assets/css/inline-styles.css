@@ -41,6 +41,26 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; }
     pointer-events: none;
 }
 
+/* Enhanced watermark visibility for live operations display */
+.theme-dark .performer-view::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('../watermark.jpg');
+    background-repeat: repeat;
+    background-position: center;
+    background-size: 400px;
+    opacity: 0.025;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Ensure live operations content appears above watermark */
+.performer-view .dashboard-grid {
+    position: relative;
+    z-index: 1;
+}
+
 /* --- Error Toast Animations --- */
 @keyframes slide-in {
     from {
