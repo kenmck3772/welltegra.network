@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
       yPosition = event.clientY - tooltipRect.height - 16;
     }
 
-    tooltip.style.transform = `translate(${xPosition}px, ${yPosition}px)`;
+    tooltip.style.setProperty('transform', `translate(${xPosition}px, ${yPosition}px)`);
   };
 
   const hideTooltip = () => {

@@ -558,8 +558,8 @@
               const category = risk?.category ? risk.category.replace(/_/g, ' ') : 'Risk';
               return `
                 <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 font-semibold ${badgeClassForRisk(label)}">
-                  <span class="text-[0.65rem] uppercase tracking-wide text-slate-200">${category}</span>
-                  <span class="text-xs text-slate-100">${label}</span>
+                  <span class="text-[0.65rem] uppercase tracking-wide text-slate-200">${escapeHTML(category)}</span>
+                  <span class="text-xs text-slate-100">${escapeHTML(label)}</span>
                 </span>
               `;
             })
@@ -577,8 +577,8 @@
             .map(
               (step) => `
                 <li class="rounded-xl border border-slate-800 bg-slate-950/60 p-3 text-sm text-slate-200">
-                  <span class="mr-2 font-semibold text-cyan-300">${step.order || 1}.</span>
-                  ${step.text || ''}
+                  <span class="mr-2 font-semibold text-cyan-300">${escapeHTML(String(step.order || 1))}.</span>
+                  ${escapeHTML(step.text || '')}
                 </li>
               `
             )
@@ -596,7 +596,7 @@
             .map(
               (person) => `
                 <li class="rounded-full border border-slate-700/70 bg-slate-900/60 px-3 py-1 text-xs font-semibold text-slate-200">
-                  ${person}
+                  ${escapeHTML(person)}
                 </li>
               `
             )
@@ -632,22 +632,22 @@
         const openedRelative = relativeTime(req.openedAt);
         const li = document.createElement('li');
         li.innerHTML = `
-          <button type="button" data-request-id="${req.id}" class="w-full rounded-2xl border ${
+          <button type="button" data-request-id="${escapeHTML(req.id)}" class="w-full rounded-2xl border ${
             isSelected ? 'border-cyan-500/60 bg-cyan-500/10 shadow-lg shadow-cyan-900/20' : 'border-slate-800 bg-slate-900/40'
           } px-4 py-3 text-left transition hover:border-cyan-500/50 hover:bg-cyan-500/10">
             <div class="flex items-center justify-between gap-3">
-              <span class="text-sm font-semibold text-slate-100">${req.id}</span>
+              <span class="text-sm font-semibold text-slate-100">${escapeHTML(req.id)}</span>
               <span class="inline-flex items-center rounded-full px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wide ${badgeClassForStatus(req.status)}">
-                ${(req.status || 'Pending').charAt(0).toUpperCase() + (req.status || 'Pending').slice(1)}
+                ${escapeHTML((req.status || 'Pending').charAt(0).toUpperCase() + (req.status || 'Pending').slice(1))}
               </span>
             </div>
-            <p class="mt-1 text-sm text-slate-300">${req.title || 'Change request'}</p>
+            <p class="mt-1 text-sm text-slate-300">${escapeHTML(req.title || 'Change request')}</p>
             <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
               <span class="inline-flex items-center gap-2">
-                <span class="inline-flex items-center rounded-full px-2 py-0.5 font-semibold ${badgeClassForRisk(req.risk)}">${req.risk || 'Medium'} risk</span>
-                <span class="flex items-center gap-1">${formatDateTime(req.openedAt)}${openedRelative ? `<span class=\"text-slate-600\">· ${openedRelative}</span>` : ''}</span>
+                <span class="inline-flex items-center rounded-full px-2 py-0.5 font-semibold ${badgeClassForRisk(req.risk)}">${escapeHTML(req.risk || 'Medium')} risk</span>
+                <span class="flex items-center gap-1">${formatDateTime(req.openedAt)}${openedRelative ? `<span class=\"text-slate-600\">· ${escapeHTML(openedRelative)}</span>` : ''}</span>
               </span>
-              <span class="truncate">${req.initiatedBy || ''}</span>
+              <span class="truncate">${escapeHTML(req.initiatedBy || '')}</span>
             </div>
           </button>
         `;
@@ -706,8 +706,8 @@
             .map(
               ([key, value]) => `
                 <div class="rounded-xl border border-slate-800 bg-slate-900/60 p-3">
-                  <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">${key}</dt>
-                  <dd class="mt-1 text-sm text-slate-200">${value}</dd>
+                  <dt class="text-xs font-semibold uppercase tracking-wide text-slate-400">${escapeHTML(key)}</dt>
+                  <dd class="mt-1 text-sm text-slate-200">${escapeHTML(value)}</dd>
                 </div>
               `
             )
@@ -722,8 +722,8 @@
             .map(
               (watcher) => `
                 <li class="inline-flex items-center gap-1 rounded-full border border-slate-700/70 bg-slate-900/60 px-3 py-1">
-                  <span class="text-[0.7rem] font-semibold text-slate-200">${watcher.name}</span>
-                  <span class="text-[0.65rem] uppercase tracking-wide text-slate-500">${watcher.role}</span>
+                  <span class="text-[0.7rem] font-semibold text-slate-200">${escapeHTML(watcher.name)}</span>
+                  <span class="text-[0.65rem] uppercase tracking-wide text-slate-500">${escapeHTML(watcher.role)}</span>
                 </li>
               `
             )
@@ -740,8 +740,8 @@
               const type = (attachment?.type || 'file').toUpperCase();
               return `
                 <li class="inline-flex items-center gap-2 rounded-full border border-cyan-500/40 bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-100">
-                  <span class="text-[0.65rem] uppercase tracking-wide text-cyan-200">${type}</span>
-                  <span>${label}</span>
+                  <span class="text-[0.65rem] uppercase tracking-wide text-cyan-200">${escapeHTML(type)}</span>
+                  <span>${escapeHTML(label)}</span>
                 </li>
               `;
             })
@@ -758,16 +758,16 @@
             .map((event) => {
               const action = (event.action || '').replace(/-/g, ' ');
               const sealLine = event.digitalSeal
-                ? `<p class="mt-2 text-[0.65rem] font-mono uppercase tracking-wide text-cyan-300">Seal: ${event.digitalSeal}</p>`
+                ? `<p class="mt-2 text-[0.65rem] font-mono uppercase tracking-wide text-cyan-300">Seal: ${escapeHTML(event.digitalSeal)}</p>`
                 : '';
               return `
                 <li class="rounded-lg border border-slate-800 bg-slate-900/60 p-3">
                   <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
                     <span>${formatDateTime(event.timestamp)}</span>
-                    <span class="font-semibold capitalize text-slate-300">${action || 'update'}</span>
+                    <span class="font-semibold capitalize text-slate-300">${escapeHTML(action || 'update')}</span>
                   </div>
-                  <p class="mt-2 text-sm text-slate-200">${event.actor || 'Unknown'} <span class="text-xs uppercase tracking-wide text-slate-500">${event.role || ''}</span></p>
-                  <p class="mt-1 text-sm text-slate-300">${event.message || ''}</p>
+                  <p class="mt-2 text-sm text-slate-200">${escapeHTML(event.actor || 'Unknown')} <span class="text-xs uppercase tracking-wide text-slate-500">${escapeHTML(event.role || '')}</span></p>
+                  <p class="mt-1 text-sm text-slate-300">${escapeHTML(event.message || '')}</p>
                   ${sealLine}
                 </li>
               `;
@@ -830,7 +830,7 @@
                   <span>Planner sync</span>
                 </div>
                 <p class="mt-2 text-sm font-semibold text-slate-200">Plan snapshot captured</p>
-                <p class="mt-1 text-sm text-slate-300">Daily rate ${metrics.totalDaily || 'n/a'}, toolstring ${metrics.length || 'n/a'}, equipment ${metrics.equipmentDaily || 'n/a'}.</p>
+                <p class="mt-1 text-sm text-slate-300">Daily rate ${escapeHTML(String(metrics.totalDaily || 'n/a'))}, toolstring ${escapeHTML(String(metrics.length || 'n/a'))}, equipment ${escapeHTML(String(metrics.equipmentDaily || 'n/a'))}.</p>
               </li>
             `;
           }
@@ -839,18 +839,18 @@
               <li class="rounded-2xl border border-slate-800 bg-slate-900/50 p-4">
                 <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
                   <span>${formatDateTime(entry.timestamp)}</span>
-                  <span>${entry.requestId || ''}</span>
+                  <span>${escapeHTML(entry.requestId || '')}</span>
                 </div>
                 <p class="mt-2 text-sm font-semibold text-slate-200">${entry.decision === 'reject' ? 'Request rejected' : 'Request approved'}</p>
-                <p class="mt-1 text-sm text-slate-300">${entry.signer || 'Unknown'} · ${entry.role || ''}</p>
+                <p class="mt-1 text-sm text-slate-300">${escapeHTML(entry.signer || 'Unknown')} · ${escapeHTML(entry.role || '')}</p>
                 ${
                   entry.comment
-                    ? `<p class="mt-1 text-sm text-slate-400 italic">“${entry.comment}”</p>`
+                    ? `<p class="mt-1 text-sm text-slate-400 italic">"${escapeHTML(entry.comment)}"</p>`
                     : ''
                 }
                 ${
                   entry.seal
-                    ? `<p class="mt-2 text-[0.65rem] font-mono uppercase tracking-wide text-cyan-300">Seal: ${entry.seal}</p>`
+                    ? `<p class="mt-2 text-[0.65rem] font-mono uppercase tracking-wide text-cyan-300">Seal: ${escapeHTML(entry.seal)}</p>`
                     : ''
                 }
               </li>
@@ -860,10 +860,10 @@
             <li class="rounded-2xl border border-slate-800 bg-slate-900/50 p-4">
               <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
                 <span>${formatDateTime(entry.timestamp)}</span>
-                <span>${entry.requestId || ''}</span>
+                <span>${escapeHTML(entry.requestId || '')}</span>
               </div>
-              <p class="mt-2 text-sm font-semibold text-slate-200">${entry.headline || 'Activity recorded'}</p>
-              <p class="mt-1 text-sm text-slate-300">${entry.detail || ''}</p>
+              <p class="mt-2 text-sm font-semibold text-slate-200">${escapeHTML(entry.headline || 'Activity recorded')}</p>
+              <p class="mt-1 text-sm text-slate-300">${escapeHTML(entry.detail || '')}</p>
             </li>
           `;
         })

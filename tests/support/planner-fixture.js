@@ -2,6 +2,11 @@ const { expect } = require('@playwright/test');
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
+const { chromium, expect } = require('@playwright/test');
+const http = require('http');
+const path = require('path');
+const fs = require('fs');
+const { spawnSync } = require('child_process');
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -20,6 +25,7 @@ const mimeTypes = {
 };
 
 const rootDir = path.resolve(__dirname, '..', '..');
+const shouldAutoInstallDependencies = process.env.PLAYWRIGHT_AUTO_INSTALL_DEPS === 'true';
 
 const createStaticServer = () =>
   http.createServer(async (req, res) => {
@@ -61,6 +67,103 @@ function setupPlannerTest(test) {
 
   test.beforeAll(async () => {
     if (skipReason()) {
+const runPlaywrightCLI = (args, failureMessage) => {
+  const npxCommand = process.platform === 'win32' ? 'npx.cmd' : 'npx';
+  const result = spawnSync(npxCommand, ['playwright', ...args], {
+    stdio: 'inherit'
+  });
+
+  if (result.status !== 0) {
+    throw new Error(failureMessage);
+  }
+};
+
+const downloadChromiumIfMissing = async () => {
+  runPlaywrightCLI(['install', 'chromium'], 'Playwright Chromium download failed');
+};
+
+const installChromiumDependenciesIfMissing = async () => {
+  if (!shouldAutoInstallDependencies) {
+    throw new Error('Automatic dependency installation is disabled.');
+  }
+
+  runPlaywrightCLI(['install-deps', 'chromium'], 'Playwright Chromium system dependency installation failed');
+};
+
+const verifyChromium = async () => {
+  try {
+    const browser = await chromium.launch();
+    await browser.close();
+  } catch (error) {
+    const needsDownload =
+      /Executable doesn't exist/.test(error.message) || /run the following command to download/.test(error.message);
+    const missingDependencies = /Host system is missing dependencies/.test(error.message);
+
+    if (needsDownload) {
+      console.warn('Chromium binaries missing. Downloading with "npx playwright install chromium"...');
+      try {
+        await downloadChromiumIfMissing();
+      } catch (downloadError) {
+        throw new Error(
+          `Unable to download Chromium for Playwright. Original error: ${error.message}. Download error: ${downloadError.message}`
+        );
+      }
+
+      const browser = await chromium.launch();
+      await browser.close();
+      return;
+    }
+
+    if (missingDependencies) {
+      if (!shouldAutoInstallDependencies) {
+        throw error;
+      }
+
+      console.warn('Chromium dependencies missing. Installing with "npx playwright install-deps chromium"...');
+      try {
+        await installChromiumDependenciesIfMissing();
+      } catch (dependencyError) {
+        throw new Error(
+          `Unable to install Chromium system dependencies. Original error: ${error.message}. Dependency error: ${dependencyError.message}`
+        );
+      }
+
+      const browser = await chromium.launch();
+      await browser.close();
+      return;
+    }
+
+    throw error;
+  }
+};
+
+function setupPlannerTest(test) {
+  let server;
+  let baseURL;
+  let launchSkipMessage;
+
+  test.beforeAll(async () => {
+    try {
+      await verifyChromium();
+    } catch (error) {
+      const manualInstruction = shouldAutoInstallDependencies
+        ? 'Automatic dependency installation failed.'
+        : 'Re-run with PLAYWRIGHT_AUTO_INSTALL_DEPS=true to attempt an automatic apt install, or run "npx playwright install-deps chromium" manually.';
+
+      launchSkipMessage = [
+        'Playwright could not launch Chromium. Install the system dependencies',
+        'with "npx playwright install-deps" (or the equivalent apt packages)',
+        'before re-running smoke tests.',
+        manualInstruction,
+        'Original error:',
+        error.message
+      ].join(' ');
+      console.warn(launchSkipMessage);
+    }
+  });
+
+  test.beforeAll(async () => {
+    if (launchSkipMessage) {
       return;
     }
 
@@ -80,6 +183,8 @@ function setupPlannerTest(test) {
     const reason = skipReason();
     if (reason) {
       testInfo.skip(reason);
+    if (launchSkipMessage) {
+      testInfo.skip(launchSkipMessage);
     }
   };
 

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' file:; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; font-src 'self' data: file:; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com; media-src 'self' data: file:; base-uri 'self'; form-action 'self'">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data: file:; base-uri 'self'; form-action 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' file: https://fonts.googleapis.com; img-src 'self' data: file: https:; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data: file:; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
 
     <!-- SEO Meta Tags -->
     <title>Well-Tegra | AI-Powered Well Engineering Platform - Reduce NPT by 30%</title>
@@ -36,38 +37,53 @@
     <meta name="revisit-after" content="7 days">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Well-Tegra">
+
+    <!-- iOS PWA Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Well-Tegra">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/assets/icons/apple-touch-icon-167x167.png">
+
+    <!-- Splash Screens for iOS -->
+    <link rel="apple-touch-startup-image" href="/assets/splash/iphone5_splash.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/iphoneplus_splash.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/iphonexr_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/iphonexsmax_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)">
+
+    <!-- Windows Tile -->
+    <meta name="msapplication-TileColor" content="#0f172a">
+    <meta name="msapplication-TileImage" content="/assets/icons/ms-tile-144x144.png">
+
+    <!-- Favicon -->
     <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
-    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=23.0.11">
+    <link rel="stylesheet" href="assets/css/inline-styles.css?v=23.0.11">
 
     <script src="assets/vendor/chart.umd.min.js" defer></script>
     <script src="assets/vendor/jspdf.umd.min.js" defer></script>
     <script src="assets/vendor/html2canvas.min.js" defer></script>
-
-    <style>
-        /* --- Base & Theme Setup --- */
-        body { font-family: 'Inter', sans-serif; font-weight: 500; }
-        h1, h2, h3, h4, h5, h6 { font-weight: 800; }
-        .theme-light { background-color: #f8fafc; }
-        .theme-dark { background-color: #0f172a; color: #e2e8f0; }
-
-        /* --- Watermark Background --- */
-        #main-content {
-            position: relative;
-            z-index: 1;
-        }
-        .theme-light #main-content::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('assets/watermark.jpg');
-            background-repeat: repeat;
-            background-position: center;
-            background-size: 350px;
-            opacity: 0.02;
-            z-index: -1;
-            pointer-events: none;
-        }
-    </style>
+    <script src="assets/js/security-utils.js?v=23.0.11"></script>
+    <script src="assets/js/fetch-utils.js?v=23.0.11"></script>
+    <script src="assets/js/performance-utils.js?v=23.0.11"></script>
+    <script src="assets/js/error-handler.js?v=23.0.11"></script>
+    <script src="assets/js/crypto-utils.js?v=23.0.11"></script>
+    <script src="assets/js/image-utils.js?v=23.0.11"></script>
+    <script src="assets/js/sw-register.js?v=23.0.11"></script>
 </head>
 
 <body class="theme-dark">
@@ -121,6 +137,10 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"></path><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"></path></svg>
                         <span>Data Exports</span>
                     </a>
+                    <a id="data-quality-nav-link" href="#data-quality-view" role="tab" aria-selected="false" aria-controls="data-quality-view" title="View Data Quality & Integrity Metrics" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        <span>Data Quality</span>
+                    </a>
                      <a id="faq-nav-link" href="#faq-view" role="tab" aria-selected="false" aria-controls="faq-view" title="Frequently Asked Questions" class="nav-link flex items-center space-x-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
                         <span>FAQ</span>
@@ -147,8 +167,8 @@
     <main id="main-content" class="flex-1" role="main">
         <div id="home-view" class="view-container">
             <section class="hero-section py-20 px-4 relative" aria-describedby="hero-video-description">
-                <video autoplay loop muted playsinline id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description">
-                    <source src="assets/hero.mp4" type="video/mp4">
+                <video loop muted playsinline preload="none" id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description" data-lazy-video="assets/hero.mp4">
+                    <source data-src="assets/hero.mp4" type="video/mp4">
                     <track kind="descriptions" srclang="en" label="English descriptions" src="assets/hero-video-descriptions.vtt" default>
                 </video>
                 <div class="hero-overlay"></div>
@@ -899,6 +919,295 @@
             </div>
         </div>
 
+        <!-- Data Quality Dashboard -->
+        <div id="data-quality-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold tracking-tight">Data Quality & Integrity Dashboard</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-400">
+                    Monitor data completeness, consistency, and reliability across your well portfolio to ensure AI recommendations are built on trusted foundations.
+                </p>
+                <div class="mt-4 inline-flex items-center px-4 py-2 rounded-lg bg-blue-900/30 border border-blue-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="text-sm font-semibold text-blue-300">Mitigating GIGO Risk: Garbage In, Garbage Out</span>
+                </div>
+            </div>
+
+            <!-- Portfolio Data Quality Overview -->
+            <div class="grid gap-6 lg:grid-cols-3 mb-12">
+                <!-- Overall Data Health Score -->
+                <div class="light-card p-6 rounded-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Portfolio Data Health</h3>
+                        <span id="portfolio-health-score" class="text-3xl font-bold text-emerald-400">87%</span>
+                    </div>
+                    <div class="w-full bg-slate-700 rounded-full h-3 mb-2">
+                        <div id="portfolio-health-bar" class="bg-emerald-500 h-3 rounded-full transition-all" data-width="87"></div>
+                    </div>
+                    <p class="text-sm text-slate-400">Average data completeness across all wells</p>
+                </div>
+
+                <!-- Critical Data Gaps -->
+                <div class="light-card p-6 rounded-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Critical Gaps</h3>
+                        <span id="critical-gaps-count" class="text-3xl font-bold text-amber-400">3</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-2">Wells with missing safety-critical data</p>
+                    <button class="text-sm text-blue-400 hover:text-blue-300 font-medium">View details →</button>
+                </div>
+
+                <!-- Data Freshness -->
+                <div class="light-card p-6 rounded-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Data Freshness</h3>
+                        <span id="stale-wells-count" class="text-3xl font-bold text-slate-300">2</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-2">Wells with data older than 90 days</p>
+                    <p class="text-xs text-slate-500">Last updated: <span id="last-sync-time">2 hours ago</span></p>
+                </div>
+            </div>
+
+            <!-- Well-by-Well Data Quality Table -->
+            <div class="light-card p-6 rounded-lg mb-12">
+                <h3 class="text-xl font-semibold mb-6">Well-by-Well Data Quality Analysis</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="table-header border-b border-slate-700">
+                            <tr>
+                                <th class="p-3">Well ID</th>
+                                <th class="p-3">Overall Score</th>
+                                <th class="p-3">Completeness</th>
+                                <th class="p-3">Consistency</th>
+                                <th class="p-3">Freshness</th>
+                                <th class="p-3">Critical Gaps</th>
+                                <th class="p-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="well-quality-table-body">
+                            <tr class="border-b border-slate-800">
+                                <td class="p-3 font-semibold">W666</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-emerald-400 font-bold">92%</span>
+                                        <div class="w-16 bg-slate-700 rounded-full h-2">
+                                            <div class="bg-emerald-500 h-2 rounded-full data-quality-bar" data-width="92"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-emerald-900/30 text-emerald-400 border border-emerald-700">95%</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-emerald-900/30 text-emerald-400 border border-emerald-700">High</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-emerald-900/30 text-emerald-400 border border-emerald-700">Current</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="text-slate-400">None</span>
+                                </td>
+                                <td class="p-3">
+                                    <button class="text-blue-400 hover:text-blue-300 text-xs font-medium">View Report</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-slate-800">
+                                <td class="p-3 font-semibold">W123</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-amber-400 font-bold">76%</span>
+                                        <div class="w-16 bg-slate-700 rounded-full h-2">
+                                            <div class="bg-amber-500 h-2 rounded-full data-quality-bar" data-width="76"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-amber-900/30 text-amber-400 border border-amber-700">78%</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-amber-900/30 text-amber-400 border border-amber-700">Medium</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-amber-900/30 text-amber-400 border border-amber-700">45 days</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="text-amber-400">2 Minor</span>
+                                </td>
+                                <td class="p-3">
+                                    <button class="text-blue-400 hover:text-blue-300 text-xs font-medium">View Report</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-slate-800">
+                                <td class="p-3 font-semibold">W234</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-red-400 font-bold">58%</span>
+                                        <div class="w-16 bg-slate-700 rounded-full h-2">
+                                            <div class="bg-red-500 h-2 rounded-full data-quality-bar" data-width="58"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-red-900/30 text-red-400 border border-red-700">61%</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-red-900/30 text-red-400 border border-red-700">Low</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-red-900/30 text-red-400 border border-red-700">120 days</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="text-red-400 font-semibold">1 Critical</span>
+                                </td>
+                                <td class="p-3">
+                                    <button class="text-blue-400 hover:text-blue-300 text-xs font-medium">View Report</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Data Quality Categories -->
+            <div class="grid gap-6 lg:grid-cols-2 mb-12">
+                <!-- Completeness Breakdown -->
+                <div class="light-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Data Completeness by Category</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Well Geometry & Trajectory</span>
+                                <span class="font-semibold text-emerald-400">95%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-emerald-500 h-2 rounded-full data-quality-bar" data-width="95"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Completion Architecture</span>
+                                <span class="font-semibold text-emerald-400">88%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-emerald-500 h-2 rounded-full data-quality-bar" data-width="88"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Pressure & Temperature Data</span>
+                                <span class="font-semibold text-amber-400">72%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-amber-500 h-2 rounded-full data-quality-bar" data-width="72"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Historical Intervention Data</span>
+                                <span class="font-semibold text-amber-400">68%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-amber-500 h-2 rounded-full data-quality-bar" data-width="68"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Equipment History & Failures</span>
+                                <span class="font-semibold text-red-400">54%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-red-500 h-2 rounded-full data-quality-bar" data-width="54"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Consistency Issues -->
+                <div class="light-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Detected Data Issues</h3>
+                    <div class="space-y-3">
+                        <div class="p-3 rounded-lg bg-red-900/20 border border-red-800">
+                            <div class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                                </svg>
+                                <div class="flex-1">
+                                    <p class="text-sm font-semibold text-red-300">Critical: Missing Safety Barrier Data</p>
+                                    <p class="text-xs text-slate-400 mt-1">W234 lacks SCSSV depth - required for safe planning</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3 rounded-lg bg-amber-900/20 border border-amber-800">
+                            <div class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-400 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                                </svg>
+                                <div class="flex-1">
+                                    <p class="text-sm font-semibold text-amber-300">Warning: Inconsistent Depth References</p>
+                                    <p class="text-xs text-slate-400 mt-1">W123 has mixed MD/TVD - normalize to single datum</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3 rounded-lg bg-blue-900/20 border border-blue-800">
+                            <div class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+                                </svg>
+                                <div class="flex-1">
+                                    <p class="text-sm font-semibold text-blue-300">Info: Stale Pressure Data</p>
+                                    <p class="text-xs text-slate-400 mt-1">5 wells have pressure readings >6 months old</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="light-card p-6 rounded-lg">
+                <h3 class="text-xl font-semibold mb-4">Recommended Actions to Improve Data Quality</h3>
+                <div class="grid gap-4 md:grid-cols-2">
+                    <div class="p-4 rounded-lg bg-slate-800/50">
+                        <div class="flex items-start gap-3">
+                            <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-emerald-900/30 text-emerald-400 font-bold">1</span>
+                            <div>
+                                <h4 class="font-semibold mb-1">Complete W234 Safety Barrier Survey</h4>
+                                <p class="text-sm text-slate-400">Schedule downhole survey to capture SCSSV and TRSSV depths before intervention planning.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-lg bg-slate-800/50">
+                        <div class="flex items-start gap-3">
+                            <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-emerald-900/30 text-emerald-400 font-bold">2</span>
+                            <div>
+                                <h4 class="font-semibold mb-1">Standardize Depth References</h4>
+                                <p class="text-sm text-slate-400">Convert all W123 measurements to TVD referenced to rotary kelly bushing (RKB).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-lg bg-slate-800/50">
+                        <div class="flex items-start gap-3">
+                            <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-blue-900/30 text-blue-400 font-bold">3</span>
+                            <div>
+                                <h4 class="font-semibold mb-1">Schedule Pressure Surveys</h4>
+                                <p class="text-sm text-slate-400">Update pressure/temperature data for wells with readings older than 90 days.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-lg bg-slate-800/50">
+                        <div class="flex items-start gap-3">
+                            <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-blue-900/30 text-blue-400 font-bold">4</span>
+                            <div>
+                                <h4 class="font-semibold mb-1">Enable WITSML Integration</h4>
+                                <p class="text-sm text-slate-400">Connect to real-time data feeds to automatically maintain data freshness and consistency.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="faq-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Frequently Asked Questions</h2><p class="mt-2 max-w-2xl mx-auto text-lg">Find answers to common questions about the Well-Tegra platform.</p></div>
             <div id="faq-accordion" class="mt-10 light-card rounded-lg shadow-md overflow-hidden">
@@ -1267,9 +1576,13 @@
 
 </div>
 
-    <script src="assets/js/app.js" defer></script>
-    <script src="assets/js/mobile-communicator.js" defer></script>
+    <script src="assets/js/app.js?v=23.0.11" defer></script>
+    <script src="assets/js/mobile-communicator.js?v=23.0.11" defer></script>
 
+    <!-- Enhanced Simulation System (v23.0.10+) -->
+    <script src="assets/js/enhanced-simulation.js?v=23.0.10" defer></script>
+    <script src="assets/js/enhanced-ui.js?v=23.0.10" defer></script>
+    <script src="assets/js/enhanced-integration.js?v=23.0.10" defer></script>
 
 </body>
 </html>

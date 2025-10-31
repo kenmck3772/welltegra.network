@@ -16,12 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const circumference = radius * 2 * Math.PI;
 
         container.innerHTML = `
-            <div class="relative" style="width:${size}px; height:${size}px;">
+            <div class="relative gauge-container">
                 <svg class="w-full h-full" viewBox="0 0 ${size} ${size}">
                     <circle class="gauge-bg" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"></circle>
-                    <circle class="gauge-fg stroke-normal" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"
-                            stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"
-                            style="transition: stroke-dashoffset 0.5s;"></circle>
+                    <circle class="gauge-fg stroke-normal gauge-circle" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"
+                            stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"></circle>
                 </svg>
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
                     <span class="gauge-value text-2xl font-bold gauge-text text-normal">0</span>
@@ -30,6 +29,12 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <h4 class="mt-2 text-sm font-semibold text-slate-300">${label}</h4>
         `;
+
+        // Apply styles via JavaScript (CSP compliant with CSS custom properties)
+        const gaugeContainer = container.querySelector('.gauge-container');
+        if (gaugeContainer) {
+            gaugeContainer.style.setProperty('--gauge-size', `${size}px`);
+        }
     }
 
     /**
@@ -48,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const radius = gaugeFg.r.baseVal.value;
         const circumference = radius * 2 * Math.PI;
         const offset = circumference - (value / maxValue) * circumference;
-        gaugeFg.style.strokeDashoffset = Math.max(0, Math.min(circumference, offset));
+        gaugeFg.style.setProperty('--gauge-offset', Math.max(0, Math.min(circumference, offset)));
 
         gaugeValue.textContent = value.toFixed(0);
 
@@ -76,13 +81,19 @@ document.addEventListener('DOMContentLoaded', function() {
         container.innerHTML = `
             <h4 class="text-sm font-semibold text-slate-300">${label}</h4>
             <div class="w-full bar-bg rounded-full h-2.5 my-2">
-                <div class="bar-fg bg-normal h-2.5 rounded-full" style="width: 0%"></div>
+                <div class="bar-fg bg-normal h-2.5 rounded-full"></div>
             </div>
             <div class="text-center">
                 <span class="bar-value text-2xl font-bold gauge-text text-normal">0</span>
                 <span class="bar-units text-xs text-slate-400">${units}</span>
             </div>
         `;
+
+        // Apply initial width via CSS custom property (CSP compliant)
+        const barFg = container.querySelector('.bar-fg');
+        if (barFg) {
+            barFg.style.setProperty('--bar-width', '0%');
+        }
     }
 
     /**
@@ -100,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const absValue = Math.abs(value);
         const percentage = Math.min(100, (absValue / maxValue) * 100);
-        barFg.style.width = `${percentage}%`;
+        barFg.style.setProperty('--bar-width', `${percentage}%`);
         barValue.textContent = value.toFixed(0);
 
         let colorClass = 'normal';
@@ -131,6 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'critical',
             themes: ['integrity', 'flow-assurance', 'controls'],
+            dataQuality: 92,
             history: [
                 { date: '2024-03-15', operation: 'Slickline Surveillance', problem: 'Unable to pass 8,500ft due to casing restriction.', lesson: 'This well combines multiple known failure modes from this field into a single asset.' },
                 { date: '2024-04-01', operation: 'Production Test', problem: 'Well died after brief flow period. Pressure analysis suggests deep blockage.', lesson: 'Suspect combination of scale and integrity issues.' },
@@ -165,6 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'case',
             themes: ['integrity', 'productivity'],
+            dataQuality: 88,
             history: [
                 { date: '2023-11-10', operation: 'Slickline Surveillance', problem: 'Standard 2.313" OD toolstring unable to pass 8,500ft, encountering a hard stop.', lesson: 'Significant reservoir depletion in this area is causing geomechanical stresses leading to casing deformation, a known regional risk. MFC log confirms this is ovalization, not collapse.' },
                 { date: '2023-12-05', operation: 'Expandable Casing Patch', problem: 'Successfully installed a 60ft expandable steel patch across the deformed section.', lesson: 'This operation proves that an expandable patch is a viable, rigless solution for restoring full-bore access in this field, restoring production and well access.' }
@@ -197,6 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'case',
             themes: ['flow-assurance', 'productivity'],
+            dataQuality: 85,
             history: [
                 { date: '2024-01-05', operation: 'Production Logging', problem: 'PLT toolstring unable to pass 9,200ft due to a hard obstruction. Produced water analysis confirmed high Barium and Sulfate content.', lesson: 'Commingling of injected seawater and formation water is causing severe, insoluble scale deposition. A previous attempt to mill scale on a nearby well resulted in stuck pipe.'},
                 { date: '2024-02-12', operation: 'CT Chemical/Jetting', problem: 'A 48hr soak with DTPA dissolver followed by a run with a high-pressure rotating jetting tool successfully cleared the blockage.', lesson: 'This two-stage approach is a proven, lower-risk method for removing hard scale compared to aggressive milling.' }
@@ -225,6 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'case',
             themes: ['integrity', 'controls'],
+            dataQuality: 82,
             history: [
                 { date: '2024-02-18', operation: 'Routine DHSV Test', problem: 'Valve failed to close reliably during routine 6-month test. Well was mandatorily shut-in by regulatory authority.', lesson: 'An attempted repair on a similar well with a hydraulic tool failed; a mechanical lock-open tool is more reliable.' },
                 { date: '2024-03-20', operation: 'Slickline Insert Valve Job', problem: 'Successfully locked open the failed valve with a mechanical tool and installed a new wireline-retrievable insert valve.', lesson: 'This standard slickline operation is a proven, cost-effective method for restoring the primary safety barrier without a rig.' }
@@ -253,6 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'case',
             themes: ['flow-assurance', 'productivity'],
+            dataQuality: 78,
             history: [
                 { date: '2023-08-15', operation: 'Surface Choke Replacement', problem: 'Replaced choke for the 3rd time in 6 months due to severe erosional wear from high sand content.', lesson: 'Choking back the well is a temporary fix; the root cause of sand control failure must be addressed. Downhole video confirmed screen erosion.' },
                 { date: '2023-09-10', operation: 'Through-Tubing Patch', problem: 'Successfully installed an expandable patch across the failed sand screen, restoring sand control.', lesson: 'This confirms that a through-tubing patch is a viable rigless repair for this failure mode in this field.'}
@@ -281,6 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'case',
             themes: ['flow-assurance', 'productivity'],
+            dataQuality: 76,
             history: [
                 { date: '2024-01-15', operation: 'Slickline Gauge Ring Run', problem: 'Gauge ring tagged a soft, waxy obstruction at 6,000ft. Unable to pass.', lesson: 'A previous attempt on another well with only chemicals was slow and ineffective; a combined approach is needed.' },
                 { date: '2024-02-01', operation: 'CT Wax Cleanout', problem: 'Successfully removed wax blockage using a combination of heated chemical dissolvers and a mechanical scraper tool on Coiled Tubing.', lesson: 'The dual chemical/mechanical approach is highly effective for severe paraffin blockages.' }
@@ -309,6 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             kind: 'case',
             themes: ['integrity', 'flow-assurance', 'controls', 'productivity'],
+            dataQuality: 95,
             history: [
                 { date: '2023-08-20', operation: 'Complex Multi-Stage Intervention', problem: 'Well experiencing compound failures: partial casing restriction, minor scale buildup, aging safety systems, and intermittent sand production.', lesson: 'This well demonstrated that multiple smaller issues, if left unaddressed, compound into major operational challenges requiring comprehensive intervention planning.' },
                 { date: '2023-09-15', operation: 'Integrated Solution Deployment', problem: 'Successfully executed a staged intervention combining expandable patch technology, chemical scale treatment, safety valve replacement, and sand control installation - all in a single campaign.', lesson: 'Integrated multi-discipline approach saved 45 days vs. sequential interventions. This became the blueprint for tackling W666.' },
@@ -2615,6 +2633,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const aiAdvisorView = document.getElementById('ai-advisor-view');
     const aiRecommendationsContainer = document.getElementById('ai-recommendations');
     const getDesignBlueprintContainer = () => document.getElementById('design-blueprint');
+    const designBlueprintContainer = document.getElementById('design-blueprint');
     const plannerStatusRegion = document.getElementById('planner-status');
     const plannerToast = document.getElementById('planner-toast');
 
@@ -3032,13 +3051,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <p class="text-xs text-slate-400">Portfolio total: ${total}</p>
                     <div class="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-800/70">
-                        <div class="h-full ${signal.progressClass}" style="width: ${percent}%;"></div>
+                        <div class="h-full ${signal.progressClass} portfolio-progress-bar" data-width="${percent}"></div>
                     </div>
                 </article>
             `;
         });
 
         wellPortfolioSignals.innerHTML = cards.join('');
+
+        // Apply widths via JavaScript (CSP compliant)
+        wellPortfolioSignals.querySelectorAll('.portfolio-progress-bar').forEach(bar => {
+            const width = bar.getAttribute('data-width');
+            if (width !== null) {
+                bar.style.setProperty('--bar-width', `${width}%`);
+            }
+        });
     };
 
     const getWellCardMarkup = (well, isSelected) => {
@@ -3052,6 +3079,31 @@ document.addEventListener('DOMContentLoaded', function() {
         const badgeMarkup = isWellFromHell
             ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Critical intervention focus well">CRITICAL</span>'
             : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full" aria-label="Case study well">CASE STUDY</span>';
+
+        // Data quality badge
+        const dataQuality = well.dataQuality || 0;
+        let qualityColor, qualityLabel, qualityBgClass;
+        if (dataQuality >= 90) {
+            qualityColor = 'emerald';
+            qualityLabel = 'Excellent';
+            qualityBgClass = 'bg-emerald-600';
+        } else if (dataQuality >= 80) {
+            qualityColor = 'blue';
+            qualityLabel = 'Good';
+            qualityBgClass = 'bg-blue-600';
+        } else if (dataQuality >= 70) {
+            qualityColor = 'yellow';
+            qualityLabel = 'Fair';
+            qualityBgClass = 'bg-yellow-600';
+        } else if (dataQuality >= 60) {
+            qualityColor = 'orange';
+            qualityLabel = 'Poor';
+            qualityBgClass = 'bg-orange-600';
+        } else {
+            qualityColor = 'red';
+            qualityLabel = 'Critical';
+            qualityBgClass = 'bg-red-600';
+        }
 
         return `
             <article class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'} ${isSelected ? 'selected' : ''}"
@@ -3072,8 +3124,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="mb-3">
+                    <div class="mb-3 flex items-center gap-2">
                         <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
+                        <span class="inline-flex items-center gap-1 px-2 py-1 text-xs font-semibold text-white rounded ${qualityBgClass}"
+                              aria-label="Data quality score: ${dataQuality}% - ${qualityLabel}"
+                              title="Data Quality: ${dataQuality}% (${qualityLabel})">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                            ${dataQuality}%
+                        </span>
                     </div>
                     <p class="text-sm">${well.issue}</p>
                 </div>
@@ -3117,6 +3177,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     function renderObjectives() {
+    const renderObjectives = () => {
         if (!objectivesFieldset) return;
 
         if (!Array.isArray(objectivesData) || objectivesData.length === 0) {
@@ -3155,6 +3216,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function renderProblems() {
+    const renderProblems = () => {
         if (!problemsFieldset) return;
 
         const selectedWellId = appState.selectedWell?.id || null;
@@ -3244,6 +3306,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // expose planners so other modules (e.g., PDF export, analytics replay) can re-render when datasets update
     window.renderObjectives = renderObjectives;
     window.renderProblems = renderProblems;
+    };
 
     const renderDesignBlueprint = () => {
         const designBlueprintContainer = getDesignBlueprintContainer();
@@ -4325,8 +4388,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (isSlickline) {
             createRadialGauge('kpi-weight-card', 'Weight', 'lbs', 2000);
-            document.getElementById('kpi-pressure-card').style.display = 'none';
-            document.getElementById('kpi-annulus-card').style.display = 'none';
+            const pressureCard = document.getElementById('kpi-pressure-card');
+            const annulusCard = document.getElementById('kpi-annulus-card');
+            if (pressureCard) pressureCard.classList.add('csp-hidden');
+            if (annulusCard) annulusCard.classList.add('csp-hidden');
             kpiGrid.className = 'grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-6';
         } else {
             createRadialGauge('kpi-weight-card', 'Hookload', 'klbf', 100);
@@ -4368,9 +4433,15 @@ document.addEventListener('DOMContentLoaded', function() {
             appState.tfaChartInstance.destroy();
             appState.tfaChartInstance = null;
         }
-        
-        chartCard.style.display = isSlickline ? 'none' : 'flex';
-        
+
+        if (isSlickline) {
+            chartCard.classList.add('csp-hidden');
+            chartCard.classList.remove('csp-flex');
+        } else {
+            chartCard.classList.remove('csp-hidden');
+            chartCard.classList.add('csp-flex');
+        }
+
         if (!isSlickline) {
             const chartCtx = document.getElementById('tfaChart').getContext('2d');
             const chartThemeOptions = getChartThemeOptions();
@@ -5119,7 +5190,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <span>${formatCurrency(actual)}</span>
                         </div>
                         <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4">
-                            <div class="${burnColor} h-4 rounded-full" style="width: ${burnPercent}%"></div>
+                            <div class="${burnColor} h-4 rounded-full burn-rate-progress" data-width="${burnPercent}"></div>
                         </div>
                         <div class="flex justify-between text-sm">
                             <span>Budget (AFE): ${formatCurrency(afe)}</span>
@@ -5174,6 +5245,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         `;
+
+        // Apply burn rate width via JavaScript (CSP compliant)
+        const burnRateBar = commercialContent.querySelector('.burn-rate-progress');
+        if (burnRateBar) {
+            const width = burnRateBar.getAttribute('data-width');
+            if (width !== null) {
+                burnRateBar.style.setProperty('--bar-width', `${width}%`);
+            }
+        }
 
         const validateInvoiceBtn = document.getElementById('validate-invoice-btn');
         addListener(validateInvoiceBtn, 'click', validateInvoice);
@@ -5757,8 +5837,7 @@ const validateInvoice = () => {
         const textarea = document.createElement('textarea');
         textarea.value = text;
         textarea.setAttribute('readonly', '');
-        textarea.style.position = 'absolute';
-        textarea.style.left = '-9999px';
+        textarea.classList.add('csp-offscreen');
         document.body.appendChild(textarea);
         textarea.select();
 
@@ -6573,12 +6652,70 @@ const validateInvoice = () => {
                                 const objective = objectivesData.find(o => o.id === rec.objectiveId) || {};
                                 const objectiveIcon = 'icon' in objective ? objective.icon : '';
                                 const objectiveName = 'name' in objective ? objective.name : 'Objective';
+
+                                // Confidence level determination
+                                const confidence = rec.confidence || 0;
+                                let confidenceColor, confidenceBg, confidenceLabel, confidenceIcon, uncertaintyLevel;
+                                if (confidence >= 95) {
+                                    confidenceColor = 'emerald';
+                                    confidenceBg = 'bg-emerald-600';
+                                    confidenceLabel = 'Very High Confidence';
+                                    confidenceIcon = '✓';
+                                    uncertaintyLevel = 'Minimal subsurface uncertainty';
+                                } else if (confidence >= 90) {
+                                    confidenceColor = 'green';
+                                    confidenceBg = 'bg-green-600';
+                                    confidenceLabel = 'High Confidence';
+                                    confidenceIcon = '✓';
+                                    uncertaintyLevel = 'Low subsurface uncertainty';
+                                } else if (confidence >= 85) {
+                                    confidenceColor = 'blue';
+                                    confidenceBg = 'bg-blue-600';
+                                    confidenceLabel = 'Good Confidence';
+                                    confidenceIcon = '○';
+                                    uncertaintyLevel = 'Moderate uncertainty - additional validation recommended';
+                                } else if (confidence >= 80) {
+                                    confidenceColor = 'yellow';
+                                    confidenceBg = 'bg-yellow-600';
+                                    confidenceLabel = 'Moderate Confidence';
+                                    confidenceIcon = '△';
+                                    uncertaintyLevel = 'Notable uncertainty - expert review advised';
+                                } else {
+                                    confidenceColor = 'orange';
+                                    confidenceBg = 'bg-orange-600';
+                                    confidenceLabel = 'Lower Confidence';
+                                    confidenceIcon = '!';
+                                    uncertaintyLevel = 'Significant uncertainty - thorough validation required';
+                                }
+
                                 return `
-                                    <div class="ai-recommendation-enhanced" data-rec-index="${index}">
-                                        <div class="confidence-badge">${rec.confidence}% Confidence</div>
+                                    <div class="ai-recommendation-enhanced relative" data-rec-index="${index}">
+                                        <div class="flex items-start justify-between gap-3 mb-3">
+                                            <div class="flex items-center gap-2">
+                                                <span class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-white rounded ${confidenceBg}"
+                                                      aria-label="Confidence: ${confidence}% - ${confidenceLabel}"
+                                                      title="${confidenceLabel}: ${uncertaintyLevel}">
+                                                    <span class="text-sm">${confidenceIcon}</span>
+                                                    ${confidence}%
+                                                </span>
+                                                <span class="text-xs text-slate-400 italic">${confidenceLabel}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="w-full bg-slate-700 rounded-full h-1.5 mb-3">
+                                            <div class="${confidenceBg} h-1.5 rounded-full confidence-bar" data-width="${confidence}"></div>
+                                        </div>
+
                                         <div class="flex justify-between items-start mb-2">
                                             <h4 class="font-bold text-lg text-teal-700 dark:text-teal-400">${objectiveIcon} ${objectiveName}</h4>
                                         </div>
+
+                                        <div class="mb-3 p-2 bg-slate-800/50 rounded border-l-2 border-${confidenceColor}-500">
+                                            <p class="text-xs text-slate-300">
+                                                <strong>Uncertainty Assessment:</strong> ${uncertaintyLevel}
+                                            </p>
+                                        </div>
+
                                         <p class="text-sm mb-1"><strong>Projected Outcome:</strong> ${rec.outcome}</p>
                                         <p class="text-xs"><strong>Reasoning:</strong> ${rec.reason}</p>
                                     </div>
@@ -6587,6 +6724,14 @@ const validateInvoice = () => {
                         </div>
                     `;
                     aiRecommendationsContainer.classList.remove('hidden');
+
+                    // Apply confidence bar widths (CSP compliant)
+                    aiRecommendationsContainer.querySelectorAll('.confidence-bar').forEach(bar => {
+                        const width = bar.getAttribute('data-width');
+                        if (width !== null) {
+                            bar.style.setProperty('--bar-width', `${width}%`);
+                        }
+                    });
                 } else {
                     aiRecommendationsContainer.innerHTML = '<p class="text-sm text-center text-slate-400">No AI recommendations available for this problem yet.</p>';
                     aiRecommendationsContainer.classList.remove('hidden');
@@ -7134,6 +7279,29 @@ const validateInvoice = () => {
         }
     };
 
+    /**
+     * Initialize Data Quality Dashboard
+     * Applies width styles to progress bars (CSP compliant)
+     */
+    function initializeDataQuality() {
+        // Apply widths to all data quality progress bars
+        document.querySelectorAll('#data-quality-view .data-quality-bar').forEach(bar => {
+            const width = bar.getAttribute('data-width');
+            if (width !== null) {
+                bar.style.setProperty('--bar-width', `${width}%`);
+            }
+        });
+
+        // Apply portfolio health bar width
+        const portfolioHealthBar = document.getElementById('portfolio-health-bar');
+        if (portfolioHealthBar) {
+            const width = portfolioHealthBar.getAttribute('data-width');
+            if (width !== null) {
+                portfolioHealthBar.style.setProperty('--bar-width', `${width}%`);
+            }
+        }
+    }
+
     const init = () => {
         initializeHeroVideoToggle();
         initializeWellFilters();
@@ -7141,6 +7309,7 @@ const validateInvoice = () => {
         renderObjectives();
         renderProblems();
         initSavingsChart();
+        initializeDataQuality();
         updateNavLinks();
     };
 
