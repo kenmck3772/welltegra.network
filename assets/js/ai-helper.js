@@ -21,7 +21,7 @@ const AI_CONFIG = {
 
     // Gemini API Key
     // Get this from: https://aistudio.google.com/app/apikey
-    geminiApiKey: "YOUR_GEMINI_API_KEY",
+    geminiApiKey: "AIzaSyA2hLCdEWUb3sDJL7UtgzMLTbhinzVBe6M",
 
     // App ID for Firebase collections
     appId: "welltegra-ai-assistant",
