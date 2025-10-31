@@ -434,7 +434,8 @@
       feed: loadFeed(),
       planContext: loadPlanContext(),
       selectedId: null,
-      previousFocus: null
+      previousFocus: null,
+      previousPendingCount: null
     };
 
     let releaseFocusTrap = null;
@@ -469,18 +470,36 @@
       if (pendingBadge) {
         pendingBadge.textContent = String(pendingCount);
         pendingBadge.classList.toggle('hidden', pendingCount === 0);
+
+        // Trigger animation if pending count increased
+        if (state.previousPendingCount !== null && pendingCount > state.previousPendingCount) {
+          pendingBadge.classList.add('has-new-message');
+          setTimeout(() => {
+            pendingBadge.classList.remove('has-new-message');
+          }, 1500);
+        }
       }
-      if (pendingBadge) pendingBadge.textContent = String(pendingCount);
       if (openBtn) {
         const labelBase = 'Open mobile communicator';
         const badge = pendingCount === 1 ? '1 request awaiting sign-off' : `${pendingCount} requests awaiting sign-off`;
         openBtn.setAttribute('aria-label', `${labelBase} (${badge})`);
         openBtn.setAttribute('aria-expanded', overlay.classList.contains('hidden') ? 'false' : 'true');
+
+        // Trigger button animation if pending count increased
+        if (state.previousPendingCount !== null && pendingCount > state.previousPendingCount) {
+          openBtn.classList.add('has-notification');
+          setTimeout(() => {
+            openBtn.classList.remove('has-notification');
+          }, 3000);
+        }
       }
       const updatedAt = computeLastUpdated(state.requests, state.feed);
       if (lastSync) {
         lastSync.textContent = updatedAt ? formatDateTime(updatedAt) : '—';
       }
+
+      // Update the previous count for next comparison
+      state.previousPendingCount = pendingCount;
     };
 
     const badgeClassForStatus = (status) => {
