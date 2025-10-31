@@ -1,6 +1,10 @@
 const { test, expect } = require('@playwright/test');
 const { setupPlannerTest } = require('./support/planner-fixture');
 
+if (process.env.PLAYWRIGHT_SKIP_REASON) {
+  test.skip(process.env.PLAYWRIGHT_SKIP_REASON);
+}
+
 const {
   skipIfChromiumUnavailable,
   gotoPlannerHome,

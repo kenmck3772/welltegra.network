@@ -1,3 +1,7 @@
+const { expect } = require('@playwright/test');
+const http = require('http');
+const path = require('path');
+const fs = require('fs');
 const { chromium, expect } = require('@playwright/test');
 const http = require('http');
 const path = require('path');
@@ -56,6 +60,13 @@ const createStaticServer = () =>
     }
   });
 
+function setupPlannerTest(test) {
+  let server;
+  let baseURL;
+  const skipReason = () => process.env.PLAYWRIGHT_SKIP_REASON;
+
+  test.beforeAll(async () => {
+    if (skipReason()) {
 const runPlaywrightCLI = (args, failureMessage) => {
   const npxCommand = process.platform === 'win32' ? 'npx.cmd' : 'npx';
   const result = spawnSync(npxCommand, ['playwright', ...args], {
@@ -169,6 +180,9 @@ function setupPlannerTest(test) {
   });
 
   const skipIfChromiumUnavailable = (testInfo) => {
+    const reason = skipReason();
+    if (reason) {
+      testInfo.skip(reason);
     if (launchSkipMessage) {
       testInfo.skip(launchSkipMessage);
     }
