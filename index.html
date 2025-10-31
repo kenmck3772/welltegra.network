@@ -1419,7 +1419,16 @@
                         <div class="flex justify-start">
                             <div class="bg-slate-800/90 p-3 rounded-xl max-w-lg shadow">
                                 <p class="font-semibold text-purple-400 mb-1">AI Assistant</p>
-                                <p>Hello! I am the Welltegra Network Assistant. I can search the web for the latest information on Welltegra's services, status, or documentation. How can I help you today?</p>
+                                <p>👋 Welcome to Welltegra! I'm your AI guide to help you navigate and understand the platform.</p>
+                                <p class="mt-2 text-sm">I can help you with:</p>
+                                <ul class="mt-1 text-sm list-disc list-inside space-y-1">
+                                    <li>Understanding platform features</li>
+                                    <li>Navigating the Well Intervention Planner</li>
+                                    <li>Using the Well Performer simulation</li>
+                                    <li>Data quality tools and best practices</li>
+                                    <li>Any questions about Welltegra services</li>
+                                </ul>
+                                <p class="mt-2 text-sm text-slate-400">How can I assist you today?</p>
                             </div>
                         </div>
                     </div>
@@ -1439,11 +1448,12 @@
 
                 <!-- Configuration Notice -->
                 <div class="mt-6 p-4 bg-blue-900/30 border border-blue-700/50 rounded-lg">
-                    <h4 class="font-semibold text-blue-400 mb-2">ℹ️ Configuration Required</h4>
-                    <p class="text-sm text-slate-300">To activate the AI Assistant, you need to configure:</p>
+                    <h4 class="font-semibold text-blue-400 mb-2">ℹ️ Configuration Status</h4>
+                    <p class="text-sm text-slate-300">The AI Assistant is configured and ready to help! Features include:</p>
                     <ul class="list-disc list-inside text-sm text-slate-400 mt-2 space-y-1">
-                        <li>Firebase configuration (for message persistence)</li>
-                        <li>Gemini API key (for AI responses with Google Search grounding)</li>
+                        <li>Context-aware assistance based on your current view</li>
+                        <li>Welltegra-specific knowledge and guidance</li>
+                        <li>Optional message persistence with Firebase</li>
                     </ul>
                     <p class="text-xs text-slate-500 mt-2">See the <code class="bg-slate-800 px-1 rounded">ai-helper.js</code> file for configuration details.</p>
                 </div>
@@ -1902,6 +1912,19 @@
     </div>
 
     <div id="planner-toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-6 right-6 hidden rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg">Integrated program synced</div>
+
+    <!-- Floating AI Assistant Button -->
+    <button id="floating-ai-button"
+            class="fixed bottom-6 left-6 bg-purple-600 hover:bg-purple-700 text-white rounded-full p-4 shadow-2xl shadow-purple-500/50 transition-all duration-300 hover:scale-110 z-50 group"
+            title="Ask the AI Assistant"
+            aria-label="Open AI Assistant">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span class="absolute left-full ml-3 px-3 py-1 bg-slate-800 text-white text-sm rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+            Need help? Ask the AI!
+        </span>
+    </button>
 
 </div>
 

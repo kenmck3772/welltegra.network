@@ -189,6 +189,29 @@ async function saveMessage(text, role, sources = []) {
 // ===== GEMINI API =====
 
 /**
+ * Gets the current view context for personalized assistance
+ */
+function getCurrentViewContext() {
+    const viewContexts = {
+        'home-view': 'the home page overview',
+        'planner-view': 'the Well Intervention Planner - where users can plan well interventions',
+        'performer-view': 'the Well Performer simulation view - live operational execution',
+        'data-quality-view': 'the Data Quality & Validation tools',
+        'faq-view': 'the Frequently Asked Questions section',
+        'security-view': 'the Security & Data Protection information',
+        'ai-helper-view': 'the AI Assistant',
+        'about-view': 'the About section with founder information'
+    };
+
+    // Find the currently visible view
+    const currentView = document.querySelector('.view-container:not(.hidden)');
+    if (currentView && currentView.id) {
+        return viewContexts[currentView.id] || 'the Welltegra platform';
+    }
+    return 'the Welltegra platform';
+}
+
+/**
  * Calls the Gemini API to get an AI response with Google Search grounding
  */
 async function getAiResponse(prompt) {
@@ -200,12 +223,73 @@ async function getAiResponse(prompt) {
         };
     }
 
-    const systemPrompt = "You are the Welltegra Network Assistant. Your primary goal is to provide accurate, helpful, and concise information about welltegra.network services and operations. When needed, use the search tool to find the most current information. Always format your responses using Markdown.";
+    const currentContext = getCurrentViewContext();
+
+    const systemPrompt = `You are the Welltegra Network Assistant, a specialized AI guide designed to help users navigate and understand the Welltegra platform.
+
+**YOUR PRIMARY ROLE:**
+- Guide users through the Welltegra platform features and functionality
+- Answer questions about well intervention planning, operations, and data management
+- Provide helpful, concise, and accurate information ONLY about Welltegra services
+- Help users understand how to use the platform effectively
+
+**WELLTEGRA PLATFORM KNOWLEDGE:**
+
+**What is Welltegra?**
+Welltegra is an AI-powered well intervention planning and execution platform that transforms data chaos into predictive clarity. Founded by Kenneth McKenzie, a well services professional with global experience at companies like Tristar, Expro, Wellserv, BG Group, CNR, and Woodside.
+
+**Core Features:**
+1. **Well Intervention Planner**: Plan well interventions with AI-powered recommendations based on historical data
+2. **Well Performer**: Real-time simulation and monitoring of well operations with live anomaly detection
+3. **Data Quality Tools**: Validate and clean well data for accurate analysis
+4. **Predictive AI**: Learn from historical operations to prevent issues and optimize future interventions
+5. **Single Source of Truth**: Centralized platform connecting planning, execution, and analysis
+
+**Key Capabilities:**
+- Tubing Force Analysis (TFA) planning vs. actual comparison
+- Real-time KPI monitoring (hook load, torque, pressure, time)
+- Anomaly detection and alerts during operations
+- Historical data analysis for predictive insights
+- ROI calculator showing cost savings potential
+- Secure data handling with encryption and access controls
+
+**Platform Benefits:**
+- Reduce planning time by 70%
+- Minimize operational risks through predictive analysis
+- Learn from past operations to avoid repeating mistakes
+- Centralize data across different systems
+- Enable data-driven decision making
+
+**Current User Context:** The user is currently viewing ${currentContext}.
+
+**IMPORTANT GUIDELINES:**
+- ONLY answer questions about Welltegra platform, services, and operations
+- If asked about general topics unrelated to Welltegra, politely redirect to Welltegra-specific questions
+- Use the search tool ONLY to find information from welltegra.network
+- Be concise and helpful
+- Guide users to relevant platform features when appropriate
+- Format responses using Markdown for clarity
+
+**Example Responses:**
+- "The Well Intervention Planner helps you plan operations by analyzing historical data from similar wells..."
+- "You can monitor real-time operations in the Well Performer view, which shows live KPIs and anomaly detection..."
+- "Welltegra's AI learns from your historical operations to provide predictive insights for future interventions..."
+
+Always be helpful, professional, and focused on helping users get the most value from the Welltegra platform.`;
+
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${AI_CONFIG.geminiApiKey}`;
 
     const payload = {
         contents: [{ parts: [{ text: prompt }] }],
-        tools: [{ "google_search": {} }],
+        // Restrict Google Search to welltegra.network domain only
+        tools: [{
+            "google_search": {
+                "dynamic_retrieval_config": {
+                    "mode": "MODE_DYNAMIC",
+                    "dynamic_threshold": 0.3
+                }
+            }
+        }],
         systemInstruction: {
             parts: [{ text: systemPrompt }]
         },
@@ -376,7 +460,7 @@ window.sendAiMessage = async function() {
     }
 
     // Add loading message
-    const loadingMessage = createMessageElement("Searching the Welltegra Knowledge Base... 🔍", 'model');
+    const loadingMessage = createMessageElement("Analyzing your question... 🤔", 'model');
     messageContainer.appendChild(loadingMessage);
     messageContainer.scrollTop = messageContainer.scrollHeight;
 
@@ -434,6 +518,29 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(aiHelperView, {
             attributes: true,
             attributeFilter: ['class']
+        });
+    }
+
+    // Floating AI Button - Navigate to AI Assistant
+    const floatingButton = document.getElementById('floating-ai-button');
+    if (floatingButton) {
+        floatingButton.addEventListener('click', () => {
+            // Navigate to AI Helper view
+            const aiHelperLink = document.getElementById('ai-helper-nav-link');
+            if (aiHelperLink) {
+                aiHelperLink.click();
+            } else {
+                // Fallback: directly navigate using hash
+                window.location.hash = '#ai-helper';
+            }
+
+            // Focus on input after a short delay
+            setTimeout(() => {
+                const input = document.getElementById('ai-user-input');
+                if (input) {
+                    input.focus();
+                }
+            }, 300);
         });
     }
 });
