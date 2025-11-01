@@ -648,12 +648,24 @@ class GovernanceComplianceManager {
         }
 
         const fips = compliance.fips1402;
+
+        // Check if FIPS data exists
+        if (!fips) {
+            return {
+                compliant: false,
+                reason: 'FIPS 140-2 configuration not initialized',
+                checks: {},
+                overallStatus: 'NOT CONFIGURED',
+                timestamp: new Date().toISOString()
+            };
+        }
+
         const checks = {
-            kmsValidated: fips.kmsValidated,
+            kmsValidated: fips.kmsValidated || false,
             certificateValid: fips.certificateExpiry ? new Date(fips.certificateExpiry) > new Date() : false,
-            encryptionStrong: compliance.dataAtRest.encryptionAlgorithm === 'AES-256-GCM',
-            tlsSecure: compliance.dataInTransit.tlsVersion === 'TLS 1.3',
-            auditEnabled: compliance.auditLog.enabled && compliance.auditLog.immutable
+            encryptionStrong: compliance.dataAtRest?.encryptionAlgorithm === 'AES-256-GCM',
+            tlsSecure: compliance.dataInTransit?.tlsVersion === 'TLS 1.3',
+            auditEnabled: compliance.auditLog?.enabled && compliance.auditLog?.immutable
         };
 
         const allChecks = Object.values(checks).every(check => check === true);
