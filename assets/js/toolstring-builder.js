@@ -155,7 +155,7 @@
     /**
      * Save toolstrings to localStorage
      */
-    function saveTool strings() {
+    function saveToolstrings() {
         try {
             localStorage.setItem('welltegra_toolstrings', JSON.stringify(state.savedToolstrings));
         } catch (error) {
