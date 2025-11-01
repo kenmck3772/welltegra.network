@@ -4,6 +4,18 @@
  */
 
 /**
+ * Escapes HTML special characters to prevent XSS
+ * @param {string} str - String to escape
+ * @returns {string} - Escaped string
+ */
+function escapeHTML(str) {
+    if (typeof str !== 'string') return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+/**
  * Global error handler for uncaught errors
  */
 window.addEventListener('error', (event) => {

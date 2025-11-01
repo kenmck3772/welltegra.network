@@ -19,16 +19,37 @@ let currentWellId = null;
  * Initialize Governance UI
  */
 function initializeGovernanceUI() {
-    // Initialize manager instances
-    dataQualityGateway = new DataQualityGateway();
-    governanceManager = new GovernanceComplianceManager();
-    remediationDashboard = new DataRemediationDashboard();
+    console.log('Initializing Governance UI...');
 
-    // Set up event listeners
-    setupEventListeners();
+    try {
+        // Initialize manager instances
+        dataQualityGateway = new DataQualityGateway();
+        console.log('✓ DataQualityGateway initialized');
 
-    // Load initial data
-    loadDashboardData();
+        governanceManager = new GovernanceComplianceManager();
+        console.log('✓ GovernanceComplianceManager initialized');
+
+        remediationDashboard = new DataRemediationDashboard();
+        console.log('✓ DataRemediationDashboard initialized');
+
+        // Set up event listeners
+        setupEventListeners();
+        console.log('✓ Event listeners configured');
+
+        // Load initial data
+        loadDashboardData();
+        console.log('✓ Governance UI initialized successfully');
+
+    } catch (error) {
+        console.error('Failed to initialize Governance UI:', error);
+        // Show error notification if possible
+        const statusEl = document.getElementById('governance-status');
+        if (statusEl) {
+            statusEl.textContent = 'Failed to initialize governance system. Please refresh the page.';
+            statusEl.className = 'text-sm text-center text-red-400';
+            statusEl.classList.remove('hidden');
+        }
+    }
 }
 
 /**
@@ -719,9 +740,27 @@ function showNotification(message, type = 'info') {
     }, 5000);
 }
 
-// Initialize when DOM is ready
+// Initialize when DOM is ready and all dependencies are loaded
+function safeInitialize() {
+    // Check if all required classes are defined
+    if (typeof DataQualityGateway === 'undefined' ||
+        typeof GovernanceComplianceManager === 'undefined' ||
+        typeof DataRemediationDashboard === 'undefined') {
+        console.log('Governance modules not yet loaded, retrying...');
+        setTimeout(safeInitialize, 100);
+        return;
+    }
+
+    try {
+        initializeGovernanceUI();
+    } catch (error) {
+        console.error('Failed to initialize governance UI:', error);
+    }
+}
+
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeGovernanceUI);
+    document.addEventListener('DOMContentLoaded', safeInitialize);
 } else {
-    initializeGovernanceUI();
+    // Delay initialization to ensure other scripts have loaded
+    setTimeout(safeInitialize, 100);
 }
