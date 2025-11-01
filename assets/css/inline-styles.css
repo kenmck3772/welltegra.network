@@ -4,7 +4,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; }
 .theme-light { background-color: #f8fafc; }
 .theme-dark { background-color: #0f172a; color: #e2e8f0; }
 
-/* --- Watermark Background --- */
+/* --- Watermark Background with Well Tegra Logo --- */
 #main-content,
 .view-container {
     position: relative;
@@ -17,28 +17,37 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; }
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url('../watermark.jpg');
+    background-image: url('../assets/logo.jpg');
     background-repeat: repeat;
     background-position: center;
-    background-size: 350px;
-    opacity: 0.02;
+    background-size: 400px 400px;
+    opacity: 0.03;
     z-index: -1;
     pointer-events: none;
+    filter: grayscale(100%) brightness(1.2);
 }
 
-/* Watermark for dark theme */
+/* Watermark for dark theme - Enhanced visibility */
 .theme-dark #main-content::before,
 .theme-dark .view-container::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url('../watermark.jpg');
+    background-image: url('../assets/logo.jpg');
     background-repeat: repeat;
     background-position: center;
-    background-size: 350px;
-    opacity: 0.015;
+    background-size: 450px 450px;
+    opacity: 0.04;
     z-index: -1;
     pointer-events: none;
+    filter: grayscale(100%) brightness(0.8) contrast(0.5);
+    animation: subtle-float 60s ease-in-out infinite;
+}
+
+/* Subtle floating animation for watermark */
+@keyframes subtle-float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.02); }
 }
 
 /* Enhanced watermark visibility for live operations display */
@@ -46,13 +55,14 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; }
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url('../watermark.jpg');
+    background-image: url('../assets/logo.jpg');
     background-repeat: repeat;
     background-position: center;
-    background-size: 400px;
-    opacity: 0.025;
+    background-size: 500px 500px;
+    opacity: 0.05;
     z-index: 0;
     pointer-events: none;
+    filter: grayscale(100%) brightness(0.7) contrast(0.6);
 }
 
 /* Ensure live operations content appears above watermark */
@@ -226,5 +236,350 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; }
 @media (max-width: 768px) {
     #weather-card {
         grid-column: span 2;
+    }
+}
+
+/* ========================================
+   ENHANCED UI DESIGN POLISH
+   ======================================== */
+
+/* --- Enhanced Card Styles --- */
+.bg-slate-800\/50,
+.bg-slate-900\/50 {
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+                0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+.rounded-xl,
+.rounded-lg {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rounded-xl:hover,
+.rounded-lg:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4),
+                0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Enhanced Header & Navigation --- */
+.header {
+    background: linear-gradient(180deg,
+                rgba(15, 23, 42, 0.95) 0%,
+                rgba(15, 23, 42, 0.9) 100%);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.nav-link {
+    position: relative;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: rgba(226, 232, 240, 0.7);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: #22d3ee;
+    background: rgba(6, 182, 212, 0.1);
+    transform: translateY(-1px);
+}
+
+.nav-link.active {
+    color: #ffffff;
+    background: linear-gradient(135deg, #0891b2, #06b6d4);
+    box-shadow: 0 4px 6px -1px rgba(6, 182, 212, 0.4);
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #22d3ee;
+    border-radius: 2px;
+}
+
+/* --- Enhanced Typography --- */
+h1, h2, h3 {
+    background: linear-gradient(135deg, #ffffff, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+}
+
+.text-cyan-400,
+.text-cyan-300 {
+    text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+}
+
+/* --- Enhanced Button Styles --- */
+button[data-ct-view],
+button.px-4,
+button.rounded-lg {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+button[data-ct-view]:hover,
+button.px-4:hover,
+button.rounded-lg:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.4);
+}
+
+button[data-ct-view].bg-cyan-600,
+button.bg-cyan-600 {
+    background: linear-gradient(135deg, #0891b2, #06b6d4);
+    box-shadow: 0 4px 6px -1px rgba(6, 182, 212, 0.5);
+}
+
+button[data-ct-view].bg-cyan-600:hover,
+button.bg-cyan-600:hover {
+    background: linear-gradient(135deg, #06b6d4, #22d3ee);
+    box-shadow: 0 6px 12px -2px rgba(6, 182, 212, 0.6);
+}
+
+/* Ripple effect for buttons */
+button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+button:active::after {
+    width: 200px;
+    height: 200px;
+}
+
+/* --- Enhanced Christmas Tree Interface --- */
+#christmas-tree-view .text-center h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+#christmas-tree-view .text-center p {
+    font-size: 1.125rem;
+    color: rgba(226, 232, 240, 0.8);
+}
+
+#ct-diagram-container {
+    background: linear-gradient(180deg,
+                rgba(30, 41, 59, 0.3) 0%,
+                rgba(15, 23, 42, 0.5) 100%);
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+/* Enhanced SVG styling */
+svg circle,
+svg rect {
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+svg g:hover circle,
+svg g:hover rect {
+    filter: drop-shadow(0 4px 8px rgba(6, 182, 212, 0.5));
+    transform: scale(1.05);
+}
+
+/* --- Enhanced Alert Cards --- */
+.border-red-500,
+.border-yellow-500,
+.border-blue-500,
+.border-green-500 {
+    position: relative;
+}
+
+.border-red-500::before,
+.border-yellow-500::before,
+.border-blue-500::before,
+.border-green-500::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg,
+                currentColor,
+                transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+                  linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* --- Enhanced Status Badges --- */
+span.px-2.py-1.text-xs,
+span.px-3.py-1.text-xs {
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Enhanced Grid Layouts --- */
+.grid-cols-1,
+.grid-cols-2,
+.grid-cols-3 {
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .grid-cols-1,
+    .grid-cols-2,
+    .grid-cols-3 {
+        gap: 2rem;
+    }
+}
+
+/* --- Enhanced Summary Cards --- */
+.bg-red-500\/10,
+.bg-yellow-500\/10,
+.bg-green-500\/10,
+.bg-blue-500\/10,
+.bg-cyan-500\/10 {
+    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+}
+
+.bg-red-500\/10::before,
+.bg-yellow-500\/10::before,
+.bg-green-500\/10::before,
+.bg-blue-500\/10::before,
+.bg-cyan-500\/10::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle,
+                currentColor 0%,
+                transparent 70%);
+    opacity: 0.05;
+    animation: pulse-glow 4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { opacity: 0.05; transform: scale(1); }
+    50% { opacity: 0.1; transform: scale(1.1); }
+}
+
+/* --- Enhanced Loading States --- */
+.animate-spin {
+    filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.6));
+}
+
+/* --- Enhanced Toolstring Builder --- */
+#toolstring-view .border-cyan-500 {
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+}
+
+/* --- Scrollbar Styling --- */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #0891b2, #06b6d4);
+    border-radius: 5px;
+    border: 2px solid rgba(15, 23, 42, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #06b6d4, #22d3ee);
+}
+
+/* --- Enhanced Focus States --- */
+*:focus-visible {
+    outline: 2px solid #22d3ee;
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+}
+
+/* --- Enhanced View Container --- */
+.view-container {
+    animation: fadeInView 0.5s ease-in-out;
+}
+
+@keyframes fadeInView {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Enhanced Data Tables --- */
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+table thead {
+    background: linear-gradient(180deg,
+                rgba(30, 41, 59, 0.8),
+                rgba(15, 23, 42, 0.8));
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+table tbody tr {
+    transition: all 0.2s ease;
+}
+
+table tbody tr:hover {
+    background: rgba(6, 182, 212, 0.05);
+    transform: scale(1.01);
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 640px) {
+    .header {
+        padding: 0.5rem;
+    }
+
+    .nav-link {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    #christmas-tree-view .text-center h2 {
+        font-size: 1.875rem;
     }
 }
