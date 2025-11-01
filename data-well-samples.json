@@ -3,17 +3,20 @@
   "description": "Sample well data for WellTegra platform demonstration",
   "wells": [
     {
-      "well_id": "WPPA-11",
-      "well_name": "WPPA-11",
-      "field": "West Patricia",
-      "operator": "Murphy Oil",
+      "well_id": "M-21",
+      "well_name": "M-21 (The Montrose Squeeze)",
+      "field": "Montrose Field",
+      "operator": "Operator A",
       "well_header": {
-        "well_type": "Production",
+        "well_type": "HPHT Gas Condensate",
         "completion_date": "2004-04-21",
         "water_depth_m": 152,
         "kb_elevation_m": 24.5,
-        "target_formation": "Paleocene Sands",
-        "purpose": "Oil Production"
+        "target_formation": "Triassic Sands",
+        "purpose": "Gas Condensate Production",
+        "current_status": "Active - Restored Production",
+        "primary_issue": "Casing deformation successfully remediated with expandable patch",
+        "key_lesson": "Expandable steel patches provide a rigless pathway to restore full-bore access"
       },
       "trajectory": {
         "survey_points": [
@@ -93,23 +96,69 @@
           }
         ]
       },
+      "well_history": [
+        {
+          "date": "2004-04-21",
+          "event_type": "Completion",
+          "description": "Well completed and brought online",
+          "status": "Success"
+        },
+        {
+          "date": "2018-03-15",
+          "event_type": "Production Issue",
+          "description": "Casing deformation detected at 2,800 ft MD - restricted flow and tool access",
+          "status": "Problem Identified"
+        },
+        {
+          "date": "2018-06-22",
+          "event_type": "Intervention",
+          "description": "Expandable steel patch deployed across deformed interval",
+          "status": "Success"
+        },
+        {
+          "date": "2018-07-10",
+          "event_type": "Production Restored",
+          "description": "Full-bore access restored, production resumed at 95% of original capacity",
+          "status": "Active"
+        }
+      ],
+      "intervention_reports": [
+        {
+          "report_id": "M21-INT-001",
+          "date": "2018-06-22",
+          "intervention_type": "Expandable Patch Installation",
+          "objectives": [
+            "Restore full-bore access across deformed casing interval",
+            "Reinstate well integrity without full workover",
+            "Minimize NPT and intervention cost"
+          ],
+          "operations_summary": "Rigless intervention utilizing expandable steel patch technology to remediate casing deformation at 2,800 ft MD. Patch successfully expanded to 7.5 inch ID, restoring tool passage and flow capacity.",
+          "npt_hours": 12,
+          "cost_usd": 285000,
+          "outcome": "Success - Production restored",
+          "lessons_learned": "Expandable patches are highly effective for casing deformation remediation in HPHT wells. Pre-intervention caliper logs are critical for proper patch sizing."
+        }
+      ],
       "metadata": {
-        "source": "WellTegra Initial Dataset",
+        "source": "WellTegra Demonstration Dataset",
         "imported_date": "2025-11-01T00:00:00Z",
-        "data_quality": "High - Real operational data",
-        "notes": "WPPA-11 well from West Patricia field, North Sea operations. Complete well program from planning to execution."
+        "data_quality": "Demonstration - Representative operational scenarios",
+        "notes": "M-21 case study: Successful casing deformation remediation using expandable patch technology"
       }
     },
     {
-      "well_id": "ET5",
-      "well_name": "ET5",
-      "field": "Everest",
-      "operator": "BG Group",
+      "well_id": "S-15",
+      "well_name": "S-15 (The Scale Trap)",
+      "field": "Montrose Field",
+      "operator": "Operator A",
       "well_header": {
-        "well_type": "Development",
-        "target_formation": "Triassic",
-        "purpose": "Gas Production",
-        "region": "North Sea"
+        "well_type": "HPHT Gas Condensate",
+        "completion_date": "2005-08-12",
+        "target_formation": "Triassic Sands",
+        "purpose": "Gas Condensate Production",
+        "current_status": "Active - Restored Production",
+        "primary_issue": "Severe BaSO4 scale successfully removed with chemical/jetting treatment",
+        "key_lesson": "Combining DTPA dissolver soaks with rotating jetting heads clears hardened scale"
       },
       "trajectory": {
         "survey_points": [
@@ -148,11 +197,441 @@
           {"measured_depth_m": 3159, "inclination_deg": 19.45, "azimuth_deg": 269.58, "tvd_m": 2915.45, "northing_m": -4089.67, "easting_m": -5765.34}
         ]
       },
+      "well_history": [
+        {
+          "date": "2005-08-12",
+          "event_type": "Completion",
+          "description": "Well completed and brought online",
+          "status": "Success"
+        },
+        {
+          "date": "2019-01-20",
+          "event_type": "Production Issue",
+          "description": "Severe BaSO4 scale accumulation blocking production tubing - 80% flow restriction",
+          "status": "Problem Identified"
+        },
+        {
+          "date": "2019-03-05",
+          "event_type": "Intervention",
+          "description": "Chemical/mechanical descaling using DTPA dissolver and rotating jetting",
+          "status": "Success"
+        },
+        {
+          "date": "2019-03-18",
+          "event_type": "Production Restored",
+          "description": "Scale successfully removed, flow capacity restored to 92% of original",
+          "status": "Active"
+        },
+        {
+          "date": "2020-09-10",
+          "event_type": "Preventive Maintenance",
+          "description": "Routine scale inhibitor squeeze performed to prevent recurrence",
+          "status": "Ongoing"
+        }
+      ],
+      "intervention_reports": [
+        {
+          "report_id": "S15-INT-001",
+          "date": "2019-03-05",
+          "intervention_type": "Chemical/Mechanical Descaling",
+          "objectives": [
+            "Remove severe BaSO4 scale accumulation from production tubing",
+            "Restore flow capacity without damaging completion",
+            "Implement scale prevention program"
+          ],
+          "operations_summary": "Coiled tubing intervention deploying DTPA chemical dissolver soaks followed by rotating jetting heads. Scale accumulation of 2-4 inches removed over 500 ft interval. Post-intervention flow testing confirmed 92% capacity restoration.",
+          "npt_hours": 36,
+          "cost_usd": 420000,
+          "outcome": "Success - Scale removed, production restored",
+          "lessons_learned": "Combining chemical dissolvers with mechanical jetting provides superior results vs. either method alone. Rotating jetting heads prevent stuck pipe risk in severe scale environments. Scale inhibitor squeeze program now mandatory for all high-risk wells."
+        }
+      ],
       "metadata": {
-        "source": "WellTegra Initial Dataset - ET5 Deviation Survey",
+        "source": "WellTegra Demonstration Dataset",
         "imported_date": "2025-11-01T00:00:00Z",
-        "data_quality": "High - 6,267 survey points (simplified to 33 for demo)",
-        "notes": "ET5 well from Everest field, North Sea. Original survey contained 6,267 high-resolution points. This is a simplified version with key survey stations."
+        "data_quality": "Demonstration - Representative operational scenarios",
+        "notes": "S-15 case study: Successful severe scale remediation using combined chemical/mechanical approach"
+      }
+    },
+    {
+      "well_id": "F-11",
+      "well_name": "F-11 (The Broken Barrier)",
+      "field": "Montrose Field",
+      "operator": "Operator A",
+      "well_header": {
+        "well_type": "HPHT Gas Condensate",
+        "completion_date": "2006-03-18",
+        "water_depth_m": 148,
+        "kb_elevation_m": 22.0,
+        "target_formation": "Triassic Sands",
+        "purpose": "Gas Condensate Production",
+        "current_status": "Active - Restored Production",
+        "primary_issue": "Failed TRSSV locked open and replaced with insert valve",
+        "key_lesson": "Mechanical lock-open tools followed by insert valves restore safety barriers quickly"
+      },
+      "trajectory": {
+        "survey_points": [
+          {"measured_depth_m": 0, "inclination_deg": 0, "azimuth_deg": 0, "tvd_m": 0, "northing_m": 0, "easting_m": 0},
+          {"measured_depth_m": 150, "inclination_deg": 1.2, "azimuth_deg": 125, "tvd_m": 150, "northing_m": 1.8, "easting_m": 2.1},
+          {"measured_depth_m": 300, "inclination_deg": 4.5, "azimuth_deg": 128, "tvd_m": 299.8, "northing_m": 13.2, "easting_m": 15.8},
+          {"measured_depth_m": 500, "inclination_deg": 12.8, "azimuth_deg": 132, "tvd_m": 498.5, "northing_m": 55.4, "easting_m": 62.1},
+          {"measured_depth_m": 750, "inclination_deg": 25.6, "azimuth_deg": 135, "tvd_m": 742.8, "northing_m": 152.3, "easting_m": 168.5},
+          {"measured_depth_m": 1000, "inclination_deg": 35.2, "azimuth_deg": 137, "tvd_m": 982.1, "northing_m": 285.6, "easting_m": 312.4},
+          {"measured_depth_m": 1250, "inclination_deg": 38.9, "azimuth_deg": 138, "tvd_m": 1217.5, "northing_m": 435.7, "easting_m": 471.2},
+          {"measured_depth_m": 1500, "inclination_deg": 40.1, "azimuth_deg": 139, "tvd_m": 1451.2, "northing_m": 592.8, "easting_m": 636.5},
+          {"measured_depth_m": 1750, "inclination_deg": 39.5, "azimuth_deg": 139, "tvd_m": 1685.6, "northing_m": 749.2, "easting_m": 801.3},
+          {"measured_depth_m": 2000, "inclination_deg": 37.8, "azimuth_deg": 140, "tvd_m": 1921.4, "northing_m": 903.5, "easting_m": 964.2},
+          {"measured_depth_m": 2250, "inclination_deg": 35.2, "azimuth_deg": 140, "tvd_m": 2159.8, "northing_m": 1054.2, "easting_m": 1123.5},
+          {"measured_depth_m": 2500, "inclination_deg": 32.1, "azimuth_deg": 140, "tvd_m": 2400.5, "northing_m": 1199.8, "easting_m": 1278.1},
+          {"measured_depth_m": 2750, "inclination_deg": 28.5, "azimuth_deg": 140, "tvd_m": 2643.2, "northing_m": 1340.1, "easting_m": 1427.5},
+          {"measured_depth_m": 2987, "inclination_deg": 25.2, "azimuth_deg": 140, "tvd_m": 2874.3, "northing_m": 1467.8, "easting_m": 1563.2}
+        ]
+      },
+      "tubular_design": {
+        "components": [
+          {"component_type": "Conductor", "od_inch": 30, "weight_ppf": 205, "grade": "X52", "top_depth_m": 0, "bottom_depth_m": 90},
+          {"component_type": "Surface Casing", "od_inch": 18.625, "weight_ppf": 87.5, "grade": "K55", "top_depth_m": 0, "bottom_depth_m": 480},
+          {"component_type": "Intermediate Casing", "od_inch": 13.375, "weight_ppf": 68, "grade": "L80", "top_depth_m": 0, "bottom_depth_m": 1020},
+          {"component_type": "Production Casing", "od_inch": 9.625, "weight_ppf": 53.5, "grade": "L80-13CR", "top_depth_m": 0, "bottom_depth_m": 2987},
+          {"component_type": "Production Tubing", "od_inch": 4.5, "weight_ppf": 12.6, "grade": "L80", "top_depth_m": 0, "bottom_depth_m": 2970},
+          {"component_type": "TRSSV (Failed)", "description": "Tubing Retrievable Subsurface Safety Valve - FAILED", "top_depth_m": 1450, "bottom_depth_m": 1455},
+          {"component_type": "Insert Safety Valve", "description": "Slickline-retrievable insert valve (replacement)", "top_depth_m": 1448, "bottom_depth_m": 1452}
+        ]
+      },
+      "well_history": [
+        {"date": "2006-03-18", "event_type": "Completion", "description": "Well completed with TRSSV at 1,450m MD", "status": "Success"},
+        {"date": "2017-11-05", "event_type": "Equipment Failure", "description": "TRSSV failed to close during routine function test - primary safety barrier compromised", "status": "Critical"},
+        {"date": "2017-11-08", "event_type": "Emergency Response", "description": "Well shut in at surface, production suspended pending barrier remediation", "status": "Shut-in"},
+        {"date": "2017-12-12", "event_type": "Intervention", "description": "TRSSV mechanically locked open, insert safety valve deployed via slickline", "status": "Success"},
+        {"date": "2017-12-20", "event_type": "Production Restored", "description": "Primary safety barrier restored, well returned to production", "status": "Active"}
+      ],
+      "intervention_reports": [
+        {
+          "report_id": "F11-INT-001",
+          "date": "2017-12-12",
+          "intervention_type": "Safety Barrier Replacement",
+          "objectives": [
+            "Restore primary safety barrier functionality",
+            "Minimize well shut-in time",
+            "Deploy cost-effective alternative to TRSSV replacement"
+          ],
+          "operations_summary": "Failed TRSSV mechanically locked in open position using lock-open tool. Slickline-retrievable insert safety valve installed 2m above failed TRSSV. New valve successfully function-tested and certified as primary safety barrier. Total intervention time: 8 days including mobilization.",
+          "npt_hours": 192,
+          "cost_usd": 175000,
+          "outcome": "Success - Primary barrier restored",
+          "lessons_learned": "Insert valves provide rapid, cost-effective safety barrier restoration when TRSSVs fail. Mechanical lock-open tools essential for eliminating flow obstruction. Regular TRSSV function testing critical for early failure detection."
+        }
+      ],
+      "metadata": {
+        "source": "WellTegra Demonstration Dataset",
+        "imported_date": "2025-11-01T00:00:00Z",
+        "data_quality": "Demonstration - Representative operational scenarios",
+        "notes": "F-11 case study: Rapid safety barrier restoration using insert valve technology"
+      }
+    },
+    {
+      "well_id": "C-08",
+      "well_name": "C-08 (The Sandstorm)",
+      "field": "Montrose Field",
+      "operator": "Operator A",
+      "well_header": {
+        "well_type": "HPHT Gas Condensate",
+        "completion_date": "2007-09-25",
+        "water_depth_m": 155,
+        "kb_elevation_m": 23.8,
+        "target_formation": "Triassic Sands",
+        "purpose": "Gas Condensate Production",
+        "current_status": "Active - Restored Production",
+        "primary_issue": "Failed sand screen repaired with through-tubing patch",
+        "key_lesson": "Through-tubing expandable patches eliminate sand ingress without full workover"
+      },
+      "trajectory": {
+        "survey_points": [
+          {"measured_depth_m": 0, "inclination_deg": 0, "azimuth_deg": 0, "tvd_m": 0, "northing_m": 0, "easting_m": 0},
+          {"measured_depth_m": 200, "inclination_deg": 2.1, "azimuth_deg": 95, "tvd_m": 199.9, "northing_m": 3.6, "easting_m": 0.3},
+          {"measured_depth_m": 400, "inclination_deg": 8.5, "azimuth_deg": 98, "tvd_m": 399.2, "northing_m": 29.5, "easting_m": 4.1},
+          {"measured_depth_m": 600, "inclination_deg": 18.2, "azimuth_deg": 102, "tvd_m": 596.8, "northing_m": 94.2, "easting_m": 19.6},
+          {"measured_depth_m": 800, "inclination_deg": 28.5, "azimuth_deg": 105, "tvd_m": 791.5, "northing_m": 192.5, "easting_m": 50.1},
+          {"measured_depth_m": 1000, "inclination_deg": 36.8, "azimuth_deg": 108, "tvd_m": 983.2, "northing_m": 315.8, "easting_m": 97.2},
+          {"measured_depth_m": 1250, "inclination_deg": 42.1, "azimuth_deg": 110, "tvd_m": 1216.5, "northing_m": 483.5, "easting_m": 166.8},
+          {"measured_depth_m": 1500, "inclination_deg": 44.5, "azimuth_deg": 111, "tvd_m": 1448.2, "northing_m": 658.2, "easting_m": 245.1},
+          {"measured_depth_m": 1750, "inclination_deg": 45.2, "azimuth_deg": 112, "tvd_m": 1679.1, "northing_m": 833.6, "easting_m": 327.5},
+          {"measured_depth_m": 2000, "inclination_deg": 44.8, "azimuth_deg": 112, "tvd_m": 1910.2, "northing_m": 1008.5, "easting_m": 410.2},
+          {"measured_depth_m": 2250, "inclination_deg": 43.2, "azimuth_deg": 112, "tvd_m": 2142.8, "northing_m": 1181.2, "easting_m": 492.8},
+          {"measured_depth_m": 2500, "inclination_deg": 40.5, "azimuth_deg": 112, "tvd_m": 2377.5, "northing_m": 1350.5, "easting_m": 574.2},
+          {"measured_depth_m": 2750, "inclination_deg": 37.2, "azimuth_deg": 112, "tvd_m": 2614.2, "northing_m": 1515.8, "easting_m": 654.1},
+          {"measured_depth_m": 3000, "inclination_deg": 33.5, "azimuth_deg": 112, "tvd_m": 2852.6, "northing_m": 1676.5, "easting_m": 732.5},
+          {"measured_depth_m": 3048, "inclination_deg": 32.1, "azimuth_deg": 112, "tvd_m": 2893.2, "northing_m": 1716.8, "easting_m": 749.8}
+        ]
+      },
+      "tubular_design": {
+        "components": [
+          {"component_type": "Conductor", "od_inch": 30, "weight_ppf": 205, "grade": "X52", "top_depth_m": 0, "bottom_depth_m": 95},
+          {"component_type": "Surface Casing", "od_inch": 20, "weight_ppf": 133, "grade": "K55", "top_depth_m": 0, "bottom_depth_m": 520},
+          {"component_type": "Production Casing", "od_inch": 9.625, "weight_ppf": 53.5, "grade": "L80-13CR", "top_depth_m": 0, "bottom_depth_m": 3048},
+          {"component_type": "Production Tubing", "od_inch": 5.5, "weight_ppf": 17, "grade": "L80", "top_depth_m": 0, "bottom_depth_m": 3030},
+          {"component_type": "Sand Screen (Failed)", "description": "Wire-wrapped sand control screen - FAILED", "top_depth_m": 2985, "bottom_depth_m": 3045},
+          {"component_type": "Through-Tubing Patch", "description": "Expandable sand screen patch", "top_depth_m": 2990, "bottom_depth_m": 3020}
+        ]
+      },
+      "well_history": [
+        {"date": "2007-09-25", "event_type": "Completion", "description": "Well completed with wire-wrapped sand control screen", "status": "Success"},
+        {"date": "2020-02-14", "event_type": "Production Issue", "description": "Sustained sand production detected - erosion of surface equipment, well shut in", "status": "Critical"},
+        {"date": "2020-02-18", "event_type": "Diagnosis", "description": "Wireline caliper confirms screen failure at 2,990-3,020m MD", "status": "Problem Confirmed"},
+        {"date": "2020-04-05", "event_type": "Intervention", "description": "Through-tubing expandable patch deployed to isolate failed screen section", "status": "Success"},
+        {"date": "2020-04-12", "event_type": "Production Restored", "description": "Sand ingress eliminated, production resumed at 88% capacity", "status": "Active"}
+      ],
+      "intervention_reports": [
+        {
+          "report_id": "C08-INT-001",
+          "date": "2020-04-05",
+          "intervention_type": "Through-Tubing Sand Control Repair",
+          "objectives": [
+            "Eliminate sustained sand production",
+            "Restore well integrity without full workover",
+            "Protect surface facilities from further erosion damage"
+          ],
+          "operations_summary": "Through-tubing expandable patch deployed via wireline to isolate 30m section of failed sand screen. Patch expanded to 4.75 inch ID, creating new sand exclusion barrier. Post-intervention sand monitoring shows zero sand production. Production capacity reduced 12% due to restricted flow area.",
+          "npt_hours": 48,
+          "cost_usd": 310000,
+          "outcome": "Success - Sand production eliminated",
+          "lessons_learned": "Through-tubing expandable patches provide viable alternative to costly full workovers for sand screen failures. Early sand detection systems critical for minimizing surface equipment damage. Patch ID sizing must balance sand exclusion vs. production capacity."
+        }
+      ],
+      "metadata": {
+        "source": "WellTegra Demonstration Dataset",
+        "imported_date": "2025-11-01T00:00:00Z",
+        "data_quality": "Demonstration - Representative operational scenarios",
+        "notes": "C-08 case study: Sand control restoration using through-tubing expandable patch"
+      }
+    },
+    {
+      "well_id": "P-12",
+      "well_name": "P-12 (The Wax Plug)",
+      "field": "Piper Field",
+      "operator": "Operator B",
+      "well_header": {
+        "well_type": "Oil Producer",
+        "completion_date": "2003-11-10",
+        "water_depth_m": 142,
+        "kb_elevation_m": 26.2,
+        "target_formation": "Jurassic Sands",
+        "purpose": "Oil Production",
+        "current_status": "Active - Restored Production",
+        "primary_issue": "Severe paraffin wax blockage cleared with chemical/mechanical CT approach",
+        "key_lesson": "Heated chemical dissolvers combined with mechanical scrapers deliver durable wax remediation"
+      },
+      "trajectory": {
+        "survey_points": [
+          {"measured_depth_m": 0, "inclination_deg": 0, "azimuth_deg": 0, "tvd_m": 0, "northing_m": 0, "easting_m": 0},
+          {"measured_depth_m": 100, "inclination_deg": 0.8, "azimuth_deg": 215, "tvd_m": 100, "northing_m": -0.7, "easting_m": -0.8},
+          {"measured_depth_m": 250, "inclination_deg": 3.2, "azimuth_deg": 218, "tvd_m": 249.9, "northing_m": -7.0, "easting_m": -8.9},
+          {"measured_depth_m": 500, "inclination_deg": 10.5, "azimuth_deg": 222, "tvd_m": 499.1, "northing_m": -45.6, "easting_m": -57.2},
+          {"measured_depth_m": 750, "inclination_deg": 19.8, "azimuth_deg": 225, "tvd_m": 746.2, "northing_m": -126.5, "easting_m": -154.8},
+          {"measured_depth_m": 1000, "inclination_deg": 28.2, "azimuth_deg": 228, "tvd_m": 989.5, "northing_m": -240.8, "easting_m": -287.5},
+          {"measured_depth_m": 1250, "inclination_deg": 34.5, "azimuth_deg": 230, "tvd_m": 1228.8, "northing_m": -378.2, "easting_m": -444.2},
+          {"measured_depth_m": 1500, "inclination_deg": 38.1, "azimuth_deg": 231, "tvd_m": 1465.2, "northing_m": -527.8, "easting_m": -615.8},
+          {"measured_depth_m": 1750, "inclination_deg": 39.5, "azimuth_deg": 232, "tvd_m": 1700.5, "northing_m": -682.5, "easting_m": -792.5},
+          {"measured_depth_m": 2000, "inclination_deg": 38.8, "azimuth_deg": 232, "tvd_m": 1936.2, "northing_m": -837.2, "easting_m": -969.8},
+          {"measured_depth_m": 2250, "inclination_deg": 36.5, "azimuth_deg": 232, "tvd_m": 2173.5, "northing_m": -989.5, "easting_m": -1145.2},
+          {"measured_depth_m": 2286, "inclination_deg": 35.8, "azimuth_deg": 232, "tvd_m": 2202.8, "northing_m": -1017.8, "easting_m": -1178.5}
+        ]
+      },
+      "tubular_design": {
+        "components": [
+          {"component_type": "Conductor", "od_inch": 26, "weight_ppf": 185, "grade": "X52", "top_depth_m": 0, "bottom_depth_m": 82},
+          {"component_type": "Surface Casing", "od_inch": 18.625, "weight_ppf": 87.5, "grade": "K55", "top_depth_m": 0, "bottom_depth_m": 425},
+          {"component_type": "Production Casing", "od_inch": 9.625, "weight_ppf": 47, "grade": "L80", "top_depth_m": 0, "bottom_depth_m": 2286},
+          {"component_type": "Production Tubing", "od_inch": 3.5, "weight_ppf": 9.3, "grade": "L80", "top_depth_m": 0, "bottom_depth_m": 2270}
+        ]
+      },
+      "well_history": [
+        {"date": "2003-11-10", "event_type": "Completion", "description": "Well completed and brought online - oil producer", "status": "Success"},
+        {"date": "2016-08-22", "event_type": "Production Issue", "description": "Declining production rates due to paraffin wax buildup in tubing", "status": "Problem Identified"},
+        {"date": "2016-10-05", "event_type": "Production Failure", "description": "Complete flow blockage at 1,800-2,100m MD - well shut in", "status": "Critical"},
+        {"date": "2016-11-18", "event_type": "Intervention", "description": "Coiled tubing chemical/mechanical wax removal campaign", "status": "Success"},
+        {"date": "2016-11-28", "event_type": "Production Restored", "description": "Wax blockage removed, production restored to 85% of original capacity", "status": "Active"},
+        {"date": "2017-05-15", "event_type": "Preventive Maintenance", "description": "Hot oil circulation program implemented to prevent wax recurrence", "status": "Ongoing"}
+      ],
+      "intervention_reports": [
+        {
+          "report_id": "P12-INT-001",
+          "date": "2016-11-18",
+          "intervention_type": "Chemical/Mechanical Wax Removal",
+          "objectives": [
+            "Remove severe paraffin wax blockage from production tubing",
+            "Restore production without damaging tubing integrity",
+            "Implement wax prevention program"
+          ],
+          "operations_summary": "Coiled tubing deployed with heated chemical wax dissolver (xylene-based) and mechanical scraper tools. 300m section of complete wax blockage removed in stages using soak-and-scrape technique. Post-intervention caliper confirms clear tubing bore. Hot oil circulation program established for ongoing wax management.",
+          "npt_hours": 240,
+          "cost_usd": 395000,
+          "outcome": "Success - Wax removed, production restored",
+          "lessons_learned": "Combining heated chemical dissolvers with mechanical scrapers provides superior results vs. either method alone. Staged intervention approach prevents stuck CT in severe blockages. Preventive hot oil programs are cost-effective vs. reactive interventions."
+        }
+      ],
+      "metadata": {
+        "source": "WellTegra Demonstration Dataset",
+        "imported_date": "2025-11-01T00:00:00Z",
+        "data_quality": "Demonstration - Representative operational scenarios",
+        "notes": "P-12 case study: Severe paraffin wax remediation using combined chemical/mechanical approach"
+      }
+    },
+    {
+      "well_id": "W666",
+      "well_name": "W666 (The Perfect Storm)",
+      "field": "Montrose Field",
+      "operator": "Operator A",
+      "well_header": {
+        "well_type": "HPHT Gas Condensate",
+        "completion_date": "2008-06-15",
+        "water_depth_m": 151,
+        "kb_elevation_m": 24.1,
+        "target_formation": "Triassic Sands",
+        "purpose": "Gas Condensate Production",
+        "measured_depth_ft": 18500,
+        "current_status": "Shut-in - Well Integrity Issues",
+        "primary_issue": "Compound casing, scale, and safety barrier failures - integrated intervention required",
+        "key_lesson": "Multi-failure scenarios require systematic, phased remediation approach"
+      },
+      "trajectory": {
+        "survey_points": [
+          {"measured_depth_m": 0, "inclination_deg": 0, "azimuth_deg": 0, "tvd_m": 0, "northing_m": 0, "easting_m": 0},
+          {"measured_depth_m": 200, "inclination_deg": 1.8, "azimuth_deg": 155, "tvd_m": 200, "northing_m": 3.1, "easting_m": 2.7},
+          {"measured_depth_m": 500, "inclination_deg": 7.2, "azimuth_deg": 158, "tvd_m": 499.6, "northing_m": 31.2, "easting_m": 23.5},
+          {"measured_depth_m": 1000, "inclination_deg": 18.5, "azimuth_deg": 162, "tvd_m": 997.5, "northing_m": 158.7, "easting_m": 98.3},
+          {"measured_depth_m": 1500, "inclination_deg": 32.1, "azimuth_deg": 165, "tvd_m": 1490.2, "northing_m": 385.6, "easting_m": 238.9},
+          {"measured_depth_m": 2000, "inclination_deg": 44.8, "azimuth_deg": 168, "tvd_m": 1975.3, "northing_m": 691.2, "easting_m": 425.8},
+          {"measured_depth_m": 2500, "inclination_deg": 55.2, "azimuth_deg": 170, "tvd_m": 2448.5, "northing_m": 1056.8, "easting_m": 652.1},
+          {"measured_depth_m": 3000, "inclination_deg": 62.5, "azimuth_deg": 172, "tvd_m": 2907.2, "northing_m": 1464.5, "easting_m": 908.7},
+          {"measured_depth_m": 3500, "inclination_deg": 67.2, "azimuth_deg": 173, "tvd_m": 3349.8, "northing_m": 1897.3, "easting_m": 1185.2},
+          {"measured_depth_m": 4000, "inclination_deg": 69.8, "azimuth_deg": 174, "tvd_m": 3775.6, "northing_m": 2339.8, "easting_m": 1474.5},
+          {"measured_depth_m": 4500, "inclination_deg": 70.5, "azimuth_deg": 175, "tvd_m": 4184.2, "northing_m": 2787.5, "easting_m": 1772.8},
+          {"measured_depth_m": 5000, "inclination_deg": 69.2, "azimuth_deg": 175, "tvd_m": 4576.8, "northing_m": 3234.2, "easting_m": 2075.1},
+          {"measured_depth_m": 5500, "inclination_deg": 66.5, "azimuth_deg": 176, "tvd_m": 4955.3, "northing_m": 3674.5, "easting_m": 2378.5},
+          {"measured_depth_m": 5640, "inclination_deg": 65.2, "azimuth_deg": 176, "tvd_m": 5015.2, "northing_m": 3785.6, "easting_m": 2452.3}
+        ]
+      },
+      "tubular_design": {
+        "components": [
+          {"component_type": "Conductor", "od_inch": 36, "weight_ppf": 245, "grade": "X52", "top_depth_m": 0, "bottom_depth_m": 105},
+          {"component_type": "Surface Casing", "od_inch": 20, "weight_ppf": 133, "grade": "K55", "top_depth_m": 0, "bottom_depth_m": 650, "issue": "Casing deformation at 620m MD"},
+          {"component_type": "Intermediate Casing", "od_inch": 13.375, "weight_ppf": 72, "grade": "L80", "top_depth_m": 0, "bottom_depth_m": 1850},
+          {"component_type": "Production Casing", "od_inch": 9.625, "weight_ppf": 53.5, "grade": "L80-13CR", "top_depth_m": 0, "bottom_depth_m": 5640, "issue": "Severe BaSO4 scale 4200-4500m MD"},
+          {"component_type": "Production Tubing", "od_inch": 5.5, "weight_ppf": 17, "grade": "L80-13CR", "top_depth_m": 0, "bottom_depth_m": 5620},
+          {"component_type": "TRSSV (Failed)", "description": "Tubing Retrievable Subsurface Safety Valve - FAILED CLOSED", "top_depth_m": 2100, "bottom_depth_m": 2105, "issue": "Failed in closed position - blocking well access"}
+        ]
+      },
+      "well_history": [
+        {"date": "2008-06-15", "event_type": "Completion", "description": "Well completed and brought online - HPHT gas condensate producer", "status": "Success"},
+        {"date": "2021-03-20", "event_type": "Production Issue", "description": "Declining production rates - scale buildup suspected", "status": "Problem Identified"},
+        {"date": "2021-06-10", "event_type": "Equipment Failure", "description": "TRSSV failed in closed position during function test - well access blocked", "status": "Critical"},
+        {"date": "2021-06-15", "event_type": "Emergency Shutdown", "description": "Well shut in - safety barrier failed, scale confirmed, casing deformation discovered during diagnostics", "status": "Shut-in"},
+        {"date": "2021-07-01", "event_type": "Investigation", "description": "Multi-string logs confirm: (1) TRSSV failed closed @ 2,100m, (2) Severe scale 4,200-4,500m, (3) Casing deformation @ 620m", "status": "Triple Failure Confirmed"},
+        {"date": "2021-08-15", "event_type": "Planning", "description": "Integrated intervention program designed: Phase 1-TRSSV, Phase 2-Scale, Phase 3-Casing", "status": "Awaiting Budget Approval"}
+      ],
+      "intervention_reports": [
+        {
+          "report_id": "W666-PLAN-001",
+          "date": "2021-08-15",
+          "intervention_type": "Multi-Phase Integrated Intervention (Planned)",
+          "objectives": [
+            "Restore well access by remediating failed TRSSV",
+            "Remove severe BaSO4 scale accumulation",
+            "Repair casing deformation with expandable patch",
+            "Restore primary safety barriers",
+            "Return well to production"
+          ],
+          "operations_summary": "PLANNED - Three-phase campaign: (1) Mill-out failed TRSSV and install insert valve, (2) Chemical/mechanical descaling of 300m interval, (3) Deploy expandable casing patch. Estimated duration: 45 days offshore operations.",
+          "npt_hours": 1080,
+          "cost_usd": 2850000,
+          "outcome": "Planned - Awaiting execution",
+          "lessons_learned": "W666 demonstrates how multiple concurrent failures compound NPT costs and complexity. Integrated planning essential for multi-failure scenarios. Case study serves as blueprint for similar compound-issue interventions across portfolio."
+        }
+      ],
+      "metadata": {
+        "source": "WellTegra Demonstration Dataset",
+        "imported_date": "2025-11-01T00:00:00Z",
+        "data_quality": "Demonstration - Representative operational scenarios",
+        "notes": "W666 case study: The 'Perfect Storm' - compound multi-failure scenario requiring integrated intervention program. This well represents the combination of all issues resolved individually in offset wells M-21, S-15, and F-11."
+      }
+    },
+    {
+      "well_id": "S-77",
+      "well_name": "S-77 (Field of Dreams)",
+      "field": "Schiehallion Field",
+      "operator": "Operator C",
+      "well_header": {
+        "well_type": "HPHT Oil Producer",
+        "completion_date": "2002-05-20",
+        "water_depth_m": 385,
+        "kb_elevation_m": 32.5,
+        "target_formation": "Paleocene Sands",
+        "purpose": "Oil Production",
+        "measured_depth_ft": 19200,
+        "current_status": "Active - Peak Performance",
+        "primary_issue": "Multi-barrier failure resolution - blueprint for portfolio-wide success",
+        "key_lesson": "Integrated multi-discipline campaigns compress timelines and maximize production uplift"
+      },
+      "trajectory": {
+        "survey_points": [
+          {"measured_depth_m": 0, "inclination_deg": 0, "azimuth_deg": 0, "tvd_m": 0, "northing_m": 0, "easting_m": 0},
+          {"measured_depth_m": 300, "inclination_deg": 2.5, "azimuth_deg": 285, "tvd_m": 300, "northing_m": 6.5, "easting_m": -11.2},
+          {"measured_depth_m": 750, "inclination_deg": 11.8, "azimuth_deg": 288, "tvd_m": 749.2, "northing_m": 76.8, "easting_m": -141.5},
+          {"measured_depth_m": 1500, "inclination_deg": 28.5, "azimuth_deg": 292, "tvd_m": 1494.5, "northing_m": 287.5, "easting_m": -534.2},
+          {"measured_depth_m": 2500, "inclination_deg": 48.2, "azimuth_deg": 296, "tvd_m": 2475.8, "northing_m": 735.2, "easting_m": -1285.6},
+          {"measured_depth_m": 3500, "inclination_deg": 61.5, "azimuth_deg": 299, "tvd_m": 3425.2, "northing_m": 1345.8, "easting_m": -2245.7},
+          {"measured_depth_m": 4500, "inclination_deg": 68.8, "azimuth_deg": 301, "tvd_m": 4345.6, "northing_m": 2068.5, "easting_m": -3354.2},
+          {"measured_depth_m": 5500, "inclination_deg": 72.1, "azimuth_deg": 303, "tvd_m": 5235.3, "northing_m": 2867.8, "easting_m": -4564.8},
+          {"measured_depth_m": 5850, "inclination_deg": 71.5, "azimuth_deg": 304, "tvd_m": 5345.7, "northing_m": 3178.5, "easting_m": -5089.2}
+        ]
+      },
+      "tubular_design": {
+        "components": [
+          {"component_type": "Conductor", "od_inch": 36, "weight_ppf": 245, "grade": "X52", "top_depth_m": 0, "bottom_depth_m": 125},
+          {"component_type": "Surface Casing", "od_inch": 22, "weight_ppf": 155, "grade": "K55", "top_depth_m": 0, "bottom_depth_m": 785},
+          {"component_type": "Intermediate Casing", "od_inch": 16, "weight_ppf": 84, "grade": "L80", "top_depth_m": 0, "bottom_depth_m": 2450},
+          {"component_type": "Production Casing", "od_inch": 11.75, "weight_ppf": 65, "grade": "L80-13CR", "top_depth_m": 0, "bottom_depth_m": 5850},
+          {"component_type": "Production Tubing", "od_inch": 5.5, "weight_ppf": 20, "grade": "L80-13CR", "top_depth_m": 0, "bottom_depth_m": 5830},
+          {"component_type": "TRSSV (Replaced)", "description": "New generation TRSSV with enhanced reliability", "top_depth_m": 1850, "bottom_depth_m": 1855},
+          {"component_type": "Production Packer", "description": "Permanent production packer", "top_depth_m": 5810, "bottom_depth_m": 5815}
+        ]
+      },
+      "well_history": [
+        {"date": "2002-05-20", "event_type": "Completion", "description": "Well completed - HPHT oil producer in deepwater environment", "status": "Success"},
+        {"date": "2018-09-10", "event_type": "Production Decline", "description": "Production declined to 45% of original capacity - multiple issues suspected", "status": "Problem Identified"},
+        {"date": "2018-10-15", "event_type": "Comprehensive Diagnosis", "description": "Identified: Scale buildup, TRSSV degradation, near-wellbore formation damage", "status": "Multi-Issue Confirmed"},
+        {"date": "2019-02-01", "event_type": "Integrated Campaign - Phase 1", "description": "Replaced TRSSV with new-generation valve, installed backup insert valve", "status": "Success"},
+        {"date": "2019-03-10", "event_type": "Integrated Campaign - Phase 2", "description": "Chemical/mechanical descaling campaign - 400m interval treated", "status": "Success"},
+        {"date": "2019-04-15", "event_type": "Integrated Campaign - Phase 3", "description": "Matrix acidization treatment for formation damage remediation", "status": "Success"},
+        {"date": "2019-05-01", "event_type": "Production Restored", "description": "Well returned to 92% of original production capacity - exceeding targets", "status": "Active - Peak Performance"},
+        {"date": "2020-Present", "event_type": "Sustained Performance", "description": "Maintained >90% production with proactive monitoring and preventive maintenance", "status": "Best-in-Class"}
+      ],
+      "intervention_reports": [
+        {
+          "report_id": "S77-INT-001",
+          "date": "2019-02-01",
+          "intervention_type": "Integrated Multi-Discipline Campaign",
+          "objectives": [
+            "Restore safety barrier reliability",
+            "Remove scale accumulation",
+            "Remediate formation damage",
+            "Maximize production uplift",
+            "Establish preventive maintenance program"
+          ],
+          "operations_summary": "Three-phase integrated campaign executed over 85 days: (1) TRSSV replacement + insert valve installation, (2) 400m descaling using combined chemical/jetting approach, (3) Matrix acidization for near-wellbore stimulation. Campaign compressed timeline by 40% vs. sequential approach. Production restored to 92% capacity.",
+          "npt_hours": 2040,
+          "cost_usd": 4250000,
+          "outcome": "Success - Exceeded production targets",
+          "production_uplift_bopd": 3500,
+          "lessons_learned": "Integrated multi-discipline campaigns deliver superior results vs. sequential interventions. Comprehensive diagnostics enable precise intervention design. Proactive preventive maintenance programs dramatically reduce future NPT. S-77 serves as portfolio-wide blueprint for complex multi-issue wells."
+        }
+      ],
+      "metadata": {
+        "source": "WellTegra Demonstration Dataset",
+        "imported_date": "2025-11-01T00:00:00Z",
+        "data_quality": "Demonstration - Representative operational scenarios",
+        "notes": "S-77 case study: 'Field of Dreams' success story demonstrating value of integrated multi-discipline intervention campaigns. Achieved 92% production restoration and sustained performance through proactive management."
       }
     }
   ]
