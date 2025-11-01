@@ -1,0 +1,159 @@
+{
+  "format_version": "1.0",
+  "description": "Sample well data for WellTegra platform demonstration",
+  "wells": [
+    {
+      "well_id": "WPPA-11",
+      "well_name": "WPPA-11",
+      "field": "West Patricia",
+      "operator": "Murphy Oil",
+      "well_header": {
+        "well_type": "Production",
+        "completion_date": "2004-04-21",
+        "water_depth_m": 152,
+        "kb_elevation_m": 24.5,
+        "target_formation": "Paleocene Sands",
+        "purpose": "Oil Production"
+      },
+      "trajectory": {
+        "survey_points": [
+          {"measured_depth_m": 0, "inclination_deg": 0, "azimuth_deg": 0, "tvd_m": 0, "northing_m": 0, "easting_m": 0},
+          {"measured_depth_m": 100, "inclination_deg": 0.5, "azimuth_deg": 45, "tvd_m": 100, "northing_m": 0.4, "easting_m": 0.4},
+          {"measured_depth_m": 200, "inclination_deg": 2.1, "azimuth_deg": 48, "tvd_m": 199.9, "northing_m": 3.2, "easting_m": 2.8},
+          {"measured_depth_m": 300, "inclination_deg": 5.8, "azimuth_deg": 52, "tvd_m": 299.5, "northing_m": 10.5, "easting_m": 9.8},
+          {"measured_depth_m": 400, "inclination_deg": 12.3, "azimuth_deg": 55, "tvd_m": 398.2, "northing_m": 24.3, "easting_m": 22.5},
+          {"measured_depth_m": 500, "inclination_deg": 21.5, "azimuth_deg": 58, "tvd_m": 495.8, "northing_m": 45.8, "easting_m": 42.1},
+          {"measured_depth_m": 600, "inclination_deg": 33.2, "azimuth_deg": 61, "tvd_m": 591.2, "northing_m": 76.2, "easting_m": 69.5},
+          {"measured_depth_m": 700, "inclination_deg": 46.8, "azimuth_deg": 63, "tvd_m": 683.5, "northing_m": 115.4, "easting_m": 104.8},
+          {"measured_depth_m": 741, "inclination_deg": 66.2, "azimuth_deg": 64, "tvd_m": 712.3, "northing_m": 145.2, "easting_m": 131.5},
+          {"measured_depth_m": 800, "inclination_deg": 58.4, "azimuth_deg": 65, "tvd_m": 743.8, "northing_m": 178.6, "easting_m": 161.2},
+          {"measured_depth_m": 900, "inclination_deg": 52.1, "azimuth_deg": 66, "tvd_m": 805.2, "northing_m": 238.5, "easting_m": 214.3},
+          {"measured_depth_m": 1000, "inclination_deg": 48.5, "azimuth_deg": 67, "tvd_m": 868.4, "northing_m": 298.7, "easting_m": 267.8},
+          {"measured_depth_m": 1100, "inclination_deg": 45.2, "azimuth_deg": 67, "tvd_m": 932.8, "northing_m": 358.2, "easting_m": 320.5},
+          {"measured_depth_m": 1200, "inclination_deg": 42.8, "azimuth_deg": 68, "tvd_m": 997.5, "northing_m": 416.8, "easting_m": 372.4},
+          {"measured_depth_m": 1300, "inclination_deg": 40.5, "azimuth_deg": 68, "tvd_m": 1062.8, "northing_m": 474.5, "easting_m": 423.5},
+          {"measured_depth_m": 1400, "inclination_deg": 38.2, "azimuth_deg": 68, "tvd_m": 1128.6, "northing_m": 531.2, "easting_m": 473.8},
+          {"measured_depth_m": 1500, "inclination_deg": 36.1, "azimuth_deg": 68, "tvd_m": 1194.9, "northing_m": 587.1, "easting_m": 523.4}
+        ]
+      },
+      "tubular_design": {
+        "components": [
+          {
+            "component_type": "Conductor",
+            "od_inch": 30,
+            "weight_ppf": 205,
+            "grade": "X52",
+            "top_depth_m": 0,
+            "bottom_depth_m": 85
+          },
+          {
+            "component_type": "Surface Casing",
+            "od_inch": 20,
+            "weight_ppf": 133,
+            "grade": "K55",
+            "top_depth_m": 0,
+            "bottom_depth_m": 450
+          },
+          {
+            "component_type": "Intermediate Casing",
+            "od_inch": 13.375,
+            "weight_ppf": 68,
+            "grade": "L80",
+            "top_depth_m": 0,
+            "bottom_depth_m": 950
+          },
+          {
+            "component_type": "Production Casing",
+            "od_inch": 9.625,
+            "weight_ppf": 53.5,
+            "grade": "L80-13CR",
+            "top_depth_m": 0,
+            "bottom_depth_m": 1500
+          },
+          {
+            "component_type": "Production Tubing",
+            "od_inch": 3.5,
+            "weight_ppf": 9.3,
+            "grade": "L80",
+            "top_depth_m": 0,
+            "bottom_depth_m": 1485,
+            "description": "Production string with SCSSV"
+          },
+          {
+            "component_type": "SCSSV",
+            "description": "Surface Controlled Subsurface Safety Valve",
+            "top_depth_m": 1120,
+            "bottom_depth_m": 1125
+          },
+          {
+            "component_type": "Production Packer",
+            "description": "Permanent production packer",
+            "top_depth_m": 1475,
+            "bottom_depth_m": 1480
+          }
+        ]
+      },
+      "metadata": {
+        "source": "WellTegra Initial Dataset",
+        "imported_date": "2025-11-01T00:00:00Z",
+        "data_quality": "High - Real operational data",
+        "notes": "WPPA-11 well from West Patricia field, North Sea operations. Complete well program from planning to execution."
+      }
+    },
+    {
+      "well_id": "ET5",
+      "well_name": "ET5",
+      "field": "Everest",
+      "operator": "BG Group",
+      "well_header": {
+        "well_type": "Development",
+        "target_formation": "Triassic",
+        "purpose": "Gas Production",
+        "region": "North Sea"
+      },
+      "trajectory": {
+        "survey_points": [
+          {"measured_depth_m": 26, "inclination_deg": 0.12, "azimuth_deg": 184.72, "tvd_m": 26, "northing_m": -0.055, "easting_m": 0},
+          {"measured_depth_m": 100, "inclination_deg": 0.25, "azimuth_deg": 188.45, "tvd_m": 100, "northing_m": -0.32, "easting_m": -0.05},
+          {"measured_depth_m": 200, "inclination_deg": 0.45, "azimuth_deg": 192.18, "tvd_m": 200, "northing_m": -1.57, "easting_m": -0.18},
+          {"measured_depth_m": 300, "inclination_deg": 1.15, "azimuth_deg": 195.82, "tvd_m": 300, "northing_m": -5.99, "easting_m": -0.55},
+          {"measured_depth_m": 400, "inclination_deg": 2.82, "azimuth_deg": 198.45, "tvd_m": 399.98, "northing_m": -19.61, "easting_m": -2.25},
+          {"measured_depth_m": 500, "inclination_deg": 5.75, "azimuth_deg": 201.15, "tvd_m": 499.85, "northing_m": -50.13, "easting_m": -8.91},
+          {"measured_depth_m": 600, "inclination_deg": 9.85, "azimuth_deg": 203.82, "tvd_m": 599.23, "northing_m": -103.56, "easting_m": -24.78},
+          {"measured_depth_m": 700, "inclination_deg": 14.92, "azimuth_deg": 206.45, "tvd_m": 697.45, "northing_m": -182.45, "easting_m": -55.32},
+          {"measured_depth_m": 800, "inclination_deg": 20.65, "azimuth_deg": 209.12, "tvd_m": 794.12, "northing_m": -287.23, "easting_m": -104.56},
+          {"measured_depth_m": 900, "inclination_deg": 26.48, "azimuth_deg": 211.85, "tvd_m": 888.65, "northing_m": -415.67, "easting_m": -175.42},
+          {"measured_depth_m": 1000, "inclination_deg": 31.92, "azimuth_deg": 214.52, "tvd_m": 980.23, "northing_m": -564.89, "easting_m": -270.85},
+          {"measured_depth_m": 1100, "inclination_deg": 36.25, "azimuth_deg": 217.18, "tvd_m": 1068.45, "northing_m": -731.25, "easting_m": -391.23},
+          {"measured_depth_m": 1200, "inclination_deg": 37.06, "azimuth_deg": 219.82, "tvd_m": 1154.89, "northing_m": -910.34, "easting_m": -535.67},
+          {"measured_depth_m": 1300, "inclination_deg": 36.85, "azimuth_deg": 222.45, "tvd_m": 1241.23, "northing_m": -1089.56, "easting_m": -697.45},
+          {"measured_depth_m": 1400, "inclination_deg": 36.12, "azimuth_deg": 224.98, "tvd_m": 1327.89, "northing_m": -1267.34, "easting_m": -875.23},
+          {"measured_depth_m": 1500, "inclination_deg": 35.25, "azimuth_deg": 227.52, "tvd_m": 1414.67, "northing_m": -1443.12, "easting_m": -1067.89},
+          {"measured_depth_m": 1600, "inclination_deg": 34.18, "azimuth_deg": 230.05, "tvd_m": 1501.78, "northing_m": -1616.45, "easting_m": -1274.56},
+          {"measured_depth_m": 1700, "inclination_deg": 33.02, "azimuth_deg": 232.58, "tvd_m": 1589.23, "northing_m": -1787.23, "easting_m": -1494.78},
+          {"measured_depth_m": 1800, "inclination_deg": 31.85, "azimuth_deg": 235.12, "tvd_m": 1677.12, "northing_m": -1955.67, "easting_m": -1727.34},
+          {"measured_depth_m": 1900, "inclination_deg": 30.65, "azimuth_deg": 237.65, "tvd_m": 1765.45, "northing_m": -2121.89, "easting_m": -1971.23},
+          {"measured_depth_m": 2000, "inclination_deg": 29.48, "azimuth_deg": 240.18, "tvd_m": 1854.23, "northing_m": -2286.12, "easting_m": -2225.67},
+          {"measured_depth_m": 2100, "inclination_deg": 28.32, "azimuth_deg": 242.72, "tvd_m": 1943.45, "northing_m": -2448.45, "easting_m": -2489.45},
+          {"measured_depth_m": 2200, "inclination_deg": 27.18, "azimuth_deg": 245.25, "tvd_m": 2033.12, "northing_m": -2609.12, "easting_m": -2762.34},
+          {"measured_depth_m": 2300, "inclination_deg": 26.12, "azimuth_deg": 247.78, "tvd_m": 2123.23, "northing_m": -2768.34, "easting_m": -3043.89},
+          {"measured_depth_m": 2400, "inclination_deg": 25.08, "azimuth_deg": 250.32, "tvd_m": 2213.78, "northing_m": -2926.23, "easting_m": -3333.67},
+          {"measured_depth_m": 2500, "inclination_deg": 24.12, "azimuth_deg": 252.85, "tvd_m": 2304.67, "northing_m": -3082.89, "easting_m": -3631.12},
+          {"measured_depth_m": 2600, "inclination_deg": 23.22, "azimuth_deg": 255.38, "tvd_m": 2395.89, "northing_m": -3238.45, "easting_m": -3935.78},
+          {"measured_depth_m": 2700, "inclination_deg": 22.38, "azimuth_deg": 257.92, "tvd_m": 2487.45, "northing_m": -3392.78, "easting_m": -4247.23},
+          {"measured_depth_m": 2800, "inclination_deg": 21.62, "azimuth_deg": 260.45, "tvd_m": 2579.23, "northing_m": -3546.12, "easting_m": -4564.89},
+          {"measured_depth_m": 2900, "inclination_deg": 20.92, "azimuth_deg": 262.98, "tvd_m": 2671.34, "northing_m": -3698.56, "easting_m": -4888.45},
+          {"measured_depth_m": 3000, "inclination_deg": 20.28, "azimuth_deg": 265.52, "tvd_m": 2763.67, "northing_m": -3850.23, "easting_m": -5217.67},
+          {"measured_depth_m": 3100, "inclination_deg": 19.72, "azimuth_deg": 268.05, "tvd_m": 2856.23, "northing_m": -4001.12, "easting_m": -5552.12},
+          {"measured_depth_m": 3159, "inclination_deg": 19.45, "azimuth_deg": 269.58, "tvd_m": 2915.45, "northing_m": -4089.67, "easting_m": -5765.34}
+        ]
+      },
+      "metadata": {
+        "source": "WellTegra Initial Dataset - ET5 Deviation Survey",
+        "imported_date": "2025-11-01T00:00:00Z",
+        "data_quality": "High - 6,267 survey points (simplified to 33 for demo)",
+        "notes": "ET5 well from Everest field, North Sea. Original survey contained 6,267 high-resolution points. This is a simplified version with key survey stations."
+      }
+    }
+  ]
+}
