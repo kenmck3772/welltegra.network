@@ -123,6 +123,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
                     <span>Planner</span>
                 </a>
+                <a id="toolstring-nav-link" href="#toolstring-view" role="tab" aria-selected="false" aria-controls="toolstring-view" title="Build Custom Toolstrings" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M14 19a6 6 0 0 0-12 0"/><circle cx="8" cy="9" r="4"/><path d="M22 19a6 6 0 0 0-6-6 4 4 0 1 0 0-8"/></svg>
+                    <span>Toolstring</span>
+                </a>
                 <a id="logistics-nav-link" href="#logistics-view" role="tab" aria-selected="false" aria-controls="logistics-view" title="Manage Equipment and Personnel" class="nav-link flex items-center space-x-2">
                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/><path d="M18 18h-1.3c-.5 0-.9-.3-1.1-.7l-2.6-5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
                     <span>Logistics</span>
@@ -639,6 +643,158 @@
                     <button id="review-analysis-btn-final" class="rounded-md bg-slate-700 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-slate-600 transition-colors">Open Post-Job Analysis</button>
                 </div>
             </section>
+        </div>
+
+        <!-- Toolstring Builder View -->
+        <div id="toolstring-view" class="view-container hidden max-w-full mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold tracking-tight text-white">Toolstring Builder</h2>
+                    <p class="mt-2 text-lg text-slate-300">Design and assemble custom toolstrings for well intervention operations</p>
+                </div>
+
+                <!-- Main Grid Layout -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left Column: Equipment Browser -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Filters -->
+                        <div class="rounded-xl border border-slate-700 bg-slate-800/50 p-4">
+                            <h3 class="text-lg font-semibold text-slate-100 mb-4">Equipment Catalog</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div>
+                                    <label for="tsb-search" class="block text-xs font-medium text-slate-300 mb-1">Search</label>
+                                    <input type="text" id="tsb-search" placeholder="Search equipment..."
+                                           class="w-full rounded-md border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                </div>
+                                <div>
+                                    <label for="tsb-category-filter" class="block text-xs font-medium text-slate-300 mb-1">Category</label>
+                                    <select id="tsb-category-filter"
+                                            class="w-full rounded-md border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                        <option value="all">All Categories</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="tsb-manufacturer-filter" class="block text-xs font-medium text-slate-300 mb-1">Manufacturer</label>
+                                    <select id="tsb-manufacturer-filter"
+                                            class="w-full rounded-md border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                        <option value="all">All Manufacturers</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Equipment Grid -->
+                        <div class="rounded-xl border border-slate-700 bg-slate-800/50 p-4">
+                            <div id="tsb-equipment-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 max-h-[600px] overflow-y-auto">
+                                <!-- Equipment cards will be rendered here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Toolstring Assembly & Controls -->
+                    <div class="space-y-6">
+                        <!-- Metrics Panel -->
+                        <div class="rounded-xl border border-slate-700 bg-slate-800/50 p-4">
+                            <h3 class="text-lg font-semibold text-slate-100 mb-4">Toolstring Metrics</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-slate-400">Tools Count:</span>
+                                    <span id="tsb-metric-count" class="text-lg font-bold text-cyan-400">0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-slate-400">Total Length:</span>
+                                    <span id="tsb-metric-length" class="text-lg font-bold text-cyan-400">0.0</span>
+                                    <span class="text-xs text-slate-500">ft</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-slate-400">Max OD:</span>
+                                    <span id="tsb-metric-max-od" class="text-lg font-bold text-cyan-400">0.00</span>
+                                    <span class="text-xs text-slate-500">in</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-slate-400">Total Weight:</span>
+                                    <span id="tsb-metric-weight" class="text-lg font-bold text-cyan-400">0</span>
+                                    <span class="text-xs text-slate-500">lbs</span>
+                                </div>
+                                <div class="flex justify-between items-center pt-3 border-t border-slate-700">
+                                    <span class="text-sm text-slate-400">Daily Cost:</span>
+                                    <span id="tsb-metric-cost" class="text-lg font-bold text-green-400">$0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Templates -->
+                        <div class="rounded-xl border border-slate-700 bg-slate-800/50 p-4">
+                            <h3 class="text-lg font-semibold text-slate-100 mb-4">Load Template</h3>
+                            <div class="space-y-3">
+                                <select id="tsb-template-select"
+                                        class="w-full rounded-md border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                    <option value="">Select a template...</option>
+                                </select>
+                                <button id="tsb-load-template"
+                                        class="w-full rounded-md bg-cyan-600 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-700 transition-colors">
+                                    Load Template
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Save/Load -->
+                        <div class="rounded-xl border border-slate-700 bg-slate-800/50 p-4">
+                            <h3 class="text-lg font-semibold text-slate-100 mb-4">Save Toolstring</h3>
+                            <div class="space-y-3">
+                                <input type="text" id="tsb-save-name" placeholder="Toolstring name..."
+                                       class="w-full rounded-md border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:border-cyan-500 focus:outline-none focus:ring-1 focus:ring-cyan-500">
+                                <button id="tsb-save-btn"
+                                        class="w-full rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700 transition-colors">
+                                    Save Current Toolstring
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Export -->
+                        <div class="rounded-xl border border-slate-700 bg-slate-800/50 p-4">
+                            <h3 class="text-lg font-semibold text-slate-100 mb-4">Export</h3>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button id="tsb-export-json"
+                                        class="rounded-md bg-slate-700 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-600 transition-colors">
+                                    Export JSON
+                                </button>
+                                <button id="tsb-export-csv"
+                                        class="rounded-md bg-slate-700 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-600 transition-colors">
+                                    Export CSV
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toolstring Assembly Area -->
+                <div class="mt-6 rounded-xl border border-slate-700 bg-slate-800/50 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-slate-100">Toolstring Assembly</h3>
+                        <button id="tsb-clear-toolstring"
+                                class="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 transition-colors">
+                            Clear All
+                        </button>
+                    </div>
+                    <div id="tsb-toolstring-list" class="space-y-2 min-h-[200px]">
+                        <!-- Toolstring items will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Saved Toolstrings -->
+                <div class="mt-6 rounded-xl border border-slate-700 bg-slate-800/50 p-6">
+                    <h3 class="text-lg font-semibold text-slate-100 mb-4">Saved Toolstrings</h3>
+                    <div id="tsb-saved-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <!-- Saved toolstrings will be rendered here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toast Notification -->
+            <div id="tsb-toast" class="fixed bottom-4 right-4 rounded-lg px-6 py-3 text-white shadow-lg hidden z-50">
+                <p id="tsb-toast-message" class="text-sm font-semibold"></p>
+            </div>
         </div>
 
         <div id="logistics-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -1935,6 +2091,9 @@
     <script src="assets/js/enhanced-simulation.js?v=23.0.18" defer></script>
     <script src="assets/js/enhanced-ui.js?v=23.0.18" defer></script>
     <script src="assets/js/enhanced-integration.js?v=23.0.18" defer></script>
+
+    <!-- Toolstring Builder -->
+    <script src="assets/js/toolstring-builder.js?v=23.0.18" defer></script>
 
     <!-- AI Assistant (v23.0.18+) -->
     <script src="assets/js/ai-helper.js?v=23.0.18" type="module" defer></script>

@@ -1945,7 +1945,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginBtn = document.getElementById('login-btn');
     const views = document.querySelectorAll('.view-container');
     const navLinks = document.querySelectorAll('.nav-link');
-    const alwaysAccessibleViews = new Set(['home', 'planner', 'data', 'about', 'faq', 'whitepaper', 'security']);
+    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'data', 'about', 'faq', 'whitepaper', 'security']);
     const headerTitle = document.getElementById('header-title');
     const headerDetails = document.getElementById('header-details');
     const headerNav = document.getElementById('header-nav');
@@ -2809,6 +2809,11 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
             if(appState.selectedWell && appState.generatedPlan) {
                 headerDetails.innerHTML = `<div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            }
+        } else if (viewName === 'toolstring') {
+            // Initialize toolstring builder
+            if (window.ToolstringBuilder && typeof window.ToolstringBuilder.init === 'function') {
+                window.ToolstringBuilder.init();
             }
         }
     };
