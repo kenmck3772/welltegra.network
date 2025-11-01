@@ -1,7 +1,7 @@
 # Well-Tegra User Manual
 
-**Version 23.0**
-**Last Updated: October 2025**
+**Version 23.0.11**
+**Last Updated: November 2025**
 
 ---
 
@@ -19,10 +19,11 @@
 10. [WITSML/ETP Integration](#witsml-etp-integration)
 11. [Mobile Communicator](#mobile-communicator)
 12. [Data Export Hub](#data-export-hub)
-13. [Pricing & Commercial](#pricing-and-commercial)
-14. [Settings & Preferences](#settings-and-preferences)
-15. [Troubleshooting](#troubleshooting)
-16. [FAQ](#faq)
+13. [Testing with Playwright](#testing-with-playwright)
+14. [Pricing & Commercial](#pricing-and-commercial)
+15. [Settings & Preferences](#settings-and-preferences)
+16. [Troubleshooting](#troubleshooting)
+17. [FAQ](#faq)
 
 ---
 
@@ -1407,6 +1408,366 @@ IGNORE 1 LINES;
 
 ---
 
+## Testing with Playwright
+
+### What is Playwright?
+
+**Playwright** is a modern end-to-end testing framework for web applications developed by Microsoft. It allows you to write automated tests that interact with your application just like a real user would - clicking buttons, filling forms, and verifying results.
+
+**Key Benefits:**
+- **Cross-browser testing**: Test on Chrome, Firefox, Safari, and Edge
+- **Reliable tests**: Auto-waits for elements to be ready before interacting
+- **Fast execution**: Runs tests in parallel for quick feedback
+- **Developer-friendly**: Clear error messages and debugging tools
+- **Real browser testing**: Tests run in actual browsers, not simulations
+
+### Why Use Playwright for Well-Tegra?
+
+Well-Tegra is a complex web application with many interactive features:
+- Multi-step planning workflow
+- Real-time data updates
+- Interactive gauges and charts
+- Modal dialogs and form validations
+- Dynamic filtering and search
+
+Playwright ensures all these features work correctly by automatically testing user workflows, catching bugs before they reach production.
+
+### Available Test Scripts
+
+The following test commands are available via npm (Node Package Manager):
+
+#### Run All Tests
+```bash
+npm test
+```
+Executes the complete test suite - unit, integration, and end-to-end tests.
+
+#### Run Unit Tests
+```bash
+npm run test:unit
+```
+Runs isolated tests for individual functions and utilities (e.g., security utils, crypto utils).
+
+#### Run Integration Tests
+```bash
+npm run test:integration
+```
+Tests how different components work together (e.g., security architecture integration).
+
+#### Run End-to-End Tests
+```bash
+npm run test:e2e
+```
+Tests complete user workflows from start to finish.
+
+#### Run Smoke Tests
+```bash
+npm run test:smoke
+```
+Quick validation tests to verify core functionality is working. Run this first to ensure the basic features are operational.
+
+#### Interactive Test UI
+```bash
+npm run test:ui
+```
+Opens Playwright's interactive UI where you can:
+- See all tests in a visual interface
+- Run individual tests
+- Watch tests execute step-by-step
+- Debug test failures
+
+#### Watch Mode
+```bash
+npm run test:watch
+```
+Automatically re-runs tests when you change files. Great for development.
+
+#### Headed Mode
+```bash
+npm run test:headed
+```
+Runs tests with visible browser windows so you can watch the tests execute in real-time.
+
+#### Debug Mode
+```bash
+npm run test:debug
+```
+Opens Playwright Inspector for step-by-step debugging:
+- Pause test execution
+- Step through each action
+- Inspect page elements
+- View action logs
+
+### Understanding Test Files
+
+Test files are located in the `/tests` directory:
+
+```
+tests/
+├── smoke.spec.js              # Core functionality smoke tests
+├── blueprint.spec.js          # Planning blueprint tests
+├── unit/
+│   ├── security-utils.spec.js # Security utility tests
+│   └── crypto-utils.spec.js   # Cryptography tests
+├── integration/
+│   └── security-architecture.spec.js # Security integration tests
+└── support/
+    ├── global-setup.js        # Test environment setup
+    ├── planner-fixture.js     # Reusable test helpers
+    └── chromium-guard.js      # Browser availability checks
+```
+
+### Example: Reading a Playwright Test
+
+Here's a real test from `tests/smoke.spec.js`:
+
+```javascript
+test('hero planner CTA opens the planner workspace without console errors', async ({ page }, testInfo) => {
+  // Navigate to the homepage
+  await gotoPlannerHome(page);
+
+  // Find the planner button
+  const heroCTA = page.locator('#hero-planner-btn');
+  await expect(heroCTA).toBeVisible();
+
+  // Click the button
+  await heroCTA.click();
+  await waitForPlannerWorkspace(page);
+
+  // Verify the planner view opened
+  const plannerView = page.locator('#planner-view');
+  await expect(plannerView).toBeVisible();
+  await expect(page.locator('.well-card-enhanced')).toHaveCount(7);
+});
+```
+
+**What this test does:**
+1. **Opens the homepage** - Navigates to Well-Tegra
+2. **Finds the "Plan" button** - Uses the button's ID to locate it
+3. **Clicks the button** - Simulates a user click
+4. **Waits for the planner** - Ensures the workspace loads
+5. **Verifies the result** - Confirms the planner view is visible and shows 7 well cards
+
+### How to Run Playwright Tests
+
+**Prerequisites:**
+1. **Node.js installed** (v18 or higher recommended)
+2. **Dependencies installed**:
+   ```bash
+   npm install
+   ```
+3. **Local server running** (tests connect to http://127.0.0.1:8000)
+
+**Basic Workflow:**
+
+1. **Install dependencies** (first time only):
+   ```bash
+   npm install
+   ```
+
+2. **Install Playwright browsers** (first time only):
+   ```bash
+   npx playwright install chromium
+   ```
+
+3. **Start your local server** in one terminal:
+   ```bash
+   python -m http.server 8000
+   # or
+   npx http-server -p 8000
+   ```
+
+4. **Run tests** in another terminal:
+   ```bash
+   npm test
+   ```
+
+**Quick Start Example:**
+
+```bash
+# Terminal 1 - Start the server
+cd /path/to/welltegra.network
+python -m http.server 8000
+
+# Terminal 2 - Run smoke tests
+cd /path/to/welltegra.network
+npm run test:smoke
+```
+
+### Understanding Test Results
+
+**Successful Test Output:**
+```
+Running 1 test using 1 worker
+  ✓  smoke.spec.js:16:1 › hero planner CTA opens planner workspace (2s)
+
+  1 passed (3s)
+```
+
+**Failed Test Output:**
+```
+Running 1 test using 1 worker
+  ✗  smoke.spec.js:16:1 › hero planner CTA opens planner workspace (2s)
+
+    Error: expect(received).toBeVisible()
+
+    Expected element to be visible, but it was not found.
+```
+
+**What Playwright Checks:**
+- ✅ Elements are visible and clickable
+- ✅ Expected content appears on the page
+- ✅ Forms accept input correctly
+- ✅ Navigation works as expected
+- ✅ No JavaScript console errors
+- ✅ Modals open and close properly
+- ✅ Filters and search work correctly
+
+### Writing Your Own Playwright Tests
+
+**Basic Test Structure:**
+
+```javascript
+const { test, expect } = require('@playwright/test');
+
+test('my test description', async ({ page }) => {
+  // 1. Navigate to a page
+  await page.goto('http://localhost:8000');
+
+  // 2. Find an element and interact
+  await page.click('#my-button');
+
+  // 3. Verify the result
+  await expect(page.locator('#result')).toContainText('Success');
+});
+```
+
+**Common Playwright Commands:**
+
+| Command | Purpose | Example |
+|---------|---------|---------|
+| `page.goto(url)` | Navigate to URL | `await page.goto('http://localhost:8000')` |
+| `page.click(selector)` | Click an element | `await page.click('#submit-btn')` |
+| `page.fill(selector, text)` | Type in an input | `await page.fill('#search', 'Well 666')` |
+| `page.locator(selector)` | Find an element | `const btn = page.locator('#hero-planner-btn')` |
+| `expect(element).toBeVisible()` | Assert element visible | `await expect(plannerView).toBeVisible()` |
+| `expect(element).toContainText()` | Assert text present | `await expect(card).toContainText('Well 666')` |
+| `expect(elements).toHaveCount()` | Assert element count | `await expect(cards).toHaveCount(7)` |
+
+**Selectors:**
+- By ID: `#my-element`
+- By class: `.my-class`
+- By attribute: `[data-well-id="W666"]`
+- By text: `text=Submit`
+
+### Continuous Integration
+
+Playwright tests can run automatically on every code change:
+
+**GitHub Actions Example:**
+```yaml
+name: Playwright Tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm install
+      - run: npx playwright install chromium
+      - run: npm test
+```
+
+This ensures every change is tested before merging to production.
+
+### Test Configuration
+
+Tests are configured in `playwright.config.js`:
+
+```javascript
+module.exports = {
+  testDir: './tests',              // Where tests are located
+  use: {
+    browserName: 'chromium'        // Default browser (Chrome/Edge)
+  }
+};
+```
+
+**Customization Options:**
+- Change default browser (chromium, firefox, webkit)
+- Set default timeout
+- Configure screenshots on failure
+- Set base URL
+- Enable video recording
+
+### Troubleshooting Tests
+
+#### Tests fail with "Browser not found"
+**Solution:**
+```bash
+npx playwright install chromium
+```
+
+#### Tests fail with "Cannot connect to server"
+**Solution:**
+Ensure local server is running on port 8000:
+```bash
+python -m http.server 8000
+```
+
+#### Tests are slow
+**Solution:**
+Run in headless mode (default) instead of headed mode.
+
+#### Need to see what's happening
+**Solution:**
+```bash
+npm run test:headed    # See browser
+npm run test:ui        # Interactive UI
+npm run test:debug     # Step-by-step debugging
+```
+
+#### Test fails intermittently
+**Solution:**
+Playwright auto-waits, but if needed, add explicit waits:
+```javascript
+await page.waitForSelector('#element');
+await page.waitForLoadState('networkidle');
+```
+
+### Best Practices
+
+**✅ DO:**
+- Write descriptive test names
+- Test user workflows, not implementation details
+- Use data attributes for stable selectors (`data-test-id`)
+- Keep tests independent (each test can run alone)
+- Use page object models for complex pages
+- Run smoke tests before full suite
+
+**❌ DON'T:**
+- Rely on brittle selectors (e.g., nth-child)
+- Test third-party libraries (they have their own tests)
+- Make tests dependent on each other
+- Hard-code wait times (use auto-waiting)
+- Ignore test failures (fix or update tests)
+
+### Resources
+
+**Official Documentation:**
+- [Playwright Docs](https://playwright.dev)
+- [API Reference](https://playwright.dev/docs/api/class-playwright)
+- [Best Practices](https://playwright.dev/docs/best-practices)
+
+**Well-Tegra Specific:**
+- Test files: `/tests` directory
+- Helper functions: `/tests/support/planner-fixture.js`
+- Configuration: `playwright.config.js`
+- Package scripts: `package.json`
+
+---
+
 ## Pricing and Commercial
 
 ### Accessing Pricing
@@ -2042,7 +2403,13 @@ A: Yes, well engineering consulting available through Ken McKenzie (30+ years ex
 
 ### Version History
 
-**v23.0.10** (Current)
+**v23.0.11** (Current)
+- Added comprehensive Playwright testing section
+- Documentation for running automated tests
+- Examples of test scripts and best practices
+- Troubleshooting guide for test execution
+
+**v23.0.10**
 - Enhanced simulation integration
 - Improved UI components
 - Weather card additions
