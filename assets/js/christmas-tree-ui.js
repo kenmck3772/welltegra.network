@@ -208,72 +208,284 @@
         container.innerHTML = svg;
     }
 
-    /**
-     * Create SVG representation of Christmas tree
-     */
     function createTreeSVG(tree) {
-        const width = 600;
-        const height = 800;
+        const width = 700;
+        const height = 900;
         const centerX = width / 2;
-
+    
         let svg = `<svg width="100%" height="100%" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
-
+    
         // Background
         svg += `<rect width="${width}" height="${height}" fill="#f8fafc"/>`;
-
-        // Grid
-        for (let i = 0; i <= 10; i++) {
-            const y = (i / 10) * height;
-            svg += `<line x1="0" y1="${y}" x2="${width}" y2="${y}" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="5,5"/>`;
-        }
-
+    
         // Title
         svg += `<text x="${centerX}" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#1e293b">`;
         svg += `${tree.well_name} - ${tree.tree_type}</text>`;
-
-        // Draw components
-        tree.components.forEach(component => {
-            svg += drawComponent(component, centerX, tree);
-        });
-
+        svg += `<text x="${centerX}" y="50" text-anchor="middle" font-size="14" fill="#64748b">`;
+        svg += `Wellhead Christmas Tree Equipment Assembly</text>`;
+    
+        // Get components organized
+        const comp = {};
+        tree.components.forEach(c => comp[c.id] = c);
+    
+        // Build vertical assembly from bottom to top
+        const baseY = 800;
+        let currentY = baseY;
+        const spacing = 75;
+    
+        // Wellbore indication
+        svg += `<line x1="${centerX}" y1="${currentY}" x2="${centerX}" y2="${currentY + 30}" stroke="#94a3b8" stroke-width="4" stroke-dasharray="5,5"/>`;
+        svg += `<text x="${centerX + 15}" y="${currentY + 20}" font-size="11" fill="#64748b" font-style="italic">Wellbore</text>`;
+    
+        // Component assembly (bottom to top like real equipment)
+        currentY -= spacing;
+        if (comp.CHH) {
+            svg += drawWellheadBase(comp.CHH, centerX, currentY);
+        }
+    
+        currentY -= spacing;
+        if (comp.THS) {
+            svg += drawTubingHeadSpool(comp.THS, centerX, currentY);
+        }
+    
+        currentY -= spacing;
+        if (comp.LMV) {
+            svg += drawMasterValveRealistic(comp.LMV, centerX, currentY, 'LMV');
+        }
+    
+        currentY -= spacing * 1.2;
+        if (comp.PWV && comp.AWV) {
+            svg += drawWingValveAssembly(comp.PWV, comp.AWV, centerX, currentY);
+        }
+    
+        currentY -= spacing;
+        if (comp.UMV) {
+            svg += drawMasterValveRealistic(comp.UMV, centerX, currentY, 'UMV');
+        }
+    
+        currentY -= spacing * 0.9;
+        if (comp.SWV) {
+            svg += drawAccessValve(comp.SWV, centerX, currentY);
+        }
+    
         // Legend
-        svg += drawLegend(width - 150, 50);
-
+        svg += drawLegend(50, 80);
+    
         svg += '</svg>';
         return svg;
     }
-
+    
     /**
-     * Draw individual component on SVG
+     * Draw wellhead base (casing head housing)
      */
-    function drawComponent(component, centerX, tree) {
-        const pos = component.position;
-        const x = centerX + pos.x * 2; // Scale for SVG
-        const y = 400 + pos.y * 2;    // Offset and scale
-
-        let svg = '';
-
-        // Determine color based on status
-        const statusColor = getStatusColor(component.status);
+    function drawWellheadBase(component, x, y) {
+        const color = getStatusColor(component.status);
+        let svg = `<g class="tree-component" data-component-id="${component.id}" style="cursor: pointer;">`;
+    
+        // Wide flange base
+        svg += `<ellipse cx="${x}" cy="${y + 15}" rx="70" ry="10" fill="#64748b" stroke="#1e293b" stroke-width="2"/>`;
+        svg += `<rect x="${x - 70}" y="${y - 20}" width="140" height="35" fill="${color}" stroke="#1e293b" stroke-width="2.5"/>`;
+        svg += `<ellipse cx="${x}" cy="${y - 20}" rx="70" ry="10" fill="${color}" stroke="#1e293b" stroke-width="2"/>`;
+    
+        // Bolt circle
+        for (let i = 0; i < 12; i++) {
+            const angle = (i / 12) * 2 * Math.PI;
+            const bx = x + Math.cos(angle) * 60;
+            const by = y + Math.sin(angle) * 8;
+            svg += `<circle cx="${bx}" cy="${by}" r="3.5" fill="#475569" stroke="#1e293b" stroke-width="1"/>`;
+        }
+    
+        // Label
+        svg += `<text x="${x}" y="${y + 4}" text-anchor="middle" font-size="12" font-weight="bold" fill="white">CHH</text>`;
+        svg += `<text x="${x + 100}" y="${y + 4}" font-size="11" fill="#475569">Casing Head</text>`;
+    
+        svg += '</g>';
+        return svg;
+    }
+    
+    /**
+     * Draw tubing head spool
+     */
+    function drawTubingHeadSpool(component, x, y) {
+        const color = getStatusColor(component.status);
+        let svg = `<g class="tree-component" data-component-id="${component.id}" style="cursor: pointer;">`;
+    
+        // Spool body with flanges
+        svg += `<rect x="${x - 55}" y="${y - 25}" width="110" height="50" fill="${color}" stroke="#1e293b" stroke-width="2.5" rx="3"/>`;
+    
+        // Top and bottom flanges
+        svg += `<rect x="${x - 60}" y="${y - 28}" width="120" height="8" fill="#64748b" stroke="#1e293b" stroke-width="1.5"/>`;
+        svg += `<rect x="${x - 60}" y="${y + 20}" width="120" height="8" fill="#64748b" stroke="#1e293b" stroke-width="1.5"/>`;
+    
+        // Seal detail lines
+        svg += `<line x1="${x - 50}" y1="${y - 25}" x2="${x - 50}" y2="${y + 20}" stroke="#94a3b8" stroke-width="1.5"/>`;
+        svg += `<line x1="${x + 50}" y1="${y - 25}" x2="${x + 50}" y2="${y + 20}" stroke="#94a3b8" stroke-width="1.5"/>`;
+    
+        // Label
+        svg += `<text x="${x}" y="${y + 4}" text-anchor="middle" font-size="12" font-weight="bold" fill="white">THS</text>`;
+        svg += `<text x="${x + 100}" y="${y + 4}" font-size="11" fill="#475569">Tubing Head Spool</text>`;
+    
+        svg += '</g>';
+        return svg;
+    }
+    
+    /**
+     * Draw master valve (realistic gate valve with handwheel)
+     */
+    function drawMasterValveRealistic(component, x, y, label) {
+        const color = getStatusColor(component.status);
         const stateColor = component.state === 'Open' ? '#10B981' : '#DC2626';
+    
+        let svg = `<g class="tree-component" data-component-id="${component.id}" style="cursor: pointer;">`;
+    
+        // Valve body
+        svg += `<rect x="${x - 45}" y="${y - 30}" width="90" height="60" fill="${color}" stroke="#1e293b" stroke-width="3" rx="5"/>`;
+    
+        // Gate indicator inside
+        const gateY = component.state === 'Open' ? y - 25 : y;
+        svg += `<rect x="${x - 35}" y="${gateY - 3}" width="70" height="6" fill="#475569" stroke="#1e293b" stroke-width="1"/>`;
+    
+        // Handwheel/actuator on top
+        svg += `<rect x="${x - 18}" y="${y - 48}" width="36" height="20" fill="#64748b" stroke="#1e293b" stroke-width="2" rx="3"/>`;
+        svg += `<circle cx="${x}" cy="${y - 38}" r="10" fill="none" stroke="#1e293b" stroke-width="2.5"/>`;
+        svg += `<line x1="${x - 7}" y1="${y - 38}" x2="${x + 7}" y2="${y - 38}" stroke="#1e293b" stroke-width="2.5"/>`;
+        svg += `<line x1="${x}" y1="${y - 45}" x2="${x}" y2="${y - 31}" stroke="#1e293b" stroke-width="2.5"/>`;
+    
+        // State indicator
+        svg += `<circle cx="${x + 50}" cy="${y - 35}" r="9" fill="${stateColor}" stroke="#1e293b" stroke-width="2.5"/>`;
+        svg += `<text x="${x + 50}" y="${y - 31}" text-anchor="middle" font-size="10" font-weight="bold" fill="white">${component.state === 'Open' ? 'O' : 'C'}</text>`;
+    
+        // Flow direction arrow if open
+        if (component.state === 'Open') {
+            svg += `<polygon points="${x - 10},${y} ${x + 10},${y} ${x},${y + 12}" fill="#10B981" opacity="0.7"/>`;
+        }
+    
+        // Label
+        svg += `<text x="${x}" y="${y + 4}" text-anchor="middle" font-size="13" font-weight="bold" fill="white">${component.id}</text>`;
+        svg += `<text x="${x + 80}" y="${y + 4}" font-size="11" fill="#475569">${label === 'LMV' ? 'Lower Master' : 'Upper Master'}</text>`;
+    
+        svg += '</g>';
+        return svg;
+    }
+    
+    /**
+     * Draw wing valve assembly (production + annulus cross)
+     */
+    function drawWingValveAssembly(pwv, awv, x, y) {
+        let svg = '<g class="wing-assembly">';
+    
+        // Central cross block
+        svg += `<rect x="${x - 50}" y="${y - 25}" width="100" height="50" fill="#94a3b8" stroke="#1e293b" stroke-width="2.5" rx="4"/>`;
+        svg += `<text x="${x}" y="${y + 4}" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">CROSS</text>`;
+    
+        // Production Wing Valve (right)
+        const pwvColor = getStatusColor(pwv.status);
+        const pwvState = pwv.state === 'Open' ? '#10B981' : '#DC2626';
+    
+        svg += `<g class="tree-component" data-component-id="${pwv.id}" style="cursor: pointer;">`;
+        svg += `<rect x="${x + 50}" y="${y - 22}" width="70" height="44" fill="${pwvColor}" stroke="#1e293b" stroke-width="2.5" rx="4"/>`;
+    
+        // Handwheel
+        svg += `<circle cx="${x + 85}" cy="${y - 32}" r="8" fill="none" stroke="#1e293b" stroke-width="2"/>`;
+        svg += `<line x1="${x + 79}" y1="${y - 32}" x2="${x + 91}" y2="${y - 32}" stroke="#1e293b" stroke-width="2"/>`;
+    
+        // State
+        svg += `<circle cx="${x + 85}" cy="${y + 28}" r="8" fill="${pwvState}" stroke="#1e293b" stroke-width="2"/>`;
+        svg += `<text x="${x + 85}" y="${y}" text-anchor="middle" font-size="11" font-weight="bold" fill="white">PWV</text>`;
+    
+        // Production flowline
+        svg += `<rect x="${x + 120}" y="${y - 8}" width="80" height="16" fill="${pwvColor}" stroke="#1e293b" stroke-width="2"/>`;
+        svg += `<polygon points="${x + 195},${y - 10} ${x + 210},${y} ${x + 195},${y + 10}" fill="${pwvColor}" stroke="#1e293b" stroke-width="2"/>`;
+        svg += `<text x="${x + 230}" y="${y + 4}" font-size="10" fill="#475569" font-weight="bold">PRODUCTION</text>`;
+        svg += '</g>';
+    
+        // Annulus Wing Valve (left)
+        const awvColor = getStatusColor(awv.status);
+        const awvState = awv.state === 'Open' ? '#10B981' : '#DC2626';
+    
+        svg += `<g class="tree-component" data-component-id="${awv.id}" style="cursor: pointer;">`;
+        svg += `<rect x="${x - 120}" y="${y - 22}" width="70" height="44" fill="${awvColor}" stroke="#1e293b" stroke-width="2.5" rx="4"/>`;
+    
+        // Handwheel
+        svg += `<circle cx="${x - 85}" cy="${y - 32}" r="8" fill="none" stroke="#1e293b" stroke-width="2"/>`;
+        svg += `<line x1="${x - 91}" y1="${y - 32}" x2="${x - 79}" y2="${y - 32}" stroke="#1e293b" stroke-width="2"/>`;
+    
+        // State
+        svg += `<circle cx="${x - 85}" cy="${y + 28}" r="8" fill="${awvState}" stroke="#1e293b" stroke-width="2"/>`;
+        svg += `<text x="${x - 85}" y="${y}" text-anchor="middle" font-size="11" font-weight="bold" fill="white">AWV</text>`;
+    
+        // Annulus line
+        svg += `<rect x="${x - 200}" y="${y - 7}" width="80" height="14" fill="${awvColor}" stroke="#1e293b" stroke-width="2"/>`;
+        svg += `<polygon points="${x - 205},${y - 9} ${x - 220},${y} ${x - 205},${y + 9}" fill="${awvColor}" stroke="#1e293b" stroke-width="2"/>`;
+        svg += `<text x="${x - 280}" y="${y + 4}" font-size="10" fill="#475569" font-weight="bold">ANNULUS</text>`;
+        svg += '</g>';
+    
+        svg += '</g>';
+        return svg;
+    }
+    
+    /**
+     * Draw access/swab valve (smaller, top valve)
+     */
+    function drawAccessValve(component, x, y) {
+        const color = getStatusColor(component.status);
+        const stateColor = component.state === 'Open' ? '#10B981' : '#DC2626';
+    
+        let svg = `<g class="tree-component" data-component-id="${component.id}" style="cursor: pointer;">`;
+    
+        // Smaller valve body
+        svg += `<rect x="${x - 35}" y="${y - 22}" width="70" height="44" fill="${color}" stroke="#1e293b" stroke-width="2.5" rx="4"/>`;
+    
+        // Large handwheel (typical for swab valve)
+        svg += `<circle cx="${x}" cy="${y - 35}" r="14" fill="none" stroke="#1e293b" stroke-width="3"/>`;
+        svg += `<line x1="${x - 10}" y1="${y - 35}" x2="${x + 10}" y2="${y - 35}" stroke="#1e293b" stroke-width="2.5"/>`;
+        svg += `<line x1="${x}" y1="${y - 45}" x2="${x}" y2="${y - 25}" stroke="#1e293b" stroke-width="2.5"/>`;
+    
+        // State indicator
+        svg += `<circle cx="${x + 32}" cy="${y - 28}" r="8" fill="${stateColor}" stroke="#1e293b" stroke-width="2"/>`;
+    
+        // Label
+        svg += `<text x="${x}" y="${y + 4}" text-anchor="middle" font-size="12" font-weight="bold" fill="white">SWV</text>`;
+        svg += `<text x="${x + 60}" y="${y + 4}" font-size="11" fill="#475569">Swab Valve</text>`;
+    
+        // Top cap indicator
+        svg += `<ellipse cx="${x}" cy="${y - 55}" rx="28" ry="9" fill="#475569" stroke="#1e293b" stroke-width="2"/>`;
+        svg += `<text x="${x}" y="${y - 52}" text-anchor="middle" font-size="9" fill="white">CAP</text>`;
+    
+        svg += '</g>';
+        return svg;
+    }
+    
+    /**
+     * Draw legend (updated)
+     */
+    function drawLegend(x, y) {
+        let svg = `<g class="legend">`;
+    
+        svg += `<rect x="${x - 5}" y="${y - 5}" width="180" height="180" fill="white" stroke="#cbd5e1" stroke-width="1" rx="4"/>`;
+        svg += `<text x="${x + 5}" y="${y + 15}" font-size="14" font-weight="bold" fill="#1e293b">Status Legend</text>`;
+    
+        const items = [
+            { label: 'Critical', color: '#DC2626', desc: 'Dual barrier fail' },
+            { label: 'Major', color: '#F97316', desc: 'Single barrier' },
+            { label: 'Monitoring', color: '#FBBF24', desc: 'Degraded' },
+            { label: 'Good', color: '#10B981', desc: 'All intact' }
+        ];
+    
+        items.forEach((item, i) => {
+            const itemY = y + 35 + (i * 30);
+            svg += `<rect x="${x + 5}" y="${itemY - 10}" width="22" height="18" fill="${item.color}" stroke="#1e293b" stroke-width="1.5" rx="2"/>`;
+            svg += `<text x="${x + 35}" y="${itemY + 3}" font-size="11" font-weight="bold" fill="#1e293b">${item.label}</text>`;
+            svg += `<text x="${x + 35}" y="${itemY + 14}" font-size="9" fill="#64748b">${item.desc}</text>`;
+        });
+    
+        svg += `<text x="${x + 5}" y="${y + 155}" font-size="10" fill="#64748b">O = Open | C = Closed</text>`;
+    
+        svg += '</g>';
+        return svg;
+    }
 
-        // Draw component shape
-        if (component.id.includes('V')) {
-            // Valve - draw as rectangle with state indicator
-            svg += `<g class="tree-component" data-component-id="${component.id}" style="cursor: pointer;">`;
-            svg += `<rect x="${x - 30}" y="${y - 20}" width="60" height="40" fill="${statusColor}" stroke="#1e293b" stroke-width="2" rx="5"/>`;
 
-            // State indicator (circle)
-            svg += `<circle cx="${x}" cy="${y - 30}" r="6" fill="${stateColor}" stroke="#1e293b" stroke-width="1"/>`;
-
-            // Component label
-            svg += `<text x="${x}" y="${y + 5}" text-anchor="middle" font-size="12" font-weight="bold" fill="white">${component.id}</text>`;
-
-            // Wing valve outlet
-            if (component.id === 'PWV' || component.id === 'AWV') {
-                const direction = component.id === 'PWV' ? 1 : -1;
-                svg += `<line x1="${x + 30}" y1="${y}" x2="${x + (80 * direction)}" y2="${y}" stroke="${statusColor}" stroke-width="15"/>`;
-            }
 
             svg += '</g>';
         } else {
@@ -291,30 +503,7 @@
         return svg;
     }
 
-    /**
-     * Draw legend
-     */
-    function drawLegend(x, y) {
-        let svg = `<g class="legend">`;
-
-        svg += `<text x="${x}" y="${y}" font-size="14" font-weight="bold" fill="#1e293b">Legend</text>`;
-
-        const items = [
-            { label: 'Critical', color: '#DC2626' },
-            { label: 'Major', color: '#F97316' },
-            { label: 'Monitoring', color: '#FBBF24' },
-            { label: 'Good', color: '#10B981' },
-            { label: 'Open', color: '#10B981', isState: true },
-            { label: 'Closed', color: '#DC2626', isState: true }
-        ];
-
-        items.forEach((item, i) => {
-            const itemY = y + 20 + (i * 25);
-
-            if (item.isState) {
-                // Draw circle for state
-                svg += `<circle cx="${x + 10}" cy="${itemY}" r="6" fill="${item.color}" stroke="#1e293b" stroke-width="1"/>`;
-            } else {
+ else {
                 // Draw rectangle for status
                 svg += `<rect x="${x}" y="${itemY - 8}" width="20" height="16" fill="${item.color}" stroke="#1e293b" stroke-width="1"/>`;
             }
