@@ -127,6 +127,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M14 19a6 6 0 0 0-12 0"/><circle cx="8" cy="9" r="4"/><path d="M22 19a6 6 0 0 0-6-6 4 4 0 1 0 0-8"/></svg>
                     <span>Toolstring</span>
                 </a>
+                <a id="christmas-tree-nav-link" href="#christmas-tree-view" role="tab" aria-selected="false" aria-controls="christmas-tree-view" title="Christmas Tree & Wellhead Integrity" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3"/></svg>
+                    <span>Integrity</span>
+                </a>
                 <a id="logistics-nav-link" href="#logistics-view" role="tab" aria-selected="false" aria-controls="logistics-view" title="Manage Equipment and Personnel" class="nav-link flex items-center space-x-2">
                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/><path d="M18 18h-1.3c-.5 0-.9-.3-1.1-.7l-2.6-5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
                     <span>Logistics</span>
@@ -794,6 +798,44 @@
             <!-- Toast Notification -->
             <div id="tsb-toast" class="fixed bottom-4 right-4 rounded-lg px-6 py-3 text-white shadow-lg hidden z-50">
                 <p id="tsb-toast-message" class="text-sm font-semibold"></p>
+            </div>
+        </div>
+
+        <!-- Christmas Tree & Wellhead Integrity View -->
+        <div id="christmas-tree-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold tracking-tight text-white">🎄 Christmas Tree & Wellhead Integrity</h2>
+                <p class="mt-2 text-lg text-slate-300">Monitor equipment status, barrier envelopes, PMS schedules, and integrity issues</p>
+            </div>
+
+            <!-- View Switcher -->
+            <div class="mb-6 flex flex-wrap gap-2 justify-center">
+                <button data-ct-view="diagram" class="px-4 py-2 rounded-lg text-sm font-semibold bg-cyan-600 text-white transition-colors">
+                    🔧 Diagram
+                </button>
+                <button data-ct-view="barriers" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
+                    🛡️ Barriers
+                </button>
+                <button data-ct-view="pms" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
+                    📅 PMS Schedule
+                </button>
+                <button data-ct-view="issues" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
+                    🔧 Issues
+                </button>
+                <button data-ct-view="tests" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
+                    📋 Test Records
+                </button>
+            </div>
+
+            <!-- Main Content Container -->
+            <div id="ct-diagram-container" class="min-h-[600px]">
+                <!-- Content will be dynamically rendered here -->
+                <div class="flex items-center justify-center h-96">
+                    <div class="text-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500 mx-auto mb-4"></div>
+                        <p class="text-slate-400">Loading Christmas Tree data...</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -2094,6 +2136,9 @@
 
     <!-- Toolstring Builder -->
     <script src="assets/js/toolstring-builder.js?v=23.0.18" defer></script>
+
+    <!-- Christmas Tree & Wellhead Integrity -->
+    <script src="assets/js/christmas-tree-integrity.js?v=23.0.18" defer></script>
 
     <!-- Live Operations Popup Window -->
     <script src="assets/js/live-operations-popup.js?v=23.0.18" defer></script>

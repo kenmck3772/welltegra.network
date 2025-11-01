@@ -1945,7 +1945,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginBtn = document.getElementById('login-btn');
     const views = document.querySelectorAll('.view-container');
     const navLinks = document.querySelectorAll('.nav-link');
-    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'data', 'about', 'faq', 'whitepaper', 'security']);
+    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'data', 'about', 'faq', 'whitepaper', 'security']);
     const headerTitle = document.getElementById('header-title');
     const headerDetails = document.getElementById('header-details');
     const headerNav = document.getElementById('header-nav');
@@ -2814,6 +2814,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Initialize toolstring builder
             if (window.ToolstringBuilder && typeof window.ToolstringBuilder.init === 'function') {
                 window.ToolstringBuilder.init();
+            }
+        } else if (viewName === 'christmas-tree') {
+            // Initialize Christmas tree integrity system
+            if (window.ChristmasTreeIntegrity && typeof window.ChristmasTreeIntegrity.init === 'function') {
+                window.ChristmasTreeIntegrity.init();
             }
         }
     };
