@@ -159,6 +159,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M12 2v20"/><path d="M2 12l3-3 3 3"/><path d="M19 12l3-3 3 3"/><circle cx="12" cy="12" r="3"/></svg>
                     <span>Wellbore Viewer</span>
                 </a>
+                <a id="christmas-tree-nav-link" href="#christmas-tree-view" role="tab" aria-selected="false" aria-controls="christmas-tree-view" title="Christmas Tree Equipment & Well Integrity" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><rect x="6" y="4" width="4" height="4"/><rect x="14" y="4" width="4" height="4"/><rect x="6" y="14" width="4" height="4"/><rect x="14" y="12" width="4" height="4"/><path d="M6 8v6"/><path d="M18 8v4"/><path d="M8 18v2"/><path d="M16 16v4"/></svg>
+                    <span>Christmas Tree</span>
+                </a>
                  <a id="faq-nav-link" href="#faq-view" role="tab" aria-selected="false" aria-controls="faq-view" title="Frequently Asked Questions" class="nav-link flex items-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
                     <span>FAQ</span>
@@ -995,6 +999,185 @@
                             <dt class="text-sm font-medium text-slate-400">Max Lateral Displacement</dt>
                             <dd id="stat-max-lateral" class="mt-1 text-2xl font-semibold text-cyan-400">-</dd>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Christmas Tree Viewer -->
+        <div id="christmas-tree-view" class="view-container hidden max-w-full mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold tracking-tight">Christmas Tree Equipment & Well Integrity</h2>
+                    <p class="mt-2 max-w-3xl mx-auto text-lg">Manage surface wellhead equipment, monitor integrity status, calculate MAASP, and track safety barrier compliance.</p>
+                </div>
+
+                <!-- Control Panel -->
+                <div class="grid gap-6 lg:grid-cols-3 mb-8">
+                    <!-- Tree Selection -->
+                    <div class="light-card p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                            </svg>
+                            Select Well
+                        </h3>
+                        <select id="tree-well-select" class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 mb-4">
+                            <option value="">-- Select a well --</option>
+                        </select>
+                        <button id="tree-load-sample-btn" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                            Load Sample Trees
+                        </button>
+                        <div id="tree-import-status" class="mt-3 text-sm text-center hidden"></div>
+                    </div>
+
+                    <!-- MAASP Calculator -->
+                    <div class="light-card p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                            MAASP Status
+                        </h3>
+                        <div id="maasp-display" class="space-y-3 text-sm">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-400">Current MAASP:</span>
+                                <span id="maasp-value" class="text-2xl font-bold text-cyan-400">-</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-400">Governing Criterion:</span>
+                                <span id="maasp-criterion" class="font-medium text-slate-200">-</span>
+                            </div>
+                            <div class="mt-4 p-3 bg-slate-900/50 rounded-lg">
+                                <p class="text-xs text-slate-400">MAASP calculated using 5 failure criteria per BG-UKUP Section 7.1</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Integrity Status -->
+                    <div class="light-card p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                            </svg>
+                            Integrity Status
+                        </h3>
+                        <div id="integrity-status-display" class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-400 text-sm">Overall Status:</span>
+                                <span id="overall-status" class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-700 text-slate-300">-</span>
+                            </div>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Primary Barrier:</span>
+                                    <span id="primary-barrier-status" class="font-medium">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Secondary Barrier:</span>
+                                    <span id="secondary-barrier-status" class="font-medium">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Active Defects:</span>
+                                    <span id="active-defects-count" class="font-medium text-yellow-400">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="grid gap-6 lg:grid-cols-2">
+                    <!-- Tree Schematic -->
+                    <div class="light-card p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold mb-4 flex items-center">
+                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z"/>
+                            </svg>
+                            Christmas Tree Schematic
+                        </h3>
+                        <div id="tree-schematic-container" class="flex items-center justify-center bg-slate-950/40 rounded-lg p-4" style="min-height: 600px;">
+                            <p class="text-slate-500 text-sm">Select a well to view Christmas tree</p>
+                        </div>
+                        <div class="mt-4 flex gap-2">
+                            <button id="tree-export-svg-btn" disabled class="flex-1 bg-slate-700 hover:bg-slate-600 disabled:bg-slate-800 disabled:text-slate-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                                Export SVG
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Components List -->
+                    <div class="light-card p-6 rounded-lg">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold flex items-center">
+                                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                </svg>
+                                Components
+                            </h3>
+                            <button id="add-defect-btn" disabled class="bg-red-600 hover:bg-red-500 disabled:bg-slate-800 disabled:text-slate-600 text-white text-sm font-semibold py-1 px-3 rounded transition-colors">
+                                Log Defect
+                            </button>
+                        </div>
+                        <div id="components-list-container" class="space-y-3" style="max-height: 600px; overflow-y: auto;">
+                            <p class="text-slate-500 text-sm text-center py-8">Select a well to view components</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Defect Logging Modal -->
+                <div id="defect-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+                    <div class="bg-slate-900 border border-slate-700 rounded-lg max-w-2xl w-full p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold">Log Component Defect</h3>
+                            <button id="defect-modal-close" class="text-slate-400 hover:text-slate-200">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <form id="defect-form" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Component</label>
+                                <select id="defect-component-id" required class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                                    <option value="">-- Select component --</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Severity</label>
+                                <select id="defect-severity" required class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                                    <option value="">-- Select severity --</option>
+                                    <option value="A">A - Critical (Immediate action required)</option>
+                                    <option value="B">B - Major (Barrier integrity compromised)</option>
+                                    <option value="C">C - Monitoring (Degradation detected)</option>
+                                    <option value="D">D - Minor (Documentation only)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Defect Type</label>
+                                <select id="defect-type" required class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                                    <option value="">-- Select type --</option>
+                                    <option value="Leak">Leak</option>
+                                    <option value="Seal Failure">Seal Failure</option>
+                                    <option value="Stuck Valve">Stuck Valve</option>
+                                    <option value="Pressure Loss">Pressure Loss</option>
+                                    <option value="Corrosion">Corrosion</option>
+                                    <option value="Mechanical Failure">Mechanical Failure</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">Description</label>
+                                <textarea id="defect-description" required rows="3" class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Describe the defect..."></textarea>
+                            </div>
+                            <div class="flex gap-3 pt-4">
+                                <button type="submit" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                                    Log Defect
+                                </button>
+                                <button type="button" id="defect-form-cancel" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -2235,6 +2418,10 @@
     <script src="assets/js/wellbore-viewer.js?v=23.0.18" defer></script>
     <script src="assets/js/well-data-manager.js?v=23.0.18" defer></script>
     <script src="assets/js/wellbore-controller.js?v=23.0.18" defer></script>
+
+    <!-- Christmas Tree & Well Integrity System -->
+    <script src="assets/js/christmas-tree-manager.js?v=23.0.18" defer></script>
+    <script src="assets/js/christmas-tree-ui.js?v=23.0.18" defer></script>
 
 </body>
 </html>
