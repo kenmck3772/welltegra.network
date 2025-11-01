@@ -541,12 +541,21 @@
                         <div class="mt-6 bg-gradient-to-br from-slate-900 to-slate-800 rounded-lg p-4 border border-purple-700/30">
                             <div class="flex items-center justify-between mb-3">
                                 <h5 class="text-sm font-semibold text-purple-300">3D Trajectory View</h5>
-                                <div class="flex gap-2">
-                                    <button id="planner-3d-rotate-btn" class="text-xs bg-purple-600/50 hover:bg-purple-600 px-2 py-1 rounded transition" title="Auto-rotate">
+                                <div class="flex gap-1">
+                                    <button onclick="window.planner3D?.setZoom(0.2)" class="text-xs bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded transition" title="Zoom In (+)">
+                                        🔍+
+                                    </button>
+                                    <button onclick="window.planner3D?.setZoom(-0.2)" class="text-xs bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded transition" title="Zoom Out (-)">
+                                        🔍-
+                                    </button>
+                                    <button id="planner-3d-rotate-btn" class="text-xs bg-purple-600/50 hover:bg-purple-600 px-2 py-1 rounded transition" title="Auto-rotate (Space)">
                                         🔄
                                     </button>
-                                    <button id="planner-3d-reset-btn" class="text-xs bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded transition" title="Reset view">
+                                    <button id="planner-3d-reset-btn" class="text-xs bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded transition" title="Reset view (R)">
                                         ↺
+                                    </button>
+                                    <button onclick="window.planner3D?.exportToPNG()" class="text-xs bg-blue-700 hover:bg-blue-600 px-2 py-1 rounded transition" title="Export to PNG">
+                                        📸
                                     </button>
                                 </div>
                             </div>
@@ -605,9 +614,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mt-2 flex items-center justify-center gap-2 text-xs text-slate-500">
-                                <span>💡 Tip:</span>
-                                <span>Click rotate button for animated 3D view</span>
+                            <div class="mt-2 space-y-1">
+                                <div class="flex items-center justify-center gap-2 text-xs text-slate-500">
+                                    <span>💡 Controls:</span>
+                                    <span>Scroll to zoom • Arrow keys to rotate • Space to auto-rotate • R to reset</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2446,12 +2457,21 @@
                         <div class="mt-6 bg-gradient-to-br from-slate-900 to-slate-800 rounded-lg p-4 border border-emerald-700/30">
                             <div class="flex items-center justify-between mb-3">
                                 <h5 class="text-sm font-semibold text-emerald-300">🎯 Live 3D Trajectory</h5>
-                                <div class="flex gap-2">
-                                    <button id="performer-3d-rotate-btn" class="text-xs bg-emerald-600/50 hover:bg-emerald-600 px-2 py-1 rounded transition" title="Auto-rotate">
+                                <div class="flex gap-1">
+                                    <button onclick="window.performer3D?.setZoom(0.2)" class="text-xs bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded transition" title="Zoom In (+)">
+                                        🔍+
+                                    </button>
+                                    <button onclick="window.performer3D?.setZoom(-0.2)" class="text-xs bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded transition" title="Zoom Out (-)">
+                                        🔍-
+                                    </button>
+                                    <button id="performer-3d-rotate-btn" class="text-xs bg-emerald-600/50 hover:bg-emerald-600 px-2 py-1 rounded transition" title="Auto-rotate (Space)">
                                         🔄
                                     </button>
-                                    <button id="performer-3d-reset-btn" class="text-xs bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded transition" title="Reset view">
+                                    <button id="performer-3d-reset-btn" class="text-xs bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded transition" title="Reset view (R)">
                                         ↺
+                                    </button>
+                                    <button onclick="window.performer3D?.exportToPNG()" class="text-xs bg-blue-700 hover:bg-blue-600 px-2 py-1 rounded transition" title="Export to PNG">
+                                        📸
                                     </button>
                                 </div>
                             </div>
@@ -2546,9 +2566,15 @@
                                     <span>3D Active</span>
                                 </div>
                             </div>
-                            <div class="mt-2 flex items-center justify-center gap-2 text-xs text-slate-500">
-                                <span>⚡</span>
-                                <span>Real-time 3D visualization updates as operation progresses</span>
+                            <div class="mt-2 space-y-1">
+                                <div class="flex items-center justify-center gap-2 text-xs text-slate-500">
+                                    <span>⚡</span>
+                                    <span>Real-time updates as operation progresses</span>
+                                </div>
+                                <div class="flex items-center justify-center gap-2 text-xs text-slate-500">
+                                    <span>💡 Controls:</span>
+                                    <span>Scroll to zoom • Arrow keys to rotate • Space to auto-rotate • R to reset</span>
+                                </div>
                             </div>
                         </div>
                     </div>

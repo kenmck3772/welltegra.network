@@ -18,6 +18,11 @@ class Wellbore3D {
         this.centerX = 400;
         this.centerY = 200;
 
+        // Enhanced controls
+        this.zoom = 1.0;
+        this.tilt = 0; // Additional tilt angle
+        this.viewPreset = 'isometric'; // isometric, top, side, front
+
         this.init();
     }
 
@@ -25,6 +30,7 @@ class Wellbore3D {
         this.drawGrid();
         this.loadSampleData();
         this.setupControls();
+        this.setupKeyboardControls();
         this.render();
     }
 
@@ -88,7 +94,7 @@ class Wellbore3D {
     }
 
     /**
-     * Project 3D coordinates to 2D with rotation
+     * Project 3D coordinates to 2D with rotation and zoom
      */
     project3D(tvd, north, east) {
         // Find bounds for scaling
@@ -97,20 +103,70 @@ class Wellbore3D {
         const maxEast = Math.max(...this.surveyData.map(p => Math.abs(p.east)));
         const maxHorizontal = Math.max(maxNorth, maxEast);
 
-        // Scale factors
-        const scaleH = 250 / Math.max(maxHorizontal, 1000); // Horizontal scale
-        const scaleV = 300 / Math.max(maxTVD, 8000); // Vertical scale
+        // Scale factors with zoom
+        const scaleH = (250 / Math.max(maxHorizontal, 1000)) * this.zoom;
+        const scaleV = (300 / Math.max(maxTVD, 8000)) * this.zoom;
 
         // Apply rotation around vertical axis
         const angleRad = this.rotationAngle * Math.PI / 180;
         const rotatedNorth = north * Math.cos(angleRad) - east * Math.sin(angleRad);
         const rotatedEast = north * Math.sin(angleRad) + east * Math.cos(angleRad);
 
-        // 3D to 2D isometric projection
-        const x = this.centerX + (rotatedEast * scaleH) + (rotatedNorth * scaleH * 0.5);
-        const y = this.centerY + (tvd * scaleV) - (rotatedNorth * scaleH * 0.3);
+        // 3D to 2D projection based on view preset
+        let x, y;
+
+        switch (this.viewPreset) {
+            case 'top': // Top-down view (plan view)
+                x = this.centerX + (rotatedEast * scaleH);
+                y = this.centerY + (rotatedNorth * scaleH);
+                break;
+
+            case 'side': // Side view (profile)
+                x = this.centerX + (rotatedEast * scaleH);
+                y = this.centerY + (tvd * scaleV);
+                break;
+
+            case 'front': // Front view
+                x = this.centerX + (rotatedNorth * scaleH);
+                y = this.centerY + (tvd * scaleV);
+                break;
+
+            case 'isometric': // Isometric 3D
+            default:
+                x = this.centerX + (rotatedEast * scaleH) + (rotatedNorth * scaleH * 0.5);
+                y = this.centerY + (tvd * scaleV) - (rotatedNorth * scaleH * 0.3);
+                break;
+        }
 
         return { x, y };
+    }
+
+    /**
+     * Set view preset
+     */
+    setViewPreset(preset) {
+        this.viewPreset = preset;
+        this.render();
+
+        // Update UI if preset buttons exist
+        const buttons = document.querySelectorAll(`[data-view-preset-${this.prefix}]`);
+        buttons.forEach(btn => {
+            if (btn.dataset[`viewPreset${this.prefix.charAt(0).toUpperCase() + this.prefix.slice(1)}`] === preset) {
+                btn.classList.add('bg-purple-600');
+                btn.classList.remove('bg-slate-700');
+            } else {
+                btn.classList.remove('bg-purple-600');
+                btn.classList.add('bg-slate-700');
+            }
+        });
+    }
+
+    /**
+     * Zoom in/out
+     */
+    setZoom(delta) {
+        this.zoom = Math.max(0.5, Math.min(3.0, this.zoom + delta));
+        this.render();
     }
 
     /**
@@ -268,17 +324,117 @@ class Wellbore3D {
 
         if (resetBtn) {
             resetBtn.addEventListener('click', () => {
-                this.rotationAngle = 45;
-                this.isRotating = false;
-                if (rotateBtn) {
-                    rotateBtn.classList.remove('bg-purple-600', 'animate-spin');
-                    rotateBtn.classList.add('bg-purple-600/50');
-                }
-                this.stopRotation();
-                this.render();
-                if (angleDisplay) angleDisplay.textContent = '45°';
+                this.resetView();
             });
         }
+
+        // Add mouse wheel zoom
+        const container = document.getElementById(`${this.prefix}-wellbore-3d-container`);
+        if (container) {
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? -0.1 : 0.1;
+                this.setZoom(delta);
+            });
+        }
+    }
+
+    /**
+     * Setup keyboard controls
+     */
+    setupKeyboardControls() {
+        // Only add keyboard controls when the container is focused
+        const container = document.getElementById(`${this.prefix}-wellbore-3d-container`);
+        if (!container) return;
+
+        container.setAttribute('tabindex', '0');
+        container.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    this.rotationAngle = (this.rotationAngle - 5) % 360;
+                    this.render();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    this.rotationAngle = (this.rotationAngle + 5) % 360;
+                    this.render();
+                    break;
+                case '+':
+                case '=':
+                    e.preventDefault();
+                    this.setZoom(0.1);
+                    break;
+                case '-':
+                case '_':
+                    e.preventDefault();
+                    this.setZoom(-0.1);
+                    break;
+                case 'r':
+                case 'R':
+                    e.preventDefault();
+                    this.resetView();
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    const rotateBtn = document.getElementById(`${this.prefix}-3d-rotate-btn`);
+                    if (rotateBtn) rotateBtn.click();
+                    break;
+            }
+        });
+    }
+
+    /**
+     * Reset view to defaults
+     */
+    resetView() {
+        this.rotationAngle = 45;
+        this.zoom = 1.0;
+        this.viewPreset = 'isometric';
+        this.isRotating = false;
+
+        const rotateBtn = document.getElementById(`${this.prefix}-3d-rotate-btn`);
+        if (rotateBtn) {
+            rotateBtn.classList.remove('bg-purple-600', 'animate-spin');
+            rotateBtn.classList.add('bg-purple-600/50');
+        }
+
+        const angleDisplay = document.getElementById(`${this.prefix}-view-angle`);
+        if (angleDisplay) angleDisplay.textContent = '45°';
+
+        this.stopRotation();
+        this.render();
+    }
+
+    /**
+     * Export visualization to PNG
+     */
+    exportToPNG() {
+        const svgData = new XMLSerializer().serializeToString(this.svg);
+        const canvas = document.createElement('canvas');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        const ctx = canvas.getContext('2d');
+
+        const img = new Image();
+        const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+
+        img.onload = () => {
+            ctx.fillStyle = '#020617'; // slate-950 background
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0);
+            URL.revokeObjectURL(url);
+
+            canvas.toBlob((blob) => {
+                const link = document.createElement('a');
+                link.download = `wellbore-3d-${this.prefix}-${Date.now()}.png`;
+                link.href = URL.createObjectURL(blob);
+                link.click();
+            });
+        };
+
+        img.src = url;
     }
 
     /**
