@@ -371,22 +371,22 @@ class DataQualityGateway {
         let totalCompleteness = 0;
 
         for (const wellId of wellIds) {
-            const eval = evaluations[wellId];
+            const evaluation = evaluations[wellId];
 
-            if (eval.overallStatus === 'BLOCKED') {
+            if (evaluation.overallStatus === 'BLOCKED') {
                 report.blocked++;
                 report.criticalIssues.push({
                     wellId: wellId,
-                    wellName: eval.wellName,
-                    issues: eval.blockedReasons
+                    wellName: evaluation.wellName,
+                    issues: evaluation.blockedReasons
                 });
-            } else if (eval.overallStatus === 'WARNING') {
+            } else if (evaluation.overallStatus === 'WARNING') {
                 report.warning++;
             } else {
                 report.pass++;
             }
 
-            totalCompleteness += eval.completeness.overall;
+            totalCompleteness += evaluation.completeness.overall;
         }
 
         if (report.totalWells > 0) {
