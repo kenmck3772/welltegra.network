@@ -1,0 +1,321 @@
+{
+  "_template_version": "1.0",
+  "_instructions": "This is a comprehensive template for WellTegra well data. Fields marked REQUIRED/CRITICAL are mandatory for AI planning. Remove this instruction block before uploading.",
+
+  "well_header": {
+    "well_id": "REQUIRED - Your unique well identifier",
+    "well_name": "REQUIRED - Common well name",
+    "alias_names": ["Alternative names"],
+    "field": "REQUIRED - Field name",
+    "block": "Block/lease designation",
+    "platform": "Platform name if applicable",
+    "country": "REQUIRED",
+    "region": "State/province",
+    "basin": "Geological basin",
+    "operator": "REQUIRED - Current operator",
+    "well_type": "REQUIRED - Production/Injection/Exploration",
+    "well_profile": "REQUIRED - Vertical/Deviated/Horizontal",
+    "well_status": "REQUIRED - Active/Shut-in/Abandoned",
+    "production_type": "Oil/Gas/Condensate",
+    "environment": "REQUIRED - Onshore/Offshore",
+
+    "surface_location": {
+      "latitude": "REQUIRED - Decimal degrees",
+      "longitude": "REQUIRED - Decimal degrees",
+      "datum": "WGS84",
+      "elevation_kb": "KB elevation in ft MSL"
+    },
+
+    "regulatory": {
+      "spud_date": "REQUIRED - YYYY-MM-DD",
+      "completion_date": "YYYY-MM-DD",
+      "first_production_date": "YYYY-MM-DD"
+    }
+  },
+
+  "drilling_history": {
+    "total_measured_depth": 0,
+    "total_true_vertical_depth": 0,
+    "total_drilling_days": 0,
+    "total_npt_hours": 0,
+
+    "casing_strings": [
+      {
+        "string_name": "Surface casing",
+        "outer_diameter": "20 inches",
+        "weight": "133 lb/ft",
+        "grade": "K-55",
+        "connection": "Buttress",
+        "depth_md": 500,
+        "depth_tvd": 500,
+        "cement_top": 0,
+        "set_date": "YYYY-MM-DD",
+        "pressure_test": {
+          "test_pressure": 1000,
+          "result": "PASS/FAIL"
+        }
+      }
+    ],
+
+    "npt_events": [
+      {
+        "event_id": "NPT-001",
+        "date": "YYYY-MM-DD",
+        "type": "Lost circulation/Stuck pipe/Weather",
+        "depth_md": 0,
+        "duration_hours": 0,
+        "cost_usd": 0,
+        "description": "What happened",
+        "remediation": "How it was fixed",
+        "lesson_learned": "What to do differently next time"
+      }
+    ]
+  },
+
+  "completion": {
+    "completion_type": "REQUIRED - Cased-hole/Openhole/Gravel pack",
+    "completion_date": "REQUIRED - YYYY-MM-DD",
+
+    "tubing": {
+      "tubing_size": "REQUIRED - inches",
+      "tubing_grade": "L-80/P-110/13Cr",
+      "tubing_depth_md": "REQUIRED",
+      "tubing_pressure_rating": 0
+    },
+
+    "production_packer": {
+      "packer_type": "REQUIRED - Retrievable/Permanent",
+      "packer_depth_md": "CRITICAL - Must have",
+      "packer_set_date": "YYYY-MM-DD",
+      "packer_rating": "psi / °F"
+    },
+
+    "safety_systems": {
+      "scssv": {
+        "type": "CRITICAL - WL retrievable/Tubing retrievable",
+        "manufacturer": "CRITICAL",
+        "model": "CRITICAL",
+        "depth_md": "CRITICAL - Safety gate blocker if missing",
+        "depth_tvd": "CRITICAL",
+        "test_date": "CRITICAL - YYYY-MM-DD",
+        "test_pressure": "CRITICAL - psi",
+        "test_result": "PASS/FAIL"
+      }
+    },
+
+    "perforations": [
+      {
+        "zone_name": "Zone name",
+        "top_depth_md": 0,
+        "bottom_depth_md": 0,
+        "shot_density": "4 spf",
+        "date_perforated": "YYYY-MM-DD",
+        "immediate_flow": "Initial flow rate"
+      }
+    ],
+
+    "artificial_lift": {
+      "system_type": "ESP/Gas lift/Beam pump/None",
+      "installation_date": "YYYY-MM-DD",
+      "equipment_details": {
+        "manufacturer": "",
+        "setting_depth": 0,
+        "design_rate": 0
+      }
+    }
+  },
+
+  "christmas_tree": {
+    "manufacturer": "REQUIRED - Cameron/FMC/Aker",
+    "model": "Model number",
+    "pressure_rating": "REQUIRED - psi",
+    "temperature_rating": "REQUIRED - °F",
+    "installation_date": "REQUIRED - YYYY-MM-DD",
+    "last_pressure_test": "YYYY-MM-DD",
+
+    "components": [
+      {
+        "component_id": "LMV-001",
+        "component_type": "Lower Master Valve",
+        "serial_number": "",
+        "install_date": "YYYY-MM-DD",
+        "status": "Good/Degraded/Failed"
+      }
+    ],
+
+    "annulus_configuration": {
+      "a_annulus_pressure": 0,
+      "b_annulus_pressure": 0,
+      "maasp": "CRITICAL - Maximum Allowable Annulus Surface Pressure",
+      "maasp_value": 0,
+      "maasp_limiting_factor": "What limits MAASP"
+    }
+  },
+
+  "production_history": [
+    {
+      "date": "YYYY-MM-DD",
+      "oil_rate_bopd": 0,
+      "gas_rate_mcfd": 0,
+      "water_rate_bwpd": 0,
+      "water_cut_percent": 0,
+      "tubing_pressure": 0,
+      "casing_pressure": 0,
+      "runtime_hours": 24,
+      "uptime_percent": 100
+    }
+  ],
+
+  "cumulative_production": {
+    "oil_bbls": 0,
+    "gas_mcf": 0,
+    "water_bbls": 0,
+    "start_date": "YYYY-MM-DD",
+    "end_date": "YYYY-MM-DD"
+  },
+
+  "intervention_history": [
+    {
+      "report_id": "REQUIRED - INT-YYYY-###",
+      "intervention_date": "REQUIRED - YYYY-MM-DD",
+      "intervention_type": "REQUIRED - Workover/Wireline/Coiled tubing/Stimulation",
+      "primary_objective": "REQUIRED - Why did you do this intervention",
+
+      "pre_intervention_status": {
+        "oil_rate": 0,
+        "water_rate": 0,
+        "issue_description": "What was wrong with the well"
+      },
+
+      "execution_summary": {
+        "start_date": "YYYY-MM-DDTHH:MM:SSZ",
+        "end_date": "YYYY-MM-DDTHH:MM:SSZ",
+        "total_duration_hours": 0,
+        "npt_hours": "CRITICAL for AI - Non-productive time",
+        "rig_type": "Workover rig/Wireline unit/CT unit",
+        "contractor": ""
+      },
+
+      "activities_performed": [
+        {
+          "activity": "Pull tubing/Replace SCSSV/Acid treatment",
+          "start_time": "YYYY-MM-DDTHH:MM:SSZ",
+          "end_time": "YYYY-MM-DDTHH:MM:SSZ",
+          "duration_hours": 0,
+          "npt_hours": 0,
+          "notes": "What happened during this activity"
+        }
+      ],
+
+      "costs": {
+        "rig_cost_usd": "CRITICAL - Rig/service costs",
+        "services_cost_usd": 0,
+        "materials_cost_usd": 0,
+        "total_cost_usd": "CRITICAL - Total intervention cost"
+      },
+
+      "npt_breakdown": [
+        {
+          "npt_event": "Equipment failure/Weather/Logistics",
+          "duration_hours": 0,
+          "cost_impact_usd": 0,
+          "root_cause": "CRITICAL - Why did this NPT occur",
+          "preventable": true
+        }
+      ],
+
+      "post_intervention_results": {
+        "oil_rate": 0,
+        "water_rate": 0,
+        "productivity_increase_percent": 0,
+        "roi_months": 0,
+        "success_rating": "Successful/Partial/Failure"
+      },
+
+      "lessons_learned": "CRITICAL - What would you do differently next time",
+      "lessons_learned_structured": [
+        {
+          "category": "Equipment/Planning/Execution",
+          "lesson": "Specific lesson",
+          "recommendation": "What to do next time",
+          "applicable_to": "Which other wells can use this lesson"
+        }
+      ],
+
+      "outcome": "REQUIRED - Success/Partial success/Failure",
+      "would_recommend_approach": "REQUIRED - Yes/No/With modifications"
+    }
+  ],
+
+  "equipment_history": [
+    {
+      "equipment_id": "ESP-YYYY-###",
+      "equipment_type": "ESP/SCSSV/Packer/Pump",
+      "manufacturer": "",
+      "model": "",
+      "serial_number": "",
+      "install_date": "YYYY-MM-DD",
+      "install_depth_md": 0,
+      "removal_date": "YYYY-MM-DD or null if still in service",
+      "current_status": "In service/Removed/Failed",
+      "failure_date": "YYYY-MM-DD or null",
+      "failure_mode": "How did it fail",
+      "failure_investigation": {
+        "root_cause": "Why did it fail",
+        "contributing_factors": ["Factor 1", "Factor 2"],
+        "recommendation": "How to prevent this in future"
+      }
+    }
+  ],
+
+  "integrity_data": {
+    "integrity_tests": [
+      {
+        "test_id": "AIT-YYYY-###",
+        "test_date": "YYYY-MM-DD",
+        "test_type": "Annulus Integrity Test/CBL/Pressure test",
+        "test_pressure": 0,
+        "result": "PASS/FAIL",
+        "next_test_date": "YYYY-MM-DD"
+      }
+    ],
+
+    "pressure_surveys": [
+      {
+        "survey_date": "YYYY-MM-DD",
+        "gauge_depth_md": 0,
+        "recorded_pressure": 0,
+        "recorded_temperature": 0
+      }
+    ]
+  },
+
+  "costs_economics": {
+    "drilling_costs": {
+      "total_drilling_cost": 0,
+      "cost_per_foot": 0
+    },
+
+    "operating_costs": {
+      "daily_opex": 0,
+      "annual_opex": 0
+    },
+
+    "intervention_costs_annual": [
+      {
+        "year": 2024,
+        "total_opex": 0,
+        "major_interventions": 0,
+        "routine_maintenance": 0
+      }
+    ]
+  },
+
+  "data_quality": {
+    "source": "Original operator records/Estimated/Third-party",
+    "confidence": "High/Medium/Low",
+    "verification_status": "Verified/Unverified",
+    "last_updated": "YYYY-MM-DD",
+    "updated_by": "Name - Title"
+  }
+}
