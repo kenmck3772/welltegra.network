@@ -1,0 +1,830 @@
+{
+  "additional_components": {
+    "anm_a": {
+      "id": "anm_a_001",
+      "name": "A-Annulus Monitor (ANM-A)",
+      "type": "Annulus Monitoring System",
+      "position": 10,
+      "pressure_rating": "5,000 PSI",
+      "size": "1/4\" Connection",
+      "manufacturer": "Weatherford",
+      "model": "ANM-500",
+      "serial_number": "ANM-A-2023-001",
+      "install_date": "2023-01-15",
+      "last_test_date": "2024-10-01",
+      "next_test_due": "2025-01-01",
+      "status": "operational",
+      "current_reading": "150 PSI",
+      "barrier_function": "monitoring",
+      "common_issues": [
+        "Gauge drift",
+        "Valve leaks",
+        "Plugged lines"
+      ]
+    },
+    "anm_b": {
+      "id": "anm_b_001",
+      "name": "B-Annulus Monitor (ANM-B)",
+      "type": "Annulus Monitoring System",
+      "position": 11,
+      "pressure_rating": "5,000 PSI",
+      "size": "1/4\" Connection",
+      "manufacturer": "Weatherford",
+      "model": "ANM-500",
+      "serial_number": "ANM-B-2023-002",
+      "install_date": "2023-01-15",
+      "last_test_date": "2024-10-01",
+      "next_test_due": "2025-01-01",
+      "status": "operational",
+      "current_reading": "85 PSI",
+      "barrier_function": "monitoring",
+      "common_issues": [
+        "Gauge drift",
+        "Freezing in cold weather",
+        "Corrosion"
+      ]
+    },
+    "wellhead_pressure_gauge": {
+      "id": "whp_001",
+      "name": "Wellhead Pressure Gauge",
+      "type": "Digital Pressure Transmitter",
+      "position": 12,
+      "pressure_rating": "15,000 PSI",
+      "size": "1/2\" NPT",
+      "manufacturer": "Rosemount",
+      "model": "3051S",
+      "serial_number": "WHP-2023-001",
+      "install_date": "2023-01-15",
+      "last_calibration": "2024-09-01",
+      "next_calibration_due": "2025-03-01",
+      "status": "operational",
+      "current_reading": "2,450 PSI",
+      "accuracy": "±0.075%",
+      "barrier_function": "monitoring",
+      "common_issues": [
+        "Calibration drift",
+        "Impulse line plugging",
+        "Electronics failure"
+      ]
+    },
+    "temperature_gauge": {
+      "id": "temp_001",
+      "name": "Wellhead Temperature Gauge",
+      "type": "RTD Temperature Transmitter",
+      "position": 13,
+      "temperature_rating": "-40°F to 400°F",
+      "manufacturer": "Rosemount",
+      "model": "644",
+      "serial_number": "TEMP-2023-001",
+      "install_date": "2023-01-15",
+      "last_calibration": "2024-09-01",
+      "next_calibration_due": "2025-03-01",
+      "status": "operational",
+      "current_reading": "145°F",
+      "accuracy": "±0.5°F",
+      "barrier_function": "monitoring",
+      "common_issues": [
+        "Sensor drift",
+        "Thermowell corrosion",
+        "Wiring issues"
+      ]
+    },
+    "master_valve_actuator": {
+      "id": "act_001",
+      "name": "Master Valve Actuator",
+      "type": "Hydraulic Actuator",
+      "position": 14,
+      "pressure_rating": "3,000 PSI Hydraulic",
+      "manufacturer": "Moog",
+      "model": "D633 Series",
+      "serial_number": "ACT-2023-001",
+      "install_date": "2023-01-15",
+      "last_service": "2024-08-15",
+      "next_service_due": "2025-02-15",
+      "status": "operational",
+      "hydraulic_pressure": "1,500 PSI",
+      "common_issues": [
+        "Hydraulic leaks",
+        "Seal degradation",
+        "Control valve failure",
+        "Position indicator failure"
+      ]
+    },
+    "emergency_shutdown_valve": {
+      "id": "esdv_001",
+      "name": "Emergency Shutdown Valve (ESDV)",
+      "type": "Fail-Safe Close Valve",
+      "position": 15,
+      "pressure_rating": "10,000 PSI",
+      "size": "2-1/16\"",
+      "manufacturer": "Mokveld",
+      "model": "Axial Flow ESD",
+      "serial_number": "ESDV-2023-001",
+      "install_date": "2023-01-15",
+      "last_test_date": "2024-10-15",
+      "next_test_due": "2024-11-15",
+      "status": "operational",
+      "fail_mode": "Close on loss of signal",
+      "barrier_function": "emergency",
+      "common_issues": [
+        "Actuator failure",
+        "Partial stroke test failures",
+        "Seat leaks"
+      ]
+    }
+  },
+  "test_procedures": {
+    "proc_001": {
+      "id": "proc_001",
+      "name": "Christmas Tree Annual Pressure Test",
+      "procedure_number": "OP-CT-002",
+      "frequency": "Annual",
+      "test_type": "Pressure Test",
+      "description": "Full pressure test of all tree valves to verify integrity",
+      "steps": [
+        "Isolate well and bleed down pressure",
+        "Close all valves",
+        "Pressure up cavity between UMV and LMV to 8,500 PSI",
+        "Hold for 30 minutes and monitor for pressure drop",
+        "Bleed down and inspect for leaks",
+        "Repeat for Production Wing and Kill Wing valves",
+        "Document results and witness signatures"
+      ],
+      "acceptance_criteria": "No pressure drop >2% over 30 minutes",
+      "required_equipment": [
+        "High pressure pump",
+        "Calibrated pressure gauge",
+        "Bleed-off equipment"
+      ],
+      "personnel_required": 3,
+      "estimated_duration": "8 hours",
+      "regulatory_reference": "OGUK Well Integrity Guidelines Section 4.2"
+    },
+    "proc_002": {
+      "id": "proc_002",
+      "name": "Monthly Valve Function Test",
+      "procedure_number": "OP-CT-001",
+      "frequency": "Monthly",
+      "test_type": "Function Test",
+      "description": "Cycle all valves to verify operation",
+      "steps": [
+        "Verify well is stable and isolated",
+        "Slowly stroke each valve from fully open to fully closed",
+        "Verify position indicators match valve position",
+        "Check for external leaks during stroking",
+        "Lubricate valve stems as required",
+        "Return valves to operational positions",
+        "Document results"
+      ],
+      "acceptance_criteria": "All valves stroke smoothly without binding, no external leaks",
+      "required_equipment": [
+        "Torque wrench",
+        "Valve grease",
+        "Inspection mirror"
+      ],
+      "personnel_required": 2,
+      "estimated_duration": "4 hours"
+    },
+    "proc_003": {
+      "id": "proc_003",
+      "name": "DHSV Function Test",
+      "procedure_number": "OP-DHSV-001",
+      "frequency": "Monthly",
+      "test_type": "Function Test",
+      "description": "Test downhole safety valve closure on demand",
+      "steps": [
+        "Record current wellhead pressure",
+        "Close surface master valves",
+        "Bleed hydraulic control line pressure",
+        "Verify DHSV closes (pressure should drop)",
+        "Re-pressurize control line",
+        "Verify DHSV opens (pressure should increase)",
+        "Return system to normal operation",
+        "Document closure/opening times"
+      ],
+      "acceptance_criteria": "Valve closes in <60 seconds, opens in <30 seconds",
+      "required_equipment": [
+        "Hydraulic pump",
+        "Pressure recorder"
+      ],
+      "personnel_required": 2,
+      "estimated_duration": "2 hours",
+      "regulatory_reference": "API RP 14B Section 5.3"
+    },
+    "proc_004": {
+      "id": "proc_004",
+      "name": "Annulus Bleed-Down Test",
+      "procedure_number": "OP-WH-003",
+      "frequency": "Quarterly",
+      "test_type": "Leak Test",
+      "description": "Test tubing and casing integrity via annulus monitoring",
+      "steps": [
+        "Record initial A-annulus and B-annulus pressures",
+        "Bleed down A-annulus to zero pressure",
+        "Monitor for pressure buildup over 24 hours",
+        "Calculate pressure buildup rate",
+        "Repeat for B-annulus",
+        "Analyze results for tubing/casing leaks",
+        "Document findings"
+      ],
+      "acceptance_criteria": "Pressure buildup <50 PSI/24hr",
+      "required_equipment": [
+        "Calibrated pressure gauges",
+        "Bleed-off valves",
+        "Data logger"
+      ],
+      "personnel_required": 2,
+      "estimated_duration": "48 hours (24hr monitoring)",
+      "regulatory_reference": "NORSOK D-010 Section 8.4"
+    },
+    "proc_005": {
+      "id": "proc_005",
+      "name": "ESD System Full Function Test",
+      "procedure_number": "OP-ESD-001",
+      "frequency": "Quarterly",
+      "test_type": "System Test",
+      "description": "Test complete emergency shutdown sequence",
+      "steps": [
+        "Notify operations and obtain isolation permit",
+        "Shut in well on production wing valve",
+        "Initiate ESD from control panel",
+        "Verify ESDV closes",
+        "Verify master valves close (if auto)",
+        "Verify alarms activate",
+        "Reset ESD system",
+        "Verify all valves return to normal",
+        "Document closure times and sequence"
+      ],
+      "acceptance_criteria": "All valves close in required sequence, <10 seconds total",
+      "required_equipment": [
+        "ESD panel",
+        "Stopwatch",
+        "Witness personnel"
+      ],
+      "personnel_required": 4,
+      "estimated_duration": "4 hours",
+      "regulatory_reference": "IEC 61511 Section 11.8"
+    }
+  },
+  "failure_modes": {
+    "fm_001": {
+      "component": "Gate Valve (Master/Wing)",
+      "failure_mode": "Seat Leak",
+      "severity": "B",
+      "probability": "Medium",
+      "detection": "Pressure test, cavity pressure monitoring",
+      "effects": [
+        "Loss of barrier integrity",
+        "Uncontrolled pressure equalization",
+        "Potential well control issue"
+      ],
+      "causes": [
+        "Erosion from high velocity flow",
+        "Corrosion from produced fluids",
+        "Mechanical damage during operation",
+        "Poor maintenance/lubrication"
+      ],
+      "preventive_actions": [
+        "Regular pressure testing",
+        "Cavity monitoring",
+        "Proper valve cycling procedure",
+        "Corrosion inhibitor treatment"
+      ],
+      "corrective_actions": [
+        "Isolate well",
+        "Replace valve or insert isolation device",
+        "Workover if barrier compromised"
+      ]
+    },
+    "fm_002": {
+      "component": "Downhole Safety Valve (DHSV)",
+      "failure_mode": "Fail to Close on Demand",
+      "severity": "A",
+      "probability": "Low",
+      "detection": "Monthly function test",
+      "effects": [
+        "Loss of primary safety barrier",
+        "Well cannot be safely shut in",
+        "Regulatory non-compliance",
+        "Production shutdown required"
+      ],
+      "causes": [
+        "Control line leak/failure",
+        "Mechanical binding from debris",
+        "Spring failure",
+        "Hydraulic actuator failure",
+        "Sand/scale accumulation"
+      ],
+      "preventive_actions": [
+        "Monthly function tests",
+        "Control line pressure monitoring",
+        "Sand production monitoring",
+        "Scale inhibitor treatment"
+      ],
+      "corrective_actions": [
+        "Immediate well shut-in on surface valves",
+        "Slickline intervention to install insert valve",
+        "Replace DHSV via workover if needed"
+      ],
+      "regulatory_impact": "Well must be shut-in until barrier restored per OGUK guidelines"
+    },
+    "fm_003": {
+      "component": "Tubing Hanger Seal",
+      "failure_mode": "A-Annulus Pressure Buildup",
+      "severity": "B",
+      "probability": "Low",
+      "detection": "Daily annulus pressure monitoring",
+      "effects": [
+        "Annular pressure",
+        "Potential casing damage",
+        "Loss of secondary barrier",
+        "Wellhead load increase"
+      ],
+      "causes": [
+        "Seal degradation from temperature cycling",
+        "Elastomer aging",
+        "Chemical attack",
+        "Installation damage",
+        "Tubing leak"
+      ],
+      "preventive_actions": [
+        "Daily annulus pressure checks",
+        "Quarterly bleed-down tests",
+        "Annular temperature monitoring",
+        "Proper installation procedures"
+      ],
+      "corrective_actions": [
+        "Bleed annulus if pressure excessive",
+        "Monitor pressure buildup rate",
+        "Replace seal via workover if severe",
+        "Investigate tubing integrity"
+      ]
+    },
+    "fm_004": {
+      "component": "Production Choke",
+      "failure_mode": "Trim Erosion",
+      "severity": "C",
+      "probability": "High",
+      "detection": "Flow rate deviation, visual inspection",
+      "effects": [
+        "Loss of flow control",
+        "Production rate variance",
+        "Pressure control issues",
+        "Potential equipment damage downstream"
+      ],
+      "causes": [
+        "Sand production",
+        "High velocity erosion",
+        "Corrosive fluids",
+        "Cavitation",
+        "Improper trim selection"
+      ],
+      "preventive_actions": [
+        "Sand production monitoring",
+        "Quarterly trim inspection",
+        "Tungsten carbide trim for erosive service",
+        "Flow velocity limits"
+      ],
+      "corrective_actions": [
+        "Replace choke trim",
+        "Upgrade to erosion-resistant material",
+        "Install sand screen if needed",
+        "Adjust production rate"
+      ]
+    },
+    "fm_005": {
+      "component": "Wellhead Pressure Gauge",
+      "failure_mode": "Calibration Drift",
+      "severity": "C",
+      "probability": "Medium",
+      "detection": "Semi-annual calibration check",
+      "effects": [
+        "Inaccurate pressure readings",
+        "Poor production optimization",
+        "Missed abnormal pressure events",
+        "Potential safety issues"
+      ],
+      "causes": [
+        "Normal wear and aging",
+        "Temperature effects",
+        "Vibration",
+        "Overpressure events",
+        "Impulse line issues"
+      ],
+      "preventive_actions": [
+        "Semi-annual calibration",
+        "Redundant pressure measurement",
+        "Periodic comparison with portable gauge",
+        "Impulse line inspection"
+      ],
+      "corrective_actions": [
+        "Recalibrate transmitter",
+        "Replace if out of specification",
+        "Check impulse lines for blockage",
+        "Verify process connection"
+      ]
+    }
+  },
+  "regulatory_documents": {
+    "doc_001": {
+      "document_type": "Well Examination Scheme",
+      "document_number": "WES-W666-2024",
+      "jurisdiction": "UKCS",
+      "issued_by": "Independent Well Examiner - J. Williams",
+      "issue_date": "2024-01-15",
+      "expiry_date": "2025-01-15",
+      "status": "Current",
+      "next_review": "2024-12-01",
+      "key_requirements": [
+        "Annual Christmas tree pressure test to 85% MWP",
+        "Monthly DHSV function test",
+        "Weekly visual inspections",
+        "Quarterly annulus monitoring",
+        "Two-barrier philosophy at all times"
+      ],
+      "file_location": "sharepoint://regulatory/WES-W666-2024.pdf"
+    },
+    "doc_002": {
+      "document_type": "Well Integrity Management System (WIMS)",
+      "document_number": "WIMS-2024-001",
+      "jurisdiction": "UKCS",
+      "issued_by": "Operator - Well Integrity Team",
+      "issue_date": "2024-01-01",
+      "revision": "Rev 3",
+      "status": "Current",
+      "next_review": "2025-01-01",
+      "key_requirements": [
+        "Barrier status tracking",
+        "Defect management process",
+        "Change management for well barriers",
+        "Competency requirements for well operations",
+        "Documentation and record keeping"
+      ],
+      "file_location": "sharepoint://integrity/WIMS-2024.pdf"
+    },
+    "doc_003": {
+      "document_type": "Safety Case",
+      "document_number": "SC-PLATFORM-2023",
+      "jurisdiction": "UKCS",
+      "issued_by": "Duty Holder",
+      "issue_date": "2023-06-01",
+      "revision": "Rev 12",
+      "status": "Current",
+      "next_review": "2025-06-01",
+      "acceptance_date": "2023-07-15",
+      "accepted_by": "HSE UK",
+      "key_requirements": [
+        "Major Accident Hazard (MAH) controls",
+        "Performance standards for safety-critical elements",
+        "Well integrity as safety-critical element",
+        "Verification scheme compliance",
+        "Management of change process"
+      ],
+      "file_location": "sharepoint://hse/safety-case-2023.pdf"
+    },
+    "doc_004": {
+      "document_type": "API RP 14B Compliance Certificate",
+      "document_number": "API14B-W666-2024",
+      "jurisdiction": "International",
+      "issued_by": "Third Party Certifier",
+      "issue_date": "2024-10-01",
+      "expiry_date": "2025-10-01",
+      "status": "Current",
+      "scope": "Surface safety valve systems",
+      "key_requirements": [
+        "SSV response time <15 seconds",
+        "Monthly function testing",
+        "Annual full system test",
+        "Documented procedures",
+        "Personnel training"
+      ],
+      "file_location": "sharepoint://compliance/API14B-2024.pdf"
+    }
+  },
+  "alerts": {
+    "alert_001": {
+      "id": "alert_001",
+      "timestamp": "2024-11-01T08:00:00Z",
+      "severity": "HIGH",
+      "type": "PMS Overdue",
+      "component": "umv_001",
+      "message": "Christmas Tree Valve Function Test overdue - Due: 2024-11-01",
+      "action_required": "Schedule and complete valve function test immediately",
+      "assigned_to": "Operations Team",
+      "status": "active",
+      "auto_generated": true
+    },
+    "alert_002": {
+      "id": "alert_002",
+      "timestamp": "2024-10-28T14:30:00Z",
+      "severity": "CRITICAL",
+      "type": "Barrier Integrity",
+      "component": "dhsv",
+      "message": "Primary safety barrier (DHSV) FAILED - Well shut-in required",
+      "action_required": "Well remains shut-in pending slickline intervention on 2024-11-15",
+      "assigned_to": "Integrity Team",
+      "status": "mitigated",
+      "mitigation": "Well shut-in on surface master valves - secondary barrier in place",
+      "auto_generated": false
+    },
+    "alert_003": {
+      "id": "alert_003",
+      "timestamp": "2024-10-30T10:15:00Z",
+      "severity": "MEDIUM",
+      "type": "Pressure Anomaly",
+      "component": "anm_a_001",
+      "message": "A-Annulus pressure increased from 120 PSI to 150 PSI over 48 hours",
+      "action_required": "Investigate cause of pressure buildup - possible tubing leak",
+      "assigned_to": "Integrity Engineer",
+      "status": "investigating",
+      "auto_generated": true
+    },
+    "alert_004": {
+      "id": "alert_004",
+      "timestamp": "2024-10-25T09:00:00Z",
+      "severity": "LOW",
+      "type": "Calibration Due",
+      "component": "whp_001",
+      "message": "Wellhead pressure gauge calibration due in 30 days",
+      "action_required": "Schedule calibration for 2025-03-01",
+      "assigned_to": "Instrumentation Team",
+      "status": "scheduled",
+      "auto_generated": true
+    },
+    "alert_005": {
+      "id": "alert_005",
+      "timestamp": "2024-11-01T06:00:00Z",
+      "severity": "HIGH",
+      "type": "Test Due",
+      "component": "esdv_001",
+      "message": "Emergency Shutdown Valve test due in 14 days",
+      "action_required": "Schedule ESD test before 2024-11-15",
+      "assigned_to": "Operations Team",
+      "status": "active",
+      "auto_generated": true
+    }
+  },
+  "inspection_checklists": {
+    "checklist_001": {
+      "id": "checklist_001",
+      "name": "Weekly Wellhead Visual Inspection",
+      "procedure_number": "OP-WH-001",
+      "frequency": "Weekly",
+      "last_completed": "2024-10-28",
+      "next_due": "2024-11-04",
+      "inspector": "Operations Team",
+      "items": [
+        {
+          "item": "Check for external leaks at all flanges",
+          "acceptance": "No visible leaks or staining",
+          "last_status": "PASS",
+          "notes": ""
+        },
+        {
+          "item": "Inspect valve stems for leaks",
+          "acceptance": "No fluid visible on stems",
+          "last_status": "PASS",
+          "notes": ""
+        },
+        {
+          "item": "Check valve position indicators",
+          "acceptance": "All indicators visible and correct",
+          "last_status": "PASS",
+          "notes": ""
+        },
+        {
+          "item": "Verify pressure gauge readings are stable",
+          "acceptance": "Readings match expected values ±5%",
+          "last_status": "PASS",
+          "notes": "WHP: 2450 PSI - Normal"
+        },
+        {
+          "item": "Check A-annulus and B-annulus pressures",
+          "acceptance": "A<500 PSI, B<300 PSI, stable",
+          "last_status": "CAUTION",
+          "notes": "A-annulus at 150 PSI - slight increase noted, under investigation"
+        },
+        {
+          "item": "Inspect for corrosion or damage",
+          "acceptance": "No visible corrosion or deterioration",
+          "last_status": "PASS",
+          "notes": ""
+        },
+        {
+          "item": "Verify wellhead labels are legible",
+          "acceptance": "All labels readable",
+          "last_status": "PASS",
+          "notes": ""
+        },
+        {
+          "item": "Check for unusual sounds or vibrations",
+          "acceptance": "No abnormal noise or vibration",
+          "last_status": "PASS",
+          "notes": ""
+        }
+      ]
+    },
+    "checklist_002": {
+      "id": "checklist_002",
+      "name": "Monthly Detailed Inspection",
+      "procedure_number": "OP-WH-004",
+      "frequency": "Monthly",
+      "last_completed": "2024-10-01",
+      "next_due": "2024-11-01",
+      "inspector": "Integrity Engineer",
+      "items": [
+        {
+          "item": "Measure valve stem travel",
+          "acceptance": "Full stroke achieved",
+          "last_status": "PASS",
+          "notes": "All valves full stroke confirmed"
+        },
+        {
+          "item": "Check grease fitting condition",
+          "acceptance": "Fittings intact, grease takes pressure",
+          "last_status": "PASS",
+          "notes": ""
+        },
+        {
+          "item": "Inspect hydraulic control lines",
+          "acceptance": "No leaks, pressure stable",
+          "last_status": "PASS",
+          "notes": "Control line pressure: 1500 PSI"
+        },
+        {
+          "item": "Verify ESD system function",
+          "acceptance": "Manual test successful",
+          "last_status": "PASS",
+          "notes": "ESDV closed in 8 seconds"
+        },
+        {
+          "item": "Check instrument air supply",
+          "acceptance": "Pressure >80 PSI, no moisture",
+          "last_status": "PASS",
+          "notes": "Supply pressure: 95 PSI"
+        }
+      ]
+    }
+  },
+  "maintenance_history": {
+    "maint_001": {
+      "date": "2024-08-15",
+      "component": "act_001",
+      "work_type": "Preventive Maintenance",
+      "description": "Master valve actuator service - replace seals and hydraulic fluid",
+      "work_order": "WO-2024-0815",
+      "technician": "J. Smith - Hydraulics Specialist",
+      "duration": "4 hours",
+      "parts_used": [
+        "Actuator seal kit - Part# ACT-SK-001",
+        "Hydraulic fluid (5 gallons) - ISO 32"
+      ],
+      "findings": "Minor seal wear noted, replaced as preventive measure. Actuator tested OK.",
+      "cost": 2850,
+      "next_service": "2025-02-15"
+    },
+    "maint_002": {
+      "date": "2024-08-25",
+      "component": "pc_001",
+      "work_type": "Corrective Maintenance",
+      "description": "Replace production choke trim due to erosion",
+      "work_order": "WO-2024-0825",
+      "technician": "M. Johnson - Instrument Tech",
+      "duration": "3 hours",
+      "parts_used": [
+        "Tungsten carbide choke trim - Part# CHK-TC-32/64"
+      ],
+      "findings": "Severe erosion on original trim, likely from sand production. Upgraded to tungsten carbide.",
+      "cost": 4200,
+      "followup_actions": [
+        "Monitor sand production rates",
+        "Consider sand screen installation"
+      ]
+    },
+    "maint_003": {
+      "date": "2024-09-01",
+      "component": "whp_001",
+      "work_type": "Calibration",
+      "description": "Six-month calibration of wellhead pressure transmitter",
+      "work_order": "WO-2024-0901",
+      "technician": "L. Wang - Instrument Calibration",
+      "duration": "2 hours",
+      "equipment_used": [
+        "Fluke 754 Documenting Process Calibrator",
+        "Deadweight tester"
+      ],
+      "findings": "Transmitter reading 15 PSI low at 5000 PSI test point. Recalibrated to spec.",
+      "calibration_as_found": "Error: -0.3% at 5000 PSI",
+      "calibration_as_left": "Error: <0.05% across range",
+      "certificate_number": "CAL-2024-0901-WHP",
+      "next_calibration": "2025-03-01",
+      "cost": 850
+    },
+    "maint_004": {
+      "date": "2024-10-01",
+      "component": "All Tree Valves",
+      "work_type": "Testing",
+      "description": "Annual Christmas tree pressure test",
+      "work_order": "WO-2024-1001",
+      "technician": "M. Singh - Integrity Engineer",
+      "witness": "J. Williams - Independent Well Examiner",
+      "duration": "8 hours",
+      "test_results": {
+        "umv_001": "PASS - No pressure drop",
+        "lmv_001": "PASS - No pressure drop",
+        "pwv_001": "MARGINAL - 5 PSI/min leak rate (within tolerance)",
+        "kwv_001": "PASS - No pressure drop",
+        "sv_001": "PASS - No pressure drop"
+      },
+      "findings": "Production wing valve shows minor seat leak. Monitor monthly, plan replacement during next shutdown.",
+      "regulatory_compliance": "Meets OGUK Well Integrity Guidelines Section 4.2",
+      "certificate_number": "PT-2024-1001-CT",
+      "cost": 5500
+    }
+  },
+  "lifecycle_data": {
+    "component_age_limits": {
+      "gate_valves": {
+        "design_life": "15 years",
+        "inspection_interval_initial": "Annual",
+        "inspection_interval_after_10yr": "Semi-annual",
+        "retirement_criteria": [
+          "Exceeds design life",
+          "Repeated test failures",
+          "Severe corrosion/erosion",
+          "Obsolete parts unavailable"
+        ]
+      },
+      "safety_valves": {
+        "design_life": "10 years",
+        "inspection_interval": "Annual",
+        "overhaul_interval": "5 years",
+        "retirement_criteria": [
+          "Exceeds design life",
+          "Failed overhaul inspection",
+          "Actuator end of life"
+        ]
+      },
+      "instrumentation": {
+        "design_life": "10 years",
+        "calibration_interval": "6 months",
+        "retirement_criteria": [
+          "Cannot be calibrated within spec",
+          "Obsolete/unsupported model",
+          "Repeated failures"
+        ]
+      }
+    },
+    "current_age_status": {
+      "umv_001": {
+        "install_date": "2023-01-15",
+        "age_years": 1.8,
+        "percent_of_life": "12%",
+        "condition": "Good",
+        "estimated_remaining_life": "13.2 years",
+        "retirement_planned": "2038"
+      },
+      "whp_001": {
+        "install_date": "2023-01-15",
+        "age_years": 1.8,
+        "percent_of_life": "18%",
+        "condition": "Good",
+        "estimated_remaining_life": "8.2 years",
+        "replacement_planned": "2033"
+      }
+    }
+  },
+  "predictive_maintenance": {
+    "pred_001": {
+      "component": "pwv_001",
+      "issue": "Increasing seat leak rate",
+      "trend_data": [
+        {"date": "2024-01-01", "leak_rate": "0 PSI/min"},
+        {"date": "2024-04-01", "leak_rate": "1 PSI/min"},
+        {"date": "2024-07-01", "leak_rate": "3 PSI/min"},
+        {"date": "2024-10-01", "leak_rate": "5 PSI/min"}
+      ],
+      "prediction": "Leak rate will exceed 10 PSI/min tolerance by March 2025",
+      "recommended_action": "Schedule valve replacement during planned shutdown in Q1 2025",
+      "confidence": "High",
+      "cost_if_reactive": 45000,
+      "cost_if_planned": 28000,
+      "savings": 17000
+    },
+    "pred_002": {
+      "component": "anm_a_001",
+      "issue": "Abnormal A-annulus pressure buildup",
+      "trend_data": [
+        {"date": "2024-09-01", "pressure": "120 PSI"},
+        {"date": "2024-09-15", "pressure": "125 PSI"},
+        {"date": "2024-10-01", "pressure": "135 PSI"},
+        {"date": "2024-10-15", "pressure": "145 PSI"},
+        {"date": "2024-10-30", "pressure": "150 PSI"}
+      ],
+      "prediction": "Possible tubing leak developing - pressure trending upward",
+      "recommended_action": "Perform annulus bleed-down test, investigate tubing integrity",
+      "confidence": "Medium",
+      "potential_impact": "If unaddressed, could lead to sustained casing pressure"
+    }
+  }
+}
