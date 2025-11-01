@@ -485,36 +485,6 @@
         return svg;
     }
 
-
-
-            svg += '</g>';
-        } else {
-            // Structural component - draw as cylinder/housing
-            svg += `<g class="tree-component" data-component-id="${component.id}" style="cursor: pointer;">`;
-            svg += `<rect x="${x - 40}" y="${y - 25}" width="80" height="50" fill="${statusColor}" stroke="#1e293b" stroke-width="2" rx="3"/>`;
-            svg += `<text x="${x}" y="${y + 5}" text-anchor="middle" font-size="10" font-weight="bold" fill="white">${component.id}</text>`;
-            svg += '</g>';
-        }
-
-        // Component name label (to the side)
-        const labelX = component.id.includes('WV') ? (component.id === 'PWV' ? x + 100 : x - 100) : x + 50;
-        svg += `<text x="${labelX}" y="${y + 5}" font-size="11" fill="#475569">${component.name}</text>`;
-
-        return svg;
-    }
-
- else {
-                // Draw rectangle for status
-                svg += `<rect x="${x}" y="${itemY - 8}" width="20" height="16" fill="${item.color}" stroke="#1e293b" stroke-width="1"/>`;
-            }
-
-            svg += `<text x="${x + 30}" y="${itemY + 4}" font-size="11" fill="#475569">${item.label}</text>`;
-        });
-
-        svg += '</g>';
-        return svg;
-    }
-
     /**
      * Get color for status
      */
