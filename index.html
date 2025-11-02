@@ -92,6 +92,89 @@
     <script src="assets/js/crypto-utils.js?v=23.0.21"></script>
     <script src="assets/js/image-utils.js?v=23.0.21"></script>
     <script src="assets/js/sw-register.js?v=23.0.21"></script>
+
+    <!-- Homepage Redesign - Entrance Animations & Enhancements -->
+    <style>
+        /* Action Card Entrance Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Apply animations to action cards */
+        .action-card {
+            animation: slideInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .action-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .action-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .action-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        /* FAB entrance animation */
+        #fixed-action-bar {
+            animation: fadeIn 0.6s ease-out 0.5s forwards;
+            opacity: 0;
+        }
+
+        /* ROI Calculator highlight */
+        .roi-calculator {
+            scroll-margin-top: 100px;
+        }
+
+        /* Enhanced footer hover effects */
+        footer a:hover svg {
+            transform: scale(1.1);
+            transition: transform 0.2s ease;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .action-card {
+                animation-delay: 0s !important;
+            }
+
+            .action-card:nth-child(1) {
+                animation-delay: 0.1s !important;
+            }
+
+            .action-card:nth-child(2) {
+                animation-delay: 0.15s !important;
+            }
+
+            .action-card:nth-child(3) {
+                animation-delay: 0.2s !important;
+            }
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 
 <body class="theme-dark">
@@ -157,15 +240,26 @@
 
     <main id="main-content" class="flex-1" role="main">
         <div id="home-view" class="view-container">
-            <!-- Intention-Driven Action Cards -->
-            <div class="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950 py-16 px-4">
-                <div class="max-w-7xl mx-auto">
+            <!-- Intention-Driven Action Cards with Blue Wallpaper & Hero Video Background -->
+            <div class="min-h-screen relative overflow-hidden py-16 px-4">
+                <!-- Background Hero Video -->
+                <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-20 z-0" poster="assets/logo.jpg">
+                    <source src="assets/hero.mp4" type="video/mp4">
+                </video>
+
+                <!-- Blue Gradient Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-900/90 via-slate-900/95 to-blue-950/90 z-0"></div>
+
+                <!-- Subtle Pattern Overlay -->
+                <div class="absolute inset-0 opacity-5 z-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"1\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+
+                <div class="max-w-7xl mx-auto relative z-10">
                     <!-- Welcome Header -->
                     <div class="text-center mb-16">
-                        <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6">
+                        <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 drop-shadow-2xl">
                             Welcome to Well-Tegra
                         </h1>
-                        <p class="text-xl text-slate-300 max-w-3xl mx-auto">
+                        <p class="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto drop-shadow-lg font-medium">
                             Choose your path: Plan interventions, Execute operations, or Analyze results
                         </p>
                     </div>
@@ -173,22 +267,26 @@
                     <!-- 3 Action Cards Grid -->
                     <div class="grid md:grid-cols-3 gap-8 mb-16">
                         <!-- Card 1: PLAN -->
-                        <div class="group action-card bg-gradient-to-br from-cyan-600 to-blue-600 p-8 rounded-2xl shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                        <div class="group action-card bg-white/10 backdrop-blur-md border-2 border-white/20 p-8 rounded-3xl shadow-2xl hover:shadow-cyan-500/50 hover:border-cyan-400/60 transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 cursor-pointer">
                             <div class="text-center">
-                                <div class="mb-6">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                    </svg>
+                                <!-- Icon with glow effect -->
+                                <div class="mb-6 relative">
+                                    <div class="absolute inset-0 bg-cyan-400/30 blur-2xl rounded-full group-hover:bg-cyan-400/50 transition-all"></div>
+                                    <div class="relative bg-gradient-to-br from-cyan-500 to-blue-600 p-5 rounded-2xl inline-block shadow-xl">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
                                 </div>
-                                <h2 class="text-2xl font-bold text-white mb-4">Plan Your Well Intervention</h2>
-                                <p class="text-cyan-50 mb-8 leading-relaxed">
+                                <h2 class="text-2xl font-bold text-white mb-4 drop-shadow-lg">Plan Your Well Intervention</h2>
+                                <p class="text-blue-100 mb-8 leading-relaxed text-lg">
                                     Begin a new well plan or continue working on existing drafts
                                 </p>
                                 <div class="flex flex-col gap-3">
-                                    <a href="#planner-view" class="inline-block px-6 py-3 bg-white text-cyan-700 font-bold rounded-lg shadow-lg hover:bg-cyan-50 transition-all">
+                                    <a href="#planner-view" class="inline-block px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-xl shadow-lg hover:shadow-cyan-400/50 hover:from-cyan-400 hover:to-blue-500 transition-all transform hover:scale-105">
                                         Start New Well Plan
                                     </a>
-                                    <button onclick="alert('Draft management coming soon')" class="px-6 py-3 bg-cyan-700/50 text-white font-semibold rounded-lg hover:bg-cyan-700 transition-all border-2 border-cyan-400/30">
+                                    <button onclick="alert('Draft management coming soon')" class="px-6 py-3 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transition-all border-2 border-white/30 hover:border-white/50">
                                         Continue Draft
                                     </button>
                                 </div>
@@ -196,59 +294,122 @@
                         </div>
 
                         <!-- Card 2: EXECUTE -->
-                        <div class="group action-card bg-gradient-to-br from-orange-600 to-amber-600 p-8 rounded-2xl shadow-2xl hover:shadow-orange-500/50 transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                        <div class="group action-card bg-white/10 backdrop-blur-md border-2 border-white/20 p-8 rounded-3xl shadow-2xl hover:shadow-orange-500/50 hover:border-orange-400/60 transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 cursor-pointer">
                             <div class="text-center">
-                                <div class="mb-6">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                                    </svg>
+                                <!-- Icon with glow effect -->
+                                <div class="mb-6 relative">
+                                    <div class="absolute inset-0 bg-orange-400/30 blur-2xl rounded-full group-hover:bg-orange-400/50 transition-all"></div>
+                                    <div class="relative bg-gradient-to-br from-orange-500 to-amber-600 p-5 rounded-2xl inline-block shadow-xl">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                        </svg>
+                                    </div>
                                 </div>
-                                <h2 class="text-2xl font-bold text-white mb-4">Execute & Monitor</h2>
-                                <p class="text-orange-50 mb-4 leading-relaxed">
+                                <h2 class="text-2xl font-bold text-white mb-4 drop-shadow-lg">Execute & Monitor</h2>
+                                <p class="text-blue-100 mb-4 leading-relaxed text-lg">
                                     Track active operations, manage logistics, and launch simulators
                                 </p>
-                                <div class="mb-6 p-4 bg-orange-700/30 rounded-lg border border-orange-400/30">
-                                    <p class="text-sm text-orange-100 font-semibold">Active Job Status</p>
-                                    <p class="text-orange-200">No active jobs</p>
+                                <div class="mb-6 p-4 bg-white/10 backdrop-blur-sm rounded-xl border-2 border-orange-400/30">
+                                    <p class="text-sm text-orange-200 font-semibold">Active Job Status</p>
+                                    <p class="text-white font-medium">No active jobs</p>
                                 </div>
                                 <div class="flex flex-col gap-3">
-                                    <a href="#logistics-view" class="inline-block px-6 py-3 bg-white text-orange-700 font-bold rounded-lg shadow-lg hover:bg-orange-50 transition-all">
+                                    <a href="#logistics-view" class="inline-block px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-600 text-white font-bold rounded-xl shadow-lg hover:shadow-orange-400/50 hover:from-orange-400 hover:to-amber-500 transition-all transform hover:scale-105">
                                         Launch Simulator
                                     </a>
-                                    <a href="#logistics-view" class="px-6 py-3 text-white font-semibold hover:underline">
-                                        View Active Jobs →
+                                    <a href="#logistics-view" class="px-6 py-3 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transition-all border-2 border-white/30 hover:border-white/50 inline-flex items-center justify-center gap-2">
+                                        View Active Jobs
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                     </a>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Card 3: ANALYZE -->
-                        <div class="group action-card bg-gradient-to-br from-emerald-600 to-green-600 p-8 rounded-2xl shadow-2xl hover:shadow-emerald-500/50 transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                        <div class="group action-card bg-white/10 backdrop-blur-md border-2 border-white/20 p-8 rounded-3xl shadow-2xl hover:shadow-emerald-500/50 hover:border-emerald-400/60 transition-all duration-300 transform hover:scale-105 hover:-translate-y-2 cursor-pointer">
                             <div class="text-center">
-                                <div class="mb-6">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                                    </svg>
+                                <!-- Icon with glow effect -->
+                                <div class="mb-6 relative">
+                                    <div class="absolute inset-0 bg-emerald-400/30 blur-2xl rounded-full group-hover:bg-emerald-400/50 transition-all"></div>
+                                    <div class="relative bg-gradient-to-br from-emerald-500 to-green-600 p-5 rounded-2xl inline-block shadow-xl">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                        </svg>
+                                    </div>
                                 </div>
-                                <h2 class="text-2xl font-bold text-white mb-4">Analyze & Export</h2>
-                                <p class="text-emerald-50 mb-8 leading-relaxed">
+                                <h2 class="text-2xl font-bold text-white mb-4 drop-shadow-lg">Analyze & Export</h2>
+                                <p class="text-blue-100 mb-8 leading-relaxed text-lg">
                                     Review data quality, generate reports, and export datasets
                                 </p>
-                                <div class="flex flex-col gap-3 text-left">
-                                    <a href="#data-quality-view" class="flex items-center justify-between px-6 py-3 bg-white text-emerald-700 font-bold rounded-lg shadow-lg hover:bg-emerald-50 transition-all group">
+                                <div class="flex flex-col gap-3">
+                                    <a href="#data-quality-view" class="inline-flex items-center justify-between px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold rounded-xl shadow-lg hover:shadow-emerald-400/50 hover:from-emerald-400 hover:to-green-500 transition-all transform hover:scale-105">
                                         <span>Data Quality Dashboard</span>
                                         <svg class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                     </a>
-                                    <a href="#data-view" class="px-6 py-3 text-white font-semibold hover:underline">
-                                        Export Data →
+                                    <a href="#data-view" class="px-6 py-3 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transition-all border-2 border-white/30 hover:border-white/50 inline-flex items-center justify-center gap-2">
+                                        Export Data
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                     </a>
-                                    <a href="#governance-view" class="px-6 py-3 text-white font-semibold hover:underline">
-                                        View Reports →
+                                    <a href="#governance-view" class="px-6 py-3 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transition-all border-2 border-white/30 hover:border-white/50 inline-flex items-center justify-center gap-2">
+                                        View Reports
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- ROI Calculator Section - Enhanced for Blue Background -->
+                    <section class="mt-16 py-16 px-4 roi-calculator bg-white/10 backdrop-blur-md rounded-3xl border-2 border-white/20 shadow-2xl">
+                        <div class="max-w-6xl mx-auto">
+                            <div class="text-center mb-12">
+                                <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4 drop-shadow-lg">The Platform That Pays for Itself</h2>
+                                <p class="text-lg text-blue-100 max-w-2xl mx-auto font-medium">
+                                    Use our interactive calculator to estimate your potential annual savings with Well-Tegra
+                                </p>
+                            </div>
+                            <div class="grid lg:grid-cols-2 gap-10 items-center">
+                                <!-- Calculator Controls -->
+                                <div class="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-2xl border-2 border-white/20">
+                                    <div class="space-y-6">
+                                        <div>
+                                            <label for="engineerCount" class="text-white font-semibold block mb-2">Number of Well Engineers</label>
+                                            <div class="flex items-center space-x-4">
+                                                <input type="range" id="engineerCount" min="5" max="100" value="20"
+                                                       class="w-full h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+                                                       aria-describedby="engineerCountValue">
+                                                <span id="engineerCountValue" class="font-bold text-xl w-12 text-center text-cyan-400">20</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label for="nptReduction" class="text-white font-semibold block mb-2">Projected NPT Reduction</label>
+                                            <div class="flex items-center space-x-4">
+                                                <input type="range" id="nptReduction" min="5" max="40" value="20"
+                                                       class="w-full h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer accent-cyan-500">
+                                                <span id="nptReductionValue" class="font-bold text-xl w-12 text-center text-cyan-400">20%</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label for="timeSavings" class="text-white font-semibold block mb-2">Engineering Time Reclaimed</label>
+                                            <div class="flex items-center space-x-4">
+                                                <input type="range" id="timeSavings" min="10" max="50" value="40"
+                                                       class="w-full h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer accent-cyan-500">
+                                                <span id="timeSavingsValue" class="font-bold text-xl w-12 text-center text-cyan-400">40%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-8 pt-6 border-t border-slate-600 text-center">
+                                        <p class="text-lg font-semibold text-slate-300">Total Estimated Annual Savings:</p>
+                                        <p id="totalSavings" class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 mt-2">$2,168,000</p>
+                                    </div>
+                                </div>
+                                <!-- Savings Chart -->
+                                <div class="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-2xl border-2 border-white/20">
+                                    <canvas id="savingsChart" aria-label="Savings chart showing annual savings breakdown"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
 
@@ -3344,7 +3505,8 @@
     </main>
 
     <!-- Fixed Action Bar - AI Advisor & Mobile Communicator -->
-    <div id="fixed-action-bar" class="fixed bottom-6 right-6 flex flex-col gap-4 z-40" role="toolbar" aria-label="Quick actions">
+    <!-- Mobile: Center bottom | Desktop: Right bottom -->
+    <div id="fixed-action-bar" class="fixed bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:right-6 md:translate-x-0 flex flex-row md:flex-col gap-4 z-40" role="toolbar" aria-label="Quick actions">
         <!-- AI Advisor Button -->
         <button id="ai-advisor-fab"
                 class="action-bubble w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 shadow-2xl hover:shadow-purple-500/50 flex items-center justify-center transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-purple-400/50"
@@ -3743,6 +3905,179 @@
 
     <!-- 3D Wellbore Visualization (v23.0.19+) -->
     <script src="assets/js/wellbore-3d.js?v=23.0.19" defer></script>
+
+    <!-- Comprehensive Footer with Blue Theme -->
+    <footer class="relative bg-gradient-to-b from-blue-950/80 to-slate-950/90 border-t-2 border-blue-800/50 mt-auto backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+
+                <!-- Resources Column -->
+                <div>
+                    <h3 class="text-cyan-400 font-bold text-lg mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="#whitepaper-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                White Paper
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#help-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Help & Documentation
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#faq-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                FAQ
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#media-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Video Tutorials
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Tools & Features Column -->
+                <div>
+                    <h3 class="text-cyan-400 font-bold text-lg mb-4">Tools & Features</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="#toolstring-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Toolstring Builder</a>
+                        </li>
+                        <li>
+                            <a href="#christmas-tree-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Christmas Tree Viewer</a>
+                        </li>
+                        <li>
+                            <a href="#wellbore-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Wellbore 3D Viewer</a>
+                        </li>
+                        <li>
+                            <a href="#integrity-schematic-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Integrity Schematic</a>
+                        </li>
+                        <li>
+                            <a href="#control-room-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Control Room</a>
+                        </li>
+                        <li>
+                            <a href="#data-standardizer-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Data Standardizer</a>
+                        </li>
+                        <li>
+                            <a href="#scenario-layering-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Scenario Layering</a>
+                        </li>
+                        <li>
+                            <a href="#readiness-checklist-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Readiness Checklist</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Business Intelligence Column -->
+                <div>
+                    <h3 class="text-cyan-400 font-bold text-lg mb-4">Business Intelligence</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="#commercial-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Commercial Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#hse-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                HSE & Risk
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#pob-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                                POB & Emergency Response
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#spend-variance-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                Spend-Variance Cockpit
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Company & Developer Column -->
+                <div>
+                    <h3 class="text-cyan-400 font-bold text-lg mb-4">Company & Developer</h3>
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="#about-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                About the Founder
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#security-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                Security & Data Protection
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#governance-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Governance & Compliance
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#developer-portal-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                                Developer Portal & API
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:contact@welltegra.network" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                Contact Us
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="pt-8 border-t border-slate-800">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-3">
+                        <img src="assets/logo.jpg" alt="Well-Tegra Logo" class="h-10 w-auto rounded">
+                        <div>
+                            <p class="text-white font-bold">Well-Tegra Data Solutions</p>
+                            <p class="text-slate-400 text-sm">Engineering Insight, Amplified by Data</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-6">
+                        <!-- Social Links -->
+                        <a href="https://www.youtube.com/@WellTegra" target="_blank" rel="noopener noreferrer"
+                           class="text-slate-400 hover:text-red-500 transition-colors"
+                           aria-label="YouTube Channel">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.linkedin.com/in/kenmckenziewellservicesken-mckenzie-b8901658" target="_blank" rel="noopener noreferrer"
+                           class="text-slate-400 hover:text-blue-500 transition-colors"
+                           aria-label="LinkedIn Profile">
+                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-6 text-center text-slate-400 text-sm">
+                    <p>&copy; 2025 Well-Tegra Data Solutions. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>
