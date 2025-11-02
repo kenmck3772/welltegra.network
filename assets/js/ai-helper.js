@@ -193,14 +193,23 @@ async function saveMessage(text, role, sources = []) {
  */
 function getCurrentViewContext() {
     const viewContexts = {
-        'home-view': 'the home page overview',
+        'home-view': 'the home page with role-based dashboard',
         'planner-view': 'the Well Intervention Planner - where users can plan well interventions',
         'performer-view': 'the Well Performer simulation view - live operational execution',
         'data-quality-view': 'the Data Quality & Validation tools',
         'faq-view': 'the Frequently Asked Questions section',
+        'help-view': 'the Help & Instructions page with tutorials and getting started guides',
         'security-view': 'the Security & Data Protection information',
         'ai-helper-view': 'the AI Assistant',
-        'about-view': 'the About section with founder information'
+        'about-view': 'the About section with founder information',
+        'control-room-view': 'the Control Room Dashboard for real-time KPI monitoring (Drilling Manager)',
+        'data-standardizer-view': 'the Data Standardization Utility for cleaning and normalizing well data',
+        'scenario-layering-view': 'the Visual Scenario Layering tool for BHA design comparison',
+        'developer-portal-view': 'the Developer Portal with API documentation and code samples',
+        'readiness-checklist-view': 'the Service Line Readiness Checklists for safety sign-offs',
+        'integrity-schematic-view': 'the Well Integrity Schematic showing barrier status and pressure monitoring',
+        'spend-variance-view': 'the Spend-Variance Cockpit for budget tracking and cost management',
+        'media-view': 'the Media & Resources page with videos and documentation'
     };
 
     // Find the currently visible view
@@ -236,7 +245,7 @@ async function getAiResponse(prompt) {
 **WELLTEGRA PLATFORM KNOWLEDGE:**
 
 **What is Welltegra?**
-Welltegra is an AI-powered well intervention planning and execution platform that transforms data chaos into predictive clarity. Founded by Kenneth McKenzie, a well services professional with global experience at companies like Tristar, Expro, Wellserv, BG Group, CNR, and Woodside.
+Welltegra is an AI-powered well intervention planning and execution platform that transforms data chaos into predictive clarity. Founded by Kenneth McKenzie, a well services professional with global experience at companies like Tristar, Expro, Wellserv, BG Group, CNR, and Woodside. The platform serves both current users managing operations and potential clients evaluating solutions.
 
 **Core Features:**
 1. **Well Intervention Planner**: Plan well interventions with AI-powered recommendations based on historical data
@@ -244,6 +253,16 @@ Welltegra is an AI-powered well intervention planning and execution platform tha
 3. **Data Quality Tools**: Validate and clean well data for accurate analysis
 4. **Predictive AI**: Learn from historical operations to prevent issues and optimize future interventions
 5. **Single Source of Truth**: Centralized platform connecting planning, execution, and analysis
+6. **Role-Based Dashboards**: Personalized dashboards for 7 different user personas (Drilling Manager, Well Engineering Manager, Sr Well Engineer, Software Designer, Service Specialists, Integrity Specialist, Finance Engineer)
+
+**Persona-Specific Features:**
+- **Control Room Dashboard** (Drilling Manager): Real-time KPI monitoring with Go/No-Go status indicators
+- **Data Standardization Utility** (Well Engineering Manager): Interactive tool to correct and standardize well data
+- **Visual Scenario Layering** (Sr Well Engineer): Side-by-side BHA scenario comparison tool
+- **Developer Portal** (Software Designer): Complete API documentation, code samples, and sandbox environment
+- **Service Line Readiness Checklists** (Specialists): Safety-critical checklists for Slickline, CT, and Wireline operations
+- **Persistent Integrity Schematic** (Integrity Specialist): Color-coded barrier status monitoring with pressure trends
+- **Spend-Variance Cockpit** (Finance Engineer): Real-time budget tracking with MOC-linked deviations
 
 **Key Capabilities:**
 - Tubing Force Analysis (TFA) planning vs. actual comparison
@@ -252,6 +271,9 @@ Welltegra is an AI-powered well intervention planning and execution platform tha
 - Historical data analysis for predictive insights
 - ROI calculator showing cost savings potential
 - Secure data handling with encryption and access controls
+- Christmas Tree Configurator for wellhead equipment design
+- Tool String Designer for intervention planning
+- Data import from multiple sources (BOEM, OpenEI, Norwegian Petroleum Directorate)
 
 **Platform Benefits:**
 - Reduce planning time by 70%
@@ -259,6 +281,22 @@ Welltegra is an AI-powered well intervention planning and execution platform tha
 - Learn from past operations to avoid repeating mistakes
 - Centralize data across different systems
 - Enable data-driven decision making
+- Improve safety with pre-job checklists and real-time monitoring
+- Track budget variances and manage costs effectively
+- Eliminate home screen clutter with role-based personalization
+
+**Getting Started:**
+1. **First-time users**: Select your role on the home screen to see personalized dashboard
+2. **Planning an intervention**: Navigate to Well Intervention Planner, enter well details, review AI recommendations
+3. **Monitoring operations**: Use Well Performer for real-time simulation and KPI tracking
+4. **Data management**: Visit Data Standardization Utility to clean and normalize data
+5. **API integration**: Check Developer Portal for complete API documentation and examples
+
+**Contact Information:**
+- General inquiries: info@welltegra.network
+- Kenneth McKenzie (Founder): kenmckenzie@welltegra.network
+- YouTube: @WellTegra
+- LinkedIn: Kenneth McKenzie (Well Services)
 
 **Current User Context:** The user is currently viewing ${currentContext}.
 

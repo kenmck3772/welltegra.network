@@ -1945,7 +1945,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginBtn = document.getElementById('login-btn');
     const views = document.querySelectorAll('.view-container');
     const navLinks = document.querySelectorAll('.nav-link');
-    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'data', 'about', 'faq', 'whitepaper', 'security', 'control-room', 'data-standardizer', 'scenario-layering', 'developer-portal', 'readiness-checklist', 'integrity-schematic', 'spend-variance', 'media']);
+    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'data', 'about', 'faq', 'help', 'ai-helper', 'whitepaper', 'security', 'control-room', 'data-standardizer', 'scenario-layering', 'developer-portal', 'readiness-checklist', 'integrity-schematic', 'spend-variance', 'media']);
     const headerTitle = document.getElementById('header-title');
     const headerDetails = document.getElementById('header-details');
     const headerNav = document.getElementById('header-nav');
@@ -2800,6 +2800,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if(viewName === 'pob') viewTitle = 'POB & ER';
         if(viewName === 'hse') viewTitle = 'HSE & Risk';
         if(viewName === 'whitepaper') viewTitle = 'White Paper';
+        if(viewName === 'help') viewTitle = 'Help & Instructions';
         if(viewName === 'ai-helper') viewTitle = 'AI Assistant';
         if(viewName === 'control-room') viewTitle = 'Control Room Dashboard';
         if(viewName === 'data-standardizer') viewTitle = 'Data Standardization Utility';

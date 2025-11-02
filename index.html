@@ -196,6 +196,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
                     <span>FAQ</span>
                 </a>
+                <a id="help-nav-link" href="#help-view" role="tab" aria-selected="false" aria-controls="help-view" title="Help & Instructions - Get started with Welltegra" class="nav-link flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                    <span>Help</span>
+                </a>
                 <a id="security-nav-link" href="#security-view" role="tab" aria-selected="false" aria-controls="security-view" title="Security & Data Protection" class="nav-link flex items-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                     <span>Security</span>
@@ -2340,6 +2344,267 @@
                 </div>
         </div>
 
+        <!-- Help & Instructions View -->
+        <div id="help-view" class="view-container hidden">
+            <div class="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-4xl font-bold tracking-tight bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">Help & Instructions</h2>
+                    <p class="mt-3 text-xl text-slate-400">Everything you need to get started and master the Welltegra platform</p>
+                </div>
+
+                <!-- Quick Access to AI Assistant -->
+                <div class="mb-8 bg-gradient-to-r from-purple-900/50 to-blue-900/50 border-2 border-purple-500/50 rounded-xl p-6 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-purple-600 p-3 rounded-full">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-purple-300">24/7 AI Assistant Available</h3>
+                                <p class="text-slate-300">Get instant answers to your questions about Welltegra</p>
+                            </div>
+                        </div>
+                        <button onclick="window.location.hash='#ai-helper-view'" class="bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-lg font-bold transition-all hover:scale-105 shadow-lg">
+                            Ask AI Now →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Getting Started Section -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <span class="text-3xl">🚀</span>
+                        Getting Started
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="light-card p-6 rounded-xl hover:shadow-xl transition-all hover:scale-105 cursor-pointer border-2 border-transparent hover:border-blue-500">
+                            <div class="text-4xl mb-3">1️⃣</div>
+                            <h4 class="text-xl font-bold mb-2 text-blue-400">Select Your Role</h4>
+                            <p class="text-slate-300 mb-3">On the home screen, choose your role from 7 persona options to see a personalized dashboard with relevant tools and KPIs.</p>
+                            <button onclick="window.location.hash='#home-view'" class="text-sm text-blue-400 hover:text-blue-300 font-semibold">Go to Dashboard →</button>
+                        </div>
+                        <div class="light-card p-6 rounded-xl hover:shadow-xl transition-all hover:scale-105 cursor-pointer border-2 border-transparent hover:border-green-500">
+                            <div class="text-4xl mb-3">2️⃣</div>
+                            <h4 class="text-xl font-bold mb-2 text-green-400">Explore Key Features</h4>
+                            <p class="text-slate-300 mb-3">Navigate through Well Planner, Well Performer, and role-specific tools using the navigation menu or your dashboard's Jump To panel.</p>
+                            <button onclick="window.location.hash='#planner-view'" class="text-sm text-green-400 hover:text-green-300 font-semibold">Try Well Planner →</button>
+                        </div>
+                        <div class="light-card p-6 rounded-xl hover:shadow-xl transition-all hover:scale-105 cursor-pointer border-2 border-transparent hover:border-purple-500">
+                            <div class="text-4xl mb-3">3️⃣</div>
+                            <h4 class="text-xl font-bold mb-2 text-purple-400">Ask the AI Anything</h4>
+                            <p class="text-slate-300 mb-3">Use the AI Assistant (purple button bottom-left) for instant guidance on any feature or question about Welltegra.</p>
+                            <button onclick="window.location.hash='#ai-helper-view'" class="text-sm text-purple-400 hover:text-purple-300 font-semibold">Open AI Assistant →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature Guides -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <span class="text-3xl">📚</span>
+                        Feature Guides
+                    </h3>
+                    <div class="space-y-4">
+                        <details class="light-card rounded-xl overflow-hidden">
+                            <summary class="cursor-pointer p-4 font-bold text-lg hover:bg-slate-700/50 transition">
+                                📋 Well Intervention Planner - Plan Operations with AI
+                            </summary>
+                            <div class="p-6 bg-slate-900/50 border-t border-slate-700">
+                                <p class="mb-4">The Well Intervention Planner helps you design and optimize well interventions using AI-powered recommendations based on historical data.</p>
+                                <div class="space-y-2">
+                                    <p class="font-semibold text-blue-400">How to use:</p>
+                                    <ol class="list-decimal list-inside space-y-1 text-slate-300">
+                                        <li>Enter well details (name, depth, configuration)</li>
+                                        <li>Select intervention type (Slickline, CT, Wireline, etc.)</li>
+                                        <li>Review AI-generated recommendations and risk assessments</li>
+                                        <li>Customize tool string and operational parameters</li>
+                                        <li>Export integrated program for field execution</li>
+                                    </ol>
+                                    <button onclick="window.location.hash='#planner-view'" class="mt-4 bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg transition">
+                                        Open Well Planner
+                                    </button>
+                                </div>
+                            </div>
+                        </details>
+
+                        <details class="light-card rounded-xl overflow-hidden">
+                            <summary class="cursor-pointer p-4 font-bold text-lg hover:bg-slate-700/50 transition">
+                                ⚡ Well Performer - Real-Time Operation Monitoring
+                            </summary>
+                            <div class="p-6 bg-slate-900/50 border-t border-slate-700">
+                                <p class="mb-4">Monitor live well operations with real-time KPI tracking, anomaly detection, and comparison against planned parameters.</p>
+                                <div class="space-y-2">
+                                    <p class="font-semibold text-orange-400">Key features:</p>
+                                    <ul class="list-disc list-inside space-y-1 text-slate-300">
+                                        <li>Live KPI dashboards (Hook Load, Torque, Pressure, Time)</li>
+                                        <li>Tubing Force Analysis (TFA) - Plan vs Actual comparison</li>
+                                        <li>Real-time anomaly detection with automatic alerts</li>
+                                        <li>Step-by-step procedure tracking</li>
+                                        <li>Post-job analysis and reporting</li>
+                                    </ul>
+                                    <button onclick="window.location.hash='#performer-view'" class="mt-4 bg-orange-600 hover:bg-orange-500 px-4 py-2 rounded-lg transition">
+                                        Open Well Performer
+                                    </button>
+                                </div>
+                            </div>
+                        </details>
+
+                        <details class="light-card rounded-xl overflow-hidden">
+                            <summary class="cursor-pointer p-4 font-bold text-lg hover:bg-slate-700/50 transition">
+                                🎯 Role-Based Dashboards - Personalized Experience
+                            </summary>
+                            <div class="p-6 bg-slate-900/50 border-t border-slate-700">
+                                <p class="mb-4">Each of the 7 user personas gets a customized dashboard with relevant tasks, KPIs, and quick-access tools.</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                                        <h5 class="font-bold text-red-400 mb-2">🎯 Drilling Manager</h5>
+                                        <p class="text-sm text-slate-300">Control Room Dashboard, Live Operations, HSE monitoring</p>
+                                    </div>
+                                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                                        <h5 class="font-bold text-blue-400 mb-2">📊 Well Engineering Manager</h5>
+                                        <p class="text-sm text-slate-300">Data Standardization, Quality Control, Well Analytics</p>
+                                    </div>
+                                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                                        <h5 class="font-bold text-green-400 mb-2">🔧 Sr Well Engineer</h5>
+                                        <p class="text-sm text-slate-300">Scenario Layering, BHA Design, Technical Analysis</p>
+                                    </div>
+                                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                                        <h5 class="font-bold text-purple-400 mb-2">💻 Software Designer</h5>
+                                        <p class="text-sm text-slate-300">Developer Portal, API Docs, Code Samples</p>
+                                    </div>
+                                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                                        <h5 class="font-bold text-cyan-400 mb-2">🪢 Service Specialists</h5>
+                                        <p class="text-sm text-slate-300">Readiness Checklists, Safety Sign-offs, Equipment Tracking</p>
+                                    </div>
+                                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                                        <h5 class="font-bold text-amber-400 mb-2">🛡️ Well Integrity Specialist</h5>
+                                        <p class="text-sm text-slate-300">Barrier Monitoring, Integrity Schematic, Pressure Trends</p>
+                                    </div>
+                                    <div class="bg-slate-800/50 p-4 rounded-lg">
+                                        <h5 class="font-bold text-emerald-400 mb-2">💰 Finance Engineer</h5>
+                                        <p class="text-sm text-slate-300">Spend-Variance Cockpit, Budget Tracking, MOC Management</p>
+                                    </div>
+                                </div>
+                                <button onclick="window.location.hash='#home-view'" class="mt-4 bg-purple-600 hover:bg-purple-500 px-4 py-2 rounded-lg transition">
+                                    View Your Dashboard
+                                </button>
+                            </div>
+                        </details>
+
+                        <details class="light-card rounded-xl overflow-hidden">
+                            <summary class="cursor-pointer p-4 font-bold text-lg hover:bg-slate-700/50 transition">
+                                💻 Developer Portal - API Integration
+                            </summary>
+                            <div class="p-6 bg-slate-900/50 border-t border-slate-700">
+                                <p class="mb-4">Integrate Welltegra into your existing systems using our comprehensive API with code samples in JavaScript, Python, and C#.</p>
+                                <div class="space-y-2">
+                                    <p class="font-semibold text-purple-400">Available endpoints:</p>
+                                    <ul class="list-disc list-inside space-y-1 text-slate-300">
+                                        <li>GET /api/v1/wells - List all wells</li>
+                                        <li>POST /api/v1/interventions - Create intervention plan</li>
+                                        <li>GET /api/v1/operations/{id} - Get operation status</li>
+                                        <li>POST /api/v1/webhooks - Register event webhooks</li>
+                                    </ul>
+                                    <button onclick="window.location.hash='#developer-portal-view'" class="mt-4 bg-purple-600 hover:bg-purple-500 px-4 py-2 rounded-lg transition">
+                                        View API Docs
+                                    </button>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Video Tutorials -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <span class="text-3xl">🎥</span>
+                        Video Tutorials
+                    </h3>
+                    <div class="light-card p-6 rounded-xl">
+                        <p class="text-slate-300 mb-4">Watch comprehensive video guides on our YouTube channel covering all major features and workflows.</p>
+                        <a href="https://www.youtube.com/@WellTegra" target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center gap-3 bg-red-600 hover:bg-red-500 px-6 py-3 rounded-lg font-bold transition-all hover:scale-105 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                            Watch Tutorials on YouTube
+                        </a>
+                        <button onclick="window.location.hash='#media-view'" class="ml-4 bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-lg font-bold transition">
+                            Browse Media Library
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Common Questions -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <span class="text-3xl">❓</span>
+                        Common Questions
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="light-card p-4 rounded-xl">
+                            <h4 class="font-bold text-blue-400 mb-2">How do I get started?</h4>
+                            <p class="text-sm text-slate-300">Select your role on the home screen to see your personalized dashboard with task queue, KPIs, and quick access tools.</p>
+                        </div>
+                        <div class="light-card p-4 rounded-xl">
+                            <h4 class="font-bold text-green-400 mb-2">Is my data secure?</h4>
+                            <p class="text-sm text-slate-300">Yes! Welltegra uses encryption, secure protocols, and follows industry best practices. <a href="#security-view" class="text-blue-400 hover:underline">Learn more →</a></p>
+                        </div>
+                        <div class="light-card p-4 rounded-xl">
+                            <h4 class="font-bold text-purple-400 mb-2">Can I integrate with my systems?</h4>
+                            <p class="text-sm text-slate-300">Absolutely! Check the Developer Portal for API documentation and integration examples.</p>
+                        </div>
+                        <div class="light-card p-4 rounded-xl">
+                            <h4 class="font-bold text-amber-400 mb-2">What ROI can I expect?</h4>
+                            <p class="text-sm text-slate-300">Typical customers see 70% reduction in planning time and significant cost savings. <a href="#whitepaper-view" class="text-blue-400 hover:underline">View whitepaper →</a></p>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <button onclick="window.location.hash='#faq-view'" class="text-blue-400 hover:text-blue-300 font-semibold">
+                            View All FAQs →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Contact & Support -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <span class="text-3xl">💬</span>
+                        Need More Help?
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="light-card p-6 rounded-xl text-center hover:shadow-xl transition">
+                            <div class="text-4xl mb-3">🤖</div>
+                            <h4 class="font-bold mb-2 text-purple-400">AI Assistant</h4>
+                            <p class="text-sm text-slate-300 mb-3">Get instant answers 24/7</p>
+                            <button onclick="window.location.hash='#ai-helper-view'" class="bg-purple-600 hover:bg-purple-500 px-4 py-2 rounded-lg transition text-sm font-semibold">
+                                Ask AI
+                            </button>
+                        </div>
+                        <div class="light-card p-6 rounded-xl text-center hover:shadow-xl transition">
+                            <div class="text-4xl mb-3">📧</div>
+                            <h4 class="font-bold mb-2 text-blue-400">Email Support</h4>
+                            <p class="text-sm text-slate-300 mb-3">General inquiries</p>
+                            <a href="mailto:info@welltegra.network" class="inline-block bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg transition text-sm font-semibold">
+                                info@welltegra.network
+                            </a>
+                        </div>
+                        <div class="light-card p-6 rounded-xl text-center hover:shadow-xl transition">
+                            <div class="text-4xl mb-3">👨‍💼</div>
+                            <h4 class="font-bold mb-2 text-green-400">Contact Kenneth</h4>
+                            <p class="text-sm text-slate-300 mb-3">Founder & CEO</p>
+                            <a href="mailto:kenmckenzie@welltegra.network" class="inline-block bg-green-600 hover:bg-green-500 px-4 py-2 rounded-lg transition text-sm font-semibold">
+                                Get in Touch
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
         <!-- AI Helper View -->
         <div id="ai-helper-view" class="view-container hidden">
             <div class="max-w-5xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
@@ -2362,30 +2627,52 @@
                         <!-- Initial Message -->
                         <div class="flex justify-start">
                             <div class="bg-gradient-to-br from-purple-900/90 to-slate-800/90 p-4 rounded-xl max-w-2xl shadow-lg border border-purple-700/50">
-                                <p class="font-semibold text-purple-300 mb-2 text-lg">👋 Welcome to Welltegra!</p>
-                                <p class="mb-3">I'm your AI guide to help you navigate and understand the platform. Whether you're planning a well intervention, monitoring operations, or exploring our features - I'm here to help!</p>
+                                <p class="font-semibold text-purple-300 mb-2 text-lg">👋 Welcome to Welltegra AI Assistant!</p>
+                                <p class="mb-3">I'm your 24/7 AI guide here to help you with everything Welltegra! Whether you're a current user managing operations, a potential client evaluating solutions, or just exploring our platform - I'm here to provide instant answers and guidance.</p>
 
                                 <div class="bg-slate-900/50 rounded-lg p-3 mb-3">
-                                    <p class="text-sm font-semibold text-purple-300 mb-2">💡 Quick Start - Try asking:</p>
+                                    <p class="text-sm font-semibold text-purple-300 mb-2">💡 For Current Users:</p>
                                     <ul class="text-sm space-y-1 text-slate-300">
-                                        <li>• "What is Welltegra and how can it help me?"</li>
                                         <li>• "How do I plan a well intervention?"</li>
-                                        <li>• "What features does the platform have?"</li>
-                                        <li>• "Show me how to use the Well Performer"</li>
+                                        <li>• "Show me how to use the Control Room Dashboard"</li>
+                                        <li>• "How do I standardize my well data?"</li>
+                                        <li>• "What are the API endpoints for well data?"</li>
                                     </ul>
                                 </div>
 
-                                <p class="text-sm text-slate-400">Type your question below or click the buttons to explore the platform!</p>
+                                <div class="bg-slate-900/50 rounded-lg p-3 mb-3">
+                                    <p class="text-sm font-semibold text-green-300 mb-2">🚀 For Potential Clients:</p>
+                                    <ul class="text-sm space-y-1 text-slate-300">
+                                        <li>• "What is Welltegra and how can it help my operations?"</li>
+                                        <li>• "What ROI can I expect from using Welltegra?"</li>
+                                        <li>• "What features does the platform offer?"</li>
+                                        <li>• "How does Welltegra handle data security?"</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-slate-900/50 rounded-lg p-3 mb-3">
+                                    <p class="text-sm font-semibold text-amber-300 mb-2">🎓 General Questions:</p>
+                                    <ul class="text-sm space-y-1 text-slate-300">
+                                        <li>• "What's new in the latest update?"</li>
+                                        <li>• "Who is Kenneth McKenzie?"</li>
+                                        <li>• "How do I get in touch with the Welltegra team?"</li>
+                                    </ul>
+                                </div>
+
+                                <p class="text-sm text-slate-400 mb-3">Type your question below, or use these quick links to explore:</p>
 
                                 <div class="mt-3 flex gap-2 flex-wrap">
                                     <button onclick="window.location.hash='#home-view'" class="text-xs bg-blue-600 hover:bg-blue-500 px-3 py-1.5 rounded-lg transition">
-                                        🏠 Go to Home
+                                        🏠 Dashboard
                                     </button>
                                     <button onclick="window.location.hash='#planner-view'" class="text-xs bg-green-600 hover:bg-green-500 px-3 py-1.5 rounded-lg transition">
                                         📋 Well Planner
                                     </button>
                                     <button onclick="window.location.hash='#performer-view'" class="text-xs bg-orange-600 hover:bg-orange-500 px-3 py-1.5 rounded-lg transition">
                                         ⚡ Well Performer
+                                    </button>
+                                    <button onclick="window.location.hash='#help-view'" class="text-xs bg-purple-600 hover:bg-purple-500 px-3 py-1.5 rounded-lg transition">
+                                        📚 Help & Tutorials
                                     </button>
                                 </div>
                             </div>
