@@ -7382,6 +7382,8 @@ const validateInvoice = () => {
     // Handle hash-based navigation for all links (footer, action cards, etc.)
     const handleHashChange = () => {
         const hash = window.location.hash;
+        console.log('[Navigation] Hash changed to:', hash);
+
         if (hash && hash.length > 1) {
             // Extract view name from hash (e.g., #planner-view -> planner)
             let viewName = hash.slice(1); // Remove the #
@@ -7389,10 +7391,15 @@ const validateInvoice = () => {
                 viewName = viewName.slice(0, -5); // Remove -view suffix
             }
 
+            console.log('[Navigation] Extracted view name:', viewName);
+
             // Check if this view exists
             const targetView = document.getElementById(`${viewName}-view`);
             if (targetView) {
+                console.log('[Navigation] Switching to view:', viewName);
                 switchView(viewName);
+            } else {
+                console.warn('[Navigation] View not found:', `${viewName}-view`);
             }
         }
     };
@@ -7404,6 +7411,25 @@ const validateInvoice = () => {
     if (window.location.hash) {
         handleHashChange();
     }
+
+    // Add click handlers to ALL navigation links for maximum compatibility
+    // This ensures navigation works even if hashchange doesn't fire
+    const viewLinks = document.querySelectorAll('a[href^="#"]');
+    let viewLinkCount = 0;
+    viewLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href.includes('-view')) {
+            viewLinkCount++;
+            link.addEventListener('click', (e) => {
+                console.log('[Navigation] Link clicked:', href);
+                // Let the hash change naturally, then handle it
+                setTimeout(() => {
+                    handleHashChange();
+                }, 10);
+            });
+        }
+    });
+    console.log(`[Navigation] Initialized navigation system - ${viewLinkCount} view links registered`);
 
     window.welltegraPlanner = {
         getState: () => ({
