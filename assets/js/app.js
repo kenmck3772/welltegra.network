@@ -7379,6 +7379,32 @@ const validateInvoice = () => {
 
     init();
 
+    // Handle hash-based navigation for all links (footer, action cards, etc.)
+    const handleHashChange = () => {
+        const hash = window.location.hash;
+        if (hash && hash.length > 1) {
+            // Extract view name from hash (e.g., #planner-view -> planner)
+            let viewName = hash.slice(1); // Remove the #
+            if (viewName.endsWith('-view')) {
+                viewName = viewName.slice(0, -5); // Remove -view suffix
+            }
+
+            // Check if this view exists
+            const targetView = document.getElementById(`${viewName}-view`);
+            if (targetView) {
+                switchView(viewName);
+            }
+        }
+    };
+
+    // Listen for hash changes (when user clicks links with href="#view-name")
+    window.addEventListener('hashchange', handleHashChange);
+
+    // Handle initial page load with hash
+    if (window.location.hash) {
+        handleHashChange();
+    }
+
     window.welltegraPlanner = {
         getState: () => ({
             selectedWell: appState.selectedWell,
