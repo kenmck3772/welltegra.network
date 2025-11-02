@@ -1,8 +1,4 @@
-const { expect } = require('@playwright/test');
-const http = require('http');
-const path = require('path');
-const fs = require('fs');
-const { chromium, expect } = require('@playwright/test');
+const { expect, chromium } = require('@playwright/test');
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
@@ -27,46 +23,6 @@ const mimeTypes = {
 const rootDir = path.resolve(__dirname, '..', '..');
 const shouldAutoInstallDependencies = process.env.PLAYWRIGHT_AUTO_INSTALL_DEPS === 'true';
 
-const createStaticServer = () =>
-  http.createServer(async (req, res) => {
-    try {
-      const requestPath = decodeURIComponent((req.url || '/').split('?')[0]);
-      const normalizedPath = path
-        .normalize(requestPath)
-        .replace(/^([.]{2}[\\/])+/, '')
-        .replace(/^\/+/, '');
-
-      let filePath = normalizedPath ? path.join(rootDir, normalizedPath) : path.join(rootDir, 'index.html');
-
-      const stats = await fs.promises.stat(filePath).catch(async (error) => {
-        if (error.code === 'ENOENT' && normalizedPath.endsWith('/')) {
-          return fs.promises.stat(path.join(filePath, 'index.html'));
-        }
-        throw error;
-      });
-
-      if (stats.isDirectory()) {
-        filePath = path.join(filePath, 'index.html');
-      }
-
-      const data = await fs.promises.readFile(filePath);
-      const ext = path.extname(filePath).toLowerCase();
-      const contentType = mimeTypes[ext] || 'application/octet-stream';
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(data);
-    } catch (error) {
-      res.writeHead(error.code === 'ENOENT' ? 404 : 500, { 'Content-Type': 'text/plain; charset=utf-8' });
-      res.end(error.code === 'ENOENT' ? 'Not found' : 'Server error');
-    }
-  });
-
-function setupPlannerTest(test) {
-  let server;
-  let baseURL;
-  const skipReason = () => process.env.PLAYWRIGHT_SKIP_REASON;
-
-  test.beforeAll(async () => {
-    if (skipReason()) {
 const runPlaywrightCLI = (args, failureMessage) => {
   const npxCommand = process.platform === 'win32' ? 'npx.cmd' : 'npx';
   const result = spawnSync(npxCommand, ['playwright', ...args], {
@@ -87,7 +43,10 @@ const installChromiumDependenciesIfMissing = async () => {
     throw new Error('Automatic dependency installation is disabled.');
   }
 
-  runPlaywrightCLI(['install-deps', 'chromium'], 'Playwright Chromium system dependency installation failed');
+  runPlaywrightCLI(
+    ['install-deps', 'chromium'],
+    'Playwright Chromium system dependency installation failed'
+  );
 };
 
 const verifyChromium = async () => {
@@ -96,7 +55,8 @@ const verifyChromium = async () => {
     await browser.close();
   } catch (error) {
     const needsDownload =
-      /Executable doesn't exist/.test(error.message) || /run the following command to download/.test(error.message);
+      /Executable doesn't exist/.test(error.message) ||
+      /run the following command to download/.test(error.message);
     const missingDependencies = /Host system is missing dependencies/.test(error.message);
 
     if (needsDownload) {
@@ -137,12 +97,50 @@ const verifyChromium = async () => {
   }
 };
 
+const createStaticServer = () =>
+  http.createServer(async (req, res) => {
+    try {
+      const requestPath = decodeURIComponent((req.url || '/').split('?')[0]);
+      const normalizedPath = path
+        .normalize(requestPath)
+        .replace(/^([.]{2}[\\/])+/, '')
+        .replace(/^\/+/, '');
+
+      let filePath = normalizedPath ? path.join(rootDir, normalizedPath) : path.join(rootDir, 'index.html');
+
+      const stats = await fs.promises.stat(filePath).catch(async (error) => {
+        if (error.code === 'ENOENT' && normalizedPath.endsWith('/')) {
+          return fs.promises.stat(path.join(filePath, 'index.html'));
+        }
+        throw error;
+      });
+
+      if (stats.isDirectory()) {
+        filePath = path.join(filePath, 'index.html');
+      }
+
+      const data = await fs.promises.readFile(filePath);
+      const ext = path.extname(filePath).toLowerCase();
+      const contentType = mimeTypes[ext] || 'application/octet-stream';
+      res.writeHead(200, { 'Content-Type': contentType });
+      res.end(data);
+    } catch (error) {
+      res.writeHead(error.code === 'ENOENT' ? 404 : 500, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end(error.code === 'ENOENT' ? 'Not found' : 'Server error');
+    }
+  });
+
 function setupPlannerTest(test) {
   let server;
   let baseURL;
   let launchSkipMessage;
+  const skipReason = () => process.env.PLAYWRIGHT_SKIP_REASON;
 
   test.beforeAll(async () => {
+    if (skipReason()) {
+      return;
+    }
+
     try {
       await verifyChromium();
     } catch (error) {
@@ -163,7 +161,7 @@ function setupPlannerTest(test) {
   });
 
   test.beforeAll(async () => {
-    if (launchSkipMessage) {
+    if (skipReason() || launchSkipMessage) {
       return;
     }
 
@@ -183,6 +181,8 @@ function setupPlannerTest(test) {
     const reason = skipReason();
     if (reason) {
       testInfo.skip(reason);
+    }
+
     if (launchSkipMessage) {
       testInfo.skip(launchSkipMessage);
     }
@@ -244,5 +244,8 @@ function setupPlannerTest(test) {
 }
 
 module.exports = {
-  setupPlannerTest
+  setupPlannerTest,
+  downloadChromiumIfMissing,
+  installChromiumDependenciesIfMissing,
+  verifyChromium
 };
