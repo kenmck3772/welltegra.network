@@ -240,14 +240,45 @@
 
     <main id="main-content" class="flex-1" role="main">
         <div id="home-view" class="view-container">
-            <!-- Intention-Driven Action Cards with Blue Wallpaper & Hero Video Background -->
-            <div class="min-h-screen relative overflow-hidden py-16 px-4">
-                <!-- Background Hero Video -->
-                <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-20 z-0" poster="assets/logo.jpg">
+            <!-- Hero Video Section (Desktop Only) -->
+            <section class="hero-section hidden md:block py-24 lg:py-32 px-4 relative" aria-describedby="hero-video-description">
+                <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0" poster="assets/logo.jpg">
                     <source src="assets/hero.mp4" type="video/mp4">
                 </video>
+                <div class="hero-overlay"></div>
+                <p id="hero-video-description" class="sr-only">Looping montage showing engineers collaborating over drilling dashboards and subsurface schematics.</p>
+                <div class="max-w-5xl mx-auto text-center relative z-10">
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight drop-shadow-2xl">
+                        The Digital Revolution in Well Engineering is Here.
+                    </h1>
+                    <p class="mt-8 text-xl md:text-2xl text-slate-50 leading-relaxed max-w-3xl mx-auto drop-shadow-lg">
+                        We turn the metaphor of "Square Wheels to Round" into reality. Discover how our technology delivers a smoother, faster, and more profitable future for your well projects.
+                    </p>
+                    <p class="mt-6 text-xl md:text-2xl font-semibold text-cyan-300 drop-shadow-lg">
+                        Well-Tegra: Engineering Insight, Amplified by Data.
+                    </p>
 
-                <!-- Blue Gradient Overlay -->
+                    <!-- Hero CTAs -->
+                    <div class="mt-12 flex flex-col sm:flex-row gap-5 justify-center items-center">
+                        <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="group px-10 py-5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-lg font-bold rounded-xl shadow-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-cyan-500/50 border border-cyan-400/20">
+                            <span class="flex items-center gap-2">
+                                Request a Demo
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                            </span>
+                        </a>
+                        <a href="#planner-view" class="group px-10 py-5 bg-white hover:bg-gray-50 text-slate-900 text-lg font-bold rounded-xl shadow-2xl transition-all duration-300 transform hover:scale-105 border-2 border-white/20">
+                            <span class="flex items-center gap-2">
+                                Try the Planner
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Intention-Driven Action Cards with Blue Wallpaper Background -->
+            <div class="min-h-screen relative overflow-hidden py-16 px-4">
+                <!-- Blue Gradient Background -->
                 <div class="absolute inset-0 bg-gradient-to-br from-blue-900/90 via-slate-900/95 to-blue-950/90 z-0"></div>
 
                 <!-- Subtle Pattern Overlay -->
