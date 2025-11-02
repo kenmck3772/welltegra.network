@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Test - Welltegra</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .header {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            margin: 0;
+            color: white;
+        }
+        .status {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #0ea5e9;
+        }
+        .test-section {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .test-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .test-links a {
+            display: block;
+            padding: 15px;
+            background: #334155;
+            color: #0ea5e9;
+            text-decoration: none;
+            border-radius: 6px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .test-links a:hover {
+            background: #475569;
+            transform: translateY(-2px);
+        }
+        .log {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        .log-entry {
+            padding: 5px;
+            margin: 2px 0;
+            border-left: 3px solid #64748b;
+            padding-left: 10px;
+        }
+        .log-entry.success {
+            border-left-color: #10b981;
+            color: #10b981;
+        }
+        .log-entry.error {
+            border-left-color: #ef4444;
+            color: #ef4444;
+        }
+        .log-entry.info {
+            border-left-color: #0ea5e9;
+            color: #0ea5e9;
+        }
+        .metric {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #334155;
+            border-radius: 20px;
+            margin: 5px;
+            font-weight: bold;
+        }
+        .metric.success {
+            background: #10b981;
+            color: white;
+        }
+        .metric.error {
+            background: #ef4444;
+            color: white;
+        }
+        button {
+            padding: 10px 20px;
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0284c7;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧪 Navigation System Test</h1>
+        <p>Test the enhanced navigation system for your presentation</p>
+    </div>
+
+    <div class="status">
+        <h2>System Status</h2>
+        <div id="metrics">
+            <span class="metric">Testing...</span>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Navigation Links</h2>
+        <p>Click any link below to test navigation. Watch the console log below for detailed output.</p>
+
+        <div class="test-links">
+            <a href="#planner-view">📋 Planner</a>
+            <a href="#data-standardizer-view">🔧 Data Standardizer</a>
+            <a href="#scenario-layering-view">📊 Scenario Layering</a>
+            <a href="#readiness-checklist-view">✅ Readiness Checklist</a>
+            <a href="#spend-variance-view">💰 Spend-Variance</a>
+            <a href="#developer-portal-view">💻 Developer Portal</a>
+            <a href="#help-view">❓ Help</a>
+            <a href="#faq-view">📖 FAQ</a>
+            <a href="#security-view">🔒 Security</a>
+            <a href="#about-view">ℹ️ About</a>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <button onclick="clearLog()">Clear Log</button>
+            <button onclick="runAllTests()">Run All Tests</button>
+        </div>
+
+        <div class="log" id="console-log"></div>
+    </div>
+
+    <script>
+        let testResults = {
+            passed: 0,
+            failed: 0
+        };
+
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('console-log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('console-log').innerHTML = '';
+            testResults = { passed: 0, failed: 0 };
+            updateMetrics();
+        }
+
+        function updateMetrics() {
+            const metricsDiv = document.getElementById('metrics');
+            const total = testResults.passed + testResults.failed;
+            metricsDiv.innerHTML = `
+                <span class="metric success">✓ Passed: ${testResults.passed}</span>
+                <span class="metric error">✗ Failed: ${testResults.failed}</span>
+                <span class="metric">Total: ${total}</span>
+            `;
+        }
+
+        function testNavigation(viewName) {
+            log(`Testing navigation to: ${viewName}`, 'info');
+
+            const targetView = document.getElementById(`${viewName}-view`);
+            if (!targetView) {
+                log(`❌ FAIL: View element "${viewName}-view" not found in DOM`, 'error');
+                testResults.failed++;
+                updateMetrics();
+                return false;
+            }
+
+            log(`✓ View element found: ${viewName}-view`, 'success');
+            testResults.passed++;
+            updateMetrics();
+            return true;
+        }
+
+        function runAllTests() {
+            clearLog();
+            log('Starting comprehensive navigation tests...', 'info');
+
+            const testViews = [
+                'planner', 'data-standardizer', 'scenario-layering',
+                'readiness-checklist', 'spend-variance', 'developer-portal',
+                'help', 'faq', 'security', 'about', 'home',
+                'logistics', 'commercial', 'hse', 'pob', 'whitepaper',
+                'toolstring', 'christmas-tree', 'wellbore', 'governance',
+                'data', 'data-quality', 'performer', 'analyzer',
+                'control-room', 'integrity-schematic', 'media'
+            ];
+
+            testViews.forEach(view => {
+                setTimeout(() => testNavigation(view), 100);
+            });
+
+            setTimeout(() => {
+                log('-----------------------------------', 'info');
+                log(`Test complete! Passed: ${testResults.passed}, Failed: ${testResults.failed}`,
+                    testResults.failed === 0 ? 'success' : 'error');
+            }, 3000);
+        }
+
+        // Monitor hash changes
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash;
+            log(`Hash changed to: ${hash}`, 'info');
+        });
+
+        // Monitor all link clicks
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', () => {
+                log(`Link clicked: ${link.getAttribute('href')}`, 'success');
+            });
+        });
+
+        // Initial status
+        window.addEventListener('DOMContentLoaded', () => {
+            log('Navigation test page loaded', 'success');
+            log('Click links above or run automated tests', 'info');
+            updateMetrics();
+        });
+    </script>
+</body>
+</html>
