@@ -311,7 +311,7 @@
                                 </p>
                                 <div class="mb-6 p-4 bg-white/10 backdrop-blur-sm rounded-xl border-2 border-orange-400/30">
                                     <p class="text-sm text-orange-200 font-semibold">Active Job Status</p>
-                                    <p class="text-white font-medium">No active jobs</p>
+                                    <p id="active-job-status" class="text-white font-medium">No active jobs</p>
                                 </div>
                                 <div class="flex flex-col gap-3">
                                     <a href="#logistics-view" class="inline-block px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-600 text-white font-bold rounded-xl shadow-lg hover:shadow-orange-400/50 hover:from-orange-400 hover:to-amber-500 transition-all transform hover:scale-105">
@@ -3905,6 +3905,101 @@
 
     <!-- 3D Wellbore Visualization (v23.0.19+) -->
     <script src="assets/js/wellbore-3d.js?v=23.0.19" defer></script>
+
+    <!-- Dynamic Active Job Status Update -->
+    <script>
+        // Update active job status dynamically on homepage
+        function updateActiveJobStatus() {
+            const statusElement = document.getElementById('active-job-status');
+            if (!statusElement) return;
+
+            // Check for active jobs in application state
+            // This can be expanded to check actual job tracking system
+            const activeJobs = [];
+
+            // Check if simulation is running
+            if (typeof window.isSimulationRunning === 'function' && window.isSimulationRunning()) {
+                activeJobs.push({ name: 'Simulator', type: 'simulation' });
+            }
+
+            // Check localStorage for active operations
+            try {
+                const savedJobs = localStorage.getItem('welltegra_active_jobs');
+                if (savedJobs) {
+                    const jobs = JSON.parse(savedJobs);
+                    activeJobs.push(...jobs);
+                }
+            } catch (e) {
+                console.debug('No active jobs in storage');
+            }
+
+            // Update display based on active jobs
+            if (activeJobs.length === 0) {
+                statusElement.textContent = 'No active jobs';
+                statusElement.className = 'text-white font-medium';
+            } else if (activeJobs.length === 1) {
+                statusElement.textContent = '1 active job';
+                statusElement.className = 'text-green-400 font-medium flex items-center gap-2';
+                statusElement.innerHTML = '<svg class="h-4 w-4 animate-pulse" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="5"/></svg> 1 active job';
+            } else {
+                statusElement.textContent = `${activeJobs.length} active jobs`;
+                statusElement.className = 'text-green-400 font-medium flex items-center gap-2';
+                statusElement.innerHTML = `<svg class="h-4 w-4 animate-pulse" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="5"/></svg> ${activeJobs.length} active jobs`;
+            }
+        }
+
+        // Run on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', updateActiveJobStatus);
+        } else {
+            updateActiveJobStatus();
+        }
+
+        // Update every 5 seconds
+        setInterval(updateActiveJobStatus, 5000);
+
+        // Export function for use by other modules
+        window.updateActiveJobStatus = updateActiveJobStatus;
+
+        // Helper function for other modules to register active jobs
+        window.registerActiveJob = function(jobName, jobType = 'operation') {
+            try {
+                const jobs = JSON.parse(localStorage.getItem('welltegra_active_jobs') || '[]');
+                jobs.push({
+                    name: jobName,
+                    type: jobType,
+                    startTime: Date.now(),
+                    id: `job_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+                });
+                localStorage.setItem('welltegra_active_jobs', JSON.stringify(jobs));
+                updateActiveJobStatus();
+            } catch (e) {
+                console.error('Error registering active job:', e);
+            }
+        };
+
+        // Helper function to clear a specific job
+        window.clearActiveJob = function(jobId) {
+            try {
+                const jobs = JSON.parse(localStorage.getItem('welltegra_active_jobs') || '[]');
+                const filtered = jobs.filter(j => j.id !== jobId);
+                localStorage.setItem('welltegra_active_jobs', JSON.stringify(filtered));
+                updateActiveJobStatus();
+            } catch (e) {
+                console.error('Error clearing active job:', e);
+            }
+        };
+
+        // Helper function to clear all jobs
+        window.clearAllActiveJobs = function() {
+            try {
+                localStorage.removeItem('welltegra_active_jobs');
+                updateActiveJobStatus();
+            } catch (e) {
+                console.error('Error clearing all active jobs:', e);
+            }
+        };
+    </script>
 
     <!-- Comprehensive Footer with Blue Theme -->
     <footer class="relative bg-gradient-to-b from-blue-950/80 to-slate-950/90 border-t-2 border-blue-800/50 mt-auto backdrop-blur-sm">
