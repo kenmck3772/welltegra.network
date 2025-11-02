@@ -1945,7 +1945,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginBtn = document.getElementById('login-btn');
     const views = document.querySelectorAll('.view-container');
     const navLinks = document.querySelectorAll('.nav-link');
-    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'data', 'about', 'faq', 'whitepaper', 'security', 'control-room', 'data-standardizer', 'scenario-layering', 'developer-portal', 'readiness-checklist', 'integrity-schematic', 'spend-variance']);
+    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'data', 'about', 'faq', 'whitepaper', 'security', 'control-room', 'data-standardizer', 'scenario-layering', 'developer-portal', 'readiness-checklist', 'integrity-schematic', 'spend-variance', 'media']);
     const headerTitle = document.getElementById('header-title');
     const headerDetails = document.getElementById('header-details');
     const headerNav = document.getElementById('header-nav');
@@ -2808,6 +2808,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if(viewName === 'readiness-checklist') viewTitle = 'Readiness Checklist';
         if(viewName === 'integrity-schematic') viewTitle = 'Integrity Schematic';
         if(viewName === 'spend-variance') viewTitle = 'Spend-Variance Cockpit';
+        if(viewName === 'media') viewTitle = 'Media & Resources';
         headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
 
         if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
