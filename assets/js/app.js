@@ -2811,7 +2811,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if(viewName === 'media') viewTitle = 'Media & Resources';
         headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
 
-        if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
+        if (viewName === 'home') {
+            // Initialize role-based dashboard
+            import('./role-based-dashboard.js').then(module => {
+                module.initRoleBasedDashboard();
+            }).catch(err => console.error('Failed to load role-based dashboard:', err));
+        } else if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
             headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">● LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
             initializePerformer();
         } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {

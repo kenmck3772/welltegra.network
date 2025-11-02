@@ -246,6 +246,13 @@
 
     <main id="main-content" class="flex-1" role="main">
         <div id="home-view" class="view-container">
+            <!-- Role-Based Dashboard Container -->
+            <div id="role-dashboard-container" class="min-h-screen bg-gradient-to-b from-slate-900 to-slate-950">
+                <!-- Dashboard will be populated by JavaScript -->
+            </div>
+
+            <!-- Traditional Home Content (Hidden by default, shown when scrolling or accessing via specific route) -->
+            <div id="traditional-home-content" class="hidden">
             <section class="hero-section py-24 md:py-32 px-4 relative" aria-describedby="hero-video-description">
                 <video loop muted playsinline preload="none" id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description" data-lazy-video="assets/hero.mp4">
                     <source data-src="assets/hero.mp4" type="video/mp4">
@@ -329,7 +336,8 @@
                     </div>
                 </div>
             </section>
-        </div>
+            </div><!-- End traditional-home-content -->
+        </div><!-- End home-view -->
 
         <div id="planner-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div class="planner-header">
