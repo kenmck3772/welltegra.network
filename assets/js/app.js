@@ -1945,7 +1945,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginBtn = document.getElementById('login-btn');
     const views = document.querySelectorAll('.view-container');
     const navLinks = document.querySelectorAll('.nav-link');
-    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'data', 'about', 'faq', 'whitepaper', 'security']);
+    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'data', 'about', 'faq', 'whitepaper', 'security', 'control-room', 'data-standardizer', 'scenario-layering', 'developer-portal', 'readiness-checklist', 'integrity-schematic', 'spend-variance']);
     const headerTitle = document.getElementById('header-title');
     const headerDetails = document.getElementById('header-details');
     const headerNav = document.getElementById('header-nav');
@@ -2801,6 +2801,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if(viewName === 'hse') viewTitle = 'HSE & Risk';
         if(viewName === 'whitepaper') viewTitle = 'White Paper';
         if(viewName === 'ai-helper') viewTitle = 'AI Assistant';
+        if(viewName === 'control-room') viewTitle = 'Control Room Dashboard';
+        if(viewName === 'data-standardizer') viewTitle = 'Data Standardization Utility';
+        if(viewName === 'scenario-layering') viewTitle = 'Scenario Layering';
+        if(viewName === 'developer-portal') viewTitle = 'Developer Portal';
+        if(viewName === 'readiness-checklist') viewTitle = 'Readiness Checklist';
+        if(viewName === 'integrity-schematic') viewTitle = 'Integrity Schematic';
+        if(viewName === 'spend-variance') viewTitle = 'Spend-Variance Cockpit';
         headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
 
         if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
@@ -2820,6 +2827,41 @@ document.addEventListener('DOMContentLoaded', function() {
             if (window.ChristmasTreeIntegrity && typeof window.ChristmasTreeIntegrity.init === 'function') {
                 window.ChristmasTreeIntegrity.init();
             }
+        } else if (viewName === 'control-room') {
+            // Initialize Control Room Dashboard
+            import('./control-room-dashboard.js').then(module => {
+                module.initControlRoom();
+            }).catch(err => console.error('Failed to load control room module:', err));
+        } else if (viewName === 'data-standardizer') {
+            // Initialize Data Standardization Utility
+            import('./data-standardizer.js').then(module => {
+                module.initDataStandardizer();
+            }).catch(err => console.error('Failed to load data standardizer module:', err));
+        } else if (viewName === 'scenario-layering') {
+            // Initialize Scenario Layering
+            import('./scenario-layering.js').then(module => {
+                module.initScenarioLayering();
+            }).catch(err => console.error('Failed to load scenario layering module:', err));
+        } else if (viewName === 'developer-portal') {
+            // Initialize Developer Portal
+            import('./developer-portal.js').then(module => {
+                module.initDeveloperPortal();
+            }).catch(err => console.error('Failed to load developer portal module:', err));
+        } else if (viewName === 'readiness-checklist') {
+            // Initialize Readiness Checklist
+            import('./readiness-checklist.js').then(module => {
+                module.initReadinessChecklist();
+            }).catch(err => console.error('Failed to load readiness checklist module:', err));
+        } else if (viewName === 'integrity-schematic') {
+            // Initialize Integrity Schematic
+            import('./integrity-schematic.js').then(module => {
+                module.initIntegritySchematic();
+            }).catch(err => console.error('Failed to load integrity schematic module:', err));
+        } else if (viewName === 'spend-variance') {
+            // Initialize Spend-Variance Cockpit
+            import('./spend-variance-cockpit.js').then(module => {
+                module.initSpendVariance();
+            }).catch(err => console.error('Failed to load spend variance module:', err));
         }
     };
     window.showView = (viewName, sourceLabel) => {
