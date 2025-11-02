@@ -1945,7 +1945,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginBtn = document.getElementById('login-btn');
     const views = document.querySelectorAll('.view-container');
     const navLinks = document.querySelectorAll('.nav-link');
-    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'data', 'about', 'faq', 'whitepaper', 'security', 'control-room', 'data-standardizer', 'scenario-layering', 'developer-portal', 'readiness-checklist', 'integrity-schematic', 'spend-variance']);
+    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'data', 'about', 'faq', 'whitepaper', 'security', 'control-room', 'data-standardizer', 'scenario-layering', 'developer-portal', 'readiness-checklist', 'integrity-schematic', 'spend-variance', 'media']);
     const headerTitle = document.getElementById('header-title');
     const headerDetails = document.getElementById('header-details');
     const headerNav = document.getElementById('header-nav');
@@ -2808,9 +2808,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if(viewName === 'readiness-checklist') viewTitle = 'Readiness Checklist';
         if(viewName === 'integrity-schematic') viewTitle = 'Integrity Schematic';
         if(viewName === 'spend-variance') viewTitle = 'Spend-Variance Cockpit';
+        if(viewName === 'media') viewTitle = 'Media & Resources';
         headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
 
-        if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
+        if (viewName === 'home') {
+            // Initialize role-based dashboard
+            import('./role-based-dashboard.js').then(module => {
+                module.initRoleBasedDashboard();
+            }).catch(err => console.error('Failed to load role-based dashboard:', err));
+        } else if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
             headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">● LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
             initializePerformer();
         } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
