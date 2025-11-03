@@ -1,231 +1,192 @@
-const serviceLines = {
-    slickline: {
-        name: 'Slickline Operations',
-        icon: '🪢',
-        color: 'blue',
-        description: 'Critical surface control, depth correlation, and tool prep checks.',
-        checklist: [
-            { id: 'sl1', item: 'Wire rope inspection completed and logged', critical: true },
-            { id: 'sl2', item: 'Maximum pulling force calculated and documented', critical: true },
-            { id: 'sl3', item: 'Lock-up depth prediction reviewed (current: 8,420 ft)', critical: true },
-            { id: 'sl4', item: 'Lubricator length verified vs. tool string (Lub: 15ft, String: 12.8ft)', critical: true },
-            { id: 'sl5', item: 'BOP test current (<30 days)', critical: true },
-            { id: 'sl6', item: 'Wellhead isolation valves functional test passed', critical: true },
-            { id: 'sl7', item: 'Tool string assembled and verified', critical: false },
-            { id: 'sl8', item: 'Communication systems tested', critical: false }
+const STORAGE_KEY = 'welltegra-readiness-checks';
+const hasStorage = (() => {
+    try {
+        return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+    } catch (error) {
+        return false;
+    }
+})();
+
+const readinessSections = [
+    {
+        id: 'people',
+        title: 'People & Permits',
+        summary: 'Confirm the crew, approvals, and emergency contacts are locked in before the job starts.',
+        resources: [
+            { label: 'Start Here Checklist', href: 'START_HERE.md' },
+            { label: 'Instruction Manual — Roles & Responsibilities', href: 'INSTRUCTION_MANUAL.md' }
+        ],
+        items: [
+            { id: 'people-briefing', label: 'Crew briefing completed using the Start Here agenda with attendance recorded.' },
+            { id: 'people-permits', label: 'Permit to Work, JHA, and isolations signed off and posted for the current shift.' },
+            { id: 'people-emergency', label: 'Emergency response roster verified with up-to-date contact numbers and muster actions.' }
         ]
     },
-    coiledtubing: {
-        name: 'Coiled Tubing Operations',
-        icon: '🌀',
-        color: 'emerald',
-        description: 'Tubing integrity, pumping envelope, and nitrogen support checks.',
-        checklist: [
-            { id: 'ct1', item: 'CT inspection report reviewed (last run: 450 cycles)', critical: true },
-            { id: 'ct2', item: 'Reel tension settings verified for well conditions', critical: true },
-            { id: 'ct3', item: 'Buckling analysis completed for horizontal section', critical: true },
-            { id: 'ct4', item: 'N₂ supply confirmed adequate for planned operation', critical: true },
-            { id: 'ct5', item: 'BOP stack function test passed (<12 hours)', critical: true },
-            { id: 'ct6', item: 'Pumping equipment pressure tested to 1.5× max planned', critical: true },
-            { id: 'ct7', item: 'Depth correlation confirmed with survey data', critical: false },
-            { id: 'ct8', item: 'Chemical compatibility verified', critical: false }
+    {
+        id: 'equipment',
+        title: 'Equipment & Safety Systems',
+        summary: 'Verify priority kit is on location, certified, and function-tested.',
+        resources: [
+            { label: 'Equipment Catalog Integration Guide', href: 'EQUIPMENT_CATALOG_INTEGRATION_GUIDE.md' },
+            { label: 'User Manual — Toolstring Builder Workflow', href: 'USER_MANUAL.md' }
+        ],
+        items: [
+            { id: 'equipment-certificates', label: 'Critical pressure-control and lifting certificates validated (still in date).' },
+            { id: 'equipment-toolstring', label: 'Toolstring build reviewed against the live program with QA log updated.' },
+            { id: 'equipment-barriers', label: 'Surface barriers (BOP, lubricator, valves) function-tested and results captured.' }
         ]
     },
-    wireline: {
-        name: 'Wireline Operations',
-        icon: '📡',
-        color: 'amber',
-        description: 'Cable head, lubricator, and weak-point validation before rig-up.',
-        checklist: [
-            { id: 'wl1', item: 'Cable head electrical continuity test passed', critical: true },
-            { id: 'wl2', item: 'Weak point calculations verified (current weak point: 8,750 lbs)', critical: true },
-            { id: 'wl3', item: 'Lubricator pressure test current (<6 months)', critical: true },
-            { id: 'wl4', item: 'Tool string weight vs. weak point verified (String: 185 lbs, Safety margin: 47×)', critical: true },
-            { id: 'wl5', item: 'Grease injection system functional', critical: true },
-            { id: 'wl6', item: 'Radioactive source transport license current', critical: true },
-            { id: 'wl7', item: 'Depth correlation with previous runs completed', critical: false },
-            { id: 'wl8', item: 'Rig-up inspection checklist completed', critical: false }
+    {
+        id: 'data',
+        title: 'Data & Reporting',
+        summary: 'Make sure the latest well files, logs, and reporting templates are ready to share.',
+        resources: [
+            { label: 'Well Data Requirements', href: 'docs/WELL_DATA_REQUIREMENTS.md' },
+            { label: 'Past Reports Archive', href: 'docs/PAST_REPORTS_ARCHIVE.md' }
+        ],
+        items: [
+            { id: 'data-wellfiles', label: 'Latest schematics, pressure charts, and offset history uploaded to the workspace.' },
+            { id: 'data-daily-report', label: 'Daily report template pre-filled with job metadata and distribution list confirmed.' },
+            { id: 'data-readiness-log', label: 'Readiness log updated with open actions, owners, and planned completion dates.' }
         ]
     }
-};
+];
 
-const serviceState = new Map();
+const readinessState = new Set(loadStoredState());
 
-function getServiceState(key) {
-    if (!serviceState.has(key)) {
-        serviceState.set(key, {
-            checked: new Set(),
-            completedAt: null
-        });
-    }
-    return serviceState.get(key);
-}
-
-function formatTimestamp(date) {
-    if (!date) return '';
-    const value = date instanceof Date ? date : new Date(date);
-    return value.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
-}
-
-export async function initReadinessChecklist() {
+export function initReadinessChecklist() {
     const container = document.getElementById('readiness-checklist-content');
     if (!container) return;
 
-    container.innerHTML = `
-        <div class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                ${Object.entries(serviceLines).map(([key, service]) => `
-                    <button class="service-line-btn bg-slate-800/60 hover:bg-slate-700/70 border border-slate-600/60 rounded-lg p-6 transition text-left"
-                            data-service="${key}" aria-pressed="false">
-                        <div class="text-4xl mb-3">${service.icon}</div>
-                        <h3 class="text-xl font-semibold text-white">${service.name}</h3>
-                        <p class="mt-2 text-sm text-slate-400">${service.description}</p>
-                        <p class="mt-4 text-xs uppercase tracking-wide text-slate-500">${service.checklist.filter(i => i.critical).length} Critical Checks</p>
-                    </button>
-                `).join('')}
-            </div>
-            <div id="active-checklist" class="bg-slate-800/50 rounded-lg p-8 border border-slate-700 text-center">
-                <p class="text-slate-300">Pick a service line to review the required readiness checks.</p>
-                <p class="text-sm text-slate-500 mt-2">Each list mirrors the Instruction Manual and Start Here guide in the repository.</p>
-            </div>
-        </div>
-    `;
-
-    container.querySelectorAll('.service-line-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const key = btn.dataset.service;
-            renderChecklist(key);
-            highlightSelection(key);
-        });
-    });
+    renderChecklist(container);
 }
 
-function highlightSelection(activeKey) {
-    document.querySelectorAll('.service-line-btn').forEach(btn => {
-        const isActive = btn.dataset.service === activeKey;
-        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-        btn.classList.toggle('outline', isActive);
-        btn.classList.toggle('outline-2', isActive);
-        btn.classList.toggle('outline-cyan-400', isActive);
-    });
-}
-
-function renderChecklist(serviceKey) {
-    const service = serviceLines[serviceKey];
-    const state = getServiceState(serviceKey);
-    const container = document.getElementById('active-checklist');
-    if (!service || !container) return;
-
-    const totalItems = service.checklist.length;
-    const checkedItems = service.checklist.filter(item => state.checked.has(item.id));
-    const criticalItems = service.checklist.filter(item => item.critical);
-    const completedCritical = criticalItems.filter(item => state.checked.has(item.id));
-    const unresolvedCritical = criticalItems.length - completedCritical.length;
-    const criticalClear = unresolvedCritical === 0;
-
-    const statusMessage = state.completedAt
-        ? `Checklist marked complete on ${formatTimestamp(state.completedAt)}.`
-        : criticalClear
-            ? 'All critical checks are complete. You can confirm readiness once the housekeeping items are reviewed.'
-            : `Critical checks remaining: ${unresolvedCritical}. Resolve these items to reach sign-off.`;
+function renderChecklist(container) {
+    const totalChecks = readinessSections.reduce((count, section) => count + section.items.length, 0);
+    const completedChecks = readinessSections.reduce((count, section) => {
+        return count + section.items.filter(item => readinessState.has(item.id)).length;
+    }, 0);
+    const completionPercent = totalChecks === 0 ? 0 : Math.round((completedChecks / totalChecks) * 100);
 
     container.innerHTML = `
-        <div class="space-y-6 text-left">
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                <div>
-                    <p class="text-sm text-slate-400 uppercase tracking-wide">Step 4 & 5 Readiness</p>
-                    <h3 class="text-2xl font-bold text-white flex items-center gap-3">
-                        <span class="text-4xl">${service.icon}</span>
-                        ${service.name}
-                    </h3>
-                    <p class="mt-2 text-slate-300">${service.description}</p>
+        <div class="space-y-8">
+            <div class="bg-slate-900/60 border border-slate-700 rounded-lg p-6">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                        <h3 class="text-xl font-semibold text-white">Operational Readiness Snapshot</h3>
+                        <p class="text-sm text-slate-300 mt-1">Tick each item as you close it out. Links open the live repository guidance.</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-3xl font-bold text-white">${completedChecks}/${totalChecks}</p>
+                        <p class="text-xs uppercase tracking-wide text-slate-400">Checks Complete (${completionPercent}%)</p>
+                    </div>
                 </div>
-                <div class="bg-slate-900/60 border border-slate-700 rounded-lg px-4 py-3 text-right">
-                    <p class="text-lg font-semibold text-white">${checkedItems.length}/${totalItems}</p>
-                    <p class="text-xs text-slate-400">Checks Complete</p>
-                    <p class="text-xs text-slate-500 mt-1">Critical: ${completedCritical.length}/${criticalItems.length}</p>
+                <div class="mt-4 h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full" style="width: ${completionPercent}%; background-color: ${completionPercent === 100 ? '#22c55e' : '#38bdf8'};"></div>
                 </div>
-            </div>
-
-            <div class="rounded-lg border ${criticalClear ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-100' : 'border-amber-500/40 bg-amber-500/10 text-amber-100'} px-4 py-3 text-sm leading-relaxed">
-                ${statusMessage}
-            </div>
-
-            <ul class="space-y-3">
-                ${service.checklist.map(item => {
-                    const isChecked = state.checked.has(item.id);
-                    return `
-                        <li class="flex items-start gap-3 bg-slate-900/50 border border-slate-700 rounded-lg p-4">
-                            <input type="checkbox"
-                                   id="${serviceKey}-${item.id}"
-                                   data-service="${serviceKey}"
-                                   data-item="${item.id}"
-                                   class="mt-1 h-5 w-5 rounded border-slate-600 text-cyan-500 focus:ring-cyan-400"
-                                   ${isChecked ? 'checked' : ''}>
-                            <label for="${serviceKey}-${item.id}" class="flex-1 cursor-pointer">
-                                <div class="flex flex-wrap items-center gap-2">
-                                    ${item.critical ? '<span class="bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded">Critical</span>' : ''}
-                                    <span class="text-white ${isChecked ? 'line-through opacity-70' : ''}">${item.item}</span>
-                                </div>
-                            </label>
-                        </li>
-                    `;
-                }).join('')}
-            </ul>
-
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <button type="button"
-                        data-action="signoff"
-                        data-service="${serviceKey}"
-                        class="inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 font-semibold transition ${criticalClear ? 'bg-emerald-600 text-white hover:bg-emerald-500' : 'bg-slate-700/80 text-slate-400 cursor-not-allowed'}"
-                        ${criticalClear ? '' : 'disabled'}>
-                    <span class="text-lg">${state.completedAt ? 'Update completion timestamp' : 'Mark checklist complete'}</span>
+                <button type="button" data-action="reset-readiness" class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-white">
+                    <span>Reset all checks</span>
                 </button>
-                <p class="text-xs text-slate-400">
-                    Reference material: <a href="INSTRUCTION_MANUAL.md" class="text-cyan-300 hover:text-cyan-200" target="_blank" rel="noopener noreferrer">Instruction Manual</a> ·
-                    <a href="START_HERE.md" class="text-cyan-300 hover:text-cyan-200" target="_blank" rel="noopener noreferrer">Start Here Guide</a>
-                </p>
             </div>
+            ${readinessSections.map(section => renderSection(section)).join('')}
         </div>
     `;
 
-    container.querySelectorAll('input[type="checkbox"]').forEach(input => {
+    container.querySelectorAll('input[data-item-id]').forEach(input => {
         input.addEventListener('change', event => {
-            const itemId = event.target.dataset.item;
-            handleCheckboxChange(serviceKey, itemId, event.target.checked);
+            const { itemId } = event.target.dataset;
+            toggleItem(itemId, event.target.checked, container);
         });
     });
 
-    container.querySelector('[data-action="signoff"]')?.addEventListener('click', () => {
-        handleSignOff(serviceKey);
+    container.querySelector('[data-action="reset-readiness"]')?.addEventListener('click', () => {
+        readinessState.clear();
+        persistState();
+        renderChecklist(container);
     });
 }
 
-function handleCheckboxChange(serviceKey, itemId, checked) {
-    const service = serviceLines[serviceKey];
-    const state = getServiceState(serviceKey);
-    if (!service || !state) return;
+function renderSection(section) {
+    const resourceLinks = section.resources?.length
+        ? `
+            <div class="text-sm text-slate-300">
+                <p class="uppercase tracking-wide text-xs text-slate-400 mb-2">Repository Links</p>
+                <ul class="space-y-1">
+                    ${section.resources.map(resource => `
+                        <li>
+                            <a href="${resource.href}" class="text-cyan-300 hover:text-cyan-200 font-semibold" target="_blank" rel="noopener noreferrer">${resource.label}</a>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        `
+        : '';
+
+    const itemsMarkup = section.items.map(item => {
+        const isChecked = readinessState.has(item.id);
+        return `
+            <li class="flex items-start gap-3 bg-slate-900/50 border border-slate-700 rounded-lg p-4">
+                <input type="checkbox"
+                       id="readiness-${item.id}"
+                       data-item-id="${item.id}"
+                       class="mt-1 h-5 w-5 rounded border-slate-600 text-cyan-500 focus:ring-cyan-400"
+                       ${isChecked ? 'checked' : ''}>
+                <label for="readiness-${item.id}" class="flex-1 text-sm leading-relaxed ${isChecked ? 'text-slate-300 line-through opacity-70' : 'text-white'}">
+                    ${item.label}
+                </label>
+            </li>
+        `;
+    }).join('');
+
+    return `
+        <section class="bg-slate-800/60 border border-slate-700 rounded-lg p-6 space-y-4">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                <div>
+                    <h4 class="text-2xl font-semibold text-white">${section.title}</h4>
+                    <p class="mt-2 text-slate-300 text-sm leading-relaxed">${section.summary}</p>
+                </div>
+                ${resourceLinks}
+            </div>
+            <ul class="space-y-3">
+                ${itemsMarkup}
+            </ul>
+        </section>
+    `;
+}
+
+function toggleItem(itemId, checked, container) {
+    if (!itemId) return;
 
     if (checked) {
-        state.checked.add(itemId);
+        readinessState.add(itemId);
     } else {
-        state.checked.delete(itemId);
-        state.completedAt = null;
+        readinessState.delete(itemId);
     }
 
-    renderChecklist(serviceKey);
+    persistState();
+    renderChecklist(container);
 }
 
-function handleSignOff(serviceKey) {
-    const service = serviceLines[serviceKey];
-    const state = getServiceState(serviceKey);
-    if (!service || !state) return;
+function loadStoredState() {
+    if (!hasStorage) return [];
 
-    const hasOpenCritical = service.checklist.some(item => item.critical && !state.checked.has(item.id));
-    if (hasOpenCritical) {
-        return;
+    try {
+        const stored = window.localStorage.getItem(STORAGE_KEY);
+        if (!stored) return [];
+        const parsed = JSON.parse(stored);
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        console.warn('Unable to load readiness checklist state from storage.', error);
+        return [];
     }
+}
 
-    state.completedAt = new Date();
-    renderChecklist(serviceKey);
+function persistState() {
+    if (!hasStorage) return;
+
+    try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(readinessState)));
+    } catch (error) {
+        console.warn('Unable to persist readiness checklist state.', error);
+    }
 }
