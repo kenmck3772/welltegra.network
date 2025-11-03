@@ -1946,8 +1946,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const views = document.querySelectorAll('.view-container');
     const navLinks = document.querySelectorAll('.nav-link');
     // All views are accessible for presentation - no login required
-    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'logistics', 'commercial', 'hse', 'pob', 'data', 'data-quality', 'about', 'faq', 'whitepaper', 'security', 'ai-helper', 'performer', 'analyzer']);
-    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'data', 'about', 'faq', 'help', 'ai-helper', 'whitepaper', 'security', 'control-room', 'data-standardizer', 'scenario-layering', 'developer-portal', 'readiness-checklist', 'integrity-schematic', 'spend-variance', 'media']);
+    const alwaysAccessibleViews = new Set([
+        'home',
+        'planner',
+        'toolstring',
+        'christmas-tree',
+        'logistics',
+        'commercial',
+        'hse',
+        'pob',
+        'data',
+        'data-quality',
+        'about',
+        'faq',
+        'help',
+        'whitepaper',
+        'security',
+        'ai-helper',
+        'performer',
+        'analyzer',
+        'control-room',
+        'data-standardizer',
+        'scenario-layering',
+        'developer-portal',
+        'readiness-checklist',
+        'integrity-schematic',
+        'spend-variance',
+        'media'
+    ]);
     const headerTitle = document.getElementById('header-title');
     const headerDetails = document.getElementById('header-details');
     const headerNav = document.getElementById('header-nav');
