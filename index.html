@@ -3246,10 +3246,170 @@
         <div id="readiness-checklist-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-bold tracking-tight">Operational Readiness Checklist</h2>
-                <p class="mt-2 max-w-3xl mx-auto text-lg text-blue-100">Step-by-step confirmations that guide people, equipment, and data preparation with live links into the GitHub manuals.</p>
+                <p class="mt-2 max-w-3xl mx-auto text-lg text-blue-100">Confirm people, equipment, and data readiness with nine quick validations and direct GitHub references.</p>
             </div>
-            <div id="readiness-checklist-content">
-                <!-- Content will be loaded by JavaScript -->
+            <div data-readiness-module class="space-y-8">
+                <section class="bg-slate-900/70 border border-slate-700 rounded-2xl p-6 md:p-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                    <div class="space-y-2 max-w-2xl text-left">
+                        <h3 class="text-2xl font-semibold text-white">Three fast lanes, nine total checks</h3>
+                        <p class="text-sm text-slate-300 leading-relaxed">Tick the items that match your pre-job confirmations. Everything saves locally so you can return later without repeating the work.</p>
+                    </div>
+                    <div class="text-left md:text-right">
+                        <p class="text-4xl font-bold text-white leading-none" data-readiness-complete>0</p>
+                        <p class="text-xs uppercase tracking-wide text-slate-400 mt-1">
+                            of <span data-readiness-total>0</span> items checked
+                        </p>
+                        <p class="text-sm text-slate-300 mt-2" data-readiness-progress>Working through checklist</p>
+                        <button type="button" data-action="reset-readiness" class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-white">
+                            <span class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-500">↺</span>
+                            Reset progress
+                        </button>
+                    </div>
+                </section>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <section class="bg-slate-900/60 border border-slate-700 rounded-2xl p-6 space-y-5" data-readiness-section="people">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-semibold text-white">Step 1 · People &amp; Permits</h3>
+                            <p class="text-sm text-slate-300 leading-relaxed">Confirm the crew briefing, approvals, and emergency contacts before the job kicks off.</p>
+                        </div>
+                        <ul class="space-y-3">
+                            <li>
+                                <label class="flex items-start gap-3 bg-slate-900/40 border border-slate-700 rounded-xl p-4 transition hover:border-cyan-400/60" for="readiness-people-briefing">
+                                    <input id="readiness-people-briefing" type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-cyan-500 focus:ring-cyan-400" data-readiness-key="people:briefing">
+                                    <span class="text-sm leading-relaxed text-slate-200">
+                                        <span class="block font-semibold text-white">Safety brief delivered and sign-in sheet completed.</span>
+                                        <span class="block text-slate-400 mt-1">Use the Start Here guide for the talking points and required attendees.</span>
+                                    </span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-start gap-3 bg-slate-900/40 border border-slate-700 rounded-xl p-4 transition hover:border-cyan-400/60" for="readiness-people-permits">
+                                    <input id="readiness-people-permits" type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-cyan-500 focus:ring-cyan-400" data-readiness-key="people:permits">
+                                    <span class="text-sm leading-relaxed text-slate-200">
+                                        <span class="block font-semibold text-white">Permit to Work, JHA, and isolation plans are posted and signed.</span>
+                                        <span class="block text-slate-400 mt-1">Cross-check against the Instruction Manual permit requirements.</span>
+                                    </span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-start gap-3 bg-slate-900/40 border border-slate-700 rounded-xl p-4 transition hover:border-cyan-400/60" for="readiness-people-contacts">
+                                    <input id="readiness-people-contacts" type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-cyan-500 focus:ring-cyan-400" data-readiness-key="people:contacts">
+                                    <span class="text-sm leading-relaxed text-slate-200">
+                                        <span class="block font-semibold text-white">Emergency contacts validated against the readiness roster.</span>
+                                        <span class="block text-slate-400 mt-1">Ensure control room and emergency numbers are distributed.</span>
+                                    </span>
+                                </label>
+                            </li>
+                        </ul>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="START_HERE.md" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-cyan-200 hover:border-cyan-400 hover:text-cyan-100 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                Start Here Checklist
+                            </a>
+                            <a href="INSTRUCTION_MANUAL.md" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-cyan-200 hover:border-cyan-400 hover:text-cyan-100 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                Instruction Manual · Roles &amp; Responsibilities
+                            </a>
+                        </div>
+                    </section>
+
+                    <section class="bg-slate-900/60 border border-slate-700 rounded-2xl p-6 space-y-5" data-readiness-section="equipment">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-semibold text-white">Step 2 · Equipment &amp; Barriers</h3>
+                            <p class="text-sm text-slate-300 leading-relaxed">Verify certifications, program alignment, and barrier health before mobilizing gear.</p>
+                        </div>
+                        <ul class="space-y-3">
+                            <li>
+                                <label class="flex items-start gap-3 bg-slate-900/40 border border-slate-700 rounded-xl p-4 transition hover:border-cyan-400/60" for="readiness-equipment-certs">
+                                    <input id="readiness-equipment-certs" type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-cyan-500 focus:ring-cyan-400" data-readiness-key="equipment:certs">
+                                    <span class="text-sm leading-relaxed text-slate-200">
+                                        <span class="block font-semibold text-white">Pressure-control and lifting certificates confirmed in date.</span>
+                                        <span class="block text-slate-400 mt-1">Log certificate IDs in the readiness register.</span>
+                                    </span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-start gap-3 bg-slate-900/40 border border-slate-700 rounded-xl p-4 transition hover:border-cyan-400/60" for="readiness-equipment-toolstring">
+                                    <input id="readiness-equipment-toolstring" type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-cyan-500 focus:ring-cyan-400" data-readiness-key="equipment:toolstring">
+                                    <span class="text-sm leading-relaxed text-slate-200">
+                                        <span class="block font-semibold text-white">Toolstring build reviewed against the latest intervention program.</span>
+                                        <span class="block text-slate-400 mt-1">Highlight any swaps or contingency tools in the logistics board.</span>
+                                    </span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-start gap-3 bg-slate-900/40 border border-slate-700 rounded-xl p-4 transition hover:border-cyan-400/60" for="readiness-equipment-barrier">
+                                    <input id="readiness-equipment-barrier" type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-cyan-500 focus:ring-cyan-400" data-readiness-key="equipment:barrier">
+                                    <span class="text-sm leading-relaxed text-slate-200">
+                                        <span class="block font-semibold text-white">Barrier function test recorded with results shared to the integrity team.</span>
+                                        <span class="block text-slate-400 mt-1">Include final pressures and operator sign-off.</span>
+                                    </span>
+                                </label>
+                            </li>
+                        </ul>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="EQUIPMENT_CATALOG_INTEGRATION_GUIDE.md" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-cyan-200 hover:border-cyan-400 hover:text-cyan-100 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                Equipment Catalog Integration Guide
+                            </a>
+                            <a href="USER_MANUAL.md" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-cyan-200 hover:border-cyan-400 hover:text-cyan-100 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                User Manual · Toolstring Builder
+                            </a>
+                        </div>
+                    </section>
+
+                    <section class="bg-slate-900/60 border border-slate-700 rounded-2xl p-6 space-y-5" data-readiness-section="data">
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-semibold text-white">Step 3 · Data &amp; Reporting</h3>
+                            <p class="text-sm text-slate-300 leading-relaxed">Line up your digital workspace so analytics and reporting start the moment operations begin.</p>
+                        </div>
+                        <ul class="space-y-3">
+                            <li>
+                                <label class="flex items-start gap-3 bg-slate-900/40 border border-slate-700 rounded-xl p-4 transition hover:border-cyan-400/60" for="readiness-data-files">
+                                    <input id="readiness-data-files" type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-cyan-500 focus:ring-cyan-400" data-readiness-key="data:files">
+                                    <span class="text-sm leading-relaxed text-slate-200">
+                                        <span class="block font-semibold text-white">Latest schematics, pressure history, and well files uploaded to the workspace.</span>
+                                        <span class="block text-slate-400 mt-1">Store the package in the shared Well-Tegra data room.</span>
+                                    </span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-start gap-3 bg-slate-900/40 border border-slate-700 rounded-xl p-4 transition hover:border-cyan-400/60" for="readiness-data-template">
+                                    <input id="readiness-data-template" type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-cyan-500 focus:ring-cyan-400" data-readiness-key="data:template">
+                                    <span class="text-sm leading-relaxed text-slate-200">
+                                        <span class="block font-semibold text-white">Daily report template pre-filled with program metadata and distribution list.</span>
+                                        <span class="block text-slate-400 mt-1">Include planned start time, objectives, and contact emails.</span>
+                                    </span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-start gap-3 bg-slate-900/40 border border-slate-700 rounded-xl p-4 transition hover:border-cyan-400/60" for="readiness-data-archive">
+                                    <input id="readiness-data-archive" type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-cyan-500 focus:ring-cyan-400" data-readiness-key="data:archive">
+                                    <span class="text-sm leading-relaxed text-slate-200">
+                                        <span class="block font-semibold text-white">Readiness log updated with owners, due dates, and links to past interventions.</span>
+                                        <span class="block text-slate-400 mt-1">Reference the Past Reports Archive and Well History Ledger.</span>
+                                    </span>
+                                </label>
+                            </li>
+                        </ul>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="docs/WELL_DATA_REQUIREMENTS.md" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-cyan-200 hover:border-cyan-400 hover:text-cyan-100 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                Well Data Requirements
+                            </a>
+                            <a href="docs/PAST_REPORTS_ARCHIVE.md" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-cyan-200 hover:border-cyan-400 hover:text-cyan-100 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                Past Reports Archive
+                            </a>
+                            <a href="docs/WELL_HISTORY_LEDGER.md" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-cyan-200 hover:border-cyan-400 hover:text-cyan-100 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                Well History Ledger
+                            </a>
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
 
