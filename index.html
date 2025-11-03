@@ -1453,15 +1453,18 @@
             </div>
         </div>
 
-        <!-- Christmas Tree Viewer -->
-        <div id="christmas-tree-view" class="view-container hidden max-w-full mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <!-- Christmas Tree Viewer (Alternative UI - Currently Not Used) -->
+        <!-- Note: This is an alternative Christmas Tree interface. The active interface is above. -->
+        <!-- This view is disabled to prevent ID conflict. Enable by renaming or integrating features. -->
+        <!--
+        <div id="christmas-tree-alt-view" class="view-container hidden max-w-full mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-bold tracking-tight">Christmas Tree Equipment & Well Integrity</h2>
                     <p class="mt-2 max-w-3xl mx-auto text-lg">Manage surface wellhead equipment, monitor integrity status, calculate MAASP, and track safety barrier compliance.</p>
                 </div>
 
-                <!-- Control Panel -->
+                <! Control Panel -->
                 <div class="grid gap-6 lg:grid-cols-3 mb-8">
                     <!-- Tree Selection -->
                     <div class="light-card p-6 rounded-lg">
@@ -1631,6 +1634,7 @@
                 </div>
             </div>
         </div>
+        -->
 
         <!-- Governance & Compliance Dashboard -->
         <div id="governance-view" class="view-container hidden max-w-full mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -3913,7 +3917,7 @@
     <!-- Live Operations Popup Window -->
     <script src="assets/js/live-operations-popup.js?v=23.0.21" defer></script>
 
-    <!-- Demo Mode for Testing -->
+welfare state    <!-- Demo Mode for Testing -->
     <script src="assets/js/demo-mode.js?v=23.0.21" defer></script>
 
     <!-- AI Assistant (v23.0.18+) -->
@@ -4046,25 +4050,25 @@
                     <h3 class="text-cyan-400 font-bold text-lg mb-4">Resources</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="#whitepaper-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                            <a href="#whitepaper-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                 White Paper
                             </a>
                         </li>
                         <li>
-                            <a href="#help-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                            <a href="#help-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 Help & Documentation
                             </a>
                         </li>
                         <li>
-                            <a href="#faq-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                            <a href="#faq-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 FAQ
                             </a>
                         </li>
                         <li>
-                            <a href="#media-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                            <a href="#media-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 Video Tutorials
                             </a>
@@ -4077,28 +4081,25 @@
                     <h3 class="text-cyan-400 font-bold text-lg mb-4">Tools & Features</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="#toolstring-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Toolstring Builder</a>
+                            <a href="#toolstring-view" class="text-white hover:text-cyan-300 transition-colors font-semibold">Toolstring Builder</a>
                         </li>
                         <li>
-                            <a href="#christmas-tree-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Christmas Tree Viewer</a>
+                            <a href="#wellbore-view" class="text-white hover:text-cyan-300 transition-colors font-semibold">Wellbore 3D Viewer</a>
                         </li>
                         <li>
-                            <a href="#wellbore-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Wellbore 3D Viewer</a>
+                            <a href="#integrity-schematic-view" class="text-white hover:text-cyan-300 transition-colors font-semibold">Integrity Schematic</a>
                         </li>
                         <li>
-                            <a href="#integrity-schematic-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Integrity Schematic</a>
+                            <a href="#control-room-view" class="text-white hover:text-cyan-300 transition-colors font-semibold">Control Room</a>
                         </li>
                         <li>
-                            <a href="#control-room-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Control Room</a>
+                            <a href="#data-standardizer-view" class="text-white hover:text-cyan-300 transition-colors font-semibold">Data Standardizer</a>
                         </li>
                         <li>
-                            <a href="#data-standardizer-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Data Standardizer</a>
+                            <a href="#scenario-layering-view" class="text-white hover:text-cyan-300 transition-colors font-semibold">Scenario Layering</a>
                         </li>
                         <li>
-                            <a href="#scenario-layering-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Scenario Layering</a>
-                        </li>
-                        <li>
-                            <a href="#readiness-checklist-view" class="text-slate-300 hover:text-cyan-400 transition-colors">Readiness Checklist</a>
+                            <a href="#readiness-checklist-view" class="text-white hover:text-cyan-300 transition-colors font-semibold">Readiness Checklist</a>
                         </li>
                     </ul>
                 </div>
@@ -4108,25 +4109,25 @@
                     <h3 class="text-cyan-400 font-bold text-lg mb-4">Business Intelligence</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="#commercial-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                            <a href="#commercial-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 Commercial Dashboard
                             </a>
                         </li>
                         <li>
-                            <a href="#hse-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                            <a href="#hse-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                 HSE & Risk
                             </a>
                         </li>
                         <li>
-                            <a href="#pob-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                            <a href="#pob-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                                 POB & Emergency Response
                             </a>
                         </li>
                         <li>
-                            <a href="#spend-variance-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                            <a href="#spend-variance-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                                 Spend-Variance Cockpit
                             </a>
@@ -4139,31 +4140,31 @@
                     <h3 class="text-cyan-400 font-bold text-lg mb-4">Company & Developer</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="#about-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                            <a href="#about-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 About the Founder
                             </a>
                         </li>
                         <li>
-                            <a href="#security-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                            <a href="#security-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                                 Security & Data Protection
                             </a>
                         </li>
                         <li>
-                            <a href="#governance-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                            <a href="#governance-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 Governance & Compliance
                             </a>
                         </li>
                         <li>
-                            <a href="#developer-portal-view" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                            <a href="#developer-portal-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
                                 Developer Portal & API
                             </a>
                         </li>
                         <li>
-                            <a href="mailto:contact@welltegra.network" class="text-slate-300 hover:text-cyan-400 transition-colors flex items-center gap-2">
+                            <a href="mailto:contact@welltegra.network" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 Contact Us
                             </a>
