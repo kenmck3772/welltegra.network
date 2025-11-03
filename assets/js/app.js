@@ -1945,7 +1945,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginBtn = document.getElementById('login-btn');
     const views = document.querySelectorAll('.view-container');
     const navLinks = document.querySelectorAll('.nav-link');
-    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'data', 'about', 'faq', 'whitepaper', 'security']);
+    // All views are accessible for presentation - no login required
+    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'logistics', 'commercial', 'hse', 'pob', 'data', 'data-quality', 'about', 'faq', 'whitepaper', 'security', 'ai-helper', 'performer', 'analyzer']);
     const headerTitle = document.getElementById('header-title');
     const headerDetails = document.getElementById('header-details');
     const headerNav = document.getElementById('header-nav');
@@ -2765,6 +2766,472 @@ document.addEventListener('DOMContentLoaded', function() {
         return true;
     };
 
+    // Initialize Commercial Dashboard with demo data
+    function initializeCommercialView() {
+        if (!commercialContent) return;
+
+        commercialContent.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-2">AFE Budget</h3>
+                    <p class="text-3xl font-bold text-white">$485,000</p>
+                    <p class="text-sm text-green-400 mt-2">✓ Within Budget</p>
+                </div>
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-2">Actual Cost</h3>
+                    <p class="text-3xl font-bold text-white">$412,350</p>
+                    <p class="text-sm text-cyan-400 mt-2">85% utilization</p>
+                </div>
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-2">Variance</h3>
+                    <p class="text-3xl font-bold text-green-400">+$72,650</p>
+                    <p class="text-sm text-slate-400 mt-2">Under budget</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mb-6">
+                <h3 class="text-lg font-semibold text-white mb-4">Service Tickets</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-slate-400 uppercase bg-slate-900/50">
+                            <tr>
+                                <th class="px-4 py-3">Service Provider</th>
+                                <th class="px-4 py-3">Service</th>
+                                <th class="px-4 py-3">Date</th>
+                                <th class="px-4 py-3">Amount</th>
+                                <th class="px-4 py-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-slate-700">
+                                <td class="px-4 py-3 text-white">Schlumberger</td>
+                                <td class="px-4 py-3 text-slate-300">Wireline Services</td>
+                                <td class="px-4 py-3 text-slate-400">2025-10-28</td>
+                                <td class="px-4 py-3 text-white font-semibold">$125,000</td>
+                                <td class="px-4 py-3"><span class="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-300">Approved</span></td>
+                            </tr>
+                            <tr class="border-b border-slate-700">
+                                <td class="px-4 py-3 text-white">Halliburton</td>
+                                <td class="px-4 py-3 text-slate-300">Pressure Testing</td>
+                                <td class="px-4 py-3 text-slate-400">2025-10-29</td>
+                                <td class="px-4 py-3 text-white font-semibold">$87,500</td>
+                                <td class="px-4 py-3"><span class="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-300">Approved</span></td>
+                            </tr>
+                            <tr class="border-b border-slate-700">
+                                <td class="px-4 py-3 text-white">Baker Hughes</td>
+                                <td class="px-4 py-3 text-slate-300">Completion Tools</td>
+                                <td class="px-4 py-3 text-slate-400">2025-10-30</td>
+                                <td class="px-4 py-3 text-white font-semibold">$156,850</td>
+                                <td class="px-4 py-3"><span class="px-2 py-1 text-xs rounded-full bg-yellow-500/20 text-yellow-300">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 text-white">Well Services Co</td>
+                                <td class="px-4 py-3 text-slate-300">Rig Operations</td>
+                                <td class="px-4 py-3 text-slate-400">2025-11-01</td>
+                                <td class="px-4 py-3 text-white font-semibold">$43,000</td>
+                                <td class="px-4 py-3"><span class="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-300">Approved</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-lg font-semibold text-white mb-4">Cost Breakdown</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-slate-300">Wireline Services</span>
+                                <span class="text-white font-semibold">$125,000</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-cyan-500 h-2 rounded-full" style="width: 30.3%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-slate-300">Completion Tools</span>
+                                <span class="text-white font-semibold">$156,850</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 38%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-slate-300">Pressure Testing</span>
+                                <span class="text-white font-semibold">$87,500</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 21.2%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-slate-300">Rig Operations</span>
+                                <span class="text-white font-semibold">$43,000</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 10.5%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-lg font-semibold text-white mb-4">Financial Metrics</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-300">Daily Rate</span>
+                            <span class="text-white font-semibold">$45,000/day</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-300">Days on Location</span>
+                            <span class="text-white font-semibold">9.2 days</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-300">Burn Rate</span>
+                            <span class="text-cyan-400 font-semibold">$44,819/day</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-300">ROI Projection</span>
+                            <span class="text-green-400 font-semibold">+18.5%</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-3 border-t border-slate-700">
+                            <span class="text-slate-300 font-semibold">NPV (@ 10%)</span>
+                            <span class="text-white text-lg font-bold">$2.1M</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Initialize HSE & Risk Dashboard with demo data
+    function initializeHSEView() {
+        if (!hseContent) return;
+
+        hseContent.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-green-500/10 border border-green-500/30 rounded-xl p-6">
+                    <h3 class="text-sm font-semibold text-green-400 uppercase tracking-wide mb-2">Safety Score</h3>
+                    <p class="text-4xl font-bold text-green-400">9.2/10</p>
+                    <p class="text-sm text-slate-400 mt-2">Excellent</p>
+                </div>
+                <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-6">
+                    <h3 class="text-sm font-semibold text-cyan-400 uppercase tracking-wide mb-2">Open Permits</h3>
+                    <p class="text-4xl font-bold text-cyan-400">3</p>
+                    <p class="text-sm text-slate-400 mt-2">Active PTWs</p>
+                </div>
+                <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-6">
+                    <h3 class="text-sm font-semibold text-yellow-400 uppercase tracking-wide mb-2">High Risks</h3>
+                    <p class="text-4xl font-bold text-yellow-400">2</p>
+                    <p class="text-sm text-slate-400 mt-2">Monitored</p>
+                </div>
+                <div class="bg-green-500/10 border border-green-500/30 rounded-xl p-6">
+                    <h3 class="text-sm font-semibold text-green-400 uppercase tracking-wide mb-2">LTI-Free Days</h3>
+                    <p class="text-4xl font-bold text-green-400">487</p>
+                    <p class="text-sm text-slate-400 mt-2">Continuous</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-lg font-semibold text-white mb-4">Active Permits to Work</h3>
+                    <div class="space-y-3">
+                        <div class="p-4 bg-green-500/5 border border-green-500/20 rounded-lg">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="font-semibold text-white">PTW-2025-001</h4>
+                                    <p class="text-sm text-slate-400">Hot Work - Wellhead Welding</p>
+                                </div>
+                                <span class="px-2 py-1 text-xs font-bold rounded bg-green-600 text-white">ACTIVE</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 text-xs mt-3">
+                                <div><span class="text-slate-400">Issued:</span> <span class="text-white">08:00 Nov 3</span></div>
+                                <div><span class="text-slate-400">Expires:</span> <span class="text-white">18:00 Nov 3</span></div>
+                                <div><span class="text-slate-400">Supervisor:</span> <span class="text-white">J. Smith</span></div>
+                                <div><span class="text-slate-400">Risk Level:</span> <span class="text-yellow-400">Medium</span></div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-green-500/5 border border-green-500/20 rounded-lg">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="font-semibold text-white">PTW-2025-002</h4>
+                                    <p class="text-sm text-slate-400">Confined Space Entry - Tank Inspection</p>
+                                </div>
+                                <span class="px-2 py-1 text-xs font-bold rounded bg-green-600 text-white">ACTIVE</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 text-xs mt-3">
+                                <div><span class="text-slate-400">Issued:</span> <span class="text-white">10:00 Nov 3</span></div>
+                                <div><span class="text-slate-400">Expires:</span> <span class="text-white">16:00 Nov 3</span></div>
+                                <div><span class="text-slate-400">Supervisor:</span> <span class="text-white">R. Johnson</span></div>
+                                <div><span class="text-slate-400">Risk Level:</span> <span class="text-red-400">High</span></div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-green-500/5 border border-green-500/20 rounded-lg">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="font-semibold text-white">PTW-2025-003</h4>
+                                    <p class="text-sm text-slate-400">Working at Height - Platform Maintenance</p>
+                                </div>
+                                <span class="px-2 py-1 text-xs font-bold rounded bg-green-600 text-white">ACTIVE</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 text-xs mt-3">
+                                <div><span class="text-slate-400">Issued:</span> <span class="text-white">09:00 Nov 3</span></div>
+                                <div><span class="text-slate-400">Expires:</span> <span class="text-white">17:00 Nov 3</span></div>
+                                <div><span class="text-slate-400">Supervisor:</span> <span class="text-white">M. Davis</span></div>
+                                <div><span class="text-slate-400">Risk Level:</span> <span class="text-yellow-400">Medium</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-lg font-semibold text-white mb-4">Risk Register</h3>
+                    <div class="space-y-3">
+                        <div class="p-4 bg-red-500/5 border border-red-500/20 rounded-lg">
+                            <div class="flex items-start justify-between mb-2">
+                                <h4 class="font-semibold text-white">High Pressure Gas Release</h4>
+                                <span class="px-2 py-1 text-xs font-bold rounded bg-red-600 text-white">HIGH</span>
+                            </div>
+                            <p class="text-sm text-slate-400 mb-2">Risk of uncontrolled gas release during valve maintenance</p>
+                            <div class="text-xs space-y-1">
+                                <div><span class="text-slate-400">Probability:</span> <span class="text-yellow-400">Medium</span></div>
+                                <div><span class="text-slate-400">Severity:</span> <span class="text-red-400">Critical</span></div>
+                                <div><span class="text-slate-400">Mitigation:</span> <span class="text-cyan-300">Pressure isolation verified, gas detection active</span></div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-lg">
+                            <div class="flex items-start justify-between mb-2">
+                                <h4 class="font-semibold text-white">H2S Exposure</h4>
+                                <span class="px-2 py-1 text-xs font-bold rounded bg-yellow-600 text-white">MEDIUM</span>
+                            </div>
+                            <p class="text-sm text-slate-400 mb-2">Potential H2S in wellbore during intervention</p>
+                            <div class="text-xs space-y-1">
+                                <div><span class="text-slate-400">Probability:</span> <span class="text-green-400">Low</span></div>
+                                <div><span class="text-slate-400">Severity:</span> <span class="text-red-400">Critical</span></div>
+                                <div><span class="text-slate-400">Mitigation:</span> <span class="text-cyan-300">SCBA available, continuous monitoring, emergency procedures briefed</span></div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-green-500/5 border border-green-500/20 rounded-lg">
+                            <div class="flex items-start justify-between mb-2">
+                                <h4 class="font-semibold text-white">Equipment Failure</h4>
+                                <span class="px-2 py-1 text-xs font-bold rounded bg-green-600 text-white">LOW</span>
+                            </div>
+                            <p class="text-sm text-slate-400 mb-2">Hydraulic system failure during operations</p>
+                            <div class="text-xs space-y-1">
+                                <div><span class="text-slate-400">Probability:</span> <span class="text-green-400">Low</span></div>
+                                <div><span class="text-slate-400">Severity:</span> <span class="text-yellow-400">Moderate</span></div>
+                                <div><span class="text-slate-400">Mitigation:</span> <span class="text-cyan-300">Backup systems available, pre-job equipment inspection completed</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h3 class="text-lg font-semibold text-white mb-4">Safety Performance Indicators</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-green-400">0</p>
+                        <p class="text-sm text-slate-400 mt-1">LTI (Year to Date)</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-green-400">2</p>
+                        <p class="text-sm text-slate-400 mt-1">Near Misses (This Month)</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-cyan-400">156</p>
+                        <p class="text-sm text-slate-400 mt-1">Safety Observations</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-bold text-green-400">100%</p>
+                        <p class="text-sm text-slate-400 mt-1">Toolbox Talk Attendance</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Initialize POB & Emergency Response Dashboard with demo data
+    function initializePOBView() {
+        if (!pobContent) return;
+
+        pobContent.innerHTML = `
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-6">
+                    <h3 class="text-sm font-semibold text-cyan-400 uppercase tracking-wide mb-2">Total POB</h3>
+                    <p class="text-4xl font-bold text-cyan-400">23</p>
+                    <p class="text-sm text-slate-400 mt-2">Personnel on site</p>
+                </div>
+                <div class="bg-green-500/10 border border-green-500/30 rounded-xl p-6">
+                    <h3 class="text-sm font-semibold text-green-400 uppercase tracking-wide mb-2">Muster Status</h3>
+                    <p class="text-4xl font-bold text-green-400">✓</p>
+                    <p class="text-sm text-slate-400 mt-2">All accounted</p>
+                </div>
+                <div class="bg-blue-500/10 border border-blue-500/30 rounded-xl p-6">
+                    <h3 class="text-sm font-semibold text-blue-400 uppercase tracking-wide mb-2">Medic On Site</h3>
+                    <p class="text-4xl font-bold text-blue-400">1</p>
+                    <p class="text-sm text-slate-400 mt-2">Certified EMT</p>
+                </div>
+                <div class="bg-purple-500/10 border border-purple-500/30 rounded-xl p-6">
+                    <h3 class="text-sm font-semibold text-purple-400 uppercase tracking-wide mb-2">Lifeboat Capacity</h3>
+                    <p class="text-4xl font-bold text-purple-400">50</p>
+                    <p class="text-sm text-slate-400 mt-2">Seats available</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-lg font-semibold text-white mb-4">Personnel Manifest</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="text-xs text-slate-400 uppercase bg-slate-900/50">
+                                <tr>
+                                    <th class="px-3 py-2 text-left">Name</th>
+                                    <th class="px-3 py-2 text-left">Role</th>
+                                    <th class="px-3 py-2 text-left">Company</th>
+                                    <th class="px-3 py-2 text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-700">
+                                <tr>
+                                    <td class="px-3 py-2 text-white">J. Smith</td>
+                                    <td class="px-3 py-2 text-slate-300">Operations Manager</td>
+                                    <td class="px-3 py-2 text-slate-400">Well-Tegra</td>
+                                    <td class="px-3 py-2 text-center"><span class="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-300">On Site</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 text-white">R. Johnson</td>
+                                    <td class="px-3 py-2 text-slate-300">Wireline Engineer</td>
+                                    <td class="px-3 py-2 text-slate-400">Schlumberger</td>
+                                    <td class="px-3 py-2 text-center"><span class="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-300">On Site</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 text-white">M. Davis</td>
+                                    <td class="px-3 py-2 text-slate-300">Safety Officer</td>
+                                    <td class="px-3 py-2 text-slate-400">Well-Tegra</td>
+                                    <td class="px-3 py-2 text-center"><span class="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-300">On Site</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 text-white">K. Wilson</td>
+                                    <td class="px-3 py-2 text-slate-300">Rig Supervisor</td>
+                                    <td class="px-3 py-2 text-slate-400">Contractor</td>
+                                    <td class="px-3 py-2 text-center"><span class="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-300">On Site</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 text-white">L. Brown</td>
+                                    <td class="px-3 py-2 text-slate-300">Medic</td>
+                                    <td class="px-3 py-2 text-slate-400">Medical Services</td>
+                                    <td class="px-3 py-2 text-center"><span class="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-300">On Site</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 text-white">+ 18 more</td>
+                                    <td class="px-3 py-2 text-slate-400" colspan="3">Crew members, technicians, support staff</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                    <h3 class="text-lg font-semibold text-white mb-4">Emergency Response</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-green-500/5 border border-green-500/20 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-semibold text-white">Muster Point Alpha</h4>
+                                <span class="px-2 py-1 text-xs font-bold rounded bg-green-600 text-white">CLEAR</span>
+                            </div>
+                            <p class="text-sm text-slate-400">Primary assembly point - Capacity: 30</p>
+                            <div class="mt-2 text-xs text-slate-400">Last drill: October 28, 2025</div>
+                        </div>
+
+                        <div class="p-4 bg-green-500/5 border border-green-500/20 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-semibold text-white">Muster Point Bravo</h4>
+                                <span class="px-2 py-1 text-xs font-bold rounded bg-green-600 text-white">CLEAR</span>
+                            </div>
+                            <p class="text-sm text-slate-400">Secondary assembly point - Capacity: 30</p>
+                            <div class="mt-2 text-xs text-slate-400">Last drill: October 28, 2025</div>
+                        </div>
+
+                        <div class="p-4 bg-blue-500/5 border border-blue-500/20 rounded-lg">
+                            <h4 class="font-semibold text-white mb-2">Emergency Equipment</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Life Rafts</span>
+                                    <span class="text-green-400">✓ 2 Ready</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Fire Extinguishers</span>
+                                    <span class="text-green-400">✓ 12 Inspected</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">First Aid Kits</span>
+                                    <span class="text-green-400">✓ 4 Stocked</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">SCBA Units</span>
+                                    <span class="text-green-400">✓ 8 Ready</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-cyan-500/5 border border-cyan-500/20 rounded-lg">
+                            <h4 class="font-semibold text-white mb-2">Emergency Contacts</h4>
+                            <div class="space-y-1 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Site Manager</span>
+                                    <span class="text-cyan-400">+1 555-0100</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Coast Guard</span>
+                                    <span class="text-cyan-400">+1 555-0911</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400">Medical Evac</span>
+                                    <span class="text-cyan-400">+1 555-EVAC</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
+                <h3 class="text-lg font-semibold text-white mb-4">Recent Muster Drills</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-slate-900/50 rounded-lg">
+                        <div>
+                            <p class="text-white font-semibold">Full Evacuation Drill</p>
+                            <p class="text-sm text-slate-400">October 28, 2025 - 14:00</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-green-400 font-semibold">100% Participation</p>
+                            <p class="text-sm text-slate-400">Time: 4min 32sec</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-slate-900/50 rounded-lg">
+                        <div>
+                            <p class="text-white font-semibold">Fire Drill</p>
+                            <p class="text-sm text-slate-400">October 15, 2025 - 10:00</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-green-400 font-semibold">100% Participation</p>
+                            <p class="text-sm text-slate-400">Time: 3min 58sec</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     const switchView = (viewName) => {
         if (appState.liveDataInterval) {
             clearInterval(appState.liveDataInterval);
@@ -2806,7 +3273,22 @@ document.addEventListener('DOMContentLoaded', function() {
         if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
             headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">● LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
             initializePerformer();
-        } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
+        } else if (viewName === 'commercial') {
+            if(appState.selectedWell && appState.generatedPlan) {
+                headerDetails.innerHTML = `<div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            }
+            initializeCommercialView();
+        } else if (viewName === 'hse') {
+            if(appState.selectedWell && appState.generatedPlan) {
+                headerDetails.innerHTML = `<div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            }
+            initializeHSEView();
+        } else if (viewName === 'pob') {
+            if(appState.selectedWell && appState.generatedPlan) {
+                headerDetails.innerHTML = `<div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            }
+            initializePOBView();
+        } else if (viewName === 'analyzer') {
             if(appState.selectedWell && appState.generatedPlan) {
                 headerDetails.innerHTML = `<div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
             }
