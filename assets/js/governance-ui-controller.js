@@ -479,45 +479,95 @@ function updateComplianceStatus() {
  * Update recent activity
  */
 function updateRecentActivity() {
-    const mocAudits = governanceManager.getMOCAudits().slice(-5).reverse();
-    const aiPrompts = governanceManager.getAIPrompts().slice(-5).reverse();
-
     const activityContainer = document.getElementById('recent-activity-list');
     if (!activityContainer) return;
 
-    let html = '';
+    const activities = [];
 
-    mocAudits.forEach(moc => {
-        html += `
-            <div class="text-xs bg-slate-900/50 p-2 rounded">
-                <div class="flex justify-between">
-                    <span class="font-semibold">MOC Approval</span>
-                    <span class="text-slate-400">${new Date(moc.timestamp).toLocaleString()}</span>
-                </div>
-                <div class="text-slate-400 mt-1">${moc.wellId} - ${moc.changeType}</div>
-                <div class="text-xs mt-1 ${moc.sealVerified ? 'text-green-400' : 'text-yellow-400'}">
-                    ${moc.sealVerified ? '✓ Verified' : '⊘ Not verified'}
-                </div>
-            </div>
-        `;
+    governanceManager.getMOCAudits().forEach(moc => {
+        activities.push({ type: 'moc', timestamp: moc.timestamp, payload: moc });
     });
 
-    aiPrompts.forEach(prompt => {
-        html += `
-            <div class="text-xs bg-slate-900/50 p-2 rounded">
-                <div class="flex justify-between">
-                    <span class="font-semibold">AI Prompt</span>
-                    <span class="text-slate-400">${new Date(prompt.timestamp).toLocaleString()}</span>
-                </div>
-                <div class="text-slate-400 mt-1">${prompt.wellId} - ${prompt.promptType}</div>
-                <div class="text-xs mt-1 ${prompt.grcApproved ? 'text-green-400' : 'text-slate-400'}">
-                    ${prompt.reviewStatus}
-                </div>
-            </div>
-        `;
+    governanceManager.getAIPrompts().forEach(prompt => {
+        activities.push({ type: 'ai', timestamp: prompt.timestamp, payload: prompt });
     });
 
-    if (html === '') {
+    if (typeof governanceManager.getDataStandardizationLogs === 'function') {
+        governanceManager.getDataStandardizationLogs().forEach(log => {
+            activities.push({ type: 'data-standardization', timestamp: log.timestamp, payload: log });
+        });
+    }
+
+    activities.sort((a, b) => {
+        const aTime = new Date(a.timestamp || 0).getTime();
+        const bTime = new Date(b.timestamp || 0).getTime();
+        return bTime - aTime;
+    });
+
+    const recent = activities.slice(0, 5);
+
+    let html = recent.map(activity => {
+        const timestamp = activity.timestamp ? new Date(activity.timestamp).toLocaleString() : '—';
+        if (activity.type === 'moc') {
+            const moc = activity.payload;
+            return `
+                <div class="text-xs bg-slate-900/50 p-2 rounded">
+                    <div class="flex justify-between">
+                        <span class="font-semibold">MOC Approval</span>
+                        <span class="text-slate-400">${timestamp}</span>
+                    </div>
+                    <div class="text-slate-400 mt-1">${moc.wellId} - ${moc.changeType}</div>
+                    <div class="text-xs mt-1 ${moc.sealVerified ? 'text-green-400' : 'text-yellow-400'}">
+                        ${moc.sealVerified ? '✓ Verified' : '⊘ Not verified'}
+                    </div>
+                </div>
+            `;
+        }
+
+        if (activity.type === 'ai') {
+            const prompt = activity.payload;
+            return `
+                <div class="text-xs bg-slate-900/50 p-2 rounded">
+                    <div class="flex justify-between">
+                        <span class="font-semibold">AI Prompt</span>
+                        <span class="text-slate-400">${timestamp}</span>
+                    </div>
+                    <div class="text-slate-400 mt-1">${prompt.wellId} - ${prompt.promptType}</div>
+                    <div class="text-xs mt-1 ${prompt.grcApproved ? 'text-green-400' : 'text-slate-400'}">
+                        ${prompt.reviewStatus}
+                    </div>
+                </div>
+            `;
+        }
+
+        if (activity.type === 'data-standardization') {
+            const log = activity.payload;
+            const adjustments = Array.isArray(log.adjustments) && log.adjustments.length
+                ? log.adjustments.join(' • ')
+                : 'Depth references already aligned';
+            const kbLabel = typeof log.kbElevation === 'number' && Number.isFinite(log.kbElevation)
+                ? `${log.kbElevation.toFixed(1)} m KB`
+                : 'KB reference n/a';
+            const tvdLabel = typeof log.tvdRkbFt === 'number' && Number.isFinite(log.tvdRkbFt)
+                ? `${Number(log.tvdRkbFt).toLocaleString()} ft TVD RKB`
+                : '';
+
+            return `
+                <div class="text-xs bg-slate-900/50 p-2 rounded">
+                    <div class="flex justify-between">
+                        <span class="font-semibold">Data Standardized</span>
+                        <span class="text-slate-400">${timestamp}</span>
+                    </div>
+                    <div class="text-slate-400 mt-1">${log.wellId} • ${kbLabel}${tvdLabel ? ` • ${tvdLabel}` : ''}</div>
+                    <div class="text-xs mt-1 text-cyan-300">${adjustments}</div>
+                </div>
+            `;
+        }
+
+        return '';
+    }).join('');
+
+    if (!html) {
         html = '<div class="text-xs text-slate-500 text-center py-4">No recent activity</div>';
     }
 
@@ -580,8 +630,142 @@ async function handleLoadSampleData() {
 /**
  * Handle auto-fix data
  */
-function handleAutoFixData() {
-    showNotification('Auto-fix feature coming soon - will standardize depth references to TVD RKB', 'info');
+async function handleAutoFixData() {
+    if (!currentWellId) {
+        showNotification('Please select a well before running auto-fix', 'warning');
+        return;
+    }
+
+    try {
+        const dataManager = typeof WellDataManager !== 'undefined' ? new WellDataManager() : null;
+        let wellData = dataManager?.getWell(currentWellId) || null;
+
+        if (!wellData) {
+            const response = await fetch('data-well-samples.json');
+            const data = await response.json();
+            wellData = data.wells.find(w => w.well_id === currentWellId);
+            if (!wellData) {
+                showNotification('Well data not found for auto-fix', 'error');
+                return;
+            }
+            if (dataManager) {
+                dataManager.addWell(wellData);
+            }
+        }
+
+        const kbElevationRaw = Number(wellData?.well_header?.kb_elevation_m ?? 0);
+        const kbElevation = Number.isFinite(kbElevationRaw) ? kbElevationRaw : 0;
+        const updatedWell = JSON.parse(JSON.stringify(wellData));
+        const adjustments = [];
+
+        const surveyPoints = Array.isArray(updatedWell?.trajectory?.survey_points)
+            ? updatedWell.trajectory.survey_points
+            : [];
+        let recalibratedPoints = 0;
+
+        const normalizedPoints = surveyPoints.map(point => {
+            const clone = { ...point };
+            if (typeof clone.measured_depth_m === 'number' && typeof clone.measured_depth_ft !== 'number') {
+                clone.measured_depth_ft = Number((clone.measured_depth_m * 3.28084).toFixed(1));
+            }
+
+            const baseTvd = typeof clone.tvd_m === 'number'
+                ? clone.tvd_m
+                : (typeof clone.measured_depth_m === 'number' ? clone.measured_depth_m : null);
+
+            if (baseTvd !== null) {
+                const tvdRkbM = Number((baseTvd + kbElevation).toFixed(2));
+                if (clone.tvd_rkb_m == null || Math.abs(clone.tvd_rkb_m - tvdRkbM) > 0.01) {
+                    clone.tvd_rkb_m = tvdRkbM;
+                    clone.tvd_rkb_ft = Number((tvdRkbM * 3.28084).toFixed(1));
+                    recalibratedPoints++;
+                }
+            }
+
+            return clone;
+        });
+
+        if (recalibratedPoints > 0) {
+            updatedWell.trajectory = { ...updatedWell.trajectory, survey_points: normalizedPoints };
+            adjustments.push(`${recalibratedPoints} survey points recalibrated to TVD RKB`);
+        }
+
+        const components = Array.isArray(updatedWell?.tubular_design?.components)
+            ? updatedWell.tubular_design.components
+            : [];
+        let componentUpdates = 0;
+
+        const recalibratedComponents = components.map(component => {
+            const clone = { ...component };
+
+            if (typeof clone.top_depth_m === 'number') {
+                const topRkb = Number((clone.top_depth_m + kbElevation).toFixed(2));
+                if (clone.top_depth_tvd_rkb_m == null || Math.abs(clone.top_depth_tvd_rkb_m - topRkb) > 0.01) {
+                    clone.top_depth_tvd_rkb_m = topRkb;
+                    clone.top_depth_tvd_rkb_ft = Number((topRkb * 3.28084).toFixed(1));
+                    componentUpdates++;
+                }
+            }
+
+            if (typeof clone.bottom_depth_m === 'number') {
+                const bottomRkb = Number((clone.bottom_depth_m + kbElevation).toFixed(2));
+                if (clone.bottom_depth_tvd_rkb_m == null || Math.abs(clone.bottom_depth_tvd_rkb_m - bottomRkb) > 0.01) {
+                    clone.bottom_depth_tvd_rkb_m = bottomRkb;
+                    clone.bottom_depth_tvd_rkb_ft = Number((bottomRkb * 3.28084).toFixed(1));
+                }
+            }
+
+            return clone;
+        });
+
+        if (componentUpdates > 0) {
+            updatedWell.tubular_design = { ...updatedWell.tubular_design, components: recalibratedComponents };
+            adjustments.push(`${componentUpdates} tubular components annotated with RKB depths`);
+        }
+
+        const lastPoint = normalizedPoints[normalizedPoints.length - 1];
+        if (lastPoint && typeof lastPoint.tvd_rkb_m === 'number') {
+            const header = { ...updatedWell.well_header };
+            const tvdRkbM = Number(lastPoint.tvd_rkb_m.toFixed(2));
+            const tvdRkbFt = Number((tvdRkbM * 3.28084).toFixed(0));
+            header.true_vertical_depth_rkb_m = tvdRkbM;
+            header.true_vertical_depth_rkb_ft = tvdRkbFt;
+            updatedWell.well_header = header;
+            const headerLabel = `${tvdRkbFt.toLocaleString()} ft TVD RKB`;
+            adjustments.push(`Header TVD updated to ${headerLabel}`);
+        }
+
+        if (dataManager) {
+            dataManager.updateWell(currentWellId, updatedWell);
+        }
+
+        dataQualityGateway.evaluateWell(currentWellId, updatedWell);
+        remediationDashboard.analyzeWell(currentWellId, updatedWell);
+
+        await loadWellDetails(currentWellId);
+        updatePortfolioMetrics();
+
+        if (typeof governanceManager.logDataStandardization === 'function') {
+            governanceManager.logDataStandardization({
+                wellId: currentWellId,
+                adjustments,
+                kbElevation,
+                updatedPoints: recalibratedPoints,
+                updatedComponents: componentUpdates,
+                tvdRkbFt: updatedWell.well_header?.true_vertical_depth_rkb_ft || null
+            });
+        }
+
+        updateRecentActivity();
+
+        const summary = adjustments.length
+            ? adjustments.join('; ')
+            : 'Depth references already aligned with TVD RKB baseline.';
+        showNotification(`Auto-fix complete: ${summary}`, 'success');
+    } catch (error) {
+        console.error('Failed to auto-fix data:', error);
+        showNotification('Auto-fix failed. See console for details.', 'error');
+    }
 }
 
 /**

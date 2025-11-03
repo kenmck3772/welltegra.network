@@ -148,7 +148,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 { date: '2024-04-01', operation: 'Production Test', problem: 'Well died after brief flow period. Pressure analysis suggests deep blockage.', lesson: 'Suspect combination of scale and integrity issues.' },
                 { date: '2024-04-10', operation: 'DHSV Test', problem: 'TRSSV failed to close on command. Well shut-in on annulus valves.', lesson: 'Well integrity is critically compromised.' }
             ],
-            dailyReports: [], 
+            dailyReports: [
+                {
+                    date: '2024-04-18',
+                    summary: 'Diagnostic slickline run profiled the main restriction; gauge ring hung at 8,480ft confirming severe ovalization.',
+                    npt: 6,
+                    toolstringRun: [
+                        'Gauge Ring 2.313\" OD — tagged 8,480ft',
+                        'Memory CCL — attenuated signal across 8,450-8,520ft'
+                    ]
+                },
+                {
+                    date: '2024-04-21',
+                    summary: 'Memory production log captured zero-flow interval below restriction with elevated annulus pressure differential.',
+                    npt: 4,
+                    toolstringRun: [
+                        'PLT Spinner — null response below 8,500ft',
+                        'Quartz PT Gauge — 150 psi tubing/annulus differential'
+                    ]
+                },
+                {
+                    date: '2024-04-27',
+                    summary: 'Contingency milling trial aborted after torque spike at 8,520ft; team pivoted to expandable patch strategy.',
+                    npt: 2,
+                    toolstringRun: [
+                        'Heavy-Duty Mill Pilot — torque spike at 8,520ft',
+                        'Gyro — deviation held stable at 28°'
+                    ]
+                }
+            ],
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 18500, isProblem: true}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 18300}], 
@@ -182,7 +210,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 { date: '2023-11-10', operation: 'Slickline Surveillance', problem: 'Standard 2.313" OD toolstring unable to pass 8,500ft, encountering a hard stop.', lesson: 'Significant reservoir depletion in this area is causing geomechanical stresses leading to casing deformation, a known regional risk. MFC log confirms this is ovalization, not collapse.' },
                 { date: '2023-12-05', operation: 'Expandable Casing Patch', problem: 'Successfully installed a 60ft expandable steel patch across the deformed section.', lesson: 'This operation proves that an expandable patch is a viable, rigless solution for restoring full-bore access in this field, restoring production and well access.' }
             ],
-            dailyReports: [], 
+            dailyReports: [
+                {
+                    date: '2023-11-12',
+                    summary: 'Caliper log confirmed 2.05\" minimum ID over 40ft, validating severity of casing deformation.',
+                    npt: 3,
+                    toolstringRun: [
+                        'Multi-Finger Caliper — 2.05\" min ID at 8,470-8,510ft',
+                        'Gyro — deviation steady at 32°'
+                    ]
+                },
+                {
+                    date: '2023-12-07',
+                    summary: 'Expandable patch expansion completed in a single run with no anomalies and full drift restored.',
+                    npt: 1,
+                    toolstringRun: [
+                        'Expandable Patch Tool — set at 8,480ft',
+                        'Drift Gauge 2.75\" — verified post-expansion ID'
+                    ]
+                },
+                {
+                    date: '2024-01-15',
+                    summary: 'Post-job production test delivered 6.2 mmscf/d with stabilized pressures and zero vibration alarms.',
+                    npt: 0,
+                    toolstringRun: [
+                        'PLT Spinner — uniform inflow profile',
+                        'Memory PT Gauge — 1,850 psi at perforations'
+                    ]
+                }
+            ],
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 9000}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 8800}], 
@@ -215,7 +271,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 { date: '2024-01-05', operation: 'Production Logging', problem: 'PLT toolstring unable to pass 9,200ft due to a hard obstruction. Produced water analysis confirmed high Barium and Sulfate content.', lesson: 'Commingling of injected seawater and formation water is causing severe, insoluble scale deposition. A previous attempt to mill scale on a nearby well resulted in stuck pipe.'},
                 { date: '2024-02-12', operation: 'CT Chemical/Jetting', problem: 'A 48hr soak with DTPA dissolver followed by a run with a high-pressure rotating jetting tool successfully cleared the blockage.', lesson: 'This two-stage approach is a proven, lower-risk method for removing hard scale compared to aggressive milling.' }
             ],
-            dailyReports: [], 
+            dailyReports: [
+                {
+                    date: '2024-01-08',
+                    summary: 'Gauge run confirmed solid obstruction at 9,210ft with BaSO₄ signature recovered in sample jar.',
+                    npt: 5,
+                    toolstringRun: [
+                        'Gauge Ring 2.00\" — tagged 9,210ft',
+                        'Sample Catcher — BaSO₄ crystals recovered'
+                    ]
+                },
+                {
+                    date: '2024-02-14',
+                    summary: 'Temperature-controlled DTPA soak dissolved majority of blockage with steady circulation.',
+                    npt: 4,
+                    toolstringRun: [
+                        'CT Bottomhole Assembly — dual injection nozzles',
+                        'Thermal String — 180°F circulation profile'
+                    ]
+                },
+                {
+                    date: '2024-02-16',
+                    summary: 'High-pressure jetting pass cleared residual nodules and restored drift to 10,900ft.',
+                    npt: 2,
+                    toolstringRun: [
+                        'Rotating Jetting Head — 6,000 psi sweep',
+                        'Drift Gauge 2.25\" — full pass to 10,900ft'
+                    ]
+                }
+            ],
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 11000}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 10800}], 
@@ -243,8 +327,36 @@ document.addEventListener('DOMContentLoaded', function() {
             history: [
                 { date: '2024-02-18', operation: 'Routine DHSV Test', problem: 'Valve failed to close reliably during routine 6-month test. Well was mandatorily shut-in by regulatory authority.', lesson: 'An attempted repair on a similar well with a hydraulic tool failed; a mechanical lock-open tool is more reliable.' },
                 { date: '2024-03-20', operation: 'Slickline Insert Valve Job', problem: 'Successfully locked open the failed valve with a mechanical tool and installed a new wireline-retrievable insert valve.', lesson: 'This standard slickline operation is a proven, cost-effective method for restoring the primary safety barrier without a rig.' }
-            ], 
-            dailyReports: [], 
+            ],
+            dailyReports: [
+                {
+                    date: '2024-02-19',
+                    summary: 'Baseline slickline test verified TRSSV leak-off and captured hydraulic signature for planning.',
+                    npt: 3,
+                    toolstringRun: [
+                        'SCSSV Test Tool — leak-off at 1,150 psi',
+                        'Memory Pressure Gauge — rapid decay to 300 psi'
+                    ]
+                },
+                {
+                    date: '2024-03-21',
+                    summary: 'Mechanical lock-open tool set successfully and valve removed from service without incident.',
+                    npt: 1,
+                    toolstringRun: [
+                        'Lock-Open Tool — set at 1,480ft',
+                        'Gauge Ring 2.25\" — verified control line clearance'
+                    ]
+                },
+                {
+                    date: '2024-03-22',
+                    summary: 'Insert safety valve installed and cycled with positive surface response.',
+                    npt: 1,
+                    toolstringRun: [
+                        'Wireline-Retrievable SSSV — landed at 1,500ft',
+                        'Communication Tool — pass/fail log recorded'
+                    ]
+                }
+            ],
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 9800}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 9600}], 
@@ -272,8 +384,36 @@ document.addEventListener('DOMContentLoaded', function() {
             history: [
                 { date: '2023-08-15', operation: 'Surface Choke Replacement', problem: 'Replaced choke for the 3rd time in 6 months due to severe erosional wear from high sand content.', lesson: 'Choking back the well is a temporary fix; the root cause of sand control failure must be addressed. Downhole video confirmed screen erosion.' },
                 { date: '2023-09-10', operation: 'Through-Tubing Patch', problem: 'Successfully installed an expandable patch across the failed sand screen, restoring sand control.', lesson: 'This confirms that a through-tubing patch is a viable rigless repair for this failure mode in this field.'}
-            ], 
-            dailyReports: [], 
+            ],
+            dailyReports: [
+                {
+                    date: '2023-08-18',
+                    summary: 'Surface samples quantified 1.8 lb/MMSCF sand production prompting downhole inspection.',
+                    npt: 2,
+                    toolstringRun: [
+                        'Sand Probe — 1.8 lb/MMSCF recorded',
+                        'Acoustic Sand Monitor — high-frequency alarms'
+                    ]
+                },
+                {
+                    date: '2023-09-11',
+                    summary: 'Through-tubing patch deployment isolated failed screen joint with full expansion achieved.',
+                    npt: 3,
+                    toolstringRun: [
+                        'Expandable Patch Tool — set at 9,870ft',
+                        'Multifinger Caliper — confirmed restored ID'
+                    ]
+                },
+                {
+                    date: '2023-09-13',
+                    summary: 'Post-job surveillance confirmed sand-free flow with stabilized drawdown.',
+                    npt: 1,
+                    toolstringRun: [
+                        'Fiber Optic DTS — uniform temperature profile',
+                        'Downhole Sand Probe — zero counts'
+                    ]
+                }
+            ],
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 10000}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 9800}], 
@@ -302,7 +442,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 { date: '2024-01-15', operation: 'Slickline Gauge Ring Run', problem: 'Gauge ring tagged a soft, waxy obstruction at 6,000ft. Unable to pass.', lesson: 'A previous attempt on another well with only chemicals was slow and ineffective; a combined approach is needed.' },
                 { date: '2024-02-01', operation: 'CT Wax Cleanout', problem: 'Successfully removed wax blockage using a combination of heated chemical dissolvers and a mechanical scraper tool on Coiled Tubing.', lesson: 'The dual chemical/mechanical approach is highly effective for severe paraffin blockages.' }
             ],
-            dailyReports: [],
+            dailyReports: [
+                {
+                    date: '2024-01-16',
+                    summary: 'Gauge run stalled at 6,040ft; sample pot retrieved heavy paraffin.',
+                    npt: 4,
+                    toolstringRun: [
+                        'Gauge Ring 2.0\" — tagged 6,040ft',
+                        'Sample Pot — paraffin assay'
+                    ]
+                },
+                {
+                    date: '2024-02-02',
+                    summary: 'Heated solvent circulation dissolved bulk wax within 18 hours.',
+                    npt: 5,
+                    toolstringRun: [
+                        'CT Heating String — 185°F at depth',
+                        'Solvent Injection Mandrel — 20 bbl slug'
+                    ]
+                },
+                {
+                    date: '2024-02-03',
+                    summary: 'Mechanical scraper pass removed remaining deposits; restart flowed clean.',
+                    npt: 2,
+                    toolstringRun: [
+                        'Wax Scraper — full pass to 7,300ft',
+                        'Memory PT Gauge — flowing tubing 1,250 psi'
+                    ]
+                }
+            ],
             completion: {
                 casing: [{type: 'Production', size: '7', top: 0, bottom: 7500}],
                 tubing: [{type: 'Production', size: '3 1/2', top: 0, bottom: 7300}],
@@ -332,7 +500,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 { date: '2023-09-15', operation: 'Integrated Solution Deployment', problem: 'Successfully executed a staged intervention combining expandable patch technology, chemical scale treatment, safety valve replacement, and sand control installation - all in a single campaign.', lesson: 'Integrated multi-discipline approach saved 45 days vs. sequential interventions. This became the blueprint for tackling W666.' },
                 { date: '2023-10-01', operation: 'Post-Intervention Performance', problem: 'Well exceeded pre-intervention production by 180%, with zero NPT and full barrier integrity restored.', lesson: 'Proves that comprehensive planning and execution of multiple remediation strategies simultaneously is not only feasible but highly effective. This success story directly informed the W666 intervention strategy.' }
             ],
-            dailyReports: [],
+            dailyReports: [
+                {
+                    date: '2023-08-22',
+                    summary: 'Baseline campaign kicked off with comprehensive production log and scale sampling program.',
+                    npt: 4,
+                    toolstringRun: [
+                        'PLT Spinner — stratified inflow identified',
+                        'Scale Sampler — trace BaSO₄ detected'
+                    ]
+                },
+                {
+                    date: '2023-09-16',
+                    summary: 'Integrated remediation run executed sequential patch, chemical cleanout, and insert valve.',
+                    npt: 8,
+                    toolstringRun: [
+                        'Expandable Patch — set at 9,200ft',
+                        'Jetting Tool — 5,800 psi sweep',
+                        'WR-SSSV — landed at 2,850ft'
+                    ]
+                },
+                {
+                    date: '2023-10-02',
+                    summary: 'Verification pass confirmed restored production with zero barrier leaks and full drift.',
+                    npt: 1,
+                    toolstringRun: [
+                        'Pressure Build-Up Tool — stabilized at 2,300 psi',
+                        'Caliper — ID fully restored'
+                    ]
+                }
+            ],
             completion: {
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 19200}],
                 tubing: [{type: 'Production', size: '5 1/2', top: 0, bottom: 19000}],
@@ -1884,29 +2081,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const faqData = [
         {
-            question: "What is Well-Tegra?",
-            answer: `<p>Well-Tegra is an advanced technology platform designed to foster collaborative intelligence within the energy sector. It provides a comprehensive architectural blueprint that integrates privacy-preserving Artificial Intelligence (AI) and enterprise blockchain technology to solve long-standing challenges in energy operations.</p><p>Its primary mission is to transform the vast, fragmented, and often inaccessible data generated by oil and gas operations into a unified, analysis-ready asset, enabling competing firms to securely pool operational insights for mutual benefit.</p>`
+            question: "Is Well-Tegra free to use?",
+            answer: `<p>The demo experience hosted on GitHub Pages is free to explore. Production deployments follow a subscription model so that we can provision secure hosting, integrations, and enterprise support.</p>`
         },
         {
-            question: "What fundamental problem does Well-Tegra solve?",
-            answer: `<p>The fundamental problem Well-Tegra addresses is the <strong>endemic data fragmentation</strong> that plagues the modern energy sector. Data is typically locked in isolated "silos," hindering the application of advanced analytics and machine learning.</p><p>This fragmentation comes from disparate sources, incompatible digital formats, and inaccessible physical data, meaning decades of invaluable operational knowledge remain locked away and unusable.</p>`
+            question: "Do I need to install anything?",
+            answer: `<p>No additional software is required. Launch the project in any modern browser. If you prefer to run it locally, the Instruction Manual walks through spinning up a simple static server with Python or the VS Code Live Server extension.</p>`
         },
         {
-            question: "Who is the target audience for the Well-Tegra platform?",
-            answer: `<p>The primary target audience consists of <strong>oil and gas operators</strong> and other firms within the energy industry's operational ecosystem. The platform is designed to serve both individual companies seeking to optimize their internal operations and consortia of competing firms aiming to achieve shared intelligence.</p>`
+            question: "Can I use Well-Tegra offline?",
+            answer: `<p>Limited offline support is available through the bundled Progressive Web App. Cached data and reports remain readable without a connection, but generating plans, running analytics, and synchronising readiness gates still requires going back online.</p>`
         },
         {
-            question: "Why does Well-Tegra use blockchain technology?",
-            answer: `<p>Well-Tegra uses a <strong>private, permissioned blockchain</strong> to create a trusted, transparent, and tamper-proof foundation for its multi-client collaborative ecosystem. This is not a public cryptocurrency blockchain, but a secure environment for vetted partners.</p><p>It provides three core guarantees:</p><ul><li><strong>Cryptographic Hashing:</strong> A unique digital fingerprint for data, making tampering obvious.</li><li><strong>Block Chaining:</strong> An unbreakable, interlocking chain where altering one block invalidates all subsequent blocks.</li><li><strong>Decentralization:</strong> The ledger is copied across all members, requiring majority consensus for changes, making fraudulent changes practically impossible.</li></ul>`
+            question: "How accurate are the AI recommendations?",
+            answer: `<p>Recommendations are seeded from 30+ years of well-engineering experience and tuned machine learning models. Each suggestion carries a confidence score and remains editable so engineering judgement can be applied before anything reaches the field.</p>`
         },
         {
-            question: "How can competing companies share data without revealing confidential information?",
-            answer: `<p>Well-Tegra implements a sophisticated, multi-stage anonymization protocol. This "defense-in-depth" strategy layers several advanced privacy-enhancing technologies:</p><ul><li><strong>Stage 1: Identification and Suppression:</strong> Removing explicit identifiers like company and well names.</li><li><strong>Stage 2: Generalization for K-Anonymity and L-Diversity:</strong> Making records indistinguishable from others to prevent re-identification from combined attributes.</li><li><strong>Stage 3: Perturbation with Differential Privacy:</strong> Adding calibrated statistical "noise" to sensitive numerical data to provide a formal, mathematical guarantee of privacy.</li></ul><p>The platform's most innovative feature is <strong>"verifiable privacy,"</strong> where the anonymization rules are coded into a smart contract on the blockchain, allowing participants to cryptographically verify that the agreed-upon privacy protocol was executed.</p>`
+            question: "Can I export plans to other systems?",
+            answer: `<p>Yes. You can export generated programs as PDFs, ingest them into downstream systems using the WITSML/ETP connectors, or consume data via upcoming REST and webhook endpoints documented in the developer portal.</p>`
         },
         {
-            question: "What is the 'network effect' and how does it benefit data providers?",
-            answer: `<p>The "network effect" is the principle that the value of the platform increases for every participant as more members join. This is achieved by securely leveraging the collective, anonymized data of the entire consortium to build predictive models that are far more powerful than any single organization could develop alone.</p><p>This creates a <strong>virtuous cycle</strong>: more data leads to better models, which provides a powerful incentive for new members to join, which in turn makes the models even more powerful for everyone.</p>`
+            question: "How often do live gauges update?",
+            answer: `<p>Real-time gauges in the Well Performer refresh every two seconds by default. The polling interval can be tuned between one and ten seconds from the WITSML integration panel to match rig telemetry cadence.</p>`
         },
+        {
+            question: "Where does the data come from?",
+            answer: `<p>The demo ships with simulated wells, personnel, and tooling catalogues. Production environments pull from WITSML feeds, secure manual entry, bulk file uploads, and planned REST integrations so you can centralise historic and live operations data.</p>`
+        },
+        {
+            question: "What technology stack powers Well-Tegra?",
+            answer: `<p>The interface is written in HTML5, Tailwind CSS, and vanilla JavaScript. Chart.js handles analytics, jsPDF powers exports, and a service worker enables the PWA experience. The demo persists data in localStorage while enterprise deployments connect to cloud services.</p>`
+        },
+        {
+            question: "What support is included?",
+            answer: `<p>Self-service documentation and GitHub Issues support the free tier. Paid subscriptions unlock direct email assistance with &lt;24 hour turnaround, while enterprise contracts add phone coverage and a dedicated account manager.</p>`
+        }
     ];
 
     // --- GLOBAL STATE ---
@@ -1945,9 +2154,36 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginBtn = document.getElementById('login-btn');
     const views = document.querySelectorAll('.view-container');
     const navLinks = document.querySelectorAll('.nav-link');
+    let documentationRendered = false;
     // All views are accessible for presentation - no login required
-    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'logistics', 'commercial', 'hse', 'pob', 'data', 'data-quality', 'about', 'faq', 'whitepaper', 'security', 'ai-helper', 'performer', 'analyzer']);
-    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'data', 'about', 'faq', 'help', 'ai-helper', 'whitepaper', 'security', 'control-room', 'data-standardizer', 'scenario-layering', 'developer-portal', 'readiness-checklist', 'integrity-schematic', 'spend-variance', 'media']);
+    const alwaysAccessibleViews = new Set([
+        'home',
+        'planner',
+        'toolstring',
+        'logistics',
+        'commercial',
+        'hse',
+        'pob',
+        'data',
+        'data-quality',
+        'about',
+        'faq',
+        'help',
+        'whitepaper',
+        'security',
+        'governance',
+        'ai-helper',
+        'performer',
+        'analyzer',
+        'control-room',
+        'data-standardizer',
+        'scenario-layering',
+        'developer-portal',
+        'readiness-checklist',
+        'integrity-schematic',
+        'spend-variance',
+        'media'
+    ]);
     const headerTitle = document.getElementById('header-title');
     const headerDetails = document.getElementById('header-details');
     const headerNav = document.getElementById('header-nav');
@@ -3233,6 +3469,75 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 
+    const renderDocumentationDirectory = () => {
+        if (documentationRendered) return;
+        const directoryContainer = document.getElementById('documentation-directory');
+        if (!directoryContainer) return;
+
+        const catalog = Array.isArray(window.welltegraDocuments) ? window.welltegraDocuments : [];
+
+        if (!catalog.length) {
+            directoryContainer.innerHTML = `
+                <div class="rounded-2xl border border-dashed border-slate-700/60 bg-slate-900/40 p-6 text-center text-sm text-slate-400">
+                    Documentation catalog unavailable. <a class="text-cyan-300 hover:text-cyan-200 font-semibold" href="https://github.com/WellTegra/welltegra.network" target="_blank" rel="noopener noreferrer">Browse the GitHub repository</a> to view the latest guides.
+                </div>
+            `;
+            documentationRendered = true;
+            return;
+        }
+
+        directoryContainer.innerHTML = catalog.map((category) => {
+            const headerIcon = category.icon ? `<span class="text-2xl">${escapeHtml(category.icon)}</span>` : '';
+            const description = category.description ? `<p class="mt-2 text-sm text-slate-300">${escapeHtml(category.description)}</p>` : '';
+            const quickLink = category.quickLink ? `<a href="${escapeHtml(category.quickLink.href)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-semibold text-cyan-300 hover:text-cyan-200">${escapeHtml(category.quickLink.label)}</a>` : '';
+
+            const items = Array.isArray(category.items) ? category.items : [];
+            const cards = items.map((item) => {
+                const tags = Array.isArray(item.tags) ? item.tags : [];
+                const tagsMarkup = tags.length
+                    ? `<div class="mt-3 flex flex-wrap gap-2">${tags.map(tag => `<span class="rounded-full border border-slate-700/60 bg-slate-800/60 px-2.5 py-1 text-xs text-slate-300">${escapeHtml(tag)}</span>`).join('')}</div>`
+                    : '';
+                const href = escapeHtml(item.path || '#');
+                const updated = item.updated ? `<span class="text-xs text-slate-500">Updated ${escapeHtml(item.updated)}</span>` : '';
+                const summary = item.summary ? `<p class="text-sm text-slate-300 mt-2 leading-relaxed">${escapeHtml(item.summary)}</p>` : '';
+
+                return `
+                    <article class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-5 flex flex-col gap-4">
+                        <div>
+                            <h5 class="text-lg font-semibold text-white">${escapeHtml(item.title || 'Documentation')}</h5>
+                            ${summary}
+                            ${tagsMarkup}
+                        </div>
+                        <div class="flex items-center justify-between gap-3">
+                            ${updated || '<span class="text-xs text-slate-500">GitHub source</span>'}
+                            <a href="${href}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 font-semibold text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                ${escapeHtml(item.cta || 'Open document')}
+                            </a>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            return `
+                <section class="rounded-2xl border border-slate-700/60 bg-slate-900/40 p-6 space-y-5">
+                    <header class="flex flex-wrap items-start justify-between gap-3">
+                        <div>
+                            <h4 class="text-xl font-semibold text-white flex items-center gap-2">${headerIcon}${escapeHtml(category.title || 'Documentation')}</h4>
+                            ${description}
+                        </div>
+                        ${quickLink}
+                    </header>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${cards}
+                    </div>
+                </section>
+            `;
+        }).join('');
+
+        documentationRendered = true;
+    };
+
     const switchView = (viewName) => {
         if (appState.liveDataInterval) {
             clearInterval(appState.liveDataInterval);
@@ -3312,11 +3617,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (window.ToolstringBuilder && typeof window.ToolstringBuilder.init === 'function') {
                 window.ToolstringBuilder.init();
             }
-        } else if (viewName === 'christmas-tree') {
-            // Initialize Christmas tree integrity system
-            if (window.ChristmasTreeIntegrity && typeof window.ChristmasTreeIntegrity.init === 'function') {
-                window.ChristmasTreeIntegrity.init();
-            }
         } else if (viewName === 'control-room') {
             // Initialize Control Room Dashboard
             import('./control-room-dashboard.js').then(module => {
@@ -3352,6 +3652,8 @@ document.addEventListener('DOMContentLoaded', function() {
             import('./spend-variance-cockpit.js').then(module => {
                 module.initSpendVariance();
             }).catch(err => console.error('Failed to load spend variance module:', err));
+        } else if (viewName === 'media') {
+            renderDocumentationDirectory();
         }
     };
     window.showView = (viewName, sourceLabel) => {
@@ -3719,7 +4021,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .join('');
     };
     
-    function renderObjectives() {
     const renderObjectives = () => {
         if (!objectivesFieldset) return;
 
@@ -3848,7 +4149,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // expose planners so other modules (e.g., PDF export, analytics replay) can re-render when datasets update
     window.renderObjectives = renderObjectives;
     window.renderProblems = renderProblems;
-    };
 
     const renderDesignBlueprint = () => {
         const designBlueprintContainer = getDesignBlueprintContainer();

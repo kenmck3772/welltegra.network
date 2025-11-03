@@ -23,7 +23,8 @@ class GovernanceComplianceManager {
             ATTESTATIONS: 'welltegra_attestations',
             ETP_CONFIG: 'welltegra_etp_config',
             FAILSAFE: 'welltegra_failsafe',
-            COMPLIANCE: 'welltegra_compliance'
+            COMPLIANCE: 'welltegra_compliance',
+            DATA_STANDARDIZATION: 'welltegra_data_standardization'
         };
 
         this.ETP_LATENCY_SLA = 200; // milliseconds - 10x faster than legacy WITSML
@@ -43,6 +44,37 @@ class GovernanceComplianceManager {
 
         // Initialize ETP configuration
         this.initializeETPConfig();
+    }
+
+    /**
+     * Retrieve data standardization log entries
+     * @returns {Array<object>}
+     */
+    getDataStandardizationLogs() {
+        try {
+            return JSON.parse(localStorage.getItem(this.STORAGE_KEYS.DATA_STANDARDIZATION) || '[]');
+        } catch (error) {
+            console.error('Failed to load data standardization logs:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Persist a new data standardization audit trail entry
+     * @param {object} entry
+     * @returns {object}
+     */
+    logDataStandardization(entry) {
+        const logs = this.getDataStandardizationLogs();
+        const logEntry = {
+            id: `DS-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            timestamp: new Date().toISOString(),
+            ...entry
+        };
+
+        logs.push(logEntry);
+        localStorage.setItem(this.STORAGE_KEYS.DATA_STANDARDIZATION, JSON.stringify(logs));
+        return logEntry;
     }
 
     // ==========================================
