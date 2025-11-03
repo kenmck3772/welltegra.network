@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'welltegra-readiness-checks';
+const STORAGE_KEY = 'welltegra-readiness-handshake';
 const hasStorage = (() => {
     try {
         return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
@@ -10,44 +10,44 @@ const hasStorage = (() => {
 const readinessSections = [
     {
         id: 'people',
-        title: 'People & Permits',
-        summary: 'Confirm the crew, approvals, and emergency contacts are locked in before the job starts.',
+        title: 'People & Permits Ready',
+        summary: 'Crew is signed in, permits are live, and the emergency roster is current.',
+        confirmations: [
+            'Safety brief delivered and signed using the Start Here talking points.',
+            'Permit to Work, JHA, and isolations are posted for the active shift.',
+            'Emergency contacts validated against the readiness contact sheet.'
+        ],
         resources: [
             { label: 'Start Here Checklist', href: 'START_HERE.md' },
-            { label: 'Instruction Manual — Roles & Responsibilities', href: 'INSTRUCTION_MANUAL.md' }
-        ],
-        items: [
-            { id: 'people-briefing', label: 'Crew briefing completed using the Start Here agenda with attendance recorded.' },
-            { id: 'people-permits', label: 'Permit to Work, JHA, and isolations signed off and posted for the current shift.' },
-            { id: 'people-emergency', label: 'Emergency response roster verified with up-to-date contact numbers and muster actions.' }
+            { label: 'Instruction Manual · Roles & Responsibilities', href: 'INSTRUCTION_MANUAL.md' }
         ]
     },
     {
         id: 'equipment',
-        title: 'Equipment & Safety Systems',
-        summary: 'Verify priority kit is on location, certified, and function-tested.',
+        title: 'Equipment & Safety Ready',
+        summary: 'Critical kit is on location, certified, and function-tested with results logged.',
+        confirmations: [
+            'Pressure-control and lifting certificates checked for validity.',
+            'Toolstring build reconciled with the latest program revision.',
+            'Barrier function test recorded in the readiness register.'
+        ],
         resources: [
             { label: 'Equipment Catalog Integration Guide', href: 'EQUIPMENT_CATALOG_INTEGRATION_GUIDE.md' },
-            { label: 'User Manual — Toolstring Builder Workflow', href: 'USER_MANUAL.md' }
-        ],
-        items: [
-            { id: 'equipment-certificates', label: 'Critical pressure-control and lifting certificates validated (still in date).' },
-            { id: 'equipment-toolstring', label: 'Toolstring build reviewed against the live program with QA log updated.' },
-            { id: 'equipment-barriers', label: 'Surface barriers (BOP, lubricator, valves) function-tested and results captured.' }
+            { label: 'User Manual · Toolstring Builder', href: 'USER_MANUAL.md' }
         ]
     },
     {
         id: 'data',
-        title: 'Data & Reporting',
-        summary: 'Make sure the latest well files, logs, and reporting templates are ready to share.',
+        title: 'Data & Reporting Ready',
+        summary: 'Well files, reporting templates, and distribution lists are packaged for kickoff.',
+        confirmations: [
+            'Latest schematics and pressure history uploaded to the workspace.',
+            'Daily report template pre-filled with program metadata.',
+            'Readiness log updated with owners and target close-out dates.'
+        ],
         resources: [
             { label: 'Well Data Requirements', href: 'docs/WELL_DATA_REQUIREMENTS.md' },
             { label: 'Past Reports Archive', href: 'docs/PAST_REPORTS_ARCHIVE.md' }
-        ],
-        items: [
-            { id: 'data-wellfiles', label: 'Latest schematics, pressure charts, and offset history uploaded to the workspace.' },
-            { id: 'data-daily-report', label: 'Daily report template pre-filled with job metadata and distribution list confirmed.' },
-            { id: 'data-readiness-log', label: 'Readiness log updated with open actions, owners, and planned completion dates.' }
         ]
     }
 ];
@@ -62,40 +62,37 @@ export function initReadinessChecklist() {
 }
 
 function renderChecklist(container) {
-    const totalChecks = readinessSections.reduce((count, section) => count + section.items.length, 0);
-    const completedChecks = readinessSections.reduce((count, section) => {
-        return count + section.items.filter(item => readinessState.has(item.id)).length;
-    }, 0);
-    const completionPercent = totalChecks === 0 ? 0 : Math.round((completedChecks / totalChecks) * 100);
+    const totalSections = readinessSections.length;
+    const completedSections = readinessSections.filter(section => readinessState.has(section.id)).length;
 
     container.innerHTML = `
         <div class="space-y-8">
-            <div class="bg-slate-900/60 border border-slate-700 rounded-lg p-6">
+            <div class="bg-slate-900/60 border border-slate-700 rounded-xl p-6">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
-                        <h3 class="text-xl font-semibold text-white">Operational Readiness Snapshot</h3>
-                        <p class="text-sm text-slate-300 mt-1">Tick each item as you close it out. Links open the live repository guidance.</p>
+                        <h3 class="text-xl font-semibold text-white">Operational Readiness Handshake</h3>
+                        <p class="text-sm text-slate-300 mt-1">Mark each lane ready once you have the basics in place. Every button is a single tap — no sub-checklists, no guesswork.</p>
                     </div>
                     <div class="text-right">
-                        <p class="text-3xl font-bold text-white">${completedChecks}/${totalChecks}</p>
-                        <p class="text-xs uppercase tracking-wide text-slate-400">Checks Complete (${completionPercent}%)</p>
+                        <p class="text-3xl font-bold text-white">${completedSections}/${totalSections}</p>
+                        <p class="text-xs uppercase tracking-wide text-slate-400">Lanes Ready</p>
                     </div>
                 </div>
-                <div class="mt-4 h-2 bg-slate-800 rounded-full overflow-hidden">
-                    <div class="h-full rounded-full" style="width: ${completionPercent}%; background-color: ${completionPercent === 100 ? '#22c55e' : '#38bdf8'};"></div>
-                </div>
                 <button type="button" data-action="reset-readiness" class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-white">
-                    <span>Reset all checks</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8 8 0 104.582 9M20 4v5h-5"/></svg>
+                    <span>Reset handshake</span>
                 </button>
             </div>
-            ${readinessSections.map(section => renderSection(section)).join('')}
+            <div class="grid grid-cols-1 gap-6">
+                ${readinessSections.map(section => renderSection(section)).join('')}
+            </div>
         </div>
     `;
 
-    container.querySelectorAll('input[data-item-id]').forEach(input => {
-        input.addEventListener('change', event => {
-            const { itemId } = event.target.dataset;
-            toggleItem(itemId, event.target.checked, container);
+    container.querySelectorAll('[data-action="toggle-section"]').forEach(button => {
+        button.addEventListener('click', event => {
+            const sectionId = event.currentTarget.dataset.sectionId;
+            toggleSection(sectionId, container);
         });
     });
 
@@ -107,60 +104,62 @@ function renderChecklist(container) {
 }
 
 function renderSection(section) {
-    const resourceLinks = section.resources?.length
-        ? `
-            <div class="text-sm text-slate-300">
-                <p class="uppercase tracking-wide text-xs text-slate-400 mb-2">Repository Links</p>
-                <ul class="space-y-1">
-                    ${section.resources.map(resource => `
-                        <li>
-                            <a href="${resource.href}" class="text-cyan-300 hover:text-cyan-200 font-semibold" target="_blank" rel="noopener noreferrer">${resource.label}</a>
-                        </li>
-                    `).join('')}
-                </ul>
-            </div>
-        `
-        : '';
-
-    const itemsMarkup = section.items.map(item => {
-        const isChecked = readinessState.has(item.id);
-        return `
-            <li class="flex items-start gap-3 bg-slate-900/50 border border-slate-700 rounded-lg p-4">
-                <input type="checkbox"
-                       id="readiness-${item.id}"
-                       data-item-id="${item.id}"
-                       class="mt-1 h-5 w-5 rounded border-slate-600 text-cyan-500 focus:ring-cyan-400"
-                       ${isChecked ? 'checked' : ''}>
-                <label for="readiness-${item.id}" class="flex-1 text-sm leading-relaxed ${isChecked ? 'text-slate-300 line-through opacity-70' : 'text-white'}">
-                    ${item.label}
-                </label>
-            </li>
-        `;
-    }).join('');
+    const isComplete = readinessState.has(section.id);
+    const statusStyles = isComplete
+        ? 'bg-emerald-500/20 text-emerald-200 border border-emerald-400/40'
+        : 'bg-amber-500/10 text-amber-200 border border-amber-400/30';
+    const statusLabel = isComplete ? 'Ready to Execute' : 'Needs Follow-Up';
+    const toggleLabel = isComplete ? 'Flag for Follow-Up' : 'Mark Ready';
 
     return `
-        <section class="bg-slate-800/60 border border-slate-700 rounded-lg p-6 space-y-4">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-                <div>
-                    <h4 class="text-2xl font-semibold text-white">${section.title}</h4>
-                    <p class="mt-2 text-slate-300 text-sm leading-relaxed">${section.summary}</p>
+        <article class="bg-slate-900/60 border border-slate-700 rounded-2xl p-6 space-y-5 shadow-lg shadow-slate-900/40">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                <div class="space-y-2">
+                    <h4 class="text-xl font-semibold text-white">${section.title}</h4>
+                    <p class="text-sm text-slate-300 leading-relaxed">${section.summary}</p>
                 </div>
-                ${resourceLinks}
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${statusStyles}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isComplete ? 'M5 13l4 4L19 7' : 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'}"/></svg>
+                    ${statusLabel}
+                </span>
             </div>
-            <ul class="space-y-3">
-                ${itemsMarkup}
+            <ul class="space-y-2 text-sm text-slate-200">
+                ${section.confirmations.map(item => `
+                    <li class="flex items-start gap-2">
+                        <span class="mt-1 h-2 w-2 rounded-full bg-cyan-300"></span>
+                        <span>${item}</span>
+                    </li>
+                `).join('')}
             </ul>
-        </section>
+            <div class="flex flex-wrap items-center gap-3">
+                <button type="button"
+                        data-action="toggle-section"
+                        data-section-id="${section.id}"
+                        class="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition ${isComplete ? 'bg-slate-800 text-slate-200 hover:bg-slate-700' : 'bg-cyan-600 text-white hover:bg-cyan-500'}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isComplete ? 'M18 12H6' : 'M5 13l4 4L19 7'}"/></svg>
+                    <span>${toggleLabel}</span>
+                </button>
+                ${section.resources.map(resource => `
+                    <a href="${resource.href}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="inline-flex items-center gap-2 rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-cyan-200 hover:border-cyan-400 hover:text-cyan-100 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        ${resource.label}
+                    </a>
+                `).join('')}
+            </div>
+        </article>
     `;
 }
 
-function toggleItem(itemId, checked, container) {
-    if (!itemId) return;
+function toggleSection(sectionId, container) {
+    if (!sectionId) return;
 
-    if (checked) {
-        readinessState.add(itemId);
+    if (readinessState.has(sectionId)) {
+        readinessState.delete(sectionId);
     } else {
-        readinessState.delete(itemId);
+        readinessState.add(sectionId);
     }
 
     persistState();
@@ -176,7 +175,7 @@ function loadStoredState() {
         const parsed = JSON.parse(stored);
         return Array.isArray(parsed) ? parsed : [];
     } catch (error) {
-        console.warn('Unable to load readiness checklist state from storage.', error);
+        console.warn('Unable to load readiness state from storage.', error);
         return [];
     }
 }
@@ -187,6 +186,6 @@ function persistState() {
     try {
         window.localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(readinessState)));
     } catch (error) {
-        console.warn('Unable to persist readiness checklist state.', error);
+        console.warn('Unable to persist readiness state.', error);
     }
 }
