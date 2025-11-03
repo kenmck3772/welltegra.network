@@ -1,8 +1,24 @@
 /* --- Base & Theme Setup --- */
 body { font-family: 'Inter', sans-serif; font-weight: 500; }
 h1, h2, h3, h4, h5, h6 { font-weight: 800; }
-.theme-light { background-color: #f8fafc; }
-.theme-dark { background-color: #0f172a; color: #e2e8f0; }
+.theme-light {
+    background-color: #f8fafc;
+    color: #0f172a;
+    background-image: linear-gradient(180deg, rgba(248, 250, 252, 0.95), rgba(226, 232, 240, 0.9)), url('../watermark.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+.theme-dark {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    background-image: linear-gradient(180deg, rgba(2, 6, 23, 0.85), rgba(2, 6, 23, 0.95)), url('../watermark.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
 
 /* --- Watermark Background with Well Tegra Logo --- */
 #main-content,
@@ -16,15 +32,15 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; }
 .theme-light .view-container::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url('../assets/logo.jpg');
-    background-repeat: repeat;
+    inset: 0;
+    background-image: linear-gradient(180deg, rgba(248, 250, 252, 0.92), rgba(226, 232, 240, 0.85)), url('../watermark.jpg');
+    background-repeat: no-repeat;
     background-position: center;
-    background-size: 400px 400px;
-    opacity: 0.03;
+    background-size: cover;
+    opacity: 0.25;
     z-index: -1;
     pointer-events: none;
-    filter: grayscale(100%) brightness(1.2);
+    filter: saturate(1.15) brightness(1.05);
 }
 
 /* Watermark for dark theme - Enhanced visibility */
@@ -32,15 +48,15 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; }
 .theme-dark .view-container::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url('../assets/logo.jpg');
-    background-repeat: repeat;
+    inset: 0;
+    background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.85), rgba(2, 6, 23, 0.9)), url('../watermark.jpg');
+    background-repeat: no-repeat;
     background-position: center;
-    background-size: 450px 450px;
-    opacity: 0.04;
+    background-size: cover;
+    opacity: 0.45;
     z-index: -1;
     pointer-events: none;
-    filter: grayscale(100%) brightness(0.8) contrast(0.5);
+    filter: saturate(1.2) brightness(0.7) contrast(0.8);
     animation: subtle-float 60s ease-in-out infinite;
 }
 
@@ -54,15 +70,15 @@ h1, h2, h3, h4, h5, h6 { font-weight: 800; }
 .theme-dark .performer-view::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url('../assets/logo.jpg');
-    background-repeat: repeat;
+    inset: 0;
+    background-image: linear-gradient(180deg, rgba(15, 23, 42, 0.8), rgba(2, 6, 23, 0.85)), url('../watermark.jpg');
+    background-repeat: no-repeat;
     background-position: center;
-    background-size: 500px 500px;
-    opacity: 0.05;
+    background-size: cover;
+    opacity: 0.5;
     z-index: 0;
     pointer-events: none;
-    filter: grayscale(100%) brightness(0.7) contrast(0.6);
+    filter: saturate(1.15) brightness(0.75) contrast(0.85);
 }
 
 /* Ensure live operations content appears above watermark */
