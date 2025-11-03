@@ -1,0 +1,923 @@
+{
+  "_template_version": "1.0",
+  "_completeness_target": "95%",
+  "_description": "BENCHMARK WELL: Complete well history for M-21 demonstrating target data structure",
+
+  "well_header": {
+    "well_id": "M-21",
+    "well_name": "M-21 (The Montrose Squeeze)",
+    "api_number": "GB-NSA-M21-2004",
+    "uwi": "GB-UKCS-22-16-M21",
+    "field": "Montrose Field",
+    "platform": "Montrose Alpha",
+    "operator": "Operator A",
+    "operator_code": "OPA-UKCS",
+    "working_interest": 60.5,
+    "net_revenue_interest": 58.2,
+    "well_type": "HPHT Gas Condensate",
+    "well_profile": "Deviated",
+    "purpose": "Gas Condensate Production",
+    "current_status": "Active - Restored Production",
+    "status_date": "2018-07-10",
+    "spud_date": "2004-02-15",
+    "completion_date": "2004-04-21",
+    "first_production_date": "2004-04-25",
+    "location": {
+      "surface_latitude": 57.8523,
+      "surface_longitude": 1.2156,
+      "bottom_hole_latitude": 57.8531,
+      "bottom_hole_longitude": 1.2189,
+      "datum": "WGS84",
+      "coordinate_system": "Geographic",
+      "country": "United Kingdom",
+      "offshore_region": "UK North Sea",
+      "block": "22/16",
+      "water_depth_m": 152,
+      "kb_elevation_m": 24.5,
+      "msl_to_kb_m": 24.5
+    },
+    "target_formation": {
+      "primary": "Triassic Sands",
+      "secondary": "Triassic Zechstein",
+      "tertiary": null
+    },
+    "regulatory": {
+      "license_number": "P1824",
+      "permit_number": "WA-2004-021",
+      "regulatory_authority": "North Sea Transition Authority (NSTA)",
+      "well_type_classification": "Development",
+      "environmental_permit": "EPA-NS-2004-M21",
+      "approval_date": "2003-12-10"
+    }
+  },
+
+  "drilling_history": {
+    "rig_name": "Ocean Guardian",
+    "rig_type": "Semi-submersible",
+    "rig_contractor": "Transocean",
+    "spud_date": "2004-02-15",
+    "td_date": "2004-04-08",
+    "total_drilling_days": 52,
+    "measured_depth_m": 1500,
+    "true_vertical_depth_m": 1194.9,
+    "kick_off_point_m": 300,
+    "maximum_inclination_deg": 46.8,
+    "afe_drilling_cost_usd": 8500000,
+    "actual_drilling_cost_usd": 8750000,
+    "cost_variance_pct": 2.9,
+    "drilling_contractor_day_rate_usd": 285000,
+    "mud_system": {
+      "type": "Synthetic Based Mud (SBM)",
+      "density_ppg": 11.8,
+      "primary_weighting_agent": "Barite",
+      "lost_circulation_events": 1,
+      "total_mud_cost_usd": 420000
+    },
+    "drilling_performance": {
+      "average_rop_fph": 42.5,
+      "max_rop_fph": 95.2,
+      "total_rotating_hours": 156,
+      "total_circulating_hours": 248,
+      "total_tripping_hours": 142,
+      "npt_hours": 38,
+      "npt_percentage": 3.05,
+      "efficiency_factor": 0.87
+    },
+    "casing_program": [
+      {
+        "string_number": 1,
+        "string_type": "Conductor",
+        "od_inch": 30,
+        "id_inch": 29.0,
+        "weight_ppf": 205,
+        "grade": "X52",
+        "top_depth_m": 0,
+        "bottom_depth_m": 85,
+        "setting_date": "2004-02-16",
+        "cement_type": "Class G",
+        "cement_toc_m": 0,
+        "shoe_test_psi": 2850,
+        "test_result": "Pass"
+      },
+      {
+        "string_number": 2,
+        "string_type": "Surface Casing",
+        "od_inch": 20,
+        "id_inch": 19.124,
+        "weight_ppf": 133,
+        "grade": "K55",
+        "connection": "ST&C",
+        "top_depth_m": 0,
+        "bottom_depth_m": 450,
+        "setting_date": "2004-02-25",
+        "cement_type": "Class G + 35% Silica Flour",
+        "cement_volume_bbl": 285,
+        "cement_toc_m": 0,
+        "shoe_test_psi": 3200,
+        "test_result": "Pass",
+        "float_equipment": "Auto-fill float collar"
+      },
+      {
+        "string_number": 3,
+        "string_type": "Intermediate Casing",
+        "od_inch": 13.375,
+        "id_inch": 12.515,
+        "weight_ppf": 68,
+        "grade": "L80",
+        "connection": "LT&C",
+        "top_depth_m": 0,
+        "bottom_depth_m": 950,
+        "setting_date": "2004-03-15",
+        "cement_type": "Class G + Retarder",
+        "cement_volume_bbl": 420,
+        "cement_toc_m": 0,
+        "shoe_test_psi": 6500,
+        "test_result": "Pass",
+        "liner_hanger": null
+      },
+      {
+        "string_number": 4,
+        "string_type": "Production Casing",
+        "od_inch": 9.625,
+        "id_inch": 8.835,
+        "weight_ppf": 53.5,
+        "grade": "L80-13CR",
+        "connection": "VAM TOP",
+        "top_depth_m": 0,
+        "bottom_depth_m": 1500,
+        "setting_date": "2004-04-08",
+        "cement_type": "Class G + Retarder + Silica Flour",
+        "cement_volume_bbl": 385,
+        "cement_toc_m": 0,
+        "shoe_test_psi": 8950,
+        "test_result": "Pass",
+        "cbl_quality": "Excellent (>90% bond)",
+        "liner_hanger": null
+      }
+    ],
+    "formation_tops": [
+      {
+        "formation_name": "Tertiary Sands",
+        "top_depth_md_m": 245,
+        "top_depth_tvd_m": 244.8,
+        "lithology": "Sandstone",
+        "age": "Paleocene"
+      },
+      {
+        "formation_name": "Cretaceous Chalk",
+        "top_depth_md_m": 520,
+        "top_depth_tvd_m": 518.5,
+        "lithology": "Chalk",
+        "age": "Cretaceous"
+      },
+      {
+        "formation_name": "Jurassic Shale",
+        "top_depth_md_m": 875,
+        "top_depth_tvd_m": 869.2,
+        "lithology": "Shale",
+        "age": "Jurassic"
+      },
+      {
+        "formation_name": "Triassic Sands (Target)",
+        "top_depth_md_m": 1420,
+        "top_depth_tvd_m": 1156.5,
+        "lithology": "Sandstone",
+        "age": "Triassic",
+        "net_pay_m": 45,
+        "porosity_pct": 22,
+        "permeability_md": 450
+      }
+    ],
+    "well_control_events": [
+      {
+        "event_date": "2004-03-08",
+        "depth_md_m": 825,
+        "event_type": "Gas Influx",
+        "severity": "Level 1",
+        "pit_gain_bbl": 8,
+        "kill_mud_weight_ppg": 12.2,
+        "response_time_minutes": 12,
+        "outcome": "Successfully circulated out, no lost time",
+        "root_cause": "Underbalanced while drilling high-pressure zone"
+      }
+    ]
+  },
+
+  "completion_data": {
+    "completion_date": "2004-04-21",
+    "completion_type": "Tubing-Conveyed Perforating (TCP)",
+    "completion_category": "Single-String Completion",
+    "tubing_string": {
+      "tubing_od_inch": 3.5,
+      "tubing_id_inch": 2.992,
+      "tubing_weight_ppf": 9.3,
+      "tubing_grade": "L80",
+      "connection": "EUE 8-Round",
+      "top_depth_m": 0,
+      "bottom_depth_m": 1485,
+      "internal_coating": "None"
+    },
+    "production_packer": {
+      "type": "Permanent",
+      "manufacturer": "Baker Hughes",
+      "model": "HydroPack",
+      "serial_number": "BH-HP-2004-M21-001",
+      "setting_depth_m": 1475,
+      "set_date": "2004-04-20",
+      "design_pressure_psi": 10000,
+      "design_temperature_f": 350
+    },
+    "scssv": {
+      "type": "Surface Controlled Subsurface Safety Valve",
+      "manufacturer": "Baker Hughes",
+      "model": "Camco SCV",
+      "serial_number": "BH-SCV-2004-M21-002",
+      "setting_depth_m": 1120,
+      "installation_date": "2004-04-20",
+      "design_pressure_psi": 10000,
+      "last_function_test_date": "2024-08-15",
+      "test_result": "Pass",
+      "test_frequency_months": 6,
+      "control_line_type": "1/4 inch hydraulic",
+      "fail_safe_mode": "Fail-closed"
+    },
+    "perforations": [
+      {
+        "zone_number": 1,
+        "top_depth_m": 1445,
+        "bottom_depth_m": 1485,
+        "interval_length_m": 40,
+        "shot_density_spf": 4,
+        "phasing": "60 degree",
+        "charge_type": "Deep Penetrating",
+        "gun_type": "TCP 3-3/8 inch",
+        "perforation_date": "2004-04-21",
+        "underbalance_psi": 850,
+        "immediate_flow": true
+      }
+    ],
+    "completion_fluid": {
+      "type": "CaCl2 Brine",
+      "density_ppg": 10.8,
+      "volume_bbl": 125,
+      "corrosion_inhibitor": "CI-3000",
+      "oxygen_scavenger": "Sodium Bisulfite"
+    },
+    "initial_well_test": {
+      "test_date": "2004-04-22",
+      "test_duration_hours": 24,
+      "test_method": "Extended Well Test (EWT)",
+      "gas_rate_mmscfd": 18.5,
+      "condensate_rate_bopd": 850,
+      "water_rate_bwpd": 15,
+      "flowing_thp_psi": 2850,
+      "flowing_bhp_psi": 6250,
+      "static_bhp_psi": 8850,
+      "reservoir_temperature_f": 285,
+      "gor_scf_bbl": 21765,
+      "condensate_api": 52,
+      "h2s_ppm": 0,
+      "co2_pct": 2.5,
+      "test_quality": "Good",
+      "pi_bbl_day_psi": 0.327
+    },
+    "wellhead_equipment": {
+      "tree_type": "Vertical Christmas Tree",
+      "tree_rating_psi": 10000,
+      "tree_manufacturer": "Cameron",
+      "tree_model": "TL 10M",
+      "tree_serial_number": "CAM-TL-2004-M21",
+      "installation_date": "2004-04-19",
+      "master_valve_size_inch": 3.0625,
+      "wing_valve_size_inch": 2.0625,
+      "swab_valve": true,
+      "choke_type": "Positive",
+      "choke_size_64ths": 48
+    },
+    "artificial_lift": {
+      "lift_method": "Natural Flow",
+      "installation_date": null,
+      "lift_equipment": null
+    },
+    "downhole_monitoring": {
+      "permanent_gauges": true,
+      "gauge_type": "Quartz Pressure/Temperature",
+      "gauge_manufacturer": "Schlumberger",
+      "gauge_depth_m": 1470,
+      "sampling_rate_seconds": 60,
+      "telemetry_method": "ESP (Electronic Submersible Pump) cable",
+      "data_quality": "Excellent"
+    }
+  },
+
+  "production_history": {
+    "first_production_date": "2004-04-25",
+    "cumulative_production": {
+      "gas_mmscf": 24580,
+      "condensate_mbbl": 1125,
+      "water_mbbl": 45,
+      "as_of_date": "2024-10-31"
+    },
+    "monthly_production": [
+      {
+        "year": 2004,
+        "month": 5,
+        "days_online": 28,
+        "gas_mmscf": 512,
+        "condensate_bbl": 23500,
+        "water_bbl": 420,
+        "avg_gas_rate_mmscfd": 18.3,
+        "avg_oil_rate_bopd": 839,
+        "avg_water_rate_bwpd": 15,
+        "avg_thp_psi": 2850,
+        "uptime_pct": 90.3,
+        "comments": "Initial production - excellent performance"
+      },
+      {
+        "year": 2018,
+        "month": 3,
+        "days_online": 15,
+        "gas_mmscf": 105,
+        "condensate_bbl": 4200,
+        "water_bbl": 185,
+        "avg_gas_rate_mmscfd": 7.0,
+        "avg_oil_rate_bopd": 280,
+        "avg_water_rate_bwpd": 12,
+        "avg_thp_psi": 1450,
+        "uptime_pct": 48.4,
+        "comments": "Casing deformation detected - restricted flow"
+      },
+      {
+        "year": 2018,
+        "month": 4,
+        "days_online": 0,
+        "gas_mmscf": 0,
+        "condensate_bbl": 0,
+        "water_bbl": 0,
+        "avg_gas_rate_mmscfd": 0,
+        "avg_oil_rate_bopd": 0,
+        "avg_water_rate_bwpd": 0,
+        "avg_thp_psi": 0,
+        "uptime_pct": 0,
+        "comments": "Well shut-in for intervention planning"
+      },
+      {
+        "year": 2018,
+        "month": 5,
+        "days_online": 0,
+        "gas_mmscf": 0,
+        "condensate_bbl": 0,
+        "water_bbl": 0,
+        "avg_gas_rate_mmscfd": 0,
+        "avg_oil_rate_bopd": 0,
+        "avg_water_rate_bwpd": 0,
+        "avg_thp_psi": 0,
+        "uptime_pct": 0,
+        "comments": "Well shut-in - intervention preparation"
+      },
+      {
+        "year": 2018,
+        "month": 6,
+        "days_online": 8,
+        "gas_mmscf": 0,
+        "condensate_bbl": 0,
+        "water_bbl": 0,
+        "avg_gas_rate_mmscfd": 0,
+        "avg_oil_rate_bopd": 0,
+        "avg_water_rate_bwpd": 0,
+        "avg_thp_psi": 0,
+        "uptime_pct": 0,
+        "comments": "Expandable patch intervention in progress"
+      },
+      {
+        "year": 2018,
+        "month": 7,
+        "days_online": 21,
+        "gas_mmscf": 342,
+        "condensate_bbl": 16450,
+        "water_bbl": 312,
+        "avg_gas_rate_mmscfd": 16.3,
+        "avg_oil_rate_bopd": 783,
+        "avg_water_rate_bwpd": 14,
+        "avg_thp_psi": 2650,
+        "uptime_pct": 67.7,
+        "comments": "Production restored - 95% of original capacity"
+      },
+      {
+        "year": 2024,
+        "month": 10,
+        "days_online": 31,
+        "gas_mmscf": 425,
+        "condensate_bbl": 19250,
+        "water_bbl": 485,
+        "avg_gas_rate_mmscfd": 13.7,
+        "avg_oil_rate_bopd": 621,
+        "avg_water_rate_bopd": 15,
+        "avg_thp_psi": 1850,
+        "uptime_pct": 100,
+        "comments": "Stable production - natural decline"
+      }
+    ],
+    "production_decline": {
+      "nominal_decline_rate_pct_year": 8.5,
+      "hyperbolic_b_factor": 0.45,
+      "economic_limit_boe_day": 50,
+      "estimated_abandonment_year": 2032
+    }
+  },
+
+  "intervention_history": [
+    {
+      "report_id": "M21-INT-001",
+      "intervention_date": "2018-06-22",
+      "end_date": "2018-06-30",
+      "intervention_type": "Expandable Patch Installation",
+      "intervention_category": "Wellbore Integrity",
+      "service_company": "Welltec",
+      "objectives": [
+        "Restore full-bore access across deformed casing interval",
+        "Reinstate well integrity without full workover",
+        "Minimize NPT and intervention cost",
+        "Return well to production at >90% capacity"
+      ],
+      "operations_summary": "Rigless intervention utilizing expandable steel patch technology to remediate casing deformation at 853m (2,800 ft) MD. Patch successfully expanded to 7.5 inch ID, restoring tool passage and flow capacity. Pre-intervention caliper log confirmed deformation severity at 5.8 inch ID (original 8.835 inch ID). Post-patch pressure test confirmed integrity.",
+      "equipment_used": [
+        {
+          "equipment_type": "Expandable Casing Patch",
+          "manufacturer": "Welltec",
+          "model": "WellPatch 9-5/8",
+          "serial_number": "WP-9625-2018-042",
+          "specifications": "9.625 inch OD pre-expansion, 7.5 inch ID post-expansion, 15 meter length"
+        },
+        {
+          "equipment_type": "Expansion Tool",
+          "manufacturer": "Welltec",
+          "model": "WellExpander Hydraulic",
+          "serial_number": "WE-HYD-2018-015"
+        },
+        {
+          "equipment_type": "Wireline Tractor",
+          "manufacturer": "Welltec",
+          "model": "Well Tractor",
+          "serial_number": "WT-2018-008"
+        }
+      ],
+      "depth_interval": {
+        "top_md_m": 846,
+        "bottom_md_m": 861,
+        "length_m": 15
+      },
+      "duration": {
+        "total_hours": 192,
+        "npt_hours": 12,
+        "productive_hours": 180,
+        "mobilization_hours": 24,
+        "demobilization_hours": 12
+      },
+      "npt_breakdown": [
+        {
+          "npt_event": "Equipment setup delay",
+          "duration_hours": 4,
+          "category": "Logistics",
+          "root_cause": "Deck equipment positioning took longer than planned due to adverse weather",
+          "preventable": true,
+          "prevention_recommendation": "Pre-position equipment 24 hours before ops, improve weather contingency planning"
+        },
+        {
+          "npt_event": "Wireline tractor communications issue",
+          "duration_hours": 8,
+          "category": "Equipment",
+          "root_cause": "Signal interference from platform electrical systems affecting downhole telemetry",
+          "preventable": true,
+          "prevention_recommendation": "Pre-job communication system testing, alternative telemetry frequency"
+        }
+      ],
+      "costs": {
+        "total_cost_usd": 285000,
+        "service_company_fees_usd": 185000,
+        "equipment_rental_usd": 45000,
+        "logistics_usd": 28000,
+        "platform_fees_usd": 18000,
+        "contingency_used_usd": 9000,
+        "afe_cost_usd": 320000,
+        "cost_variance_pct": -10.9,
+        "cost_per_boe_saved": 2.85
+      },
+      "production_impact": {
+        "pre_intervention_rate_boepd": 380,
+        "post_intervention_rate_boepd": 980,
+        "production_uplift_boepd": 600,
+        "uplift_percentage": 158,
+        "payback_period_days": 145,
+        "cumulative_production_gain_mboe": 1250,
+        "value_created_usd": 6250000
+      },
+      "outcome": "Success - Production restored",
+      "success_criteria_met": true,
+      "lessons_learned": "Expandable patches are highly effective for casing deformation remediation in HPHT wells. Pre-intervention caliper logs are critical for proper patch sizing. Rigless approach saved ~$2M vs. workover rig alternative.",
+      "lessons_learned_structured": [
+        {
+          "category": "Equipment",
+          "lesson": "Expandable steel patches provide reliable full-bore restoration in HPHT environments",
+          "recommendation": "Consider expandable patches as first-line solution for casing deformation <30% collapse"
+        },
+        {
+          "category": "Planning",
+          "lesson": "High-resolution caliper logs essential for accurate patch sizing and placement",
+          "recommendation": "Always run caliper log within 7 days of intervention to capture accurate geometry"
+        },
+        {
+          "category": "Execution",
+          "lesson": "Wireline tractor technology enables patch deployment in deviated wells up to 70 degrees",
+          "recommendation": "Budget additional time for tractor-based interventions vs. vertical wells"
+        }
+      ],
+      "hse_performance": {
+        "ltis": 0,
+        "recordables": 0,
+        "near_misses": 1,
+        "safety_observations": 12,
+        "environmental_incidents": 0,
+        "permit_compliance": "Full compliance"
+      },
+      "regulatory_notifications": [
+        {
+          "authority": "North Sea Transition Authority",
+          "notification_type": "Well Intervention Notice",
+          "notification_date": "2018-06-10",
+          "approval_date": "2018-06-15"
+        }
+      ]
+    }
+  ],
+
+  "equipment_history": [
+    {
+      "equipment_id": "M21-SCSSV-001",
+      "equipment_type": "SCSSV",
+      "equipment_category": "Safety Barrier",
+      "manufacturer": "Baker Hughes",
+      "model": "Camco SCV",
+      "serial_number": "BH-SCV-2004-M21-002",
+      "installation_date": "2004-04-20",
+      "installation_depth_m": 1120,
+      "design_life_years": 20,
+      "current_age_years": 20.5,
+      "current_status": "Active - Good condition",
+      "function_test_history": [
+        {
+          "test_date": "2004-10-15",
+          "test_result": "Pass",
+          "test_method": "Surface panel actuation",
+          "closure_time_seconds": 2.8,
+          "cycles_to_date": 1
+        },
+        {
+          "test_date": "2018-02-20",
+          "test_result": "Pass",
+          "test_method": "Surface panel actuation",
+          "closure_time_seconds": 3.2,
+          "cycles_to_date": 28
+        },
+        {
+          "test_date": "2024-08-15",
+          "test_result": "Pass",
+          "test_method": "Surface panel actuation",
+          "closure_time_seconds": 3.5,
+          "cycles_to_date": 42
+        }
+      ],
+      "maintenance_history": [
+        {
+          "maintenance_date": "2014-06-10",
+          "maintenance_type": "Control line integrity test",
+          "outcome": "Pass - No issues detected",
+          "cost_usd": 8500
+        }
+      ],
+      "failure_history": [],
+      "mtbf_hours": null,
+      "reliability_rating": "Excellent"
+    },
+    {
+      "equipment_id": "M21-PACKER-001",
+      "equipment_type": "Production Packer",
+      "equipment_category": "Completion",
+      "manufacturer": "Baker Hughes",
+      "model": "HydroPack",
+      "serial_number": "BH-HP-2004-M21-001",
+      "installation_date": "2004-04-20",
+      "installation_depth_m": 1475,
+      "design_life_years": 20,
+      "current_age_years": 20.5,
+      "current_status": "Active - Good condition",
+      "function_test_history": [],
+      "maintenance_history": [],
+      "failure_history": [],
+      "mtbf_hours": null,
+      "reliability_rating": "Excellent"
+    },
+    {
+      "equipment_id": "M21-PATCH-001",
+      "equipment_type": "Expandable Casing Patch",
+      "equipment_category": "Wellbore Integrity",
+      "manufacturer": "Welltec",
+      "model": "WellPatch 9-5/8",
+      "serial_number": "WP-9625-2018-042",
+      "installation_date": "2018-06-22",
+      "installation_depth_m": 853,
+      "design_life_years": 15,
+      "current_age_years": 6.3,
+      "current_status": "Active - Excellent condition",
+      "function_test_history": [
+        {
+          "test_date": "2018-06-30",
+          "test_result": "Pass",
+          "test_method": "Pressure test to 5000 psi",
+          "test_duration_minutes": 60
+        },
+        {
+          "test_date": "2020-11-12",
+          "test_result": "Pass",
+          "test_method": "Caliper verification",
+          "id_measured_inch": 7.48,
+          "comments": "No degradation observed"
+        }
+      ],
+      "maintenance_history": [],
+      "failure_history": [],
+      "mtbf_hours": null,
+      "reliability_rating": "Excellent"
+    }
+  ],
+
+  "integrity_data": {
+    "current_barrier_status": {
+      "primary_barrier": {
+        "barrier_type": "SCSSV",
+        "status": "Verified",
+        "last_test_date": "2024-08-15",
+        "test_result": "Pass",
+        "next_test_date": "2025-02-15"
+      },
+      "secondary_barrier": {
+        "barrier_type": "Surface Master Valve",
+        "status": "Verified",
+        "last_test_date": "2024-09-10",
+        "test_result": "Pass",
+        "next_test_date": "2025-09-10"
+      },
+      "well_integrity_status": "Green",
+      "last_review_date": "2024-10-15",
+      "next_review_date": "2025-04-15"
+    },
+    "pressure_tests": [
+      {
+        "test_date": "2004-04-08",
+        "test_type": "Production Casing Shoe Test",
+        "test_pressure_psi": 8950,
+        "test_duration_minutes": 30,
+        "result": "Pass",
+        "max_pressure_achieved_psi": 8950,
+        "pressure_decline_psi": 0
+      },
+      {
+        "test_date": "2018-06-30",
+        "test_type": "Expandable Patch Integrity Test",
+        "test_pressure_psi": 5000,
+        "test_duration_minutes": 60,
+        "result": "Pass",
+        "max_pressure_achieved_psi": 5000,
+        "pressure_decline_psi": 0
+      },
+      {
+        "test_date": "2024-03-20",
+        "test_type": "Christmas Tree Pressure Test",
+        "test_pressure_psi": 10000,
+        "test_duration_minutes": 30,
+        "result": "Pass",
+        "max_pressure_achieved_psi": 10000,
+        "pressure_decline_psi": 15
+      }
+    ],
+    "integrity_surveys": [
+      {
+        "survey_date": "2018-03-20",
+        "survey_type": "Multi-finger Caliper",
+        "survey_interval_top_m": 0,
+        "survey_interval_bottom_m": 1500,
+        "findings": "Casing deformation detected at 853m MD - minimum ID 5.8 inch (original 8.835 inch)",
+        "severity": "High",
+        "action_required": "Immediate remediation required"
+      },
+      {
+        "survey_date": "2018-06-30",
+        "survey_type": "Multi-finger Caliper (Post-Intervention)",
+        "survey_interval_top_m": 840,
+        "survey_interval_bottom_m": 870,
+        "findings": "Patch successfully restored ID to 7.48 inch across deformed interval",
+        "severity": "Resolved",
+        "action_required": "None - continue monitoring"
+      },
+      {
+        "survey_date": "2020-11-12",
+        "survey_type": "Ultrasonic Thickness",
+        "survey_interval_top_m": 0,
+        "survey_interval_bottom_m": 1485,
+        "findings": "No corrosion detected, all tubulars within design specifications",
+        "severity": "Low",
+        "action_required": "None - routine monitoring"
+      }
+    ],
+    "annulus_monitoring": {
+      "a_annulus_pressure_psi": 125,
+      "a_annulus_trend": "Stable",
+      "b_annulus_pressure_psi": 85,
+      "b_annulus_trend": "Stable",
+      "last_measurement_date": "2024-10-30",
+      "abnormal_pressure_detected": false
+    }
+  },
+
+  "cost_economics": {
+    "capital_costs": {
+      "total_capex_usd": 12500000,
+      "drilling_cost_usd": 8750000,
+      "completion_cost_usd": 2850000,
+      "subsea_equipment_usd": 0,
+      "facilities_allocation_usd": 900000,
+      "afe_total_usd": 12200000,
+      "variance_usd": 300000,
+      "variance_pct": 2.5
+    },
+    "operating_costs": {
+      "annual_opex_usd_2023": 850000,
+      "opex_per_boe_usd": 8.50,
+      "cost_breakdown": {
+        "direct_personnel_usd": 285000,
+        "maintenance_routine_usd": 125000,
+        "chemicals_utilities_usd": 95000,
+        "platform_allocation_usd": 245000,
+        "insurance_usd": 65000,
+        "regulatory_fees_usd": 35000
+      }
+    },
+    "intervention_costs": {
+      "total_intervention_spend_usd": 285000,
+      "interventions_count": 1,
+      "average_cost_per_intervention_usd": 285000
+    },
+    "npt_costs": {
+      "total_npt_hours": 3084,
+      "npt_cost_per_hour_usd": 15000,
+      "total_npt_cost_usd": 46260000,
+      "breakdown": [
+        {
+          "year": 2018,
+          "npt_hours": 2880,
+          "reason": "Well shut-in for casing deformation intervention",
+          "cost_usd": 43200000
+        },
+        {
+          "year": "2004-2024",
+          "npt_hours": 204,
+          "reason": "Routine maintenance and testing",
+          "cost_usd": 3060000
+        }
+      ]
+    },
+    "revenue": {
+      "cumulative_revenue_usd": 68500000,
+      "gas_revenue_usd": 48200000,
+      "condensate_revenue_usd": 19850000,
+      "ngl_revenue_usd": 450000,
+      "average_gas_price_mmbtu": 4.25,
+      "average_oil_price_bbl": 75.00
+    },
+    "project_economics": {
+      "npv_usd_10pct": 35200000,
+      "irr_pct": 28.5,
+      "payback_period_years": 2.8,
+      "profit_oil_pct": 65,
+      "government_take_pct": 35
+    }
+  },
+
+  "hse_regulatory": {
+    "safety_record": {
+      "total_manhours": 125000,
+      "ltis": 0,
+      "trcf": 0,
+      "lost_time_incidents": [],
+      "recordable_incidents": [],
+      "near_misses": 15,
+      "safety_observations": 248,
+      "last_incident_date": null
+    },
+    "environmental": {
+      "spills": [],
+      "emissions_reporting_current": true,
+      "waste_management_compliant": true,
+      "environmental_permit_status": "Current",
+      "environmental_incidents": 0
+    },
+    "regulatory_compliance": {
+      "well_examinations": [
+        {
+          "examination_date": "2024-04-15",
+          "examination_type": "Thorough Well Examination",
+          "examiner": "Well Examination Services Ltd",
+          "result": "Pass",
+          "findings": "Well in good condition, all safety systems functional",
+          "next_examination_date": "2025-04-15"
+        }
+      ],
+      "regulatory_submissions": [
+        {
+          "submission_date": "2024-01-15",
+          "submission_type": "Annual Well Integrity Report",
+          "authority": "North Sea Transition Authority",
+          "status": "Accepted"
+        },
+        {
+          "submission_date": "2024-03-30",
+          "submission_type": "Production Data Report Q1 2024",
+          "authority": "North Sea Transition Authority",
+          "status": "Accepted"
+        }
+      ],
+      "decommissioning_plan": {
+        "plan_submitted": true,
+        "estimated_cost_usd": 8500000,
+        "financial_security_posted": true,
+        "planned_abandonment_year": 2032
+      }
+    }
+  },
+
+  "geological_reservoir": {
+    "reservoir_name": "Montrose Triassic",
+    "play_type": "Structural Trap",
+    "trap_type": "Four-way dip closure",
+    "reservoir_age": "Triassic",
+    "lithology": "Sandstone",
+    "depositional_environment": "Fluvial-deltaic",
+    "formation_tops": [
+      {
+        "formation": "Triassic Sands (Reservoir)",
+        "top_md_m": 1420,
+        "top_tvd_m": 1156.5,
+        "gross_thickness_m": 65,
+        "net_thickness_m": 45,
+        "net_to_gross": 0.69
+      }
+    ],
+    "reservoir_properties": {
+      "porosity_avg_pct": 22,
+      "porosity_range_pct": "18-26",
+      "permeability_avg_md": 450,
+      "permeability_range_md": "200-800",
+      "water_saturation_pct": 25,
+      "hydrocarbon_saturation_pct": 75
+    },
+    "fluid_properties": {
+      "fluid_type": "Gas Condensate",
+      "initial_reservoir_pressure_psi": 8850,
+      "current_reservoir_pressure_psi": 3250,
+      "reservoir_temperature_f": 285,
+      "bubble_point_pressure_psi": 3850,
+      "solution_gor_scf_bbl": 21765,
+      "condensate_api": 52,
+      "condensate_gravity_sg": 0.770,
+      "gas_gravity_sg": 0.68,
+      "h2s_ppm": 0,
+      "co2_pct": 2.5,
+      "n2_pct": 1.2
+    },
+    "reservoir_drive": {
+      "primary_drive_mechanism": "Solution Gas Drive",
+      "secondary_drive_mechanism": "Gas Cap Expansion",
+      "aquifer_support": "Weak"
+    },
+    "original_in_place": {
+      "ogip_bscf": 125,
+      "ocip_mmstb": 5.8
+    },
+    "recovery_factors": {
+      "gas_recovery_factor_pct": 75,
+      "condensate_recovery_factor_pct": 45,
+      "eur_gas_bscf": 93.8,
+      "eur_condensate_mmstb": 2.6
+    }
+  },
+
+  "metadata": {
+    "source": "WellTegra Complete Benchmark Dataset",
+    "data_quality": "Benchmark - 95% Completeness Target",
+    "completeness_score": 95,
+    "last_updated": "2025-11-01T12:00:00Z",
+    "data_steward": "Well Data Management Team",
+    "verification_status": "Verified",
+    "notes": "M-21 BENCHMARK WELL: This record demonstrates the target data structure and completeness level for all portfolio wells. Use as reference for data collection and client uploads."
+  }
+}

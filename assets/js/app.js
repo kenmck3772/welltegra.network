@@ -1947,6 +1947,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
     // All views are accessible for presentation - no login required
     const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'logistics', 'commercial', 'hse', 'pob', 'data', 'data-quality', 'about', 'faq', 'whitepaper', 'security', 'ai-helper', 'performer', 'analyzer']);
+    const alwaysAccessibleViews = new Set(['home', 'planner', 'toolstring', 'christmas-tree', 'data', 'about', 'faq', 'help', 'ai-helper', 'whitepaper', 'security', 'control-room', 'data-standardizer', 'scenario-layering', 'developer-portal', 'readiness-checklist', 'integrity-schematic', 'spend-variance', 'media']);
     const headerTitle = document.getElementById('header-title');
     const headerDetails = document.getElementById('header-details');
     const headerNav = document.getElementById('header-nav');
@@ -3267,10 +3268,24 @@ document.addEventListener('DOMContentLoaded', function() {
         if(viewName === 'pob') viewTitle = 'POB & ER';
         if(viewName === 'hse') viewTitle = 'HSE & Risk';
         if(viewName === 'whitepaper') viewTitle = 'White Paper';
+        if(viewName === 'help') viewTitle = 'Help & Instructions';
         if(viewName === 'ai-helper') viewTitle = 'AI Assistant';
+        if(viewName === 'control-room') viewTitle = 'Control Room Dashboard';
+        if(viewName === 'data-standardizer') viewTitle = 'Data Standardization Utility';
+        if(viewName === 'scenario-layering') viewTitle = 'Scenario Layering';
+        if(viewName === 'developer-portal') viewTitle = 'Developer Portal';
+        if(viewName === 'readiness-checklist') viewTitle = 'Readiness Checklist';
+        if(viewName === 'integrity-schematic') viewTitle = 'Integrity Schematic';
+        if(viewName === 'spend-variance') viewTitle = 'Spend-Variance Cockpit';
+        if(viewName === 'media') viewTitle = 'Media & Resources';
         headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
 
-        if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
+        if (viewName === 'home') {
+            // Initialize role-based dashboard
+            import('./role-based-dashboard.js').then(module => {
+                module.initRoleBasedDashboard();
+            }).catch(err => console.error('Failed to load role-based dashboard:', err));
+        } else if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
             headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">● LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
             initializePerformer();
         } else if (viewName === 'commercial') {
@@ -3302,6 +3317,41 @@ document.addEventListener('DOMContentLoaded', function() {
             if (window.ChristmasTreeIntegrity && typeof window.ChristmasTreeIntegrity.init === 'function') {
                 window.ChristmasTreeIntegrity.init();
             }
+        } else if (viewName === 'control-room') {
+            // Initialize Control Room Dashboard
+            import('./control-room-dashboard.js').then(module => {
+                module.initControlRoom();
+            }).catch(err => console.error('Failed to load control room module:', err));
+        } else if (viewName === 'data-standardizer') {
+            // Initialize Data Standardization Utility
+            import('./data-standardizer.js').then(module => {
+                module.initDataStandardizer();
+            }).catch(err => console.error('Failed to load data standardizer module:', err));
+        } else if (viewName === 'scenario-layering') {
+            // Initialize Scenario Layering
+            import('./scenario-layering.js').then(module => {
+                module.initScenarioLayering();
+            }).catch(err => console.error('Failed to load scenario layering module:', err));
+        } else if (viewName === 'developer-portal') {
+            // Initialize Developer Portal
+            import('./developer-portal.js').then(module => {
+                module.initDeveloperPortal();
+            }).catch(err => console.error('Failed to load developer portal module:', err));
+        } else if (viewName === 'readiness-checklist') {
+            // Initialize Readiness Checklist
+            import('./readiness-checklist.js').then(module => {
+                module.initReadinessChecklist();
+            }).catch(err => console.error('Failed to load readiness checklist module:', err));
+        } else if (viewName === 'integrity-schematic') {
+            // Initialize Integrity Schematic
+            import('./integrity-schematic.js').then(module => {
+                module.initIntegritySchematic();
+            }).catch(err => console.error('Failed to load integrity schematic module:', err));
+        } else if (viewName === 'spend-variance') {
+            // Initialize Spend-Variance Cockpit
+            import('./spend-variance-cockpit.js').then(module => {
+                module.initSpendVariance();
+            }).catch(err => console.error('Failed to load spend variance module:', err));
         }
     };
     window.showView = (viewName, sourceLabel) => {
@@ -7811,6 +7861,58 @@ const validateInvoice = () => {
     }
 
     init();
+
+    // Handle hash-based navigation for all links (footer, action cards, etc.)
+    const handleHashChange = () => {
+        const hash = window.location.hash;
+        console.log('[Navigation] Hash changed to:', hash);
+
+        if (hash && hash.length > 1) {
+            // Extract view name from hash (e.g., #planner-view -> planner)
+            let viewName = hash.slice(1); // Remove the #
+            if (viewName.endsWith('-view')) {
+                viewName = viewName.slice(0, -5); // Remove -view suffix
+            }
+
+            console.log('[Navigation] Extracted view name:', viewName);
+
+            // Check if this view exists
+            const targetView = document.getElementById(`${viewName}-view`);
+            if (targetView) {
+                console.log('[Navigation] Switching to view:', viewName);
+                switchView(viewName);
+            } else {
+                console.warn('[Navigation] View not found:', `${viewName}-view`);
+            }
+        }
+    };
+
+    // Listen for hash changes (when user clicks links with href="#view-name")
+    window.addEventListener('hashchange', handleHashChange);
+
+    // Handle initial page load with hash
+    if (window.location.hash) {
+        handleHashChange();
+    }
+
+    // Add click handlers to ALL navigation links for maximum compatibility
+    // This ensures navigation works even if hashchange doesn't fire
+    const viewLinks = document.querySelectorAll('a[href^="#"]');
+    let viewLinkCount = 0;
+    viewLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href.includes('-view')) {
+            viewLinkCount++;
+            link.addEventListener('click', (e) => {
+                console.log('[Navigation] Link clicked:', href);
+                // Let the hash change naturally, then handle it
+                setTimeout(() => {
+                    handleHashChange();
+                }, 10);
+            });
+        }
+    });
+    console.log(`[Navigation] Initialized navigation system - ${viewLinkCount} view links registered`);
 
     window.welltegraPlanner = {
         getState: () => ({

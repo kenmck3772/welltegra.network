@@ -70,7 +70,7 @@
     <link rel="stylesheet" href="./assets/css/styles.css">
     <style>
         body {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #0c4a6e 50%, #0f172a 100%);
             color: #f1f5f9;
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             margin: 0;
