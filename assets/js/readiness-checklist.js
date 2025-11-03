@@ -21,7 +21,10 @@ export async function initReadinessChecklist() {
                 { id: 'sl6', item: 'Wellhead isolation valves functional test passed', critical: true, checked: false },
                 { id: 'sl7', item: 'Tool string assembled and verified', critical: false, checked: false },
                 { id: 'sl8', item: 'Communication systems tested', critical: false, checked: false }
-            ]
+            ],
+            signedOff: false,
+            signedOffAt: null,
+            signedOffBy: ''
         },
         coiledtubing: {
             name: 'Coiled Tubing Operations',
@@ -36,7 +39,10 @@ export async function initReadinessChecklist() {
                 { id: 'ct6', item: 'Pumping equipment pressure tested to 1.5x max planned', critical: true, checked: false },
                 { id: 'ct7', item: 'Depth correlation confirmed with survey data', critical: false, checked: false },
                 { id: 'ct8', item: 'Chemical compatibility verified', critical: false, checked: false }
-            ]
+            ],
+            signedOff: false,
+            signedOffAt: null,
+            signedOffBy: ''
         },
         wireline: {
             name: 'Wireline Operations',
@@ -51,7 +57,10 @@ export async function initReadinessChecklist() {
                 { id: 'wl6', item: 'Radioactive source transport license current', critical: true, checked: false },
                 { id: 'wl7', item: 'Depth correlation with previous runs completed', critical: false, checked: false },
                 { id: 'wl8', item: 'Rig-up inspection checklist completed', critical: false, checked: false }
-            ]
+            ],
+            signedOff: false,
+            signedOffAt: null,
+            signedOffBy: ''
         }
     };
 
@@ -83,15 +92,88 @@ export async function initReadinessChecklist() {
     initChecklistHandlers(serviceLines);
 }
 
+function formatDateTime(date) {
+    if (!date) return '';
+    const value = date instanceof Date ? date : new Date(date);
+    return value.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+function showChecklistNotification(message, type = 'info') {
+    const container = document.getElementById('active-checklist');
+    if (!container) return;
+
+    const existing = container.querySelector('.checklist-notification');
+    if (existing) {
+        existing.remove();
+    }
+
+    const palette = {
+        success: {
+            icon: '✅',
+            classes: 'bg-emerald-500/10 border-emerald-500/40 text-emerald-200'
+        },
+        info: {
+            icon: 'ℹ️',
+            classes: 'bg-blue-500/10 border-blue-500/40 text-blue-200'
+        },
+        warning: {
+            icon: '⚠️',
+            classes: 'bg-amber-500/10 border-amber-500/40 text-amber-200'
+        },
+        error: {
+            icon: '⛔',
+            classes: 'bg-red-500/10 border-red-500/40 text-red-200'
+        }
+    };
+
+    const theme = palette[type] || palette.info;
+    const banner = document.createElement('div');
+    banner.className = `checklist-notification mb-4 rounded-lg border px-4 py-3 transition ease-in-out duration-300 ${theme.classes}`;
+    banner.innerHTML = `
+        <div class="flex items-start gap-3">
+            <span class="text-xl leading-none">${theme.icon}</span>
+            <span class="text-sm leading-relaxed">${message}</span>
+        </div>
+    `;
+
+    container.prepend(banner);
+
+    window.setTimeout(() => {
+        banner.classList.add('opacity-0', 'translate-y-1');
+        window.setTimeout(() => banner.remove(), 400);
+    }, 4000);
+}
+
 function renderChecklist(service, checklist) {
     const completedCount = checklist.filter(i => i.checked).length;
     const criticalCount = checklist.filter(i => i.critical).length;
     const completedCritical = checklist.filter(i => i.critical && i.checked).length;
     const progress = (completedCount / checklist.length) * 100;
     const allCriticalComplete = completedCritical === criticalCount;
+    const signedOff = Boolean(service.signedOff);
+
+    let signOffButtonText;
+    if (!allCriticalComplete) {
+        signOffButtonText = '✗ Complete Critical Items to Approve';
+    } else if (signedOff) {
+        signOffButtonText = '✓ Reconfirm Sign Off';
+    } else {
+        signOffButtonText = '✓ Approve & Sign Off';
+    }
 
     return `
         <div class="space-y-6">
+            ${signedOff ? `
+                <div class="bg-emerald-900/25 border border-emerald-500/40 rounded-lg p-4 flex items-start gap-3">
+                    <svg class="w-6 h-6 text-emerald-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <div>
+                        <p class="font-semibold text-emerald-200">Approved${service.signedOffBy ? ` by ${service.signedOffBy}` : ''}</p>
+                        <p class="text-sm text-emerald-100/80">${service.signedOffAt ? `Signed on ${formatDateTime(service.signedOffAt)}` : 'Ready for deployment'}</p>
+                    </div>
+                </div>
+            ` : ''}
             <!-- Header with Progress -->
             <div class="flex items-start justify-between">
                 <div>
@@ -180,7 +262,7 @@ function renderChecklist(service, checklist) {
                 <button id="sign-off-btn"
                         ${!allCriticalComplete ? 'disabled' : ''}
                         class="flex-1 ${allCriticalComplete ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-slate-700 cursor-not-allowed opacity-50'} text-white font-bold py-3 px-6 rounded-lg transition">
-                    ${allCriticalComplete ? '✓ Approve & Sign Off' : '✗ Complete Critical Items to Approve'}
+                    ${signOffButtonText}
                 </button>
                 <button id="export-checklist-btn" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg transition">
                     Export PDF
@@ -213,6 +295,11 @@ function attachChecklistItemHandlers(service) {
             const item = service.checklist.find(i => i.id === itemId);
             if (item) {
                 item.checked = e.target.checked;
+                if (service.signedOff) {
+                    service.signedOff = false;
+                    service.signedOffAt = null;
+                    service.signedOffBy = '';
+                }
                 // Re-render to update progress and status
                 const container = document.getElementById('active-checklist');
                 if (container) {
@@ -225,11 +312,73 @@ function attachChecklistItemHandlers(service) {
 
     // Sign off button
     document.getElementById('sign-off-btn')?.addEventListener('click', () => {
-        alert('Checklist approved and signed off. Operation is GO for execution.');
+        const hasIncompleteCritical = service.checklist.some(item => item.critical && !item.checked);
+        if (hasIncompleteCritical) {
+            showChecklistNotification('Complete every critical safety item before approving the checklist.', 'warning');
+            return;
+        }
+
+        service.signedOff = true;
+        service.signedOffAt = new Date();
+        service.signedOffBy = 'Operations Supervisor';
+
+        const container = document.getElementById('active-checklist');
+        if (container) {
+            container.innerHTML = renderChecklist(service, service.checklist);
+            attachChecklistItemHandlers(service);
+            showChecklistNotification(`Checklist signed off by ${service.signedOffBy} on ${formatDateTime(service.signedOffAt)}.`, 'success');
+        }
     });
 
     // Export button
     document.getElementById('export-checklist-btn')?.addEventListener('click', () => {
-        alert('Checklist exported to PDF (feature coming soon)');
+        exportChecklistToPDF(service);
     });
+}
+
+function exportChecklistToPDF(service) {
+    const jspdf = window.jspdf;
+    if (!jspdf || typeof jspdf.jsPDF !== 'function') {
+        showChecklistNotification('PDF library is unavailable in this offline mode. Please try again later.', 'error');
+        return;
+    }
+
+    const doc = new jspdf.jsPDF();
+    const title = `${service.name} Readiness Checklist`;
+    const criticalCount = service.checklist.filter(item => item.critical).length;
+    const completedCount = service.checklist.filter(item => item.checked).length;
+    const completedCritical = service.checklist.filter(item => item.critical && item.checked).length;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.text(title, 14, 20);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.text(`Generated: ${formatDateTime(new Date())}`, 14, 30);
+    doc.text(`Items Complete: ${completedCount}/${service.checklist.length}`, 14, 38);
+    doc.text(`Critical Complete: ${completedCritical}/${criticalCount}`, 14, 46);
+    if (service.signedOff && service.signedOffAt) {
+        doc.text(`Approved by ${service.signedOffBy || 'Operations Supervisor'} on ${formatDateTime(service.signedOffAt)}`, 14, 54);
+    }
+
+    let y = service.signedOff ? 64 : 58;
+    service.checklist.forEach((item, index) => {
+        if (y > 270) {
+            doc.addPage();
+            y = 20;
+        }
+        const status = item.checked ? 'Complete' : 'Open';
+        const prefix = item.critical ? '[CRITICAL] ' : '';
+        const line = `${index + 1}. ${prefix}${item.item} — ${status}`;
+        const lines = doc.splitTextToSize(line, 180);
+        lines.forEach(segment => {
+            doc.text(segment, 14, y);
+            y += 6;
+        });
+    });
+
+    const safeFileName = `${service.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-readiness-checklist.pdf`;
+    doc.save(safeFileName);
+    showChecklistNotification('Checklist PDF downloaded successfully.', 'info');
 }
