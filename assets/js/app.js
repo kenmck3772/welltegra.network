@@ -148,7 +148,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 { date: '2024-04-01', operation: 'Production Test', problem: 'Well died after brief flow period. Pressure analysis suggests deep blockage.', lesson: 'Suspect combination of scale and integrity issues.' },
                 { date: '2024-04-10', operation: 'DHSV Test', problem: 'TRSSV failed to close on command. Well shut-in on annulus valves.', lesson: 'Well integrity is critically compromised.' }
             ],
-            dailyReports: [], 
+            dailyReports: [
+                {
+                    date: '2024-04-18',
+                    summary: 'Diagnostic slickline run profiled the main restriction; gauge ring hung at 8,480ft confirming severe ovalization.',
+                    npt: 6,
+                    toolstringRun: [
+                        'Gauge Ring 2.313\" OD — tagged 8,480ft',
+                        'Memory CCL — attenuated signal across 8,450-8,520ft'
+                    ]
+                },
+                {
+                    date: '2024-04-21',
+                    summary: 'Memory production log captured zero-flow interval below restriction with elevated annulus pressure differential.',
+                    npt: 4,
+                    toolstringRun: [
+                        'PLT Spinner — null response below 8,500ft',
+                        'Quartz PT Gauge — 150 psi tubing/annulus differential'
+                    ]
+                },
+                {
+                    date: '2024-04-27',
+                    summary: 'Contingency milling trial aborted after torque spike at 8,520ft; team pivoted to expandable patch strategy.',
+                    npt: 2,
+                    toolstringRun: [
+                        'Heavy-Duty Mill Pilot — torque spike at 8,520ft',
+                        'Gyro — deviation held stable at 28°'
+                    ]
+                }
+            ],
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 18500, isProblem: true}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 18300}], 
@@ -182,7 +210,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 { date: '2023-11-10', operation: 'Slickline Surveillance', problem: 'Standard 2.313" OD toolstring unable to pass 8,500ft, encountering a hard stop.', lesson: 'Significant reservoir depletion in this area is causing geomechanical stresses leading to casing deformation, a known regional risk. MFC log confirms this is ovalization, not collapse.' },
                 { date: '2023-12-05', operation: 'Expandable Casing Patch', problem: 'Successfully installed a 60ft expandable steel patch across the deformed section.', lesson: 'This operation proves that an expandable patch is a viable, rigless solution for restoring full-bore access in this field, restoring production and well access.' }
             ],
-            dailyReports: [], 
+            dailyReports: [
+                {
+                    date: '2023-11-12',
+                    summary: 'Caliper log confirmed 2.05\" minimum ID over 40ft, validating severity of casing deformation.',
+                    npt: 3,
+                    toolstringRun: [
+                        'Multi-Finger Caliper — 2.05\" min ID at 8,470-8,510ft',
+                        'Gyro — deviation steady at 32°'
+                    ]
+                },
+                {
+                    date: '2023-12-07',
+                    summary: 'Expandable patch expansion completed in a single run with no anomalies and full drift restored.',
+                    npt: 1,
+                    toolstringRun: [
+                        'Expandable Patch Tool — set at 8,480ft',
+                        'Drift Gauge 2.75\" — verified post-expansion ID'
+                    ]
+                },
+                {
+                    date: '2024-01-15',
+                    summary: 'Post-job production test delivered 6.2 mmscf/d with stabilized pressures and zero vibration alarms.',
+                    npt: 0,
+                    toolstringRun: [
+                        'PLT Spinner — uniform inflow profile',
+                        'Memory PT Gauge — 1,850 psi at perforations'
+                    ]
+                }
+            ],
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 9000}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 8800}], 
@@ -215,7 +271,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 { date: '2024-01-05', operation: 'Production Logging', problem: 'PLT toolstring unable to pass 9,200ft due to a hard obstruction. Produced water analysis confirmed high Barium and Sulfate content.', lesson: 'Commingling of injected seawater and formation water is causing severe, insoluble scale deposition. A previous attempt to mill scale on a nearby well resulted in stuck pipe.'},
                 { date: '2024-02-12', operation: 'CT Chemical/Jetting', problem: 'A 48hr soak with DTPA dissolver followed by a run with a high-pressure rotating jetting tool successfully cleared the blockage.', lesson: 'This two-stage approach is a proven, lower-risk method for removing hard scale compared to aggressive milling.' }
             ],
-            dailyReports: [], 
+            dailyReports: [
+                {
+                    date: '2024-01-08',
+                    summary: 'Gauge run confirmed solid obstruction at 9,210ft with BaSO₄ signature recovered in sample jar.',
+                    npt: 5,
+                    toolstringRun: [
+                        'Gauge Ring 2.00\" — tagged 9,210ft',
+                        'Sample Catcher — BaSO₄ crystals recovered'
+                    ]
+                },
+                {
+                    date: '2024-02-14',
+                    summary: 'Temperature-controlled DTPA soak dissolved majority of blockage with steady circulation.',
+                    npt: 4,
+                    toolstringRun: [
+                        'CT Bottomhole Assembly — dual injection nozzles',
+                        'Thermal String — 180°F circulation profile'
+                    ]
+                },
+                {
+                    date: '2024-02-16',
+                    summary: 'High-pressure jetting pass cleared residual nodules and restored drift to 10,900ft.',
+                    npt: 2,
+                    toolstringRun: [
+                        'Rotating Jetting Head — 6,000 psi sweep',
+                        'Drift Gauge 2.25\" — full pass to 10,900ft'
+                    ]
+                }
+            ],
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 11000}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 10800}], 
@@ -243,8 +327,36 @@ document.addEventListener('DOMContentLoaded', function() {
             history: [
                 { date: '2024-02-18', operation: 'Routine DHSV Test', problem: 'Valve failed to close reliably during routine 6-month test. Well was mandatorily shut-in by regulatory authority.', lesson: 'An attempted repair on a similar well with a hydraulic tool failed; a mechanical lock-open tool is more reliable.' },
                 { date: '2024-03-20', operation: 'Slickline Insert Valve Job', problem: 'Successfully locked open the failed valve with a mechanical tool and installed a new wireline-retrievable insert valve.', lesson: 'This standard slickline operation is a proven, cost-effective method for restoring the primary safety barrier without a rig.' }
-            ], 
-            dailyReports: [], 
+            ],
+            dailyReports: [
+                {
+                    date: '2024-02-19',
+                    summary: 'Baseline slickline test verified TRSSV leak-off and captured hydraulic signature for planning.',
+                    npt: 3,
+                    toolstringRun: [
+                        'SCSSV Test Tool — leak-off at 1,150 psi',
+                        'Memory Pressure Gauge — rapid decay to 300 psi'
+                    ]
+                },
+                {
+                    date: '2024-03-21',
+                    summary: 'Mechanical lock-open tool set successfully and valve removed from service without incident.',
+                    npt: 1,
+                    toolstringRun: [
+                        'Lock-Open Tool — set at 1,480ft',
+                        'Gauge Ring 2.25\" — verified control line clearance'
+                    ]
+                },
+                {
+                    date: '2024-03-22',
+                    summary: 'Insert safety valve installed and cycled with positive surface response.',
+                    npt: 1,
+                    toolstringRun: [
+                        'Wireline-Retrievable SSSV — landed at 1,500ft',
+                        'Communication Tool — pass/fail log recorded'
+                    ]
+                }
+            ],
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 9800}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 9600}], 
@@ -272,8 +384,36 @@ document.addEventListener('DOMContentLoaded', function() {
             history: [
                 { date: '2023-08-15', operation: 'Surface Choke Replacement', problem: 'Replaced choke for the 3rd time in 6 months due to severe erosional wear from high sand content.', lesson: 'Choking back the well is a temporary fix; the root cause of sand control failure must be addressed. Downhole video confirmed screen erosion.' },
                 { date: '2023-09-10', operation: 'Through-Tubing Patch', problem: 'Successfully installed an expandable patch across the failed sand screen, restoring sand control.', lesson: 'This confirms that a through-tubing patch is a viable rigless repair for this failure mode in this field.'}
-            ], 
-            dailyReports: [], 
+            ],
+            dailyReports: [
+                {
+                    date: '2023-08-18',
+                    summary: 'Surface samples quantified 1.8 lb/MMSCF sand production prompting downhole inspection.',
+                    npt: 2,
+                    toolstringRun: [
+                        'Sand Probe — 1.8 lb/MMSCF recorded',
+                        'Acoustic Sand Monitor — high-frequency alarms'
+                    ]
+                },
+                {
+                    date: '2023-09-11',
+                    summary: 'Through-tubing patch deployment isolated failed screen joint with full expansion achieved.',
+                    npt: 3,
+                    toolstringRun: [
+                        'Expandable Patch Tool — set at 9,870ft',
+                        'Multifinger Caliper — confirmed restored ID'
+                    ]
+                },
+                {
+                    date: '2023-09-13',
+                    summary: 'Post-job surveillance confirmed sand-free flow with stabilized drawdown.',
+                    npt: 1,
+                    toolstringRun: [
+                        'Fiber Optic DTS — uniform temperature profile',
+                        'Downhole Sand Probe — zero counts'
+                    ]
+                }
+            ],
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 10000}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 9800}], 
@@ -302,7 +442,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 { date: '2024-01-15', operation: 'Slickline Gauge Ring Run', problem: 'Gauge ring tagged a soft, waxy obstruction at 6,000ft. Unable to pass.', lesson: 'A previous attempt on another well with only chemicals was slow and ineffective; a combined approach is needed.' },
                 { date: '2024-02-01', operation: 'CT Wax Cleanout', problem: 'Successfully removed wax blockage using a combination of heated chemical dissolvers and a mechanical scraper tool on Coiled Tubing.', lesson: 'The dual chemical/mechanical approach is highly effective for severe paraffin blockages.' }
             ],
-            dailyReports: [],
+            dailyReports: [
+                {
+                    date: '2024-01-16',
+                    summary: 'Gauge run stalled at 6,040ft; sample pot retrieved heavy paraffin.',
+                    npt: 4,
+                    toolstringRun: [
+                        'Gauge Ring 2.0\" — tagged 6,040ft',
+                        'Sample Pot — paraffin assay'
+                    ]
+                },
+                {
+                    date: '2024-02-02',
+                    summary: 'Heated solvent circulation dissolved bulk wax within 18 hours.',
+                    npt: 5,
+                    toolstringRun: [
+                        'CT Heating String — 185°F at depth',
+                        'Solvent Injection Mandrel — 20 bbl slug'
+                    ]
+                },
+                {
+                    date: '2024-02-03',
+                    summary: 'Mechanical scraper pass removed remaining deposits; restart flowed clean.',
+                    npt: 2,
+                    toolstringRun: [
+                        'Wax Scraper — full pass to 7,300ft',
+                        'Memory PT Gauge — flowing tubing 1,250 psi'
+                    ]
+                }
+            ],
             completion: {
                 casing: [{type: 'Production', size: '7', top: 0, bottom: 7500}],
                 tubing: [{type: 'Production', size: '3 1/2', top: 0, bottom: 7300}],
@@ -332,7 +500,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 { date: '2023-09-15', operation: 'Integrated Solution Deployment', problem: 'Successfully executed a staged intervention combining expandable patch technology, chemical scale treatment, safety valve replacement, and sand control installation - all in a single campaign.', lesson: 'Integrated multi-discipline approach saved 45 days vs. sequential interventions. This became the blueprint for tackling W666.' },
                 { date: '2023-10-01', operation: 'Post-Intervention Performance', problem: 'Well exceeded pre-intervention production by 180%, with zero NPT and full barrier integrity restored.', lesson: 'Proves that comprehensive planning and execution of multiple remediation strategies simultaneously is not only feasible but highly effective. This success story directly informed the W666 intervention strategy.' }
             ],
-            dailyReports: [],
+            dailyReports: [
+                {
+                    date: '2023-08-22',
+                    summary: 'Baseline campaign kicked off with comprehensive production log and scale sampling program.',
+                    npt: 4,
+                    toolstringRun: [
+                        'PLT Spinner — stratified inflow identified',
+                        'Scale Sampler — trace BaSO₄ detected'
+                    ]
+                },
+                {
+                    date: '2023-09-16',
+                    summary: 'Integrated remediation run executed sequential patch, chemical cleanout, and insert valve.',
+                    npt: 8,
+                    toolstringRun: [
+                        'Expandable Patch — set at 9,200ft',
+                        'Jetting Tool — 5,800 psi sweep',
+                        'WR-SSSV — landed at 2,850ft'
+                    ]
+                },
+                {
+                    date: '2023-10-02',
+                    summary: 'Verification pass confirmed restored production with zero barrier leaks and full drift.',
+                    npt: 1,
+                    toolstringRun: [
+                        'Pressure Build-Up Tool — stabilized at 2,300 psi',
+                        'Caliper — ID fully restored'
+                    ]
+                }
+            ],
             completion: {
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 19200}],
                 tubing: [{type: 'Production', size: '5 1/2', top: 0, bottom: 19000}],

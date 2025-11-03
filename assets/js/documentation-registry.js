@@ -185,6 +185,32 @@
             ]
         },
         {
+            id: 'operations-history',
+            icon: '📊',
+            title: 'Operations History & Reports',
+            description: 'Curated well histories and daily report extracts that power the readiness demo narrative.',
+            quickLink: {
+                href: 'docs/PAST_REPORTS_ARCHIVE.md',
+                label: 'Open past reports archive'
+            },
+            items: [
+                {
+                    title: 'Past Intervention Reports Archive',
+                    path: 'docs/PAST_REPORTS_ARCHIVE.md',
+                    summary: 'Normalized daily report snapshots for every flagship well, including NPT and toolstring details.',
+                    tags: ['Operations', 'Reporting'],
+                    updated: 'Nov 2025'
+                },
+                {
+                    title: 'Well History Ledger',
+                    path: 'docs/WELL_HISTORY_LEDGER.md',
+                    summary: 'Chronological event log linking surveillance findings, remediation steps, and supporting artefacts.',
+                    tags: ['History', 'Traceability'],
+                    updated: 'Nov 2025'
+                }
+            ]
+        },
+        {
             id: 'strategy-roadmap',
             icon: '🧭',
             title: 'Strategy & Roadmap',
