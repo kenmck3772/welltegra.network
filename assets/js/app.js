@@ -1957,6 +1957,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const loginBtn = document.getElementById('login-btn');
     const views = document.querySelectorAll('.view-container');
     const navLinks = document.querySelectorAll('.nav-link');
+    let documentationRendered = false;
     // All views are accessible for presentation - no login required
     const alwaysAccessibleViews = new Set([
         'home',
@@ -3272,6 +3273,75 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 
+    const renderDocumentationDirectory = () => {
+        if (documentationRendered) return;
+        const directoryContainer = document.getElementById('documentation-directory');
+        if (!directoryContainer) return;
+
+        const catalog = Array.isArray(window.welltegraDocuments) ? window.welltegraDocuments : [];
+
+        if (!catalog.length) {
+            directoryContainer.innerHTML = `
+                <div class="rounded-2xl border border-dashed border-slate-700/60 bg-slate-900/40 p-6 text-center text-sm text-slate-400">
+                    Documentation catalog unavailable. <a class="text-cyan-300 hover:text-cyan-200 font-semibold" href="https://github.com/WellTegra/welltegra.network" target="_blank" rel="noopener noreferrer">Browse the GitHub repository</a> to view the latest guides.
+                </div>
+            `;
+            documentationRendered = true;
+            return;
+        }
+
+        directoryContainer.innerHTML = catalog.map((category) => {
+            const headerIcon = category.icon ? `<span class="text-2xl">${escapeHtml(category.icon)}</span>` : '';
+            const description = category.description ? `<p class="mt-2 text-sm text-slate-300">${escapeHtml(category.description)}</p>` : '';
+            const quickLink = category.quickLink ? `<a href="${escapeHtml(category.quickLink.href)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-semibold text-cyan-300 hover:text-cyan-200">${escapeHtml(category.quickLink.label)}</a>` : '';
+
+            const items = Array.isArray(category.items) ? category.items : [];
+            const cards = items.map((item) => {
+                const tags = Array.isArray(item.tags) ? item.tags : [];
+                const tagsMarkup = tags.length
+                    ? `<div class="mt-3 flex flex-wrap gap-2">${tags.map(tag => `<span class="rounded-full border border-slate-700/60 bg-slate-800/60 px-2.5 py-1 text-xs text-slate-300">${escapeHtml(tag)}</span>`).join('')}</div>`
+                    : '';
+                const href = escapeHtml(item.path || '#');
+                const updated = item.updated ? `<span class="text-xs text-slate-500">Updated ${escapeHtml(item.updated)}</span>` : '';
+                const summary = item.summary ? `<p class="text-sm text-slate-300 mt-2 leading-relaxed">${escapeHtml(item.summary)}</p>` : '';
+
+                return `
+                    <article class="bg-slate-800/40 border border-slate-700/60 rounded-xl p-5 flex flex-col gap-4">
+                        <div>
+                            <h5 class="text-lg font-semibold text-white">${escapeHtml(item.title || 'Documentation')}</h5>
+                            ${summary}
+                            ${tagsMarkup}
+                        </div>
+                        <div class="flex items-center justify-between gap-3">
+                            ${updated || '<span class="text-xs text-slate-500">GitHub source</span>'}
+                            <a href="${href}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 font-semibold text-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                ${escapeHtml(item.cta || 'Open document')}
+                            </a>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            return `
+                <section class="rounded-2xl border border-slate-700/60 bg-slate-900/40 p-6 space-y-5">
+                    <header class="flex flex-wrap items-start justify-between gap-3">
+                        <div>
+                            <h4 class="text-xl font-semibold text-white flex items-center gap-2">${headerIcon}${escapeHtml(category.title || 'Documentation')}</h4>
+                            ${description}
+                        </div>
+                        ${quickLink}
+                    </header>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${cards}
+                    </div>
+                </section>
+            `;
+        }).join('');
+
+        documentationRendered = true;
+    };
+
     const switchView = (viewName) => {
         if (appState.liveDataInterval) {
             clearInterval(appState.liveDataInterval);
@@ -3391,6 +3461,8 @@ document.addEventListener('DOMContentLoaded', function() {
             import('./spend-variance-cockpit.js').then(module => {
                 module.initSpendVariance();
             }).catch(err => console.error('Failed to load spend variance module:', err));
+        } else if (viewName === 'media') {
+            renderDocumentationDirectory();
         }
     };
     window.showView = (viewName, sourceLabel) => {
@@ -3758,7 +3830,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .join('');
     };
     
-    function renderObjectives() {
     const renderObjectives = () => {
         if (!objectivesFieldset) return;
 
@@ -3887,7 +3958,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // expose planners so other modules (e.g., PDF export, analytics replay) can re-render when datasets update
     window.renderObjectives = renderObjectives;
     window.renderProblems = renderProblems;
-    };
 
     const renderDesignBlueprint = () => {
         const designBlueprintContainer = getDesignBlueprintContainer();
