@@ -116,11 +116,97 @@ function renderScenarioCard(scenario) {
 }
 
 function renderSideBySideView(scenarios) {
-    const selectedScenarios = scenarios.filter(s => true); // All selected by default
+    const selectedScenarios = Array.isArray(scenarios) ? scenarios : [];
+    if (!selectedScenarios.length) {
+        return '<div class="text-center text-slate-400 py-20">Select at least one scenario to compare.</div>';
+    }
+
+    const columnCount = Math.min(selectedScenarios.length, 3) || 1;
 
     return `
-        <div class="grid grid-cols-1 md:grid-cols-${Math.min(selectedScenarios.length, 3)} gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-${columnCount} gap-6">
             ${selectedScenarios.map(s => renderWellboreSchematic(s)).join('')}
+        </div>
+    `;
+}
+
+function renderOverlayView(scenarios) {
+    const selectedScenarios = Array.isArray(scenarios) ? scenarios : [];
+    if (!selectedScenarios.length) {
+        return '<div class="text-center text-slate-400 py-20">Select at least one scenario to display the overlay view.</div>';
+    }
+
+    const totalDepth = 12000;
+    const axisMarks = [0, 2000, 4000, 6000, 8000, 10000, 12000];
+    const axisSpacing = 520 / (axisMarks.length - 1);
+
+    const legend = selectedScenarios.map(s => `
+        <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full" style="background:${s.color}"></span>
+            <span class="text-sm text-slate-200 font-medium">${s.name}</span>
+        </div>
+    `).join('');
+
+    const overlays = selectedScenarios.map((scenario, index) => {
+        const segmentHeight = 520 / scenario.bha.length;
+        const horizontalOffset = (index - (selectedScenarios.length - 1) / 2) * 24;
+        return `
+            <div class="absolute top-0 bottom-0 w-24" style="left:calc(50% - 12px + ${horizontalOffset}px);">
+                ${scenario.bha.map((comp, compIdx) => {
+                    const depth = Math.round((compIdx + 1) * totalDepth / scenario.bha.length);
+                    return `
+                        <div class="relative" style="height:${segmentHeight}px;">
+                            <div class="absolute inset-x-4 rounded-full" style="top:6px; bottom:6px; background:${scenario.color}; opacity:0.35;"></div>
+                            <div class="hidden lg:block absolute right-[-150px] top-1/2 -translate-y-1/2 text-xs text-slate-300 whitespace-nowrap">
+                                ${comp}
+                                <span class="ml-2 text-slate-500">${depth.toLocaleString()} ft</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }).join('');
+
+    const axisHtml = axisMarks.map((depth, idx) => `
+        <div class="relative" style="height:${idx === axisMarks.length - 1 ? 0 : axisSpacing}px;">
+            <div class="absolute left-0 right-0 top-0 border-t border-slate-700/60"></div>
+            <div class="absolute -left-1.5 -translate-y-1/2 text-[10px] text-slate-500">${depth.toLocaleString()} ft</div>
+        </div>
+    `).join('');
+
+    const columnCount = Math.min(selectedScenarios.length, 3) || 1;
+
+    return `
+        <div class="bg-slate-900/70 rounded-lg p-6 border border-slate-700">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                <div>
+                    <h4 class="text-lg font-semibold text-white">Overlay Comparison</h4>
+                    <p class="text-sm text-slate-400">Aligned BHA segments referenced to the shared TVD RKB baseline.</p>
+                </div>
+                <div class="flex flex-wrap gap-4">${legend}</div>
+            </div>
+            <div class="relative flex">
+                <div class="w-16 mr-4 flex flex-col justify-between text-right">${axisHtml}</div>
+                <div class="relative flex-1 h-[520px]">
+                    <div class="absolute inset-0 border-l border-slate-700/80"></div>
+                    ${overlays}
+                </div>
+            </div>
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-${columnCount} gap-4">
+                ${selectedScenarios.map(s => `
+                    <div class="bg-slate-800/60 rounded-lg p-4">
+                        <h5 class="font-semibold text-white mb-2 flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full" style="background:${s.color}"></span>
+                            ${s.name}
+                        </h5>
+                        <ul class="space-y-1 text-xs text-slate-300">
+                            ${s.bha.map(comp => `<li>${comp}</li>`).join('')}
+                        </ul>
+                        <div class="mt-3 text-xs text-slate-400">Fluid: ${s.fluid.type} @ ${s.fluid.density} ${s.fluid.units} • Est. Cost $${s.cost.toLocaleString()}</div>
+                    </div>
+                `).join('')}
+            </div>
         </div>
     `;
 }
@@ -296,7 +382,7 @@ function initScenarioEventHandlers(scenarios) {
         if (mode === 'side-by-side') {
             vizArea.innerHTML = renderSideBySideView(filteredScenarios);
         } else {
-            vizArea.innerHTML = '<div class="text-center text-slate-400 py-20">Overlay view coming soon</div>';
+            vizArea.innerHTML = renderOverlayView(filteredScenarios);
         }
     }
 }
