@@ -127,7 +127,7 @@ const ROLE_DASHBOARDS = {
     'service-specialist': {
         tasks: [
             { id: 'task-1', priority: 'high', title: 'Complete readiness checklist: Wireline W234', description: '6 of 8 items signed off', dueIn: '3 hours', link: '#readiness-checklist-view' },
-            { id: 'task-2', priority: 'high', title: 'DHSV test failure on A-15H', description: 'Safety critical - immediate attention', dueIn: 'Now', link: '#christmas-tree-view' },
+            { id: 'task-2', priority: 'high', title: 'DHSV test failure on A-15H', description: 'Safety critical - immediate attention', dueIn: 'Now', link: '#integrity-schematic-view' },
             { id: 'task-3', priority: 'medium', title: 'Review lock-up depth prediction', description: 'Current prediction: 8,420 ft', dueIn: '1 day', link: '#readiness-checklist-view' }
         ],
         kpis: [
@@ -145,7 +145,7 @@ const ROLE_DASHBOARDS = {
     'integrity-specialist': {
         tasks: [
             { id: 'task-1', priority: 'high', title: 'W234 Integrity Score: 58% (Critical Gap)', description: 'B-Annulus pressure increasing', dueIn: 'Now', link: '#integrity-schematic-view' },
-            { id: 'task-2', priority: 'high', title: 'DHSV failed on A-15H - barrier compromised', description: 'Well shut-in on annulus valves', dueIn: 'Now', link: '#christmas-tree-view' },
+            { id: 'task-2', priority: 'high', title: 'DHSV failed on A-15H - barrier compromised', description: 'Well shut-in on annulus valves', dueIn: 'Now', link: '#integrity-schematic-view' },
             { id: 'task-3', priority: 'medium', title: 'Quarterly integrity review: 8 wells', description: 'Due end of month', dueIn: '15 days', link: '#integrity-schematic-view' }
         ],
         kpis: [
@@ -155,7 +155,7 @@ const ROLE_DASHBOARDS = {
         ],
         jumpTo: [
             { label: 'Integrity Schematic', icon: '🛡️', link: '#integrity-schematic-view', color: 'cyan' },
-            { label: 'Christmas Tree Status', icon: '🎄', link: '#christmas-tree-view', color: 'emerald' },
+            { label: 'Well Integrity Status', icon: '🛡️', link: '#integrity-schematic-view', color: 'emerald' },
             { label: 'Well Planner', icon: '📋', link: '#planner-view', color: 'blue' },
             { label: 'HSE Dashboard', icon: '⚠️', link: '#hse-view', color: 'red' }
         ]

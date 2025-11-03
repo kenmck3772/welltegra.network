@@ -1,235 +1,281 @@
-/**
- * Service Line Readiness Checklists for Slick/CT/Wireline Specialists
- * Step 4 & 5: Mandatory visual sign-offs on safety-critical constraints
- */
+const STORAGE_KEY = 'welltegra-readiness-checklist';
 
-export async function initReadinessChecklist() {
+const hasStorage = (() => {
+    try {
+        return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+    } catch (error) {
+        return false;
+    }
+})();
+
+const SUMMARY_COPY = {
+    heading: 'Three fast lanes, nine total checks',
+    description: 'Tick the items that match your pre-job confirmations. Everything saves locally so you can return later without repeating the work.'
+};
+
+const SECTION_DEFINITIONS = [
+    {
+        id: 'people',
+        title: 'Step 1 · People & Permits',
+        description: 'Confirm the crew briefing, approvals, and emergency contacts before the job kicks off.',
+        items: [
+            {
+                key: 'people:briefing',
+                label: 'Safety brief delivered and sign-in sheet completed.',
+                helper: 'Use the Start Here guide for the talking points and required attendees.'
+            },
+            {
+                key: 'people:permits',
+                label: 'Permit to Work, JHA, and isolation plans are posted and signed.',
+                helper: 'Cross-check against the Instruction Manual permit requirements.'
+            },
+            {
+                key: 'people:contacts',
+                label: 'Emergency contacts validated against the readiness roster.',
+                helper: 'Ensure control room and emergency numbers are distributed.'
+            }
+        ],
+        resources: [
+            { href: 'START_HERE.md', label: 'Start Here Checklist' },
+            { href: 'INSTRUCTION_MANUAL.md', label: 'Instruction Manual · Roles & Responsibilities' }
+        ]
+    },
+    {
+        id: 'equipment',
+        title: 'Step 2 · Equipment & Barriers',
+        description: 'Verify certifications, program alignment, and barrier health before mobilizing gear.',
+        items: [
+            {
+                key: 'equipment:certs',
+                label: 'Pressure-control and lifting certificates confirmed in date.',
+                helper: 'Log certificate IDs in the readiness register.'
+            },
+            {
+                key: 'equipment:program',
+                label: 'Program and toolstring alignment verified.',
+                helper: 'Match the assembled toolstring against the latest run sheet.'
+            },
+            {
+                key: 'equipment:barriers',
+                label: 'Barriers and pressure control checks passed.',
+                helper: 'Document barrier status in the integrity schematic log.'
+            }
+        ],
+        resources: [
+            { href: 'docs/WELL_HISTORY_LEDGER.md', label: 'Well History Ledger' },
+            { href: 'docs/PAST_REPORTS_ARCHIVE.md', label: 'Past Intervention Reports' }
+        ]
+    },
+    {
+        id: 'data',
+        title: 'Step 3 · Data & Handover',
+        description: 'Ensure the latest datasets, checklists, and documentation are ready to share.',
+        items: [
+            {
+                key: 'data:standardized',
+                label: 'Latest datasets standardized to TVD RKB.',
+                helper: 'Run the data standardizer and update the repository snapshot.'
+            },
+            {
+                key: 'data:checklist',
+                label: 'Readiness checklist exported to PDF and shared.',
+                helper: 'Use the export option for the operations handover packet.'
+            },
+            {
+                key: 'data:notes',
+                label: 'Operations log updated with latest notes.',
+                helper: 'Add any outstanding actions and acknowledgements.'
+            }
+        ],
+        resources: [
+            { href: 'DEMO_PROGRAM_PLAN.md', label: 'Demo Program Plan' },
+            { href: 'WHITE_PAPER_INSIGHTS.md', label: 'White Paper Insights' }
+        ]
+    }
+];
+
+export function initReadinessChecklist() {
     const container = document.getElementById('readiness-checklist-content');
     if (!container) return;
 
-    const serviceLines = {
-        slickline: {
-            name: 'Slickline Operations',
-            color: 'blue',
-            icon: '🪢',
-            checklist: [
-                { id: 'sl1', item: 'Wire rope inspection completed and logged', critical: true, checked: false },
-                { id: 'sl2', item: 'Maximum pulling force calculated and documented', critical: true, checked: false },
-                { id: 'sl3', item: 'Lock-up depth prediction reviewed (current: 8,420 ft)', critical: true, checked: false },
-                { id: 'sl4', item: 'Lubricator length verified vs. tool string (Lub: 15ft, String: 12.8ft)', critical: true, checked: false },
-                { id: 'sl5', item: 'BOP test current (<30 days)', critical: true, checked: false },
-                { id: 'sl6', item: 'Wellhead isolation valves functional test passed', critical: true, checked: false },
-                { id: 'sl7', item: 'Tool string assembled and verified', critical: false, checked: false },
-                { id: 'sl8', item: 'Communication systems tested', critical: false, checked: false }
-            ]
-        },
-        coiledtubing: {
-            name: 'Coiled Tubing Operations',
-            color: 'emerald',
-            icon: '🌀',
-            checklist: [
-                { id: 'ct1', item: 'CT inspection report reviewed (last run: 450 cycles)', critical: true, checked: false },
-                { id: 'ct2', item: 'Reel tension settings verified for well conditions', critical: true, checked: false },
-                { id: 'ct3', item: 'Buckling analysis completed for horizontal section', critical: true, checked: false },
-                { id: 'ct4', item: 'N2 supply confirmed adequate for planned operation', critical: true, checked: false },
-                { id: 'ct5', item: 'BOP stack function test passed (<12 hours)', critical: true, checked: false },
-                { id: 'ct6', item: 'Pumping equipment pressure tested to 1.5x max planned', critical: true, checked: false },
-                { id: 'ct7', item: 'Depth correlation confirmed with survey data', critical: false, checked: false },
-                { id: 'ct8', item: 'Chemical compatibility verified', critical: false, checked: false }
-            ]
-        },
-        wireline: {
-            name: 'Wireline Operations',
-            color: 'amber',
-            icon: '📡',
-            checklist: [
-                { id: 'wl1', item: 'Cable head electrical continuity test passed', critical: true, checked: false },
-                { id: 'wl2', item: 'Weak point calculations verified (current weak point: 8,750 lbs)', critical: true, checked: false },
-                { id: 'wl3', item: 'Lubricator pressure test current (<6 months)', critical: true, checked: false },
-                { id: 'wl4', item: 'Tool string weight vs. weak point verified (String: 185 lbs, Safety margin: 47x)', critical: true, checked: false },
-                { id: 'wl5', item: 'Grease injection system functional', critical: true, checked: false },
-                { id: 'wl6', item: 'Radioactive source transport license current', critical: true, checked: false },
-                { id: 'wl7', item: 'Depth correlation with previous runs completed', critical: false, checked: false },
-                { id: 'wl8', item: 'Rig-up inspection checklist completed', critical: false, checked: false }
-            ]
+    container.innerHTML = renderChecklist();
+
+    const module = container.querySelector('[data-readiness-module]');
+    if (!module) return;
+
+    const checkboxes = Array.from(module.querySelectorAll('input[type="checkbox"][data-readiness-key]'));
+    if (!checkboxes.length) return;
+
+    const summaryComplete = module.querySelector('[data-readiness-complete]');
+    const summaryTotal = module.querySelector('[data-readiness-total]');
+    const summaryProgress = module.querySelector('[data-readiness-progress]');
+    const resetButton = module.querySelector('[data-action="reset-readiness"]');
+
+    const validKeys = new Set(checkboxes.map(input => input.dataset.readinessKey).filter(Boolean));
+
+    hydrateState(checkboxes, validKeys);
+
+    if (summaryTotal) {
+        summaryTotal.textContent = checkboxes.length.toString();
+    }
+
+    updateSummary();
+
+    checkboxes.forEach(input => {
+        input.addEventListener('change', () => {
+            saveState(getCheckedKeys());
+            updateSummary();
+        });
+    });
+
+    resetButton?.addEventListener('click', () => {
+        checkboxes.forEach(input => {
+            input.checked = false;
+        });
+        saveState([]);
+        updateSummary();
+    });
+
+    function getCheckedKeys() {
+        return checkboxes
+            .filter(input => input.checked && input.dataset.readinessKey)
+            .map(input => input.dataset.readinessKey);
+    }
+
+    function updateSummary() {
+        const completed = checkboxes.filter(input => input.checked).length;
+
+        if (summaryComplete) {
+            summaryComplete.textContent = completed.toString();
         }
-    };
 
-    container.innerHTML = `
-        <div class="space-y-6">
-            <!-- Service Line Selection -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                ${Object.entries(serviceLines).map(([key, service]) => `
-                    <button class="service-line-btn bg-slate-800/50 hover:bg-slate-700/50 border-2 border-${service.color}-500/30 hover:border-${service.color}-500 rounded-lg p-6 transition text-left"
-                            data-service="${key}">
-                        <div class="text-4xl mb-2">${service.icon}</div>
-                        <h3 class="text-xl font-semibold text-white">${service.name}</h3>
-                        <div class="mt-3 text-sm text-slate-400">
-                            ${service.checklist.filter(i => i.critical).length} critical items
-                        </div>
-                    </button>
-                `).join('')}
-            </div>
+        if (summaryProgress) {
+            summaryProgress.textContent = completed === checkboxes.length
+                ? 'All steps confirmed'
+                : 'Working through checklist';
+        }
+    }
+}
 
-            <!-- Active Checklist Display -->
-            <div id="active-checklist" class="bg-slate-800/50 rounded-lg p-6 border border-slate-700">
-                <div class="text-center text-slate-400 py-12">
-                    Select a service line above to view readiness checklist
-                </div>
+function renderChecklist() {
+    return `
+        <div data-readiness-module class="space-y-8">
+            ${renderSummaryCard()}
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                ${SECTION_DEFINITIONS.map(renderSection).join('')}
             </div>
         </div>
     `;
-
-    initChecklistHandlers(serviceLines);
 }
 
-function renderChecklist(service, checklist) {
-    const completedCount = checklist.filter(i => i.checked).length;
-    const criticalCount = checklist.filter(i => i.critical).length;
-    const completedCritical = checklist.filter(i => i.critical && i.checked).length;
-    const progress = (completedCount / checklist.length) * 100;
-    const allCriticalComplete = completedCritical === criticalCount;
+function renderSummaryCard() {
+    return `
+        <section class="bg-slate-900/70 border border-slate-700 rounded-2xl p-6 md:p-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="space-y-2 max-w-2xl text-left">
+                <h3 class="text-2xl font-semibold text-white">${SUMMARY_COPY.heading}</h3>
+                <p class="text-sm text-slate-300 leading-relaxed">${SUMMARY_COPY.description}</p>
+            </div>
+            <div class="text-left md:text-right">
+                <p class="text-4xl font-bold text-white leading-none" data-readiness-complete>0</p>
+                <p class="text-xs uppercase tracking-wide text-slate-400 mt-1">
+                    of <span data-readiness-total>0</span> items checked
+                </p>
+                <p class="text-sm text-slate-300 mt-2" data-readiness-progress>Working through checklist</p>
+                <button type="button" data-action="reset-readiness" class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-white">
+                    <span class="inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-500">↺</span>
+                    Reset progress
+                </button>
+            </div>
+        </section>
+    `;
+}
+
+function renderSection(section) {
+    return `
+        <section class="bg-slate-900/60 border border-slate-700 rounded-2xl p-6 space-y-5" data-readiness-section="${section.id}">
+            <div class="space-y-2">
+                <h3 class="text-xl font-semibold text-white">${section.title}</h3>
+                <p class="text-sm text-slate-300 leading-relaxed">${section.description}</p>
+            </div>
+            <ul class="space-y-3">
+                ${renderItems(section)}
+            </ul>
+            ${renderResources(section)}
+        </section>
+    `;
+}
+
+function renderItems(section) {
+    return section.items.map((item, index) => {
+        const inputId = `readiness-${section.id}-${index + 1}`;
+        return `
+            <li>
+                <label class="flex items-start gap-3 bg-slate-900/40 border border-slate-700 rounded-xl p-4 transition hover:border-cyan-400/60" for="${inputId}">
+                    <input id="${inputId}" type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-cyan-500 focus:ring-cyan-400" data-readiness-key="${item.key}">
+                    <span class="text-sm leading-relaxed text-slate-200">
+                        <span class="block font-semibold text-white">${item.label}</span>
+                        ${item.helper ? `<span class="block text-slate-400 mt-1">${item.helper}</span>` : ''}
+                    </span>
+                </label>
+            </li>
+        `;
+    }).join('');
+}
+
+function renderResources(section) {
+    if (!Array.isArray(section.resources) || !section.resources.length) {
+        return '';
+    }
 
     return `
-        <div class="space-y-6">
-            <!-- Header with Progress -->
-            <div class="flex items-start justify-between">
-                <div>
-                    <h3 class="text-2xl font-bold text-white flex items-center">
-                        <span class="text-4xl mr-3">${service.icon}</span>
-                        ${service.name}
-                    </h3>
-                    <p class="text-slate-400 mt-2">Complete all critical items before proceeding</p>
-                </div>
-                <div class="text-right">
-                    <div class="text-3xl font-bold ${allCriticalComplete ? 'text-emerald-400' : 'text-amber-400'}">
-                        ${completedCount}/${checklist.length}
-                    </div>
-                    <div class="text-sm text-slate-400">Items Complete</div>
-                </div>
-            </div>
-
-            <!-- Progress Bar -->
-            <div class="space-y-2">
-                <div class="w-full bg-slate-700 rounded-full h-4">
-                    <div class="bg-gradient-to-r from-${service.color}-600 to-${service.color}-400 h-4 rounded-full transition-all duration-500"
-                         style="width: ${progress}%"></div>
-                </div>
-                <div class="flex justify-between text-xs text-slate-400">
-                    <span>Progress: ${progress.toFixed(0)}%</span>
-                    <span>Critical: ${completedCritical}/${criticalCount}</span>
-                </div>
-            </div>
-
-            <!-- Critical Status Banner -->
-            ${!allCriticalComplete ? `
-                <div class="bg-red-900/20 border-l-4 border-red-500 rounded-lg p-4">
-                    <div class="flex items-start">
-                        <svg class="w-6 h-6 text-red-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                        </svg>
-                        <div>
-                            <h4 class="font-bold text-red-300">Critical Items Incomplete</h4>
-                            <p class="text-red-200 text-sm mt-1">All critical safety items must be completed and signed off before operation can proceed.</p>
-                        </div>
-                    </div>
-                </div>
-            ` : `
-                <div class="bg-emerald-900/20 border-l-4 border-emerald-500 rounded-lg p-4">
-                    <div class="flex items-start">
-                        <svg class="w-6 h-6 text-emerald-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        <div>
-                            <h4 class="font-bold text-emerald-300">All Critical Items Complete</h4>
-                            <p class="text-emerald-200 text-sm mt-1">Critical safety requirements met. Complete remaining items for full readiness.</p>
-                        </div>
-                    </div>
-                </div>
-            `}
-
-            <!-- Checklist Items -->
-            <div class="space-y-3">
-                ${checklist.map(item => `
-                    <div class="checklist-item bg-slate-900/50 rounded-lg p-4 border-2 ${item.checked ? 'border-emerald-500/50' : item.critical ? 'border-red-500/30' : 'border-slate-600'} transition"
-                         data-item="${item.id}">
-                        <div class="flex items-start gap-4">
-                            <input type="checkbox"
-                                   id="${item.id}"
-                                   ${item.checked ? 'checked' : ''}
-                                   class="item-checkbox w-6 h-6 mt-1 rounded border-slate-600 text-${service.color}-600 focus:ring-${service.color}-500 cursor-pointer"
-                                   data-item="${item.id}">
-                            <label for="${item.id}" class="flex-1 cursor-pointer">
-                                <div class="flex items-center gap-2 mb-1">
-                                    ${item.critical ? '<span class="bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded">CRITICAL</span>' : ''}
-                                    <span class="text-white font-semibold ${item.checked ? 'line-through opacity-60' : ''}">${item.item}</span>
-                                </div>
-                                ${item.checked ? `
-                                    <div class="text-xs text-emerald-400 mt-2">
-                                        ✓ Signed off by: J. Smith on ${new Date().toLocaleString()}
-                                    </div>
-                                ` : ''}
-                            </label>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex gap-4 pt-4">
-                <button id="sign-off-btn"
-                        ${!allCriticalComplete ? 'disabled' : ''}
-                        class="flex-1 ${allCriticalComplete ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-slate-700 cursor-not-allowed opacity-50'} text-white font-bold py-3 px-6 rounded-lg transition">
-                    ${allCriticalComplete ? '✓ Approve & Sign Off' : '✗ Complete Critical Items to Approve'}
-                </button>
-                <button id="export-checklist-btn" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg transition">
-                    Export PDF
-                </button>
-            </div>
+        <div class="flex flex-wrap gap-3">
+            ${section.resources.map(resource => getResourceButtonMarkup(resource)).join('')}
         </div>
     `;
 }
 
-function initChecklistHandlers(serviceLines) {
-    // Service line selection
-    document.querySelectorAll('.service-line-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const serviceKey = btn.dataset.service;
-            const service = serviceLines[serviceKey];
-            const container = document.getElementById('active-checklist');
-            if (container) {
-                container.innerHTML = renderChecklist(service, service.checklist);
-                attachChecklistItemHandlers(service);
-            }
-        });
+function getResourceButtonMarkup(resource) {
+    return `
+        <a href="${resource.href}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-cyan-200 hover:border-cyan-400 hover:text-cyan-100 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            ${resource.label}
+        </a>
+    `;
+}
+
+function hydrateState(checkboxes, validKeys) {
+    const storedKeys = loadState().filter(key => validKeys.has(key));
+    if (!storedKeys.length) return;
+
+    const keySet = new Set(storedKeys);
+    checkboxes.forEach(input => {
+        if (input.dataset.readinessKey && keySet.has(input.dataset.readinessKey)) {
+            input.checked = true;
+        }
     });
 }
 
-function attachChecklistItemHandlers(service) {
-    // Checkbox handlers
-    document.querySelectorAll('.item-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', (e) => {
-            const itemId = e.target.dataset.item;
-            const item = service.checklist.find(i => i.id === itemId);
-            if (item) {
-                item.checked = e.target.checked;
-                // Re-render to update progress and status
-                const container = document.getElementById('active-checklist');
-                if (container) {
-                    container.innerHTML = renderChecklist(service, service.checklist);
-                    attachChecklistItemHandlers(service);
-                }
-            }
-        });
-    });
+function loadState() {
+    if (!hasStorage) return [];
 
-    // Sign off button
-    document.getElementById('sign-off-btn')?.addEventListener('click', () => {
-        alert('Checklist approved and signed off. Operation is GO for execution.');
-    });
+    try {
+        const stored = window.localStorage.getItem(STORAGE_KEY);
+        if (!stored) return [];
 
-    // Export button
-    document.getElementById('export-checklist-btn')?.addEventListener('click', () => {
-        alert('Checklist exported to PDF (feature coming soon)');
-    });
+        const parsed = JSON.parse(stored);
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        console.warn('Unable to load readiness checklist state.', error);
+        return [];
+    }
+}
+
+function saveState(keys) {
+    if (!hasStorage) return;
+
+    try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(keys));
+    } catch (error) {
+        console.warn('Unable to persist readiness checklist state.', error);
+    }
 }

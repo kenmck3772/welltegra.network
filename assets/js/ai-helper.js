@@ -206,7 +206,7 @@ function getCurrentViewContext() {
         'data-standardizer-view': 'the Data Standardization Utility for cleaning and normalizing well data',
         'scenario-layering-view': 'the Visual Scenario Layering tool for BHA design comparison',
         'developer-portal-view': 'the Developer Portal with API documentation and code samples',
-        'readiness-checklist-view': 'the Service Line Readiness Checklists for safety sign-offs',
+        'readiness-checklist-view': 'the Operational Readiness Checklist — a step-by-step breakdown linking people, equipment, and data preparation to GitHub guidance',
         'integrity-schematic-view': 'the Well Integrity Schematic showing barrier status and pressure monitoring',
         'spend-variance-view': 'the Spend-Variance Cockpit for budget tracking and cost management',
         'media-view': 'the Media & Resources page with videos and documentation'
@@ -260,7 +260,7 @@ Welltegra is an AI-powered well intervention planning and execution platform tha
 - **Data Standardization Utility** (Well Engineering Manager): Interactive tool to correct and standardize well data
 - **Visual Scenario Layering** (Sr Well Engineer): Side-by-side BHA scenario comparison tool
 - **Developer Portal** (Software Designer): Complete API documentation, code samples, and sandbox environment
-- **Service Line Readiness Checklists** (Specialists): Safety-critical checklists for Slickline, CT, and Wireline operations
+- **Operational Readiness Checklist** (Specialists): Guided breakdown to confirm people, equipment, and data readiness with GitHub documentation links
 - **Persistent Integrity Schematic** (Integrity Specialist): Color-coded barrier status monitoring with pressure trends
 - **Spend-Variance Cockpit** (Finance Engineer): Real-time budget tracking with MOC-linked deviations
 

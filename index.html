@@ -317,9 +317,9 @@
                                     <a href="#planner-view" class="inline-block px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-xl shadow-lg hover:shadow-cyan-400/50 hover:from-cyan-400 hover:to-blue-500 transition-all transform hover:scale-105">
                                         Start New Well Plan
                                     </a>
-                                    <button onclick="alert('Draft management coming soon')" class="px-6 py-3 bg-slate-900/50 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-slate-700/60 transition-all border-2 border-slate-600/40 hover:border-slate-500/60">
-                                        Continue Draft
-                                    </button>
+                                    <a href="INSTRUCTION_MANUAL.md" target="_blank" rel="noopener noreferrer" class="px-6 py-3 bg-slate-900/50 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-slate-700/60 transition-all border-2 border-slate-600/40 hover:border-slate-500/60 text-center">
+                                        Review Instruction Manual
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -1198,62 +1198,6 @@
             </div>
         </div>
 
-        <!-- Christmas Tree & Wellhead Integrity View -->
-        <div id="christmas-tree-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold tracking-tight text-white">🎄 Christmas Tree & Wellhead Integrity</h2>
-                <p class="mt-2 text-lg text-slate-300">Monitor equipment status, barrier envelopes, PMS schedules, and integrity issues</p>
-            </div>
-
-            <!-- View Switcher -->
-            <div class="mb-6 flex flex-wrap gap-2 justify-center">
-                <button data-ct-view="diagram" class="px-4 py-2 rounded-lg text-sm font-semibold bg-cyan-600 text-white transition-colors">
-                    🔧 Diagram
-                </button>
-                <button data-ct-view="barriers" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
-                    🛡️ Barriers
-                </button>
-                <button data-ct-view="pms" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
-                    📅 PMS Schedule
-                </button>
-                <button data-ct-view="issues" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
-                    🔧 Issues
-                </button>
-                <button data-ct-view="tests" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
-                    📋 Test Records
-                </button>
-                <button data-ct-view="alerts" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
-                    🚨 Alerts
-                </button>
-                <button data-ct-view="procedures" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
-                    📋 Procedures
-                </button>
-                <button data-ct-view="fmea" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
-                    ⚠️ FMEA
-                </button>
-                <button data-ct-view="regulatory" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
-                    📄 Regulatory
-                </button>
-                <button data-ct-view="maintenance" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
-                    🔧 History
-                </button>
-                <button data-ct-view="lifecycle" class="px-4 py-2 rounded-lg text-sm font-semibold bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors">
-                    📊 Lifecycle
-                </button>
-            </div>
-
-            <!-- Main Content Container -->
-            <div id="ct-diagram-container" class="min-h-[600px]">
-                <!-- Content will be dynamically rendered here -->
-                <div class="flex items-center justify-center h-96">
-                    <div class="text-center">
-                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500 mx-auto mb-4"></div>
-                        <p class="text-slate-400">Loading Christmas Tree data...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div id="logistics-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Logistics & Asset Management</h2><p id="logistics-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Manage equipment and personnel availability, certifications, and maintenance schedules.</p></div>
             <div id="logistics-content" class="mt-10 grid gap-12 lg:grid-cols-3">
@@ -1320,12 +1264,52 @@
             <div id="pob-content" class="mt-10"></div>
         </div>
 
-        <div id="whitepaper-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div id="whitepaper-view" class="view-container hidden max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h2 class="text-3xl font-bold tracking-tight">Well-Tegra White Paper</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-lg">Dive deeper into the technical architecture and strategic vision behind the Well-Tegra platform. Our white paper provides a comprehensive overview of the privacy-preserving AI, enterprise blockchain, and data unification strategies that power our solution.</p>
-                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
-                    Download the White Paper
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-300">A deep dive into the Old Pie Embassy architectural blueprint that powers the Well-Tegra vision—unifying well identity, history, schematics, barrier management, and AI-assisted program generation.</p>
+            </div>
+
+            <div class="mt-10 grid gap-6 lg:grid-cols-3">
+                <article class="light-card rounded-2xl p-6 border border-slate-700/70 bg-slate-900/40">
+                    <h3 class="text-xl font-semibold mb-3 text-cyan-300">Core Data Objects</h3>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-slate-300">
+                        <li><strong>Well Master Record:</strong> Universal schema that enforces metadata for every attribute, preventing “unknown” data from slipping through.</li>
+                        <li><strong>Well History Ledger:</strong> Event-driven chronology that ties operations, anomalies, and approvals back to the master record.</li>
+                        <li><strong>Wellbore Schematic Object:</strong> SVG-first representation with time-lapse layering for completions, equipment, and failure states.</li>
+                    </ul>
+                </article>
+
+                <article class="light-card rounded-2xl p-6 border border-slate-700/70 bg-slate-900/40">
+                    <h3 class="text-xl font-semibold mb-3 text-cyan-300">Roadmap Alignment</h3>
+                    <p class="text-sm text-slate-300">The white paper mirrors our phased delivery plan:</p>
+                    <ol class="list-decimal list-inside space-y-2 text-sm text-slate-300 mt-3">
+                        <li><strong>Phase 1 – Foundation:</strong> Master Record, History Ledger, schematics, and personnel registry.</li>
+                        <li><strong>Phase 2 – Safety &amp; Planning:</strong> Barrier management, job safety analysis, and program builder.</li>
+                        <li><strong>Phase 3 – Execution:</strong> SOP library, toolstring configurator, and chemical register.</li>
+                        <li><strong>Phase 4 – Advanced Analytics:</strong> Predictive risk modeling and telemetry-driven insights.</li>
+                    </ol>
+                </article>
+
+                <article class="light-card rounded-2xl p-6 border border-slate-700/70 bg-slate-900/40">
+                    <h3 class="text-xl font-semibold mb-3 text-cyan-300">Actionable Enhancements</h3>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-slate-300">
+                        <li>Expand every core object with <em>data_source</em>, <em>verification_status</em>, and <em>completeness_notes</em>.</li>
+                        <li>Unify well history, change requests, and live operations into a single ledger service.</li>
+                        <li>Accelerate barrier dashboards and historical schematic overlays to support audit-ready reviews.</li>
+                        <li>Package “AI context packs” so Gemini prompts always reference the current program snapshot.</li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="mt-10 flex flex-wrap justify-center gap-4">
+                <a href="WHITE_PAPER_INSIGHTS.md" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-blue-500 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/></svg>
+                    Open GitHub Insights
+                </a>
+                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-xl border border-blue-500/60 px-6 py-3 text-base font-semibold text-blue-200 hover:bg-blue-600/10 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/></svg>
+                    Download Full White Paper
                 </a>
             </div>
         </div>
@@ -1453,188 +1437,6 @@
             </div>
         </div>
 
-        <!-- Christmas Tree Viewer (Alternative UI - Currently Not Used) -->
-        <!-- Note: This is an alternative Christmas Tree interface. The active interface is above. -->
-        <!-- This view is disabled to prevent ID conflict. Enable by renaming or integrating features. -->
-        <!--
-        <div id="christmas-tree-alt-view" class="view-container hidden max-w-full mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="text-3xl font-bold tracking-tight">Christmas Tree Equipment & Well Integrity</h2>
-                    <p class="mt-2 max-w-3xl mx-auto text-lg">Manage surface wellhead equipment, monitor integrity status, calculate MAASP, and track safety barrier compliance.</p>
-                </div>
-
-                <! Control Panel -->
-                <div class="grid gap-6 lg:grid-cols-3 mb-8">
-                    <!-- Tree Selection -->
-                    <div class="light-card p-6 rounded-lg">
-                        <h3 class="text-lg font-semibold mb-4 flex items-center">
-                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                            </svg>
-                            Select Well
-                        </h3>
-                        <select id="tree-well-select" class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 mb-4">
-                            <option value="">-- Select a well --</option>
-                        </select>
-                        <button id="tree-load-sample-btn" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
-                            Load Sample Trees
-                        </button>
-                        <div id="tree-import-status" class="mt-3 text-sm text-center hidden"></div>
-                    </div>
-
-                    <!-- MAASP Calculator -->
-                    <div class="light-card p-6 rounded-lg">
-                        <h3 class="text-lg font-semibold mb-4 flex items-center">
-                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                            </svg>
-                            MAASP Status
-                        </h3>
-                        <div id="maasp-display" class="space-y-3 text-sm">
-                            <div class="flex justify-between items-center">
-                                <span class="text-slate-400">Current MAASP:</span>
-                                <span id="maasp-value" class="text-2xl font-bold text-cyan-400">-</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-slate-400">Governing Criterion:</span>
-                                <span id="maasp-criterion" class="font-medium text-slate-200">-</span>
-                            </div>
-                            <div class="mt-4 p-3 bg-slate-900/50 rounded-lg">
-                                <p class="text-xs text-slate-400">MAASP calculated using 5 failure criteria per BG-UKUP Section 7.1</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Integrity Status -->
-                    <div class="light-card p-6 rounded-lg">
-                        <h3 class="text-lg font-semibold mb-4 flex items-center">
-                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                            </svg>
-                            Integrity Status
-                        </h3>
-                        <div id="integrity-status-display" class="space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-400 text-sm">Overall Status:</span>
-                                <span id="overall-status" class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-700 text-slate-300">-</span>
-                            </div>
-                            <div class="space-y-2 text-sm">
-                                <div class="flex justify-between">
-                                    <span class="text-slate-400">Primary Barrier:</span>
-                                    <span id="primary-barrier-status" class="font-medium">-</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-slate-400">Secondary Barrier:</span>
-                                    <span id="secondary-barrier-status" class="font-medium">-</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-slate-400">Active Defects:</span>
-                                    <span id="active-defects-count" class="font-medium text-yellow-400">-</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Main Content Area -->
-                <div class="grid gap-6 lg:grid-cols-2">
-                    <!-- Tree Schematic -->
-                    <div class="light-card p-6 rounded-lg">
-                        <h3 class="text-lg font-semibold mb-4 flex items-center">
-                            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z"/>
-                            </svg>
-                            Christmas Tree Schematic
-                        </h3>
-                        <div id="tree-schematic-container" class="flex items-center justify-center bg-slate-950/40 rounded-lg p-4" style="min-height: 600px;">
-                            <p class="text-slate-500 text-sm">Select a well to view Christmas tree</p>
-                        </div>
-                        <div class="mt-4 flex gap-2">
-                            <button id="tree-export-svg-btn" disabled class="flex-1 bg-slate-700 hover:bg-slate-600 disabled:bg-slate-800 disabled:text-slate-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
-                                Export SVG
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Components List -->
-                    <div class="light-card p-6 rounded-lg">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-semibold flex items-center">
-                                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                                </svg>
-                                Components
-                            </h3>
-                            <button id="add-defect-btn" disabled class="bg-red-600 hover:bg-red-500 disabled:bg-slate-800 disabled:text-slate-600 text-white text-sm font-semibold py-1 px-3 rounded transition-colors">
-                                Log Defect
-                            </button>
-                        </div>
-                        <div id="components-list-container" class="space-y-3" style="max-height: 600px; overflow-y: auto;">
-                            <p class="text-slate-500 text-sm text-center py-8">Select a well to view components</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Defect Logging Modal -->
-                <div id="defect-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-                    <div class="bg-slate-900 border border-slate-700 rounded-lg max-w-2xl w-full p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-xl font-semibold">Log Component Defect</h3>
-                            <button id="defect-modal-close" class="text-slate-400 hover:text-slate-200">
-                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                </svg>
-                            </button>
-                        </div>
-                        <form id="defect-form" class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-slate-300 mb-2">Component</label>
-                                <select id="defect-component-id" required class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500">
-                                    <option value="">-- Select component --</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-300 mb-2">Severity</label>
-                                <select id="defect-severity" required class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500">
-                                    <option value="">-- Select severity --</option>
-                                    <option value="A">A - Critical (Immediate action required)</option>
-                                    <option value="B">B - Major (Barrier integrity compromised)</option>
-                                    <option value="C">C - Monitoring (Degradation detected)</option>
-                                    <option value="D">D - Minor (Documentation only)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-300 mb-2">Defect Type</label>
-                                <select id="defect-type" required class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500">
-                                    <option value="">-- Select type --</option>
-                                    <option value="Leak">Leak</option>
-                                    <option value="Seal Failure">Seal Failure</option>
-                                    <option value="Stuck Valve">Stuck Valve</option>
-                                    <option value="Pressure Loss">Pressure Loss</option>
-                                    <option value="Corrosion">Corrosion</option>
-                                    <option value="Mechanical Failure">Mechanical Failure</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-slate-300 mb-2">Description</label>
-                                <textarea id="defect-description" required rows="3" class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Describe the defect..."></textarea>
-                            </div>
-                            <div class="flex gap-3 pt-4">
-                                <button type="submit" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
-                                    Log Defect
-                                </button>
-                                <button type="button" id="defect-form-cancel" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
 
         <!-- Governance & Compliance Dashboard -->
         <div id="governance-view" class="view-container hidden max-w-full mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -2566,30 +2368,79 @@
                 </div>
 
                 <!-- Getting Started Section -->
-                <div class="mb-8">
+                <div class="mb-10">
                     <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
                         <span class="text-3xl">🚀</span>
-                        Getting Started
+                        Quick Start from the Instruction Manual
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="light-card p-6 rounded-xl hover:shadow-xl transition-all hover:scale-105 cursor-pointer border-2 border-transparent hover:border-blue-500">
-                            <div class="text-4xl mb-3">1️⃣</div>
-                            <h4 class="text-xl font-bold mb-2 text-blue-400">Select Your Role</h4>
-                            <p class="text-slate-300 mb-3">On the home screen, choose your role from 7 persona options to see a personalized dashboard with relevant tools and KPIs.</p>
-                            <button onclick="window.location.hash='#home-view'" class="text-sm text-blue-400 hover:text-blue-300 font-semibold">Go to Dashboard →</button>
-                        </div>
-                        <div class="light-card p-6 rounded-xl hover:shadow-xl transition-all hover:scale-105 cursor-pointer border-2 border-transparent hover:border-green-500">
-                            <div class="text-4xl mb-3">2️⃣</div>
-                            <h4 class="text-xl font-bold mb-2 text-green-400">Explore Key Features</h4>
-                            <p class="text-slate-300 mb-3">Navigate through Well Planner, Well Performer, and role-specific tools using the navigation menu or your dashboard's Jump To panel.</p>
-                            <button onclick="window.location.hash='#planner-view'" class="text-sm text-green-400 hover:text-green-300 font-semibold">Try Well Planner →</button>
-                        </div>
-                        <div class="light-card p-6 rounded-xl hover:shadow-xl transition-all hover:scale-105 cursor-pointer border-2 border-transparent hover:border-purple-500">
-                            <div class="text-4xl mb-3">3️⃣</div>
-                            <h4 class="text-xl font-bold mb-2 text-purple-400">Ask the AI Anything</h4>
-                            <p class="text-slate-300 mb-3">Use the AI Assistant (purple button bottom-left) for instant guidance on any feature or question about Welltegra.</p>
-                            <button onclick="window.location.hash='#ai-helper-view'" class="text-sm text-purple-400 hover:text-purple-300 font-semibold">Open AI Assistant →</button>
-                        </div>
+                        <article class="light-card p-6 rounded-xl border border-slate-700/60 bg-slate-900/40">
+                            <h4 class="text-xl font-bold mb-3 text-blue-300">End Users · 5 Minute Setup</h4>
+                            <ol class="list-decimal list-inside space-y-2 text-sm text-slate-300">
+                                <li>Download the project ZIP from GitHub.</li>
+                                <li>Start a local server (<code>python -m http.server 8000</code>) or use VS Code Live Server.</li>
+                                <li>Open <code>http://localhost:8000</code> and explore PLAN → EXECUTE → ANALYZE journeys.</li>
+                            </ol>
+                            <a href="INSTRUCTION_MANUAL.md#quick-start-guide" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-300 hover:text-blue-200">View detailed steps →</a>
+                        </article>
+                        <article class="light-card p-6 rounded-xl border border-slate-700/60 bg-slate-900/40">
+                            <h4 class="text-xl font-bold mb-3 text-emerald-300">Developers · 10 Minute Setup</h4>
+                            <ol class="list-decimal list-inside space-y-2 text-sm text-slate-300">
+                                <li><code>git clone</code> the repository and run <code>npm install</code>.</li>
+                                <li>Install Playwright browsers with <code>npx playwright install chromium</code>.</li>
+                                <li>Run <code>python -m http.server 8000</code> (or <code>npx http-server -p 8000</code>) and open the browser.</li>
+                            </ol>
+                            <a href="INSTRUCTION_MANUAL.md#quick-start-guide" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-300 hover:text-emerald-200">Developer instructions →</a>
+                        </article>
+                        <article class="light-card p-6 rounded-xl border border-slate-700/60 bg-slate-900/40">
+                            <h4 class="text-xl font-bold mb-3 text-purple-300">Build &amp; Test Essentials</h4>
+                            <ul class="list-disc list-inside space-y-2 text-sm text-slate-300">
+                                <li><code>npm run build:css</code> to regenerate the Tailwind bundle.</li>
+                                <li><code>npm run test:smoke</code> for 30-second validation, <code>npm test</code> for full suite.</li>
+                                <li>UI walkthroughs available via <code>npm run test:ui</code>.</li>
+                            </ul>
+                            <a href="INSTRUCTION_MANUAL.md#quick-start-guide" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-purple-300 hover:text-purple-200">Testing playbook →</a>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- Documentation Hub -->
+                <div class="mb-10">
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <span class="text-3xl">📂</span>
+                        Documentation pulled from GitHub
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <article class="light-card p-6 rounded-xl border border-slate-700/60 bg-slate-900/40">
+                            <h4 class="text-lg font-semibold text-cyan-300 mb-2">Instruction Manual</h4>
+                            <p class="text-sm text-slate-300">Full build notes, personas, deployment guidance, and architecture diagrams.</p>
+                            <a href="INSTRUCTION_MANUAL.md" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200">Open manual →</a>
+                        </article>
+                        <article class="light-card p-6 rounded-xl border border-slate-700/60 bg-slate-900/40">
+                            <h4 class="text-lg font-semibold text-cyan-300 mb-2">User Manual</h4>
+                            <p class="text-sm text-slate-300">Step-by-step walkthroughs, persona playbooks, and an extensive FAQ section.</p>
+                            <a href="USER_MANUAL.md" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200">Open user manual →</a>
+                        </article>
+                        <article class="light-card p-6 rounded-xl border border-slate-700/60 bg-slate-900/40">
+                            <h4 class="text-lg font-semibold text-cyan-300 mb-2">Readiness Checklist</h4>
+                            <p class="text-sm text-slate-300">Operational sign-off gates mapped to the digital checklist workflow.</p>
+                            <a href="CHECKLIST.md" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200">Download checklist →</a>
+                        </article>
+                        <article class="light-card p-6 rounded-xl border border-slate-700/60 bg-slate-900/40">
+                            <h4 class="text-lg font-semibold text-cyan-300 mb-2">Deployment Guide</h4>
+                            <p class="text-sm text-slate-300">Static hosting steps, caching configuration, and CDN hardening for production launches.</p>
+                            <a href="DEPLOYMENT_GUIDE.md" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200">Deployment steps →</a>
+                        </article>
+                        <article class="light-card p-6 rounded-xl border border-slate-700/60 bg-slate-900/40">
+                            <h4 class="text-lg font-semibold text-cyan-300 mb-2">Testing Guide</h4>
+                            <p class="text-sm text-slate-300">Playwright scenarios, smoke test matrix, and troubleshooting tips.</p>
+                            <a href="TESTING_GUIDE.md" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200">Testing guide →</a>
+                        </article>
+                        <article class="light-card p-6 rounded-xl border border-slate-700/60 bg-slate-900/40">
+                            <h4 class="text-lg font-semibold text-cyan-300 mb-2">Demo Program Plan</h4>
+                            <p class="text-sm text-slate-300">Storyboard for walkthroughs and talking points used in investor demos.</p>
+                            <a href="DEMO_PROGRAM_PLAN.md" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200">Review demo plan →</a>
+                        </article>
                     </div>
                 </div>
 
@@ -2908,15 +2759,26 @@
                 </div>
                 <div>
                     <h4 class="text-xl font-semibold">My Perspective</h4>
-                    <p>I'm not a software developer who decided to get into oil and gas. I'm a well services guy who learned to code. My career started at the sharp end with Tristar Oilfield Services and took me around the world, working with service leaders like Expro and Wellserv, and later supervising operations for major operators like BG Group, CNR, and Woodside. I've been on both sides of the fenceâ€”I know the service company's challenges and the operator's objectives. That's the insight Well-Tegra is built on.</p>
+                    <p>I'm not a software developer who decided to get into oil and gas. I'm a well services guy who learned to code. My career started at the sharp end with Tristar Oilfield Services and took me around the world, working with service leaders like Expro and Wellserv, and later supervising operations for major operators like BG Group, CNR, and Woodside. I've been on both sides of the fence—I know the service company's challenges and the operator's objectives. That's the insight Well-Tegra is built on.</p>
                 </div>
-                 <div>
-                    <h4 class="text-xl font-semibold">Why I Built This</h4>
-                    <p>I've seen first-hand how much time, money, and energy we waste because our data is a mess. It's locked in different systems, buried in old reports, and stuck in spreadsheets. We repeat the same mistakes because the lessons learned from one job are never available for the next. The "Well From Hell" in this demo isn't an exaggeration; it's a sanitized version of the real-world train wrecks I've witnessedâ€”and helped clean up.</p>
-                 <div>
+                <div>
                     <h4 class="text-xl font-semibold">Why I Built This</h4>
                     <p>I've seen first-hand how much time, money, and energy we waste because our data is a mess. It's locked in different systems, buried in old reports, and stuck in spreadsheets. We repeat the same mistakes because the lessons learned from one job are never available for the next. The "Well From Hell" in this demo isn't an exaggeration; it's a sanitized version of the real-world train wrecks I've witnessed—and helped clean up.</p>
                     <p class="mt-2">Well-Tegra is my answer to that chaos. It's a platform designed from an operator's perspective, focused on a single source of truth that connects planning, execution, and analysis.</p>
+                </div>
+                <div class="bg-slate-900/40 border border-slate-700 rounded-lg p-6 space-y-4">
+                    <h4 class="text-xl font-semibold">What Well-Tegra Delivers Today</h4>
+                    <ul class="list-disc list-inside space-y-2 text-slate-300">
+                        <li>Intention-driven homepage journeys that guide teams into Plan, Execute, and Analyze workstreams with ROI tracking.</li>
+                        <li>A six-step Well Intervention Planner that blends offset lessons learned, AI guidance, and operational program generation.</li>
+                        <li>Live Operations monitoring with simulated telemetry, anomaly detection, and post-job analytics ready for export.</li>
+                        <li>Data Quality and Governance dashboards with remediation gates so portfolio health stays audit-ready.</li>
+                    </ul>
+                    <p class="text-sm text-slate-400">Dive into the full build notes, personas, and workflows in the Instruction Manual.</p>
+                    <a href="INSTRUCTION_MANUAL.md" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2.5 rounded-lg transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/></svg>
+                        Open Instruction Manual
+                    </a>
                 </div>
                 <div class="bg-blue-50 dark:bg-blue-900/50 border-l-4 border-blue-400 p-4 rounded-r-lg">
                     <h4 class="font-bold text-blue-800 dark:text-blue-300">The Path Forward</h4>
@@ -3380,11 +3242,11 @@
             </div>
         </div>
 
-        <!-- Service Line Readiness Checklists for Slick/CT/Wireline Specialists -->
+        <!-- Operational Readiness Checklist -->
         <div id="readiness-checklist-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold tracking-tight">Service Line Readiness Checklists</h2>
-                <p class="mt-2 max-w-3xl mx-auto text-lg text-blue-100">Step 4 & 5: Mandatory visual sign-offs on safety-critical constraints for specialized service lines</p>
+                <h2 class="text-3xl font-bold tracking-tight">Operational Readiness Checklist</h2>
+                <p class="mt-2 max-w-3xl mx-auto text-lg text-blue-100">Confirm people, equipment, and data readiness with nine quick validations and direct GitHub references.</p>
             </div>
             <div id="readiness-checklist-content">
                 <!-- Content will be loaded by JavaScript -->
@@ -3441,98 +3303,74 @@
                 <div>
                     <h3 class="text-2xl font-bold text-white mb-6">Featured Videos</h3>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <!-- Video placeholders - these will be replaced when you add actual video IDs -->
-                        <div class="bg-slate-800/50 rounded-lg p-6 border border-slate-700">
-                            <div class="aspect-video bg-slate-900 rounded-lg mb-4 flex items-center justify-center border-2 border-dashed border-slate-600">
-                                <div class="text-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-slate-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                    <p class="text-slate-400 text-sm">Video coming soon</p>
-                                    <p class="text-slate-500 text-xs mt-1">Subscribe to get notified</p>
-                                </div>
+                        <article class="bg-slate-800/50 rounded-lg p-6 border border-slate-700 shadow-xl">
+                            <div class="aspect-video mb-4 overflow-hidden rounded-lg border border-slate-700/80">
+                                <video controls preload="metadata" poster="assets/logo.jpg" class="w-full h-full object-cover">
+                                    <source src="assets/hero.mp4" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
                             </div>
-                            <h4 class="text-lg font-semibold text-white mb-2">Platform Overview</h4>
-                            <p class="text-slate-400 text-sm">Introduction to Well-Tegra and its capabilities</p>
-                        </div>
+                            <h4 class="text-lg font-semibold text-white mb-2">Well-Tegra Platform Walkthrough</h4>
+                            <p class="text-slate-400 text-sm mb-4">A rapid overview of the Well Planner, Live Operations cockpit, and analytics accelerators.</p>
+                            <a href="assets/hero-video-descriptions.vtt" class="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 font-semibold" target="_blank" rel="noopener noreferrer">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m0-4v4m0-4L9 6m6 4l-6 4m0 0L4.447 17.382A1 1 0 013 16.488V9.724a1 1 0 011.447-.894L9 11m0 4V7"/></svg>
+                                View full transcript (.vtt)
+                            </a>
+                        </article>
 
-                        <div class="bg-slate-800/50 rounded-lg p-6 border border-slate-700">
-                            <div class="aspect-video bg-slate-900 rounded-lg mb-4 flex items-center justify-center border-2 border-dashed border-slate-600">
-                                <div class="text-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-slate-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                    <p class="text-slate-400 text-sm">Video coming soon</p>
-                                    <p class="text-slate-500 text-xs mt-1">Subscribe to get notified</p>
-                                </div>
-                            </div>
-                            <h4 class="text-lg font-semibold text-white mb-2">Feature Walkthrough</h4>
-                            <p class="text-slate-400 text-sm">Deep dive into key features and workflows</p>
-                        </div>
-
-                        <div class="bg-slate-800/50 rounded-lg p-6 border border-slate-700">
-                            <div class="aspect-video bg-slate-900 rounded-lg mb-4 flex items-center justify-center border-2 border-dashed border-slate-600">
-                                <div class="text-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-slate-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                    <p class="text-slate-400 text-sm">Video coming soon</p>
-                                    <p class="text-slate-500 text-xs mt-1">Subscribe to get notified</p>
-                                </div>
-                            </div>
-                            <h4 class="text-lg font-semibold text-white mb-2">Case Study</h4>
-                            <p class="text-slate-400 text-sm">Real-world application and results</p>
-                        </div>
-
-                        <div class="bg-slate-800/50 rounded-lg p-6 border border-slate-700">
-                            <div class="aspect-video bg-slate-900 rounded-lg mb-4 flex items-center justify-center border-2 border-dashed border-slate-600">
-                                <div class="text-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-slate-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                    <p class="text-slate-400 text-sm">Video coming soon</p>
-                                    <p class="text-slate-500 text-xs mt-1">Subscribe to get notified</p>
-                                </div>
-                            </div>
-                            <h4 class="text-lg font-semibold text-white mb-2">Technical Deep Dive</h4>
-                            <p class="text-slate-400 text-sm">Architecture and integration capabilities</p>
-                        </div>
+                        <article class="bg-slate-800/50 rounded-lg p-6 border border-slate-700 shadow-xl">
+                            <h4 class="text-lg font-semibold text-white mb-3">Scenario Layering Demo</h4>
+                            <p class="text-slate-400 text-sm mb-4">Step through a complete high/low case build using our simulator-ready intervention templates.</p>
+                            <ul class="space-y-3 text-sm text-slate-300">
+                                <li class="flex items-start gap-2"><span class="mt-1 text-cyan-300">•</span><span>Review pre-built contingencies for HPHT workovers and complex fishing programs.</span></li>
+                                <li class="flex items-start gap-2"><span class="mt-1 text-cyan-300">•</span><span>See how readiness gates trigger automated notifications for supply chain and HSE owners.</span></li>
+                                <li class="flex items-start gap-2"><span class="mt-1 text-cyan-300">•</span><span>Export the bundle directly into the execution cockpit with a single click.</span></li>
+                            </ul>
+                            <a href="#scenario-layering-view" class="mt-5 inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 font-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                Launch Scenario Layering Workspace
+                            </a>
+                        </article>
                     </div>
                 </div>
 
-                <!-- Additional Resources -->
-                <div class="border-t border-slate-700 pt-8">
-                    <h3 class="text-2xl font-bold text-white mb-6">Additional Resources</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-blue-900/20 border border-blue-500/30 rounded-lg p-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                            <h4 class="font-semibold text-white mb-2">Documentation</h4>
-                            <p class="text-slate-400 text-sm mb-4">User guides and technical documentation</p>
-                            <a href="#whitepaper-view" class="text-blue-400 hover:text-blue-300 text-sm font-semibold">View Whitepaper →</a>
+                <!-- Documentation pulled directly from GitHub -->
+                <section class="space-y-6">
+                    <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700 shadow-xl flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                        <div>
+                            <h4 class="text-lg font-semibold text-white">GitHub Documentation Directory</h4>
+                            <p class="text-slate-300 text-sm mt-2">Every link below loads the live markdown straight from the repository so your team never lands on a dead-end stub.</p>
                         </div>
-                        <div class="bg-emerald-900/20 border border-emerald-500/30 rounded-lg p-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-emerald-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
-                            <h4 class="font-semibold text-white mb-2">API Reference</h4>
-                            <p class="text-slate-400 text-sm mb-4">Integration guides and code examples</p>
-                            <a href="#developer-portal-view" class="text-emerald-400 hover:text-emerald-300 text-sm font-semibold">View Developer Portal →</a>
-                        </div>
-                        <div class="bg-purple-900/20 border border-purple-500/30 rounded-lg p-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-purple-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <h4 class="font-semibold text-white mb-2">FAQs</h4>
-                            <p class="text-slate-400 text-sm mb-4">Frequently asked questions</p>
-                            <a href="#faq-view" class="text-purple-400 hover:text-purple-300 text-sm font-semibold">View FAQs →</a>
+                        <a href="https://github.com/WellTegra/welltegra.network/tree/main/docs" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold px-4 py-2 rounded-lg transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            Browse docs on GitHub
+                        </a>
+                    </div>
+                    <div id="documentation-directory" class="space-y-6" aria-live="polite">
+                        <div class="rounded-2xl border border-dashed border-slate-700/60 bg-slate-900/40 p-6 text-center text-sm text-slate-400">
+                            Loading documentation catalog from repository…
                         </div>
                     </div>
+                </section>
+
+                <!-- Additional Media -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <article class="bg-slate-800/50 rounded-lg p-6 border border-slate-700 shadow-xl">
+                        <h4 class="text-lg font-semibold text-white mb-2">Product Release Notes</h4>
+                        <p class="text-slate-400 text-sm mb-4">Stay updated on the latest product enhancements, integrations, and performance upgrades.</p>
+                        <a href="RELEASE_NOTES.md" class="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 font-semibold" target="_blank" rel="noopener noreferrer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                            Read the latest release notes
+                        </a>
+                    </article>
+                    <article class="bg-slate-800/50 rounded-lg p-6 border border-slate-700 shadow-xl">
+                        <h4 class="text-lg font-semibold text-white mb-2">Schedule a Guided Tour</h4>
+                        <p class="text-slate-400 text-sm mb-4">Book time with our team to tailor Well-Tegra for your next campaign.</p>
+                        <a href="mailto:contact@welltegra.network?subject=Schedule%20a%20Well-Tegra%20Tour" class="inline-flex items-center gap-2 text-cyan-300 hover:text-cyan-200 font-semibold">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12v.01"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16h.01"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20h.01"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4a4 4 0 118 0v4H8V4z"/></svg>
+                            Contact us for a walkthrough
+                        </a>
+                    </article>
                 </div>
             </div>
         </div>
@@ -3806,100 +3644,7 @@
 
     <div id="planner-toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-6 right-6 hidden rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg">Integrated program synced</div>
 
-    <!-- Floating AI Assistant Button -->
-    <button id="floating-ai-button"
-            class="fixed bottom-6 left-6 bg-purple-600 hover:bg-purple-700 text-white rounded-full p-4 shadow-2xl shadow-purple-500/50 transition-all duration-300 hover:scale-110 z-50 group"
-            title="Ask the AI Assistant"
-            aria-label="Open AI Assistant">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <span class="absolute left-full ml-3 px-3 py-1 bg-slate-800 text-white text-sm rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-            Need help? Ask the AI!
-        </span>
-    </button>
-
-</div>
-
-<!-- Footer -->
-<footer class="bg-slate-900 border-t border-slate-800 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <!-- Brand Column -->
-            <div class="col-span-1 md:col-span-2">
-                <div class="flex items-center mb-4">
-                    <img src="assets/logo.jpg" alt="Well-Tegra Logo" class="h-10 w-auto mr-3">
-                    <h3 class="text-xl font-bold text-white">Well-Tegra</h3>
-                </div>
-                <p class="text-slate-400 text-sm mb-4">
-                    The Digital Revolution in Well Engineering. Transform chaos into clarity with our comprehensive intervention planning platform.
-                </p>
-                <div class="flex gap-4">
-                    <a href="https://www.youtube.com/@WellTegra" target="_blank" rel="noopener noreferrer"
-                       class="p-2 rounded-full bg-red-600/20 hover:bg-red-600/30 text-red-400 hover:text-red-300 transition"
-                       aria-label="YouTube Channel" title="YouTube">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                        </svg>
-                    </a>
-                    <a href="https://www.linkedin.com/in/kenmckenziewellservicesken-mckenzie-b8901658" target="_blank" rel="noopener noreferrer"
-                       class="p-2 rounded-full bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 hover:text-blue-300 transition"
-                       aria-label="LinkedIn Profile" title="LinkedIn">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                    </a>
-                    <a href="mailto:info@welltegra.network"
-                       class="p-2 rounded-full bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white transition"
-                       aria-label="Email" title="Email: info@welltegra.network">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Quick Links -->
-            <div>
-                <h4 class="text-white font-semibold mb-4">Quick Links</h4>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#home-view" class="text-slate-400 hover:text-white transition">Home</a></li>
-                    <li><a href="#planner-view" class="text-slate-400 hover:text-white transition">Planner</a></li>
-                    <li><a href="#media-view" class="text-slate-400 hover:text-white transition">Videos & Media</a></li>
-                    <li><a href="#developer-portal-view" class="text-slate-400 hover:text-white transition">Developer Portal</a></li>
-                    <li><a href="#about-view" class="text-slate-400 hover:text-white transition">About</a></li>
-                </ul>
-            </div>
-
-            <!-- Resources -->
-            <div>
-                <h4 class="text-white font-semibold mb-4">Resources</h4>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#whitepaper-view" class="text-slate-400 hover:text-white transition">White Paper</a></li>
-                    <li><a href="#faq-view" class="text-slate-400 hover:text-white transition">FAQs</a></li>
-                    <li><a href="#security-view" class="text-slate-400 hover:text-white transition">Security</a></li>
-                    <li><a href="#data-view" class="text-slate-400 hover:text-white transition">Data Export</a></li>
-                    <li><a href="#governance-view" class="text-slate-400 hover:text-white transition">Governance</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Bottom Bar -->
-        <div class="border-t border-slate-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="text-slate-500 text-sm">
-                © 2024 Well-Tegra Data Solutions. All rights reserved.
-            </p>
-            <div class="flex gap-4 text-sm">
-                <a href="#security-view" class="text-slate-400 hover:text-white transition">Privacy Policy</a>
-                <span class="text-slate-700">|</span>
-                <a href="#security-view" class="text-slate-400 hover:text-white transition">Terms of Service</a>
-                <span class="text-slate-700">|</span>
-                <a href="mailto:info@welltegra.network" class="text-slate-400 hover:text-white transition">Contact</a>
-            </div>
-        </div>
-    </div>
-</footer>
-
+    <script src="assets/js/documentation-registry.js?v=23.0.21" defer></script>
     <script src="assets/js/app.js?v=23.0.21" defer></script>
     <script src="assets/js/mobile-communicator.js?v=23.0.21" defer></script>
 
@@ -3911,13 +3656,10 @@
     <!-- Toolstring Builder -->
     <script src="assets/js/toolstring-builder.js?v=23.0.21" defer></script>
 
-    <!-- Christmas Tree & Wellhead Integrity -->
-    <script src="assets/js/christmas-tree-integrity.js?v=23.0.18" defer></script>
-
     <!-- Live Operations Popup Window -->
     <script src="assets/js/live-operations-popup.js?v=23.0.21" defer></script>
 
-welfare state    <!-- Demo Mode for Testing -->
+    <!-- Demo Mode for Testing -->
     <script src="assets/js/demo-mode.js?v=23.0.21" defer></script>
 
     <!-- AI Assistant (v23.0.18+) -->
@@ -3927,10 +3669,6 @@ welfare state    <!-- Demo Mode for Testing -->
     <script src="assets/js/wellbore-viewer.js?v=23.0.21" defer></script>
     <script src="assets/js/well-data-manager.js?v=23.0.21" defer></script>
     <script src="assets/js/wellbore-controller.js?v=23.0.21" defer></script>
-
-    <!-- Christmas Tree & Well Integrity System -->
-    <script src="assets/js/christmas-tree-manager.js?v=23.0.21" defer></script>
-    <script src="assets/js/christmas-tree-ui.js?v=23.0.21" defer></script>
 
     <!-- Governance & Compliance Management System -->
     <script src="assets/js/data-quality-gateway.js?v=23.0.21" defer></script>
@@ -4050,25 +3788,49 @@ welfare state    <!-- Demo Mode for Testing -->
                     <h3 class="text-cyan-400 font-bold text-lg mb-4">Resources</h3>
                     <ul class="space-y-2">
                         <li>
-                            <a href="#whitepaper-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
+                            <a href="START_HERE.md" target="_blank" rel="noopener noreferrer" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253C13.168 5.477 14.754 5 16.5 5s3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18s-3.332.477-4.5 1.253"/></svg>
+                                Start Here Guide
+                            </a>
+                        </li>
+                        <li>
+                            <a href="INSTRUCTION_MANUAL.md" target="_blank" rel="noopener noreferrer" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Instruction Manual
+                            </a>
+                        </li>
+                        <li>
+                            <a href="USER_MANUAL.md#faq" target="_blank" rel="noopener noreferrer" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                User Manual &amp; FAQ
+                            </a>
+                        </li>
+                        <li>
+                            <a href="CHECKLIST.md" target="_blank" rel="noopener noreferrer" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Readiness Checklist
+                            </a>
+                        </li>
+                        <li>
+                            <a href="TESTING_GUIDE.md" target="_blank" rel="noopener noreferrer" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                Testing Guide
+                            </a>
+                        </li>
+                        <li>
+                            <a href="DEPLOYMENT_GUIDE.md" target="_blank" rel="noopener noreferrer" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h6m0 0V3m0 4L3 4m3 13h12M9 21h6m0 0v-4m0 4l6-3-6-3"/></svg>
+                                Deployment Guide
+                            </a>
+                        </li>
+                        <li>
+                            <a href="WHITE_PAPER_INSIGHTS.md" target="_blank" rel="noopener noreferrer" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                                White Paper
+                                White Paper Insights
                             </a>
                         </li>
                         <li>
-                            <a href="#help-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                Help & Documentation
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#faq-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
-                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                FAQ
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#media-view" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
+                            <a href="https://www.youtube.com/@WellTegra" target="_blank" rel="noopener noreferrer" class="text-white hover:text-cyan-300 transition-colors flex items-center gap-2 font-semibold">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                 Video Tutorials
                             </a>
