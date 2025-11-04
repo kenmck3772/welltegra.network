@@ -41,9 +41,11 @@ jobs:
 
       - name: Parse branch names
         id: parse
+        env:
+          PR_DATA: ${{ steps.pr.outputs.data }}
         run: |
-          echo "head_ref=$(jq -r .head.ref <<< '${{ steps.pr.outputs.data }}')" >> $GITHUB_OUTPUT
-          echo "base_ref=$(jq -r .base.ref <<< '${{ steps.pr.outputs.data }}')" >> $GITHUB_OUTPUT
+          echo "head_ref=$(jq -r .head.ref <<< \"$PR_DATA\")" >> $GITHUB_OUTPUT
+          echo "base_ref=$(jq -r .base.ref <<< \"$PR_DATA\")" >> $GITHUB_OUTPUT
 
       - name: Fetch branches
         run: |
