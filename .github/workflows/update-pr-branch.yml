@@ -1,7 +1,4 @@
-name: Update PR Branch with main
-permissions:
-  contents: read
-  pull-requests: write
+name: Update PR Branch by creating merge PR
 
 on:
   workflow_dispatch:
@@ -14,9 +11,13 @@ on:
         description: 'Merge strategy: merge (default) or rebase'
         required: false
         default: 'merge'
+      create_pr_target:
+        description: 'Target of the new PR: head (merge into head branch) or base (merge into base/main)'
+        required: false
+        default: 'head'
 
 jobs:
-  update-branch:
+  update-branch-and-create-pr:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -32,20 +33,25 @@ jobs:
 
       - name: Get PR info
         id: pr
-        uses: octokit/request-action@v4
+        uses: actions/github-script@v6
         with:
-          route: GET /repos/{owner}/{repo}/pulls/{pull_number}
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.event.repository.name }}
-          pull_number: ${{ github.event.inputs.pr_number }}
+          script: |
+            const prNumber = Number(core.getInput('pr_number') || github.context.payload.inputs?.pr_number);
+            if (!prNumber) throw new Error('pr_number input is required');
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+            return { head_ref: pr.head.ref, head_repo_full_name: pr.head.repo.full_name, base_ref: pr.base.ref, pr_number: prNumber };
 
       - name: Parse branch names
         id: parse
-        env:
-          PR_DATA: ${{ steps.pr.outputs.data }}
         run: |
-          echo "head_ref=$(jq -r .head.ref <<< \"$PR_DATA\")" >> $GITHUB_OUTPUT
-          echo "base_ref=$(jq -r .base.ref <<< \"$PR_DATA\")" >> $GITHUB_OUTPUT
+          echo "head_ref=$(jq -r .head_ref <<< '${{ steps.pr.outputs.result }}')" >> $GITHUB_OUTPUT
+          echo "head_repo_full_name=$(jq -r .head_repo_full_name <<< '${{ steps.pr.outputs.result }}')" >> $GITHUB_OUTPUT
+          echo "base_ref=$(jq -r .base_ref <<< '${{ steps.pr.outputs.result }}')" >> $GITHUB_OUTPUT
+          echo "pr_number=$(jq -r .pr_number <<< '${{ steps.pr.outputs.result }}')" >> $GITHUB_OUTPUT
 
       - name: Fetch branches
         run: |
@@ -55,28 +61,95 @@ jobs:
       - name: Checkout head branch
         run: git checkout -B ${{ steps.parse.outputs.head_ref }} origin/${{ steps.parse.outputs.head_ref }}
 
-      - name: Merge main into branch
-        run: |
-          if [ "${{ github.event.inputs.merge_strategy }}" = "rebase" ]; then
-            git rebase origin/main
-          else
-            git merge --no-ff origin/main -m "Merge main into ${{ steps.parse.outputs.head_ref }}"
-          fi
-        continue-on-error: true
+      - name: Attempt merge main into head
         id: merge_step
-
-      - name: Show merge status
-        if: steps.merge_step.outcome != 'success'
         run: |
-          echo "Merge failed or conflicts detected."
-          git status --short
-          echo "Conflicting files:"
-          git diff --name-only --diff-filter=U || true
-          exit 1
+          set -o pipefail
+          if [ "${{ github.event.inputs.merge_strategy }}" = "rebase" ]; then
+            git rebase origin/main 2>&1 | tee rebase.log || true
+            echo "REBASE_OUTPUT<<EOF" >> $GITHUB_OUTPUT
+            cat rebase.log >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            if git rebase --show-current-patch > /dev/null 2>&1; then
+              echo "rebase_failed=true" >> $GITHUB_OUTPUT
+            else
+              echo "rebase_failed=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            git merge --no-ff origin/main -m "Merge main into ${{ steps.parse.outputs.head_ref }}" 2>&1 | tee merge.log || true
+            echo "MERGE_OUTPUT<<EOF" >> $GITHUB_OUTPUT
+            cat merge.log >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            if git ls-files -u | grep -q '^'; then
+              echo "merge_conflicts=true" >> $GITHUB_OUTPUT
+            else
+              echo "merge_conflicts=false" >> $GITHUB_OUTPUT
+            fi
+          fi
 
-      - name: Push updated branch
-        if: steps.merge_step.outcome == 'success'
+      - name: Inspect merge result
+        run: |
+          echo "Merge step outputs:";
+          cat <<EOF
+          merge_conflicts: ${{ steps.merge_step.outputs.merge_conflicts }}
+          EOF
+          git status --short || true
+          git diff --name-only --diff-filter=U || true
+
+      - name: Create temporary branch with merge state
+        if: always()
         env:
           TOKEN: ${{ secrets.MERGE_TOKEN }}
         run: |
-          git push https://x-access-token:${TOKEN}@github.com/${{ github.repository_owner }}/${{ github.event.repository.name }} HEAD:${{ steps.parse.outputs.head_ref }}
+          timestamp=$(date -u +"%Y%m%d%H%M%S")
+          PR=${{ steps.parse.outputs.pr_number }}
+          TMP_BRANCH="automerge/pr-${PR}-main-${timestamp}"
+          git branch -f "${TMP_BRANCH}"
+          git push https://x-access-token:${TOKEN}@github.com/${{ github.repository_owner }}/${{ github.event.repository.name }} ${TMP_BRANCH} -f
+          echo "tmp_branch=${TMP_BRANCH}" >> $GITHUB_OUTPUT
+
+      - name: Create PR for the temporary branch
+        id: create_pr
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const prNumber = Number(core.getInput('pr_number') || github.context.payload.inputs?.pr_number);
+            const targetChoice = core.getInput('create_pr_target') || github.context.payload.inputs?.create_pr_target || 'head';
+            const headRef = '${{ steps.parse.outputs.head_ref }}';
+            const baseRef = '${{ steps.parse.outputs.base_ref }}';
+            const tmpBranchName = '${{ steps.create_temporary_branch.outputs.tmp_branch }}' || `automerge/pr-${prNumber}-main`;
+            let newPr;
+            if (targetChoice === 'head') {
+              newPr = await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `Automated merge of main into ${headRef} (PR #${prNumber})`,
+                head: tmpBranchName,
+                base: headRef,
+                body: `Automated merge of main into ${headRef}. This PR contains the merge commit from main into the PR branch. Original PR: #${prNumber}`
+              });
+            } else {
+              newPr = await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `Automated merge PR: merge ${headRef} (PR #${prNumber}) into ${baseRef}`,
+                head: tmpBranchName,
+                base: baseRef,
+                body: `Automated merge PR from ${tmpBranchName} to ${baseRef} containing the merge of main and ${headRef}. Original PR: #${prNumber}`
+              });
+            }
+            return { new_pr_number: newPr.data.number, new_pr_url: newPr.data.html_url };
+
+      - name: Post comment on original PR with link to new PR
+        if: steps.create_pr.outputs.result != ''
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const prNumber = Number(core.getInput('pr_number') || github.context.payload.inputs?.pr_number);
+            const parsed = JSON.parse('${{ steps.create_pr.outputs.result }}');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: `An automated merge attempt was made. A new PR has been opened for review: ${parsed.new_pr_url}`
+            });
