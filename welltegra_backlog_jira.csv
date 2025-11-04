@@ -1,0 +1,131 @@
+Summary,Issue Type,Priority,Description,Labels,Components
+"ROI widget (offline, client-side)",Story,Highest,"Build a lightweight ROI calculator with inputs for engineers, NPT reduction, and time reclaimed; produce a sharable summary.
+
+Acceptance Criteria:
+- Defaults: 20 engineers, 20% NPT, 40% time
+- Works offline, <50KB JS
+- Copy-to-clipboard summary
+- Values persist locally","welltegra,pilot,ui,roi","UI,Reporting"
+Error handling & telemetry for parsers,Task,Highest,"Instrument CSV/WITSML/PDF parsers with structured logs, IDs, and user-visible toasts.
+
+Acceptance Criteria:
+- Simulate 3 failure modes and display human-readable messages
+- Backoff/retry for feeds
+- Correlate logs with error IDs","welltegra,pilot,quality,telemetry","Ingestion,Data/ML"
+Tests/CI & packaging (run in 2 minutes),Task,Highest,"Add unit tests for envelope math and parsers; smoke test generates closeout.html; ship a self-contained ZIP.
+
+Acceptance Criteria:
+- CI green
+- README allows setup and run in ≤2 minutes
+- Release artifact <50MB","welltegra,pilot,ci","DevOps,Reporting"
+Auto-refresh white paper & promos from live artifacts,Story,Highest,"Automate regeneration of PDF/DOCX and promo images from latest KPIs and charts.
+
+Acceptance Criteria:
+- One command updates PDF, DOCX, and visuals
+- Pulls charts from out/ and embeds in docs","welltegra,docs,marketing",Reporting
+WellView/OpenWells importer + DQ report,Story,High,"Ingest WellView/OpenWells CSV/XML into canonical Activity records with a data quality report.
+
+Acceptance Criteria:
+- Map {date, phase, activity_code, duration, comments, AFE, cost}
+- Validate ≤24h/day and known codes
+- DQ report with line references","welltegra,ingestion,ops",Ingestion
+Plan‑vs‑Actual charts (client‑side),Story,High,"Render WHP/HL time series against envelopes in both close-out and dashboard; highlight breaches.
+
+Acceptance Criteria:
+- Read edr_channels.jsonl + envelopes.json
+- 1‑min downsample, offline-capable
+- Keyboard accessible; tooltips show residuals","welltegra,ui,analytics","UI,Reporting"
+Watermarked PDF export + SharePoint uploader,Story,High,"Export the close-out as a branded, watermarked PDF and push to SharePoint with metadata.
+
+Acceptance Criteria:
+- ≤10MB PDF identical to HTML
+- Upload to Operations/W666/{date}
+- Metadata {well, phase, owner, hash}
+- Return URL and log audit entry","welltegra,reporting,sharepoint","Reporting,Integrations"
+Audit log export with hash chain,Story,High,"Provide CSV/JSON export of approvals, edits, and MOC transitions with hash chaining.
+
+Acceptance Criteria:
+- Query by date range and user
+- Verifier script checks chain integrity","welltegra,governance,audit","Governance,Security"
+Anomaly + change‑point detection,Story,High,"Add residual breach detection (3 consecutive) and simple CUSUM change-point over 10‑min windows.
+
+Acceptance Criteria:
+- Spike at t≈75 triggers exactly one S2+ alert
+- Severity bands at 2%/5% of envelope span","welltegra,analytics,ml",Data/ML
+AFE variance & burn‑rate tracker,Story,High,"Compute and display variance vs AFE using durations and rate cards; alert on thresholds.
+
+Acceptance Criteria:
+- Thresholds at 5% and 10%
+- CSV export of daily variance
+- Analyzer overlay chart","welltegra,finance,ops","Reporting,UI"
+Energy & emissions estimator,Story,High,"Estimate diesel draw and CO₂e per activity with overrideable factors; include in close-out.
+
+Acceptance Criteria:
+- Totals by activity and job
+- Downloadable CSV of factors/assumptions","welltegra,hse,emissions","Reporting,Data/ML"
+Vendor scorecard (post‑job),Story,High,"Aggregate vendor performance from service events and activities into a scorecard.
+
+Acceptance Criteria:
+- Grade A–D, drill-down to source entries
+- Export CSV/PDF","welltegra,vendor,quality",Reporting
+Lessons‑learned knowledge base,Story,High,"Create/search lesson cards with tags and links to steps and channels.
+
+Acceptance Criteria:
+- Add from Analyzer view
+- Tag search retrieves cards
+- Exportable JSON/CSV","welltegra,knowledge","UI,Reporting"
+OSDU read bridge (headers/trajectories),Story,High,"Read OSDU sample datasets for well headers/trajectories and map to Planner context.
+
+Acceptance Criteria:
+- Display well path and metadata panel
+- Works with sample IDs","welltegra,osdu,ingestion","Integrations,Ingestion"
+Smart‑contract stubs (sign/verify),Story,High,"Provide lightweight sign/verify for approvals and MOC events to show verifiable provenance.
+
+Acceptance Criteria:
+- Sign returns proof blob
+- Viewer shows 'verified' badge
+- Offline verifier script checks signature + hash","welltegra,blockchain,governance","Governance,Security"
+"WITSML 1.4/2.0 client (resilient, unit‑normalized)",Story,Medium,"Implement WITSML read with reconnect/backoff; map Channel/ChannelSet to EDRSample; normalize units.
+
+Acceptance Criteria:
+- 60‑min backfill on start, then 1‑min increments
+- Unit map psi/klbf; gap detection and logging","welltegra,ingestion,witsml","Integrations,Ingestion"
+PDF→JSON extractor (service reports/JSAs),Story,Medium,"Parse 3 vendor templates to extract key fields with confidence scoring and a human review queue.
+
+Acceptance Criteria:
+- Fields: job, depth_from/to, issue, npt_hours, notes
+- <90% confidence routed to review UI","welltegra,ml,ocr","Data/ML,Ingestion"
+Risk Register / JSA pre‑fill,Story,Medium,"Suggest hazards and bow‑tie controls from procedure steps to pre‑fill JSA.
+
+Acceptance Criteria:
+- Editable JSA; export PDF
+- Trace hazards to step IDs","welltegra,hse,planning","UI,Reporting"
+RBAC + SSO (OIDC/SAML),Story,Medium,"Add Azure AD OIDC with role claims mapped to Admin, Planner, Supervisor, HSE, Vendor, Viewer.
+
+Acceptance Criteria:
+- Role‑gated actions enforced
+- Audit entries capture user identity","welltegra,security,sso","Security,Governance"
+Barrier envelopes (D‑010 aligned),Story,Medium,"Compute two‑barrier status from activity context and display impairments in Performer.
+
+Acceptance Criteria:
+- Barrier panel with R/A/G status
+- Logged warnings on impairment","welltegra,hse,barriers","UI,Governance"
+Procedure Composer (AI‑assisted),Story,Low,"Draft procedure steps with durations, resources, and risks from objectives/constraints and history; track redlines.
+
+Acceptance Criteria:
+- Export PDF/JSON
+- Full change history","welltegra,planning,ai","UI,Reporting"
+Closed‑loop MOC workflow,Story,Low,"Implement state machine: Proposed → Reviewed → Approved → Re‑brief → Executed → Analyzed, with signed transitions.
+
+Acceptance Criteria:
+- Mandatory re‑brief before Executed
+- Complete audit trail and rollback","welltegra,governance,moc","Governance,UI"
+SIMOPS conflict checks,Story,Low,"Flag conflicts using POB, permits, and planned activities with severity and mitigations.
+
+Acceptance Criteria:
+- False positive rate <0.5% on pilot fixtures","welltegra,planning,simops","Data/ML,UI"
+"Privacy controls (suppression, k‑anon, differential privacy)",Story,Low,"Offer privacy profiles (internal/share/consortium) applying suppression, k‑anonymity, and DP noise; provide a privacy report.
+
+Acceptance Criteria:
+- Show ε and masked fields per profile
+- Downloadable privacy proof report","welltegra,privacy,security","Security,Governance"

@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' file:; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; font-src 'self' data: file:; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com; media-src 'self' data: file:; base-uri 'self'; form-action 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data: file:; base-uri 'self'; form-action 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' file: https://fonts.googleapis.com; img-src 'self' data: file: https:; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; media-src 'self' data: file:; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
+
+    <!-- SEO Meta Tags -->
+    <title>Well-Tegra | AI-Powered Well Engineering Platform - Reduce NPT by 30%</title>
+    <meta name="description" content="Transform well intervention planning with Well-Tegra's AI-assisted platform. Reduce NPT by 15-30%, reclaim 2-3 hours/day of engineer time, and cut planning cycles from days to hours. Try it free.">
+    <meta name="keywords" content="well engineering, intervention planning, NPT reduction, drilling optimization, well data management, oil and gas software, well planning software, drilling automation">
+    <meta name="author" content="Well-Tegra Data Solutions">
+    <link rel="canonical" href="https://welltegra.network/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://welltegra.network/">
+    <meta property="og:title" content="Well-Tegra | From Data Chaos to Predictive Clarity">
+    <meta property="og:description" content="AI-powered well engineering platform that reduces NPT by 15-30% and reclaims hours of engineer time daily. Transform your well intervention planning.">
+    <meta property="og:image" content="/assets/og-image.jpg">
+    <meta property="og:site_name" content="Well-Tegra">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://welltegra.network/">
+    <meta name="twitter:title" content="Well-Tegra | AI-Powered Well Engineering Platform">
+    <meta name="twitter:description" content="Reduce NPT by 15-30%, reclaim 2-3 hours/day, cut planning cycles from days to hours. Try Well-Tegra free.">
+    <meta name="twitter:image" content="/assets/twitter-card.jpg">
+
+    <!-- Additional Meta -->
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Well-Tegra">
+
+    <!-- iOS PWA Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Well-Tegra">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/assets/icons/apple-touch-icon-167x167.png">
+
+    <!-- Splash Screens for iOS -->
+    <link rel="apple-touch-startup-image" href="/assets/splash/iphone5_splash.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/iphoneplus_splash.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/iphonexr_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/iphonexsmax_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="/assets/splash/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)">
+
+    <!-- Windows Tile -->
+    <meta name="msapplication-TileColor" content="#0f172a">
+    <meta name="msapplication-TileImage" content="/assets/icons/ms-tile-144x144.png">
+
+    <!-- Favicon -->
+    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+    <link rel="stylesheet" href="assets/css/tailwind.css?v=23.0.11">
+    <link rel="stylesheet" href="assets/css/inline-styles.css?v=23.0.11">
+
+    <script src="assets/vendor/chart.umd.min.js" defer></script>
+    <script src="assets/vendor/jspdf.umd.min.js" defer></script>
+    <script src="assets/vendor/html2canvas.min.js" defer></script>
+    <script src="assets/js/security-utils.js?v=23.0.11"></script>
+    <script src="assets/js/fetch-utils.js?v=23.0.11"></script>
+    <script src="assets/js/performance-utils.js?v=23.0.11"></script>
+    <script src="assets/js/error-handler.js?v=23.0.11"></script>
+    <script src="assets/js/crypto-utils.js?v=23.0.11"></script>
+    <script src="assets/js/image-utils.js?v=23.0.11"></script>
+    <script src="assets/js/sw-register.js?v=23.0.11"></script>
+</head>
+
+<body class="theme-dark">
+
+<!-- Login page removed - direct access to application -->
+
+<div id="app-container" class="min-h-screen flex flex-col">
+
+    <!-- Skip to main content link for keyboard navigation -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:px-4 focus:py-2 focus:bg-cyan-600 focus:text-white">
+        Skip to main content
+    </a>
+
+    <header id="app-header" class="header sticky top-0 z-30 transition-colors" role="banner">
+        <div class="max-w-full mx-auto py-3 px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="assets/logo.jpg" alt="Well-Tegra Data Solutions Logo" class="h-12 w-auto mr-3" loading="lazy">
+                    <h1 id="header-title" class="text-xl font-bold hidden md:block">Well-Tegra Data Solutions</h1>
+                </div>
+                <nav id="header-nav" class="flex-1 flex items-center justify-center space-x-1 md:space-x-4" role="navigation" aria-label="Main navigation">
+                    <a id="home-nav-link" href="#home-view" role="tab" aria-selected="true" aria-controls="home-view" title="Return to the Home Page" class="nav-link active flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span>Home</span>
+                    </a>
+                    <a id="planner-nav-link" href="#planner-view" role="tab" aria-selected="false" aria-controls="planner-view" title="Go to the Well Intervention Planner" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+                        <span>Planner</span>
+                    </a>
+                    <a id="logistics-nav-link" href="#logistics-view" role="tab" aria-selected="false" aria-controls="logistics-view" title="Manage Equipment and Personnel" class="nav-link flex items-center space-x-2">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/><path d="M18 18h-1.3c-.5 0-.9-.3-1.1-.7l-2.6-5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+                        <span>Logistics</span>
+                    </a>
+                    <a id="commercial-nav-link" href="#commercial-view" role="tab" aria-selected="false" aria-controls="commercial-view" title="View Financial Dashboards" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        <span>Commercial</span>
+                    </a>
+                    <a id="hse-nav-link" href="#hse-view" role="tab" aria-selected="false" aria-controls="hse-view" title="View Health, Safety, and Environment Data" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span>HSE & Risk</span>
+                    </a>
+                    <a id="pob-nav-link" href="#pob-view" role="tab" aria-selected="false" aria-controls="pob-view" title="View Personnel on Board and Emergency Response" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <span>POB & ER</span>
+                    </a>
+                    <a id="whitepaper-nav-link" href="#whitepaper-view" role="tab" aria-selected="false" aria-controls="whitepaper-view" title="Download the White Paper" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        <span>White Paper</span>
+                    </a>
+                    <a id="data-nav-link" href="#data-view" role="tab" aria-selected="false" aria-controls="data-view" title="Download structured Well-Tegra datasets" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"></path><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"></path></svg>
+                        <span>Data Exports</span>
+                    </a>
+                    <a id="data-quality-nav-link" href="#data-quality-view" role="tab" aria-selected="false" aria-controls="data-quality-view" title="View Data Quality & Integrity Metrics" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        <span>Data Quality</span>
+                    </a>
+                     <a id="faq-nav-link" href="#faq-view" role="tab" aria-selected="false" aria-controls="faq-view" title="Frequently Asked Questions" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>
+                        <span>FAQ</span>
+                    </a>
+                    <a id="security-nav-link" href="#security-view" role="tab" aria-selected="false" aria-controls="security-view" title="Security & Data Protection" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <span>Security</span>
+                    </a>
+                    <a id="about-nav-link" href="#about-view" role="tab" aria-selected="false" aria-controls="about-view" title="About the Founder" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
+                        <span>About</span>
+                    </a>
+                </nav>
+                <div id="header-details" class="flex items-center space-x-4">
+                    <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700" aria-label="Toggle dark mode">
+                        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="flex-1" role="main">
+        <div id="home-view" class="view-container">
+            <section class="hero-section py-20 px-4 relative" aria-describedby="hero-video-description">
+                <video loop muted playsinline preload="none" id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description" data-lazy-video="assets/hero.mp4">
+                    <source data-src="assets/hero.mp4" type="video/mp4">
+                    <track kind="descriptions" srclang="en" label="English descriptions" src="assets/hero-video-descriptions.vtt" default>
+                </video>
+                <div class="hero-overlay"></div>
+                <p id="hero-video-description" class="sr-only">Looping montage showing engineers collaborating over drilling dashboards and subsurface schematics.</p>
+                <div class="max-w-4xl mx-auto text-center relative z-10">
+                    <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">From Data Chaos to Predictive Clarity.</h2>
+                    <p class="mt-6 text-lg md:text-xl text-slate-100">The oil and gas industry loses over $38 million per asset annually to unplanned downtime. Your engineers spend more than 50% of their time wrangling data. The cause? A disconnected digital ecosystem.</p>
+                    <p class="mt-4 text-lg md:text-xl font-semibold text-white">Well-Tegra: Engineering Insight, Amplified by Data.</p>
+
+                    <!-- Hero CTAs -->
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Request a Demo
+                        </a>
+                        <button id="hero-planner-btn" class="px-8 py-4 bg-white hover:bg-slate-100 text-slate-900 text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Try the Planner
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <section class="py-20 px-4 bg-white dark:bg-transparent">
+                <div class="max-w-7xl mx-auto relative z-10">
+                    <div class="text-center">
+                        <h2 class="section-title">Are You Paying the Hidden Taxes of Inefficiency?</h2>
+                        <p class="mt-4 text-lg">Your operations are being taxed by disconnected workflows you can't see on a balance sheet.</p>
+                    </div>
+                    <ul class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8" role="list">
+                        <li class="feature-card light-card p-6 rounded-lg shadow" role="listitem"><h3 class="text-xl font-bold">The Data Wrangling Tax</h3><p class="mt-2">Unlock Your Data. Your most valuable assets—your engineers—are forced to act as data clerks, wasting countless hours hunting for information in emails, correcting spreadsheet errors, and re-entering data from PDFs.</p></li>
+                        <li class="feature-card light-card p-6 rounded-lg shadow" role="listitem"><h3 class="text-xl font-bold">The NPT Tax</h3><p class="mt-2">Every moment of Non-Productive Time is a direct hit to your bottom line. Plans based on poor data lead to equipment failures, procedural errors, and costly downtime.</p></li>
+                        <li class="feature-card light-card p-6 rounded-lg shadow" role="listitem"><h3 class="text-xl font-bold">The Collaboration Tax</h3><p class="mt-2">The critical gap between your team and service partners is where value is lost. Static PDF handoffs create slow, error-prone workflows that prevent true, real-time collaboration.</p></li>
+                        <li class="feature-card light-card p-6 rounded-lg shadow" role="listitem"><h3 class="text-xl font-bold">The Energy & Emissions Tax</h3><p class="mt-2">Inefficient operations don't just waste money—they waste energy. Extended run times and unnecessary flaring contribute to higher operational costs and a larger carbon footprint.</p></li>
+                    </ul>
+                </div>
+            </section>
+            <section class="py-20 px-4 roi-calculator dark:bg-slate-900/50">
+                <div class="max-w-6xl mx-auto relative z-10">
+                    <div class="text-center"><h2 class="section-title">The Platform That Pays for Itself</h2><p class="mt-4 text-lg">Unlock Your Reservoir's True Potential. Use our interactive calculator to estimate your potential annual savings with Well-Tegra.</p></div>
+                    <div class="mt-12 grid lg:grid-cols-2 gap-12 items-center">
+                        <div class="light-card p-8 rounded-lg shadow-lg">
+                            <div class="space-y-6">
+                                <div><label for="engineerCount" class="font-semibold">Number of Well Engineers</label><div class="flex items-center space-x-4"><input type="range" id="engineerCount" min="5" max="100" value="20" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer" aria-describedby="engineerCountValue" aria-valuemin="5" aria-valuemax="100" aria-valuenow="20" aria-valuetext="20 well engineers"><span id="engineerCountValue" class="font-bold text-lg w-12 text-center">20</span></div></div>
+                                <div><label for="nptReduction" class="font-semibold">Projected NPT Reduction</label><div class="flex items-center space-x-4"><input type="range" id="nptReduction" min="5" max="40" value="20" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer" aria-describedby="nptReductionValue" aria-valuemin="5" aria-valuemax="40" aria-valuenow="20" aria-valuetext="20 percent reduction"><span id="nptReductionValue" class="font-bold text-lg w-12 text-center">20%</span></div></div>
+                                <div><label for="timeSavings" class="font-semibold">Engineering Time Reclaimed</label><div class="flex items-center space-x-4"><input type="range" id="timeSavings" min="10" max="50" value="40" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer" aria-describedby="timeSavingsValue" aria-valuemin="10" aria-valuemax="50" aria-valuenow="40" aria-valuetext="40 percent reclaimed"><span id="timeSavingsValue" class="font-bold text-lg w-12 text-center">40%</span></div></div>
+                            </div>
+                            <div class="mt-8 pt-6 border-t border-slate-300 dark:border-slate-600 text-center"><p class="text-xl font-semibold">Total Estimated Annual Savings:</p><p id="totalSavings" class="text-5xl font-extrabold accent-text mt-2">$2,168,000</p></div>
+                        </div>
+                        <div class="chart-container"><canvas id="savingsChart">Savings chart illustrating annual savings splits between engineering time and NPT reduction.</canvas></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="planner-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="planner-header">
+                <h2 class="text-3xl font-bold tracking-tight text-white">Well Intervention Planner</h2>
+                <p class="mt-2 max-w-2xl mx-auto text-lg text-blue-100">The Single Source of Truth for Your Entire Well Portfolio.</p>
+            </div>
+            <div class="mt-8 flex flex-wrap items-center justify-end gap-3">
+                <button
+                    id="open-mobile-communicator"
+                    type="button"
+                    aria-haspopup="dialog"
+                    aria-controls="mobile-communicator"
+                    aria-expanded="false"
+                    aria-label="Open mobile communicator"
+                    class="inline-flex items-center gap-2 rounded-full border border-cyan-500/70 px-4 py-2 text-sm font-semibold text-cyan-200 shadow-sm transition hover:bg-cyan-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                >
+                    <svg class="h-4 w-4 text-cyan-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 6.75a2.25 2.25 0 0 1 2.25-2.25h10.5A2.25 2.25 0 0 1 19.5 6.75v5.25a2.25 2.25 0 0 1-2.25 2.25H9.75L6 18v-3.75H6a2.25 2.25 0 0 1-2.25-2.25V6.75Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 6h6" />
+                    </svg>
+                    <span class="whitespace-nowrap">Mobile Communicator</span>
+                    <span id="communicator-pending-badge" class="hidden rounded-full bg-cyan-500/15 px-2 py-0.5 text-xs font-semibold text-cyan-100">0</span>
+                </button>
+            </div>
+            <div id="planner-status" class="sr-only" role="status" aria-live="polite"></div>
+            
+            <div class="mb-12 flex items-center justify-center space-x-2">
+                <div id="step-1-indicator" class="step-indicator w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">1</div>
+                <div id="step-1-connector" class="step-connector flex-1"></div>
+                <div id="step-2-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">2</div>
+                <div id="step-2-connector" class="step-connector flex-1"></div>
+                <div id="step-3-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">3</div>
+                <div id="step-3-connector" class="step-connector flex-1"></div>
+                <div id="step-4-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">4</div>
+                <div id="step-4-connector" class="step-connector flex-1"></div>
+                <div id="step-5-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">5</div>
+                <div id="step-5-connector" class="step-connector flex-1"></div>
+                <div id="step-6-indicator" class="step-indicator bg-gray-200 dark:bg-gray-700 text-gray-500 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">6</div>
+            </div>
+
+            <section id="step-1" class="mb-12">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold tracking-tight">Step 1: Ingest Portfolio Data</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-sm">Welcome to the "Well From Hell" case study. The portfolio below contains one critical problem well, <strong>W666 - The Perfect Storm</strong>, which is shut-in with multiple, complex issues. The other wells are historical case studies from the same field, each representing a successful intervention that fixed one of the problems now facing W666. Start by selecting the target well so the platform can pull all relevant offset data, historical lessons, and completion architecture.</p>
+                </div>
+                <div class="mt-10 space-y-6">
+                    <section id="portfolio-signals" class="grid gap-4 md:grid-cols-2 xl:grid-cols-4" aria-label="Portfolio signals"></section>
+                    <section class="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 shadow-inner">
+                        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                            <div class="w-full lg:max-w-md">
+                                <label for="well-search-input" class="text-xs font-semibold uppercase tracking-wide text-slate-400">Search the portfolio</label>
+                                <input type="search" id="well-search-input" name="well-search-input" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/60 px-4 py-3 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Search by well name, field, issue, or equipment..." autocomplete="off">
+                            </div>
+                            <p id="well-filter-summary" class="text-sm text-slate-400" role="status" aria-live="polite">Showing 0 of 0 wells.</p>
+                        </div>
+                        <div class="mt-6">
+                            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Focus</p>
+                            <div id="well-focus-group" class="mt-3 flex flex-wrap gap-2" role="group" aria-label="Focus filters">
+                                <button type="button" class="filter-chip" data-focus-filter="all" aria-pressed="true">
+                                    All Wells
+                                    <span class="filter-chip__count" data-focus-count="all"></span>
+                                </button>
+                                <button type="button" class="filter-chip" data-focus-filter="critical" aria-pressed="false">
+                                    Critical Path
+                                    <span class="filter-chip__count" data-focus-count="critical"></span>
+                                </button>
+                                <button type="button" class="filter-chip" data-focus-filter="case" aria-pressed="false">
+                                    Case Studies
+                                    <span class="filter-chip__count" data-focus-count="case"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Themes</p>
+                            <div id="well-theme-group" class="mt-3 flex flex-wrap gap-2" role="group" aria-label="Theme filters">
+                                <button type="button" class="filter-chip" data-theme-filter="integrity" aria-pressed="false">
+                                    Integrity
+                                    <span class="filter-chip__count" data-theme-count="integrity"></span>
+                                </button>
+                                <button type="button" class="filter-chip" data-theme-filter="flow-assurance" aria-pressed="false">
+                                    Flow Assurance
+                                    <span class="filter-chip__count" data-theme-count="flow-assurance"></span>
+                                </button>
+                                <button type="button" class="filter-chip" data-theme-filter="controls" aria-pressed="false">
+                                    Controls &amp; Safety
+                                    <span class="filter-chip__count" data-theme-count="controls"></span>
+                                </button>
+                                <button type="button" class="filter-chip" data-theme-filter="productivity" aria-pressed="false">
+                                    Production Recovery
+                                    <span class="filter-chip__count" data-theme-count="productivity"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div id="well-selection-grid" class="mt-6 grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
+                <section id="data-scrubbing-panel" class="mt-12 hidden">
+                    <div class="text-center mb-8">
+                        <h4 class="text-xl font-semibold tracking-tight">How W666 Data Gets Scrubbed Before Planning</h4>
+                        <p id="data-scrubbing-overview" class="mt-3 max-w-3xl mx-auto text-sm text-slate-400"></p>
+                    </div>
+                    <div id="data-scrubbing-stages" class="grid gap-4 md:grid-cols-3"></div>
+                    <div class="mt-8 grid gap-6 lg:grid-cols-2">
+                        <div class="light-card p-6 rounded-lg">
+                            <h5 class="text-lg font-semibold mb-3">LangExtract Task Snapshot</h5>
+                            <dl id="data-scrubbing-schema" class="space-y-3 text-sm"></dl>
+                        </div>
+                        <div class="light-card p-6 rounded-lg">
+                            <h5 class="text-lg font-semibold mb-3">Before & After Example</h5>
+                            <figure>
+                                <figcaption class="text-xs font-semibold tracking-wide uppercase text-slate-400">Source Excerpt</figcaption>
+                                <blockquote id="data-scrubbing-raw" class="mt-2 rounded-md border border-slate-700 bg-slate-900/60 p-3 italic text-sm"></blockquote>
+                            </figure>
+                            <div class="mt-4">
+                                <figcaption class="text-xs font-semibold tracking-wide uppercase text-slate-400">Structured Output</figcaption>
+                                <ul id="data-scrubbing-normalized" class="mt-2 space-y-2 text-sm"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 light-card p-6 rounded-lg">
+                        <h5 class="text-lg font-semibold mb-3">Quality Gates & Evidence</h5>
+                        <ul id="data-scrubbing-summary" class="space-y-2 text-sm"></ul>
+                    </div>
+                </section>
+                <div class="mt-8 flex justify-center">
+                    <button id="step-1-continue" class="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Continue to Objectives</button>
+                </div>
+            </section>
+
+            <section id="step-2" class="mb-12 hidden">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold tracking-tight">Step 2: Define Objectives & Strategy</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg">With <strong>W666</strong> selected, choose how you want to scope the job. Use the <strong>AI Advisor</strong> to cross-reference known issues with offset case studies or drive manually from engineering objectives. Your selection sets the design basis for the rest of the workflow.</p>
+                </div>
+                <div class="mt-8 max-w-4xl mx-auto">
+                    <div class="flex items-center justify-center mb-6">
+                        <span class="text-sm font-medium mr-3">Manual Planning</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="ai-toggle" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-teal-300 dark:peer-focus:ring-teal-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-600"></div>
+                        </label>
+                        <span class="text-sm font-medium ml-3">AI Advisor</span>
+                    </div>
+                    
+                    <div id="manual-planning-view">
+                        <h4 class="text-lg font-semibold mb-4 text-center">Select Intervention Objective</h4>
+                        <div id="objectives-fieldset" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                    </div>
+                    
+                    <div id="ai-advisor-view" class="hidden">
+                        <div class="bg-blue-50 dark:bg-blue-900/50 p-4 rounded-lg text-center mb-6">
+                            <p class="text-sm text-blue-800 dark:text-blue-200">Our AI analyzes anonymized operational patterns from all community data providers to find optimal solutions. Your raw well data is never shared, and Well-Tegra cannot access it. This process is secured by smart contracts.</p>
+                        </div>
+
+                        <div id="problem-selection">
+                            <h3 class="text-lg font-semibold text-center mb-4">What is the primary problem with this well?</h3>
+                            <div id="problems-fieldset" class="space-y-4"></div>
+                        </div>
+                        
+                        <div id="ai-recommendations" class="hidden mt-8"></div>
+
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-center">
+                    <button id="step-2-continue" class="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Continue to Engineering Blueprint</button>
+                </div>
+            </section>
+
+            <section id="step-3" class="hidden">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold tracking-tight">Step 3: Engineering Blueprint</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg">Validate the technical design before we build the operational program. The blueprint stitches together trajectory assumptions, casing design, fluid program, BHA strategy, and contingency envelopes tailored to your selected objective.</p>
+                </div>
+                <div id="design-blueprint" class="mt-10 space-y-6 light-card p-6 rounded-lg">
+                    <p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>
+                </div>
+                <div class="mt-8 flex justify-center">
+                    <button id="generate-program-btn" class="rounded-md bg-teal-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-teal-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Generate Integrated Program</button>
+                </div>
+            </section>
+
+            <section id="step-4" class="hidden">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold tracking-tight">Step 4: Build the Operational Program</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg">The platform assembles a detailed procedure, resource plan, and risk profile from the blueprint. Review every element before we lock in logistics and commercial commitments.</p>
+                </div>
+
+                <div id="plan-output" class="mt-10 space-y-8"></div>
+
+                <div class="mt-8 flex justify-center space-x-4">
+                    <button id="start-over-btn" class="rounded-md bg-gray-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-gray-500 transition-colors">Start Over</button>
+                    <button id="step-4-continue" class="rounded-md bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Compile Readiness Package</button>
+                </div>
+            </section>
+
+            <section id="step-5" class="hidden">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold tracking-tight">Step 5: Logistics & Commercial Readiness</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg">Confirm that the required equipment, crews, spend envelopes, and permits are aligned. Address any conflicts before we hand off to execution.</p>
+                </div>
+
+                <div id="readiness-output" class="mt-10 space-y-6"></div>
+
+                <div class="mt-8 flex flex-wrap justify-center gap-4">
+                    <button id="open-logistics-btn" class="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors">Open Logistics Workspace</button>
+                    <button id="open-commercial-btn" class="rounded-md bg-purple-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-purple-500 transition-colors">Open Commercial Dashboard</button>
+                    <button id="open-hse-btn" class="rounded-md bg-amber-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-amber-500 transition-colors">Open HSE & Risk Dashboard</button>
+                    <button id="step-5-continue" class="rounded-md bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Finalize Execution Plan</button>
+                </div>
+            </section>
+
+            <section id="step-6" class="hidden">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold tracking-tight">Step 6: Execute & Handover</h3>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg">Push the approved program into the live operations simulator, capture real-time performance, and prepare the post-job package for handover.</p>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-2">
+                    <div class="light-card p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold mb-2">Execution Readiness</h4>
+                        <p class="text-sm text-slate-400">Launch the <strong>Live Operations</strong> workspace to run the digital twin, track KPIs, and log events as the intervention progresses.</p>
+                        <p class="text-sm text-slate-400 mt-2">The simulator streams planned versus actual hookload, pressure, and NPT trends so supervisors can intervene before deviations escalate.</p>
+                    </div>
+                    <div class="light-card p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold mb-2">Closeout & Reporting</h4>
+                        <p class="text-sm text-slate-400">Use the <strong>Post-Job Analysis</strong> view to export the final report, vendor scorecards, and lessons learned. Everything is captured for future wells.</p>
+                        <p class="text-sm text-slate-400 mt-2">Hand the validated program, execution history, and improvement actions to production or the next intervention team.</p>
+                    </div>
+                </div>
+
+                <div id="handover-output" class="mt-10 space-y-6"></div>
+
+                <div class="mt-8 flex flex-wrap justify-center gap-4">
+                    <button id="begin-op-btn" class="rounded-md bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Launch Live Operations</button>
+                    <button id="review-analysis-btn-final" class="rounded-md bg-slate-700 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-slate-600 transition-colors">Open Post-Job Analysis</button>
+                </div>
+            </section>
+        </div>
+
+        <div id="logistics-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Logistics & Asset Management</h2><p id="logistics-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Manage equipment and personnel availability, certifications, and maintenance schedules.</p></div>
+            <div id="logistics-content" class="mt-10 grid gap-12 lg:grid-cols-3">
+                <div class="light-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Equipment Hub</h3>
+                    <label for="equipment-search" class="sr-only">Search equipment</label>
+                    <input type="text" id="equipment-search" placeholder="Search equipment..." class="w-full p-2 rounded-md mb-4">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="p-2">Asset ID</th>
+                                    <th>Type</th>
+                                    <th>Vendor</th>
+                                    <th>Location</th>
+                                    <th>Daily Rate</th>
+                                    <th>Test Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="equipment-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="light-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Personnel Roster</h3>
+                    <label for="personnel-search" class="sr-only">Search personnel</label>
+                    <input type="text" id="personnel-search" placeholder="Search personnel..." class="w-full p-2 rounded-md mb-4">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="p-2">Name</th>
+                                    <th>Role</th>
+                                    <th>Company</th>
+                                    <th>Status</th>
+                                    <th>Daily Rate</th>
+                                    <th>Certs Valid</th>
+                                </tr>
+                            </thead>
+                            <tbody id="personnel-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="logistics-reference-card" class="light-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Service Line Reference</h3>
+                    <p class="text-sm text-slate-400">Generate a plan to view recommended service templates, vendor insights, and supporting tooling pulled from the Well-Tegra catalog.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="commercial-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Commercial Dashboard</h2><p id="commercial-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Live financial tracking for the selected operation.</p></div>
+            <div id="commercial-content" class="mt-10"></div>
+        </div>
+
+        <div id="hse-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">HSE & Risk Dashboard</h2><p id="hse-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Centralized risk register and permit to work status.</p></div>
+            <div id="hse-content" class="mt-10"></div>
+        </div>
+
+        <div id="pob-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Personnel on Board & Emergency Response</h2><p id="pob-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Live POB manifest and emergency muster status.</p></div>
+            <div id="pob-content" class="mt-10"></div>
+        </div>
+
+        <div id="whitepaper-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight">Well-Tegra White Paper</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg">Dive deeper into the technical architecture and strategic vision behind the Well-Tegra platform. Our white paper provides a comprehensive overview of the privacy-preserving AI, enterprise blockchain, and data unification strategies that power our solution.</p>
+                <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
+                    Download the White Paper
+                </a>
+            </div>
+        </div>
+
+        <div id="data-view" class="view-container hidden max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight">Data Export Hub</h2>
+                <p class="mt-2 max-w-3xl mx-auto text-lg">Direct access to the structured CSV datasets that feed the Well-Tegra planner, complete with inline data dictionaries plus one-click pandas, curl, and SQL snippets.</p>
+            </div>
+
+            <div id="data-export-hub" class="mt-10 grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+                <article class="light-card p-6 rounded-lg flex flex-col h-full" aria-labelledby="data-well-666-heading">
+                    <div>
+                        <h3 id="data-well-666-heading" class="text-xl font-semibold mb-2">W666 Intervention Dataset</h3>
+                        <p class="text-sm text-slate-400">Single-well export covering the Montrose &ldquo;Well From Hell&rdquo; with history, completion architecture, and active risk signals.</p>
+                        <dl class="mt-4 space-y-3">
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Records</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-well-666-count" aria-live="polite">—</span></dd>
+                            </div>
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Approx. Size</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-well-666-size" aria-live="polite">—</span></dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Columns &amp; Data Dictionary</dt>
+                                <dd>
+                                    <ul id="data-well-666-columns" class="mt-1 text-sm text-slate-300 list-disc list-inside space-y-1">
+                                        <li>Loading schema…</li>
+                                    </ul>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Preview</dt>
+                                <dd>
+                                    <div class="mt-2 overflow-x-auto rounded-md border border-slate-800 bg-slate-900/40">
+                                        <table id="data-well-666-preview" class="min-w-full text-left text-xs text-slate-300">
+                                            <thead id="data-well-666-preview-head" class="bg-slate-900/60"></thead>
+                                            <tbody id="data-well-666-preview-body">
+                                                <tr>
+                                                    <td class="px-3 py-2 text-slate-500" colspan="4">Loading preview…</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p id="data-well-666-preview-notice" class="mt-2 text-[11px] text-slate-500">Showing a quick look at the first 3 records.</p>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Data Fingerprint (SHA-256)</dt>
+                                <dd>
+                                    <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                        <code id="data-well-666-hash" class="w-full rounded-md bg-slate-900/60 px-3 py-2 font-mono text-[11px] text-slate-300 break-all">—</code>
+                                        <button type="button" data-export-hash="data-well-666" class="inline-flex items-center justify-center rounded-md border border-slate-800 px-4 py-2 text-xs font-semibold text-slate-300 transition-colors hover:border-cyan-500/80 hover:text-white">
+                                            Copy fingerprint
+                                        </button>
+                                    </div>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <a href="data-well-666.csv" download class="mt-6 inline-flex items-center justify-center rounded-md bg-cyan-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 transition-colors">
+                        Download W666 CSV
+                    </a>
+                    <button type="button" data-export-copy="data-well-666" class="mt-3 inline-flex items-center justify-center rounded-md border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-200 hover:border-cyan-500 hover:text-white transition-colors">
+                        Copy pandas import snippet
+                    </button>
+                    <button type="button" data-export-curl="data-well-666" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-cyan-500/80 hover:text-white transition-colors">
+                        Copy curl download command
+                    </button>
+                    <button type="button" data-export-sql="data-well-666" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-cyan-500/80 hover:text-white transition-colors">
+                        Copy SQL table schema
+                    </button>
+                    <div class="mt-2 space-y-1 text-xs text-slate-500">
+                        <p id="data-well-666-copy-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-well-666-curl-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-well-666-sql-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-well-666-hash-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                    <div class="mt-2 space-y-1 text-xs text-slate-500" aria-live="polite">
+                        <p id="data-well-666-copy-status"></p>
+                        <p id="data-well-666-curl-status"></p>
+                        <p id="data-well-666-sql-status"></p>
+                    </div>
+                </article>
+
+                <article class="light-card p-6 rounded-lg flex flex-col h-full" aria-labelledby="data-portfolio-heading">
+                    <div>
+                        <h3 id="data-portfolio-heading" class="text-xl font-semibold mb-2">Portfolio Benchmarks</h3>
+                        <p class="text-sm text-slate-400">Seven offset case studies with production status, challenge narratives, and distilled lessons learned for AI training and benchmarking.</p>
+                        <dl class="mt-4 space-y-3">
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Records</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-well-portfolio-count" aria-live="polite">—</span></dd>
+                            </div>
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Approx. Size</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-well-portfolio-size" aria-live="polite">—</span></dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Columns &amp; Data Dictionary</dt>
+                                <dd>
+                                    <ul id="data-well-portfolio-columns" class="mt-1 text-sm text-slate-300 list-disc list-inside space-y-1">
+                                        <li>Loading schema…</li>
+                                    </ul>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Preview</dt>
+                                <dd>
+                                    <div class="mt-2 overflow-x-auto rounded-md border border-slate-800 bg-slate-900/40">
+                                        <table id="data-well-portfolio-preview" class="min-w-full text-left text-xs text-slate-300">
+                                            <thead id="data-well-portfolio-preview-head" class="bg-slate-900/60"></thead>
+                                            <tbody id="data-well-portfolio-preview-body">
+                                                <tr>
+                                                    <td class="px-3 py-2 text-slate-500" colspan="4">Loading preview…</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p id="data-well-portfolio-preview-notice" class="mt-2 text-[11px] text-slate-500">Showing a quick look at the first 3 records.</p>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Data Fingerprint (SHA-256)</dt>
+                                <dd>
+                                    <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                        <code id="data-well-portfolio-hash" class="w-full rounded-md bg-slate-900/60 px-3 py-2 font-mono text-[11px] text-slate-300 break-all">—</code>
+                                        <button type="button" data-export-hash="data-well-portfolio" class="inline-flex items-center justify-center rounded-md border border-slate-800 px-4 py-2 text-xs font-semibold text-slate-300 transition-colors hover:border-emerald-500/80 hover:text-white">
+                                            Copy fingerprint
+                                        </button>
+                                    </div>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <a href="data-well-portfolio.csv" download class="mt-6 inline-flex items-center justify-center rounded-md bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-emerald-500 transition-colors">
+                        Download Portfolio CSV
+                    </a>
+                    <button type="button" data-export-copy="data-well-portfolio" class="mt-3 inline-flex items-center justify-center rounded-md border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-200 hover:border-emerald-500 hover:text-white transition-colors">
+                        Copy pandas import snippet
+                    </button>
+                    <button type="button" data-export-curl="data-well-portfolio" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-emerald-500/80 hover:text-white transition-colors">
+                        Copy curl download command
+                    </button>
+                    <button type="button" data-export-sql="data-well-portfolio" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-emerald-500/80 hover:text-white transition-colors">
+                        Copy SQL table schema
+                    </button>
+                    <div class="mt-2 space-y-1 text-xs text-slate-500">
+                        <p id="data-well-portfolio-copy-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-well-portfolio-curl-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-well-portfolio-sql-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-well-portfolio-hash-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                    <div class="mt-2 space-y-1 text-xs text-slate-500" aria-live="polite">
+                        <p id="data-well-portfolio-copy-status"></p>
+                        <p id="data-well-portfolio-curl-status"></p>
+                        <p id="data-well-portfolio-sql-status"></p>
+                    </div>
+                </article>
+
+                <article class="light-card p-6 rounded-lg flex flex-col h-full" aria-labelledby="data-activity-heading">
+                    <div>
+                        <h3 id="data-activity-heading" class="text-xl font-semibold mb-2">Activity Cost Benchmarks</h3>
+                        <p class="text-sm text-slate-400">Normalized intervention activity catalogue with duration, cost, and risk markers ready for budgeting models.</p>
+                        <dl class="mt-4 space-y-3">
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Records</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-activity-count" aria-live="polite">—</span></dd>
+                            </div>
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Approx. Size</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-activity-size" aria-live="polite">—</span></dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Columns &amp; Data Dictionary</dt>
+                                <dd>
+                                    <ul id="data-activity-columns" class="mt-1 text-sm text-slate-300 list-disc list-inside space-y-1">
+                                        <li>Loading schema…</li>
+                                    </ul>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Preview</dt>
+                                <dd>
+                                    <div class="mt-2 overflow-x-auto rounded-md border border-slate-800 bg-slate-900/40">
+                                        <table id="data-activity-preview" class="min-w-full text-left text-xs text-slate-300">
+                                            <thead id="data-activity-preview-head" class="bg-slate-900/60"></thead>
+                                            <tbody id="data-activity-preview-body">
+                                                <tr>
+                                                    <td class="px-3 py-2 text-slate-500" colspan="4">Loading preview…</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p id="data-activity-preview-notice" class="mt-2 text-[11px] text-slate-500">Showing a quick look at the first 3 records.</p>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Data Fingerprint (SHA-256)</dt>
+                                <dd>
+                                    <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                        <code id="data-activity-hash" class="w-full rounded-md bg-slate-900/60 px-3 py-2 font-mono text-[11px] text-slate-300 break-all">—</code>
+                                        <button type="button" data-export-hash="data-activity-cost-rates" class="inline-flex items-center justify-center rounded-md border border-slate-800 px-4 py-2 text-xs font-semibold text-slate-300 transition-colors hover:border-amber-500/80 hover:text-white">
+                                            Copy fingerprint
+                                        </button>
+                                    </div>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <a href="data-activity-cost-rates.csv" download class="mt-6 inline-flex items-center justify-center rounded-md bg-amber-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-amber-500 transition-colors">
+                        Download Activity CSV
+                    </a>
+                    <button type="button" data-export-copy="data-activity-cost-rates" class="mt-3 inline-flex items-center justify-center rounded-md border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-200 hover:border-amber-500 hover:text-white transition-colors">
+                        Copy pandas import snippet
+                    </button>
+                    <button type="button" data-export-curl="data-activity-cost-rates" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-amber-500/80 hover:text-white transition-colors">
+                        Copy curl download command
+                    </button>
+                    <button type="button" data-export-sql="data-activity-cost-rates" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-amber-500/80 hover:text-white transition-colors">
+                        Copy SQL table schema
+                    </button>
+                    <div class="mt-2 space-y-1 text-xs text-slate-500">
+                        <p id="data-activity-copy-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-activity-curl-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-activity-sql-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-activity-hash-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                    <div class="mt-2 space-y-1 text-xs text-slate-500" aria-live="polite">
+                        <p id="data-activity-copy-status"></p>
+                        <p id="data-activity-curl-status"></p>
+                        <p id="data-activity-sql-status"></p>
+                    </div>
+                </article>
+
+                <article class="light-card p-6 rounded-lg flex flex-col h-full" aria-labelledby="data-equipment-heading">
+                    <div>
+                        <h3 id="data-equipment-heading" class="text-xl font-semibold mb-2">Equipment Rate Card</h3>
+                        <p class="text-sm text-slate-400">Daily, standby, and mobilization economics for the intervention tool fleet with vendor attribution.</p>
+                        <dl class="mt-4 space-y-3">
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Records</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-equipment-count" aria-live="polite">—</span></dd>
+                            </div>
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Approx. Size</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-equipment-size" aria-live="polite">—</span></dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Columns &amp; Data Dictionary</dt>
+                                <dd>
+                                    <ul id="data-equipment-columns" class="mt-1 text-sm text-slate-300 list-disc list-inside space-y-1">
+                                        <li>Loading schema…</li>
+                                    </ul>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Preview</dt>
+                                <dd>
+                                    <div class="mt-2 overflow-x-auto rounded-md border border-slate-800 bg-slate-900/40">
+                                        <table id="data-equipment-preview" class="min-w-full text-left text-xs text-slate-300">
+                                            <thead id="data-equipment-preview-head" class="bg-slate-900/60"></thead>
+                                            <tbody id="data-equipment-preview-body">
+                                                <tr>
+                                                    <td class="px-3 py-2 text-slate-500" colspan="4">Loading preview…</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p id="data-equipment-preview-notice" class="mt-2 text-[11px] text-slate-500">Showing a quick look at the first 3 records.</p>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Data Fingerprint (SHA-256)</dt>
+                                <dd>
+                                    <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                        <code id="data-equipment-hash" class="w-full rounded-md bg-slate-900/60 px-3 py-2 font-mono text-[11px] text-slate-300 break-all">—</code>
+                                        <button type="button" data-export-hash="data-equipment-tools" class="inline-flex items-center justify-center rounded-md border border-slate-800 px-4 py-2 text-xs font-semibold text-slate-300 transition-colors hover:border-indigo-500/80 hover:text-white">
+                                            Copy fingerprint
+                                        </button>
+                                    </div>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <a href="data-equipment-tools.csv" download class="mt-6 inline-flex items-center justify-center rounded-md bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors">
+                        Download Equipment CSV
+                    </a>
+                    <button type="button" data-export-copy="data-equipment-tools" class="mt-3 inline-flex items-center justify-center rounded-md border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-200 hover:border-indigo-500 hover:text-white transition-colors">
+                        Copy pandas import snippet
+                    </button>
+                    <button type="button" data-export-curl="data-equipment-tools" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-indigo-500/80 hover:text-white transition-colors">
+                        Copy curl download command
+                    </button>
+                    <button type="button" data-export-sql="data-equipment-tools" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-indigo-500/80 hover:text-white transition-colors">
+                        Copy SQL table schema
+                    </button>
+                    <div class="mt-2 space-y-1 text-xs text-slate-500">
+                        <p id="data-equipment-copy-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-equipment-curl-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-equipment-sql-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-equipment-hash-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                    <div class="mt-2 space-y-1 text-xs text-slate-500" aria-live="polite">
+                        <p id="data-equipment-copy-status"></p>
+                        <p id="data-equipment-curl-status"></p>
+                        <p id="data-equipment-sql-status"></p>
+                    </div>
+                </article>
+
+                <article class="light-card p-6 rounded-lg flex flex-col h-full" aria-labelledby="data-personnel-heading">
+                    <div>
+                        <h3 id="data-personnel-heading" class="text-xl font-semibold mb-2">Personnel Rate Sheet</h3>
+                        <p class="text-sm text-slate-400">Role-based manpower catalogue with daily rates, certification flags, and team size signals.</p>
+                        <dl class="mt-4 space-y-3">
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Records</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-personnel-count" aria-live="polite">—</span></dd>
+                            </div>
+                            <div class="flex items-start justify-between gap-4">
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Approx. Size</dt>
+                                <dd class="text-sm font-semibold text-slate-200"><span id="data-personnel-size" aria-live="polite">—</span></dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Columns &amp; Data Dictionary</dt>
+                                <dd>
+                                    <ul id="data-personnel-columns" class="mt-1 text-sm text-slate-300 list-disc list-inside space-y-1">
+                                        <li>Loading schema…</li>
+                                    </ul>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Preview</dt>
+                                <dd>
+                                    <div class="mt-2 overflow-x-auto rounded-md border border-slate-800 bg-slate-900/40">
+                                        <table id="data-personnel-preview" class="min-w-full text-left text-xs text-slate-300">
+                                            <thead id="data-personnel-preview-head" class="bg-slate-900/60"></thead>
+                                            <tbody id="data-personnel-preview-body">
+                                                <tr>
+                                                    <td class="px-3 py-2 text-slate-500" colspan="4">Loading preview…</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p id="data-personnel-preview-notice" class="mt-2 text-[11px] text-slate-500">Showing a quick look at the first 3 records.</p>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs uppercase tracking-wide text-slate-400">Data Fingerprint (SHA-256)</dt>
+                                <dd>
+                                    <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                        <code id="data-personnel-hash" class="w-full rounded-md bg-slate-900/60 px-3 py-2 font-mono text-[11px] text-slate-300 break-all">—</code>
+                                        <button type="button" data-export-hash="data-personnel-rates" class="inline-flex items-center justify-center rounded-md border border-slate-800 px-4 py-2 text-xs font-semibold text-slate-300 transition-colors hover:border-purple-500/80 hover:text-white">
+                                            Copy fingerprint
+                                        </button>
+                                    </div>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <a href="data-personnel-rates.csv" download class="mt-6 inline-flex items-center justify-center rounded-md bg-rose-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-rose-500 transition-colors">
+                        Download Personnel CSV
+                    </a>
+                    <button type="button" data-export-copy="data-personnel-rates" class="mt-3 inline-flex items-center justify-center rounded-md border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-200 hover:border-rose-500 hover:text-white transition-colors">
+                        Copy pandas import snippet
+                    </button>
+                    <button type="button" data-export-curl="data-personnel-rates" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-rose-500/80 hover:text-white transition-colors">
+                        Copy curl download command
+                    </button>
+                    <button type="button" data-export-sql="data-personnel-rates" class="mt-2 inline-flex items-center justify-center rounded-md border border-slate-800 px-5 py-2 text-sm font-semibold text-slate-300 hover:border-rose-500/80 hover:text-white transition-colors">
+                        Copy SQL table schema
+                    </button>
+                    <div class="mt-2 space-y-1 text-xs text-slate-500">
+                        <p id="data-personnel-copy-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-personnel-curl-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-personnel-sql-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                        <p id="data-personnel-hash-status" role="status" aria-live="polite" aria-atomic="true"></p>
+                    <div class="mt-2 space-y-1 text-xs text-slate-500" aria-live="polite">
+                        <p id="data-personnel-copy-status"></p>
+                        <p id="data-personnel-curl-status"></p>
+                        <p id="data-personnel-sql-status"></p>
+                    </div>
+                </article>
+            </div>
+
+            <div class="mt-10 light-card p-6 rounded-lg">
+                <h3 class="text-lg font-semibold mb-2">Usage Notes</h3>
+                <p class="text-sm text-slate-400">Both datasets are UTF-8 encoded, comma-delimited, and optimized for ingestion into spreadsheets, pandas, SQL engines, or notebooks. Schema updates and SQL quick-start notes live in <code class="text-xs bg-slate-800/60 px-1.5 py-0.5 rounded">RELEASE_NOTES.md</code> so downstream tooling stays in sync.</p>
+            </div>
+        </div>
+
+        <!-- Data Quality Dashboard -->
+        <div id="data-quality-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold tracking-tight">Data Quality & Integrity Dashboard</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-400">
+                    Monitor data completeness, consistency, and reliability across your well portfolio to ensure AI recommendations are built on trusted foundations.
+                </p>
+                <div class="mt-4 inline-flex items-center px-4 py-2 rounded-lg bg-blue-900/30 border border-blue-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="text-sm font-semibold text-blue-300">Mitigating GIGO Risk: Garbage In, Garbage Out</span>
+                </div>
+            </div>
+
+            <!-- Portfolio Data Quality Overview -->
+            <div class="grid gap-6 lg:grid-cols-3 mb-12">
+                <!-- Overall Data Health Score -->
+                <div class="light-card p-6 rounded-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Portfolio Data Health</h3>
+                        <span id="portfolio-health-score" class="text-3xl font-bold text-emerald-400">87%</span>
+                    </div>
+                    <div class="w-full bg-slate-700 rounded-full h-3 mb-2">
+                        <div id="portfolio-health-bar" class="bg-emerald-500 h-3 rounded-full transition-all" data-width="87"></div>
+                    </div>
+                    <p class="text-sm text-slate-400">Average data completeness across all wells</p>
+                </div>
+
+                <!-- Critical Data Gaps -->
+                <div class="light-card p-6 rounded-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Critical Gaps</h3>
+                        <span id="critical-gaps-count" class="text-3xl font-bold text-amber-400">3</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-2">Wells with missing safety-critical data</p>
+                    <button class="text-sm text-blue-400 hover:text-blue-300 font-medium">View details →</button>
+                </div>
+
+                <!-- Data Freshness -->
+                <div class="light-card p-6 rounded-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Data Freshness</h3>
+                        <span id="stale-wells-count" class="text-3xl font-bold text-slate-300">2</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-2">Wells with data older than 90 days</p>
+                    <p class="text-xs text-slate-500">Last updated: <span id="last-sync-time">2 hours ago</span></p>
+                </div>
+            </div>
+
+            <!-- Well-by-Well Data Quality Table -->
+            <div class="light-card p-6 rounded-lg mb-12">
+                <h3 class="text-xl font-semibold mb-6">Well-by-Well Data Quality Analysis</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="table-header border-b border-slate-700">
+                            <tr>
+                                <th class="p-3">Well ID</th>
+                                <th class="p-3">Overall Score</th>
+                                <th class="p-3">Completeness</th>
+                                <th class="p-3">Consistency</th>
+                                <th class="p-3">Freshness</th>
+                                <th class="p-3">Critical Gaps</th>
+                                <th class="p-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="well-quality-table-body">
+                            <tr class="border-b border-slate-800">
+                                <td class="p-3 font-semibold">W666</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-emerald-400 font-bold">92%</span>
+                                        <div class="w-16 bg-slate-700 rounded-full h-2">
+                                            <div class="bg-emerald-500 h-2 rounded-full data-quality-bar" data-width="92"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-emerald-900/30 text-emerald-400 border border-emerald-700">95%</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-emerald-900/30 text-emerald-400 border border-emerald-700">High</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-emerald-900/30 text-emerald-400 border border-emerald-700">Current</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="text-slate-400">None</span>
+                                </td>
+                                <td class="p-3">
+                                    <button class="text-blue-400 hover:text-blue-300 text-xs font-medium">View Report</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-slate-800">
+                                <td class="p-3 font-semibold">W123</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-amber-400 font-bold">76%</span>
+                                        <div class="w-16 bg-slate-700 rounded-full h-2">
+                                            <div class="bg-amber-500 h-2 rounded-full data-quality-bar" data-width="76"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-amber-900/30 text-amber-400 border border-amber-700">78%</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-amber-900/30 text-amber-400 border border-amber-700">Medium</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-amber-900/30 text-amber-400 border border-amber-700">45 days</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="text-amber-400">2 Minor</span>
+                                </td>
+                                <td class="p-3">
+                                    <button class="text-blue-400 hover:text-blue-300 text-xs font-medium">View Report</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-slate-800">
+                                <td class="p-3 font-semibold">W234</td>
+                                <td class="p-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-red-400 font-bold">58%</span>
+                                        <div class="w-16 bg-slate-700 rounded-full h-2">
+                                            <div class="bg-red-500 h-2 rounded-full data-quality-bar" data-width="58"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-red-900/30 text-red-400 border border-red-700">61%</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-red-900/30 text-red-400 border border-red-700">Low</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-red-900/30 text-red-400 border border-red-700">120 days</span>
+                                </td>
+                                <td class="p-3">
+                                    <span class="text-red-400 font-semibold">1 Critical</span>
+                                </td>
+                                <td class="p-3">
+                                    <button class="text-blue-400 hover:text-blue-300 text-xs font-medium">View Report</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Data Quality Categories -->
+            <div class="grid gap-6 lg:grid-cols-2 mb-12">
+                <!-- Completeness Breakdown -->
+                <div class="light-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Data Completeness by Category</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Well Geometry & Trajectory</span>
+                                <span class="font-semibold text-emerald-400">95%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-emerald-500 h-2 rounded-full data-quality-bar" data-width="95"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Completion Architecture</span>
+                                <span class="font-semibold text-emerald-400">88%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-emerald-500 h-2 rounded-full data-quality-bar" data-width="88"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Pressure & Temperature Data</span>
+                                <span class="font-semibold text-amber-400">72%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-amber-500 h-2 rounded-full data-quality-bar" data-width="72"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Historical Intervention Data</span>
+                                <span class="font-semibold text-amber-400">68%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-amber-500 h-2 rounded-full data-quality-bar" data-width="68"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>Equipment History & Failures</span>
+                                <span class="font-semibold text-red-400">54%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-2">
+                                <div class="bg-red-500 h-2 rounded-full data-quality-bar" data-width="54"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Consistency Issues -->
+                <div class="light-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-4">Detected Data Issues</h3>
+                    <div class="space-y-3">
+                        <div class="p-3 rounded-lg bg-red-900/20 border border-red-800">
+                            <div class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                                </svg>
+                                <div class="flex-1">
+                                    <p class="text-sm font-semibold text-red-300">Critical: Missing Safety Barrier Data</p>
+                                    <p class="text-xs text-slate-400 mt-1">W234 lacks SCSSV depth - required for safe planning</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3 rounded-lg bg-amber-900/20 border border-amber-800">
+                            <div class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-400 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                                </svg>
+                                <div class="flex-1">
+                                    <p class="text-sm font-semibold text-amber-300">Warning: Inconsistent Depth References</p>
+                                    <p class="text-xs text-slate-400 mt-1">W123 has mixed MD/TVD - normalize to single datum</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3 rounded-lg bg-blue-900/20 border border-blue-800">
+                            <div class="flex items-start gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+                                </svg>
+                                <div class="flex-1">
+                                    <p class="text-sm font-semibold text-blue-300">Info: Stale Pressure Data</p>
+                                    <p class="text-xs text-slate-400 mt-1">5 wells have pressure readings >6 months old</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="light-card p-6 rounded-lg">
+                <h3 class="text-xl font-semibold mb-4">Recommended Actions to Improve Data Quality</h3>
+                <div class="grid gap-4 md:grid-cols-2">
+                    <div class="p-4 rounded-lg bg-slate-800/50">
+                        <div class="flex items-start gap-3">
+                            <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-emerald-900/30 text-emerald-400 font-bold">1</span>
+                            <div>
+                                <h4 class="font-semibold mb-1">Complete W234 Safety Barrier Survey</h4>
+                                <p class="text-sm text-slate-400">Schedule downhole survey to capture SCSSV and TRSSV depths before intervention planning.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-lg bg-slate-800/50">
+                        <div class="flex items-start gap-3">
+                            <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-emerald-900/30 text-emerald-400 font-bold">2</span>
+                            <div>
+                                <h4 class="font-semibold mb-1">Standardize Depth References</h4>
+                                <p class="text-sm text-slate-400">Convert all W123 measurements to TVD referenced to rotary kelly bushing (RKB).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-lg bg-slate-800/50">
+                        <div class="flex items-start gap-3">
+                            <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-blue-900/30 text-blue-400 font-bold">3</span>
+                            <div>
+                                <h4 class="font-semibold mb-1">Schedule Pressure Surveys</h4>
+                                <p class="text-sm text-slate-400">Update pressure/temperature data for wells with readings older than 90 days.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 rounded-lg bg-slate-800/50">
+                        <div class="flex items-start gap-3">
+                            <span class="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-blue-900/30 text-blue-400 font-bold">4</span>
+                            <div>
+                                <h4 class="font-semibold mb-1">Enable WITSML Integration</h4>
+                                <p class="text-sm text-slate-400">Connect to real-time data feeds to automatically maintain data freshness and consistency.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="faq-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Frequently Asked Questions</h2><p class="mt-2 max-w-2xl mx-auto text-lg">Find answers to common questions about the Well-Tegra platform.</p></div>
+            <div id="faq-accordion" class="mt-10 light-card rounded-lg shadow-md overflow-hidden">
+                </div>
+        </div>
+
+        <div id="about-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">About Me & The Mission</h2></div>
+            <div class="mt-10 light-card p-8 rounded-lg space-y-8">
+                <div>
+                    <h3 class="text-2xl font-bold">From the Wellsite to the Web</h3>
+                    <p class="text-lg italic">"I built Well-Tegra because I've lived the problems it's designed to solve." - Kenneth McKenzie</p>
+                </div>
+                <div>
+                    <h4 class="text-xl font-semibold">My Perspective</h4>
+                    <p>I'm not a software developer who decided to get into oil and gas. I'm a well services guy who learned to code. My career started at the sharp end with Tristar Oilfield Services and took me around the world, working with service leaders like Expro and Wellserv, and later supervising operations for major operators like BG Group, CNR, and Woodside. I've been on both sides of the fenceâ€”I know the service company's challenges and the operator's objectives. That's the insight Well-Tegra is built on.</p>
+                </div>
+                 <div>
+                    <h4 class="text-xl font-semibold">Why I Built This</h4>
+                    <p>I've seen first-hand how much time, money, and energy we waste because our data is a mess. It's locked in different systems, buried in old reports, and stuck in spreadsheets. We repeat the same mistakes because the lessons learned from one job are never available for the next. The "Well From Hell" in this demo isn't an exaggeration; it's a sanitized version of the real-world train wrecks I've witnessedâ€”and helped clean up.</p>
+                 <div>
+                    <h4 class="text-xl font-semibold">Why I Built This</h4>
+                    <p>I've seen first-hand how much time, money, and energy we waste because our data is a mess. It's locked in different systems, buried in old reports, and stuck in spreadsheets. We repeat the same mistakes because the lessons learned from one job are never available for the next. The "Well From Hell" in this demo isn't an exaggeration; it's a sanitized version of the real-world train wrecks I've witnessed—and helped clean up.</p>
+                    <p class="mt-2">Well-Tegra is my answer to that chaos. It's a platform designed from an operator's perspective, focused on a single source of truth that connects planning, execution, and analysis.</p>
+                </div>
+                <div class="bg-blue-50 dark:bg-blue-900/50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                    <h4 class="font-bold text-blue-800 dark:text-blue-300">The Path Forward</h4>
+                    <p class="mt-2 text-blue-700 dark:text-blue-200">This demo is the blueprint. It was built on a Chromebook with a lot of determination, but to bring it to life, it needs the power of real, collective data. The next step is to partner with operators and service companies to build out the anonymized data pool that will drive the predictive AI. The platform is ready to scale, and I'm actively seeking the right partners to help build the future of well operations.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="performer-view" class="view-container hidden performer-view p-4 lg:p-6 h-full">
+            <div class="h-full dashboard-grid">
+                <div id="procedure-panel" class="bg-slate-800/50 rounded-lg p-4 flex flex-col">
+                    <h2 class="text-lg font-semibold mb-2 border-b border-slate-700 pb-2">Operational Procedure</h2>
+                    <p class="text-xs text-slate-400 mb-3">Simulation is running. Click a future step to jump ahead.</p>
+                    <div id="procedure-steps" class="flex-1 space-y-3 overflow-y-auto pr-2"></div>
+                    <div id="performer-controls" class="hidden mt-4">
+                        <button id="view-analysis-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-md transition">View Post-Job Analysis</button>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-4 lg:gap-6">
+                    <div id="kpi-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
+                        </div>
+                    <div id="chart-card" class="flex-1 bg-slate-800/50 rounded-lg p-4 flex-col"><h3 class="text-lg font-semibold mb-2">Tubing Force Analysis: Plan vs. Actual</h3><div class="flex-1 relative"><canvas id="tfaChart"></canvas></div></div>
+
+                    <!-- V23: Real-Time Anomaly Detection -->
+                    <div id="anomaly-alerts-container" class="bg-slate-800/50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold mb-4">🚨 Live Anomaly Detection</h3>
+                        <div id="anomaly-alerts" class="space-y-3">
+                            <div class="text-slate-400 text-center py-8 text-sm">
+                                Monitoring for anomalies... All systems normal.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-800/50 rounded-lg p-4 flex flex-col"><h2 class="text-lg font-semibold mb-4 border-b border-slate-700 pb-2">Operations Log</h2><div id="log-entries" class="flex-1 space-y-3 overflow-y-auto mb-4"></div><div class="mt-auto"><textarea id="log-input" class="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-sm" rows="3" placeholder="Add log entry..."></textarea><button id="add-log-btn" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-4 rounded-md transition">Add Entry</button></div></div>
+            </div>
+        </div>
+
+        <div id="analyzer-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Post-Job Analysis</h2><p id="analyzer-subtitle" class="mt-2 max-w-2xl mx-auto text-lg"></p></div>
+
+            <!-- PDF Export Button -->
+            <div class="mt-6 flex justify-center">
+                <button id="pdf-export-button" class="pdf-export-btn bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 rounded-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all shadow-lg">
+                    📄 Export Complete Report (PDF)
+                </button>
+            </div>
+            <div id="pdf-export-status" class="sr-only" role="status" aria-live="polite"></div>
+
+            <div class="mt-10 grid gap-8 lg:grid-cols-2"><div class="light-card p-6 md:p-8 rounded-lg"><h3 class="text-xl font-semibold mb-4">Performance Summary</h3><div id="summary-kpis" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div></div><div class="light-card p-6 md:p-8 rounded-lg"><h3 class="text-xl font-semibold mb-4">Non-Productive Time (NPT) Breakdown</h3><div class="h-64 md:h-80"><canvas id="nptChart"></canvas></div></div></div>
+
+            <!-- V23: Enhanced Vendor Scorecard -->
+            <div class="vendor-scorecard mt-8 fade-in-up">
+                <h3 class="text-2xl font-bold mb-4">⭐ Vendor Performance Scorecard</h3>
+                <div class="bg-white/10 rounded-lg p-6 mb-4">
+                    <div class="text-center mb-6">
+                        <div class="text-5xl font-bold mb-2" id="vendor-overall-rating">4.2</div>
+                        <div class="star-rating mb-2 justify-center" id="vendor-overall-stars">
+                            <!-- Stars generated by JavaScript -->
+                        </div>
+                        <div class="text-sm opacity-90">Overall Performance Rating</div>
+                    </div>
+                </div>
+
+                <div class="bg-white/5 rounded-lg p-6">
+                    <div class="metric-row">
+                        <span class="metric-label">On-Time Delivery</span>
+                        <div class="metric-value">
+                            <div class="star-rating" id="metric-delivery-stars"></div>
+                            <span class="score-badge score-excellent">95%</span>
+                        </div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Equipment Quality</span>
+                        <div class="metric-value">
+                            <div class="star-rating" id="metric-quality-stars"></div>
+                            <span class="score-badge score-good">88%</span>
+                        </div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Technical Support</span>
+                        <div class="metric-value">
+                            <div class="star-rating" id="metric-support-stars"></div>
+                            <span class="score-badge score-excellent">92%</span>
+                        </div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Cost Competitiveness</span>
+                        <div class="metric-value">
+                            <div class="star-rating" id="metric-cost-stars"></div>
+                            <span class="score-badge score-fair">78%</span>
+                        </div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Safety Record</span>
+                        <div class="metric-value">
+                            <div class="star-rating" id="metric-safety-stars"></div>
+                            <span class="score-badge score-excellent">98%</span>
+                        </div>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Responsiveness</span>
+                        <div class="metric-value">
+                            <div class="star-rating" id="metric-response-stars"></div>
+                            <span class="score-badge score-good">85%</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="security-view" class="view-container hidden max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight">Security &amp; Data Protection</h2>
+                <p class="mt-2 max-w-2xl mx-auto text-lg text-slate-300">Enterprise-grade controls keep well programs, Gemini prompts, and live operational telemetry secured from the planning office to the rig floor.</p>
+            </div>
+
+            <div class="mt-10 grid gap-6">
+                <section class="light-card p-6 rounded-lg space-y-4">
+                    <h3 class="text-2xl font-semibold">Defense-in-Depth Architecture</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-slate-300">
+                        <li><strong>Zero Trust perimeter.</strong> Planner and Mobile Communicator sessions are brokered with short-lived OAuth tokens and conditional access tied to rig site geofences.</li>
+                        <li><strong>Encryption everywhere.</strong> TLS 1.3 for all traffic, FIPS 140-2 validated KMS for data at rest, and client-side sealing on every Management of Change approval.</li>
+                        <li><strong>Separation of duties.</strong> Immutable audit trails on Gemini prompt edits, procedure generation, and supervisor sign-off prevent unauthorized workflow changes.</li>
+                    </ul>
+                </section>
+
+                <section class="light-card p-6 rounded-lg space-y-4">
+                    <h3 class="text-2xl font-semibold">Data Governance Pipeline</h3>
+                    <dl class="grid gap-4 sm:grid-cols-2 text-sm text-slate-300">
+                        <div>
+                            <dt class="text-xs uppercase tracking-wide text-slate-400">Identity</dt>
+                            <dd>Enterprise Managed Users with SCIM lifecycle management ensure only certified personnel access active wells.</dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs uppercase tracking-wide text-slate-400">Segmentation</dt>
+                            <dd>Program data, AI embeddings, and live operations streams reside in isolated tenants with per-operator encryption domains.</dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs uppercase tracking-wide text-slate-400">Integrity</dt>
+                            <dd>Automated hash stamping on every import plus dual attestation before procedures are released to the field.</dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs uppercase tracking-wide text-slate-400">Retention</dt>
+                            <dd>Configurable retention schedules with defensible deletion aligned to regional regulation and contract terms.</dd>
+                        </div>
+                    </dl>
+                </section>
+
+                <section class="light-card p-6 rounded-lg space-y-4">
+                    <h3 class="text-2xl font-semibold">Response &amp; Assurance</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-slate-300">
+                        <li>24/7 managed detection with playbooks mapped to rig cyber incidents and cross-domain API anomalies.</li>
+                        <li>Quarterly tabletop drills that include Mobile Communicator escalation paths and connectivity failover.</li>
+                        <li>Exportable compliance packets covering SOC 2 Type II, ISO/IEC 27001, and NIS2 readiness for operator audits.</li>
+                    </ul>
+                </section>
+
+                <div class="light-card p-8 rounded-lg text-center">
+                    <h3 class="text-2xl font-bold">Need a security briefing?</h3>
+                    <p class="text-lg text-slate-400 mb-6">Coordinate a deep dive into identity, audit, and disaster recovery posture tailored to your intervention campaign.</p>
+                    <a href="mailto:security@welltegra.network" class="inline-block px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">Contact Security Team</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <div id="well-history-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 modal-overlay" aria-hidden="true">
+        <div class="relative top-10 mx-auto p-5 border w-full max-w-5xl shadow-lg rounded-md modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <div class="flex justify-between items-center border-b pb-3 dark:border-gray-700">
+                <h3 id="modal-title" class="text-2xl font-bold"></h3>
+                <button id="close-modal-btn" type="button" class="text-3xl font-bold hover:text-red-500" aria-label="Close well history dialog">&times;</button>
+            </div>
+            <div id="modal-content" class="mt-4 max-h-[80vh] overflow-y-auto p-1"></div>
+        </div>
+    </div>
+
+    <div
+        id="mobile-communicator"
+        class="pointer-events-none fixed inset-0 z-40 hidden place-items-center bg-slate-950/80 px-4 py-8"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="mobile-communicator-title"
+        aria-hidden="true"
+    >
+        <section class="pointer-events-auto flex w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 shadow-2xl">
+            <header class="flex items-start justify-between gap-3 border-b border-slate-800 bg-slate-900/80 px-6 py-5">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-[0.35em] text-cyan-300">Remote sign-off</p>
+                    <h2 id="mobile-communicator-title" class="mt-2 text-2xl font-semibold text-slate-100">Mobile Communicator</h2>
+                    <p class="text-sm text-slate-400">Approve Management of Change requests and programme amendments without leaving the deck.</p>
+                </div>
+                <button
+                    id="close-mobile-communicator"
+                    type="button"
+                    class="rounded-full border border-slate-700/60 p-2 text-slate-300 transition hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400"
+                    aria-label="Close mobile communicator panel"
+                >
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M6 18L18 6" />
+                    </svg>
+                </button>
+            </header>
+            <details id="mobile-communicator-howto" class="mx-6 mt-4 space-y-4 rounded-2xl border border-slate-800 bg-slate-900/70 p-5 text-sm text-slate-300">
+                <summary class="flex cursor-pointer items-center justify-between text-base font-semibold text-slate-100">
+                    <span>How to use the Mobile Communicator</span>
+                    <span class="ml-3 text-xs font-semibold uppercase tracking-wide text-cyan-300">Step-by-step</span>
+                </summary>
+                <p>
+                    The communicator mirrors the latest saved programme and lets authorised supervisors review change requests, evidence, and impact before releasing work.
+                </p>
+                <ol class="list-decimal space-y-2 pl-5">
+                    <li><strong>Open the channel.</strong> Tap the Mobile Communicator badge in the planner header. Pending items are flagged in amber.</li>
+                    <li><strong>Select a request.</strong> Choose a card in the left column to load the justification, plan snapshot, and decision trail.</li>
+                    <li><strong>Validate the context.</strong> Check risk badges, first execution steps, and the on-call crew in the plan snapshot. Review evidence attachments and watchers if escalation is required.</li>
+                    <li><strong>Approve or reject.</strong> Enter your WellTegra email and secure PIN, add an optional comment for the log, then submit a decision. A digital seal is generated and the audit feed updates instantly.</li>
+                </ol>
+                <p class="text-xs text-slate-500">All approvals are stored locally for this demo build. In production, the communicator would synchronise with the WellTegra control plane over an encrypted channel.</p>
+            </details>
+            <div class="grid gap-6 px-6 py-6 lg:grid-cols-[17rem_1fr]">
+                <section class="flex flex-col gap-5">
+                    <div class="grid gap-3 text-sm text-slate-200 sm:grid-cols-3">
+                        <div class="rounded-2xl border border-slate-800 bg-slate-950/70 p-4 shadow-inner">
+                            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Total</p>
+                            <p id="communicator-summary-total" class="mt-2 text-2xl font-semibold text-slate-100">0</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-800 bg-slate-950/70 p-4 shadow-inner">
+                            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Pending</p>
+                            <p id="communicator-summary-pending" class="mt-2 text-2xl font-semibold text-amber-300">0</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-800 bg-slate-950/70 p-4 shadow-inner">
+                            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Approved</p>
+                            <p id="communicator-summary-approved" class="mt-2 text-2xl font-semibold text-emerald-300">0</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500">Last synced <span id="communicator-last-sync">—</span></p>
+                    <div class="flex-1 overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/60">
+                        <h3 class="border-b border-slate-800 px-4 py-3 text-sm font-semibold text-slate-200">Requests</h3>
+                        <div class="max-h-80 overflow-y-auto px-2 py-3">
+                            <p id="communicator-empty" class="hidden px-3 py-6 text-sm text-slate-400">No change requests are active.</p>
+                            <ul id="communicator-request-list" class="flex flex-col gap-2" aria-label="Mobile communicator requests"></ul>
+                        </div>
+                    </div>
+                </section>
+                <section class="flex min-h-[24rem] flex-col gap-5 rounded-2xl border border-slate-800 bg-slate-950/60 p-5">
+                    <div class="flex flex-col gap-3">
+                        <div class="flex flex-wrap items-center gap-3">
+                            <span id="communicator-detail-status" class="hidden rounded-full border border-slate-700/70 bg-slate-800/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-200"></span>
+                            <span id="communicator-detail-category" class="hidden rounded-full bg-cyan-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cyan-200"></span>
+                            <p id="communicator-detail-meta" class="text-xs text-slate-500"></p>
+                        </div>
+                        <h3 id="communicator-detail-title" class="text-xl font-semibold text-slate-100">Select a change request</h3>
+                        <p id="communicator-detail-summary" class="text-sm leading-relaxed text-slate-300">Choose a request from the list to review the justification, impact, and supporting evidence before granting remote approval.</p>
+                        <dl id="communicator-detail-impact" class="grid gap-3 text-sm text-slate-300 sm:grid-cols-3"></dl>
+                    </div>
+                    <section
+                        id="communicator-plan-context"
+                        class="hidden rounded-2xl border border-slate-800 bg-slate-900/60 p-4"
+                        aria-labelledby="communicator-plan-context-title"
+                    >
+                        <div class="flex flex-wrap items-start justify-between gap-4">
+                            <div class="space-y-1">
+                                <p class="text-[0.65rem] font-semibold uppercase tracking-[0.35em] text-cyan-300" id="communicator-plan-context-title">Latest plan snapshot</p>
+                                <h4 id="communicator-plan-name" class="text-lg font-semibold text-slate-100">No plan synced</h4>
+                                <p id="communicator-plan-meta" class="text-xs text-slate-400">Generate a program to expose plan context for sign-off.</p>
+                            </div>
+                            <dl class="grid gap-3 text-right text-xs sm:text-sm">
+                                <div class="flex flex-col rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-2">
+                                    <dt class="font-semibold text-slate-400">Budget</dt>
+                                    <dd id="communicator-plan-cost" class="text-base font-semibold text-slate-100">—</dd>
+                                </div>
+                                <div class="flex flex-col rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-2">
+                                    <dt class="font-semibold text-slate-400">Duration</dt>
+                                    <dd id="communicator-plan-duration" class="text-base font-semibold text-slate-100">—</dd>
+                                </div>
+                                <div class="flex flex-col rounded-xl border border-slate-800 bg-slate-950/60 px-3 py-2">
+                                    <dt class="font-semibold text-slate-400">Crew</dt>
+                                    <dd id="communicator-plan-crew" class="text-base font-semibold text-slate-100">—</dd>
+                                </div>
+                            </dl>
+                        </div>
+                        <p id="communicator-plan-highlight" class="mt-3 text-sm text-slate-300"></p>
+                        <div id="communicator-plan-risks" class="mt-3 flex flex-wrap gap-2 text-xs"></div>
+                        <div class="mt-4">
+                            <h5 class="text-xs font-semibold uppercase tracking-wide text-slate-400">First steps</h5>
+                            <ol id="communicator-plan-steps" class="mt-2 space-y-2 text-sm text-slate-200"></ol>
+                        </div>
+                        <div class="mt-4">
+                            <h5 class="text-xs font-semibold uppercase tracking-wide text-slate-400">Crew on call</h5>
+                            <ul id="communicator-plan-crew-list" class="mt-2 flex flex-wrap gap-2 text-xs text-slate-300"></ul>
+                        </div>
+                        <p id="communicator-plan-empty" class="mt-3 text-sm text-slate-400">Plan context will appear here after the planner syncs a program.</p>
+                    </section>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wide text-slate-400">Watchers</h4>
+                        <ul id="communicator-detail-watchers" class="mt-2 flex flex-wrap gap-2 text-xs text-slate-300"></ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wide text-slate-400">Supporting evidence</h4>
+                        <ul id="communicator-detail-attachments" class="mt-2 flex flex-wrap gap-2 text-xs text-cyan-200"></ul>
+                    </div>
+                    <div class="flex-1 overflow-hidden rounded-xl border border-slate-800 bg-slate-900/40">
+                        <h4 class="border-b border-slate-800 px-4 py-3 text-sm font-semibold text-slate-200">Decision trail</h4>
+                        <ol id="communicator-timeline" class="max-h-48 space-y-3 overflow-y-auto px-4 py-3 text-sm text-slate-300"></ol>
+                    </div>
+                    <form id="communicator-signoff-form" class="space-y-3 rounded-xl border border-slate-800 bg-slate-900/50 p-4" aria-describedby="communicator-feedback">
+                        <div class="grid gap-3 sm:grid-cols-2">
+                            <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                                Approver email
+                                <input id="communicator-email" type="email" class="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50" placeholder="name@welltegra.com" autocomplete="email">
+                            </label>
+                            <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                                Secure PIN
+                                <input id="communicator-pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" class="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50" placeholder="••••" autocomplete="one-time-code">
+                            </label>
+                        </div>
+                        <label class="flex flex-col gap-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
+                            Comment (optional)
+                            <textarea id="communicator-comment" rows="3" class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50" placeholder="Note for the log"></textarea>
+                        </label>
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <p id="communicator-feedback" class="text-sm text-slate-400" role="status" aria-live="polite"></p>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" data-decision="reject" class="rounded-full border border-rose-500/60 px-4 py-2 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-500">Reject</button>
+                                <button type="button" data-decision="approve" class="rounded-full border border-emerald-500/60 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 transition hover:bg-emerald-500/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400">Approve</button>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+            <section class="border-t border-slate-800 bg-slate-900/70 px-6 py-5">
+                <h3 class="text-sm font-semibold text-slate-200">Activity feed</h3>
+                <p class="mt-1 text-xs text-slate-500">Trace every remote decision and plan update captured through the communicator channel.</p>
+                <ol id="communicator-feed" class="mt-4 space-y-3 text-sm text-slate-300"></ol>
+                <p id="communicator-feed-empty" class="mt-4 hidden text-sm text-slate-400">No activity recorded yet. Generate or update a plan to build the audit trail.</p>
+            </section>
+        </section>
+    </div>
+
+    <div id="planner-toast" role="status" aria-live="polite" class="pointer-events-none fixed bottom-6 right-6 hidden rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-900 shadow-lg">Integrated program synced</div>
+
+</div>
+
+    <script src="assets/js/app.js?v=23.0.11" defer></script>
+    <script src="assets/js/mobile-communicator.js?v=23.0.11" defer></script>
+
+    <!-- Enhanced Simulation System (v23.0.10+) -->
+    <script src="assets/js/enhanced-simulation.js?v=23.0.10" defer></script>
+    <script src="assets/js/enhanced-ui.js?v=23.0.10" defer></script>
+    <script src="assets/js/enhanced-integration.js?v=23.0.10" defer></script>
+
+</body>
+</html>
