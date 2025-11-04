@@ -1,0 +1,77 @@
+name: Update PR Branch with main
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull request number to update'
+        required: true
+        default: '126'
+      merge_strategy:
+        description: 'Merge strategy: merge (default) or rebase'
+        required: false
+        default: 'merge'
+
+jobs:
+  update-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Setup Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Get PR info
+        id: pr
+        uses: octokit/request-action@v4
+        with:
+          route: GET /repos/{owner}/{repo}/pulls/{pull_number}
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.event.repository.name }}
+          pull_number: ${{ github.event.inputs.pr_number }}
+
+      - name: Parse branch names
+        id: parse
+        run: |
+          echo "head_ref=$(jq -r .head.ref <<< '${{ steps.pr.outputs.data }}')" >> $GITHUB_OUTPUT
+          echo "base_ref=$(jq -r .base.ref <<< '${{ steps.pr.outputs.data }}')" >> $GITHUB_OUTPUT
+
+      - name: Fetch branches
+        run: |
+          git fetch origin main
+          git fetch origin ${{ steps.parse.outputs.head_ref }}
+
+      - name: Checkout head branch
+        run: git checkout -B ${{ steps.parse.outputs.head_ref }} origin/${{ steps.parse.outputs.head_ref }}
+
+      - name: Merge main into branch
+        run: |
+          if [ "${{ github.event.inputs.merge_strategy }}" = "rebase" ]; then
+            git rebase origin/main
+          else
+            git merge --no-ff origin/main -m "Merge main into ${{ steps.parse.outputs.head_ref }}"
+          fi
+        continue-on-error: true
+        id: merge_step
+
+      - name: Show merge status
+        if: steps.merge_step.outcome != 'success'
+        run: |
+          echo "Merge failed or conflicts detected."
+          git status --short
+          echo "Conflicting files:"
+          git diff --name-only --diff-filter=U || true
+          exit 1
+
+      - name: Push updated branch
+        if: steps.merge_step.outcome == 'success'
+        env:
+          TOKEN: ${{ secrets.MERGE_TOKEN }}
+        run: |
+          git push https://x-access-token:${TOKEN}@github.com/${{ github.repository_owner }}/${{ github.event.repository.name }} HEAD:${{ steps.parse.outputs.head_ref }}
