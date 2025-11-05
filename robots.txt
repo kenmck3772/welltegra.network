@@ -1,0 +1,17 @@
+# Well-Tegra robots.txt
+# Allow all crawlers access to public content
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://welltegra.network/sitemap.xml
+
+# Crawl rate - be respectful
+Crawl-delay: 1
+
+# Block any future admin or testing paths
+Disallow: /admin/
+Disallow: /test/
+Disallow: /_draft/
+Disallow: *.bak$
