@@ -17,6 +17,7 @@
                    img-src 'self' data: https:;
                    frame-src 'self';
                    connect-src 'self' http://localhost:3001 https://api.welltegra.local ws://api.welltegra.local:8080;">
+                   connect-src 'self' https://api.welltegra.local ws://api.welltegra.local:8080;">
     <title>Engineering Cockpit - WellTegra</title>
 
     <!-- Tailwind CSS -->
@@ -259,6 +260,9 @@
                             class="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg font-semibold transition shadow-lg">
                         ➕ New Step
                     </button>
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-blue-400 mb-2">Well Operations Procedure</h2>
+                    <p class="text-sm text-gray-400">Real-time checklist synchronized with field operations</p>
                 </div>
 
                 <!-- Checklist will be populated dynamically -->

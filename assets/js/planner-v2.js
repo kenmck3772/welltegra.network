@@ -325,6 +325,81 @@
                 `;
             }
         }
+            // Emit request for procedure data
+            webSocketService.emit('subscribe-procedure', { wellId: wellId });
+
+            // Mock data timeout (in case WebSocket fails)
+            setTimeout(() => {
+                if (procedureChecklist.length === 0) {
+                    loadMockProcedureData(wellId);
+                }
+            }, 2000);
+
+        } else {
+            // WebSocket service not available, load mock data
+            console.warn('[PlannerV2] WebSocket service not available, loading mock data');
+            loadMockProcedureData(wellId);
+        }
+    }
+
+    /**
+     * Load mock procedure data for development
+     */
+    function loadMockProcedureData(wellId) {
+        console.log('[PlannerV2] Loading mock procedure data');
+
+        procedureChecklist = [
+            {
+                id: 'step-1',
+                title: 'Pre-Spud Meeting',
+                description: 'Complete pre-spud safety meeting with all personnel',
+                status: 'completed',
+                assignee: 'Finlay MacLeod',
+                timestamp: '2024-11-05T08:00:00Z'
+            },
+            {
+                id: 'step-2',
+                title: 'Rig-up BOP Stack',
+                description: 'Install and pressure test 5-ram BOP stack',
+                status: 'completed',
+                assignee: 'Rowan Ross',
+                timestamp: '2024-11-05T10:30:00Z'
+            },
+            {
+                id: 'step-3',
+                title: 'Run Surface Casing',
+                description: 'Run 13-3/8" surface casing to 2,500ft',
+                status: 'in-progress',
+                assignee: 'Rowan Ross',
+                timestamp: '2024-11-05T14:00:00Z'
+            },
+            {
+                id: 'step-4',
+                title: 'Cement Surface Casing',
+                description: 'Cement surface casing with lead/tail slurry',
+                status: 'pending',
+                assignee: 'Dr. Isla Munro',
+                timestamp: null
+            },
+            {
+                id: 'step-5',
+                title: 'WOC (Wait on Cement)',
+                description: 'Wait 12 hours for cement to reach compressive strength',
+                status: 'pending',
+                assignee: 'Finlay MacLeod',
+                timestamp: null
+            },
+            {
+                id: 'step-6',
+                title: 'Pressure Test Casing',
+                description: 'Pressure test to 2,000 PSI for 30 minutes',
+                status: 'pending',
+                assignee: 'Rowan Ross',
+                timestamp: null
+            }
+        ];
+
+        updateProcedureUI(procedureChecklist);
     }
 
     /**
@@ -393,6 +468,18 @@
                             Delete
                         </button>
                     </div>
+                    ${item.status === 'pending' ? `
+                        <button onclick="window.PlannerV2.updateStepStatus('${escapeHTML(item.id)}', 'in-progress')"
+                                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-semibold transition">
+                            Start Step
+                        </button>
+                    ` : ''}
+                    ${item.status === 'in-progress' ? `
+                        <button onclick="window.PlannerV2.updateStepStatus('${escapeHTML(item.id)}', 'completed')"
+                                class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-sm font-semibold transition">
+                            Mark Complete
+                        </button>
+                    ` : ''}
                 </div>
             </div>
         `).join('');
@@ -605,6 +692,27 @@
     function retryLoadProcedures() {
         if (currentWell) {
             loadProcedureChecklist(currentWell);
+    function updateStepStatus(stepId, newStatus) {
+        console.log('[PlannerV2] Updating step status:', stepId, newStatus);
+
+        // Update local state
+        const step = procedureChecklist.find(s => s.id === stepId);
+        if (step) {
+            step.status = newStatus;
+            step.timestamp = new Date().toISOString();
+
+            // Emit update to WebSocket
+            if (typeof webSocketService !== 'undefined') {
+                webSocketService.emit('update-procedure-step', {
+                    wellId: currentWell,
+                    stepId: stepId,
+                    status: newStatus,
+                    timestamp: step.timestamp
+                });
+            }
+
+            // Update UI
+            updateProcedureUI(procedureChecklist);
         }
     }
 

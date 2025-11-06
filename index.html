@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.socket.io; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com ws://api.welltegra.local:8080; media-src 'self' data: file:; base-uri 'self'; form-action 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' 'unsafe-eval' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.socket.io https://aframe.io https://raw.githack.com; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file: blob:; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com ws://api.welltegra.local:8080; media-src 'self' data: file: blob:; worker-src 'self' blob:; base-uri 'self'; form-action 'self'">
 
     <!-- SEO Meta Tags -->
     <title>Well-Tegra | AI-Powered Well Engineering Platform - Reduce NPT by 30%</title>
@@ -42,7 +42,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
     <!-- Socket.IO for real-time WebSocket connection to Kafka stream -->
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" integrity="sha384-mZLF4UVrpi/QTWPA7BjNPEnkIfRFn4ZEO3Qp/kpiXg2KKZqzKQ8TCgjIkgEMmXpP" crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js" integrity="sha512-Xm9qbB6Pu06k3PUwPj785dyTl6oHxgsv9nHp7ej7nCpAqGZT3OZpsELuCYX05DdonFpTlBpXMOxjavIAIUwr0w==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    <!-- A-Frame and AR.js for Augmented Reality features -->
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ar.js@3.4.5/aframe/build/aframe-ar.min.js"></script>
 
     <style>
         /* --- Base & Theme Setup --- */
@@ -1225,6 +1228,18 @@
                     <p id="ws-connection-status" class="text-xl text-yellow-400 font-bold mt-1">🟡 CONNECTING...</p>
                 </div>
 
+                <!-- AR MODE BUTTON (Sprint 9 - Digital Twin AR) -->
+                <div class="mb-3">
+                    <button
+                        id="ar-mode-btn"
+                        class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 active:from-purple-800 active:to-blue-800 text-white font-black text-2xl py-4 rounded-xl shadow-2xl border-4 border-purple-900 transition-all"
+                        style="min-height: 72px; font-size: 26px;"
+                        aria-label="Launch AR Mode - Digital Twin"
+                    >
+                        📱 LAUNCH AR MODE
+                    </button>
+                </div>
+
                 <!-- PRIORITY 1: FLOATING EMERGENCY STOP BUTTON (Always Visible) -->
                 <div id="emergency-stop-container" class="sticky top-0 z-50 mb-3">
                     <button
@@ -1657,8 +1672,129 @@
 
 </div>
 
+    <!-- AR MODE CONTAINER (Sprint 9 - Hidden by default) -->
+    <div id="performer-ar-container" class="hidden fixed inset-0 z-[2000] bg-black">
+
+        <!-- A-Frame AR Scene -->
+        <a-scene
+            id="performer-ar-scene"
+            embedded
+            arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+            vr-mode-ui="enabled: false"
+            renderer="logarithmicDepthBuffer: true; precision: medium;">
+
+            <!-- Camera -->
+            <a-entity camera></a-entity>
+
+            <!-- HIRO Marker + Live BOP Model -->
+            <a-marker preset="hiro" id="hiro-marker-performer">
+                <!-- BOP Model (color changes based on pressure) -->
+                <a-entity
+                    id="bop-model-performer"
+                    gltf-model="/models/pce/bop_5ram.glb"
+                    scale="0.5 0.5 0.5"
+                    position="0 0 0"
+                    rotation="-90 0 0"
+                    material="color: #4a5568; metalness: 0.7; roughness: 0.3"
+                    animation="property: rotation; to: -90 360 0; loop: true; dur: 10000; easing: linear">
+                </a-entity>
+
+                <!-- 3D Pressure Text (floating above BOP) -->
+                <a-text
+                    id="pressure-text-performer"
+                    value="Pressure: -- PSI\nNORMAL"
+                    color="#22c55e"
+                    align="center"
+                    position="0 2 0"
+                    scale="2 2 2"
+                    look-at="[camera]">
+                </a-text>
+            </a-marker>
+
+        </a-scene>
+
+        <!-- AR UI Overlay -->
+        <div class="fixed inset-0 pointer-events-none z-[2001]">
+
+            <!-- Header -->
+            <div class="fixed top-0 left-0 right-0 bg-gradient-to-b from-gray-900/95 to-transparent p-4 pointer-events-auto">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+                            <span class="text-2xl">📱</span>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold text-white">AR Mode - Digital Twin</h1>
+                            <p class="text-xs text-gray-300">Live Pressure Monitoring</p>
+                        </div>
+                    </div>
+                    <button onclick="PerformerAR.exitARMode()"
+                            class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-bold transition">
+                        Exit AR
+                    </button>
+                </div>
+            </div>
+
+            <!-- Controls Footer -->
+            <div class="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-gray-900/95 to-transparent p-4 pointer-events-auto">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Tracking Status -->
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span id="ar-tracking-status" class="inline-block w-3 h-3 rounded-full bg-red-500"></span>
+                            <div>
+                                <p class="text-sm font-semibold text-white">Marker Status</p>
+                                <p id="ar-status-text" class="text-xs text-gray-400">Searching for HIRO marker...</p>
+                            </div>
+                        </div>
+                        <button onclick="PerformerAR.showARInstructions()"
+                                class="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded text-xs font-bold transition">
+                            📖 Help
+                        </button>
+                    </div>
+
+                    <!-- Live Pressure Display -->
+                    <div class="bg-gray-800/80 rounded-lg p-3 text-center">
+                        <p class="text-xs text-gray-400 mb-1">Live Pressure</p>
+                        <p id="ar-pressure-display" class="text-lg font-bold text-white">
+                            <span class="text-green-400">✓ 0.0 PSI - NORMAL</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- AR Instructions Modal -->
+        <div id="ar-instructions-modal" class="hidden fixed inset-0 z-[2002] flex items-center justify-center p-4 bg-black/80">
+            <div class="bg-gray-900 border-2 border-blue-500 rounded-xl p-6 max-w-lg">
+                <h2 class="text-2xl font-bold text-blue-400 mb-4">🎯 How to Use AR Mode</h2>
+
+                <div class="text-left space-y-3 mb-6 text-sm text-gray-300">
+                    <p><strong class="text-white">Step 1:</strong> Get the HIRO marker (search "AR.js HIRO marker" online)</p>
+                    <p><strong class="text-white">Step 2:</strong> Display marker on another device or print it</p>
+                    <p><strong class="text-white">Step 3:</strong> Point your camera at the marker</p>
+                    <p><strong class="text-white">Step 4:</strong> 3D BOP appears with live pressure data</p>
+
+                    <div class="bg-blue-900/30 border border-blue-500/50 rounded p-3 mt-4">
+                        <p class="text-blue-300 font-semibold mb-1">🔴 CRITICAL Alert:</p>
+                        <p class="text-xs">When pressure exceeds 3000 PSI, the BOP turns RED and you'll feel vibration alerts</p>
+                    </div>
+                </div>
+
+                <button onclick="PerformerAR.hideARInstructions()"
+                        class="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold transition">
+                    Got It
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="assets/js/webSocketService.js" defer></script>
     <script src="assets/js/performer-websocket.js" defer></script>
     <script src="assets/js/performer-live-data.js" defer></script>
+    <script src="assets/js/performer-ar.js" defer></script>
     <script src="assets/js/app.js" defer></script>
     <script src="assets/js/mobile-communicator.js" defer></script>
 

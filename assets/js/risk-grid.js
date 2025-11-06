@@ -520,6 +520,18 @@
     }
 
     /**
+     * Escape HTML to prevent XSS attacks
+     * @param {string} str - String to escape
+     * @returns {string} - Escaped string safe for HTML insertion
+     */
+    function escapeHtml(str) {
+        if (typeof str !== 'string') return str;
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    /**
      * Update individual well cards
      */
     function updateWellCards(data) {
@@ -541,6 +553,7 @@
 
     /**
      * Create a well risk card element
+     * All user-provided data is properly escaped to prevent XSS
      */
     function createWellCard(well) {
         const div = document.createElement('div');
@@ -557,15 +570,21 @@
 
         div.className = `risk-card ${riskClass}`;
 
+        // Escape all user-provided strings to prevent XSS
+        const safeWellName = escapeHtml(well.wellName || well.wellId);
+        const safeWellId = escapeHtml(well.wellId);
+        const riskColor = getRiskColor(well.overallRisk);
+        const riskLevel = escapeHtml(getRiskLevel(well.overallRisk).toUpperCase());
+
         div.innerHTML = `
             <div class="flex items-center justify-between mb-4">
                 <div>
-                    <h3 class="text-2xl font-bold text-white">${well.wellName || well.wellId}</h3>
-                    <p class="text-sm text-slate-400 mt-1">${well.wellId}</p>
+                    <h3 class="text-2xl font-bold text-white">${safeWellName}</h3>
+                    <p class="text-sm text-slate-400 mt-1">${safeWellId}</p>
                 </div>
                 <div class="text-right">
                     <p class="text-sm text-slate-400 mb-1">Overall Risk</p>
-                    <p class="risk-score text-${getRiskColor(well.overallRisk)}" style="font-size: 2.5rem;">
+                    <p class="risk-score text-${riskColor}" style="font-size: 2.5rem;">
                         ${well.overallRisk.toFixed(1)}
                     </p>
                 </div>
@@ -588,7 +607,7 @@
 
             <div class="mt-4 pt-4 border-t border-slate-600">
                 <p class="text-xs text-slate-400 text-center">
-                    Risk Level: <span class="font-bold text-${getRiskColor(well.overallRisk)}">${getRiskLevel(well.overallRisk).toUpperCase()}</span>
+                    Risk Level: <span class="font-bold text-${riskColor}">${riskLevel}</span>
                 </p>
             </div>
         `;
