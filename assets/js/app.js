@@ -2232,21 +2232,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    themeToggleBtn.addEventListener('click', () => {
-        const currentTheme = body.classList.contains('theme-dark') ? 'dark' : 'light';
-        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
-    });
-
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (link.classList.contains('disabled')) return;
-            switchView(e.currentTarget.id.replace('-nav-link', ''));
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = body.classList.contains('theme-dark') ? 'dark' : 'light';
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
         });
-    });
+    }
+
+    if (navLinks) {
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (link.classList.contains('disabled')) return;
+                switchView(e.currentTarget.id.replace('-nav-link', ''));
+            });
+        });
+    }
 
     // Well selection event listener
-    wellSelectionGrid.addEventListener('click', (e) => {
+    if (wellSelectionGrid) {
+        wellSelectionGrid.addEventListener('click', (e) => {
         // Handle view details button
         if (e.target.closest('.view-details-btn')) { 
             e.stopPropagation(); 
@@ -2264,26 +2269,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
         renderProblems(); // Update the problems list based on selection
         updatePlannerStepUI(2);
-    });
+        });
+    }
 
     // Objective selection event listener
-    objectivesFieldset.addEventListener('change', (e) => { 
-        // Find the selected objective card and update its styling
-        document.querySelectorAll('.objective-card').forEach(card => {
-            card.classList.remove('selected');
+    if (objectivesFieldset) {
+        objectivesFieldset.addEventListener('change', (e) => {
+            // Find the selected objective card and update its styling
+            document.querySelectorAll('.objective-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            const selectedCard = document.querySelector(`input[name="objective"]:checked`).closest('.objective-card');
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+
+            appState.selectedObjective = objectivesData.find(o => o.id === e.target.value);
+            if (generatePlanBtnManual) {
+                generatePlanBtnManual.disabled = !appState.selectedObjective;
+            }
         });
-        
-        const selectedCard = document.querySelector(`input[name="objective"]:checked`).closest('.objective-card');
-        if (selectedCard) {
-            selectedCard.classList.add('selected');
-        }
-        
-        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value); 
-        generatePlanBtnManual.disabled = !appState.selectedObjective; 
-    });
+    }
 
     // Problem selection event listener
-    problemsFieldset.addEventListener('change', (e) => {
+    if (problemsFieldset && aiRecommendationsContainer) {
+        problemsFieldset.addEventListener('change', (e) => {
         // Find the selected problem card and update its styling
         document.querySelectorAll('.objective-card').forEach(card => {
             card.classList.remove('selected');
@@ -2323,103 +2334,133 @@ document.addEventListener('DOMContentLoaded', function() {
             const selectedCard = ev.target.closest('.ai-recommendation-enhanced');
             const recIndex = parseInt(selectedCard.dataset.recIndex);
             appState.ai.selectedRecommendation = aiRecommendations[appState.ai.selectedProblemId][recIndex];
-            
+
             document.querySelectorAll('.ai-recommendation-enhanced').forEach(c => c.classList.remove('selected'));
             selectedCard.classList.add('selected');
-            
-            generatePlanBtnAi.disabled = false;
+
+            if (generatePlanBtnAi) {
+                generatePlanBtnAi.disabled = false;
+            }
         }));
-    });
+        });
+    }
 
     // AI toggle event listener
-    aiToggle.addEventListener('change', (e) => { 
-        manualPlanningView.classList.toggle('hidden', e.target.checked); 
-        aiAdvisorView.classList.toggle('hidden', !e.target.checked);
-        
-        if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== 'W666') {
-             aiAdvisorView.innerHTML = `
+    if (aiToggle && manualPlanningView && aiAdvisorView) {
+        aiToggle.addEventListener('change', (e) => {
+            manualPlanningView.classList.toggle('hidden', e.target.checked);
+            aiAdvisorView.classList.toggle('hidden', !e.target.checked);
+
+            if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== 'W666') {
+                aiAdvisorView.innerHTML = `
                 <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
                     <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (W666) scenario. Please select W666 to see AI recommendations.</p>
                 </div>
             `;
-        } else {
-             renderProblems(); // Re-render problems list
-        }
-    });
+            } else {
+                renderProblems(); // Re-render problems list
+            }
+        });
+    }
 
     // Generate plan buttons event listeners
-    generatePlanBtnManual.addEventListener('click', () => { 
-        if (!appState.selectedWell || !appState.selectedObjective) return; 
-        appState.generatedPlan = proceduresData[appState.selectedObjective.id]; 
-        renderPlan(); 
-        updatePlannerStepUI(3); 
-    });
+    if (generatePlanBtnManual) {
+        generatePlanBtnManual.addEventListener('click', () => {
+            if (!appState.selectedWell || !appState.selectedObjective) return;
+            appState.generatedPlan = proceduresData[appState.selectedObjective.id];
+            renderPlan();
+            updatePlannerStepUI(3);
+        });
+    }
 
-    generatePlanBtnAi.addEventListener('click', () => { 
-        if (!appState.selectedWell || !appState.ai.selectedRecommendation) return; 
-        appState.selectedObjective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId); 
-        appState.generatedPlan = proceduresData[appState.selectedObjective.id]; 
-        renderPlan(); 
-        updatePlannerStepUI(3); 
-    });
+    if (generatePlanBtnAi) {
+        generatePlanBtnAi.addEventListener('click', () => {
+            if (!appState.selectedWell || !appState.ai.selectedRecommendation) return;
+            appState.selectedObjective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId);
+            appState.generatedPlan = proceduresData[appState.selectedObjective.id];
+            renderPlan();
+            updatePlannerStepUI(3);
+        });
+    }
 
     // Control buttons event listeners
-    startOverBtn.addEventListener('click', () => resetApp(false));
-    beginOpBtn.addEventListener('click', () => { 
-        if (!appState.generatedPlan) return; 
-        switchView('performer'); 
-    });
+    if (startOverBtn) {
+        startOverBtn.addEventListener('click', () => resetApp(false));
+    }
 
-    addLogBtn.addEventListener('click', () => { 
-        addLogEntry('Operator', logInput.value); 
-        logInput.value = ''; 
-    });
+    if (beginOpBtn) {
+        beginOpBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            switchView('performer');
+        });
+    }
 
-    procedureStepsContainer.addEventListener('click', (e) => {
-        const stepDiv = e.target.closest('.procedure-step');
-        if (!stepDiv || !appState.liveData.jobRunning) return;
+    if (addLogBtn && logInput) {
+        addLogBtn.addEventListener('click', () => {
+            addLogEntry('Operator', logInput.value);
+            logInput.value = '';
+        });
+    }
 
-        const targetStepId = parseInt(stepDiv.dataset.stepId);
-        const currentStepId = appState.liveData.currentStep;
-        
-        if (targetStepId > currentStepId) {
-            jumpToStep(targetStepId);
-        }
-    });
+    if (procedureStepsContainer) {
+        procedureStepsContainer.addEventListener('click', (e) => {
+            const stepDiv = e.target.closest('.procedure-step');
+            if (!stepDiv || !appState.liveData.jobRunning) return;
 
-    viewAnalysisBtn.addEventListener('click', () => {
-        switchView('analyzer');
-        if (window.initializeAnalyzer) {
-            window.initializeAnalyzer();
-        } else {
-            initializeAnalyzer();
-            initializeVendorScorecard();
-        }
-    });
+            const targetStepId = parseInt(stepDiv.dataset.stepId);
+            const currentStepId = appState.liveData.currentStep;
 
-    addLessonBtn.addEventListener('click', () => { 
-        if(lessonInput.value.trim()){ 
-            appState.lessonsLearned.push(lessonInput.value.trim()); 
-            lessonInput.value = ''; 
-            renderLessons(); 
-        } 
-    });
+            if (targetStepId > currentStepId) {
+                jumpToStep(targetStepId);
+            }
+        });
+    }
 
-    planNewJobBtn.addEventListener('click', () => resetApp(true));
+    if (viewAnalysisBtn) {
+        viewAnalysisBtn.addEventListener('click', () => {
+            switchView('analyzer');
+            if (window.initializeAnalyzer) {
+                window.initializeAnalyzer();
+            } else {
+                initializeAnalyzer();
+                initializeVendorScorecard();
+            }
+        });
+    }
 
-    equipmentSearch.addEventListener('input', (e) => 
-        renderAssetManagementViews(e.target.value, personnelSearch.value)
-    );
+    if (addLessonBtn && lessonInput) {
+        addLessonBtn.addEventListener('click', () => {
+            if(lessonInput.value.trim()){
+                appState.lessonsLearned.push(lessonInput.value.trim());
+                lessonInput.value = '';
+                renderLessons();
+            }
+        });
+    }
 
-    personnelSearch.addEventListener('input', (e) => 
-        renderAssetManagementViews(equipmentSearch.value, e.target.value)
-    );
+    if (planNewJobBtn) {
+        planNewJobBtn.addEventListener('click', () => resetApp(true));
+    }
 
-    closeModalBtn.addEventListener('click', closeModal);
+    if (equipmentSearch && personnelSearch) {
+        equipmentSearch.addEventListener('input', (e) =>
+            renderAssetManagementViews(e.target.value, personnelSearch.value)
+        );
 
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-    });
+        personnelSearch.addEventListener('input', (e) =>
+            renderAssetManagementViews(equipmentSearch.value, e.target.value)
+        );
+    }
+
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeModal);
+    }
+
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+    }
 
     /* ========================================
        V23 FEATURE FUNCTIONS
