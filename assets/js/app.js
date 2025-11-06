@@ -1963,19 +1963,24 @@ document.addEventListener('DOMContentLoaded', async function() {
         `;
         
         // Components
-        well.completion.casing?.forEach(c => { 
-            const topY = c.top * scale; 
-            const height = (c.bottom - c.top) * scale; 
-            svgContent += `<rect x="60" y="${topY}" width="60" height="${height}" fill="none" stroke="${c.isProblem ? '#ef4444' : '#6b7280'}" stroke-width="2"/>`; 
+        well.completion.casing?.forEach(c => {
+            if (c.top !== undefined && c.bottom !== undefined) {
+                const topY = c.top * scale;
+                const height = (c.bottom - c.top) * scale;
+                svgContent += `<rect x="60" y="${topY}" width="60" height="${height}" fill="none" stroke="${c.isProblem ? '#ef4444' : '#6b7280'}" stroke-width="2"/>`;
+            }
         });
-        
-        well.completion.tubing?.forEach(t => { 
-            const topY = t.top * scale; 
-            const height = (t.bottom - t.top) * scale; 
-            svgContent += `<rect x="85" y="${topY}" width="10" height="${height}" fill="${t.isProblem ? 'rgba(239, 68, 68, 0.3)' : (isDark ? '#6b7280' : '#d1d5db')}" stroke="${t.isProblem ? '#ef4444' : (isDark ? '#4b5563' : '#9ca3af')}" stroke-width="0.5"/>`; 
+
+        well.completion.tubing?.forEach(t => {
+            if (t.top !== undefined && t.bottom !== undefined) {
+                const topY = t.top * scale;
+                const height = (t.bottom - t.top) * scale;
+                svgContent += `<rect x="85" y="${topY}" width="10" height="${height}" fill="${t.isProblem ? 'rgba(239, 68, 68, 0.3)' : (isDark ? '#6b7280' : '#d1d5db')}" stroke="${t.isProblem ? '#ef4444' : (isDark ? '#4b5563' : '#9ca3af')}" stroke-width="0.5"/>`;
+            }
         });
-        
-        well.completion.equipment?.forEach(e => { 
+
+        well.completion.equipment?.forEach(e => {
+            if (e.top === undefined) return; // Skip equipment without depth data
             const y = e.top * scale; 
             const fillProblem = 'rgba(239, 68, 68, 0.5)';
             const strokeProblem = '#ef4444';
