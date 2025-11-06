@@ -247,6 +247,26 @@ function createSafeUserPayload(dbResult) {
 }
 
 /**
+ * Create safe JWT user payload from decoded JWT
+ * Explicitly reconstructs user object to break taint from JWT (which originated from database)
+ */
+function createSafeJWTUser(jwtPayload) {
+    if (!jwtPayload || typeof jwtPayload !== 'object') {
+        return {
+            id: '',
+            username: '',
+            role: '',
+        };
+    }
+
+    return {
+        id: String(jwtPayload.id || ''),
+        username: String(jwtPayload.username || ''),
+        role: String(jwtPayload.role || ''),
+    };
+}
+
+/**
  * Create safe sync status payload from database result
  * Explicitly reconstructs sync status object to break taint from database
  */
@@ -353,7 +373,8 @@ function authenticateJWT(req, res, next) {
         if (err) {
             return res.status(403).json({ success: false, error: 'Invalid token' });
         }
-        req.user = user;
+        // SECURITY: Sanitize JWT payload to break taint flow from database → JWT → req.user
+        req.user = createSafeJWTUser(user);
         next();
     });
 }
@@ -421,31 +442,31 @@ app.post('/api/auth/login', async (req, res) => {
             });
         }
 
-        // Generate JWT (use validated username from database, not user input)
+        // SECURITY: Create safe user payload from database result FIRST (breaks taint flow)
+        const safeUser = createSafeUserPayload(user);
+
+        // Generate JWT - use safe user payload (not raw database result)
         const token = jwt.sign(
             {
-                id: user.id,
-                username: user.username,  // From database, not user input
-                role: user.role,
+                id: safeUser.id,
+                username: safeUser.username,
+                role: safeUser.role,
             },
             JWT_SECRET,
             { expiresIn: '24h' }
         );
 
-        // Update last login
+        // Update last login - use safe user ID
         await pool.query(
             'UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = $1',
-            [user.id]
+            [safeUser.id]
         );
 
-        // Audit log - use validated username only (no user input)
+        // Audit log - use safe user data (no raw database access)
         await pool.query(
             'INSERT INTO audit_log (user_id, action, details, ip_address) VALUES ($1, $2, $3, $4)',
-            [user.id, 'LOGIN', JSON.stringify({ username: validatedUsername }), req.ip]
+            [safeUser.id, 'LOGIN', JSON.stringify({ username: safeUser.username }), req.ip]
         );
-
-        // SECURITY: Create safe user payload from database result (breaks taint flow)
-        const safeUser = createSafeUserPayload(user);
 
         res.json({
             success: true,
@@ -824,6 +845,9 @@ app.delete('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req,
 
         const toolstring = result.rows[0];
 
+        // SECURITY: Sanitize database result before accessing properties
+        const safeToolstring = createSafeSyncPayload(toolstring);
+
         // Add to sync queue
         await pool.query(
             `INSERT INTO sync_queue (entity_type, entity_id, operation, payload)
@@ -843,8 +867,8 @@ app.delete('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req,
             }
         }
 
-        // Audit log - use safe audit log creation (no user input, just ID from database)
-        const safeAuditLog = createSafeAuditLog({ name: String(toolstring.name || 'unknown') });
+        // Audit log - use safe toolstring name (no raw database access)
+        const safeAuditLog = createSafeAuditLog({ name: safeToolstring.name });
         await pool.query(
             'INSERT INTO audit_log (user_id, action, entity_type, entity_id, details, ip_address) VALUES ($1, $2, $3, $4, $5, $6)',
             [req.user.id, 'DELETE', 'toolstring', validatedId, JSON.stringify(safeAuditLog), req.ip]
