@@ -11,13 +11,28 @@
     <link rel="stylesheet" href="assets/css/tailwind.css">
     <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous"></script>
+
+<!-- Equipment Catalog & Tool String Builder -->
+<script src="/assets/js/toast.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/equipment-catalog.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
     
     <!-- PDF Export Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Equipment Catalog & Tool String Builder -->
+<script src="/assets/js/toast.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/equipment-catalog.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Equipment Catalog & Tool String Builder -->
+<script src="/assets/js/toast.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/equipment-catalog.js"></script>
     
     <style>
         /* --- Base & Theme Setup --- */
@@ -653,6 +668,209 @@
             border: 1px solid rgba(71, 85, 105, 0.3);
         }
 
+        /* ========================= EQUIPMENT CATALOG STYLES ========================= */
+        .equipment-tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid #334155;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .equipment-tab {
+            padding: 12px 24px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #94a3b8;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .equipment-tab:hover {
+            color: #14b8a6;
+        }
+
+        .equipment-tab.active {
+            color: #14b8a6;
+            border-bottom-color: #14b8a6;
+        }
+
+        .equipment-tab-content {
+            display: block;
+        }
+
+        .equipment-tab-content.hidden {
+            display: none;
+        }
+
+        .equipment-category-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.8));
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .equipment-category-card:hover {
+            border-color: #14b8a6;
+            box-shadow: 0 4px 20px rgba(20, 184, 166, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .equipment-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .equipment-item:hover {
+            border-color: #14b8a6;
+            background: rgba(20, 184, 166, 0.1);
+        }
+
+        .equipment-item-name {
+            font-weight: 600;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        .equipment-item-meta {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .btn-add-equipment {
+            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-add-equipment:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);
+        }
+
+        .tool-string-card {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(59, 130, 246, 0.05));
+            border: 2px solid #14b8a6;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-string-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .tool-string-name {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #14b8a6;
+        }
+
+        .tool-string-components {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tool-string-component {
+            padding: 8px 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border-left: 3px solid #14b8a6;
+            margin-bottom: 6px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: #e2e8f0;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #475569;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+        }
+
+        .manufacturer-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(234, 179, 8, 0.2);
+            border: 1px solid #eab308;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #fbbf24;
+            margin-left: 8px;
+        }
+
+        .application-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background: rgba(59, 130, 246, 0.2);
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: #93c5fd;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+
+        .service-line-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            color: #0b1220;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-left: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #94a3b8;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state-text {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
     </style>
 </head>
 
@@ -691,6 +909,10 @@
                     <a id="planner-nav-link" title="Go to the Well Intervention Planner" class="nav-link flex items-center space-x-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
                         <span>Planner</span>
+                    </a>
+                    <a id="equipment-nav-link" title="Browse Equipment Catalog & Build Tool Strings" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                        <span>Equipment Catalog</span>
                     </a>
                     <a id="logistics-nav-link" title="Manage Equipment and Personnel" class="nav-link flex items-center space-x-2">
                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/><path d="M18 18h-1.3c-.5 0-.9-.3-1.1-.7l-2.6-5"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
@@ -853,6 +1075,126 @@
                     <button id="begin-op-btn" class="rounded-md bg-emerald-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-500 transition-colors">Begin Live Operation</button>
                 </div>
             </section>
+        </div>
+
+        <!-- ========================= EQUIPMENT CATALOG VIEW ========================= -->
+        <div id="equipment-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold tracking-tight">Equipment Catalog & Tool String Builder</h2>
+                <p class="mt-2 max-w-2xl mx-auto text-lg">Browse equipment, build custom tool strings, and add them to your intervention plans.</p>
+            </div>
+
+            <div class="light-card rounded-lg p-6 shadow-xl border-2 border-cyan-500/30">
+                <!-- Tabs -->
+                <div class="equipment-tabs mb-6">
+                    <button class="equipment-tab active" data-tab="catalog" onclick="switchEquipmentTab('catalog')">
+                        Equipment Catalog
+                    </button>
+                    <button class="equipment-tab" data-tab="toolstrings" onclick="switchEquipmentTab('toolstrings')">
+                        My Tool Strings
+                    </button>
+                    <button class="equipment-tab" data-tab="builder" onclick="switchEquipmentTab('builder')">
+                        Build New String
+                    </button>
+                    <button class="equipment-tab" data-tab="templates" onclick="switchEquipmentTab('templates')">
+                        Service Templates
+                    </button>
+                </div>
+
+                <!-- Tab Content: Equipment Catalog -->
+                <div id="tab-catalog" class="equipment-tab-content">
+                    <input type="text" id="equipment-catalog-search" class="search-box mb-4" placeholder="Search equipment by name, manufacturer, or application...">
+
+                    <div class="mb-4 flex gap-3 flex-wrap">
+                        <button class="btn-secondary" onclick="filterEquipmentCategory('all')">All</button>
+                        <button class="btn-secondary" onclick="filterEquipmentCategory('fishing')">Fishing</button>
+                        <button class="btn-secondary" onclick="filterEquipmentCategory('running')">Running Tools</button>
+                        <button class="btn-secondary" onclick="filterEquipmentCategory('wireline')">Wireline</button>
+                        <button class="btn-secondary" onclick="filterEquipmentCategory('completion')">Completion</button>
+                        <button class="btn-secondary" onclick="filterEquipmentCategory('gaslift')">Gas Lift</button>
+                    </div>
+
+                    <div id="equipment-catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Equipment items will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Tab Content: My Tool Strings -->
+                <div id="tab-toolstrings" class="equipment-tab-content hidden">
+                    <div id="saved-toolstrings-list">
+                        <!-- Saved tool strings will be rendered here -->
+                    </div>
+                    <div id="empty-toolstrings" class="empty-state">
+                        <div class="empty-state-icon">📦</div>
+                        <div class="empty-state-text">No tool strings saved yet</div>
+                        <p class="mt-2">Use the Builder tab to create your first reusable tool string assembly.</p>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Build New String -->
+                <div id="tab-builder" class="equipment-tab-content hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Left: Builder Form -->
+                        <div>
+                            <h4 class="text-xl font-bold mb-4">Create New Tool String</h4>
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2">Assembly Name</label>
+                                <input type="text" id="new-toolstring-name" class="search-box" placeholder="e.g., Standard Fishing Assembly">
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2">Service Line</label>
+                                <select id="new-toolstring-service" class="search-box">
+                                    <option value="CT">Coiled Tubing</option>
+                                    <option value="ELS">E-Line Services</option>
+                                    <option value="SLK">Slickline</option>
+                                    <option value="WHM">Wireline/Hydraulics</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2">Select Equipment</label>
+                                <select id="equipment-selector" class="search-box">
+                                    <option value="">-- Choose equipment --</option>
+                                </select>
+                                <button class="btn-add-equipment mt-2" onclick="addEquipmentToBuilder()">Add to String</button>
+                            </div>
+
+                            <button class="btn-add-equipment mt-4 w-full py-3 text-lg" onclick="saveToolString()">
+                                💾 Save Tool String
+                            </button>
+                        </div>
+
+                        <!-- Right: Preview -->
+                        <div>
+                            <h4 class="text-xl font-bold mb-4">Assembly Preview</h4>
+                            <div id="builder-preview" class="tool-string-card">
+                                <div class="tool-string-header">
+                                    <span class="tool-string-name" id="preview-name">Untitled Assembly</span>
+                                </div>
+                                <ul id="builder-components-list" class="tool-string-components">
+                                    <li class="text-gray-500 italic">No components added yet</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Service Templates -->
+                <div id="tab-templates" class="equipment-tab-content hidden">
+                    <div id="service-templates-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Service templates will be rendered here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Return to Planner Button -->
+            <div class="mt-8 flex justify-center">
+                <button id="return-to-planner-btn" class="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors">
+                    ← Return to Planner
+                </button>
+            </div>
         </div>
 
         <div id="logistics-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -3832,6 +4174,11 @@ async function generatePDFReport() {
 }
 
 </script>
+
+<!-- Equipment Catalog & Tool String Builder -->
+<script src="/assets/js/toast.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/equipment-catalog.js"></script>
 
 </body>
 </html>
