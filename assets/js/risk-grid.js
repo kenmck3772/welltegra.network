@@ -1,24 +1,133 @@
 /**
- * Risk Grid Main Application
- * Connects WebSocket manager to Risk Grid UI components
+ * Risk Grid Main Application (Midas Dashboard)
+ * Executive Dashboard for Real-Time Risk Monitoring
  * Implements Chart.js visualization for risk analytics
  *
- * @author Sprint 3 Risk Analytics Team
+ * Design Principles:
+ * 1. Audience: Marcus & Al (Executive/CTO) - Data-dense, professional
+ * 2. Security-First: Role-based access control
+ * 3. Reusable Service: Uses centralized webSocketService.js
+ * 4. Efficient Updates: Chart.js updates without recreation
+ *
+ * @author Sprint 3 - Midas Dashboard Team
  * @spec Marcus King - Dynamic Risk Grid Requirements
  */
 
 (function() {
     'use strict';
 
-    let wsManager = null;
+    // ========================================================================
+    // PRINCIPLE #2: SECURITY-FIRST - ROLE-BASED ACCESS CONTROL
+    // ========================================================================
+
+    /**
+     * Verify user authorization before allowing access to this view
+     * Only Executive and Risk-Analyst roles can access this dashboard
+     */
+    function verifyAuthorization() {
+        console.log('[RiskGrid] Verifying user authorization...');
+
+        // Get JWT token from localStorage (Catriona's auth framework)
+        const jwtToken = localStorage.getItem('jwtToken');
+
+        if (!jwtToken) {
+            console.error('[RiskGrid] No JWT token found. Redirecting to login.');
+            redirectToLogin('Authentication required');
+            return false;
+        }
+
+        // Get user data from localStorage
+        const userDataString = localStorage.getItem('userData');
+
+        if (!userDataString) {
+            console.error('[RiskGrid] No user data found. Redirecting to login.');
+            redirectToLogin('User data not found');
+            return false;
+        }
+
+        try {
+            const userData = JSON.parse(userDataString);
+            const userRole = userData.role;
+
+            console.log('[RiskGrid] User role:', userRole);
+
+            // Check if user has authorized role
+            const authorizedRoles = ['Executive', 'Risk-Analyst'];
+
+            if (!authorizedRoles.includes(userRole)) {
+                console.error('[RiskGrid] Unauthorized role:', userRole);
+                redirectToUnauthorized(`Access denied. This dashboard is restricted to Executive and Risk-Analyst roles only.`);
+                return false;
+            }
+
+            console.log('[RiskGrid] Authorization successful. User role:', userRole);
+            return true;
+
+        } catch (error) {
+            console.error('[RiskGrid] Failed to parse user data:', error);
+            redirectToLogin('Invalid user data');
+            return false;
+        }
+    }
+
+    /**
+     * Redirect to login page
+     */
+    function redirectToLogin(reason) {
+        showError(`⚠️ AUTHENTICATION REQUIRED: ${reason}`);
+        setTimeout(() => {
+            window.location.href = '/login.html';
+        }, 2000);
+    }
+
+    /**
+     * Show unauthorized access message
+     */
+    function redirectToUnauthorized(message) {
+        const wellsGrid = document.getElementById('wells-grid');
+        if (wellsGrid) {
+            wellsGrid.innerHTML = `
+                <div class="risk-card col-span-full text-center py-12 border-red-500 bg-red-900/30">
+                    <p class="text-red-400 text-4xl font-bold mb-6">🚫 UNAUTHORIZED ACCESS</p>
+                    <p class="text-slate-200 text-xl mb-4">${message}</p>
+                    <p class="text-slate-400 text-lg">Your role does not have permission to view this dashboard.</p>
+                    <p class="text-slate-400 text-lg mt-2">Please contact your administrator if you believe this is an error.</p>
+                    <button onclick="window.location.href='/index.html'" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                        Return to Home
+                    </button>
+                </div>
+            `;
+        }
+
+        // Hide other UI elements
+        const chartContainer = document.querySelector('.chart-container');
+        if (chartContainer) chartContainer.style.display = 'none';
+
+        const summaryCards = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-4');
+        if (summaryCards) summaryCards.style.display = 'none';
+    }
+
+    // ========================================================================
+    // MAIN APPLICATION
+    // ========================================================================
+
     let riskChart = null;
     let latestRiskData = [];
+    let unsubscribeRisk = null;
+    let unsubscribeConnectionStatus = null;
+    let unsubscribeConnectionError = null;
 
     /**
      * Initialize Risk Grid application
      */
     function initRiskGrid() {
-        console.log('[RiskGrid] Initializing Risk Grid Dashboard...');
+        console.log('[RiskGrid] Initializing Midas Dynamic Risk Grid...');
+
+        // PRINCIPLE #2: Verify authorization FIRST
+        if (!verifyAuthorization()) {
+            console.error('[RiskGrid] Authorization failed. Stopping initialization.');
+            return;
+        }
 
         // Check if Socket.IO is loaded
         if (typeof io === 'undefined') {
@@ -34,49 +143,124 @@
             return;
         }
 
-        // Check if WebSocket manager is available
-        if (typeof RiskGridWebSocketManager === 'undefined') {
-            console.error('[RiskGrid] RiskGridWebSocketManager not loaded');
-            showError('WebSocket manager not loaded. Please refresh the page.');
+        // PRINCIPLE #3: Check if centralized WebSocket service is available
+        if (typeof webSocketService === 'undefined') {
+            console.error('[RiskGrid] webSocketService not loaded');
+            showError('WebSocket service not loaded. Please refresh the page.');
             return;
         }
 
-        // Initialize Chart.js
+        // PRINCIPLE #4: Initialize Chart.js ONCE
         initializeChart();
-
-        // Initialize WebSocket manager
-        wsManager = new RiskGridWebSocketManager();
-
-        // Register risk update handler
-        wsManager.onRiskUpdate(handleRiskData);
 
         // Setup UI event handlers
         setupEventHandlers();
 
-        // Connect to WebSocket
+        // PRINCIPLE #3: Connect using centralized WebSocket service
         connectWebSocket();
 
         console.log('[RiskGrid] Initialized successfully');
     }
 
     /**
-     * Connect to WebSocket
+     * Connect to WebSocket using centralized service
      */
     function connectWebSocket() {
-        // For development: Create a mock JWT token if none exists
+        // For development: Create mock credentials if none exist
         if (!localStorage.getItem('jwtToken')) {
-            console.warn('[RiskGrid] No JWT token found. Using mock token for development.');
+            console.warn('[RiskGrid] No JWT token found. Using mock credentials for development.');
             localStorage.setItem('jwtToken', 'mock-jwt-token-executive-dev');
+            localStorage.setItem('userData', JSON.stringify({
+                role: 'Executive',
+                username: 'marcus.king',
+                name: 'Marcus King'
+            }));
         }
 
-        if (wsManager && !wsManager.isConnected()) {
-            console.log('[RiskGrid] Connecting to Risk WebSocket...');
-            wsManager.connect();
+        console.log('[RiskGrid] Connecting to Risk WebSocket via centralized service...');
+
+        // Connect to the /risk endpoint
+        webSocketService.connect('/risk');
+
+        // PRINCIPLE #3: Subscribe to risk updates using pub/sub pattern
+        unsubscribeRisk = webSocketService.subscribe(
+            webSocketService.channels.RISK,
+            handleRiskData
+        );
+
+        // Subscribe to connection status updates
+        unsubscribeConnectionStatus = webSocketService.subscribe(
+            'connection-status',
+            handleConnectionStatus
+        );
+
+        // Subscribe to connection errors
+        unsubscribeConnectionError = webSocketService.subscribe(
+            'connection-error',
+            handleConnectionError
+        );
+
+        console.log('[RiskGrid] Subscribed to risk-update channel');
+    }
+
+    /**
+     * Handle connection status updates from WebSocket service
+     */
+    function handleConnectionStatus(statusData) {
+        const { status, attempt, maxAttempts } = statusData;
+
+        const statusContainer = document.getElementById('ws-connection-status');
+        if (!statusContainer) return;
+
+        let statusHTML = '';
+        let statusClass = '';
+
+        switch (status) {
+            case 'connected':
+                statusHTML = '🟢 LIVE';
+                statusClass = 'status-live';
+                break;
+            case 'disconnected':
+                statusHTML = '🔴 OFFLINE';
+                statusClass = 'status-offline';
+                break;
+            case 'reconnecting':
+                statusHTML = `🟡 RECONNECTING (${attempt}/${maxAttempts})`;
+                statusClass = 'status-reconnecting';
+                break;
+            case 'failed':
+                statusHTML = '🔴 CONNECTION FAILED';
+                statusClass = 'status-offline';
+                break;
+        }
+
+        statusContainer.innerHTML = statusHTML;
+        statusContainer.className = `status-indicator ${statusClass}`;
+
+        console.log('[RiskGrid] Connection status:', status);
+    }
+
+    /**
+     * Handle connection errors from WebSocket service
+     */
+    function handleConnectionError(errorData) {
+        const { message, type } = errorData;
+
+        console.error('[RiskGrid] Connection error:', message, 'Type:', type);
+
+        // Show error in UI
+        const alertBanner = document.getElementById('critical-alert-banner');
+        const alertMessage = document.getElementById('critical-alert-message');
+
+        if (alertBanner && alertMessage) {
+            alertMessage.textContent = `⚠️ CONNECTION ERROR: ${message}`;
+            alertBanner.classList.remove('hidden');
         }
     }
 
     /**
      * Initialize Chart.js for risk visualization
+     * PRINCIPLE #4: Initialize ONCE - never recreate
      */
     function initializeChart() {
         const ctx = document.getElementById('riskChart');
@@ -236,10 +420,13 @@
 
         console.log('[RiskGrid] Processing risk data for', data.length, 'wells');
 
+        // Update last update time
+        updateLastUpdateTime();
+
         // Update summary statistics
         updateSummaryStats(data);
 
-        // Update chart
+        // PRINCIPLE #4: Update chart efficiently (no recreation)
         updateChart(data);
 
         // Update individual well cards
@@ -247,6 +434,17 @@
 
         // Check for critical risks
         checkCriticalRisks(data);
+    }
+
+    /**
+     * Update last update time display
+     */
+    function updateLastUpdateTime() {
+        const timeElement = document.getElementById('last-update-time');
+        if (timeElement) {
+            const now = new Date();
+            timeElement.textContent = now.toLocaleTimeString();
+        }
     }
 
     /**
@@ -288,6 +486,8 @@
 
     /**
      * Update Chart.js visualization
+     * PRINCIPLE #4: Efficient Updates - Update data object and call .update()
+     * NEVER recreate the chart - this ensures smooth, animated transitions
      */
     function updateChart(data) {
         if (!riskChart) {
@@ -305,17 +505,18 @@
         const financialRisks = sortedData.map(well => well.financialRisk);
         const overallRisks = sortedData.map(well => well.overallRisk);
 
-        // Update chart data
+        // PRINCIPLE #4: Update the existing chart's data object
         riskChart.data.labels = labels;
         riskChart.data.datasets[0].data = integrityRisks;
         riskChart.data.datasets[1].data = physicalRisks;
         riskChart.data.datasets[2].data = financialRisks;
         riskChart.data.datasets[3].data = overallRisks;
 
-        // Update chart
-        riskChart.update();
+        // PRINCIPLE #4: Call .update() for smooth, animated transition
+        // Using 'active' mode gives the best visual effect for Marcus & Al
+        riskChart.update('active');
 
-        console.log('[RiskGrid] Chart updated with', data.length, 'wells');
+        console.log('[RiskGrid] Chart updated with smooth animation -', data.length, 'wells');
     }
 
     /**
@@ -527,13 +728,24 @@
     // Check for demo data every 2 seconds (only in development)
     setInterval(checkDemoData, 2000);
 
+    // Clean up on page unload
+    window.addEventListener('beforeunload', () => {
+        console.log('[RiskGrid] Cleaning up subscriptions...');
+        if (unsubscribeRisk) unsubscribeRisk();
+        if (unsubscribeConnectionStatus) unsubscribeConnectionStatus();
+        if (unsubscribeConnectionError) unsubscribeConnectionError();
+        webSocketService.disconnect();
+    });
+
     // Expose for debugging
     window.RiskGrid = {
-        getManager: () => wsManager,
+        getService: () => webSocketService,
+        getServiceStatus: () => webSocketService.getStatus(),
         getLatestData: () => latestRiskData,
         getChart: () => riskChart,
-        connect: connectWebSocket,
-        injectDemoData: handleRiskData // Allow manual demo data injection
+        reconnect: connectWebSocket,
+        injectDemoData: handleRiskData, // Allow manual demo data injection
+        verifyAuth: verifyAuthorization // Allow manual auth check
     };
 
 })();
