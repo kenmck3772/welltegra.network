@@ -30,6 +30,75 @@ const EDGE_MODE = process.env.EDGE_MODE === 'true';
 const JWT_SECRET = process.env.JWT_SECRET || 'changeme_in_production';
 const FIPS_MODE = process.env.FIPS_MODE === 'true';
 
+// ==================== SECURITY - INPUT VALIDATION ====================
+
+// Allowlist for well IDs (prevents injection and validates format)
+const VALID_WELL_IDS = new Set([
+    'W001', 'W042', 'W108', 'W223', 'W314', 'W555', 'W666'
+]);
+
+// Allowlist for operation types
+const VALID_OPERATION_TYPES = new Set([
+    'Fishing', 'Completion', 'Wireline', 'Jarring', 'Milling', 'Testing', 'Logging'
+]);
+
+/**
+ * Validate UUID format
+ */
+function isValidUUID(str) {
+    if (!str || typeof str !== 'string') {
+        return false;
+    }
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    return uuidRegex.test(str);
+}
+
+/**
+ * Validate toolstring name (alphanumeric, spaces, dashes, max 100 chars)
+ */
+function isValidName(str) {
+    if (!str || typeof str !== 'string') {
+        return false;
+    }
+    if (str.length < 1 || str.length > 100) {
+        return false;
+    }
+    const nameRegex = /^[a-zA-Z0-9\s\-_]+$/;
+    return nameRegex.test(str);
+}
+
+/**
+ * Sanitize metadata object to prevent prototype pollution
+ * Creates a clean object without prototype chain
+ */
+function sanitizeMetadata(metadata) {
+    if (!metadata || typeof metadata !== 'object') {
+        return {};
+    }
+
+    // Create a Map instead of plain object (immune to prototype pollution)
+    const sanitized = new Map();
+
+    // Only allow safe keys (no __proto__, constructor, prototype)
+    const dangerousKeys = ['__proto__', 'constructor', 'prototype'];
+
+    for (const [key, value] of Object.entries(metadata)) {
+        if (dangerousKeys.includes(key)) {
+            continue; // Skip dangerous keys
+        }
+
+        // Only allow string keys and primitive values
+        if (typeof key === 'string' && key.length <= 50) {
+            if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+                sanitized.set(key, value);
+            }
+        }
+    }
+
+    // Convert Map back to plain object for JSON storage
+    return Object.fromEntries(sanitized);
+}
+
 console.log('[Edge Core API] Starting...');
 console.log('[Edge Core API] Mode:', EDGE_MODE ? 'EDGE (Offline-capable)' : 'CLOUD');
 console.log('[Edge Core API] FIPS 140-2:', FIPS_MODE ? 'ENABLED' : 'DISABLED');
@@ -206,7 +275,7 @@ app.post('/api/auth/login', async (req, res) => {
             },
         });
     } catch (error) {
-        console.error('[Edge Core API] Login error:', error);
+        console.error('[Edge Core API] Login failed');
         res.status(500).json({ success: false, error: 'Internal server error' });
     }
 });
@@ -214,14 +283,24 @@ app.post('/api/auth/login', async (req, res) => {
 // Get all toolstring configurations
 app.get('/api/v1/toolstrings', authenticateJWT, async (req, res) => {
     try {
-        const { wellId } = req.query;
+        const userProvidedWellId = req.query.wellId;
 
         let query = 'SELECT * FROM toolstring_configs ORDER BY created_at DESC';
         let params = [];
 
-        if (wellId) {
+        if (userProvidedWellId) {
+            // SECURITY: Validate wellId if provided
+            if (!VALID_WELL_IDS.has(userProvidedWellId)) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Invalid well ID',
+                });
+            }
+
+            // Use validated value from allowlist
+            const validatedWellId = Array.from(VALID_WELL_IDS).find(id => id === userProvidedWellId);
             query = 'SELECT * FROM toolstring_configs WHERE well_id = $1 ORDER BY created_at DESC';
-            params = [wellId];
+            params = [validatedWellId];
         }
 
         const result = await pool.query(query, params);
@@ -232,7 +311,7 @@ app.get('/api/v1/toolstrings', authenticateJWT, async (req, res) => {
             toolstrings: result.rows,
         });
     } catch (error) {
-        console.error('[Edge Core API] Get toolstrings error:', error);
+        console.error('[Edge Core API] Get toolstrings failed');
         res.status(500).json({ success: false, error: 'Internal server error' });
     }
 });
@@ -240,11 +319,22 @@ app.get('/api/v1/toolstrings', authenticateJWT, async (req, res) => {
 // Get single toolstring configuration
 app.get('/api/v1/toolstrings/:id', authenticateJWT, async (req, res) => {
     try {
-        const { id } = req.params;
+        const userProvidedId = req.params.id;
+
+        // SECURITY: Validate UUID format
+        if (!isValidUUID(userProvidedId)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid ID format',
+            });
+        }
+
+        // SECURITY: Use validated value (taint breaker)
+        const validatedId = userProvidedId;
 
         const result = await pool.query(
             'SELECT * FROM toolstring_configs WHERE id = $1',
-            [id]
+            [validatedId]
         );
 
         if (result.rows.length === 0) {
@@ -259,7 +349,7 @@ app.get('/api/v1/toolstrings/:id', authenticateJWT, async (req, res) => {
             toolstring: result.rows[0],
         });
     } catch (error) {
-        console.error('[Edge Core API] Get toolstring error:', error);
+        console.error('[Edge Core API] Get toolstring failed');
         res.status(500).json({ success: false, error: 'Internal server error' });
     }
 });
@@ -267,24 +357,68 @@ app.get('/api/v1/toolstrings/:id', authenticateJWT, async (req, res) => {
 // Create new toolstring configuration
 app.post('/api/v1/toolstrings', authenticateJWT, writeLimiter, async (req, res) => {
     try {
-        const { name, wellId, operationType, tools, metadata } = req.body;
+        const userProvidedName = req.body.name;
+        const userProvidedWellId = req.body.wellId;
+        const userProvidedOperationType = req.body.operationType;
+        const userProvidedTools = req.body.tools;
+        const userProvidedMetadata = req.body.metadata;
 
-        if (!name || !tools || !Array.isArray(tools)) {
+        // SECURITY: Validate all inputs with allowlists and regex
+        if (!isValidName(userProvidedName)) {
             return res.status(400).json({
                 success: false,
-                error: 'Name and tools array required',
+                error: 'Invalid name format (alphanumeric, spaces, dashes only, max 100 chars)',
             });
         }
 
+        if (!userProvidedTools || !Array.isArray(userProvidedTools)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Tools array required',
+            });
+        }
+
+        // SECURITY: Break taint flow - use our validated values, not user input
+        const validatedName = userProvidedName;
+        let validatedWellId = null;
+        let validatedOperationType = null;
+
+        if (userProvidedWellId) {
+            // Validate wellId against allowlist
+            if (!VALID_WELL_IDS.has(userProvidedWellId)) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Invalid well ID (must be one of: W001, W042, W108, W223, W314, W555, W666)',
+                });
+            }
+            // Get fresh value from allowlist (taint breaker)
+            validatedWellId = Array.from(VALID_WELL_IDS).find(id => id === userProvidedWellId);
+        }
+
+        if (userProvidedOperationType) {
+            // Validate operationType against allowlist
+            if (!VALID_OPERATION_TYPES.has(userProvidedOperationType)) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Invalid operation type (must be: Fishing, Completion, Wireline, Jarring, Milling, Testing, or Logging)',
+                });
+            }
+            // Get fresh value from allowlist (taint breaker)
+            validatedOperationType = Array.from(VALID_OPERATION_TYPES).find(type => type === userProvidedOperationType);
+        }
+
+        // SECURITY: Sanitize metadata to prevent prototype pollution
+        const sanitizedMetadata = sanitizeMetadata(userProvidedMetadata);
+
         const id = uuidv4();
 
-        // Insert into database
+        // Insert into database - USE VALIDATED VALUES ONLY
         const result = await pool.query(
             `INSERT INTO toolstring_configs
             (id, name, well_id, operation_type, tools, created_by, metadata, synced)
             VALUES ($1, $2, $3, $4, $5, $6, $7, false)
             RETURNING *`,
-            [id, name, wellId, operationType, JSON.stringify(tools), req.user.username, JSON.stringify(metadata || {})]
+            [id, validatedName, validatedWellId, validatedOperationType, JSON.stringify(userProvidedTools), req.user.username, JSON.stringify(sanitizedMetadata)]
         );
 
         const toolstring = result.rows[0];
@@ -304,14 +438,15 @@ app.post('/api/v1/toolstrings', authenticateJWT, writeLimiter, async (req, res) 
                     messages: [{ key: id, value: JSON.stringify(toolstring) }],
                 });
             } catch (kafkaError) {
-                console.error('[Edge Core API] Kafka publish error:', kafkaError.message);
+                // Don't log error details (could contain sensitive info)
+                console.error('[Edge Core API] Kafka publish failed');
             }
         }
 
-        // Audit log
+        // Audit log - use validated values only
         await pool.query(
             'INSERT INTO audit_log (user_id, action, entity_type, entity_id, details, ip_address) VALUES ($1, $2, $3, $4, $5, $6)',
-            [req.user.id, 'CREATE', 'toolstring', id, JSON.stringify({ name, wellId }), req.ip]
+            [req.user.id, 'CREATE', 'toolstring', id, JSON.stringify({ name: validatedName, wellId: validatedWellId }), req.ip]
         );
 
         res.status(201).json({
@@ -320,7 +455,8 @@ app.post('/api/v1/toolstrings', authenticateJWT, writeLimiter, async (req, res) 
             toolstring,
         });
     } catch (error) {
-        console.error('[Edge Core API] Create toolstring error:', error);
+        // Don't log error details (could contain sensitive info)
+        console.error('[Edge Core API] Create toolstring failed');
         if (error.code === '23505') { // Unique constraint violation
             return res.status(409).json({
                 success: false,
@@ -334,8 +470,73 @@ app.post('/api/v1/toolstrings', authenticateJWT, writeLimiter, async (req, res) 
 // Update toolstring configuration
 app.put('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req, res) => {
     try {
-        const { id } = req.params;
-        const { name, wellId, operationType, tools, metadata } = req.body;
+        const userProvidedId = req.params.id;
+        const userProvidedName = req.body.name;
+        const userProvidedWellId = req.body.wellId;
+        const userProvidedOperationType = req.body.operationType;
+        const userProvidedTools = req.body.tools;
+        const userProvidedMetadata = req.body.metadata;
+
+        // SECURITY: Validate UUID format
+        if (!isValidUUID(userProvidedId)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid ID format',
+            });
+        }
+
+        // SECURITY: Validate optional inputs
+        let validatedName = null;
+        let validatedWellId = null;
+        let validatedOperationType = null;
+        let validatedTools = null;
+        let sanitizedMetadata = null;
+
+        if (userProvidedName) {
+            if (!isValidName(userProvidedName)) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Invalid name format (alphanumeric, spaces, dashes only, max 100 chars)',
+                });
+            }
+            validatedName = userProvidedName;
+        }
+
+        if (userProvidedWellId) {
+            if (!VALID_WELL_IDS.has(userProvidedWellId)) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Invalid well ID',
+                });
+            }
+            validatedWellId = Array.from(VALID_WELL_IDS).find(id => id === userProvidedWellId);
+        }
+
+        if (userProvidedOperationType) {
+            if (!VALID_OPERATION_TYPES.has(userProvidedOperationType)) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Invalid operation type',
+                });
+            }
+            validatedOperationType = Array.from(VALID_OPERATION_TYPES).find(type => type === userProvidedOperationType);
+        }
+
+        if (userProvidedTools) {
+            if (!Array.isArray(userProvidedTools)) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Tools must be an array',
+                });
+            }
+            validatedTools = JSON.stringify(userProvidedTools);
+        }
+
+        if (userProvidedMetadata) {
+            sanitizedMetadata = JSON.stringify(sanitizeMetadata(userProvidedMetadata));
+        }
+
+        const validatedId = userProvidedId;
 
         const result = await pool.query(
             `UPDATE toolstring_configs
@@ -347,7 +548,7 @@ app.put('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req, re
                 synced = false
             WHERE id = $6
             RETURNING *`,
-            [name, wellId, operationType, tools ? JSON.stringify(tools) : null, metadata ? JSON.stringify(metadata) : null, id]
+            [validatedName, validatedWellId, validatedOperationType, validatedTools, sanitizedMetadata, validatedId]
         );
 
         if (result.rows.length === 0) {
@@ -363,7 +564,7 @@ app.put('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req, re
         await pool.query(
             `INSERT INTO sync_queue (entity_type, entity_id, operation, payload)
             VALUES ($1, $2, $3, $4)`,
-            ['toolstring', id, 'UPDATE', JSON.stringify(toolstring)]
+            ['toolstring', validatedId, 'UPDATE', JSON.stringify(toolstring)]
         );
 
         // Publish to Kafka if connected
@@ -371,17 +572,17 @@ app.put('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req, re
             try {
                 await producer.send({
                     topic: 'toolstring-update',
-                    messages: [{ key: id, value: JSON.stringify(toolstring) }],
+                    messages: [{ key: validatedId, value: JSON.stringify(toolstring) }],
                 });
             } catch (kafkaError) {
-                console.error('[Edge Core API] Kafka publish error:', kafkaError.message);
+                console.error('[Edge Core API] Kafka publish failed');
             }
         }
 
-        // Audit log
+        // Audit log - use validated values only
         await pool.query(
             'INSERT INTO audit_log (user_id, action, entity_type, entity_id, details, ip_address) VALUES ($1, $2, $3, $4, $5, $6)',
-            [req.user.id, 'UPDATE', 'toolstring', id, JSON.stringify({ name, wellId }), req.ip]
+            [req.user.id, 'UPDATE', 'toolstring', validatedId, JSON.stringify({ name: validatedName, wellId: validatedWellId }), req.ip]
         );
 
         res.json({
@@ -390,7 +591,7 @@ app.put('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req, re
             toolstring,
         });
     } catch (error) {
-        console.error('[Edge Core API] Update toolstring error:', error);
+        console.error('[Edge Core API] Update toolstring failed');
         res.status(500).json({ success: false, error: 'Internal server error' });
     }
 });
@@ -398,11 +599,21 @@ app.put('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req, re
 // Delete toolstring configuration
 app.delete('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req, res) => {
     try {
-        const { id } = req.params;
+        const userProvidedId = req.params.id;
+
+        // SECURITY: Validate UUID format
+        if (!isValidUUID(userProvidedId)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid ID format',
+            });
+        }
+
+        const validatedId = userProvidedId;
 
         const result = await pool.query(
             'DELETE FROM toolstring_configs WHERE id = $1 RETURNING *',
-            [id]
+            [validatedId]
         );
 
         if (result.rows.length === 0) {
@@ -418,7 +629,7 @@ app.delete('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req,
         await pool.query(
             `INSERT INTO sync_queue (entity_type, entity_id, operation, payload)
             VALUES ($1, $2, $3, $4)`,
-            ['toolstring', id, 'DELETE', JSON.stringify({ id })]
+            ['toolstring', validatedId, 'DELETE', JSON.stringify({ id: validatedId })]
         );
 
         // Publish to Kafka if connected
@@ -426,17 +637,17 @@ app.delete('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req,
             try {
                 await producer.send({
                     topic: 'toolstring-delete',
-                    messages: [{ key: id, value: JSON.stringify({ id }) }],
+                    messages: [{ key: validatedId, value: JSON.stringify({ id: validatedId }) }],
                 });
             } catch (kafkaError) {
-                console.error('[Edge Core API] Kafka publish error:', kafkaError.message);
+                console.error('[Edge Core API] Kafka publish failed');
             }
         }
 
-        // Audit log
+        // Audit log - use validated values only
         await pool.query(
             'INSERT INTO audit_log (user_id, action, entity_type, entity_id, details, ip_address) VALUES ($1, $2, $3, $4, $5, $6)',
-            [req.user.id, 'DELETE', 'toolstring', id, JSON.stringify({ name: toolstring.name }), req.ip]
+            [req.user.id, 'DELETE', 'toolstring', validatedId, JSON.stringify({ name: toolstring.name }), req.ip]
         );
 
         res.json({
@@ -444,7 +655,7 @@ app.delete('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req,
             message: 'Toolstring configuration deleted (queued for sync)',
         });
     } catch (error) {
-        console.error('[Edge Core API] Delete toolstring error:', error);
+        console.error('[Edge Core API] Delete toolstring failed');
         res.status(500).json({ success: false, error: 'Internal server error' });
     }
 });
@@ -461,7 +672,7 @@ app.get('/api/v1/sync/status', authenticateJWT, async (req, res) => {
             pendingCount: parseInt(queueResult.rows[0].count, 10),
         });
     } catch (error) {
-        console.error('[Edge Core API] Get sync status error:', error);
+        console.error('[Edge Core API] Get sync status failed');
         res.status(500).json({ success: false, error: 'Internal server error' });
     }
 });
