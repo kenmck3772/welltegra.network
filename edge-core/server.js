@@ -447,10 +447,13 @@ app.get('/api/v1/toolstrings', authenticateJWT, async (req, res) => {
 
         const result = await pool.query(query, params);
 
+        // SECURITY: Sanitize all database results before returning to client
+        const safeToolstrings = result.rows.map(row => createSafeSyncPayload(row));
+
         res.json({
             success: true,
-            count: result.rows.length,
-            toolstrings: result.rows,
+            count: safeToolstrings.length,
+            toolstrings: safeToolstrings,  // Use safe payloads, not raw database results
         });
     } catch (error) {
         console.error('[Edge Core API] Get toolstrings failed');
@@ -486,9 +489,12 @@ app.get('/api/v1/toolstrings/:id', authenticateJWT, async (req, res) => {
             });
         }
 
+        // SECURITY: Sanitize database result before returning to client
+        const safeToolstring = createSafeSyncPayload(result.rows[0]);
+
         res.json({
             success: true,
-            toolstring: result.rows[0],
+            toolstring: safeToolstring,  // Use safe payload, not raw database result
         });
     } catch (error) {
         console.error('[Edge Core API] Get toolstring failed');
@@ -596,10 +602,11 @@ app.post('/api/v1/toolstrings', authenticateJWT, writeLimiter, async (req, res) 
             [req.user.id, 'CREATE', 'toolstring', id, JSON.stringify(safeAuditLog), req.ip]
         );
 
+        // SECURITY: Return safe payload to client (not raw database result)
         res.status(201).json({
             success: true,
             message: 'Toolstring configuration created (queued for sync)',
-            toolstring,
+            toolstring: safeSyncPayload,  // Use safe payload, not raw database result
         });
     } catch (error) {
         // Don't log error details (could contain sensitive info)
@@ -740,10 +747,11 @@ app.put('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req, re
             [req.user.id, 'UPDATE', 'toolstring', validatedId, JSON.stringify(safeAuditLog), req.ip]
         );
 
+        // SECURITY: Return safe payload to client (not raw database result)
         res.json({
             success: true,
             message: 'Toolstring configuration updated (queued for sync)',
-            toolstring,
+            toolstring: safeSyncPayload,  // Use safe payload, not raw database result
         });
     } catch (error) {
         console.error('[Edge Core API] Update toolstring failed');
