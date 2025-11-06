@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self';
+                   script-src 'self'
+                              https://cdn.tailwindcss.com
+                              https://cdn.socket.io
+                              https://cdnjs.cloudflare.com
+                              'sha256-8KJvL9M8xRPQvX3hZ9Y5pGwU7XqKLjN5xZwM9vY2vKc=';
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+                   font-src 'self' https://fonts.gstatic.com;
+                   img-src 'self' data: https:;
+                   connect-src 'self' https://api.welltegra.local ws://api.welltegra.local:8080;">
+    <title>HSE & Risk Management - WellTegra</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3730a3 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Faded WellTegra watermark background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background-image: url('assets/watermark.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.05;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        .incident-row:hover {
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateX(4px);
+            transition: all 0.2s;
+        }
+
+        .procedure-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s;
+        }
+
+        .live-risk-badge {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-open { background: #ef4444; }
+        .status-investigating { background: #f59e0b; }
+        .status-closed { background: #22c55e; }
+    </style>
+</head>
+<body class="text-white">
+    <div class="content-wrapper">
+
+        <!-- Header -->
+        <header class="bg-gray-900/80 backdrop-blur-sm border-b-2 border-blue-500 px-6 py-4 sticky top-0 z-50 shadow-xl">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center">
+                        <span class="text-3xl">🛡️</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">HSE & Risk Management</h1>
+                        <p class="text-sm text-gray-300">Health, Safety, Environment & Live Risk Monitoring</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <p class="text-xs text-gray-400">Current User</p>
+                        <p class="text-sm font-semibold text-blue-400" id="current-user">Loading...</p>
+                    </div>
+                    <button onclick="window.location.href='index.html'"
+                            class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition">
+                        ← Back to Dashboard
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto py-8 px-6">
+
+            <!-- Connection Status -->
+            <div class="mb-6 bg-gray-900/60 backdrop-blur-sm border-2 border-gray-700 rounded-xl p-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span id="connection-status" class="inline-block w-3 h-3 rounded-full bg-red-500"></span>
+                        <div>
+                            <p class="text-sm font-semibold">Live Risk Monitor Status</p>
+                            <p id="connection-text" class="text-xs text-gray-400">Connecting to risk engine...</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-gray-400">Active Alerts</p>
+                        <p id="active-alerts-count" class="text-2xl font-bold text-yellow-400">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <!-- SECTION 1: Incident Reports -->
+                <div class="bg-gray-900/60 backdrop-blur-sm border-2 border-gray-700 rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-red-400">📋 Incident Reports</h2>
+                        <button class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-semibold transition">
+                            + New Incident
+                        </button>
+                    </div>
+
+                    <!-- Incident Table -->
+                    <div class="space-y-3">
+                        <!-- Table Header -->
+                        <div class="grid grid-cols-12 gap-2 text-xs font-bold text-gray-400 uppercase border-b border-gray-700 pb-2">
+                            <div class="col-span-1">ID</div>
+                            <div class="col-span-2">Date</div>
+                            <div class="col-span-3">Type</div>
+                            <div class="col-span-3">Well/Location</div>
+                            <div class="col-span-2">Severity</div>
+                            <div class="col-span-1">Status</div>
+                        </div>
+
+                        <!-- Incident Rows (populated dynamically) -->
+                        <div id="incident-list" class="space-y-2">
+                            <!-- Loading state -->
+                            <div class="text-center py-8 text-gray-400">
+                                Loading incidents...
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary Stats -->
+                    <div class="mt-6 grid grid-cols-3 gap-4">
+                        <div class="bg-red-900/30 border border-red-500/50 rounded-lg p-3 text-center">
+                            <p class="text-xs text-gray-400">Open</p>
+                            <p id="incidents-open" class="text-2xl font-bold text-red-400">0</p>
+                        </div>
+                        <div class="bg-yellow-900/30 border border-yellow-500/50 rounded-lg p-3 text-center">
+                            <p class="text-xs text-gray-400">Investigating</p>
+                            <p id="incidents-investigating" class="text-2xl font-bold text-yellow-400">0</p>
+                        </div>
+                        <div class="bg-green-900/30 border border-green-500/50 rounded-lg p-3 text-center">
+                            <p class="text-xs text-gray-400">Closed (30d)</p>
+                            <p id="incidents-closed" class="text-2xl font-bold text-green-400">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: Safety Procedures -->
+                <div class="bg-gray-900/60 backdrop-blur-sm border-2 border-gray-700 rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-green-400">📚 Safety Procedures</h2>
+                        <button class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-sm font-semibold transition">
+                            + Upload Document
+                        </button>
+                    </div>
+
+                    <!-- Procedures Grid -->
+                    <div id="procedures-list" class="space-y-3">
+                        <!-- Loading state -->
+                        <div class="text-center py-8 text-gray-400">
+                            Loading procedures...
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="mt-6 bg-blue-900/30 border border-blue-500/50 rounded-lg p-4">
+                        <h3 class="text-sm font-bold text-blue-300 mb-3">📌 Quick Access</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button class="text-xs px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded transition text-left">
+                                Emergency Response Plan
+                            </button>
+                            <button class="text-xs px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded transition text-left">
+                                Evacuation Procedures
+                            </button>
+                            <button class="text-xs px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded transition text-left">
+                                First Aid Guide
+                            </button>
+                            <button class="text-xs px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded transition text-left">
+                                H2S Safety Protocol
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Live Risk Alert Banner (appears when high-risk event detected) -->
+            <div id="live-risk-banner" class="hidden mt-6 bg-red-900/80 backdrop-blur-sm border-4 border-red-500 rounded-xl p-6 animate-pulse">
+                <div class="flex items-center space-x-4">
+                    <div class="text-6xl">🚨</div>
+                    <div class="flex-1">
+                        <h3 class="text-2xl font-black text-red-200 mb-2">LIVE HIGH-RISK ALERT</h3>
+                        <p id="live-risk-message" class="text-lg text-white">
+                            <!-- Message populated by WebSocket -->
+                        </p>
+                    </div>
+                    <button onclick="HSERiskV2.acknowledgeLiveRisk()"
+                            class="px-6 py-3 bg-yellow-500 hover:bg-yellow-400 rounded-lg font-black text-black transition">
+                        ACKNOWLEDGE
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- WebSocket Service -->
+    <script src="assets/js/webSocketService.js" defer></script>
+
+    <!-- Application Scripts -->
+    <script src="assets/js/hse-risk-v2.js" defer></script>
+
+    <script>
+        // Inline CSP hash: Initialize app when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.HSERiskV2) {
+                window.HSERiskV2.initialize();
+            }
+        });
+    </script>
+</body>
+</html>
