@@ -32,6 +32,15 @@
     // ==================== SECURITY ====================
 
     /**
+     * Escape HTML to prevent XSS attacks
+     */
+    function escapeHTML(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    /**
      * Security-first: Verify user authorization before initialization
      */
     function verifyAuthorization() {
@@ -232,7 +241,7 @@
         container.innerHTML = `
             <div class="text-center py-12">
                 <div class="loading-spinner mx-auto mb-4"></div>
-                <p class="text-gray-400">Loading procedure checklist for ${wellId}...</p>
+                <p class="text-gray-400">Loading procedure checklist for ${escapeHTML(wellId)}...</p>
             </div>
         `;
 
@@ -347,9 +356,9 @@
             return;
         }
 
-        // Render checklist items
+        // Render checklist items (with HTML escaping to prevent XSS)
         container.innerHTML = checklist.map((item, index) => `
-            <div class="checklist-item ${item.status}" data-step-id="${item.id}">
+            <div class="checklist-item ${escapeHTML(item.status)}" data-step-id="${escapeHTML(item.id)}">
                 <div class="flex items-start justify-between">
                     <div class="flex items-start space-x-4 flex-1">
                         <div class="text-3xl mt-1">
@@ -357,34 +366,34 @@
                         </div>
                         <div class="flex-1">
                             <div class="flex items-center space-x-3 mb-2">
-                                <h3 class="text-lg font-bold text-white">Step ${index + 1}: ${item.title}</h3>
-                                <span class="status-badge status-${item.status}">
-                                    ${item.status.replace('-', ' ')}
+                                <h3 class="text-lg font-bold text-white">Step ${index + 1}: ${escapeHTML(item.title)}</h3>
+                                <span class="status-badge status-${escapeHTML(item.status)}">
+                                    ${escapeHTML(item.status.replace('-', ' '))}
                                 </span>
                             </div>
-                            <p class="text-sm text-gray-300 mb-3">${item.description}</p>
+                            <p class="text-sm text-gray-300 mb-3">${escapeHTML(item.description)}</p>
                             <div class="flex items-center space-x-4 text-xs text-gray-400">
                                 <div class="flex items-center space-x-2">
                                     <span>👤</span>
-                                    <span>${item.assignee}</span>
+                                    <span>${escapeHTML(item.assignee)}</span>
                                 </div>
                                 ${item.timestamp ? `
                                     <div class="flex items-center space-x-2">
                                         <span>🕐</span>
-                                        <span>${new Date(item.timestamp).toLocaleString()}</span>
+                                        <span>${escapeHTML(new Date(item.timestamp).toLocaleString())}</span>
                                     </div>
                                 ` : ''}
                             </div>
                         </div>
                     </div>
                     ${item.status === 'pending' ? `
-                        <button onclick="window.PlannerV2.updateStepStatus('${item.id}', 'in-progress')"
+                        <button onclick="window.PlannerV2.updateStepStatus('${escapeHTML(item.id)}', 'in-progress')"
                                 class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-semibold transition">
                             Start Step
                         </button>
                     ` : ''}
                     ${item.status === 'in-progress' ? `
-                        <button onclick="window.PlannerV2.updateStepStatus('${item.id}', 'completed')"
+                        <button onclick="window.PlannerV2.updateStepStatus('${escapeHTML(item.id)}', 'completed')"
                                 class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-sm font-semibold transition">
                             Mark Complete
                         </button>
@@ -529,7 +538,7 @@
                         ${currentWell ? `
                             <div class="text-sm">
                                 <span class="text-purple-300">Context:</span>
-                                <span class="ml-2 font-bold text-white">${currentWell}</span>
+                                <span class="ml-2 font-bold text-white">${escapeHTML(currentWell)}</span>
                             </div>
                         ` : ''}
                     </div>
@@ -539,7 +548,7 @@
                 <div id="ai-chat-messages" class="flex-1 overflow-y-auto px-6 py-4 space-y-4">
                     <div class="text-center py-8 text-gray-400">
                         <p class="mb-2">👋 Hello! I'm OGAI-R1, your AI well engineering assistant.</p>
-                        <p class="text-sm">${currentWell ? `I'm ready to help you with ${currentWell}.` : 'Select a well to get started.'}</p>
+                        <p class="text-sm">${currentWell ? `I'm ready to help you with ${escapeHTML(currentWell)}.` : 'Select a well to get started.'}</p>
                     </div>
                 </div>
 
@@ -548,7 +557,7 @@
                     <div class="flex space-x-3">
                         <input type="text"
                                id="ai-chat-input"
-                               placeholder="${currentWell ? 'Ask me anything about ' + currentWell + '...' : 'Select a well first...'}"
+                               placeholder="${currentWell ? 'Ask me anything about ' + escapeHTML(currentWell) + '...' : 'Select a well first...'}"
                                class="flex-1 px-4 py-3 bg-gray-700 border-2 border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none"
                                ${!currentWell ? 'disabled' : ''}>
                         <button onclick="window.PlannerV2.sendAIMessage()"
@@ -619,12 +628,12 @@
             input.value = '';
         }
 
-        // Add user message to chat
+        // Add user message to chat (with HTML escaping to prevent XSS)
         const userMessageEl = document.createElement('div');
         userMessageEl.className = 'flex justify-end';
         userMessageEl.innerHTML = `
             <div class="max-w-2xl bg-blue-600 rounded-lg px-4 py-3">
-                <p class="text-white">${userMessage}</p>
+                <p class="text-white">${escapeHTML(userMessage)}</p>
             </div>
         `;
         messagesContainer.appendChild(userMessageEl);
@@ -653,14 +662,14 @@
                 loadingMsg.remove();
             }
 
-            // Add AI response
+            // Add AI response (with HTML escaping to prevent XSS)
             const aiMessageEl = document.createElement('div');
             aiMessageEl.className = 'flex justify-start';
             aiMessageEl.innerHTML = `
                 <div class="max-w-2xl bg-gray-700 rounded-lg px-4 py-3">
                     <div class="flex items-start space-x-2">
                         <span class="text-2xl">🤖</span>
-                        <p class="text-gray-200 flex-1">${aiResponse}</p>
+                        <p class="text-gray-200 flex-1">${escapeHTML(aiResponse)}</p>
                     </div>
                 </div>
             `;
@@ -674,10 +683,13 @@
 
     /**
      * Generate mock AI response based on user query
+     * Note: This function returns text that will be escaped before display
      */
     function generateMockAIResponse(query) {
         const lowerQuery = query.toLowerCase();
 
+        // Note: escapeHTML is not needed here because the response is escaped
+        // when inserted into the DOM in sendAIMessage()
         if (lowerQuery.includes('well path') || lowerQuery.includes('trajectory')) {
             return `Based on the survey data for ${currentWell}, the well has a maximum inclination of 47.3° at 8,250 ft MD. The trajectory shows a smooth build section with no dogleg severity concerns. Switch to the "Well Path 3D" tab to visualize the complete trajectory.`;
         } else if (lowerQuery.includes('integrity') || lowerQuery.includes('cement')) {
