@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; font-src 'self' data: file:; connect-src 'self' ws://api.welltegra.local:8080; media-src 'self' data: file:; base-uri 'self'; form-action 'self'">
+
+    <title>WellTegra | Well Integrity Analyzer - Engineering Dashboard</title>
+    <meta name="description" content="Advanced well integrity analysis powered by PyAnsys. Time-series modeling of cement degradation and corrosion rates.">
+    <meta name="author" content="WellTegra Engineering Team - Dr. Isla Munro">
+
+    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+
+    <!-- Chart.js for time-series visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous" defer></script>
+
+    <!-- Chart.js annotation plugin for threshold lines -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js" integrity="sha384-Ov9RF2JKJTZmShXPRkemzNzQzWvEkBWmJxvzxCDxKhxKhxKhxKhxKhxKhxKhxKhx" crossorigin="anonymous" defer></script>
+
+    <!-- Socket.IO for real-time WebSocket connection -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js" integrity="sha512-Xm9qbB6Pu06k3PUwPj785dyTl6oHxgsv9nHp7ej7nCpAqGZT3OZpsELuCYX05DdonFpTlBpXMOxjavIAIUwr0w==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header-bar {
+            background: linear-gradient(90deg, #0f766e 0%, #0d9488 100%);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(15, 118, 110, 0.3);
+            border: 2px solid #14b8a6;
+        }
+
+        .control-panel {
+            background: rgba(30, 41, 59, 0.95);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 2px solid #334155;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 600px;
+            background: rgba(30, 41, 59, 0.95);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 2px solid #334155;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .status-live {
+            background: rgba(20, 184, 166, 0.2);
+            color: #14b8a6;
+            border: 2px solid #14b8a6;
+        }
+
+        .status-offline {
+            background: rgba(220, 38, 38, 0.2);
+            color: #dc2626;
+            border: 2px solid #dc2626;
+        }
+
+        .status-reconnecting {
+            background: rgba(234, 179, 8, 0.2);
+            color: #eab308;
+            border: 2px solid #eab308;
+        }
+
+        .well-selector {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid #475569;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: #e2e8f0;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .well-selector:hover {
+            border-color: #14b8a6;
+            background: rgba(20, 184, 166, 0.1);
+        }
+
+        .well-selector:focus {
+            outline: none;
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2);
+        }
+
+        .model-button {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid #475569;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            color: #e2e8f0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .model-button:hover {
+            border-color: #14b8a6;
+            background: rgba(20, 184, 166, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .model-button.active {
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+            border-color: #14b8a6;
+            color: white;
+            box-shadow: 0 4px 16px rgba(20, 184, 166, 0.4);
+        }
+
+        .metric-card {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            border: 2px solid #334155;
+            transition: all 0.3s;
+        }
+
+        .metric-card:hover {
+            border-color: #14b8a6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(20, 184, 166, 0.2);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .alert-banner {
+            background: rgba(220, 38, 38, 0.2);
+            border: 3px solid #dc2626;
+            border-radius: 0.75rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .alert-banner.visible {
+            display: block;
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #14b8a6;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="header-bar">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-4xl font-black text-white mb-2">
+                        WELL INTEGRITY ANALYZER
+                    </h1>
+                    <p class="text-teal-200 text-lg">
+                        Engineering Dashboard - Powered by PyAnsys Structural Analysis
+                    </p>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    <div id="ws-connection-status" class="status-indicator status-offline">
+                        🔴 OFFLINE
+                    </div>
+                    <div class="text-sm text-teal-200">
+                        Last Updated: <span id="last-update-time">--:--:--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Critical Alert Banner -->
+        <div id="critical-alert-banner" class="alert-banner">
+            <div class="flex items-center gap-4">
+                <svg class="w-8 h-8 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                <div class="flex-1">
+                    <p class="text-xl font-bold text-red-200" id="critical-alert-message">
+                        Failure threshold exceeded
+                    </p>
+                </div>
+                <button id="acknowledge-alert-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                    ACKNOWLEDGE
+                </button>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                <!-- Well Selector -->
+                <div>
+                    <label class="block text-sm font-bold text-slate-300 mb-2 uppercase tracking-wide">
+                        Select Well
+                    </label>
+                    <select id="well-selector" class="well-selector w-full">
+                        <option value="">-- Select a well --</option>
+                        <option value="W666">W666 - The Perfect Storm</option>
+                        <option value="W101">W101 - Old Faithful</option>
+                        <option value="W234">W234 - Deep Blue</option>
+                        <option value="W555">W555 - Golden Opportunity</option>
+                        <option value="W789">W789 - North Star</option>
+                        <option value="W432">W432 - Rising Sun</option>
+                        <option value="W888">W888 - Silver Lining</option>
+                    </select>
+                </div>
+
+                <!-- Model Type Selector -->
+                <div>
+                    <label class="block text-sm font-bold text-slate-300 mb-2 uppercase tracking-wide">
+                        Analysis Model
+                    </label>
+                    <div class="flex gap-3">
+                        <button id="btn-cement" class="model-button active" data-model="CEMENT_DEGRADATION">
+                            Cement Degradation
+                        </button>
+                        <button id="btn-corrosion" class="model-button" data-model="CORROSION_RATE">
+                            Corrosion Rate
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div>
+                    <div class="text-center">
+                        <p class="text-sm font-bold text-slate-400 mb-2">ACTIVE WELL</p>
+                        <p id="active-well-display" class="text-2xl font-black text-teal-400">
+                            None Selected
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metrics Summary -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="metric-card">
+                <p class="metric-label">Current Value</p>
+                <p class="metric-value text-blue-400" id="current-value">--</p>
+            </div>
+            <div class="metric-card">
+                <p class="metric-label">Predicted (6mo)</p>
+                <p class="metric-value text-yellow-400" id="predicted-6mo">--</p>
+            </div>
+            <div class="metric-card">
+                <p class="metric-label">Failure Threshold</p>
+                <p class="metric-value text-red-400" id="failure-threshold">--</p>
+            </div>
+            <div class="metric-card">
+                <p class="metric-label">Time to Failure</p>
+                <p class="metric-value text-orange-400" id="time-to-failure">--</p>
+            </div>
+        </div>
+
+        <!-- Chart Visualization -->
+        <div class="chart-container">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-white">Time-Series Analysis</h2>
+                <div class="flex gap-4 text-sm">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 bg-blue-500 rounded"></div>
+                        <span class="text-slate-300">Actual Data</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 border-2 border-dashed border-orange-500 rounded"></div>
+                        <span class="text-slate-300">Predicted</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-1 bg-red-500"></div>
+                        <span class="text-slate-300">Failure Threshold</span>
+                    </div>
+                </div>
+            </div>
+            <canvas id="integrityChart"></canvas>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center text-slate-400 text-sm">
+            <p>WellTegra Well Integrity Analyzer | PyAnsys Structural Analysis Engine | Dr. Isla Munro</p>
+            <p class="mt-2">For Engineer, Risk-Analyst, and Executive roles only | Authenticated via JWT</p>
+        </div>
+    </div>
+
+    <!-- Load JavaScript modules -->
+    <script src="assets/js/webSocketService.js" defer></script>
+    <script src="assets/js/integrity-analyzer.js" defer></script>
+</body>
+
+</html>
