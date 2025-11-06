@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self';
+                   script-src 'self'
+                              https://cdn.tailwindcss.com
+                              https://cdn.socket.io
+                              https://cdnjs.cloudflare.com
+                              https://cdn.babylonjs.com
+                              https://unpkg.com
+                              'sha256-YhXLu8h3Ow2JE9pK8ov5h3gGLqJ5x7XQJ8w8yfGP8YU=';
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+                   font-src 'self' https://fonts.gstatic.com;
+                   img-src 'self' data: https:;
+                   frame-src 'self';
+                   connect-src 'self' https://api.welltegra.local ws://api.welltegra.local:8080;">
+    <title>Engineering Cockpit - WellTegra</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .tab-content {
+            display: none;
+            height: calc(100vh - 180px);
+            overflow: hidden;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-button {
+            position: relative;
+            padding: 12px 24px;
+            background: linear-gradient(to bottom, #374151, #1f2937);
+            border: 2px solid #4b5563;
+            border-bottom: none;
+            color: #9ca3af;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 8px 8px 0 0;
+            margin-right: 4px;
+        }
+
+        .tab-button:hover {
+            background: linear-gradient(to bottom, #4b5563, #374151);
+            color: #d1d5db;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(to bottom, #1e3a8a, #1e40af);
+            border-color: #3b82f6;
+            color: #ffffff;
+            box-shadow: 0 -2px 8px rgba(59, 130, 246, 0.3);
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #1e40af;
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #0f172a;
+        }
+
+        .master-selector {
+            background: linear-gradient(135deg, #1e3a8a, #3730a3);
+            border: 2px solid #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .procedure-checklist {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .checklist-item {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 2px solid #334155;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .checklist-item:hover {
+            border-color: #3b82f6;
+            transform: translateX(4px);
+        }
+
+        .checklist-item.completed {
+            border-color: #22c55e;
+            background: linear-gradient(135deg, #064e3b, #022c22);
+        }
+
+        .checklist-item.in-progress {
+            border-color: #eab308;
+            background: linear-gradient(135deg, #422006, #1c1917);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #374151;
+            color: #9ca3af;
+        }
+
+        .status-in-progress {
+            background: #eab308;
+            color: #000000;
+        }
+
+        .status-completed {
+            background: #22c55e;
+            color: #000000;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #334155;
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-gradient-to-r from-gray-900 to-gray-800 border-b-2 border-blue-500 px-6 py-4 z-30 shadow-xl">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                    <span class="text-3xl">🎯</span>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-white">Engineering Cockpit</h1>
+                    <p class="text-sm text-gray-400">Unified Well Engineering Workspace</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="text-right">
+                    <p class="text-xs text-gray-400">Active User</p>
+                    <p class="text-sm font-semibold text-blue-400" id="current-user">Rowan Ross</p>
+                </div>
+                <button onclick="window.location.href='index.html'"
+                        class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition">
+                    ← Back to Dashboard
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Master Well Selector -->
+    <div class="fixed top-24 left-0 right-0 z-20 px-6 py-4 master-selector">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <label class="text-sm font-bold text-white">Master Well Selector:</label>
+                <select id="master-well-selector"
+                        class="px-4 py-2 bg-gray-800 border-2 border-blue-500 rounded-lg text-white font-semibold cursor-pointer hover:bg-gray-700 transition">
+                    <option value="">Select a well...</option>
+                    <option value="W666">W666 - The Perfect Storm</option>
+                    <option value="W001">W001 - North Sea Alpha</option>
+                    <option value="W042">W042 - Gulf Explorer</option>
+                    <option value="W108">W108 - Arctic Pioneer</option>
+                    <option value="W223">W223 - Deep Horizon</option>
+                    <option value="W314">W314 - Pacific Venture</option>
+                    <option value="W555">W555 - Atlantic Driller</option>
+                </select>
+            </div>
+            <div class="flex items-center space-x-6">
+                <div class="text-sm">
+                    <span class="text-gray-400">Current Well:</span>
+                    <span id="current-well-display" class="ml-2 font-bold text-blue-400">None selected</span>
+                </div>
+                <div class="text-sm">
+                    <span class="text-gray-400">Active Tab:</span>
+                    <span id="active-tab-display" class="ml-2 font-bold text-yellow-400">Procedure</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="fixed top-44 left-0 right-0 z-20 px-6 bg-gray-900 border-b-2 border-gray-700">
+        <div class="max-w-7xl mx-auto flex">
+            <button class="tab-button active" data-tab="procedure">
+                📋 Procedure
+            </button>
+            <button class="tab-button" data-tab="wellpath">
+                🌐 Well Path 3D
+            </button>
+            <button class="tab-button" data-tab="pce">
+                🏗️ PCE Simulator
+            </button>
+            <button class="tab-button" data-tab="ai">
+                🤖 AI Assistant
+            </button>
+        </div>
+    </div>
+
+    <!-- Tab Content Area -->
+    <div class="mt-48 relative">
+
+        <!-- Tab 1: Procedure Checklist -->
+        <div id="tab-procedure" class="tab-content active">
+            <div class="procedure-checklist">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-blue-400 mb-2">Well Operations Procedure</h2>
+                    <p class="text-sm text-gray-400">Real-time checklist synchronized with field operations</p>
+                </div>
+
+                <!-- Checklist will be populated dynamically -->
+                <div id="checklist-container">
+                    <div class="text-center py-12">
+                        <div class="loading-spinner mx-auto mb-4"></div>
+                        <p class="text-gray-400">Loading procedure checklist...</p>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="checklist-empty" class="text-center py-12 hidden">
+                    <p class="text-gray-400 mb-4">Select a well to view its procedure checklist</p>
+                    <svg class="w-24 h-24 mx-auto text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Well Path 3D -->
+        <div id="tab-wellpath" class="tab-content">
+            <div class="relative w-full h-full">
+                <div class="loading-overlay" id="wellpath-loading">
+                    <div class="text-center">
+                        <div class="loading-spinner mx-auto mb-4"></div>
+                        <p class="text-blue-400 text-lg font-semibold">Loading 3D Well Path...</p>
+                    </div>
+                </div>
+                <iframe id="wellpath-iframe"
+                        class="iframe-container"
+                        src=""
+                        title="3D Well Path Viewer">
+                </iframe>
+            </div>
+        </div>
+
+        <!-- Tab 3: PCE Simulator -->
+        <div id="tab-pce" class="tab-content">
+            <div class="relative w-full h-full">
+                <div class="loading-overlay" id="pce-loading">
+                    <div class="text-center">
+                        <div class="loading-spinner mx-auto mb-4"></div>
+                        <p class="text-blue-400 text-lg font-semibold">Loading PCE Simulator...</p>
+                    </div>
+                </div>
+                <iframe id="pce-iframe"
+                        class="iframe-container"
+                        src=""
+                        title="PCE Rig-up Simulator">
+                </iframe>
+            </div>
+        </div>
+
+        <!-- Tab 4: AI Assistant -->
+        <div id="tab-ai" class="tab-content">
+            <div class="relative w-full h-full bg-gray-900">
+                <!-- AI Chat Interface will be embedded here -->
+                <div id="ai-chat-container" class="w-full h-full">
+                    <div class="loading-overlay" id="ai-loading">
+                        <div class="text-center">
+                            <div class="loading-spinner mx-auto mb-4"></div>
+                            <p class="text-blue-400 text-lg font-semibold">Loading AI Assistant...</p>
+                        </div>
+                    </div>
+                    <!-- AI chat UI will be injected here -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- WebSocket Service -->
+    <script src="assets/js/webSocketService.js" defer></script>
+
+    <!-- Application Scripts -->
+    <script src="assets/js/planner-v2.js" defer></script>
+
+    <script>
+        // Inline CSP hash: Initialize app when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.PlannerV2) {
+                window.PlannerV2.initialize();
+            }
+        });
+    </script>
+</body>
+</html>
