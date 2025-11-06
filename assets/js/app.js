@@ -2192,17 +2192,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- EVENT LISTENERS ---
 
-    loginBtn.addEventListener('click', () => {
-        welcomeScreen.style.opacity = '0';
-        setTimeout(() => {
-            welcomeScreen.classList.add('hidden');
-            appContainer.classList.remove('hidden');
-            appContainer.classList.add('flex');
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            setTheme(savedTheme);
-            switchView('home');
-        }, 500);
-    });
+    if (loginBtn) {
+        loginBtn.addEventListener('click', () => {
+            welcomeScreen.style.opacity = '0';
+            setTimeout(() => {
+                welcomeScreen.classList.add('hidden');
+                appContainer.classList.remove('hidden');
+                appContainer.classList.add('flex');
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                setTheme(savedTheme);
+                switchView('home');
+            }, 500);
+        });
+    }
 
     themeToggleBtn.addEventListener('click', () => {
         const currentTheme = body.classList.contains('theme-dark') ? 'dark' : 'light';
