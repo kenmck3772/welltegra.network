@@ -1,0 +1,152 @@
+version: '3.8'
+
+# WellTegra Edge Core - Docker Compose Stack
+# Complete offline-capable rig deployment
+# Stack: Nginx + Node.js API + PostgreSQL + Kafka + Sync Service
+
+services:
+  # PostgreSQL - Local data persistence with encryption
+  postgres:
+    image: postgres:15-alpine
+    container_name: welltegra-edge-db
+    environment:
+      POSTGRES_DB: welltegra_edge
+      POSTGRES_USER: edge
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme_in_production}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --data-checksums"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - edge_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U edge"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Kafka - Message queue for Store-and-Forward sync
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: welltegra-edge-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper/data
+      - zookeeper_logs:/var/lib/zookeeper/log
+    networks:
+      - edge_network
+    restart: unless-stopped
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: welltegra-edge-kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_LOG_SEGMENT_BYTES: 1073741824
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    networks:
+      - edge_network
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-broker-api-versions --bootstrap-server localhost:9092"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # Edge Core Application (Nginx + Node.js API)
+  edge_core:
+    build:
+      context: ..
+      dockerfile: edge-core/Dockerfile
+    container_name: welltegra-edge-core
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      EDGE_MODE: "true"
+      API_PORT: 3001
+      NGINX_PORT: 8080
+      DATABASE_URL: postgresql://edge:${DB_PASSWORD:-changeme_in_production}@postgres:5432/welltegra_edge
+      KAFKA_BROKERS: kafka:9092
+      JWT_SECRET: ${JWT_SECRET:-changeme_in_production}
+      CLOUD_SYNC_ENDPOINT: ${CLOUD_SYNC_ENDPOINT:-https://cloud.welltegra.com/api/edge-sync}
+      CLOUD_SYNC_ENABLED: ${CLOUD_SYNC_ENABLED:-false}
+      SYNC_INTERVAL_SECONDS: ${SYNC_INTERVAL_SECONDS:-300}
+      FIPS_MODE: ${FIPS_MODE:-true}
+    volumes:
+      - edge_data:/data
+      - edge_logs:/app/logs
+    ports:
+      - "8080:8080"   # Nginx - Main application
+      - "3001:3001"   # Node.js API
+    networks:
+      - edge_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # Sync Service - Store-and-Forward to cloud
+  sync_service:
+    build:
+      context: ..
+      dockerfile: edge-core/Dockerfile.sync
+    container_name: welltegra-edge-sync
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://edge:${DB_PASSWORD:-changeme_in_production}@postgres:5432/welltegra_edge
+      KAFKA_BROKERS: kafka:9092
+      CLOUD_SYNC_ENDPOINT: ${CLOUD_SYNC_ENDPOINT:-https://cloud.welltegra.com/api/edge-sync}
+      CLOUD_SYNC_ENABLED: ${CLOUD_SYNC_ENABLED:-false}
+      SYNC_INTERVAL_SECONDS: ${SYNC_INTERVAL_SECONDS:-300}
+      JWT_SECRET: ${JWT_SECRET:-changeme_in_production}
+      EDGE_CORE_ID: ${EDGE_CORE_ID:-rig-001}
+      TLS_CERT_PATH: ${TLS_CERT_PATH:-/certs/edge-core.crt}
+      TLS_KEY_PATH: ${TLS_KEY_PATH:-/certs/edge-core.key}
+    volumes:
+      - edge_data:/data
+      - sync_logs:/app/logs
+      - ${CERT_DIR:-./certs}:/certs:ro
+    networks:
+      - edge_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  kafka_data:
+    driver: local
+  zookeeper_data:
+    driver: local
+  zookeeper_logs:
+    driver: local
+  edge_data:
+    driver: local
+  edge_logs:
+    driver: local
+  sync_logs:
+    driver: local
+
+networks:
+  edge_network:
+    driver: bridge
