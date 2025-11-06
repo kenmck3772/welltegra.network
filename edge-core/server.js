@@ -43,6 +43,40 @@ const VALID_OPERATION_TYPES = new Set([
 ]);
 
 /**
+ * Validate well ID against allowlist
+ * Returns fresh value from allowlist (not user input) to break taint
+ */
+function validateWellId(input) {
+    if (!input || typeof input !== 'string') {
+        return null;
+    }
+    // Iterate allowlist and return allowlist value (breaks taint)
+    for (const validId of VALID_WELL_IDS) {
+        if (String(validId) === String(input)) {
+            return String(validId); // Return allowlist value, not input
+        }
+    }
+    return null;
+}
+
+/**
+ * Validate operation type against allowlist
+ * Returns fresh value from allowlist (not user input) to break taint
+ */
+function validateOperationType(input) {
+    if (!input || typeof input !== 'string') {
+        return null;
+    }
+    // Iterate allowlist and return allowlist value (breaks taint)
+    for (const validType of VALID_OPERATION_TYPES) {
+        if (String(validType) === String(input)) {
+            return String(validType); // Return allowlist value, not input
+        }
+    }
+    return null;
+}
+
+/**
  * Validate and sanitize UUID format
  * Returns sanitized UUID or null if invalid (breaks taint flow)
  */
@@ -498,16 +532,15 @@ app.get('/api/v1/toolstrings', authenticateJWT, async (req, res) => {
         let params = [];
 
         if (userProvidedWellId) {
-            // SECURITY: Validate wellId if provided
-            if (!VALID_WELL_IDS.has(userProvidedWellId)) {
+            // SECURITY: Validate wellId against allowlist (breaks taint flow)
+            const validatedWellId = validateWellId(userProvidedWellId);
+            if (!validatedWellId) {
                 return res.status(400).json({
                     success: false,
                     error: 'Invalid well ID',
                 });
             }
 
-            // Use validated value from allowlist
-            const validatedWellId = Array.from(VALID_WELL_IDS).find(id => id === userProvidedWellId);
             query = 'SELECT * FROM toolstring_configs WHERE well_id = $1 ORDER BY created_at DESC';
             params = [validatedWellId];
         }
@@ -593,31 +626,29 @@ app.post('/api/v1/toolstrings', authenticateJWT, writeLimiter, async (req, res) 
         }
 
         // SECURITY: Validated name already breaks taint flow via regex reconstruction
-        let validatedWellId = null;
-        let validatedOperationType = null;
 
+        // SECURITY: Validate wellId against allowlist (breaks taint flow)
+        let validatedWellId = null;
         if (userProvidedWellId) {
-            // Validate wellId against allowlist
-            if (!VALID_WELL_IDS.has(userProvidedWellId)) {
+            validatedWellId = validateWellId(userProvidedWellId);
+            if (!validatedWellId) {
                 return res.status(400).json({
                     success: false,
                     error: 'Invalid well ID (must be one of: W001, W042, W108, W223, W314, W555, W666)',
                 });
             }
-            // Get fresh value from allowlist (taint breaker)
-            validatedWellId = Array.from(VALID_WELL_IDS).find(id => id === userProvidedWellId);
         }
 
+        // SECURITY: Validate operationType against allowlist (breaks taint flow)
+        let validatedOperationType = null;
         if (userProvidedOperationType) {
-            // Validate operationType against allowlist
-            if (!VALID_OPERATION_TYPES.has(userProvidedOperationType)) {
+            validatedOperationType = validateOperationType(userProvidedOperationType);
+            if (!validatedOperationType) {
                 return res.status(400).json({
                     success: false,
                     error: 'Invalid operation type (must be: Fishing, Completion, Wireline, Jarring, Milling, Testing, or Logging)',
                 });
             }
-            // Get fresh value from allowlist (taint breaker)
-            validatedOperationType = Array.from(VALID_OPERATION_TYPES).find(type => type === userProvidedOperationType);
         }
 
         // SECURITY: Sanitize metadata and tools array to prevent prototype pollution
@@ -724,23 +755,25 @@ app.put('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req, re
         }
 
         if (userProvidedWellId) {
-            if (!VALID_WELL_IDS.has(userProvidedWellId)) {
+            // SECURITY: Validate wellId against allowlist (breaks taint flow)
+            validatedWellId = validateWellId(userProvidedWellId);
+            if (!validatedWellId) {
                 return res.status(400).json({
                     success: false,
                     error: 'Invalid well ID',
                 });
             }
-            validatedWellId = Array.from(VALID_WELL_IDS).find(id => id === userProvidedWellId);
         }
 
         if (userProvidedOperationType) {
-            if (!VALID_OPERATION_TYPES.has(userProvidedOperationType)) {
+            // SECURITY: Validate operationType against allowlist (breaks taint flow)
+            validatedOperationType = validateOperationType(userProvidedOperationType);
+            if (!validatedOperationType) {
                 return res.status(400).json({
                     success: false,
                     error: 'Invalid operation type',
                 });
             }
-            validatedOperationType = Array.from(VALID_OPERATION_TYPES).find(type => type === userProvidedOperationType);
         }
 
         if (userProvidedTools) {
