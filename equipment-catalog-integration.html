@@ -369,6 +369,7 @@ let equipmentCatalog = {};
 let savedToolStrings = [];
 let builderComponents = [];
 let currentEquipmentFilter = 'all';
+let equipmentSearchQuery = '';
 
 // Load equipment catalog from JSON
 async function loadEquipmentCatalog() {
@@ -426,17 +427,29 @@ function renderEquipmentCatalog() {
     Object.keys(equipmentCatalog).forEach(categoryKey => {
         const category = equipmentCatalog[categoryKey];
 
-        // Apply filter
-        if (currentEquipmentFilter !== 'all') {
-            const hasMatchingItems = category.items.some(item => item.category === currentEquipmentFilter);
-            if (!hasMatchingItems) return;
-        }
-
         const card = document.createElement('div');
         card.className = 'equipment-category-card';
 
         const itemsHTML = category.items
-            .filter(item => currentEquipmentFilter === 'all' || item.category === currentEquipmentFilter)
+            .filter(item => {
+                // Category filter
+                if (currentEquipmentFilter !== 'all' && item.category !== currentEquipmentFilter) {
+                    return false;
+                }
+
+                // Search filter
+                if (equipmentSearchQuery) {
+                    const searchLower = equipmentSearchQuery.toLowerCase();
+                    return (
+                        item.name.toLowerCase().includes(searchLower) ||
+                        item.category.toLowerCase().includes(searchLower) ||
+                        (item.manufacturer && item.manufacturer.toLowerCase().includes(searchLower)) ||
+                        (item.applications && item.applications.some(app => app.toLowerCase().includes(searchLower)))
+                    );
+                }
+
+                return true;
+            })
             .map(item => `
                 <div class="equipment-item">
                     <div>
@@ -453,6 +466,9 @@ function renderEquipmentCatalog() {
                     </button>
                 </div>
             `).join('');
+
+        // Skip category if no items match filters
+        if (!itemsHTML) return;
 
         card.innerHTML = `
             <h4 class="text-lg font-bold mb-4 text-cyan-400">${category.name}</h4>
@@ -622,8 +638,41 @@ function renderSavedToolStrings() {
 // Use a tool string (add to current plan)
 function useToolString(index) {
     const toolString = savedToolStrings[index];
-    showToast(`Tool string "${toolString.name}" added to your plan! (Feature integration pending)`);
-    // TODO: Integrate with the main planner to add these components to the active intervention plan
+
+    // Store the tool string for the current plan
+    const planToolString = {
+        id: toolString.id || `ts-${Date.now()}`,
+        name: toolString.name,
+        components: toolString.components,
+        addedAt: new Date().toISOString(),
+        serviceLine: toolString.serviceLine || 'General'
+    };
+
+    // Save to localStorage for integration with main planner
+    const currentPlanTools = JSON.parse(localStorage.getItem('welltegra_current_plan_tools') || '[]');
+    currentPlanTools.push(planToolString);
+    localStorage.setItem('welltegra_current_plan_tools', JSON.stringify(currentPlanTools));
+
+    // If main app's appState exists, integrate directly
+    if (window.appState && window.appState.generatedPlan) {
+        // Add to the generated plan's equipment list
+        if (!window.appState.generatedPlan.equipment) {
+            window.appState.generatedPlan.equipment = [];
+        }
+        window.appState.generatedPlan.equipment.push(...toolString.components);
+
+        showToast(`Tool string "${toolString.name}" added to ${window.appState.generatedPlan.name}!`);
+        console.log('[Equipment] Tool string added to active plan:', planToolString);
+    } else {
+        // Store for later integration
+        showToast(`Tool string "${toolString.name}" saved to plan! Open the planner to view.`);
+        console.log('[Equipment] Tool string queued for plan integration:', planToolString);
+    }
+
+    // Dispatch event for other modules to listen
+    window.dispatchEvent(new CustomEvent('toolstring:added', {
+        detail: planToolString
+    }));
 }
 
 // Delete a tool string
@@ -693,8 +742,64 @@ function renderServiceTemplates() {
 
 // Load a template into builder
 function loadTemplate(templateKey) {
-    showToast('Template loading feature coming soon!');
-    // TODO: Load template into the builder
+    const templates = {
+        ct: {
+            name: 'Coiled Tubing Standard Package',
+            description: 'Standard CT package for wellbore cleanout and circulation',
+            serviceLine: 'CT',
+            components: ['CT Reel', 'Injector Head', 'BHA Assembly', 'Jetting Tools']
+        },
+        els_fishing: {
+            name: 'E-Line Fishing Assembly',
+            description: 'Complete fishing assembly for wireline operations',
+            serviceLine: 'ELS',
+            components: ['Rope Socket', 'Power Jar', 'Internal Spear', 'Pressure Gauge']
+        },
+        slk_gaslift: {
+            name: 'Slickline Gas Lift Service',
+            description: 'Standard slickline setup for gas lift valve operations',
+            serviceLine: 'SLK',
+            components: ['Running Tool', 'Gas Lift Valve', 'Lock Mandrel', 'Equalizing Prong']
+        },
+        whm_completion: {
+            name: 'WHM Completion Assembly',
+            description: 'Wireline completion tools package',
+            serviceLine: 'WHM',
+            components: ['Setting Tool', 'Plug Assembly', 'Bridge Plug', 'Tubing Cutter']
+        }
+    };
+
+    const template = templates[templateKey];
+    if (!template) {
+        showToast('Template not found', 'error');
+        return;
+    }
+
+    // Clear existing builder components
+    builderComponents = [];
+
+    // Add template components to builder
+    template.components.forEach(componentName => {
+        builderComponents.push({
+            id: `template-${Date.now()}-${Math.random()}`,
+            name: componentName,
+            category: template.serviceLine,
+            manufacturer: 'Template',
+            applications: [template.description]
+        });
+    });
+
+    // Set the tool string name
+    const nameInput = document.getElementById('new-toolstring-name');
+    if (nameInput) {
+        nameInput.value = template.name;
+    }
+
+    // Switch to builder tab and update preview
+    switchEquipmentTab('builder');
+    updateBuilderPreview();
+
+    showToast(`Loaded template: ${template.name}`);
 }
 
 // Equipment search
@@ -702,8 +807,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchBox = document.getElementById('equipment-search');
     if (searchBox) {
         searchBox.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            // TODO: Implement search filtering
+            equipmentSearchQuery = e.target.value.trim();
+            renderEquipmentCatalog();
         });
     }
 
