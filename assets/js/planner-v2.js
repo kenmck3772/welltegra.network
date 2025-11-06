@@ -29,6 +29,9 @@
         role: 'Engineer'
     };
 
+    // API Configuration
+    const API_BASE_URL = 'http://localhost:3001';  // Procedure API server
+
     // ==================== SECURITY ====================
 
     /**
@@ -261,6 +264,67 @@
                 }
             });
 
+            // Emit request for procedure data (optional - API is primary source)
+            webSocketService.emit('subscribe-procedure', { wellId: wellId });
+
+        } else {
+            console.warn('[PlannerV2] WebSocket service not available');
+        }
+
+        // Fetch from API (primary data source)
+        await fetchProceduresFromAPI(wellId);
+    }
+
+    /**
+     * Fetch procedure data from API
+     */
+    async function fetchProceduresFromAPI(wellId) {
+        console.log('[PlannerV2] Fetching procedures from API for well:', wellId);
+
+        try {
+            // Get JWT token
+            const jwtToken = localStorage.getItem('jwtToken') || MOCK_JWT;
+
+            // Make GET request to API
+            const response = await fetch(`${API_BASE_URL}/api/v1/procedures/${wellId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+            }
+
+            const data = await response.json();
+
+            if (data.success && data.checklist) {
+                console.log('[PlannerV2] Successfully fetched', data.count, 'procedures from API');
+                updateProcedureUI(data.checklist);
+            } else {
+                throw new Error('Invalid API response format');
+            }
+
+        } catch (error) {
+            console.error('[PlannerV2] Error fetching procedures from API:', error);
+
+            // Show error message to user
+            const container = document.getElementById('checklist-container');
+            if (container) {
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <p class="text-red-400 mb-4">⚠️ Failed to load procedures from API</p>
+                        <p class="text-sm text-gray-400 mb-4">${escapeHTML(error.message)}</p>
+                        <button onclick="window.PlannerV2.retryLoadProcedures()"
+                                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-semibold transition">
+                            Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
             // Emit request for procedure data
             webSocketService.emit('subscribe-procedure', { wellId: wellId });
 
@@ -386,6 +450,24 @@
                             </div>
                         </div>
                     </div>
+                    <div class="flex flex-col space-y-2">
+                        ${item.status === 'pending' ? `
+                            <button onclick="window.PlannerV2.updateStepStatus('${escapeHTML(item.id)}', 'in-progress')"
+                                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-semibold transition">
+                                Start Step
+                            </button>
+                        ` : ''}
+                        ${item.status === 'in-progress' ? `
+                            <button onclick="window.PlannerV2.updateStepStatus('${escapeHTML(item.id)}', 'completed')"
+                                    class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-sm font-semibold transition">
+                                Mark Complete
+                            </button>
+                        ` : ''}
+                        <button onclick="window.PlannerV2.deleteStep('${escapeHTML(item.id)}')"
+                                class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm font-semibold transition">
+                            Delete
+                        </button>
+                    </div>
                     ${item.status === 'pending' ? `
                         <button onclick="window.PlannerV2.updateStepStatus('${escapeHTML(item.id)}', 'in-progress')"
                                 class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm font-semibold transition">
@@ -408,6 +490,208 @@
     /**
      * Update step status (called from UI buttons)
      */
+    async function updateStepStatus(stepId, newStatus) {
+        console.log('[PlannerV2] Updating step status:', stepId, newStatus);
+
+        try {
+            // Get JWT token
+            const jwtToken = localStorage.getItem('jwtToken') || MOCK_JWT;
+
+            // Make PUT request to API
+            const response = await fetch(`${API_BASE_URL}/api/v1/procedures/step/${stepId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    status: newStatus
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+            }
+
+            const data = await response.json();
+
+            if (data.success && data.step) {
+                console.log('[PlannerV2] Step status updated successfully via API');
+
+                // Update local state
+                const step = procedureChecklist.find(s => s.id === stepId);
+                if (step) {
+                    step.status = data.step.status;
+                    step.timestamp = data.step.timestamp;
+                    updateProcedureUI(procedureChecklist);
+                }
+
+                // WebSocket will broadcast the update to other clients
+            } else {
+                throw new Error('Invalid API response format');
+            }
+
+        } catch (error) {
+            console.error('[PlannerV2] Error updating step status:', error);
+            alert(`Failed to update step status: ${error.message}`);
+        }
+    }
+
+    /**
+     * Create new procedure step via API
+     */
+    async function createNewStep() {
+        console.log('[PlannerV2] Creating new procedure step...');
+
+        if (!currentWell) {
+            alert('Please select a well first');
+            return;
+        }
+
+        // Get form values
+        const titleInput = document.getElementById('new-step-title');
+        const descriptionInput = document.getElementById('new-step-description');
+        const assigneeInput = document.getElementById('new-step-assignee');
+
+        if (!titleInput || !descriptionInput || !assigneeInput) {
+            console.error('[PlannerV2] Form inputs not found');
+            return;
+        }
+
+        const title = titleInput.value.trim();
+        const description = descriptionInput.value.trim();
+        const assignee = assigneeInput.value.trim();
+
+        // Validate inputs
+        if (!title) {
+            alert('Please enter a step title');
+            return;
+        }
+
+        try {
+            // Get JWT token
+            const jwtToken = localStorage.getItem('jwtToken') || MOCK_JWT;
+
+            // Make POST request to API
+            const response = await fetch(`${API_BASE_URL}/api/v1/procedures/${currentWell}/step`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: title,
+                    description: description || 'No description provided',
+                    assignee: assignee || 'Unassigned'
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+            }
+
+            const data = await response.json();
+
+            if (data.success && data.step) {
+                console.log('[PlannerV2] New step created successfully via API');
+
+                // Add to local state
+                procedureChecklist.push(data.step);
+                updateProcedureUI(procedureChecklist);
+
+                // Close modal and reset form
+                closeNewStepModal();
+
+                // WebSocket will broadcast the update to other clients
+            } else {
+                throw new Error('Invalid API response format');
+            }
+
+        } catch (error) {
+            console.error('[PlannerV2] Error creating new step:', error);
+            alert(`Failed to create new step: ${error.message}`);
+        }
+    }
+
+    /**
+     * Delete procedure step via API
+     */
+    async function deleteStep(stepId) {
+        console.log('[PlannerV2] Deleting procedure step:', stepId);
+
+        if (!confirm('Are you sure you want to delete this step? This action cannot be undone.')) {
+            return;
+        }
+
+        try {
+            // Get JWT token
+            const jwtToken = localStorage.getItem('jwtToken') || MOCK_JWT;
+
+            // Make DELETE request to API
+            const response = await fetch(`${API_BASE_URL}/api/v1/procedures/step/${stepId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                console.log('[PlannerV2] Step deleted successfully via API');
+
+                // Remove from local state
+                procedureChecklist = procedureChecklist.filter(s => s.id !== stepId);
+                updateProcedureUI(procedureChecklist);
+
+                // WebSocket will broadcast the update to other clients
+            } else {
+                throw new Error('Invalid API response format');
+            }
+
+        } catch (error) {
+            console.error('[PlannerV2] Error deleting step:', error);
+            alert(`Failed to delete step: ${error.message}`);
+        }
+    }
+
+    /**
+     * Open new step modal
+     */
+    function openNewStepModal() {
+        const modal = document.getElementById('new-step-modal');
+        if (modal) {
+            modal.classList.remove('hidden');
+        }
+    }
+
+    /**
+     * Close new step modal and reset form
+     */
+    function closeNewStepModal() {
+        const modal = document.getElementById('new-step-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+
+        // Reset form
+        const form = document.getElementById('new-step-form');
+        if (form) {
+            form.reset();
+        }
+    }
+
+    /**
+     * Retry loading procedures (called from error UI)
+     */
+    function retryLoadProcedures() {
+        if (currentWell) {
+            loadProcedureChecklist(currentWell);
     function updateStepStatus(stepId, newStatus) {
         console.log('[PlannerV2] Updating step status:', stepId, newStatus);
 
@@ -769,6 +1053,11 @@
     window.PlannerV2 = {
         initialize,
         updateStepStatus,
+        createNewStep,
+        deleteStep,
+        openNewStepModal,
+        closeNewStepModal,
+        retryLoadProcedures,
         sendAIMessage,
         // Expose for debugging
         getCurrentWell: () => currentWell,
