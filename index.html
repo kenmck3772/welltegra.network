@@ -66,6 +66,279 @@
             z-index: -1;
             pointer-events: none;
         }
+
+        /* --- Well Detail Cards --- */
+        .well-detail-card {
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .theme-dark .well-detail-card {
+            background-color: #1e293b;
+            border-color: #334155;
+        }
+
+        .theme-light .well-detail-card {
+            background-color: #ffffff;
+            border-color: #e2e8f0;
+        }
+
+        .well-detail-card.critical-well-card {
+            border-color: #dc2626;
+            box-shadow: 0 10px 40px rgba(220, 38, 38, 0.4);
+        }
+
+        .well-detail-card.critical-well-card .card-header-detailed {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+        }
+
+        .well-detail-card.case-study-card {
+            border-color: #2563eb;
+        }
+
+        .well-detail-card.case-study-card .card-header-detailed {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        }
+
+        .card-header-detailed {
+            padding: 1.5rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card-expandable-content {
+            transition: max-height 0.4s ease-in-out, opacity 0.3s ease;
+        }
+
+        .card-expandable-content.hidden {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        .toggle-card-btn {
+            transition: all 0.3s ease;
+        }
+
+        .toggle-card-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .expand-icon {
+            transition: transform 0.3s ease;
+        }
+
+        /* --- Stat Cards --- */
+        .stat-card {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .theme-dark .stat-card {
+            background-color: #334155;
+            border: 1px solid #475569;
+        }
+
+        .theme-light .stat-card {
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .theme-dark .stat-label {
+            color: #94a3b8;
+        }
+
+        .theme-light .stat-label {
+            color: #64748b;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .theme-dark .stat-value {
+            color: #e2e8f0;
+        }
+
+        .theme-light .stat-value {
+            color: #0f172a;
+        }
+
+        /* --- Well Detail Tabs --- */
+        .well-detail-tab {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background: none;
+        }
+
+        .theme-dark .well-detail-tab {
+            color: #94a3b8;
+        }
+
+        .theme-light .well-detail-tab {
+            color: #64748b;
+        }
+
+        .well-detail-tab:hover {
+            border-bottom-color: #3b82f6;
+        }
+
+        .theme-dark .well-detail-tab:hover {
+            color: #60a5fa;
+        }
+
+        .theme-light .well-detail-tab:hover {
+            color: #2563eb;
+        }
+
+        .well-detail-tab.active {
+            border-bottom-color: #3b82f6;
+        }
+
+        .theme-dark .well-detail-tab.active {
+            color: #60a5fa;
+        }
+
+        .theme-light .well-detail-tab.active {
+            color: #2563eb;
+        }
+
+        /* --- Tab Panes --- */
+        .tab-pane {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- History Items --- */
+        .history-item {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .history-item:hover {
+            transform: translateX(4px);
+        }
+
+        .theme-dark .history-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-light .history-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- Schematic Container --- */
+        .schematic-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .schematic-label {
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .schematic-depth-marker text {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* --- Table Styling --- */
+        .theme-dark .well-detail-card table {
+            color: #e2e8f0;
+        }
+
+        .theme-light .well-detail-card table {
+            color: #0f172a;
+        }
+
+        .theme-dark .well-detail-card table tbody tr {
+            background-color: #1e293b;
+        }
+
+        .theme-light .well-detail-card table tbody tr {
+            background-color: #ffffff;
+        }
+
+        .theme-dark .well-detail-card table tbody tr:hover {
+            background-color: #334155 !important;
+        }
+
+        .theme-light .well-detail-card table tbody tr:hover {
+            background-color: #f8fafc !important;
+        }
+
+        /* --- Responsive Improvements --- */
+        @media (max-width: 768px) {
+            .card-header-detailed {
+                padding: 1rem;
+            }
+
+            .stat-card {
+                padding: 0.75rem;
+            }
+
+            .stat-value {
+                font-size: 1.25rem;
+            }
+
+            .well-detail-tab {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* --- Completion Detail Styling --- */
+        .theme-dark .well-detail-card .border-l-4 {
+            border-left-width: 4px;
+        }
+
+        .theme-light .well-detail-card .border-l-4 {
+            border-left-width: 4px;
+        }
+
+        /* --- Smooth Scrolling --- */
+        .tab-content-container {
+            scroll-behavior: smooth;
+        }
+
+        /* --- Focus States for Accessibility --- */
+        .toggle-card-btn:focus,
+        .well-detail-tab:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
     </style>
 </head>
 
@@ -145,56 +418,17 @@
 
     <main id="main-content" class="flex-1" role="main">
         <div id="home-view" class="view-container">
-            <section class="hero-section py-20 px-4 relative" aria-describedby="hero-video-description">
-                <video autoplay loop muted playsinline id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description">
-                    <source src="assets/hero.mp4" type="video/mp4">
-                    <track kind="descriptions" srclang="en" label="English descriptions" src="assets/hero-video-descriptions.vtt" default>
-                </video>
-                <div class="hero-overlay"></div>
-                <p id="hero-video-description" class="sr-only">Looping montage showing engineers collaborating over drilling dashboards and subsurface schematics.</p>
-                <div class="max-w-4xl mx-auto text-center relative z-10">
-                    <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">From Data Chaos to Predictive Clarity.</h2>
-                    <p class="mt-6 text-lg md:text-xl text-slate-100">The oil and gas industry loses over $38 million per asset annually to unplanned downtime. Your engineers spend more than 50% of their time wrangling data. The cause? A disconnected digital ecosystem.</p>
-                    <p class="mt-4 text-lg md:text-xl font-semibold text-white">Well-Tegra: Engineering Insight, Amplified by Data.</p>
+            <section class="py-12 px-4 relative">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center mb-12">
+                        <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">Well Portfolio Overview</h2>
+                        <p class="text-lg md:text-xl text-slate-300 max-w-4xl mx-auto">Comprehensive Well Engineering Intelligence System - Montrose Field Case Study</p>
+                        <p class="mt-4 text-base text-slate-400 max-w-3xl mx-auto">Six successful interventions inform the restoration of <strong class="text-red-400">W666 - The Perfect Storm</strong>, a critical well with compound integrity challenges requiring integrated multi-discipline remediation.</p>
+                    </div>
 
-                    <!-- Hero CTAs -->
-                    <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
-                            Request a Demo
-                        </a>
-                        <button id="hero-planner-btn" class="px-8 py-4 bg-white hover:bg-slate-100 text-slate-900 text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
-                            Try the Planner
-                        </button>
-                    </div>
-                </div>
-            </section>
-            <section class="py-20 px-4 bg-white dark:bg-transparent">
-                <div class="max-w-7xl mx-auto relative z-10">
-                    <div class="text-center">
-                        <h2 class="section-title">Are You Paying the Hidden Taxes of Inefficiency?</h2>
-                        <p class="mt-4 text-lg">Your operations are being taxed by disconnected workflows you can't see on a balance sheet.</p>
-                    </div>
-                    <ul class="mt-12 grid md:grid-cols-2 lg:grid-cols-4 gap-8" role="list">
-                        <li class="feature-card light-card p-6 rounded-lg shadow" role="listitem"><h3 class="text-xl font-bold">The Data Wrangling Tax</h3><p class="mt-2">Unlock Your Data. Your most valuable assets—your engineers—are forced to act as data clerks, wasting countless hours hunting for information in emails, correcting spreadsheet errors, and re-entering data from PDFs.</p></li>
-                        <li class="feature-card light-card p-6 rounded-lg shadow" role="listitem"><h3 class="text-xl font-bold">The NPT Tax</h3><p class="mt-2">Every moment of Non-Productive Time is a direct hit to your bottom line. Plans based on poor data lead to equipment failures, procedural errors, and costly downtime.</p></li>
-                        <li class="feature-card light-card p-6 rounded-lg shadow" role="listitem"><h3 class="text-xl font-bold">The Collaboration Tax</h3><p class="mt-2">The critical gap between your team and service partners is where value is lost. Static PDF handoffs create slow, error-prone workflows that prevent true, real-time collaboration.</p></li>
-                        <li class="feature-card light-card p-6 rounded-lg shadow" role="listitem"><h3 class="text-xl font-bold">The Energy & Emissions Tax</h3><p class="mt-2">Inefficient operations don't just waste money—they waste energy. Extended run times and unnecessary flaring contribute to higher operational costs and a larger carbon footprint.</p></li>
-                    </ul>
-                </div>
-            </section>
-            <section class="py-20 px-4 roi-calculator dark:bg-slate-900/50">
-                <div class="max-w-6xl mx-auto relative z-10">
-                    <div class="text-center"><h2 class="section-title">The Platform That Pays for Itself</h2><p class="mt-4 text-lg">Unlock Your Reservoir's True Potential. Use our interactive calculator to estimate your potential annual savings with Well-Tegra.</p></div>
-                    <div class="mt-12 grid lg:grid-cols-2 gap-12 items-center">
-                        <div class="light-card p-8 rounded-lg shadow-lg">
-                            <div class="space-y-6">
-                                <div><label for="engineerCount" class="font-semibold">Number of Well Engineers</label><div class="flex items-center space-x-4"><input type="range" id="engineerCount" min="5" max="100" value="20" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer" aria-describedby="engineerCountValue" aria-valuemin="5" aria-valuemax="100" aria-valuenow="20" aria-valuetext="20 well engineers"><span id="engineerCountValue" class="font-bold text-lg w-12 text-center">20</span></div></div>
-                                <div><label for="nptReduction" class="font-semibold">Projected NPT Reduction</label><div class="flex items-center space-x-4"><input type="range" id="nptReduction" min="5" max="40" value="20" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer" aria-describedby="nptReductionValue" aria-valuemin="5" aria-valuemax="40" aria-valuenow="20" aria-valuetext="20 percent reduction"><span id="nptReductionValue" class="font-bold text-lg w-12 text-center">20%</span></div></div>
-                                <div><label for="timeSavings" class="font-semibold">Engineering Time Reclaimed</label><div class="flex items-center space-x-4"><input type="range" id="timeSavings" min="10" max="50" value="40" class="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer" aria-describedby="timeSavingsValue" aria-valuemin="10" aria-valuemax="50" aria-valuenow="40" aria-valuetext="40 percent reclaimed"><span id="timeSavingsValue" class="font-bold text-lg w-12 text-center">40%</span></div></div>
-                            </div>
-                            <div class="mt-8 pt-6 border-t border-slate-300 dark:border-slate-600 text-center"><p class="text-xl font-semibold">Total Estimated Annual Savings:</p><p id="totalSavings" class="text-5xl font-extrabold accent-text mt-2">$2,168,000</p></div>
-                        </div>
-                        <div class="chart-container"><canvas id="savingsChart">Savings chart illustrating annual savings splits between engineering time and NPT reduction.</canvas></div>
+                    <!-- Well Cards Grid -->
+                    <div id="home-well-cards-grid" class="space-y-8">
+                        <!-- Cards will be dynamically rendered here -->
                     </div>
                 </div>
             </section>
@@ -246,53 +480,6 @@
                 </div>
                 <div class="mt-10 space-y-6">
                     <section id="portfolio-signals" class="grid gap-4 md:grid-cols-2 xl:grid-cols-4" aria-label="Portfolio signals"></section>
-                    <section class="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 shadow-inner">
-                        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-                            <div class="w-full lg:max-w-md">
-                                <label for="well-search-input" class="text-xs font-semibold uppercase tracking-wide text-slate-400">Search the portfolio</label>
-                                <input type="search" id="well-search-input" name="well-search-input" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950/60 px-4 py-3 text-sm text-slate-100 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500" placeholder="Search by well name, field, issue, or equipment..." autocomplete="off">
-                            </div>
-                            <p id="well-filter-summary" class="text-sm text-slate-400" role="status" aria-live="polite">Showing 0 of 0 wells.</p>
-                        </div>
-                        <div class="mt-6">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Focus</p>
-                            <div id="well-focus-group" class="mt-3 flex flex-wrap gap-2" role="group" aria-label="Focus filters">
-                                <button type="button" class="filter-chip" data-focus-filter="all" aria-pressed="true">
-                                    All Wells
-                                    <span class="filter-chip__count" data-focus-count="all"></span>
-                                </button>
-                                <button type="button" class="filter-chip" data-focus-filter="critical" aria-pressed="false">
-                                    Critical Path
-                                    <span class="filter-chip__count" data-focus-count="critical"></span>
-                                </button>
-                                <button type="button" class="filter-chip" data-focus-filter="case" aria-pressed="false">
-                                    Case Studies
-                                    <span class="filter-chip__count" data-focus-count="case"></span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="mt-6">
-                            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">Themes</p>
-                            <div id="well-theme-group" class="mt-3 flex flex-wrap gap-2" role="group" aria-label="Theme filters">
-                                <button type="button" class="filter-chip" data-theme-filter="integrity" aria-pressed="false">
-                                    Integrity
-                                    <span class="filter-chip__count" data-theme-count="integrity"></span>
-                                </button>
-                                <button type="button" class="filter-chip" data-theme-filter="flow-assurance" aria-pressed="false">
-                                    Flow Assurance
-                                    <span class="filter-chip__count" data-theme-count="flow-assurance"></span>
-                                </button>
-                                <button type="button" class="filter-chip" data-theme-filter="controls" aria-pressed="false">
-                                    Controls &amp; Safety
-                                    <span class="filter-chip__count" data-theme-count="controls"></span>
-                                </button>
-                                <button type="button" class="filter-chip" data-theme-filter="productivity" aria-pressed="false">
-                                    Production Recovery
-                                    <span class="filter-chip__count" data-theme-count="productivity"></span>
-                                </button>
-                            </div>
-                        </div>
-                    </section>
                 </div>
                 <div id="well-selection-grid" class="mt-6 grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
                 <section id="data-scrubbing-panel" class="mt-12 hidden">
