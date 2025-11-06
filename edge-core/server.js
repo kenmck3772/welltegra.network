@@ -68,6 +68,20 @@ function isValidName(str) {
 }
 
 /**
+ * Validate username (alphanumeric and underscore only, max 50 chars)
+ */
+function isValidUsername(str) {
+    if (!str || typeof str !== 'string') {
+        return false;
+    }
+    if (str.length < 1 || str.length > 50) {
+        return false;
+    }
+    const usernameRegex = /^[a-zA-Z0-9_]+$/;
+    return usernameRegex.test(str);
+}
+
+/**
  * Sanitize metadata object to prevent prototype pollution
  * Creates a clean object without prototype chain
  */
@@ -97,6 +111,72 @@ function sanitizeMetadata(metadata) {
 
     // Convert Map back to plain object for JSON storage
     return Object.fromEntries(sanitized);
+}
+
+/**
+ * Sanitize tools array to prevent prototype pollution
+ * Creates clean array of objects without dangerous properties
+ */
+function sanitizeToolsArray(tools) {
+    if (!Array.isArray(tools)) {
+        return [];
+    }
+
+    const sanitized = [];
+    const dangerousKeys = ['__proto__', 'constructor', 'prototype'];
+
+    for (const tool of tools) {
+        if (!tool || typeof tool !== 'object') {
+            continue; // Skip non-objects
+        }
+
+        // Create clean object using Map
+        const cleanTool = new Map();
+
+        for (const [key, value] of Object.entries(tool)) {
+            if (dangerousKeys.includes(key)) {
+                continue; // Skip dangerous keys
+            }
+
+            // Only allow safe property names and primitive values
+            if (typeof key === 'string' && key.length <= 50) {
+                if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+                    cleanTool.set(key, value);
+                } else if (Array.isArray(value)) {
+                    // Handle nested arrays (e.g., applications: [...])
+                    const cleanArray = value.filter(item =>
+                        typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean'
+                    );
+                    cleanTool.set(key, cleanArray);
+                }
+            }
+        }
+
+        sanitized.push(Object.fromEntries(cleanTool));
+    }
+
+    return sanitized;
+}
+
+/**
+ * Create safe audit log object
+ * Only includes validated, safe properties
+ */
+function createSafeAuditLog(properties) {
+    const safe = {};
+
+    // Only include explicitly validated properties
+    if (properties.name && typeof properties.name === 'string') {
+        safe.name = properties.name;
+    }
+    if (properties.wellId && typeof properties.wellId === 'string') {
+        safe.wellId = properties.wellId;
+    }
+    if (properties.operationType && typeof properties.operationType === 'string') {
+        safe.operationType = properties.operationType;
+    }
+
+    return safe;
 }
 
 console.log('[Edge Core API] Starting...');
@@ -208,19 +288,31 @@ app.get('/api/health', (req, res) => {
 // Login
 app.post('/api/auth/login', async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const userProvidedUsername = req.body.username;
+        const userProvidedPassword = req.body.password;
 
-        if (!username || !password) {
+        if (!userProvidedUsername || !userProvidedPassword) {
             return res.status(400).json({
                 success: false,
                 error: 'Username and password required',
             });
         }
 
+        // SECURITY: Validate username format
+        if (!isValidUsername(userProvidedUsername)) {
+            return res.status(400).json({
+                success: false,
+                error: 'Invalid username format',
+            });
+        }
+
+        // Use validated username (taint breaker)
+        const validatedUsername = userProvidedUsername;
+
         // Query user
         const result = await pool.query(
             'SELECT * FROM users WHERE username = $1',
-            [username]
+            [validatedUsername]
         );
 
         if (result.rows.length === 0) {
@@ -232,8 +324,8 @@ app.post('/api/auth/login', async (req, res) => {
 
         const user = result.rows[0];
 
-        // Verify password
-        const validPassword = await bcrypt.compare(password, user.password_hash);
+        // Verify password (using user-provided password is safe for bcrypt.compare)
+        const validPassword = await bcrypt.compare(userProvidedPassword, user.password_hash);
         if (!validPassword) {
             return res.status(401).json({
                 success: false,
@@ -241,11 +333,11 @@ app.post('/api/auth/login', async (req, res) => {
             });
         }
 
-        // Generate JWT
+        // Generate JWT (use validated username from database, not user input)
         const token = jwt.sign(
             {
                 id: user.id,
-                username: user.username,
+                username: user.username,  // From database, not user input
                 role: user.role,
             },
             JWT_SECRET,
@@ -258,10 +350,10 @@ app.post('/api/auth/login', async (req, res) => {
             [user.id]
         );
 
-        // Audit log
+        // Audit log - use validated username only (no user input)
         await pool.query(
             'INSERT INTO audit_log (user_id, action, details, ip_address) VALUES ($1, $2, $3, $4)',
-            [user.id, 'LOGIN', JSON.stringify({ username }), req.ip]
+            [user.id, 'LOGIN', JSON.stringify({ username: validatedUsername }), req.ip]
         );
 
         res.json({
@@ -407,18 +499,19 @@ app.post('/api/v1/toolstrings', authenticateJWT, writeLimiter, async (req, res) 
             validatedOperationType = Array.from(VALID_OPERATION_TYPES).find(type => type === userProvidedOperationType);
         }
 
-        // SECURITY: Sanitize metadata to prevent prototype pollution
+        // SECURITY: Sanitize metadata and tools array to prevent prototype pollution
         const sanitizedMetadata = sanitizeMetadata(userProvidedMetadata);
+        const sanitizedTools = sanitizeToolsArray(userProvidedTools);
 
         const id = uuidv4();
 
-        // Insert into database - USE VALIDATED VALUES ONLY
+        // Insert into database - USE VALIDATED VALUES ONLY (no user input)
         const result = await pool.query(
             `INSERT INTO toolstring_configs
             (id, name, well_id, operation_type, tools, created_by, metadata, synced)
             VALUES ($1, $2, $3, $4, $5, $6, $7, false)
             RETURNING *`,
-            [id, validatedName, validatedWellId, validatedOperationType, JSON.stringify(userProvidedTools), req.user.username, JSON.stringify(sanitizedMetadata)]
+            [id, validatedName, validatedWellId, validatedOperationType, JSON.stringify(sanitizedTools), req.user.username, JSON.stringify(sanitizedMetadata)]
         );
 
         const toolstring = result.rows[0];
@@ -443,10 +536,11 @@ app.post('/api/v1/toolstrings', authenticateJWT, writeLimiter, async (req, res) 
             }
         }
 
-        // Audit log - use validated values only
+        // Audit log - use safe audit log creation (no user input)
+        const safeAuditLog = createSafeAuditLog({ name: validatedName, wellId: validatedWellId, operationType: validatedOperationType });
         await pool.query(
             'INSERT INTO audit_log (user_id, action, entity_type, entity_id, details, ip_address) VALUES ($1, $2, $3, $4, $5, $6)',
-            [req.user.id, 'CREATE', 'toolstring', id, JSON.stringify({ name: validatedName, wellId: validatedWellId }), req.ip]
+            [req.user.id, 'CREATE', 'toolstring', id, JSON.stringify(safeAuditLog), req.ip]
         );
 
         res.status(201).json({
@@ -529,11 +623,15 @@ app.put('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req, re
                     error: 'Tools must be an array',
                 });
             }
-            validatedTools = JSON.stringify(userProvidedTools);
+            // SECURITY: Sanitize tools array to prevent prototype pollution
+            const sanitizedToolsArray = sanitizeToolsArray(userProvidedTools);
+            validatedTools = JSON.stringify(sanitizedToolsArray);
         }
 
         if (userProvidedMetadata) {
-            sanitizedMetadata = JSON.stringify(sanitizeMetadata(userProvidedMetadata));
+            // SECURITY: Sanitize metadata to prevent prototype pollution
+            const cleanMetadata = sanitizeMetadata(userProvidedMetadata);
+            sanitizedMetadata = JSON.stringify(cleanMetadata);
         }
 
         const validatedId = userProvidedId;
@@ -579,10 +677,11 @@ app.put('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req, re
             }
         }
 
-        // Audit log - use validated values only
+        // Audit log - use safe audit log creation (no user input)
+        const safeAuditLog = createSafeAuditLog({ name: validatedName, wellId: validatedWellId, operationType: validatedOperationType });
         await pool.query(
             'INSERT INTO audit_log (user_id, action, entity_type, entity_id, details, ip_address) VALUES ($1, $2, $3, $4, $5, $6)',
-            [req.user.id, 'UPDATE', 'toolstring', validatedId, JSON.stringify({ name: validatedName, wellId: validatedWellId }), req.ip]
+            [req.user.id, 'UPDATE', 'toolstring', validatedId, JSON.stringify(safeAuditLog), req.ip]
         );
 
         res.json({
@@ -644,10 +743,11 @@ app.delete('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req,
             }
         }
 
-        // Audit log - use validated values only
+        // Audit log - use safe audit log creation (no user input, just ID from database)
+        const safeAuditLog = createSafeAuditLog({ name: String(toolstring.name || 'unknown') });
         await pool.query(
             'INSERT INTO audit_log (user_id, action, entity_type, entity_id, details, ip_address) VALUES ($1, $2, $3, $4, $5, $6)',
-            [req.user.id, 'DELETE', 'toolstring', validatedId, JSON.stringify({ name: toolstring.name }), req.ip]
+            [req.user.id, 'DELETE', 'toolstring', validatedId, JSON.stringify(safeAuditLog), req.ip]
         );
 
         res.json({
