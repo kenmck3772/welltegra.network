@@ -375,6 +375,101 @@
                 <div id="design-blueprint" class="mt-10 space-y-6 light-card p-6 rounded-lg">
                     <p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>
                 </div>
+
+                <!-- Equipment Catalog & Tool String Viewer -->
+                <div id="equipment-tools-section" class="mt-12">
+                    <div class="light-card rounded-lg p-6 shadow-xl border-2 border-cyan-500/30">
+                        <h3 class="text-2xl font-bold mb-6">🛠️ Tool String Viewer & Equipment Catalog</h3>
+
+                        <!-- Tabs -->
+                        <div class="equipment-tabs" style="display: flex; gap: 8px; border-bottom: 2px solid #334155; margin-bottom: 1.5rem;">
+                            <button class="equipment-tab active" data-tab="historical" onclick="switchEquipmentTab('historical')" style="padding: 12px 24px; font-weight: 700; font-size: 1rem; color: #14b8a6; background: transparent; border: none; border-bottom: 3px solid #14b8a6; cursor: pointer;">
+                                Historical Tool Strings
+                            </button>
+                            <button class="equipment-tab" data-tab="toolstrings" onclick="switchEquipmentTab('toolstrings')" style="padding: 12px 24px; font-weight: 700; font-size: 1rem; color: #94a3b8; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer;">
+                                My Tool Strings
+                            </button>
+                            <button class="equipment-tab" data-tab="builder" onclick="switchEquipmentTab('builder')" style="padding: 12px 24px; font-weight: 700; font-size: 1rem; color: #94a3b8; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer;">
+                                Build New String
+                            </button>
+                        </div>
+
+                        <!-- Tab Content: Historical Tool Strings -->
+                        <div id="tab-historical" class="equipment-tab-content">
+                            <div class="bg-blue-50 dark:bg-blue-900/50 p-4 rounded-lg mb-6">
+                                <p class="text-sm text-blue-800 dark:text-blue-200">View tool strings from previous interventions on this well and similar wells. Load them directly into the builder to reuse proven configurations.</p>
+                            </div>
+                            <div id="historical-toolstrings-list">
+                                <!-- Historical tool strings will be rendered here -->
+                            </div>
+                            <div id="empty-historical" class="text-center py-12 text-gray-500">
+                                <div class="text-5xl mb-4 opacity-50">📋</div>
+                                <div class="text-lg font-semibold">No historical tool strings available</div>
+                                <p class="mt-2">Select a well with daily reports to view historical tool string configurations.</p>
+                            </div>
+                        </div>
+
+                        <!-- Tab Content: My Tool Strings -->
+                        <div id="tab-toolstrings" class="equipment-tab-content hidden">
+                            <div id="saved-toolstrings-list">
+                                <!-- Saved tool strings will be rendered here -->
+                            </div>
+                            <div id="empty-toolstrings" class="text-center py-12 text-gray-500">
+                                <div class="text-5xl mb-4 opacity-50">📦</div>
+                                <div class="text-lg font-semibold">No tool strings saved yet</div>
+                                <p class="mt-2">Use the Builder tab to create your first reusable tool string assembly.</p>
+                            </div>
+                        </div>
+
+                        <!-- Tab Content: Build New String -->
+                        <div id="tab-builder" class="equipment-tab-content hidden">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <!-- Left: Builder Form -->
+                                <div>
+                                    <h4 class="text-xl font-bold mb-4">Create New Tool String</h4>
+
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium mb-2">Assembly Name</label>
+                                        <input type="text" id="new-toolstring-name" class="search-box w-full p-2 rounded-md bg-slate-800 text-white border border-slate-600" placeholder="e.g., Standard Fishing Assembly">
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium mb-2">Service Line</label>
+                                        <select id="new-toolstring-service" class="search-box w-full p-2 rounded-md bg-slate-800 text-white border border-slate-600">
+                                            <option value="CT">Coiled Tubing</option>
+                                            <option value="ELS">E-Line Services</option>
+                                            <option value="SLK">Slickline</option>
+                                            <option value="WHM">Wireline/Hydraulics</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium mb-2">Add Components (one per line)</label>
+                                        <textarea id="toolstring-components-input" class="search-box w-full p-2 rounded-md bg-slate-800 text-white border border-slate-600" rows="6" placeholder="Enter each component on a new line...&#10;Example:&#10;Gauge Ring 9.0&quot;&#10;Hydraulic Setting Tool&#10;Expandable Patch"></textarea>
+                                    </div>
+
+                                    <button class="w-full py-3 px-6 text-lg font-bold rounded-md bg-teal-600 text-white hover:bg-teal-500" onclick="saveToolString()">
+                                        💾 Save Tool String
+                                    </button>
+                                </div>
+
+                                <!-- Right: Preview -->
+                                <div>
+                                    <h4 class="text-xl font-bold mb-4">Assembly Preview</h4>
+                                    <div class="tool-string-card p-6 rounded-lg border-2 border-cyan-500 bg-gradient-to-br from-cyan-900/20 to-blue-900/10">
+                                        <div class="flex justify-between items-center mb-4">
+                                            <span class="text-xl font-bold text-cyan-400" id="preview-name">Untitled Assembly</span>
+                                        </div>
+                                        <ul id="builder-components-list" class="space-y-2">
+                                            <li class="text-gray-500 italic">No components added yet</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="mt-8 flex justify-center">
                     <button id="generate-program-btn" class="rounded-md bg-teal-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-teal-500 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors" disabled>Generate Integrated Program</button>
                 </div>

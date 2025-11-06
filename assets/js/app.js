@@ -151,11 +151,15 @@ document.addEventListener('DOMContentLoaded', function() {
             depth: '9,000ft', 
             status: 'Active - Restored Production', 
             issue: 'SOLUTION: Casing deformation was successfully remediated with an expandable patch.', 
-            history: [ 
+            history: [
                 { date: '2023-11-10', operation: 'Slickline Surveillance', problem: 'Standard 2.313" OD toolstring unable to pass 8,500ft, encountering a hard stop.', lesson: 'Significant reservoir depletion in this area is causing geomechanical stresses leading to casing deformation, a known regional risk. MFC log confirms this is ovalization, not collapse.' },
                 { date: '2023-12-05', operation: 'Expandable Casing Patch', problem: 'Successfully installed a 60ft expandable steel patch across the deformed section.', lesson: 'This operation proves that an expandable patch is a viable, rigless solution for restoring full-bore access in this field, restoring production and well access.' }
+            ],
+            dailyReports: [
+                { date: '2023-11-10', summary: 'Slickline surveillance run with gauge ring', npt: 2, toolstringRun: ['2.313" OD Gauge Ring', 'Slickline Sinker Bar (50 lbs)', 'CCL/GR Correlation Tool', 'Knuckle Joint'] },
+                { date: '2023-12-04', summary: 'Pre-deployment gauge run and cleanout', npt: 0, toolstringRun: ['Scraper Assembly', 'Gauge Ring 8.5"', 'Jetting Tool', 'CT BHA'] },
+                { date: '2023-12-05', summary: 'Expandable patch installation', npt: 0, toolstringRun: ['Expandable Casing Patch (60ft, 9 5/8")', 'Hydraulic Setting Tool', 'Pressure Test Assembly', 'CT Running String'] }
             ], 
-            dailyReports: [], 
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 9000}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 8800}], 
@@ -176,11 +180,15 @@ document.addEventListener('DOMContentLoaded', function() {
             depth: '11,000ft', 
             status: 'Active - Restored Production', 
             issue: 'SOLUTION: Severe BaSO4 scale was successfully removed with a chemical/jetting treatment.', 
-            history: [ 
+            history: [
                 { date: '2024-01-05', operation: 'Production Logging', problem: 'PLT toolstring unable to pass 9,200ft due to a hard obstruction. Produced water analysis confirmed high Barium and Sulfate content.', lesson: 'Commingling of injected seawater and formation water is causing severe, insoluble scale deposition. A previous attempt to mill scale on a nearby well resulted in stuck pipe.'},
                 { date: '2024-02-12', operation: 'CT Chemical/Jetting', problem: 'A 48hr soak with DTPA dissolver followed by a run with a high-pressure rotating jetting tool successfully cleared the blockage.', lesson: 'This two-stage approach is a proven, lower-risk method for removing hard scale compared to aggressive milling.' }
+            ],
+            dailyReports: [
+                { date: '2024-01-05', summary: 'PLT survey - tagged obstruction at 9,200ft', npt: 3, toolstringRun: ['Production Logging Tool (PLT)', 'Spinner Assembly', 'Pressure/Temp Sensors', 'E-Line Cable Head', 'Tension Sub'] },
+                { date: '2024-02-10', summary: 'Chemical treatment - DTPA dissolver soak', npt: 0, toolstringRun: ['Chemical Delivery Sub', 'DTPA Dissolver Tank', 'CT Injection Head', 'Pressure Gauge'] },
+                { date: '2024-02-12', summary: 'Mechanical jetting - scale removal', npt: 0, toolstringRun: ['High-Pressure Rotating Jetting Tool', 'Nozzle Assembly (15,000 PSI)', 'CT BHA', 'Torque Sub'] }
             ], 
-            dailyReports: [], 
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 11000}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 10800}], 
@@ -197,11 +205,15 @@ document.addEventListener('DOMContentLoaded', function() {
             depth: '9,800ft', 
             status: 'Active - Restored Production', 
             issue: 'SOLUTION: Failed TRSSV was locked open and replaced with a slickline-retrievable insert valve.', 
-            history: [ 
+            history: [
                 { date: '2024-02-18', operation: 'Routine DHSV Test', problem: 'Valve failed to close reliably during routine 6-month test. Well was mandatorily shut-in by regulatory authority.', lesson: 'An attempted repair on a similar well with a hydraulic tool failed; a mechanical lock-open tool is more reliable.' },
                 { date: '2024-03-20', operation: 'Slickline Insert Valve Job', problem: 'Successfully locked open the failed valve with a mechanical tool and installed a new wireline-retrievable insert valve.', lesson: 'This standard slickline operation is a proven, cost-effective method for restoring the primary safety barrier without a rig.' }
+            ],
+            dailyReports: [
+                { date: '2024-02-18', summary: 'DHSV test failure - regulatory shut-in', npt: 24, toolstringRun: ['DHSV Test Tool', 'Slickline Gauge', 'Sinker Bar (75 lbs)', 'Pressure Test Assembly'] },
+                { date: '2024-03-19', summary: 'Lock-open tool deployment', npt: 0, toolstringRun: ['Mechanical Lock-Open Tool', 'Running Tool', 'Sinker Bar Assembly', 'Slickline Jarring Head'] },
+                { date: '2024-03-20', summary: 'WRSV installation complete', npt: 0, toolstringRun: ['Wireline-Retrievable Safety Valve (WRSV)', 'Setting Tool', 'Slickline Pressure Test Sub', 'Landing Nipple Profile'] }
             ], 
-            dailyReports: [], 
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 9800}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 9600}], 
@@ -218,11 +230,15 @@ document.addEventListener('DOMContentLoaded', function() {
             depth: '10,000ft', 
             status: 'Active - Restored Production', 
             issue: 'SOLUTION: Failed sand screen was repaired with a through-tubing patch.', 
-            history: [ 
+            history: [
                 { date: '2023-08-15', operation: 'Surface Choke Replacement', problem: 'Replaced choke for the 3rd time in 6 months due to severe erosional wear from high sand content.', lesson: 'Choking back the well is a temporary fix; the root cause of sand control failure must be addressed. Downhole video confirmed screen erosion.' },
                 { date: '2023-09-10', operation: 'Through-Tubing Patch', problem: 'Successfully installed an expandable patch across the failed sand screen, restoring sand control.', lesson: 'This confirms that a through-tubing patch is a viable rigless repair for this failure mode in this field.'}
+            ],
+            dailyReports: [
+                { date: '2023-08-14', summary: 'Downhole video survey - screen inspection', npt: 0, toolstringRun: ['Downhole Camera System', 'LED Light Array', 'E-Line Cable Head', 'Centralizer'] },
+                { date: '2023-09-09', summary: 'Pre-patch gauge and cleanout', npt: 1, toolstringRun: ['Gauge Ring (3.5")', 'Scraper BHA', 'Jetting Sub', 'CT Running Tool'] },
+                { date: '2023-09-10', summary: 'Through-tubing patch deployment', npt: 0, toolstringRun: ['Expandable Sand Screen Patch', 'Hydraulic Expansion Tool', 'Setting Assembly', 'Verification Tool'] }
             ], 
-            dailyReports: [], 
             completion: { 
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 10000}], 
                 tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 9800}], 
@@ -243,7 +259,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 { date: '2024-01-15', operation: 'Slickline Gauge Ring Run', problem: 'Gauge ring tagged a soft, waxy obstruction at 6,000ft. Unable to pass.', lesson: 'A previous attempt on another well with only chemicals was slow and ineffective; a combined approach is needed.' },
                 { date: '2024-02-01', operation: 'CT Wax Cleanout', problem: 'Successfully removed wax blockage using a combination of heated chemical dissolvers and a mechanical scraper tool on Coiled Tubing.', lesson: 'The dual chemical/mechanical approach is highly effective for severe paraffin blockages.' }
             ],
-            dailyReports: [],
+            dailyReports: [
+                { date: '2024-01-15', summary: 'Gauge ring run - wax obstruction confirmed', npt: 2, toolstringRun: ['3.0" Gauge Ring', 'Slickline Sinker Bar (60 lbs)', 'CCL Tool', 'Temperature Gauge'] },
+                { date: '2024-01-31', summary: 'Chemical treatment - heated dissolver injection', npt: 0, toolstringRun: ['Heated Chemical Tank', 'Paraffin Dissolver Pump', 'CT Injection Head', 'Temperature Monitor'] },
+                { date: '2024-02-01', summary: 'Mechanical wax removal - scraper run', npt: 0, toolstringRun: ['Mechanical Wax Scraper Tool', 'Rotary Brush Assembly', 'CT BHA', 'Debris Catcher Sub'] }
+            ],
             completion: {
                 casing: [{type: 'Production', size: '7', top: 0, bottom: 7500}],
                 tubing: [{type: 'Production', size: '3 1/2', top: 0, bottom: 7300}],
@@ -265,7 +285,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 { date: '2023-09-15', operation: 'Integrated Solution Deployment', problem: 'Successfully executed a staged intervention combining expandable patch technology, chemical scale treatment, safety valve replacement, and sand control installation - all in a single campaign.', lesson: 'Integrated multi-discipline approach saved 45 days vs. sequential interventions. This became the blueprint for tackling W666.' },
                 { date: '2023-10-01', operation: 'Post-Intervention Performance', problem: 'Well exceeded pre-intervention production by 180%, with zero NPT and full barrier integrity restored.', lesson: 'Proves that comprehensive planning and execution of multiple remediation strategies simultaneously is not only feasible but highly effective. This success story directly informed the W666 intervention strategy.' }
             ],
-            dailyReports: [],
+            dailyReports: [
+                { date: '2023-08-21', summary: 'Stage 1: Casing patch installation', npt: 0, toolstringRun: ['Expandable Casing Patch (40ft, 9 5/8")', 'Hydraulic Setting Tool', 'Gauge Ring 9.0"', 'CT Running String'] },
+                { date: '2023-08-25', summary: 'Stage 2: Chemical scale treatment', npt: 0, toolstringRun: ['Scale Dissolver Injection System', 'DTPA Chemical Tank', 'CT Circulation Sub', 'Jetting Nozzle Assembly'] },
+                { date: '2023-09-05', summary: 'Stage 3: Safety valve replacement', npt: 0, toolstringRun: ['New WRSV Assembly', 'Lock-Open Tool (failed SSSV)', 'Setting/Test Tool', 'Slickline Running String'] },
+                { date: '2023-09-15', summary: 'Stage 4: Sand control installation', npt: 0, toolstringRun: ['Premium Sand Screen Assembly', 'Expansion Tool', 'Gravel Pack Sub', 'CT Deployment System'] },
+                { date: '2023-10-01', summary: 'Post-intervention verification', npt: 0, toolstringRun: ['Multi-Finger Caliper (MFC)', 'Production Logging Tool', 'Pressure/Temp Gauges', 'E-Line Survey Package'] }
+            ],
             completion: {
                 casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 19200}],
                 tubing: [{type: 'Production', size: '5 1/2', top: 0, bottom: 19000}],
@@ -2790,4 +2816,306 @@ async function generatePDFReport() {
         button.classList.remove('pdf-generating');
     }
 }
+
+/* ========================================
+   TOOL STRING VIEWER & EQUIPMENT CATALOG
+   ======================================== */
+
+// Tool String Management
+let savedToolStrings = [];
+let builderComponents = [];
+
+// Load saved tool strings from localStorage
+function loadSavedToolStrings() {
+    const saved = localStorage.getItem('welltegra_toolstrings');
+    savedToolStrings = saved ? JSON.parse(saved) : [];
+    renderSavedToolStrings();
+}
+
+// Save tool strings to localStorage
+function saveToolStringsToStorage() {
+    localStorage.setItem('welltegra_toolstrings', JSON.stringify(savedToolStrings));
+}
+
+// Switch between tabs
+function switchEquipmentTab(tabName) {
+    // Update tab buttons
+    document.querySelectorAll('.equipment-tab').forEach(tab => {
+        const isActive = tab.dataset.tab === tabName;
+        tab.classList.toggle('active', isActive);
+        tab.style.color = isActive ? '#14b8a6' : '#94a3b8';
+        tab.style.borderBottomColor = isActive ? '#14b8a6' : 'transparent';
+    });
+
+    // Update tab content
+    document.querySelectorAll('.equipment-tab-content').forEach(content => {
+        content.classList.add('hidden');
+    });
+    document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+    // Refresh content if needed
+    if (tabName === 'historical') {
+        renderHistoricalToolStrings();
+    } else if (tabName === 'toolstrings') {
+        renderSavedToolStrings();
+    } else if (tabName === 'builder') {
+        updateBuilderPreview();
+    }
+}
+
+// Extract and render historical tool strings from selected well
+function renderHistoricalToolStrings() {
+    const list = document.getElementById('historical-toolstrings-list');
+    const empty = document.getElementById('empty-historical');
+
+    if (!appState.selectedWell) {
+        list.innerHTML = '';
+        list.classList.add('hidden');
+        empty.classList.remove('hidden');
+        return;
+    }
+
+    const well = wellData.find(w => w.id === appState.selectedWell);
+    if (!well || !well.dailyReports || well.dailyReports.length === 0) {
+        list.innerHTML = '';
+        list.classList.add('hidden');
+        empty.classList.remove('hidden');
+        return;
+    }
+
+    list.classList.remove('hidden');
+    empty.classList.add('hidden');
+
+    // Extract unique tool strings from daily reports
+    const toolStrings = well.dailyReports.map((report, index) => ({
+        id: `hist-${well.id}-${index}`,
+        date: report.date,
+        summary: report.summary,
+        components: report.toolstringRun,
+        wellName: well.name
+    }));
+
+    list.innerHTML = toolStrings.map(ts => `
+        <div class="p-6 mb-4 rounded-lg border-2 border-cyan-500 bg-gradient-to-br from-cyan-900/20 to-blue-900/10">
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex-1">
+                    <h4 class="text-lg font-bold text-cyan-400">${ts.summary}</h4>
+                    <p class="text-sm text-gray-400 mt-1">Date: ${ts.date} | Well: ${ts.wellName}</p>
+                </div>
+                <button onclick='loadHistoricalToolString(${JSON.stringify(ts).replace(/'/g, "\\'")})'
+                        class="px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-md transition-colors">
+                    Load into Builder
+                </button>
+            </div>
+            <div class="border-l-4 border-cyan-500 pl-4">
+                <p class="text-xs font-semibold text-gray-300 mb-2">Tool String Components:</p>
+                <ul class="space-y-1">
+                    ${ts.components.map((comp, idx) => `
+                        <li class="text-sm text-gray-300">
+                            <span class="text-cyan-400 font-mono">${idx + 1}.</span> ${comp}
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Load historical tool string into builder
+function loadHistoricalToolString(toolString) {
+    // Switch to builder tab
+    switchEquipmentTab('builder');
+
+    // Populate the builder
+    document.getElementById('new-toolstring-name').value = `${toolString.summary} (from ${toolString.date})`;
+
+    // Add components to textarea
+    const textarea = document.getElementById('toolstring-components-input');
+    textarea.value = toolString.components.join('\n');
+
+    // Update preview
+    updateBuilderPreview();
+
+    // Show success message
+    showToast(`Loaded historical tool string: ${toolString.summary}`);
+}
+
+// Render saved tool strings
+function renderSavedToolStrings() {
+    const list = document.getElementById('saved-toolstrings-list');
+    const empty = document.getElementById('empty-toolstrings');
+
+    if (savedToolStrings.length === 0) {
+        list.classList.add('hidden');
+        empty.classList.remove('hidden');
+        return;
+    }
+
+    list.classList.remove('hidden');
+    empty.classList.add('hidden');
+
+    list.innerHTML = savedToolStrings.map((toolString, index) => `
+        <div class="p-6 mb-4 rounded-lg border-2 border-teal-500 bg-gradient-to-br from-teal-900/20 to-emerald-900/10">
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex-1">
+                    <h4 class="text-lg font-bold text-teal-400">${toolString.name}</h4>
+                    <div class="mt-1 flex items-center gap-2">
+                        <span class="px-2 py-1 bg-teal-600 text-white text-xs font-bold rounded">${toolString.serviceLine}</span>
+                        <span class="text-xs text-gray-400">Created: ${new Date(toolString.createdAt).toLocaleDateString()}</span>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="useToolString(${index})"
+                            class="px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-md transition-colors">
+                        Use
+                    </button>
+                    <button onclick="deleteToolString(${index})"
+                            class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-md transition-colors">
+                        Delete
+                    </button>
+                </div>
+            </div>
+            <div class="border-l-4 border-teal-500 pl-4">
+                <p class="text-xs font-semibold text-gray-300 mb-2">Components:</p>
+                <ul class="space-y-1">
+                    ${toolString.components.map((comp, idx) => `
+                        <li class="text-sm text-gray-300">
+                            <span class="text-teal-400 font-mono">${idx + 1}.</span> ${comp}
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Update builder preview
+function updateBuilderPreview() {
+    const nameInput = document.getElementById('new-toolstring-name');
+    const textarea = document.getElementById('toolstring-components-input');
+    const previewName = document.getElementById('preview-name');
+    const componentsList = document.getElementById('builder-components-list');
+
+    previewName.textContent = nameInput.value || 'Untitled Assembly';
+
+    // Parse components from textarea
+    const components = textarea.value
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line => line.length > 0);
+
+    if (components.length === 0) {
+        componentsList.innerHTML = '<li class="text-gray-500 italic">No components added yet</li>';
+    } else {
+        componentsList.innerHTML = components.map((comp, index) => `
+            <li class="text-sm text-gray-300 py-1 border-l-3 border-cyan-500 pl-3">
+                ${index + 1}. ${comp}
+            </li>
+        `).join('');
+    }
+
+    // Update live as user types
+    if (nameInput) {
+        nameInput.addEventListener('input', updateBuilderPreview);
+    }
+    if (textarea) {
+        textarea.addEventListener('input', updateBuilderPreview);
+    }
+}
+
+// Save tool string
+function saveToolString() {
+    const nameInput = document.getElementById('new-toolstring-name');
+    const serviceSelect = document.getElementById('new-toolstring-service');
+    const textarea = document.getElementById('toolstring-components-input');
+
+    if (!nameInput.value.trim()) {
+        alert('Please enter a name for the tool string');
+        return;
+    }
+
+    const components = textarea.value
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line => line.length > 0);
+
+    if (components.length === 0) {
+        alert('Please add at least one component to the tool string');
+        return;
+    }
+
+    const newToolString = {
+        id: Date.now().toString(),
+        name: nameInput.value.trim(),
+        serviceLine: serviceSelect.value,
+        components: components,
+        createdAt: new Date().toISOString()
+    };
+
+    savedToolStrings.push(newToolString);
+    saveToolStringsToStorage();
+
+    // Reset builder
+    nameInput.value = '';
+    textarea.value = '';
+    updateBuilderPreview();
+
+    // Switch to tool strings tab
+    switchEquipmentTab('toolstrings');
+
+    showToast(`Tool string "${newToolString.name}" saved successfully!`);
+}
+
+// Use saved tool string
+function useToolString(index) {
+    const toolString = savedToolStrings[index];
+    if (!toolString) return;
+
+    // Switch to builder and populate
+    switchEquipmentTab('builder');
+
+    document.getElementById('new-toolstring-name').value = `${toolString.name} (Copy)`;
+    document.getElementById('new-toolstring-service').value = toolString.serviceLine;
+    document.getElementById('toolstring-components-input').value = toolString.components.join('\n');
+
+    updateBuilderPreview();
+    showToast(`Loaded tool string: ${toolString.name}`);
+}
+
+// Delete tool string
+function deleteToolString(index) {
+    if (confirm('Are you sure you want to delete this tool string?')) {
+        const toolString = savedToolStrings[index];
+        savedToolStrings.splice(index, 1);
+        saveToolStringsToStorage();
+        renderSavedToolStrings();
+        showToast(`Deleted tool string: ${toolString.name}`);
+    }
+}
+
+// Simple toast notification
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-4 right-4 bg-teal-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-opacity';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Initialize tool string viewer when well is selected
+const originalSelectWell = window.selectWell || function() {};
+window.selectWell = function(wellId) {
+    originalSelectWell(wellId);
+    // Refresh historical tool strings when a well is selected
+    setTimeout(() => renderHistoricalToolStrings(), 100);
+};
+
+// Load saved tool strings on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadSavedToolStrings();
+});
 
