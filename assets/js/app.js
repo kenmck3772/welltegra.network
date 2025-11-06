@@ -2625,9 +2625,364 @@ document.addEventListener('DOMContentLoaded', function() {
     // Replace the function globally
     window.initializeAnalyzer = initializeAnalyzerWithVendor;
 
+    // --- HOME WELL CARDS RENDERING ---
+
+    const renderHomeWellCards = () => {
+        const container = document.getElementById('home-well-cards-grid');
+        if (!container) return;
+
+        // Sort wells: W666 last, others first
+        const sortedWells = [...wellData].sort((a, b) => {
+            if (a.id === 'W666') return 1;
+            if (b.id === 'W666') return -1;
+            return 0;
+        });
+
+        container.innerHTML = sortedWells.map(well => {
+            const isW666 = well.id === 'W666';
+            const isDark = body.classList.contains('theme-dark');
+
+            // Calculate total NPT
+            const totalNPT = well.dailyReports.reduce((sum, report) => sum + (report.npt || 0), 0);
+
+            return `
+                <div class="well-detail-card ${isW666 ? 'critical-well-card' : 'case-study-card'}" data-well-id="${well.id}">
+                    <!-- Card Header -->
+                    <div class="card-header-detailed ${isW666 ? 'bg-gradient-to-r from-red-600 to-red-700' : 'bg-gradient-to-r from-blue-600 to-blue-700'}">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h3 class="text-2xl font-extrabold text-white">${well.id}</h3>
+                                    <span class="px-3 py-1 rounded-full text-xs font-bold ${isW666 ? 'bg-red-900 text-red-100' : 'bg-blue-900 text-blue-100'}">
+                                        ${isW666 ? 'CRITICAL - SHUT IN' : 'CASE STUDY'}
+                                    </span>
+                                </div>
+                                <h4 class="text-xl font-bold text-white mb-2">${well.name}</h4>
+                                <div class="grid grid-cols-2 gap-2 text-sm text-white/90">
+                                    <div><span class="font-semibold">Field:</span> ${well.field}</div>
+                                    <div><span class="font-semibold">Region:</span> ${well.region}</div>
+                                    <div><span class="font-semibold">Type:</span> ${well.type}</div>
+                                    <div><span class="font-semibold">Depth:</span> ${well.depth}</div>
+                                </div>
+                            </div>
+                            <button class="toggle-card-btn text-white hover:bg-white/20 p-2 rounded-lg transition" data-well-id="${well.id}">
+                                <svg class="w-8 h-8 transform transition-transform expand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="mt-4 p-3 bg-white/10 rounded-lg">
+                            <p class="text-sm font-semibold text-white mb-1">Status:</p>
+                            <p class="text-sm text-white/90">${well.status}</p>
+                        </div>
+                        <div class="mt-3 p-3 ${isW666 ? 'bg-red-900/50' : 'bg-blue-900/50'} rounded-lg">
+                            <p class="text-sm font-semibold text-white mb-1">${isW666 ? 'Problem Description:' : 'Solution Overview:'}</p>
+                            <p class="text-sm text-white/90">${well.issue}</p>
+                        </div>
+                    </div>
+
+                    <!-- Expandable Content -->
+                    <div class="card-expandable-content hidden" data-well-id="${well.id}">
+                        <div class="p-6 space-y-6">
+                            <!-- Quick Stats -->
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div class="stat-card">
+                                    <div class="stat-label">Historical Operations</div>
+                                    <div class="stat-value">${well.history.length}</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Daily Reports</div>
+                                    <div class="stat-value">${well.dailyReports.length}</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Total NPT</div>
+                                    <div class="stat-value ${totalNPT > 5 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}">${totalNPT} days</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Equipment Count</div>
+                                    <div class="stat-value">${well.completion.equipment.length}</div>
+                                </div>
+                            </div>
+
+                            <!-- Tabs -->
+                            <div class="border-b border-gray-200 dark:border-gray-700">
+                                <nav class="-mb-px flex space-x-4" aria-label="Tabs">
+                                    <button class="well-detail-tab active" data-well-id="${well.id}" data-tab="history">
+                                        History & Lessons
+                                    </button>
+                                    <button class="well-detail-tab" data-well-id="${well.id}" data-tab="schematic">
+                                        Wellbore Schematic
+                                    </button>
+                                    <button class="well-detail-tab" data-well-id="${well.id}" data-tab="reports">
+                                        Daily Reports
+                                    </button>
+                                    <button class="well-detail-tab" data-well-id="${well.id}" data-tab="completion">
+                                        Completion Details
+                                    </button>
+                                </nav>
+                            </div>
+
+                            <!-- Tab Content -->
+                            <div class="tab-content-container">
+                                <!-- History Tab -->
+                                <div class="tab-pane active" data-well-id="${well.id}" data-tab-content="history">
+                                    <h4 class="text-xl font-bold mb-4 text-slate-900 dark:text-slate-100">Operational History</h4>
+                                    ${well.history.length ? `
+                                        <div class="space-y-4">
+                                            ${well.history.map((h, idx) => `
+                                                <div class="history-item p-5 rounded-lg border-l-4 ${isW666 ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'}">
+                                                    <div class="flex items-start justify-between mb-3">
+                                                        <div>
+                                                            <h5 class="font-bold text-lg text-slate-900 dark:text-slate-100">${h.operation}</h5>
+                                                            <p class="text-sm text-slate-600 dark:text-slate-400">${h.date}</p>
+                                                        </div>
+                                                        <span class="text-sm font-semibold px-3 py-1 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                                                            Entry ${idx + 1} of ${well.history.length}
+                                                        </span>
+                                                    </div>
+                                                    <div class="space-y-3">
+                                                        <div class="flex items-start gap-3">
+                                                            <svg class="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                                            </svg>
+                                                            <div class="flex-1">
+                                                                <strong class="font-semibold text-red-700 dark:text-red-400">Problem Encountered:</strong>
+                                                                <p class="text-sm mt-1 text-slate-700 dark:text-slate-300">${h.problem}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex items-start gap-3">
+                                                            <svg class="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                            </svg>
+                                                            <div class="flex-1">
+                                                                <strong class="font-semibold text-green-700 dark:text-green-400">Lesson Learned:</strong>
+                                                                <p class="text-sm mt-1 text-slate-700 dark:text-slate-300">${h.lesson}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : '<p class="text-slate-600 dark:text-slate-400">No historical data available.</p>'}
+                                </div>
+
+                                <!-- Schematic Tab -->
+                                <div class="tab-pane hidden" data-well-id="${well.id}" data-tab-content="schematic">
+                                    <h4 class="text-xl font-bold mb-4 text-slate-900 dark:text-slate-100">Wellbore Schematic</h4>
+                                    <div class="schematic-container bg-white dark:bg-slate-800 p-6 rounded-lg border-2 border-slate-200 dark:border-slate-700">
+                                        ${renderWellSchematic(well)}
+                                    </div>
+                                    <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                        <h5 class="font-semibold text-sm text-blue-900 dark:text-blue-200 mb-2">Schematic Legend:</h5>
+                                        <ul class="text-xs space-y-1 text-blue-800 dark:text-blue-300">
+                                            <li><span class="inline-block w-3 h-3 bg-red-500 mr-2"></span>Problem Areas (Red)</li>
+                                            <li><span class="inline-block w-3 h-3 bg-green-500 mr-2"></span>Successful Repairs (Green)</li>
+                                            <li><span class="inline-block w-3 h-3 bg-gray-500 mr-2"></span>Normal Equipment (Gray)</li>
+                                            <li><span class="inline-block w-3 h-3 bg-blue-700 mr-2"></span>Perforations (Blue)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Daily Reports Tab -->
+                                <div class="tab-pane hidden" data-well-id="${well.id}" data-tab-content="reports">
+                                    <h4 class="text-xl font-bold mb-4 text-slate-900 dark:text-slate-100">Daily Operational Reports</h4>
+                                    ${well.dailyReports.length ? `
+                                        <div class="overflow-x-auto">
+                                            <table class="w-full text-sm">
+                                                <thead class="bg-slate-100 dark:bg-slate-800">
+                                                    <tr>
+                                                        <th class="p-3 text-left font-semibold">Date</th>
+                                                        <th class="p-3 text-left font-semibold">Operation Summary</th>
+                                                        <th class="p-3 text-left font-semibold">NPT (days)</th>
+                                                        <th class="p-3 text-left font-semibold">Tool String</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                                                    ${well.dailyReports.map(r => `
+                                                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                                            <td class="p-3 align-top font-mono text-xs whitespace-nowrap">${r.date}</td>
+                                                            <td class="p-3 align-top">${r.summary}</td>
+                                                            <td class="p-3 align-top">
+                                                                <span class="px-2 py-1 rounded text-xs font-bold ${r.npt > 2 ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'}">
+                                                                    ${r.npt}
+                                                                </span>
+                                                            </td>
+                                                            <td class="p-3 align-top">
+                                                                <div class="font-mono text-xs space-y-1 max-w-md">
+                                                                    ${r.toolstringRun.map((item, idx) => `
+                                                                        <div class="flex gap-2">
+                                                                            <span class="text-cyan-600 dark:text-cyan-400 font-bold">${idx + 1}.</span>
+                                                                            <span class="text-slate-700 dark:text-slate-300">${item}</span>
+                                                                        </div>
+                                                                    `).join('')}
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    `).join('')}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="mt-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                                            <h5 class="font-semibold text-sm mb-2">NPT Summary:</h5>
+                                            <p class="text-sm text-slate-600 dark:text-slate-400">Total Non-Productive Time: <span class="font-bold ${totalNPT > 5 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}">${totalNPT} days</span> across ${well.dailyReports.length} operations</p>
+                                        </div>
+                                    ` : '<p class="text-slate-600 dark:text-slate-400">No daily reports available.</p>'}
+                                </div>
+
+                                <!-- Completion Details Tab -->
+                                <div class="tab-pane hidden" data-well-id="${well.id}" data-tab-content="completion">
+                                    <h4 class="text-xl font-bold mb-4 text-slate-900 dark:text-slate-100">Completion Architecture</h4>
+
+                                    <!-- Casing -->
+                                    <div class="mb-6">
+                                        <h5 class="font-semibold text-lg mb-3 text-slate-900 dark:text-slate-100">Casing</h5>
+                                        <div class="space-y-2">
+                                            ${well.completion.casing.map(c => `
+                                                <div class="p-4 rounded-lg ${c.isProblem ? 'bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500' : 'bg-slate-50 dark:bg-slate-800 border-l-4 border-slate-300'}">
+                                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                                                        <div>
+                                                            <span class="font-semibold block text-slate-600 dark:text-slate-400">Type:</span>
+                                                            <span class="text-slate-900 dark:text-slate-100">${c.type}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="font-semibold block text-slate-600 dark:text-slate-400">Size:</span>
+                                                            <span class="text-slate-900 dark:text-slate-100">${c.size}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="font-semibold block text-slate-600 dark:text-slate-400">Top Depth:</span>
+                                                            <span class="text-slate-900 dark:text-slate-100">${c.top.toLocaleString()}ft</span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="font-semibold block text-slate-600 dark:text-slate-400">Bottom Depth:</span>
+                                                            <span class="text-slate-900 dark:text-slate-100">${c.bottom.toLocaleString()}ft</span>
+                                                        </div>
+                                                    </div>
+                                                    ${c.isProblem ? '<div class="mt-2"><span class="text-xs font-bold text-red-700 dark:text-red-300">⚠️ PROBLEM AREA</span></div>' : ''}
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+
+                                    <!-- Tubing -->
+                                    <div class="mb-6">
+                                        <h5 class="font-semibold text-lg mb-3 text-slate-900 dark:text-slate-100">Tubing</h5>
+                                        <div class="space-y-2">
+                                            ${well.completion.tubing.map(t => `
+                                                <div class="p-4 rounded-lg ${t.isProblem ? 'bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500' : 'bg-slate-50 dark:bg-slate-800 border-l-4 border-blue-300'}">
+                                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                                                        <div>
+                                                            <span class="font-semibold block text-slate-600 dark:text-slate-400">Type:</span>
+                                                            <span class="text-slate-900 dark:text-slate-100">${t.type}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="font-semibold block text-slate-600 dark:text-slate-400">Size:</span>
+                                                            <span class="text-slate-900 dark:text-slate-100">${t.size}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="font-semibold block text-slate-600 dark:text-slate-400">Top Depth:</span>
+                                                            <span class="text-slate-900 dark:text-slate-100">${t.top.toLocaleString()}ft</span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="font-semibold block text-slate-600 dark:text-slate-400">Bottom Depth:</span>
+                                                            <span class="text-slate-900 dark:text-slate-100">${t.bottom.toLocaleString()}ft</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+
+                                    <!-- Equipment -->
+                                    <div class="mb-6">
+                                        <h5 class="font-semibold text-lg mb-3 text-slate-900 dark:text-slate-100">Downhole Equipment</h5>
+                                        <div class="space-y-2">
+                                            ${well.completion.equipment.map(e => `
+                                                <div class="p-4 rounded-lg ${e.isProblem ? 'bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500' : e.comments && e.comments.includes('Restored') ? 'bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500' : 'bg-slate-50 dark:bg-slate-800 border-l-4 border-slate-300'}">
+                                                    <div class="flex justify-between items-start">
+                                                        <div class="flex-1">
+                                                            <div class="font-semibold text-slate-900 dark:text-slate-100">${e.item}</div>
+                                                            <div class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                                                                Depth: <span class="font-mono">${e.top.toLocaleString()}ft</span>
+                                                            </div>
+                                                            ${e.comments ? `<div class="text-sm mt-2 text-slate-700 dark:text-slate-300">${e.comments}</div>` : ''}
+                                                        </div>
+                                                        ${e.isProblem ? '<svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>' : ''}
+                                                    </div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+
+                                    <!-- Perforations -->
+                                    <div>
+                                        <h5 class="font-semibold text-lg mb-3 text-slate-900 dark:text-slate-100">Perforations</h5>
+                                        <div class="space-y-2">
+                                            ${well.completion.perforations.map((p, idx) => `
+                                                <div class="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500">
+                                                    <div class="grid grid-cols-3 gap-3 text-sm">
+                                                        <div>
+                                                            <span class="font-semibold block text-slate-600 dark:text-slate-400">Interval:</span>
+                                                            <span class="text-slate-900 dark:text-slate-100">#${idx + 1}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="font-semibold block text-slate-600 dark:text-slate-400">Top:</span>
+                                                            <span class="text-slate-900 dark:text-slate-100">${p.top.toLocaleString()}ft</span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="font-semibold block text-slate-600 dark:text-slate-400">Bottom:</span>
+                                                            <span class="text-slate-900 dark:text-slate-100">${p.bottom.toLocaleString()}ft</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Add event listeners for expand/collapse
+        document.querySelectorAll('.toggle-card-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const wellId = this.dataset.wellId;
+                const content = document.querySelector(`.card-expandable-content[data-well-id="${wellId}"]`);
+                const icon = this.querySelector('.expand-icon');
+
+                if (content.classList.contains('hidden')) {
+                    content.classList.remove('hidden');
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    content.classList.add('hidden');
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+
+        // Add event listeners for tab switching
+        document.querySelectorAll('.well-detail-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const wellId = this.dataset.wellId;
+                const tabName = this.dataset.tab;
+
+                // Update active tab
+                document.querySelectorAll(`.well-detail-tab[data-well-id="${wellId}"]`).forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                // Update visible pane
+                document.querySelectorAll(`.tab-pane[data-well-id="${wellId}"]`).forEach(pane => pane.classList.add('hidden'));
+                document.querySelector(`.tab-pane[data-well-id="${wellId}"][data-tab-content="${tabName}"]`).classList.remove('hidden');
+            });
+        });
+    };
+
     // --- INITIALIZATION ---
 
     const init = () => {
+        renderHomeWellCards();
         renderWellCards();
         renderObjectives();
         renderProblems();
