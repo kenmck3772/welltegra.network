@@ -1,5 +1,136 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // --- UI COMPONENT BUILDERS --- 
+document.addEventListener('DOMContentLoaded', async function() {
+    // --- DATA LOADER FOR COMPREHENSIVE WELL DATA ---
+    let comprehensiveData = null;
+
+    /**
+     * Loads comprehensive well data from JSON file
+     */
+    async function loadComprehensiveWellData() {
+        try {
+            const response = await fetch('comprehensive-well-data.json');
+            if (!response.ok) {
+                throw new Error(`Failed to load comprehensive well data: ${response.status}`);
+            }
+            comprehensiveData = await response.json();
+            console.log(`Loaded comprehensive data for ${comprehensiveData.wells.length} wells`);
+            return comprehensiveData;
+        } catch (error) {
+            console.error('Error loading comprehensive well data:', error);
+            return null;
+        }
+    }
+
+    /**
+     * Transforms comprehensive well data to the app's expected format
+     */
+    function transformComprehensiveToAppFormat(comprehensiveWell) {
+        try {
+            const foundation = comprehensiveWell.foundationalIdentity || {};
+            const design = comprehensiveWell.designAndConstruction || {};
+            const operational = comprehensiveWell.operationalHistory || { events: [] };
+            const integrity = comprehensiveWell.wellIntegrityAndRisk || { liveAnomalies: [] };
+
+            // Build history array from operational events
+            const history = (operational.events || []).map(event => ({
+                date: event.eventDate || '',
+                operation: event.eventType || '',
+                problem: event.description || '',
+                lesson: event.lessonsLearned || event.outcome || ''
+            }));
+
+        // Build daily reports from operational events
+        const dailyReports = (operational.events || [])
+            .filter(event => event.toolstringUsed)
+            .map(event => ({
+                date: event.eventDate || '',
+                summary: `${event.eventType || 'Event'} - ${event.outcome || ''}`,
+                npt: event.nptHours || 0,
+                toolstringRun: (event.toolstringUsed && event.toolstringUsed.components) || []
+            }));
+
+        // Build casing array
+        const casing = (design.casingStrings || []).map(str => {
+            const isProblem = str.integrityStatus && str.integrityStatus.includes('CRITICAL');
+            // Format size properly (e.g., "9 5/8" for 9.625)
+            const size = str.outerDiameter_in.toString().replace('.', ' ');
+            return {
+                type: str.type,
+                size: size,
+                top: str.topDepthMD_ft,
+                bottom: str.bottomDepthMD_ft,
+                isProblem: isProblem
+            };
+        });
+
+        // Build tubing array
+        const tubing = (design.tubingStrings || []).map(str => {
+            const size = (str.outerDiameter_in || 0).toString().replace('.', ' ');
+            return {
+                type: str.type || 'Tubing',
+                size: size,
+                top: str.topDepthMD_ft || 0,
+                bottom: str.bottomDepthMD_ft || 0
+            };
+        });
+
+        // Build equipment array from downhole equipment
+        const equipment = (design.downholeEquipment || []).map(eq => {
+            const isProblem = eq.functionalStatus && (eq.functionalStatus.includes('Failed') || eq.functionalStatus.includes('CRITICAL'));
+            return {
+                item: eq.itemType.split('(')[0].trim(),
+                top: eq.depthMD_ft,
+                comments: eq.functionalStatus || eq.description,
+                isProblem: isProblem
+            };
+        });
+
+        // Add anomalies as equipment problems
+        if (integrity.liveAnomalies && integrity.liveAnomalies.length > 0) {
+            integrity.liveAnomalies.forEach(anomaly => {
+                if (anomaly.severity === 'Critical' || anomaly.severity === 'High') {
+                    equipment.push({
+                        item: anomaly.type,
+                        top: anomaly.locationMD_ft,
+                        comments: anomaly.description,
+                        isProblem: true
+                    });
+                }
+            });
+        }
+
+        // Build perforations array
+        const perforations = design.perforations ? design.perforations.map(perf => ({
+            top: perf.topDepthMD_ft,
+            bottom: perf.bottomDepthMD_ft
+        })) : [];
+
+            return {
+                id: foundation.wellId || 'UNKNOWN',
+                name: foundation.commonWellName || 'Unnamed Well',
+                field: foundation.fieldName || 'Unknown Field',
+                region: foundation.regulatoryAuthority === 'North Sea Transition Authority (NSTA)' ? 'UKCS' : 'Unknown',
+                type: foundation.wellType || 'Unknown Type',
+                depth: `${(foundation.totalDepthMD_ft || 0).toLocaleString()}ft`,
+                status: foundation.currentStatus || 'Unknown Status',
+                issue: `${(integrity.liveAnomalies || []).length > 0 ? 'Multiple integrity issues requiring intervention' : 'Well operational with comprehensive monitoring'}`,
+                history: history,
+                dailyReports: dailyReports,
+                completion: {
+                    casing: casing,
+                    tubing: tubing,
+                    equipment: equipment,
+                    perforations: perforations
+                },
+                // Store reference to comprehensive data for future use
+                _comprehensiveData: comprehensiveWell
+            };
+        } catch (error) {
+            console.error('Error transforming well data:', error, comprehensiveWell);
+            return null;
+        }
+    }
+
+    // --- UI COMPONENT BUILDERS ---
     /**
      * Creates a radial gauge component and injects it into a container.
      * @param {string} containerId - The ID of the element to contain the gauge.
@@ -113,198 +244,31 @@ document.addEventListener('DOMContentLoaded', function() {
         barValue.classList.add(`text-${colorClass}`);
     }
 
-    // --- DATA STORE (REWRITTEN FOR NARRATIVE) ---
-    const wellData = [
-        { 
-            id: 'W666', 
-            name: 'The Perfect Storm',
-            field: 'Montrose', 
-            region: 'UKCS', 
-            type: 'HPHT Gas Condensate', 
-            depth: '18,500ft', 
-            status: 'Shut-in - Well Integrity Issues', 
-            issue: 'A nightmare well with multiple, compounding failures: severe casing deformation, a hard scale blockage, and a failed primary safety valve. Requires a complex, multi-stage intervention plan.', 
-            history: [ 
-                { date: '2024-03-15', operation: 'Slickline Surveillance', problem: 'Unable to pass 8,500ft due to casing restriction.', lesson: 'This well combines multiple known failure modes from this field into a single asset.' },
-                { date: '2024-04-01', operation: 'Production Test', problem: 'Well died after brief flow period. Pressure analysis suggests deep blockage.', lesson: 'Suspect combination of scale and integrity issues.' },
-                { date: '2024-04-10', operation: 'DHSV Test', problem: 'TRSSV failed to close on command. Well shut-in on annulus valves.', lesson: 'Well integrity is critically compromised.' }
-            ], 
-            dailyReports: [], 
-            completion: { 
-                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 18500, isProblem: true}], 
-                tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 18300}], 
-                equipment: [
-                    {item: 'SSSV', top: 2500, comments: 'Failed test', isProblem: true}, 
-                    {item: 'Casing Deformation', top: 8500, comments: 'Severe Ovalization', isProblem: true},
-                    {item: 'BaSO4 Scale Bridge', top: 14200, comments: 'Solid blockage', isProblem: true},
-                    {item: 'Packer', top: 18250}
-                ], 
-                perforations: [{top: 18350, bottom: 18450}] 
-            } 
-        },
-        { 
-            id: 'M-21', 
-            name: 'CASE STUDY: The Montrose Squeeze', 
-            field: 'Montrose', 
-            region: 'UKCS', 
-            type: 'HPHT Gas Condensate', 
-            depth: '9,000ft', 
-            status: 'Active - Restored Production', 
-            issue: 'SOLUTION: Casing deformation was successfully remediated with an expandable patch.', 
-            history: [
-                { date: '2023-11-10', operation: 'Slickline Surveillance', problem: 'Standard 2.313" OD toolstring unable to pass 8,500ft, encountering a hard stop.', lesson: 'Significant reservoir depletion in this area is causing geomechanical stresses leading to casing deformation, a known regional risk. MFC log confirms this is ovalization, not collapse.' },
-                { date: '2023-12-05', operation: 'Expandable Casing Patch', problem: 'Successfully installed a 60ft expandable steel patch across the deformed section.', lesson: 'This operation proves that an expandable patch is a viable, rigless solution for restoring full-bore access in this field, restoring production and well access.' }
-            ],
-            dailyReports: [
-                { date: '2023-11-10', summary: 'Slickline surveillance run with gauge ring', npt: 2, toolstringRun: ['2.313" OD Gauge Ring', 'Slickline Sinker Bar (50 lbs)', 'CCL/GR Correlation Tool', 'Knuckle Joint'] },
-                { date: '2023-12-04', summary: 'Pre-deployment gauge run and cleanout', npt: 0, toolstringRun: ['Scraper Assembly', 'Gauge Ring 8.5"', 'Jetting Tool', 'CT BHA'] },
-                { date: '2023-12-05', summary: 'Expandable patch installation', npt: 0, toolstringRun: ['Expandable Casing Patch (60ft, 9 5/8")', 'Hydraulic Setting Tool', 'Pressure Test Assembly', 'CT Running String'] }
-            ], 
-            completion: { 
-                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 9000}], 
-                tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 8800}], 
-                equipment: [
-                    {item: 'SSSV', top: 1500}, 
-                    {item: 'Tubing Patch', top: 8500, comments: 'Restored ID'},
-                    {item: 'Packer', top: 8750}
-                ], 
-                perforations: [{top: 8850, bottom: 8950}] 
-            } 
-        },
-        { 
-            id: 'S-15', 
-            name: 'CASE STUDY: The Scale Trap', 
-            field: 'Montrose', 
-            region: 'UKCS', 
-            type: 'HPHT Gas Condensate', 
-            depth: '11,000ft', 
-            status: 'Active - Restored Production', 
-            issue: 'SOLUTION: Severe BaSO4 scale was successfully removed with a chemical/jetting treatment.', 
-            history: [
-                { date: '2024-01-05', operation: 'Production Logging', problem: 'PLT toolstring unable to pass 9,200ft due to a hard obstruction. Produced water analysis confirmed high Barium and Sulfate content.', lesson: 'Commingling of injected seawater and formation water is causing severe, insoluble scale deposition. A previous attempt to mill scale on a nearby well resulted in stuck pipe.'},
-                { date: '2024-02-12', operation: 'CT Chemical/Jetting', problem: 'A 48hr soak with DTPA dissolver followed by a run with a high-pressure rotating jetting tool successfully cleared the blockage.', lesson: 'This two-stage approach is a proven, lower-risk method for removing hard scale compared to aggressive milling.' }
-            ],
-            dailyReports: [
-                { date: '2024-01-05', summary: 'PLT survey - tagged obstruction at 9,200ft', npt: 3, toolstringRun: ['Production Logging Tool (PLT)', 'Spinner Assembly', 'Pressure/Temp Sensors', 'E-Line Cable Head', 'Tension Sub'] },
-                { date: '2024-02-10', summary: 'Chemical treatment - DTPA dissolver soak', npt: 0, toolstringRun: ['Chemical Delivery Sub', 'DTPA Dissolver Tank', 'CT Injection Head', 'Pressure Gauge'] },
-                { date: '2024-02-12', summary: 'Mechanical jetting - scale removal', npt: 0, toolstringRun: ['High-Pressure Rotating Jetting Tool', 'Nozzle Assembly (15,000 PSI)', 'CT BHA', 'Torque Sub'] }
-            ], 
-            completion: { 
-                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 11000}], 
-                tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 10800}], 
-                equipment: [{item: 'SSSV', top: 1800}, {item: 'Packer', top: 10750}], 
-                perforations: [{top: 10850, bottom: 10950}] 
-            } 
-        },
-        { 
-            id: 'F-11', 
-            name: 'CASE STUDY: The Broken Barrier', 
-            field: 'Montrose', 
-            region: 'UKCS', 
-            type: 'HPHT Gas Condensate', 
-            depth: '9,800ft', 
-            status: 'Active - Restored Production', 
-            issue: 'SOLUTION: Failed TRSSV was locked open and replaced with a slickline-retrievable insert valve.', 
-            history: [
-                { date: '2024-02-18', operation: 'Routine DHSV Test', problem: 'Valve failed to close reliably during routine 6-month test. Well was mandatorily shut-in by regulatory authority.', lesson: 'An attempted repair on a similar well with a hydraulic tool failed; a mechanical lock-open tool is more reliable.' },
-                { date: '2024-03-20', operation: 'Slickline Insert Valve Job', problem: 'Successfully locked open the failed valve with a mechanical tool and installed a new wireline-retrievable insert valve.', lesson: 'This standard slickline operation is a proven, cost-effective method for restoring the primary safety barrier without a rig.' }
-            ],
-            dailyReports: [
-                { date: '2024-02-18', summary: 'DHSV test failure - regulatory shut-in', npt: 24, toolstringRun: ['DHSV Test Tool', 'Slickline Gauge', 'Sinker Bar (75 lbs)', 'Pressure Test Assembly'] },
-                { date: '2024-03-19', summary: 'Lock-open tool deployment', npt: 0, toolstringRun: ['Mechanical Lock-Open Tool', 'Running Tool', 'Sinker Bar Assembly', 'Slickline Jarring Head'] },
-                { date: '2024-03-20', summary: 'WRSV installation complete', npt: 0, toolstringRun: ['Wireline-Retrievable Safety Valve (WRSV)', 'Setting Tool', 'Slickline Pressure Test Sub', 'Landing Nipple Profile'] }
-            ], 
-            completion: { 
-                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 9800}], 
-                tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 9600}], 
-                equipment: [{item: 'SSSV', top: 1500, comments: 'New Insert Valve'}, {item: 'Packer', top: 9550}], 
-                perforations: [{top: 9650, bottom: 9750}] 
-            } 
-        },
-        { 
-            id: 'C-08', 
-            name: 'CASE STUDY: The Sandstorm', 
-            field: 'Montrose', 
-            region: 'UKCS', 
-            type: 'HPHT Gas Condensate', 
-            depth: '10,000ft', 
-            status: 'Active - Restored Production', 
-            issue: 'SOLUTION: Failed sand screen was repaired with a through-tubing patch.', 
-            history: [
-                { date: '2023-08-15', operation: 'Surface Choke Replacement', problem: 'Replaced choke for the 3rd time in 6 months due to severe erosional wear from high sand content.', lesson: 'Choking back the well is a temporary fix; the root cause of sand control failure must be addressed. Downhole video confirmed screen erosion.' },
-                { date: '2023-09-10', operation: 'Through-Tubing Patch', problem: 'Successfully installed an expandable patch across the failed sand screen, restoring sand control.', lesson: 'This confirms that a through-tubing patch is a viable rigless repair for this failure mode in this field.'}
-            ],
-            dailyReports: [
-                { date: '2023-08-14', summary: 'Downhole video survey - screen inspection', npt: 0, toolstringRun: ['Downhole Camera System', 'LED Light Array', 'E-Line Cable Head', 'Centralizer'] },
-                { date: '2023-09-09', summary: 'Pre-patch gauge and cleanout', npt: 1, toolstringRun: ['Gauge Ring (3.5")', 'Scraper BHA', 'Jetting Sub', 'CT Running Tool'] },
-                { date: '2023-09-10', summary: 'Through-tubing patch deployment', npt: 0, toolstringRun: ['Expandable Sand Screen Patch', 'Hydraulic Expansion Tool', 'Setting Assembly', 'Verification Tool'] }
-            ], 
-            completion: { 
-                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 10000}], 
-                tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 9800}], 
-                equipment: [{item: 'SSSV', top: 1600}, {item: 'Packer', top: 9750}, {item: 'Standalone Sand Screen', top: 9850, comments: 'Patched'}], 
-                perforations: [{top: 9850, bottom: 9950}] 
-            } 
-        },
-        {
-            id: 'P-12',
-            name: 'CASE STUDY: The Wax Plug',
-            field: 'Piper',
-            region: 'UKCS',
-            type: 'Oil Producer',
-            depth: '7,500ft',
-            status: 'Active - Restored Production',
-            issue: 'SOLUTION: Severe paraffin wax blockage was cleared using CT with a chemical/mechanical approach.',
-            history: [
-                { date: '2024-01-15', operation: 'Slickline Gauge Ring Run', problem: 'Gauge ring tagged a soft, waxy obstruction at 6,000ft. Unable to pass.', lesson: 'A previous attempt on another well with only chemicals was slow and ineffective; a combined approach is needed.' },
-                { date: '2024-02-01', operation: 'CT Wax Cleanout', problem: 'Successfully removed wax blockage using a combination of heated chemical dissolvers and a mechanical scraper tool on Coiled Tubing.', lesson: 'The dual chemical/mechanical approach is highly effective for severe paraffin blockages.' }
-            ],
-            dailyReports: [
-                { date: '2024-01-15', summary: 'Gauge ring run - wax obstruction confirmed', npt: 2, toolstringRun: ['3.0" Gauge Ring', 'Slickline Sinker Bar (60 lbs)', 'CCL Tool', 'Temperature Gauge'] },
-                { date: '2024-01-31', summary: 'Chemical treatment - heated dissolver injection', npt: 0, toolstringRun: ['Heated Chemical Tank', 'Paraffin Dissolver Pump', 'CT Injection Head', 'Temperature Monitor'] },
-                { date: '2024-02-01', summary: 'Mechanical wax removal - scraper run', npt: 0, toolstringRun: ['Mechanical Wax Scraper Tool', 'Rotary Brush Assembly', 'CT BHA', 'Debris Catcher Sub'] }
-            ],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 7500}],
-                tubing: [{type: 'Production', size: '3 1/2', top: 0, bottom: 7300}],
-                equipment: [{item: 'SSSV', top: 1200}, {item: 'Packer', top: 7250}],
-                perforations: [{top: 7350, bottom: 7450}]
+    // --- DATA STORE (LOADED FROM COMPREHENSIVE WELL DATA) ---
+    // Initialize with empty array - will be populated from comprehensive-well-data.json
+    let wellData = [];
+    let dataLoaded = false;
+
+    // Load and transform comprehensive well data
+    async function initializeWellData() {
+        try {
+            const compData = await loadComprehensiveWellData();
+            if (compData && compData.wells) {
+                wellData = compData.wells
+                    .map(transformComprehensiveToAppFormat)
+                    .filter(well => well !== null); // Filter out any transformation errors
+                console.log(`Initialized ${wellData.length} wells from comprehensive dataset`);
+                dataLoaded = true;
+                return true;
+            } else {
+                console.warn('Failed to load comprehensive well data');
+                return false;
             }
-        },
-        {
-            id: 'S-77',
-            name: 'CASE STUDY: Field of Dreams',
-            field: 'Schiehallion',
-            region: 'UKCS',
-            type: 'HPHT Oil Producer',
-            depth: '19,200ft',
-            status: 'Active - Peak Performance',
-            issue: 'SOLUTION: Multi-barrier failure resolution - Combined lessons from all interventions delivered exceptional results.',
-            history: [
-                { date: '2023-08-20', operation: 'Complex Multi-Stage Intervention', problem: 'Well experiencing compound failures: partial casing restriction, minor scale buildup, aging safety systems, and intermittent sand production.', lesson: 'This well demonstrated that multiple smaller issues, if left unaddressed, compound into major operational challenges requiring comprehensive intervention planning.' },
-                { date: '2023-09-15', operation: 'Integrated Solution Deployment', problem: 'Successfully executed a staged intervention combining expandable patch technology, chemical scale treatment, safety valve replacement, and sand control installation - all in a single campaign.', lesson: 'Integrated multi-discipline approach saved 45 days vs. sequential interventions. This became the blueprint for tackling W666.' },
-                { date: '2023-10-01', operation: 'Post-Intervention Performance', problem: 'Well exceeded pre-intervention production by 180%, with zero NPT and full barrier integrity restored.', lesson: 'Proves that comprehensive planning and execution of multiple remediation strategies simultaneously is not only feasible but highly effective. This success story directly informed the W666 intervention strategy.' }
-            ],
-            dailyReports: [
-                { date: '2023-08-21', summary: 'Stage 1: Casing patch installation', npt: 0, toolstringRun: ['Expandable Casing Patch (40ft, 9 5/8")', 'Hydraulic Setting Tool', 'Gauge Ring 9.0"', 'CT Running String'] },
-                { date: '2023-08-25', summary: 'Stage 2: Chemical scale treatment', npt: 0, toolstringRun: ['Scale Dissolver Injection System', 'DTPA Chemical Tank', 'CT Circulation Sub', 'Jetting Nozzle Assembly'] },
-                { date: '2023-09-05', summary: 'Stage 3: Safety valve replacement', npt: 0, toolstringRun: ['New WRSV Assembly', 'Lock-Open Tool (failed SSSV)', 'Setting/Test Tool', 'Slickline Running String'] },
-                { date: '2023-09-15', summary: 'Stage 4: Sand control installation', npt: 0, toolstringRun: ['Premium Sand Screen Assembly', 'Expansion Tool', 'Gravel Pack Sub', 'CT Deployment System'] },
-                { date: '2023-10-01', summary: 'Post-intervention verification', npt: 0, toolstringRun: ['Multi-Finger Caliper (MFC)', 'Production Logging Tool', 'Pressure/Temp Gauges', 'E-Line Survey Package'] }
-            ],
-            completion: {
-                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 19200}],
-                tubing: [{type: 'Production', size: '5 1/2', top: 0, bottom: 19000}],
-                equipment: [
-                    {item: 'SSSV', top: 2800, comments: 'Replaced - Now Operational'},
-                    {item: 'Expandable Patch', top: 9200, comments: 'Successfully Installed'},
-                    {item: 'Sand Screen', top: 17500, comments: 'Through-Tubing Installation'},
-                    {item: 'Packer', top: 18950}
-                ],
-                perforations: [{top: 19050, bottom: 19150}]
-            }
-        },
-    ];
+        } catch (error) {
+            console.error('Error initializing well data:', error);
+            return false;
+        }
+    }
     const objectivesData = [ 
         { id: 'obj1', name: 'Remediate Casing Deformation', description: 'Install an expandable steel patch to restore wellbore access.', icon: 'ðŸ”§' }, 
         { id: 'obj2', name: 'Remove BaSO4 Scale', description: 'Use a chemical and mechanical method to clear tubing blockage.', icon: 'ðŸ§ª' }, 
@@ -2232,21 +2196,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    themeToggleBtn.addEventListener('click', () => {
-        const currentTheme = body.classList.contains('theme-dark') ? 'dark' : 'light';
-        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
-    });
-
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (link.classList.contains('disabled')) return;
-            switchView(e.currentTarget.id.replace('-nav-link', ''));
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = body.classList.contains('theme-dark') ? 'dark' : 'light';
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
         });
-    });
+    }
+
+    if (navLinks) {
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (link.classList.contains('disabled')) return;
+                switchView(e.currentTarget.id.replace('-nav-link', ''));
+            });
+        });
+    }
 
     // Well selection event listener
-    wellSelectionGrid.addEventListener('click', (e) => {
+    if (wellSelectionGrid) {
+        wellSelectionGrid.addEventListener('click', (e) => {
         // Handle view details button
         if (e.target.closest('.view-details-btn')) { 
             e.stopPropagation(); 
@@ -2264,26 +2233,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
         renderProblems(); // Update the problems list based on selection
         updatePlannerStepUI(2);
-    });
+        });
+    }
 
     // Objective selection event listener
-    objectivesFieldset.addEventListener('change', (e) => { 
-        // Find the selected objective card and update its styling
-        document.querySelectorAll('.objective-card').forEach(card => {
-            card.classList.remove('selected');
+    if (objectivesFieldset) {
+        objectivesFieldset.addEventListener('change', (e) => {
+            // Find the selected objective card and update its styling
+            document.querySelectorAll('.objective-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            const selectedCard = document.querySelector(`input[name="objective"]:checked`).closest('.objective-card');
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+            }
+
+            appState.selectedObjective = objectivesData.find(o => o.id === e.target.value);
+            if (generatePlanBtnManual) {
+                generatePlanBtnManual.disabled = !appState.selectedObjective;
+            }
         });
-        
-        const selectedCard = document.querySelector(`input[name="objective"]:checked`).closest('.objective-card');
-        if (selectedCard) {
-            selectedCard.classList.add('selected');
-        }
-        
-        appState.selectedObjective = objectivesData.find(o => o.id === e.target.value); 
-        generatePlanBtnManual.disabled = !appState.selectedObjective; 
-    });
+    }
 
     // Problem selection event listener
-    problemsFieldset.addEventListener('change', (e) => {
+    if (problemsFieldset && aiRecommendationsContainer) {
+        problemsFieldset.addEventListener('change', (e) => {
         // Find the selected problem card and update its styling
         document.querySelectorAll('.objective-card').forEach(card => {
             card.classList.remove('selected');
@@ -2323,103 +2298,133 @@ document.addEventListener('DOMContentLoaded', function() {
             const selectedCard = ev.target.closest('.ai-recommendation-enhanced');
             const recIndex = parseInt(selectedCard.dataset.recIndex);
             appState.ai.selectedRecommendation = aiRecommendations[appState.ai.selectedProblemId][recIndex];
-            
+
             document.querySelectorAll('.ai-recommendation-enhanced').forEach(c => c.classList.remove('selected'));
             selectedCard.classList.add('selected');
-            
-            generatePlanBtnAi.disabled = false;
+
+            if (generatePlanBtnAi) {
+                generatePlanBtnAi.disabled = false;
+            }
         }));
-    });
+        });
+    }
 
     // AI toggle event listener
-    aiToggle.addEventListener('change', (e) => { 
-        manualPlanningView.classList.toggle('hidden', e.target.checked); 
-        aiAdvisorView.classList.toggle('hidden', !e.target.checked);
-        
-        if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== 'W666') {
-             aiAdvisorView.innerHTML = `
+    if (aiToggle && manualPlanningView && aiAdvisorView) {
+        aiToggle.addEventListener('change', (e) => {
+            manualPlanningView.classList.toggle('hidden', e.target.checked);
+            aiAdvisorView.classList.toggle('hidden', !e.target.checked);
+
+            if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== 'W666') {
+                aiAdvisorView.innerHTML = `
                 <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
                     <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (W666) scenario. Please select W666 to see AI recommendations.</p>
                 </div>
             `;
-        } else {
-             renderProblems(); // Re-render problems list
-        }
-    });
+            } else {
+                renderProblems(); // Re-render problems list
+            }
+        });
+    }
 
     // Generate plan buttons event listeners
-    generatePlanBtnManual.addEventListener('click', () => { 
-        if (!appState.selectedWell || !appState.selectedObjective) return; 
-        appState.generatedPlan = proceduresData[appState.selectedObjective.id]; 
-        renderPlan(); 
-        updatePlannerStepUI(3); 
-    });
+    if (generatePlanBtnManual) {
+        generatePlanBtnManual.addEventListener('click', () => {
+            if (!appState.selectedWell || !appState.selectedObjective) return;
+            appState.generatedPlan = proceduresData[appState.selectedObjective.id];
+            renderPlan();
+            updatePlannerStepUI(3);
+        });
+    }
 
-    generatePlanBtnAi.addEventListener('click', () => { 
-        if (!appState.selectedWell || !appState.ai.selectedRecommendation) return; 
-        appState.selectedObjective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId); 
-        appState.generatedPlan = proceduresData[appState.selectedObjective.id]; 
-        renderPlan(); 
-        updatePlannerStepUI(3); 
-    });
+    if (generatePlanBtnAi) {
+        generatePlanBtnAi.addEventListener('click', () => {
+            if (!appState.selectedWell || !appState.ai.selectedRecommendation) return;
+            appState.selectedObjective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId);
+            appState.generatedPlan = proceduresData[appState.selectedObjective.id];
+            renderPlan();
+            updatePlannerStepUI(3);
+        });
+    }
 
     // Control buttons event listeners
-    startOverBtn.addEventListener('click', () => resetApp(false));
-    beginOpBtn.addEventListener('click', () => { 
-        if (!appState.generatedPlan) return; 
-        switchView('performer'); 
-    });
+    if (startOverBtn) {
+        startOverBtn.addEventListener('click', () => resetApp(false));
+    }
 
-    addLogBtn.addEventListener('click', () => { 
-        addLogEntry('Operator', logInput.value); 
-        logInput.value = ''; 
-    });
+    if (beginOpBtn) {
+        beginOpBtn.addEventListener('click', () => {
+            if (!appState.generatedPlan) return;
+            switchView('performer');
+        });
+    }
 
-    procedureStepsContainer.addEventListener('click', (e) => {
-        const stepDiv = e.target.closest('.procedure-step');
-        if (!stepDiv || !appState.liveData.jobRunning) return;
+    if (addLogBtn && logInput) {
+        addLogBtn.addEventListener('click', () => {
+            addLogEntry('Operator', logInput.value);
+            logInput.value = '';
+        });
+    }
 
-        const targetStepId = parseInt(stepDiv.dataset.stepId);
-        const currentStepId = appState.liveData.currentStep;
-        
-        if (targetStepId > currentStepId) {
-            jumpToStep(targetStepId);
-        }
-    });
+    if (procedureStepsContainer) {
+        procedureStepsContainer.addEventListener('click', (e) => {
+            const stepDiv = e.target.closest('.procedure-step');
+            if (!stepDiv || !appState.liveData.jobRunning) return;
 
-    viewAnalysisBtn.addEventListener('click', () => {
-        switchView('analyzer');
-        if (window.initializeAnalyzer) {
-            window.initializeAnalyzer();
-        } else {
-            initializeAnalyzer();
-            initializeVendorScorecard();
-        }
-    });
+            const targetStepId = parseInt(stepDiv.dataset.stepId);
+            const currentStepId = appState.liveData.currentStep;
 
-    addLessonBtn.addEventListener('click', () => { 
-        if(lessonInput.value.trim()){ 
-            appState.lessonsLearned.push(lessonInput.value.trim()); 
-            lessonInput.value = ''; 
-            renderLessons(); 
-        } 
-    });
+            if (targetStepId > currentStepId) {
+                jumpToStep(targetStepId);
+            }
+        });
+    }
 
-    planNewJobBtn.addEventListener('click', () => resetApp(true));
+    if (viewAnalysisBtn) {
+        viewAnalysisBtn.addEventListener('click', () => {
+            switchView('analyzer');
+            if (window.initializeAnalyzer) {
+                window.initializeAnalyzer();
+            } else {
+                initializeAnalyzer();
+                initializeVendorScorecard();
+            }
+        });
+    }
 
-    equipmentSearch.addEventListener('input', (e) => 
-        renderAssetManagementViews(e.target.value, personnelSearch.value)
-    );
+    if (addLessonBtn && lessonInput) {
+        addLessonBtn.addEventListener('click', () => {
+            if(lessonInput.value.trim()){
+                appState.lessonsLearned.push(lessonInput.value.trim());
+                lessonInput.value = '';
+                renderLessons();
+            }
+        });
+    }
 
-    personnelSearch.addEventListener('input', (e) => 
-        renderAssetManagementViews(equipmentSearch.value, e.target.value)
-    );
+    if (planNewJobBtn) {
+        planNewJobBtn.addEventListener('click', () => resetApp(true));
+    }
 
-    closeModalBtn.addEventListener('click', closeModal);
+    if (equipmentSearch && personnelSearch) {
+        equipmentSearch.addEventListener('input', (e) =>
+            renderAssetManagementViews(e.target.value, personnelSearch.value)
+        );
 
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-    });
+        personnelSearch.addEventListener('input', (e) =>
+            renderAssetManagementViews(equipmentSearch.value, e.target.value)
+        );
+    }
+
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeModal);
+    }
+
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+    }
 
     /* ========================================
        V23 FEATURE FUNCTIONS
@@ -2981,9 +2986,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- INITIALIZATION ---
 
-    const init = () => {
+    const init = async () => {
+        // Load comprehensive well data first
+        await initializeWellData();
+
+        // Render UI components
         renderHomeWellCards();
-        renderWellCards();
         renderObjectives();
         renderProblems();
         initSavingsChart();
