@@ -18,6 +18,7 @@
     let equipmentCatalog = {};
     let selectedTools = [];
     let currentCategory = 'all';
+    let searchQuery = '';
     let isOnline = navigator.onLine;
     let db = null;
     let authToken = null;
@@ -151,12 +152,22 @@
             });
 
             if (!response.ok) {
-                throw new Error(`API error: ${response.status}`);
+                const errorMsg = `API error: ${response.status}`;
+                if (window.Toast) {
+                    window.Toast.error(`Network error: ${response.status} - ${response.statusText}`);
+                }
+                throw new Error(errorMsg);
             }
 
             return await response.json();
         } catch (error) {
             console.error(`[Toolstring] API call failed: ${endpoint}`, error);
+
+            // Show user-friendly error message
+            if (window.Toast && error.message.includes('Failed to fetch')) {
+                window.Toast.error('Network connection failed. Working in offline mode.');
+            }
+
             throw error;
         }
     }
@@ -239,12 +250,24 @@
             }
         });
 
-        if (tools.length === 0) {
+        // Apply search filter
+        const filteredTools = searchQuery
+            ? tools.filter(tool => {
+                const searchLower = searchQuery.toLowerCase();
+                return (
+                    tool.name.toLowerCase().includes(searchLower) ||
+                    tool.category.toLowerCase().includes(searchLower) ||
+                    tool.applications.some(app => app.toLowerCase().includes(searchLower))
+                );
+            })
+            : tools;
+
+        if (filteredTools.length === 0) {
             grid.innerHTML = '<p class="text-gray-500 text-center py-8 col-span-2">No tools found</p>';
             return;
         }
 
-        tools.forEach(tool => {
+        filteredTools.forEach(tool => {
             const isSelected = selectedTools.some(t => t.id === tool.id);
             const card = document.createElement('div');
             card.className = `tool-card bg-gray-700 rounded-lg p-4 ${isSelected ? 'selected' : ''}`;
@@ -321,12 +344,20 @@
         const operationType = document.getElementById('operation-type').value;
 
         if (!name) {
-            alert('Please enter a configuration name');
+            if (window.Toast) {
+                window.Toast.warning('Please enter a configuration name');
+            } else {
+                alert('Please enter a configuration name');
+            }
             return;
         }
 
         if (selectedTools.length === 0) {
-            alert('Please select at least one tool');
+            if (window.Toast) {
+                window.Toast.warning('Please select at least one tool');
+            } else {
+                alert('Please select at least one tool');
+            }
             return;
         }
 
@@ -358,12 +389,20 @@
                 if (response.success) {
                     config.id = response.toolstring.id;
                     config.synced = false; // Will be synced by sync service
-                    alert('Configuration saved! Queued for sync to cloud.');
+                    if (window.Toast) {
+                        window.Toast.success('Configuration saved! Queued for sync to cloud.');
+                    } else {
+                        alert('Configuration saved! Queued for sync to cloud.');
+                    }
                 }
             } else {
                 // Save to IndexedDB only
                 config.synced = false;
-                alert('Saved offline! Will sync when connection is restored.');
+                if (window.Toast) {
+                    window.Toast.info('Saved offline! Will sync when connection is restored.');
+                } else {
+                    alert('Saved offline! Will sync when connection is restored.');
+                }
             }
 
             // Always save to IndexedDB for offline access
@@ -386,7 +425,11 @@
                 synced: false,
             });
 
-            alert('Saved offline! Will sync when connection is restored.');
+            if (window.Toast) {
+                window.Toast.warning('Saved offline! Will sync when connection is restored.');
+            } else {
+                alert('Saved offline! Will sync when connection is restored.');
+            }
         }
     }
 
@@ -524,8 +567,7 @@
 
         // Search
         document.getElementById('search-tools').addEventListener('input', (e) => {
-            const search = e.target.value.toLowerCase();
-            // TODO: Implement search filter
+            searchQuery = e.target.value.trim();
             renderToolsGrid();
         });
 
@@ -545,8 +587,19 @@
 
         // Logout
         document.getElementById('logout-btn').addEventListener('click', () => {
-            authToken = null;
-            window.location.href = '/index.html';
+            // Use centralized auth manager
+            if (window.AuthManager) {
+                window.AuthManager.logout('/index.html');
+            } else {
+                // Fallback if auth manager not loaded
+                authToken = null;
+                localStorage.removeItem('jwtToken');
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userSession');
+                sessionStorage.clear();
+                console.log('[Toolstring] User logged out, auth state cleared');
+                window.location.href = '/index.html';
+            }
         });
 
         console.log('[Toolstring] Initialized');
