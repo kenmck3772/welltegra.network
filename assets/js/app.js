@@ -2907,7 +2907,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                                                         <div class="flex-1">
                                                             <div class="font-semibold text-slate-900 dark:text-slate-100">${e.item}</div>
                                                             <div class="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                                                                Depth: <span class="font-mono">${e.top.toLocaleString()}ft</span>
+                                                                Depth: <span class="font-mono">${e.top ? e.top.toLocaleString() : 'N/A'}ft</span>
                                                             </div>
                                                             ${e.comments ? `<div class="text-sm mt-2 text-slate-700 dark:text-slate-300">${e.comments}</div>` : ''}
                                                         </div>
