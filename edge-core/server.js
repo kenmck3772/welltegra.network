@@ -229,6 +229,44 @@ function createSafeSyncPayload(dbResult) {
     return safe;
 }
 
+/**
+ * Create safe user payload from database result
+ * Explicitly reconstructs user object to break taint from database
+ */
+function createSafeUserPayload(dbResult) {
+    if (!dbResult || typeof dbResult !== 'object') {
+        return {};
+    }
+
+    return {
+        id: String(dbResult.id || ''),
+        username: String(dbResult.username || ''),
+        role: String(dbResult.role || ''),
+        fullName: String(dbResult.full_name || ''),
+    };
+}
+
+/**
+ * Create safe sync status payload from database result
+ * Explicitly reconstructs sync status object to break taint from database
+ */
+function createSafeSyncStatusPayload(dbResult) {
+    if (!dbResult || typeof dbResult !== 'object') {
+        return {
+            id: 0,
+            last_sync: new Date().toISOString(),
+            status: 'unknown',
+        };
+    }
+
+    return {
+        id: Number(dbResult.id || 0),
+        last_sync: dbResult.last_sync ? dbResult.last_sync.toISOString() : new Date().toISOString(),
+        status: String(dbResult.status || 'unknown'),
+        details: dbResult.details ? String(dbResult.details) : null,
+    };
+}
+
 console.log('[Edge Core API] Starting...');
 console.log('[Edge Core API] Mode:', EDGE_MODE ? 'EDGE (Offline-capable)' : 'CLOUD');
 console.log('[Edge Core API] FIPS 140-2:', FIPS_MODE ? 'ENABLED' : 'DISABLED');
@@ -406,15 +444,13 @@ app.post('/api/auth/login', async (req, res) => {
             [user.id, 'LOGIN', JSON.stringify({ username: validatedUsername }), req.ip]
         );
 
+        // SECURITY: Create safe user payload from database result (breaks taint flow)
+        const safeUser = createSafeUserPayload(user);
+
         res.json({
             success: true,
             token,
-            user: {
-                id: user.id,
-                username: user.username,
-                role: user.role,
-                fullName: user.full_name,
-            },
+            user: safeUser,  // Use safe payload, not raw database result
         });
     } catch (error) {
         console.error('[Edge Core API] Login failed');
@@ -830,9 +866,12 @@ app.get('/api/v1/sync/status', authenticateJWT, async (req, res) => {
         const statusResult = await pool.query('SELECT * FROM sync_status ORDER BY id DESC LIMIT 1');
         const queueResult = await pool.query('SELECT COUNT(*) FROM sync_queue WHERE synced = false');
 
+        // SECURITY: Sanitize database result before returning to client
+        const safeStatus = statusResult.rows[0] ? createSafeSyncStatusPayload(statusResult.rows[0]) : createSafeSyncStatusPayload(null);
+
         res.json({
             success: true,
-            status: statusResult.rows[0],
+            status: safeStatus,  // Use safe payload, not raw database result
             pendingCount: parseInt(queueResult.rows[0].count, 10),
         });
     } catch (error) {
