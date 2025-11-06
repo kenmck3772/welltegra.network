@@ -1,0 +1,1094 @@
+{
+  "dataVersion": "1.0.0",
+  "generatedDate": "2025-11-06T00:00:00Z",
+  "description": "Comprehensive Well History Data for 7 Primary Wells in WellTegra Network",
+  "wells": [
+    {
+      "foundationalIdentity": {
+        "uniqueId": "W666-MONT-UKCS-2019-001",
+        "wellId": "W666",
+        "commonWellName": "The Perfect Storm",
+        "apiNumber": "GB-UKCS-666-MONT-2019",
+        "fieldName": "Montrose",
+        "blockNumber": "22/17a",
+        "licenseNumber": "P2377",
+        "wellType": "HPHT Gas Condensate Producer",
+        "currentStatus": "Shut-in - Well Integrity Issues",
+        "slotIdentifier": "A-12",
+        "waterDepth_ft": 295,
+        "totalDepthMD_ft": 18500,
+        "totalDepthTVD_ft": 18350,
+        "wellProfile": "Deviated (max 25°)",
+        "surfaceCoordinates": {
+          "latitude": 57.3421,
+          "longitude": 1.8956,
+          "utmZone": "31N",
+          "easting": 425678,
+          "northing": 6352341
+        },
+        "operator": "Hess Corporation",
+        "operatorShare_percent": 48.5,
+        "jointVenturePartners": [
+          {"company": "Shell UK Limited", "share": 28.2},
+          {"company": "ExxonMobil", "share": 23.3}
+        ],
+        "regulatoryAuthority": "North Sea Transition Authority (NSTA)",
+        "dataProvenance": {
+          "source": "Well Master Database v4.2",
+          "verificationStatus": "Verified",
+          "lastVerified": "2024-10-15",
+          "verifiedBy": "J. Henderson - Asset Manager"
+        }
+      },
+      "designAndConstruction": {
+        "spudDate": "2019-04-12",
+        "completionDate": "2019-08-28",
+        "firstProductionDate": "2019-09-15",
+        "drillingContractor": "Transocean",
+        "drillingRig": "Paul B. Loyd Jr.",
+        "casingStrings": [
+          {
+            "stringId": "CSG-01",
+            "type": "Conductor",
+            "outerDiameter_in": 30,
+            "weight_ppf": 435,
+            "grade": "X52",
+            "connectionType": "Welded",
+            "topDepthMD_ft": 0,
+            "bottomDepthMD_ft": 325,
+            "cementTopMD_ft": 0,
+            "cementVolume_bbl": 145,
+            "cementType": "Class G + 40% Silica Flour",
+            "installationDate": "2019-04-15",
+            "integrityStatus": "Good",
+            "lastInspectionDate": "2024-03-15",
+            "pressureRating_psi": 5000
+          },
+          {
+            "stringId": "CSG-02",
+            "type": "Surface Casing",
+            "outerDiameter_in": 20,
+            "weight_ppf": 133,
+            "grade": "L80",
+            "connectionType": "Buttress",
+            "topDepthMD_ft": 0,
+            "bottomDepthMD_ft": 3850,
+            "cementTopMD_ft": 0,
+            "cementVolume_bbl": 892,
+            "cementType": "Class G",
+            "installationDate": "2019-05-02",
+            "integrityStatus": "Good",
+            "lastInspectionDate": "2024-03-15",
+            "pressureRating_psi": 10000
+          },
+          {
+            "stringId": "CSG-03",
+            "type": "Intermediate Casing",
+            "outerDiameter_in": 13.375,
+            "weight_ppf": 72,
+            "grade": "P110",
+            "connectionType": "Premium (VAM TOP)",
+            "topDepthMD_ft": 0,
+            "bottomDepthMD_ft": 14200,
+            "cementTopMD_ft": 12500,
+            "cementVolume_bbl": 1245,
+            "cementType": "High-Temp Class G + Retarder",
+            "installationDate": "2019-06-18",
+            "integrityStatus": "Good",
+            "lastInspectionDate": "2024-03-15",
+            "pressureRating_psi": 15000
+          },
+          {
+            "stringId": "CSG-04",
+            "type": "Production Casing",
+            "outerDiameter_in": 9.625,
+            "weight_ppf": 53.5,
+            "grade": "P110",
+            "connectionType": "Premium (VAM TOP)",
+            "topDepthMD_ft": 0,
+            "bottomDepthMD_ft": 18500,
+            "cementTopMD_ft": 16200,
+            "cementVolume_bbl": 678,
+            "cementType": "HPHT Cement (API Class G + Densifier)",
+            "installationDate": "2019-07-15",
+            "integrityStatus": "CRITICAL - Deformation at 8500ft",
+            "deformationDetails": {
+              "type": "Severe Ovalization",
+              "locationMD_ft": 8500,
+              "reducedID_in": 7.2,
+              "originalID_in": 8.681,
+              "restrictionSeverity": "Cannot pass 2.313\" OD tools",
+              "cause": "Reservoir depletion + geomechanical stress",
+              "discoveredDate": "2024-03-15",
+              "mfcLogDate": "2024-03-18"
+            },
+            "lastInspectionDate": "2024-03-18",
+            "pressureRating_psi": 15000
+          }
+        ],
+        "tubingStrings": [
+          {
+            "stringId": "TBG-01",
+            "type": "Production Tubing",
+            "outerDiameter_in": 4.5,
+            "innerDiameter_in": 3.958,
+            "weight_ppf": 12.75,
+            "grade": "L80-13Cr",
+            "connectionType": "Premium (PTC)",
+            "topDepthMD_ft": 0,
+            "bottomDepthMD_ft": 18300,
+            "installationDate": "2019-08-10",
+            "integrityStatus": "Good",
+            "lastInspectionDate": "2024-02-01",
+            "pressureRating_psi": 15000,
+            "corrosionResistance": "13% Chromium for CO2 service"
+          }
+        ],
+        "downholeEquipment": [
+          {
+            "equipmentId": "DHSV-001",
+            "itemType": "TRSSV (Tubing Retrievable Subsurface Safety Valve)",
+            "manufacturer": "Baker Hughes",
+            "model": "TRSCSSV-HT",
+            "serialNumber": "BH-TRSSV-28491-A",
+            "settingDepthMD_ft": 2500,
+            "settingDepthTVD_ft": 2485,
+            "outerDiameter_in": 4.25,
+            "installationDate": "2019-08-10",
+            "function": "Primary safety barrier - automatic shut-in on control line pressure loss",
+            "testFrequency_months": 6,
+            "lastTestDate": "2024-04-10",
+            "lastTestResult": "FAILED - Valve did not close on command",
+            "integrityStatus": "FAILED",
+            "barrierCritical": true,
+            "failureMode": "Hydraulic control system malfunction",
+            "contingencyRequired": true
+          },
+          {
+            "equipmentId": "PKR-001",
+            "itemType": "Production Packer",
+            "manufacturer": "Halliburton",
+            "model": "Versa-Trieve HT",
+            "serialNumber": "HAL-PKR-19442-B",
+            "settingDepthMD_ft": 18250,
+            "settingDepthTVD_ft": 18100,
+            "outerDiameter_in": 7.875,
+            "installationDate": "2019-08-12",
+            "function": "Isolate tubing-casing annulus and protect casing from reservoir pressure",
+            "testFrequency_months": 12,
+            "lastTestDate": "2024-02-15",
+            "lastTestResult": "PASSED - Held 5000 psi differential",
+            "integrityStatus": "Good",
+            "barrierCritical": true,
+            "designPressure_psi": 15000,
+            "designTemperature_F": 350
+          },
+          {
+            "equipmentId": "SCALE-BRIDGE-001",
+            "itemType": "BaSO4 Scale Bridge",
+            "settingDepthMD_ft": 14200,
+            "discoveredDate": "2024-04-01",
+            "description": "Solid barium sulfate scale blockage preventing toolstring passage",
+            "integrityStatus": "CRITICAL BLOCKAGE",
+            "barrierCritical": false,
+            "productionImpact": "Complete blockage - well cannot produce",
+            "remediationRequired": true,
+            "estimatedThickness_ft": 150,
+            "scaleComposition": "BaSO4 (>95%), with trace FeS and CaCO3"
+          },
+          {
+            "equipmentId": "XMAS-TREE-001",
+            "itemType": "Subsea Christmas Tree",
+            "manufacturer": "Cameron (SLB)",
+            "model": "TL-HXT 15M",
+            "serialNumber": "CAM-TREE-2019-8841",
+            "installationDate": "2019-08-28",
+            "waterDepth_ft": 295,
+            "pressureRating_psi": 15000,
+            "temperatureRating_F": 250,
+            "integrityStatus": "Good",
+            "lastInspectionDate": "2024-05-10",
+            "components": [
+              {
+                "component": "Production Master Valve",
+                "status": "Operational",
+                "lastTest": "2024-05-10"
+              },
+              {
+                "component": "Production Wing Valve",
+                "status": "Operational",
+                "lastTest": "2024-05-10"
+              },
+              {
+                "component": "Annulus Master Valve",
+                "status": "Operational - Currently shut for safety",
+                "lastTest": "2024-05-10"
+              }
+            ]
+          }
+        ],
+        "perforations": [
+          {
+            "perforationId": "PERF-001",
+            "zoneName": "Montrose Main Sand",
+            "topDepthMD_ft": 18350,
+            "bottomDepthMD_ft": 18450,
+            "perforationDate": "2019-08-15",
+            "gunType": "4\" TCP (Tubing Conveyed Perforating)",
+            "chargeType": "Deep penetrating - 32g HMX",
+            "shotDensity_spf": 12,
+            "phasing": "60° (6 shots per plane)",
+            "totalShots": 1200,
+            "penetrationDepth_in": 24,
+            "holeDiameter_in": 0.43,
+            "contractor": "Schlumberger",
+            "perforationFluidType": "Light Completion Brine (8.8 ppg)",
+            "underbalancePressure_psi": 250,
+            "initialFlowTest_bopd": 8500,
+            "integrityStatus": "Good"
+          }
+        ],
+        "wellheadAndTree": {
+          "wellheadManufacturer": "Aker Solutions",
+          "wellheadModel": "H4 Compact",
+          "wellheadSerialNumber": "AKER-WH-2019-4421",
+          "wellheadPressureRating_psi": 15000,
+          "treeManufacturer": "Cameron (SLB)",
+          "treeModel": "TL-HXT 15M",
+          "treePressureRating_psi": 15000,
+          "installationDate": "2019-08-28",
+          "integrityStatus": "Good",
+          "lastInspectionDate": "2024-05-10"
+        },
+        "asBuiltDocumentation": {
+          "wellSchematic": "/documents/W666/W666_As_Built_Schematic_Rev3.pdf",
+          "completionReport": "/documents/W666/W666_Final_Completion_Report_2019.pdf",
+          "cementing": "/documents/W666/Cementing_Records_All_Strings.pdf",
+          "tubularTally": "/documents/W666/Final_Tubular_Tally_2019.pdf",
+          "perforationReport": "/documents/W666/TCP_Perforation_Report_SLB_2019.pdf"
+        }
+      },
+      "operationalHistory": {
+        "interventionCount": 12,
+        "totalNPT_hours": 1248,
+        "lastIntervention": "2024-04-10",
+        "events": [
+          {
+            "eventId": "EVT-001",
+            "eventType": "Completion",
+            "startDate": "2019-08-10",
+            "endDate": "2019-08-28",
+            "duration_days": 18,
+            "contractor": "Halliburton",
+            "summary": "Initial well completion with HPHT tubing, packer, TRSSV, and TCP perforating",
+            "linkedProgram": "/documents/W666/Programs/W666_Completion_Program_2019.pdf",
+            "linkedReport": "/documents/W666/Reports/W666_Completion_Report_2019.pdf",
+            "outcome": "Success",
+            "npt_hours": 0
+          },
+          {
+            "eventId": "EVT-002",
+            "eventType": "First Production",
+            "startDate": "2019-09-15",
+            "endDate": "2019-09-15",
+            "duration_days": 1,
+            "summary": "Well brought online. Initial rate: 8,500 bopd condensate, 42 MMscfd gas",
+            "linkedReport": "/documents/W666/Reports/First_Production_Test_2019.pdf",
+            "outcome": "Success",
+            "npt_hours": 0
+          },
+          {
+            "eventId": "EVT-003",
+            "eventType": "Routine DHSV Test",
+            "startDate": "2020-03-10",
+            "endDate": "2020-03-10",
+            "duration_days": 1,
+            "contractor": "Weatherford",
+            "summary": "6-month TRSSV function test - valve cycled successfully",
+            "linkedProgram": "/documents/W666/Programs/DHSV_Test_Procedure_Standard.pdf",
+            "linkedReport": "/documents/W666/Reports/DHSV_Test_Report_2020-03.pdf",
+            "outcome": "Success - Valve functional",
+            "npt_hours": 0
+          },
+          {
+            "eventId": "EVT-004",
+            "eventType": "Slickline Gauge Survey",
+            "startDate": "2021-06-22",
+            "endDate": "2021-06-23",
+            "duration_days": 1,
+            "contractor": "Archer",
+            "summary": "Annual pressure and temperature survey to 18,350 ft",
+            "linkedProgram": "/documents/W666/Programs/Slickline_Gauge_Survey_2021.pdf",
+            "linkedReport": "/documents/W666/Reports/Gauge_Survey_Report_2021-06.pdf",
+            "toolstringRun": [
+              "Slickline Sinker Bar (75 lbs)",
+              "Memory Gauge (Pressure/Temperature)",
+              "CCL Tool",
+              "Knuckle Joint"
+            ],
+            "outcome": "Success",
+            "npt_hours": 2,
+            "keyFindings": "Reservoir pressure declining as expected. No tubing restrictions noted."
+          },
+          {
+            "eventId": "EVT-005",
+            "eventType": "Production Logging Tool Run",
+            "startDate": "2022-11-15",
+            "endDate": "2022-11-16",
+            "duration_days": 1,
+            "contractor": "Schlumberger",
+            "summary": "Multi-pass PLT survey to assess perforation contribution",
+            "linkedProgram": "/documents/W666/Programs/PLT_Survey_Program_2022.pdf",
+            "linkedReport": "/documents/W666/Reports/PLT_Analysis_Report_2022-11.pdf",
+            "toolstringRun": [
+              "Production Logging Tool (PLT)",
+              "Spinner Assembly",
+              "Pressure/Temperature Sensors",
+              "E-Line Cable Head",
+              "Tension Sub"
+            ],
+            "outcome": "Success",
+            "npt_hours": 4,
+            "keyFindings": "70% of production from upper 50ft of perforations. Lower perfs contributing minimally."
+          },
+          {
+            "eventId": "EVT-006",
+            "eventType": "Slickline Surveillance",
+            "startDate": "2024-03-15",
+            "endDate": "2024-03-15",
+            "duration_days": 1,
+            "contractor": "Archer",
+            "summary": "Routine surveillance run - CRITICAL DISCOVERY: Cannot pass 8,500ft due to casing restriction",
+            "linkedProgram": "/documents/W666/Programs/Slickline_Surveillance_2024-03.pdf",
+            "linkedReport": "/documents/W666/Reports/Slickline_Report_2024-03-15_RESTRICTION.pdf",
+            "toolstringRun": [
+              "2.313\" OD Gauge Ring",
+              "Slickline Sinker Bar (50 lbs)",
+              "CCL/GR Correlation Tool",
+              "Knuckle Joint"
+            ],
+            "outcome": "Failed - Restriction encountered",
+            "npt_hours": 12,
+            "anomalyDetected": "Hard stop at 8,500ft. Tools will not pass.",
+            "followUpAction": "MFC (Multi-Finger Caliper) log ordered to diagnose restriction"
+          },
+          {
+            "eventId": "EVT-007",
+            "eventType": "Multi-Finger Caliper Survey",
+            "startDate": "2024-03-18",
+            "endDate": "2024-03-18",
+            "duration_days": 1,
+            "contractor": "Schlumberger",
+            "summary": "MFC log confirms severe casing ovalization at 8,500ft MD",
+            "linkedProgram": "/documents/W666/Programs/MFC_Diagnostic_Program_2024-03.pdf",
+            "linkedReport": "/documents/W666/Reports/MFC_Log_Analysis_2024-03-18.pdf",
+            "toolstringRun": [
+              "Multi-Finger Caliper (40 arm)",
+              "Casing Collar Locator",
+              "E-Line Cable Head"
+            ],
+            "outcome": "Success - Diagnosis confirmed",
+            "npt_hours": 8,
+            "keyFindings": "Severe ovalization detected. Minimum ID reduced from 8.681\" to 7.2\". Caused by geomechanical stress from reservoir depletion."
+          },
+          {
+            "eventId": "EVT-008",
+            "eventType": "Production Test",
+            "startDate": "2024-04-01",
+            "endDate": "2024-04-02",
+            "duration_days": 2,
+            "summary": "Attempted production test - well died after 6 hours of flow",
+            "linkedReport": "/documents/W666/Reports/Production_Test_Failure_2024-04-01.pdf",
+            "outcome": "Failed - Well died",
+            "npt_hours": 48,
+            "keyFindings": "Pressure analysis suggests deep blockage around 14,000-14,500 ft. Suspected BaSO4 scale bridge.",
+            "followUpAction": "Well shut-in pending investigation"
+          },
+          {
+            "eventId": "EVT-009",
+            "eventType": "Routine DHSV Test",
+            "startDate": "2024-04-10",
+            "endDate": "2024-04-10",
+            "duration_days": 1,
+            "contractor": "Archer",
+            "summary": "6-month TRSSV test - CRITICAL FAILURE: Valve did not close on command",
+            "linkedProgram": "/documents/W666/Programs/DHSV_Test_Procedure_Standard.pdf",
+            "linkedReport": "/documents/W666/Reports/DHSV_Test_FAILURE_2024-04-10.pdf",
+            "outcome": "Failed - Primary safety barrier compromised",
+            "npt_hours": 24,
+            "anomalyDetected": "TRSSV failed to close. Control line pressure response abnormal.",
+            "regulatoryNotification": "NSTA notified immediately per regulations",
+            "followUpAction": "Well shut-in on surface tree (annulus valves). Production suspended until TRSSV repaired or replaced."
+          },
+          {
+            "eventId": "EVT-010",
+            "eventType": "Emergency Safety Meeting",
+            "startDate": "2024-04-11",
+            "endDate": "2024-04-11",
+            "duration_days": 1,
+            "summary": "Cross-functional team assembled to assess well integrity status",
+            "linkedReport": "/documents/W666/Reports/Emergency_Safety_Assessment_2024-04-11.pdf",
+            "outcome": "Decision: Well to remain shut-in pending comprehensive intervention plan",
+            "keyFindings": "Three critical issues identified: (1) Casing deformation at 8,500ft, (2) Suspected scale blockage at 14,200ft, (3) Failed TRSSV at 2,500ft"
+          },
+          {
+            "eventId": "EVT-011",
+            "eventType": "Management of Change Approved",
+            "startDate": "2024-04-20",
+            "endDate": "2024-04-20",
+            "duration_days": 1,
+            "summary": "MoC approved for multi-stage intervention campaign",
+            "linkedReport": "/documents/W666/MoC/MoC_2024_004_Multi_Stage_Intervention.pdf",
+            "outcome": "Approved",
+            "keyDetails": "Authorized comprehensive intervention: expandable patch, scale removal, DHSV replacement"
+          },
+          {
+            "eventId": "EVT-012",
+            "eventType": "Intervention Planning Phase",
+            "startDate": "2024-04-22",
+            "endDate": "2024-11-06",
+            "duration_days": 198,
+            "summary": "Detailed engineering and planning for complex multi-stage intervention",
+            "linkedReport": "/documents/W666/Programs/W666_Master_Intervention_Program_2024.pdf",
+            "outcome": "In Progress",
+            "status": "Planning",
+            "keyActivities": [
+              "Detailed risk assessment",
+              "Service provider selection",
+              "Equipment procurement",
+              "Program development using WellTegra AI recommendations"
+            ]
+          }
+        ],
+        "fluidHistory": [
+          {
+            "fluidEventId": "FLD-001",
+            "date": "2019-08-12",
+            "operation": "Completion Brine Displacement",
+            "fluidType": "Completion Brine (CaBr2/CaCl2 blend)",
+            "density_ppg": 14.2,
+            "volume_bbl": 285,
+            "purpose": "Displace drilling mud and provide hydrostatic overbalance during completion",
+            "pumpedIntoWell": true
+          },
+          {
+            "fluidEventId": "FLD-002",
+            "date": "2019-09-14",
+            "operation": "Pre-Production Displacement",
+            "fluidType": "Light Completion Brine (NaCl)",
+            "density_ppg": 8.8,
+            "volume_bbl": 312,
+            "purpose": "Lighten fluid column prior to first production",
+            "pumpedIntoWell": true
+          },
+          {
+            "fluidEventId": "FLD-003",
+            "date": "2024-03-15",
+            "operation": "Emergency Bullhead",
+            "fluidType": "Heavy Kill Fluid (CaCl2 brine)",
+            "density_ppg": 12.5,
+            "volume_bbl": 85,
+            "purpose": "Control well pressure during casing restriction investigation",
+            "pumpedIntoWell": true
+          }
+        ],
+        "testingHistory": [
+          {
+            "testId": "TEST-001",
+            "testType": "TRSSV Function Test",
+            "date": "2020-03-10",
+            "result": "PASSED",
+            "testPressure_psi": 4500,
+            "holdTime_minutes": 30,
+            "acceptanceCriteria": "Valve closes on control line pressure loss, no leakage",
+            "contractor": "Weatherford",
+            "linkedReport": "/documents/W666/Tests/DHSV_Test_2020-03-10.pdf"
+          },
+          {
+            "testId": "TEST-002",
+            "testType": "TRSSV Function Test",
+            "date": "2020-09-15",
+            "result": "PASSED",
+            "testPressure_psi": 4500,
+            "holdTime_minutes": 30,
+            "acceptanceCriteria": "Valve closes on control line pressure loss, no leakage",
+            "contractor": "Weatherford",
+            "linkedReport": "/documents/W666/Tests/DHSV_Test_2020-09-15.pdf"
+          },
+          {
+            "testId": "TEST-003",
+            "testType": "TRSSV Function Test",
+            "date": "2021-03-12",
+            "result": "PASSED",
+            "testPressure_psi": 4500,
+            "holdTime_minutes": 30,
+            "acceptanceCriteria": "Valve closes on control line pressure loss, no leakage",
+            "contractor": "Weatherford",
+            "linkedReport": "/documents/W666/Tests/DHSV_Test_2021-03-12.pdf"
+          },
+          {
+            "testId": "TEST-004",
+            "testType": "TRSSV Function Test",
+            "date": "2024-04-10",
+            "result": "FAILED",
+            "testPressure_psi": null,
+            "holdTime_minutes": null,
+            "acceptanceCriteria": "Valve closes on control line pressure loss, no leakage",
+            "failureMode": "Valve did not close on control line bleed-down",
+            "contractor": "Archer",
+            "linkedReport": "/documents/W666/Tests/DHSV_Test_FAILURE_2024-04-10.pdf",
+            "regulatoryImpact": "Well shut-in per NSTA regulations"
+          },
+          {
+            "testId": "TEST-005",
+            "testType": "Annulus Pressure Test",
+            "date": "2024-02-15",
+            "result": "PASSED",
+            "testPressure_psi": 5000,
+            "holdTime_minutes": 60,
+            "acceptanceCriteria": "Less than 10% pressure drop over 60 minutes",
+            "actualPressureDrop_psi": 85,
+            "contractor": "Hess Operations",
+            "linkedReport": "/documents/W666/Tests/Annulus_Test_2024-02-15.pdf"
+          }
+        ],
+        "dataLogRepository": [
+          {
+            "logId": "LOG-001",
+            "logType": "Casing Collar Locator / Gamma Ray",
+            "date": "2021-06-23",
+            "contractor": "Archer",
+            "depthRange_ft": "0-18350",
+            "linkedFile": "/documents/W666/Logs/CCL_GR_2021-06-23.las"
+          },
+          {
+            "logId": "LOG-002",
+            "logType": "Production Logging Tool (PLT)",
+            "date": "2022-11-16",
+            "contractor": "Schlumberger",
+            "depthRange_ft": "18200-18500",
+            "linkedFile": "/documents/W666/Logs/PLT_2022-11-16.las"
+          },
+          {
+            "logId": "LOG-003",
+            "logType": "Multi-Finger Caliper (MFC)",
+            "date": "2024-03-18",
+            "contractor": "Schlumberger",
+            "depthRange_ft": "8000-9000",
+            "keyFindings": "Severe casing ovalization at 8,500ft",
+            "linkedFile": "/documents/W666/Logs/MFC_2024-03-18.las"
+          }
+        ]
+      },
+      "wellIntegrityAndRisk": {
+        "currentIntegrityRating": "C - Poor (Critical Intervention Required)",
+        "lastIntegrityReview": "2024-04-11",
+        "nextScheduledReview": "2024-11-15",
+        "safetyCriticalIssueCount": 3,
+        "liveAnomalies": [
+          {
+            "anomalyId": "ANOM-001",
+            "type": "Casing Structural Failure",
+            "severity": "HIGH",
+            "description": "Severe ovalization of production casing at 8,500ft MD",
+            "discoveredDate": "2024-03-15",
+            "status": "Active - Requires Expandable Patch",
+            "barrierImpact": "Restricts access to lower completions",
+            "linkedDispensation": "/documents/W666/Dispensations/DISP_2024_001_Casing_Restriction.pdf",
+            "remediationPlan": "Install 60ft expandable steel patch across deformed section",
+            "estimatedCost_USD": 1200000,
+            "riskScore": 85
+          },
+          {
+            "anomalyId": "ANOM-002",
+            "type": "Solid Blockage (Scale)",
+            "severity": "HIGH",
+            "description": "BaSO4 scale bridge at approximately 14,200ft MD",
+            "discoveredDate": "2024-04-01",
+            "status": "Active - Requires Chemical/Mechanical Removal",
+            "barrierImpact": "Complete production blockage",
+            "linkedDispensation": "/documents/W666/Dispensations/DISP_2024_002_Scale_Blockage.pdf",
+            "remediationPlan": "48hr DTPA chemical soak followed by CT jetting",
+            "estimatedCost_USD": 950000,
+            "riskScore": 78
+          },
+          {
+            "anomalyId": "ANOM-003",
+            "type": "Primary Safety Barrier Failure",
+            "severity": "CRITICAL",
+            "description": "TRSSV failed to close during function test",
+            "discoveredDate": "2024-04-10",
+            "status": "Active - Requires Valve Replacement",
+            "barrierImpact": "Primary downhole safety barrier non-functional",
+            "linkedDispensation": "/documents/W666/Dispensations/DISP_2024_003_DHSV_Failure.pdf",
+            "regulatoryStatus": "Well shut-in per NSTA requirement",
+            "remediationPlan": "Lock open failed TRSSV and install wireline-retrievable insert valve",
+            "estimatedCost_USD": 350000,
+            "riskScore": 95
+          }
+        ],
+        "barrierStatus": {
+          "lastBarrierVerification": "2024-04-10",
+          "primaryBarriers": [
+            {
+              "barrierId": "PB-001",
+              "barrierType": "TRSSV (Tubing Retrievable Subsurface Safety Valve)",
+              "depthMD_ft": 2500,
+              "status": "FAILED",
+              "lastTestDate": "2024-04-10",
+              "lastTestResult": "Failed to close",
+              "verified": false,
+              "acceptableForProduction": false,
+              "remediationRequired": true
+            },
+            {
+              "barrierId": "PB-002",
+              "barrierType": "Production Packer",
+              "depthMD_ft": 18250,
+              "status": "OPERATIONAL",
+              "lastTestDate": "2024-02-15",
+              "lastTestResult": "Passed - held 5000 psi differential",
+              "verified": true,
+              "acceptableForProduction": true
+            },
+            {
+              "barrierId": "PB-003",
+              "barrierType": "Cement Sheath (Production Casing)",
+              "depthRange_ft": "16200-18500",
+              "status": "OPERATIONAL",
+              "lastTestDate": "2019-07-16",
+              "lastTestResult": "CBL/VDL confirms good cement bond",
+              "verified": true,
+              "acceptableForProduction": true
+            }
+          ],
+          "secondaryBarriers": [
+            {
+              "barrierId": "SB-001",
+              "barrierType": "Surface Tree Valves",
+              "location": "Subsea Tree",
+              "status": "OPERATIONAL",
+              "lastTestDate": "2024-05-10",
+              "lastTestResult": "All valves functional",
+              "verified": true,
+              "acceptableForProduction": true,
+              "currentConfiguration": "Closed - well shut-in"
+            },
+            {
+              "barrierId": "SB-002",
+              "barrierType": "Wellhead Seals",
+              "location": "Subsea Wellhead",
+              "status": "OPERATIONAL",
+              "lastTestDate": "2024-05-10",
+              "lastTestResult": "No leakage detected",
+              "verified": true,
+              "acceptableForProduction": true
+            },
+            {
+              "barrierId": "SB-003",
+              "barrierType": "Tubing String",
+              "depthRange_ft": "0-18300",
+              "status": "OPERATIONAL",
+              "lastTestDate": "2024-02-01",
+              "lastTestResult": "No leaks detected",
+              "verified": true,
+              "acceptableForProduction": true
+            }
+          ]
+        },
+        "contingencyLog": [
+          {
+            "contingencyId": "CONT-001",
+            "operation": "Slickline Surveillance 2024-03-15",
+            "issue": "Toolstring unable to pass 8,500ft restriction",
+            "contingencyAction": "Pulled out of hole. Ordered MFC diagnostic log.",
+            "outcome": "Successfully recovered tools. MFC log confirmed casing deformation."
+          },
+          {
+            "contingencyId": "CONT-002",
+            "operation": "Production Test 2024-04-01",
+            "issue": "Well died during flow test",
+            "contingencyAction": "Shut-in well immediately. Conducted pressure analysis.",
+            "outcome": "Analysis revealed deep blockage. Well left shut-in pending intervention."
+          },
+          {
+            "contingencyId": "CONT-003",
+            "operation": "DHSV Test 2024-04-10",
+            "issue": "TRSSV failed to close on control line bleed-down",
+            "contingencyAction": "Immediate shut-in on surface tree valves. NSTA notified.",
+            "outcome": "Well secured using secondary barriers. Regulatory approval for continued shut-in received."
+          }
+        ],
+        "riskAssessment": {
+          "overallRiskLevel": "CRITICAL",
+          "riskScore": 95,
+          "riskFactors": [
+            {
+              "factor": "Primary safety barrier failure",
+              "impact": "Critical",
+              "probability": "Confirmed",
+              "mitigation": "Well shut-in on secondary barriers pending DHSV replacement"
+            },
+            {
+              "factor": "Production loss",
+              "impact": "High",
+              "probability": "100%",
+              "mitigation": "Comprehensive intervention campaign planned"
+            },
+            {
+              "factor": "Casing structural integrity",
+              "impact": "High",
+              "probability": "Confirmed",
+              "mitigation": "Expandable patch to restore full-bore access"
+            }
+          ]
+        }
+      },
+      "equipmentAndAssets": {
+        "masterAssetRegister": [
+          {
+            "assetId": "ASS-001",
+            "assetType": "TRSSV",
+            "manufacturer": "Baker Hughes",
+            "model": "TRSCSSV-HT",
+            "serialNumber": "BH-TRSSV-28491-A",
+            "installationDate": "2019-08-10",
+            "currentStatus": "Failed",
+            "locationMD_ft": 2500,
+            "certifications": [
+              {
+                "certificateNumber": "BH-CERT-28491-2019",
+                "issueDate": "2019-07-15",
+                "expiryDate": "2029-07-15",
+                "certifyingBody": "Baker Hughes QA/QC",
+                "linkedDocument": "/documents/W666/Certifications/TRSSV_Cert_2019.pdf"
+              }
+            ],
+            "maintenanceHistory": [
+              {
+                "date": "2020-03-10",
+                "activity": "Function Test",
+                "result": "Passed",
+                "contractor": "Weatherford"
+              },
+              {
+                "date": "2024-04-10",
+                "activity": "Function Test",
+                "result": "Failed",
+                "contractor": "Archer",
+                "failureMode": "Hydraulic control system malfunction"
+              }
+            ]
+          },
+          {
+            "assetId": "ASS-002",
+            "assetType": "Production Packer",
+            "manufacturer": "Halliburton",
+            "model": "Versa-Trieve HT",
+            "serialNumber": "HAL-PKR-19442-B",
+            "installationDate": "2019-08-12",
+            "currentStatus": "Operational",
+            "locationMD_ft": 18250,
+            "certifications": [
+              {
+                "certificateNumber": "HAL-CERT-19442-2019",
+                "issueDate": "2019-07-20",
+                "expiryDate": "2029-07-20",
+                "certifyingBody": "Halliburton QA/QC",
+                "linkedDocument": "/documents/W666/Certifications/Packer_Cert_2019.pdf"
+              }
+            ],
+            "maintenanceHistory": [
+              {
+                "date": "2024-02-15",
+                "activity": "Annulus Pressure Test",
+                "result": "Passed - held 5000 psi differential",
+                "contractor": "Hess Operations"
+              }
+            ]
+          },
+          {
+            "assetId": "ASS-003",
+            "assetType": "Subsea Christmas Tree",
+            "manufacturer": "Cameron (SLB)",
+            "model": "TL-HXT 15M",
+            "serialNumber": "CAM-TREE-2019-8841",
+            "installationDate": "2019-08-28",
+            "currentStatus": "Operational",
+            "location": "Subsea at 295ft water depth",
+            "certifications": [
+              {
+                "certificateNumber": "CAM-CERT-8841-2019",
+                "issueDate": "2019-08-01",
+                "expiryDate": "2029-08-01",
+                "certifyingBody": "Cameron QA/QC",
+                "linkedDocument": "/documents/W666/Certifications/Tree_Cert_2019.pdf"
+              }
+            ],
+            "maintenanceHistory": [
+              {
+                "date": "2024-05-10",
+                "activity": "Annual ROV Inspection",
+                "result": "All systems operational",
+                "contractor": "Oceaneering"
+              }
+            ]
+          }
+        ],
+        "plannedInterventionToolstrings": [
+          {
+            "toolstringId": "TS-W666-001",
+            "operation": "Expandable Patch Installation",
+            "serviceLineType": "Hydraulic Workover Unit (HWU)",
+            "contractor": "Halliburton",
+            "components": [
+              {
+                "itemNumber": 1,
+                "component": "Expandable Casing Patch",
+                "manufacturer": "Enventure (Halliburton)",
+                "model": "ESeal 60ft x 9 5/8\"",
+                "serialNumber": "TBD",
+                "outerDiameter_in": 7.875,
+                "length_ft": 60,
+                "certificationRequired": true
+              },
+              {
+                "itemNumber": 2,
+                "component": "Hydraulic Setting Tool",
+                "manufacturer": "Halliburton",
+                "model": "HST-HT",
+                "serialNumber": "TBD",
+                "certificationRequired": true
+              },
+              {
+                "itemNumber": 3,
+                "component": "Pressure Test Assembly",
+                "manufacturer": "Halliburton",
+                "certificationRequired": true
+              },
+              {
+                "itemNumber": 4,
+                "component": "Work String (Jointed Pipe)",
+                "size": "3 1/2\" Drill Pipe",
+                "length_ft": 8500,
+                "certificationRequired": true
+              }
+            ]
+          },
+          {
+            "toolstringId": "TS-W666-002",
+            "operation": "Scale Removal (Chemical + Jetting)",
+            "serviceLineType": "Coiled Tubing",
+            "contractor": "Halliburton",
+            "components": [
+              {
+                "itemNumber": 1,
+                "component": "High-Pressure Rotating Jetting Tool",
+                "manufacturer": "Halliburton",
+                "model": "Hydra-Jet 15K",
+                "nozzlePressure_psi": 15000,
+                "certificationRequired": true
+              },
+              {
+                "itemNumber": 2,
+                "component": "Chemical Delivery Sub",
+                "manufacturer": "Halliburton",
+                "certificationRequired": true
+              },
+              {
+                "itemNumber": 3,
+                "component": "Coiled Tubing String",
+                "size": "2 3/8\" OD",
+                "length_ft": 18000,
+                "certificationRequired": true
+              }
+            ]
+          },
+          {
+            "toolstringId": "TS-W666-003",
+            "operation": "DHSV Replacement",
+            "serviceLineType": "Slickline",
+            "contractor": "Archer",
+            "components": [
+              {
+                "itemNumber": 1,
+                "component": "Mechanical Lock-Open Tool",
+                "manufacturer": "Baker Hughes",
+                "model": "Lock-Open-HT",
+                "certificationRequired": true
+              },
+              {
+                "itemNumber": 2,
+                "component": "Wireline-Retrievable Safety Valve (WRSV)",
+                "manufacturer": "Baker Hughes",
+                "model": "WRSV-Insert-HT",
+                "serialNumber": "TBD",
+                "certificationRequired": true
+              },
+              {
+                "itemNumber": 3,
+                "component": "Setting Tool",
+                "manufacturer": "Baker Hughes",
+                "certificationRequired": true
+              },
+              {
+                "itemNumber": 4,
+                "component": "Slickline Running String",
+                "weight": "3/16\" Slickline Wire",
+                "length_ft": 2500,
+                "certificationRequired": true
+              }
+            ]
+          }
+        ]
+      },
+      "safetyAndCompliance": {
+        "regulatoryAuthority": "North Sea Transition Authority (NSTA)",
+        "wellIntegrityStatement": {
+          "currentStatus": "NON-COMPLIANT - Well Shut-in",
+          "lastSubmittedDate": "2024-04-11",
+          "linkedDocument": "/documents/W666/Regulatory/WIS_2024_04_11.pdf",
+          "nonComplianceReason": "Primary DHSV barrier failed function test"
+        },
+        "managementOfChangeLog": [
+          {
+            "mocId": "MoC-2024-004",
+            "title": "W666 Multi-Stage Intervention Campaign",
+            "raisedDate": "2024-04-12",
+            "raisedBy": "J. Henderson - Asset Manager",
+            "reason": "Primary safety barrier failure + casing deformation + scale blockage require comprehensive intervention",
+            "riskAssessment": "HIGH - Complex multi-stage intervention in HPHT environment",
+            "approvalStatus": "Approved",
+            "approvedBy": "R. Morrison - VP Operations",
+            "approvedDate": "2024-04-20",
+            "linkedDocument": "/documents/W666/MoC/MoC_2024_004_Multi_Stage_Intervention.pdf"
+          }
+        ],
+        "jobSafetyAnalyses": [
+          {
+            "jsaId": "JSA-W666-001",
+            "operation": "Expandable Patch Installation",
+            "preparedDate": "2024-10-15",
+            "preparedBy": "M. Thompson - HSE Manager",
+            "keyHazards": [
+              "High-pressure hydraulic operations",
+              "Heavy lifting operations",
+              "Subsea operations",
+              "HPHT well environment"
+            ],
+            "mitigations": [
+              "Certified HWU equipment with valid pressure testing",
+              "Lifting plan with certified crane operator",
+              "ROV support for subsea operations",
+              "Well control equipment on standby"
+            ],
+            "linkedDocument": "/documents/W666/Safety/JSA_W666_Expandable_Patch.pdf"
+          },
+          {
+            "jsaId": "JSA-W666-002",
+            "operation": "CT Scale Removal",
+            "preparedDate": "2024-10-18",
+            "preparedBy": "M. Thompson - HSE Manager",
+            "keyHazards": [
+              "High-pressure jetting operations",
+              "Chemical handling (DTPA)",
+              "Coiled tubing fatigue",
+              "H2S exposure risk"
+            ],
+            "mitigations": [
+              "Pressure testing of all equipment",
+              "Chemical handling PPE and procedures",
+              "CT inspection and fatigue tracking",
+              "H2S monitoring and ERP"
+            ],
+            "linkedDocument": "/documents/W666/Safety/JSA_W666_CT_Scale_Removal.pdf"
+          },
+          {
+            "jsaId": "JSA-W666-003",
+            "operation": "Slickline DHSV Replacement",
+            "preparedDate": "2024-10-20",
+            "preparedBy": "M. Thompson - HSE Manager",
+            "keyHazards": [
+              "Wireline operations over live well",
+              "Dropped object risk",
+              "Confined space (if platform work)"
+            ],
+            "mitigations": [
+              "Double barrier verification before operation",
+              "Drop object prevention program",
+              "Gas monitoring and ventilation"
+            ],
+            "linkedDocument": "/documents/W666/Safety/JSA_W666_Slickline_DHSV.pdf"
+          }
+        ],
+        "permitsToWork": [
+          {
+            "ptwId": "PTW-W666-2024-001",
+            "operation": "Multi-Stage Intervention Campaign",
+            "issueDate": "TBD",
+            "expiryDate": "TBD",
+            "issuingAuthority": "Hess Operations Manager",
+            "status": "Pending - Awaiting mobilization",
+            "linkedDocument": "/documents/W666/Safety/PTW_W666_Intervention_2024.pdf"
+          }
+        ],
+        "personnelAndCompetency": [
+          {
+            "personnelId": "PERS-001",
+            "name": "J. Henderson",
+            "role": "Asset Manager",
+            "company": "Hess Corporation",
+            "certifications": [
+              "Petroleum Engineering Degree",
+              "IWCF Well Control Level 4",
+              "20+ years North Sea experience"
+            ],
+            "involvement": "Overall campaign authority and decision-making"
+          },
+          {
+            "personnelId": "PERS-002",
+            "name": "M. Thompson",
+            "role": "HSE Manager",
+            "company": "Hess Corporation",
+            "certifications": [
+              "NEBOSH International Diploma",
+              "IOSH Managing Safely",
+              "15+ years HSE experience"
+            ],
+            "involvement": "Safety case development and JSA preparation"
+          },
+          {
+            "personnelId": "PERS-003",
+            "name": "S. Williams",
+            "role": "Wellsite Engineer",
+            "company": "Hess Corporation",
+            "certifications": [
+              "Petroleum Engineering Degree",
+              "IWCF Well Control Level 3",
+              "10+ years intervention experience"
+            ],
+            "involvement": "On-site supervision of all intervention operations"
+          }
+        ],
+        "regulatoryNotifications": [
+          {
+            "notificationId": "NOTIF-001",
+            "date": "2024-04-10",
+            "recipient": "North Sea Transition Authority (NSTA)",
+            "subject": "Primary DHSV Barrier Failure - W666",
+            "summary": "Notification of TRSSV failure during routine test. Well shut-in on secondary barriers.",
+            "linkedDocument": "/documents/W666/Regulatory/NSTA_Notification_2024_04_10.pdf"
+          },
+          {
+            "notificationId": "NOTIF-002",
+            "date": "2024-04-20",
+            "recipient": "North Sea Transition Authority (NSTA)",
+            "subject": "Intervention Program Submission - W666",
+            "summary": "Submission of comprehensive intervention program for NSTA review and approval",
+            "linkedDocument": "/documents/W666/Regulatory/NSTA_Program_Submission_2024_04_20.pdf"
+          }
+        ]
+      }
+    }
+  ]
+}
