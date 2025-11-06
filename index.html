@@ -41,6 +41,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    <!-- Socket.IO for real-time WebSocket connection to Kafka stream -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" integrity="sha384-mZLF4UVrpi/QTWPA7BjNPEnkIfRFn4ZEO3Qp/kpiXg2KKZqzKQ8TCgjIkgEMmXpP" crossorigin="anonymous" defer></script>
 
     <style>
         /* --- Base & Theme Setup --- */
@@ -1212,32 +1214,139 @@
             </div>
         </div>
 
-        <div id="performer-view" class="view-container hidden performer-view p-4 lg:p-6 h-full">
-            <div class="h-full dashboard-grid">
-                <div id="procedure-panel" class="bg-slate-800/50 rounded-lg p-4 flex flex-col">
-                    <h2 class="text-lg font-semibold mb-2 border-b border-slate-700 pb-2">Operational Procedure</h2>
-                    <p class="text-xs text-slate-400 mb-3">Simulation is running. Click a future step to jump ahead.</p>
-                    <div id="procedure-steps" class="flex-1 space-y-3 overflow-y-auto pr-2"></div>
-                    <div id="performer-controls" class="hidden mt-4">
-                        <button id="view-analysis-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-md transition">View Post-Job Analysis</button>
-                    </div>
-                </div>
-                <div class="flex flex-col gap-4 lg:gap-6">
-                    <div id="kpi-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
-                        </div>
-                    <div id="chart-card" class="flex-1 bg-slate-800/50 rounded-lg p-4 flex-col"><h3 class="text-lg font-semibold mb-2">Tubing Force Analysis: Plan vs. Actual</h3><div class="flex-1 relative"><canvas id="tfaChart"></canvas></div></div>
+        <!-- HFE REFACTORED PERFORMER VIEW - Finlay MacLeod Field Operations Spec -->
+        <div id="performer-view" class="view-container hidden performer-view p-3 h-full overflow-y-auto">
+            <!-- Single-column linear layout for glove-friendly operation -->
+            <div class="max-w-4xl mx-auto space-y-3">
 
-                    <!-- V23: Real-Time Anomaly Detection -->
-                    <div id="anomaly-alerts-container" class="bg-slate-800/50 rounded-lg p-4">
-                        <h3 class="text-lg font-semibold mb-4">🚨 Live Anomaly Detection</h3>
-                        <div id="anomaly-alerts" class="space-y-3">
-                            <div class="text-slate-400 text-center py-8 text-sm">
-                                Monitoring for anomalies... All systems normal.
-                            </div>
+                <!-- CONNECTION STATUS INDICATOR (Always Visible) -->
+                <div class="sticky top-0 z-50 mb-1 bg-slate-900 rounded-lg p-3 text-center border-2 border-slate-700">
+                    <p class="text-sm text-slate-400 font-semibold" style="font-size: 14px;">Data Stream Status:</p>
+                    <p id="ws-connection-status" class="text-xl text-yellow-400 font-bold mt-1">🟡 CONNECTING...</p>
+                </div>
+
+                <!-- PRIORITY 1: FLOATING EMERGENCY STOP BUTTON (Always Visible) -->
+                <div id="emergency-stop-container" class="sticky top-0 z-50 mb-3">
+                    <button
+                        id="emergency-stop-btn"
+                        class="w-full bg-red-600 hover:bg-red-700 active:bg-red-800 text-black font-black text-2xl py-4 rounded-xl shadow-2xl border-4 border-red-900 transition-all"
+                        style="min-height: 72px; font-size: 28px; letter-spacing: 0.1em;"
+                        aria-label="Emergency stop - halt all operations"
+                    >
+                        🛑 EMERGENCY STOP
+                    </button>
+                </div>
+
+                <!-- PRIORITY 2: ANOMALY ALERTS (Full-width, requires acknowledgment) -->
+                <div id="anomaly-alerts-container" class="bg-gradient-to-br from-red-900/40 to-orange-900/40 border-4 border-red-600 rounded-xl p-6">
+                    <h2 class="text-3xl font-black mb-4 text-yellow-300" style="font-size: 28px;">
+                        🚨 LIVE ANOMALY ALERTS
+                    </h2>
+                    <div id="anomaly-alerts" class="space-y-3">
+                        <div class="text-slate-300 text-center py-6 text-xl">
+                            All systems normal. Monitoring...
                         </div>
                     </div>
+                    <!-- Acknowledge button (shown when alerts exist) -->
+                    <button
+                        id="acknowledge-alert-btn"
+                        class="hidden w-full mt-4 bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-black font-black text-2xl py-4 rounded-xl shadow-lg border-4 border-yellow-700"
+                        style="min-height: 60px; font-size: 22px;"
+                        aria-label="Acknowledge alert"
+                    >
+                        ✓ ACKNOWLEDGE ALERT
+                    </button>
                 </div>
-                <div class="bg-slate-800/50 rounded-lg p-4 flex flex-col"><h2 class="text-lg font-semibold mb-4 border-b border-slate-700 pb-2">Operations Log</h2><div id="log-entries" class="flex-1 space-y-3 overflow-y-auto mb-4"></div><div class="mt-auto"><textarea id="log-input" class="w-full bg-slate-900 border border-slate-600 rounded-md p-2 text-sm" rows="3" placeholder="Add log entry..."></textarea><button id="add-log-btn" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-4 rounded-md transition">Add Entry</button></div></div>
+
+                <!-- PRIORITY 3: PROCEDURE CONTROLS (Large, glove-friendly buttons) -->
+                <div id="procedure-panel" class="bg-slate-800/90 border-2 border-slate-600 rounded-xl p-6">
+                    <h2 class="text-3xl font-black mb-3 text-cyan-300 border-b-4 border-slate-600 pb-3" style="font-size: 28px;">
+                        OPERATIONAL PROCEDURE
+                    </h2>
+                    <p class="text-xl text-slate-300 mb-4" style="font-size: 20px;">
+                        Current Step: <span id="current-step-indicator" class="text-yellow-300 font-bold">Initializing...</span>
+                    </p>
+
+                    <!-- Scrollable procedure steps -->
+                    <div id="procedure-steps" class="space-y-3 overflow-y-auto mb-6 max-h-96"></div>
+
+                    <!-- Primary action buttons (60px minimum height, 12px spacing) -->
+                    <div class="space-y-3">
+                        <button
+                            id="confirm-step-btn"
+                            class="w-full bg-green-600 hover:bg-green-500 active:bg-green-700 text-black font-black text-2xl py-4 rounded-xl shadow-lg border-4 border-green-800"
+                            style="min-height: 60px; font-size: 22px;"
+                            aria-label="Confirm current step complete"
+                        >
+                            ✓ CONFIRM STEP COMPLETE
+                        </button>
+
+                        <button
+                            id="hold-operation-btn"
+                            class="w-full bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-black font-black text-2xl py-4 rounded-xl shadow-lg border-4 border-yellow-700"
+                            style="min-height: 60px; font-size: 22px;"
+                            aria-label="Hold operation - pause work"
+                        >
+                            ⏸ HOLD OPERATION
+                        </button>
+                    </div>
+
+                    <!-- Post-job analysis (shown when complete) -->
+                    <div id="performer-controls" class="hidden mt-4">
+                        <button
+                            id="view-analysis-btn"
+                            class="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-black text-2xl py-4 rounded-xl shadow-lg border-4 border-blue-800"
+                            style="min-height: 60px; font-size: 22px;"
+                        >
+                            📊 VIEW POST-JOB ANALYSIS
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRIORITY 4: LIVE KPI GAUGES -->
+                <div class="bg-slate-800/90 border-2 border-slate-600 rounded-xl p-6">
+                    <h2 class="text-3xl font-black mb-4 text-cyan-300" style="font-size: 28px;">
+                        LIVE PARAMETERS
+                    </h2>
+                    <div id="kpi-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                </div>
+
+                <!-- PRIORITY 5: TUBING FORCE ANALYSIS CHART -->
+                <div id="chart-card" class="bg-slate-800/90 border-2 border-slate-600 rounded-xl p-6">
+                    <h2 class="text-3xl font-black mb-4 text-cyan-300" style="font-size: 28px;">
+                        TUBING FORCE: PLAN vs ACTUAL
+                    </h2>
+                    <div class="relative" style="min-height: 300px;">
+                        <canvas id="tfaChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- PRIORITY 6: OPERATIONS LOG (Lower priority, smaller text ok) -->
+                <div class="bg-slate-800/90 border-2 border-slate-600 rounded-xl p-6">
+                    <h2 class="text-2xl font-bold mb-4 text-cyan-300 border-b-2 border-slate-600 pb-3" style="font-size: 24px;">
+                        Operations Log
+                    </h2>
+                    <div id="log-entries" class="space-y-2 overflow-y-auto mb-4 max-h-64 text-lg"></div>
+
+                    <!-- Log entry form (de-emphasized) -->
+                    <div class="mt-4 space-y-2">
+                        <textarea
+                            id="log-input"
+                            class="w-full bg-slate-900 border-2 border-slate-600 rounded-lg p-3 text-lg"
+                            rows="2"
+                            placeholder="Add log entry..."
+                            style="font-size: 18px;"
+                        ></textarea>
+                        <button
+                            id="add-log-btn"
+                            class="w-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-bold text-xl py-3 rounded-lg border-2 border-emerald-800"
+                            style="min-height: 48px; font-size: 18px;"
+                        >
+                            ➕ Add Entry
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -1548,6 +1657,8 @@
 
 </div>
 
+    <script src="assets/js/performer-websocket.js" defer></script>
+    <script src="assets/js/performer-live-data.js" defer></script>
     <script src="assets/js/app.js" defer></script>
     <script src="assets/js/mobile-communicator.js" defer></script>
 
