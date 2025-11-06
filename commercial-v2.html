@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self';
+                   script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com;
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com;
+                   font-src 'self' https://fonts.gstatic.com;
+                   img-src 'self' data: https:;
+                   connect-src 'self' ws://localhost:8080 http://localhost:8080;">
+    <title>Commercial Dashboard - WellTegra</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 50%, #581c87 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Faded WellTegra Watermark */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background-image: url('assets/watermark.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.05;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .cost-widget {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+            border: 2px solid #3b82f6;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .cost-widget:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+        }
+
+        .high-risk-alert {
+            animation: pulse-border 2s ease-in-out infinite;
+            border-color: #dc2626 !important;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(153, 27, 27, 0.2)) !important;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% {
+                border-color: #dc2626;
+                box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+            }
+            50% {
+                border-color: #f87171;
+                box-shadow: 0 0 30px rgba(220, 38, 38, 0.8);
+            }
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .risk-badge.critical {
+            background: #dc2626;
+            color: white;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .contract-row {
+            transition: background 0.2s;
+        }
+
+        .contract-row:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .loading-spinner {
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .connection-status {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .connection-status.connected {
+            background: #22c55e;
+            box-shadow: 0 0 10px #22c55e;
+        }
+
+        .connection-status.disconnected {
+            background: #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-blue-900 to-purple-900 border-b-4 border-blue-500 shadow-xl">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-white">Commercial Dashboard</h1>
+                        <p class="mt-1 text-sm text-blue-200">Financial impact tracking with live risk integration</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-300">User: <span id="current-user" class="font-semibold text-white">--</span></p>
+                        <p class="text-sm text-gray-300">Role: <span id="current-role" class="font-semibold text-blue-400">--</span></p>
+                        <div class="mt-2 flex items-center justify-end">
+                            <span class="connection-status disconnected" id="connection-status"></span>
+                            <span class="text-xs text-gray-400" id="connection-text">Connecting...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+            <!-- Risk Alert Banner (Hidden by default) -->
+            <div id="risk-alert-banner" class="hidden mb-6 bg-red-900 border-2 border-red-500 rounded-lg p-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-3xl">⚠️</span>
+                        <div>
+                            <p class="text-lg font-bold text-white">HIGH RISK EVENT DETECTED</p>
+                            <p class="text-sm text-red-200" id="risk-alert-message">--</p>
+                        </div>
+                    </div>
+                    <span class="risk-badge critical" id="risk-alert-value">--</span>
+                </div>
+            </div>
+
+            <!-- Cost Dashboard Row -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- AFE vs Actual Widget -->
+                <div class="cost-widget">
+                    <h3 class="text-sm font-semibold text-gray-400 mb-2">AFE vs Actual</h3>
+                    <div class="text-3xl font-bold text-white mb-1" id="actual-cost">$0</div>
+                    <div class="text-sm text-gray-300">of <span id="afe-cost" class="font-semibold text-blue-400">$0</span> AFE</div>
+                    <div class="mt-3 bg-gray-700 rounded-full h-2">
+                        <div id="burn-bar" class="bg-blue-500 h-2 rounded-full transition-all" style="width: 0%"></div>
+                    </div>
+                    <div class="mt-2 text-xs text-gray-400" id="burn-percent">0% burned</div>
+                </div>
+
+                <!-- NPT Cost Tracker Widget -->
+                <div class="cost-widget" id="npt-widget">
+                    <h3 class="text-sm font-semibold text-gray-400 mb-2">NPT Cost Impact</h3>
+                    <div class="text-3xl font-bold text-orange-400 mb-1" id="npt-cost">$0</div>
+                    <div class="text-sm text-gray-300">Non-Productive Time</div>
+                    <div class="mt-3 space-y-1 text-xs">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Weather</span>
+                            <span class="text-white font-semibold" id="npt-weather">$0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Equipment</span>
+                            <span class="text-white font-semibold" id="npt-equipment">$0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Operational</span>
+                            <span class="text-white font-semibold" id="npt-operational">$0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Risk Exposure Widget -->
+                <div class="cost-widget" id="risk-exposure-widget">
+                    <h3 class="text-sm font-semibold text-gray-400 mb-2">Potential Risk Exposure</h3>
+                    <div class="text-3xl font-bold text-red-400 mb-1" id="risk-exposure">$0</div>
+                    <div class="text-sm text-gray-300">Estimated at current risk levels</div>
+                    <div class="mt-3 text-xs text-gray-400" id="risk-exposure-detail">
+                        Based on historical incident costs
+                    </div>
+                </div>
+            </div>
+
+            <!-- AFE vs Actual Chart -->
+            <div class="card mb-8">
+                <h3 class="text-xl font-bold text-white mb-4">Cost Tracking</h3>
+                <div class="h-64">
+                    <canvas id="cost-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Contracts Table -->
+                <div class="card">
+                    <h3 class="text-xl font-bold text-white mb-4">Key Contracts</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b-2 border-blue-500 text-gray-400">
+                                    <th class="text-left p-2">Contractor</th>
+                                    <th class="text-left p-2">Service</th>
+                                    <th class="text-right p-2">Rate</th>
+                                    <th class="text-right p-2">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contracts-body" class="text-white">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- NPT Breakdown -->
+                <div class="card">
+                    <h3 class="text-xl font-bold text-white mb-4">NPT Breakdown by Well</h3>
+                    <div id="npt-breakdown-content" class="space-y-3">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-12 py-6 text-center text-sm text-gray-400">
+            <p>WellTegra Commercial Dashboard v2.0 | Sprint 12</p>
+            <p class="mt-1">Role-Based Access: Executive & Risk-Analyst Only</p>
+        </footer>
+    </div>
+
+    <!-- WebSocket Service -->
+    <script src="assets/js/webSocketService.js"></script>
+
+    <!-- Commercial V2 Logic -->
+    <script src="assets/js/commercial-v2.js"></script>
+
+    <script>
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.CommercialV2) {
+                window.CommercialV2.initialize();
+            }
+        });
+    </script>
+</body>
+</html>
