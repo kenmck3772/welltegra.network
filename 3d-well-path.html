@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' 'unsafe-eval' file: https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; font-src 'self' data: file:; connect-src 'self' https://api.welltegra.local; media-src 'self' data: file:; base-uri 'self'; form-action 'self'">
+
+    <title>WellTegra | 3D Well Path Analyzer - Engineering Visualization</title>
+    <meta name="description" content="3D visualization of well deviation surveys. Spatial analysis for collision avoidance and geomechanical planning.">
+    <meta name="author" content="WellTegra Engineering Team - Rowan Ross & Dr. Isla Munro">
+
+    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+
+    <!-- VTK.js for 3D scientific visualization -->
+    <script src="https://unpkg.com/vtk.js@29.5.0/dist/vtk.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .dashboard-container {
+            max-width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+
+        .header-bar {
+            background: linear-gradient(90deg, #4338ca 0%, #6366f1 100%);
+            border-radius: 0.75rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 32px rgba(67, 56, 202, 0.3);
+            border: 2px solid #6366f1;
+            flex-shrink: 0;
+        }
+
+        .control-panel {
+            background: rgba(30, 27, 75, 0.95);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+            border: 2px solid #4338ca;
+            flex-shrink: 0;
+        }
+
+        .viewer-container {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 0.75rem;
+            border: 2px solid #4338ca;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        #vtk-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .well-selector {
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid #6366f1;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: #e2e8f0;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .well-selector:hover {
+            border-color: #818cf8;
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .well-selector:focus {
+            outline: none;
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .info-badge {
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid #6366f1;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #c7d2fe;
+        }
+
+        .controls-help {
+            background: rgba(30, 27, 75, 0.9);
+            border: 1px solid #4338ca;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            font-size: 0.75rem;
+            color: #cbd5e1;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            border-radius: 0.75rem;
+        }
+
+        .loading-overlay.hidden {
+            display: none;
+        }
+
+        .loading-spinner {
+            width: 64px;
+            height: 64px;
+            border: 6px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50%;
+            border-top-color: #6366f1;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .metric-display {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid #4338ca;
+        }
+
+        .metric-label {
+            font-size: 0.625rem;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: #c7d2fe;
+        }
+
+        .alert-banner {
+            background: rgba(220, 38, 38, 0.2);
+            border: 2px solid #dc2626;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert-banner.visible {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="header-bar">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-black text-white">
+                        3D WELL PATH ANALYZER
+                    </h1>
+                    <p class="text-indigo-200 text-sm mt-1">
+                        Engineering Visualization - Deviation Survey & Spatial Analysis
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="info-badge">
+                        VTK.js Renderer
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Banner -->
+        <div id="alert-banner" class="alert-banner">
+            <p class="text-red-200 font-bold" id="alert-message"></p>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                <!-- Well Selector -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1 uppercase tracking-wide">
+                        Select Well
+                    </label>
+                    <select id="well-selector" class="well-selector w-full">
+                        <option value="">-- Select a well --</option>
+                        <option value="W666">W666 - The Perfect Storm</option>
+                        <option value="W101">W101 - Old Faithful</option>
+                        <option value="W234">W234 - Deep Blue</option>
+                        <option value="W555">W555 - Golden Opportunity</option>
+                        <option value="W789">W789 - North Star</option>
+                        <option value="W432">W432 - Rising Sun</option>
+                        <option value="W888">W888 - Silver Lining</option>
+                    </select>
+                </div>
+
+                <!-- Survey Info -->
+                <div class="metric-display">
+                    <p class="metric-label">Survey Points</p>
+                    <p class="metric-value" id="survey-points">--</p>
+                </div>
+
+                <div class="metric-display">
+                    <p class="metric-label">Max Depth (MD)</p>
+                    <p class="metric-value" id="max-depth">-- ft</p>
+                </div>
+
+                <div class="metric-display">
+                    <p class="metric-label">Max Inclination</p>
+                    <p class="metric-value" id="max-inclination">--°</p>
+                </div>
+            </div>
+
+            <!-- Controls Help -->
+            <div class="controls-help mt-3">
+                <p class="font-bold mb-1">🖱️ Mouse Controls:</p>
+                <div class="grid grid-cols-3 gap-2">
+                    <p><span class="font-semibold">Left Click + Drag:</span> Rotate</p>
+                    <p><span class="font-semibold">Middle Click + Drag:</span> Pan</p>
+                    <p><span class="font-semibold">Scroll Wheel:</span> Zoom</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3D Viewer Container -->
+        <div class="viewer-container">
+            <div id="vtk-container"></div>
+
+            <!-- Loading Overlay -->
+            <div id="loading-overlay" class="loading-overlay hidden">
+                <div class="text-center">
+                    <div class="loading-spinner mx-auto mb-4"></div>
+                    <p class="text-xl font-bold text-indigo-300">Loading Survey Data...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Info -->
+        <div class="mt-2 text-center text-slate-400 text-xs">
+            <p>WellTegra 3D Well Path Analyzer | VTK.js Scientific Visualization | For Engineer, Risk-Analyst, and Executive roles only</p>
+        </div>
+    </div>
+
+    <!-- Load JavaScript -->
+    <script src="assets/js/3d-well-path.js" defer></script>
+</body>
+
+</html>
