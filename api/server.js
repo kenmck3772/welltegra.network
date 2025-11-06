@@ -11,16 +11,61 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const { Kafka } = require('kafkajs');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
+// Rate Limiting Configuration
+// Prevents brute force and DoS attacks
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: {
+        success: false,
+        error: 'Too many requests from this IP, please try again later.'
+    },
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+// Stricter rate limiting for write operations (POST, PUT, DELETE)
+const writeLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 30, // Limit each IP to 30 write requests per windowMs
+    message: {
+        success: false,
+        error: 'Too many write operations from this IP, please try again later.'
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+// CORS Configuration - Restrict to specific origins
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',')
+    : ['http://localhost:3000', 'http://localhost:8080', 'http://127.0.0.1:3000'];
+
 app.use(cors({
-    origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : '*',
-    credentials: true
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(express.json());
+
+// Apply rate limiting to all API routes
+app.use('/api/', apiLimiter);
 
 // JWT Configuration (matches Catriona's security framework)
 const JWT_SECRET = process.env.JWT_SECRET || 'welltegra-dev-secret-key';
@@ -255,7 +300,7 @@ app.get('/api/v1/procedures/:wellId', authenticateJWT, (req, res) => {
  * POST /api/v1/procedures/:wellId/step
  * Create a new procedure step
  */
-app.post('/api/v1/procedures/:wellId/step', authenticateJWT, async (req, res) => {
+app.post('/api/v1/procedures/:wellId/step', writeLimiter, authenticateJWT, async (req, res) => {
     const userProvidedId = req.params.wellId;
     const { title, description, assignee } = req.body;
 
@@ -328,7 +373,7 @@ app.post('/api/v1/procedures/:wellId/step', authenticateJWT, async (req, res) =>
  * PUT /api/v1/procedures/step/:stepId
  * Update an existing procedure step
  */
-app.put('/api/v1/procedures/step/:stepId', authenticateJWT, async (req, res) => {
+app.put('/api/v1/procedures/step/:stepId', writeLimiter, authenticateJWT, async (req, res) => {
     const userProvidedId = req.params.stepId;
     const { status, title, description, assignee } = req.body;
 
@@ -389,7 +434,7 @@ app.put('/api/v1/procedures/step/:stepId', authenticateJWT, async (req, res) => 
  * DELETE /api/v1/procedures/step/:stepId
  * Delete a procedure step
  */
-app.delete('/api/v1/procedures/step/:stepId', authenticateJWT, async (req, res) => {
+app.delete('/api/v1/procedures/step/:stepId', writeLimiter, authenticateJWT, async (req, res) => {
     const userProvidedId = req.params.stepId;
 
     // TAINT BARRIER: Validate stepId
