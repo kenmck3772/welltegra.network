@@ -94,6 +94,7 @@ function isValidStepId(stepId) {
 
 /**
  * Sanitize string input to prevent XSS
+ * Encodes HTML special characters and limits length
  * @param {string} input - User input
  * @returns {string} - Sanitized string
  */
@@ -102,11 +103,18 @@ function sanitizeString(input) {
         return '';
     }
 
-    // Remove HTML tags and limit length
-    return input
-        .replace(/[<>]/g, '')
+    // HTML entity encoding to prevent XSS
+    const sanitized = input
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;')
+        .replace(/\//g, '&#x2F;')
         .trim()
         .substring(0, 500);
+
+    return sanitized;
 }
 
 /**
@@ -147,60 +155,63 @@ function authenticateJWT(req, res, next) {
 // ==================== DATA STORE ====================
 
 /**
- * In-memory data store for procedures
+ * In-memory data store for procedures using Map to prevent prototype pollution
+ * Map is immune to prototype pollution attacks as it doesn't use object property access
  * In production, this would be a database (PostgreSQL, MongoDB, etc.)
  */
-const procedures = {
-    'W666': [
-        {
-            id: 'step-1',
-            title: 'Pre-Spud Meeting',
-            description: 'Complete pre-spud safety meeting with all personnel',
-            status: 'completed',
-            assignee: 'Finlay MacLeod',
-            timestamp: '2024-11-05T08:00:00Z',
-            wellId: 'W666'
-        },
-        {
-            id: 'step-2',
-            title: 'Rig-up BOP Stack',
-            description: 'Install and pressure test 5-ram BOP stack',
-            status: 'completed',
-            assignee: 'Rowan Ross',
-            timestamp: '2024-11-05T10:30:00Z',
-            wellId: 'W666'
-        },
-        {
-            id: 'step-3',
-            title: 'Run Surface Casing',
-            description: 'Run 13-3/8" surface casing to 2,500ft',
-            status: 'in-progress',
-            assignee: 'Rowan Ross',
-            timestamp: '2024-11-05T14:00:00Z',
-            wellId: 'W666'
-        },
-        {
-            id: 'step-4',
-            title: 'Cement Surface Casing',
-            description: 'Cement surface casing with lead/tail slurry',
-            status: 'pending',
-            assignee: 'Dr. Isla Munro',
-            timestamp: null,
-            wellId: 'W666'
-        }
-    ],
-    'W001': [
-        {
-            id: 'step-w001-1',
-            title: 'Equipment Mobilization',
-            description: 'Mobilize drilling equipment to North Sea Alpha location',
-            status: 'completed',
-            assignee: 'Logistics Team',
-            timestamp: '2024-11-04T09:00:00Z',
-            wellId: 'W001'
-        }
-    ]
-};
+const procedures = new Map();
+
+// Initialize with sample data
+procedures.set('W666', [
+    {
+        id: 'step-1',
+        title: 'Pre-Spud Meeting',
+        description: 'Complete pre-spud safety meeting with all personnel',
+        status: 'completed',
+        assignee: 'Finlay MacLeod',
+        timestamp: '2024-11-05T08:00:00Z',
+        wellId: 'W666'
+    },
+    {
+        id: 'step-2',
+        title: 'Rig-up BOP Stack',
+        description: 'Install and pressure test 5-ram BOP stack',
+        status: 'completed',
+        assignee: 'Rowan Ross',
+        timestamp: '2024-11-05T10:30:00Z',
+        wellId: 'W666'
+    },
+    {
+        id: 'step-3',
+        title: 'Run Surface Casing',
+        description: 'Run 13-3/8" surface casing to 2,500ft',
+        status: 'in-progress',
+        assignee: 'Rowan Ross',
+        timestamp: '2024-11-05T14:00:00Z',
+        wellId: 'W666'
+    },
+    {
+        id: 'step-4',
+        title: 'Cement Surface Casing',
+        description: 'Cement surface casing with lead/tail slurry',
+        status: 'pending',
+        assignee: 'Dr. Isla Munro',
+        timestamp: null,
+        wellId: 'W666'
+    }
+]);
+
+procedures.set('W001', [
+    {
+        id: 'step-w001-1',
+        title: 'Equipment Mobilization',
+        description: 'Mobilize drilling equipment to North Sea Alpha location',
+        status: 'completed',
+        assignee: 'Logistics Team',
+        timestamp: '2024-11-04T09:00:00Z',
+        wellId: 'W001'
+    }
+]);
 
 // ==================== API ENDPOINTS ====================
 
@@ -221,8 +232,8 @@ app.get('/api/v1/procedures/:wellId', authenticateJWT, (req, res) => {
 
     console.log(`[API] GET /procedures/${wellId} - User: ${req.user.name}`);
 
-    // Safe property access using Object.hasOwn
-    const wellProcedures = Object.hasOwn(procedures, wellId) ? procedures[wellId] : [];
+    // Safe Map access - immune to prototype pollution
+    const wellProcedures = procedures.get(wellId) || [];
 
     res.json({
         success: true,
@@ -281,14 +292,15 @@ app.post('/api/v1/procedures/:wellId/step', authenticateJWT, async (req, res) =>
         wellId
     };
 
-    // Add to data store - safe property creation
-    if (!Object.hasOwn(procedures, wellId)) {
-        procedures[wellId] = [];
+    // Add to data store using Map - immune to prototype pollution
+    if (!procedures.has(wellId)) {
+        procedures.set(wellId, []);
     }
-    procedures[wellId].push(newStep);
+    const wellProcedures = procedures.get(wellId);
+    wellProcedures.push(newStep);
 
     // Publish to Kafka
-    await publishProcedureUpdate(wellId, procedures[wellId]);
+    await publishProcedureUpdate(wellId, wellProcedures);
 
     res.status(201).json({
         success: true,
@@ -322,19 +334,16 @@ app.put('/api/v1/procedures/step/:stepId', authenticateJWT, async (req, res) => 
 
     console.log(`[API] PUT /procedures/step/${stepId} - User: ${req.user.name}`);
 
-    // Find step across all wells - safe iteration
+    // Find step across all wells using Map iteration - immune to prototype pollution
     let foundStep = null;
     let foundWellId = null;
 
-    for (const wellId of Object.keys(procedures)) {
-        if (Object.hasOwn(procedures, wellId)) {
-            const steps = procedures[wellId];
-            const step = steps.find(s => s.id === stepId);
-            if (step) {
-                foundStep = step;
-                foundWellId = wellId;
-                break;
-            }
+    for (const [wellId, steps] of procedures.entries()) {
+        const step = steps.find(s => s.id === stepId);
+        if (step) {
+            foundStep = step;
+            foundWellId = wellId;
+            break;
         }
     }
 
@@ -353,7 +362,7 @@ app.put('/api/v1/procedures/step/:stepId', authenticateJWT, async (req, res) => 
     foundStep.timestamp = new Date().toISOString();
 
     // Publish to Kafka
-    await publishProcedureUpdate(foundWellId, procedures[foundWellId]);
+    await publishProcedureUpdate(foundWellId, procedures.get(foundWellId));
 
     res.json({
         success: true,
@@ -378,20 +387,17 @@ app.delete('/api/v1/procedures/step/:stepId', authenticateJWT, async (req, res) 
 
     console.log(`[API] DELETE /procedures/step/${stepId} - User: ${req.user.name}`);
 
-    // Find and remove step - safe iteration
+    // Find and remove step using Map iteration - immune to prototype pollution
     let removed = false;
     let affectedWellId = null;
 
-    for (const wellId of Object.keys(procedures)) {
-        if (Object.hasOwn(procedures, wellId)) {
-            const steps = procedures[wellId];
-            const index = steps.findIndex(s => s.id === stepId);
-            if (index !== -1) {
-                steps.splice(index, 1);
-                removed = true;
-                affectedWellId = wellId;
-                break;
-            }
+    for (const [wellId, steps] of procedures.entries()) {
+        const index = steps.findIndex(s => s.id === stepId);
+        if (index !== -1) {
+            steps.splice(index, 1);
+            removed = true;
+            affectedWellId = wellId;
+            break;
         }
     }
 
@@ -403,7 +409,7 @@ app.delete('/api/v1/procedures/step/:stepId', authenticateJWT, async (req, res) 
     }
 
     // Publish to Kafka
-    await publishProcedureUpdate(affectedWellId, procedures[affectedWellId]);
+    await publishProcedureUpdate(affectedWellId, procedures.get(affectedWellId));
 
     res.json({
         success: true,
