@@ -179,6 +179,56 @@ function createSafeAuditLog(properties) {
     return safe;
 }
 
+/**
+ * Create safe sync payload from database result
+ * Explicitly reconstructs object to break taint from database
+ */
+function createSafeSyncPayload(dbResult) {
+    if (!dbResult || typeof dbResult !== 'object') {
+        return {};
+    }
+
+    const safe = {
+        id: String(dbResult.id || ''),
+        name: String(dbResult.name || ''),
+        well_id: dbResult.well_id ? String(dbResult.well_id) : null,
+        operation_type: dbResult.operation_type ? String(dbResult.operation_type) : null,
+        created_by: String(dbResult.created_by || ''),
+        created_at: dbResult.created_at ? dbResult.created_at.toISOString() : new Date().toISOString(),
+        synced: Boolean(dbResult.synced),
+    };
+
+    // Parse and validate tools array from database
+    if (dbResult.tools) {
+        try {
+            const toolsData = typeof dbResult.tools === 'string' ? JSON.parse(dbResult.tools) : dbResult.tools;
+            if (Array.isArray(toolsData)) {
+                safe.tools = sanitizeToolsArray(toolsData);
+            } else {
+                safe.tools = [];
+            }
+        } catch (e) {
+            safe.tools = [];
+        }
+    } else {
+        safe.tools = [];
+    }
+
+    // Parse and validate metadata from database
+    if (dbResult.metadata) {
+        try {
+            const metadataData = typeof dbResult.metadata === 'string' ? JSON.parse(dbResult.metadata) : dbResult.metadata;
+            safe.metadata = sanitizeMetadata(metadataData);
+        } catch (e) {
+            safe.metadata = {};
+        }
+    } else {
+        safe.metadata = {};
+    }
+
+    return safe;
+}
+
 console.log('[Edge Core API] Starting...');
 console.log('[Edge Core API] Mode:', EDGE_MODE ? 'EDGE (Offline-capable)' : 'CLOUD');
 console.log('[Edge Core API] FIPS 140-2:', FIPS_MODE ? 'ENABLED' : 'DISABLED');
@@ -516,19 +566,22 @@ app.post('/api/v1/toolstrings', authenticateJWT, writeLimiter, async (req, res) 
 
         const toolstring = result.rows[0];
 
-        // Add to sync queue
+        // SECURITY: Create safe payload from database result (breaks taint flow)
+        const safeSyncPayload = createSafeSyncPayload(toolstring);
+
+        // Add to sync queue - use safe payload (no database taint)
         await pool.query(
             `INSERT INTO sync_queue (entity_type, entity_id, operation, payload)
             VALUES ($1, $2, $3, $4)`,
-            ['toolstring', id, 'CREATE', JSON.stringify(toolstring)]
+            ['toolstring', id, 'CREATE', JSON.stringify(safeSyncPayload)]
         );
 
-        // Publish to Kafka if connected
+        // Publish to Kafka if connected - use safe payload (no database taint)
         if (kafkaConnected) {
             try {
                 await producer.send({
                     topic: 'toolstring-create',
-                    messages: [{ key: id, value: JSON.stringify(toolstring) }],
+                    messages: [{ key: id, value: JSON.stringify(safeSyncPayload) }],
                 });
             } catch (kafkaError) {
                 // Don't log error details (could contain sensitive info)
@@ -658,19 +711,22 @@ app.put('/api/v1/toolstrings/:id', authenticateJWT, writeLimiter, async (req, re
 
         const toolstring = result.rows[0];
 
-        // Add to sync queue
+        // SECURITY: Create safe payload from database result (breaks taint flow)
+        const safeSyncPayload = createSafeSyncPayload(toolstring);
+
+        // Add to sync queue - use safe payload (no database taint)
         await pool.query(
             `INSERT INTO sync_queue (entity_type, entity_id, operation, payload)
             VALUES ($1, $2, $3, $4)`,
-            ['toolstring', validatedId, 'UPDATE', JSON.stringify(toolstring)]
+            ['toolstring', validatedId, 'UPDATE', JSON.stringify(safeSyncPayload)]
         );
 
-        // Publish to Kafka if connected
+        // Publish to Kafka if connected - use safe payload (no database taint)
         if (kafkaConnected) {
             try {
                 await producer.send({
                     topic: 'toolstring-update',
-                    messages: [{ key: validatedId, value: JSON.stringify(toolstring) }],
+                    messages: [{ key: validatedId, value: JSON.stringify(safeSyncPayload) }],
                 });
             } catch (kafkaError) {
                 console.error('[Edge Core API] Kafka publish failed');
