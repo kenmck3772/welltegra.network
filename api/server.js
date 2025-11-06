@@ -16,7 +16,10 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : '*',
+    credentials: true
+}));
 app.use(express.json());
 
 // JWT Configuration (matches Catriona's security framework)
@@ -44,6 +47,77 @@ async function initKafka() {
 }
 
 initKafka();
+
+// ==================== SECURITY UTILITIES ====================
+
+/**
+ * Validate and sanitize wellId to prevent prototype pollution
+ * @param {string} wellId - Well identifier
+ * @returns {boolean} - True if valid
+ */
+function isValidWellId(wellId) {
+    if (!wellId || typeof wellId !== 'string') {
+        return false;
+    }
+
+    // Prevent prototype pollution attacks
+    const dangerousKeys = ['__proto__', 'constructor', 'prototype'];
+    if (dangerousKeys.includes(wellId.toLowerCase())) {
+        return false;
+    }
+
+    // Validate format: alphanumeric, hyphens, underscores only
+    const validPattern = /^[a-zA-Z0-9_-]+$/;
+    return validPattern.test(wellId) && wellId.length <= 50;
+}
+
+/**
+ * Validate and sanitize stepId to prevent prototype pollution
+ * @param {string} stepId - Step identifier
+ * @returns {boolean} - True if valid
+ */
+function isValidStepId(stepId) {
+    if (!stepId || typeof stepId !== 'string') {
+        return false;
+    }
+
+    // Prevent prototype pollution attacks
+    const dangerousKeys = ['__proto__', 'constructor', 'prototype'];
+    if (dangerousKeys.includes(stepId.toLowerCase())) {
+        return false;
+    }
+
+    // Validate format: alphanumeric, hyphens, underscores only
+    const validPattern = /^[a-zA-Z0-9_-]+$/;
+    return validPattern.test(stepId) && stepId.length <= 100;
+}
+
+/**
+ * Sanitize string input to prevent XSS
+ * @param {string} input - User input
+ * @returns {string} - Sanitized string
+ */
+function sanitizeString(input) {
+    if (!input || typeof input !== 'string') {
+        return '';
+    }
+
+    // Remove HTML tags and limit length
+    return input
+        .replace(/[<>]/g, '')
+        .trim()
+        .substring(0, 500);
+}
+
+/**
+ * Validate status value
+ * @param {string} status - Status value
+ * @returns {boolean} - True if valid
+ */
+function isValidStatus(status) {
+    const validStatuses = ['pending', 'in-progress', 'completed'];
+    return validStatuses.includes(status);
+}
 
 // ==================== MIDDLEWARE ====================
 
@@ -137,9 +211,18 @@ const procedures = {
 app.get('/api/v1/procedures/:wellId', authenticateJWT, (req, res) => {
     const { wellId } = req.params;
 
+    // Validate wellId to prevent prototype pollution
+    if (!isValidWellId(wellId)) {
+        return res.status(400).json({
+            success: false,
+            error: 'Invalid well ID format'
+        });
+    }
+
     console.log(`[API] GET /procedures/${wellId} - User: ${req.user.name}`);
 
-    const wellProcedures = procedures[wellId] || [];
+    // Safe property access using Object.hasOwn
+    const wellProcedures = Object.hasOwn(procedures, wellId) ? procedures[wellId] : [];
 
     res.json({
         success: true,
@@ -157,6 +240,14 @@ app.post('/api/v1/procedures/:wellId/step', authenticateJWT, async (req, res) =>
     const { wellId } = req.params;
     const { title, description, assignee } = req.body;
 
+    // Validate wellId to prevent prototype pollution
+    if (!isValidWellId(wellId)) {
+        return res.status(400).json({
+            success: false,
+            error: 'Invalid well ID format'
+        });
+    }
+
     console.log(`[API] POST /procedures/${wellId}/step - User: ${req.user.name}`);
 
     // Validation
@@ -167,19 +258,31 @@ app.post('/api/v1/procedures/:wellId/step', authenticateJWT, async (req, res) =>
         });
     }
 
+    // Sanitize user inputs to prevent XSS
+    const sanitizedTitle = sanitizeString(title);
+    const sanitizedDescription = sanitizeString(description);
+    const sanitizedAssignee = sanitizeString(assignee) || req.user.name;
+
+    if (!sanitizedTitle || !sanitizedDescription) {
+        return res.status(400).json({
+            success: false,
+            error: 'Title and description cannot be empty after sanitization'
+        });
+    }
+
     // Create new step
     const newStep = {
         id: `step-${Date.now()}`,
-        title,
-        description,
+        title: sanitizedTitle,
+        description: sanitizedDescription,
         status: 'pending',
-        assignee: assignee || req.user.name,
+        assignee: sanitizedAssignee,
         timestamp: new Date().toISOString(),
         wellId
     };
 
-    // Add to data store
-    if (!procedures[wellId]) {
+    // Add to data store - safe property creation
+    if (!Object.hasOwn(procedures, wellId)) {
         procedures[wellId] = [];
     }
     procedures[wellId].push(newStep);
@@ -201,18 +304,37 @@ app.put('/api/v1/procedures/step/:stepId', authenticateJWT, async (req, res) => 
     const { stepId } = req.params;
     const { status, title, description, assignee } = req.body;
 
+    // Validate stepId to prevent prototype pollution
+    if (!isValidStepId(stepId)) {
+        return res.status(400).json({
+            success: false,
+            error: 'Invalid step ID format'
+        });
+    }
+
+    // Validate status if provided
+    if (status && !isValidStatus(status)) {
+        return res.status(400).json({
+            success: false,
+            error: 'Invalid status value. Must be: pending, in-progress, or completed'
+        });
+    }
+
     console.log(`[API] PUT /procedures/step/${stepId} - User: ${req.user.name}`);
 
-    // Find step across all wells
+    // Find step across all wells - safe iteration
     let foundStep = null;
     let foundWellId = null;
 
-    for (const [wellId, steps] of Object.entries(procedures)) {
-        const step = steps.find(s => s.id === stepId);
-        if (step) {
-            foundStep = step;
-            foundWellId = wellId;
-            break;
+    for (const wellId of Object.keys(procedures)) {
+        if (Object.hasOwn(procedures, wellId)) {
+            const steps = procedures[wellId];
+            const step = steps.find(s => s.id === stepId);
+            if (step) {
+                foundStep = step;
+                foundWellId = wellId;
+                break;
+            }
         }
     }
 
@@ -223,11 +345,11 @@ app.put('/api/v1/procedures/step/:stepId', authenticateJWT, async (req, res) => 
         });
     }
 
-    // Update fields
+    // Sanitize and update fields
     if (status) foundStep.status = status;
-    if (title) foundStep.title = title;
-    if (description) foundStep.description = description;
-    if (assignee) foundStep.assignee = assignee;
+    if (title) foundStep.title = sanitizeString(title);
+    if (description) foundStep.description = sanitizeString(description);
+    if (assignee) foundStep.assignee = sanitizeString(assignee);
     foundStep.timestamp = new Date().toISOString();
 
     // Publish to Kafka
@@ -246,19 +368,30 @@ app.put('/api/v1/procedures/step/:stepId', authenticateJWT, async (req, res) => 
 app.delete('/api/v1/procedures/step/:stepId', authenticateJWT, async (req, res) => {
     const { stepId } = req.params;
 
+    // Validate stepId to prevent prototype pollution
+    if (!isValidStepId(stepId)) {
+        return res.status(400).json({
+            success: false,
+            error: 'Invalid step ID format'
+        });
+    }
+
     console.log(`[API] DELETE /procedures/step/${stepId} - User: ${req.user.name}`);
 
-    // Find and remove step
+    // Find and remove step - safe iteration
     let removed = false;
     let affectedWellId = null;
 
-    for (const [wellId, steps] of Object.entries(procedures)) {
-        const index = steps.findIndex(s => s.id === stepId);
-        if (index !== -1) {
-            steps.splice(index, 1);
-            removed = true;
-            affectedWellId = wellId;
-            break;
+    for (const wellId of Object.keys(procedures)) {
+        if (Object.hasOwn(procedures, wellId)) {
+            const steps = procedures[wellId];
+            const index = steps.findIndex(s => s.id === stepId);
+            if (index !== -1) {
+                steps.splice(index, 1);
+                removed = true;
+                affectedWellId = wellId;
+                break;
+            }
         }
     }
 
