@@ -344,6 +344,29 @@
             outline: 2px solid #3b82f6;
             outline-offset: 2px;
         }
+
+        /* --- Hero Section Styles --- */
+        .hero-section { position: relative; overflow: hidden; }
+        #hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            transform: translateX(-50%) translateY(-50%);
+            background-size: cover;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(15, 23, 42, 0.8);
+            z-index: -50;
+        }
+        .hero-section h2 { text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); }
+        .hero-section p { text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); }
     </style>
 </head>
 
