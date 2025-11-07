@@ -587,6 +587,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     const manualPlanningView = document.getElementById('manual-planning-view');
     const aiAdvisorView = document.getElementById('ai-advisor-view');
     const aiRecommendationsContainer = document.getElementById('ai-recommendations');
+    const step1ContinueBtn = document.getElementById('step-1-continue');
+    const step2ContinueBtn = document.getElementById('step-2-continue');
 
     // Performer
 
@@ -752,7 +754,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         // Reset buttons
         generatePlanBtnManual.disabled = true;
         generatePlanBtnAi.disabled = true;
-        
+        if (step1ContinueBtn) step1ContinueBtn.disabled = true;
+        if (step2ContinueBtn) step2ContinueBtn.disabled = true;
+
         // Reset AI recommendations
         aiRecommendationsContainer.classList.add('hidden');
         
@@ -2576,15 +2580,37 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
         
         // Handle well card selection
-        const card = e.target.closest('.planner-card'); 
+        const card = e.target.closest('.planner-card');
         if (!card) return;
-        
+
         appState.selectedWell = wellData.find(w => w.id === card.dataset.wellId);
         document.querySelectorAll('.planner-card').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
 
+        // Enable the continue button
+        if (step1ContinueBtn) {
+            step1ContinueBtn.disabled = false;
+        }
+
         renderProblems(); // Update the problems list based on selection
-        updatePlannerStepUI(2);
+        });
+    }
+
+    // Step 1 Continue button event listener
+    if (step1ContinueBtn) {
+        step1ContinueBtn.addEventListener('click', () => {
+            if (appState.selectedWell) {
+                updatePlannerStepUI(2);
+            }
+        });
+    }
+
+    // Step 2 Continue button event listener
+    if (step2ContinueBtn) {
+        step2ContinueBtn.addEventListener('click', () => {
+            if (appState.selectedObjective || appState.ai.selectedRecommendation) {
+                updatePlannerStepUI(3);
+            }
         });
     }
 
@@ -2604,6 +2630,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             appState.selectedObjective = objectivesData.find(o => o.id === e.target.value);
             if (generatePlanBtnManual) {
                 generatePlanBtnManual.disabled = !appState.selectedObjective;
+            }
+            if (step2ContinueBtn) {
+                step2ContinueBtn.disabled = !appState.selectedObjective;
             }
         });
     }
@@ -2657,6 +2686,9 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (generatePlanBtnAi) {
                 generatePlanBtnAi.disabled = false;
             }
+            if (step2ContinueBtn) {
+                step2ContinueBtn.disabled = false;
+            }
         }));
         });
     }
@@ -2666,6 +2698,17 @@ document.addEventListener('DOMContentLoaded', async function() {
         aiToggle.addEventListener('change', (e) => {
             manualPlanningView.classList.toggle('hidden', e.target.checked);
             aiAdvisorView.classList.toggle('hidden', !e.target.checked);
+
+            // Update step 2 continue button based on mode
+            if (step2ContinueBtn) {
+                if (e.target.checked) {
+                    // AI mode - enable only if AI recommendation selected
+                    step2ContinueBtn.disabled = !appState.ai.selectedRecommendation;
+                } else {
+                    // Manual mode - enable only if objective selected
+                    step2ContinueBtn.disabled = !appState.selectedObjective;
+                }
+            }
 
             if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== '666') {
                 aiAdvisorView.innerHTML = `
