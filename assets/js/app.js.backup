@@ -130,6 +130,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
+    // --- SECURITY UTILITIES ---
+    /**
+     * Escapes HTML special characters to prevent XSS attacks
+     * @param {string} text - The text to escape
+     * @returns {string} The escaped text safe for HTML insertion
+     */
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
     // --- UI COMPONENT BUILDERS ---
     /**
      * Creates a radial gauge component and injects it into a container.
@@ -146,21 +158,67 @@ document.addEventListener('DOMContentLoaded', async function() {
         const radius = (size / 2) - (strokeWidth * 2);
         const circumference = radius * 2 * Math.PI;
 
-        container.innerHTML = `
-            <div class="relative" style="width:${size}px; height:${size}px;">
-                <svg class="w-full h-full" viewBox="0 0 ${size} ${size}">
-                    <circle class="gauge-bg" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"></circle>
-                    <circle class="gauge-fg stroke-normal" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"
-                            stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"
-                            style="transition: stroke-dashoffset 0.5s;"></circle>
-                </svg>
-                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <span class="gauge-value text-2xl font-bold gauge-text text-normal">0</span>
-                    <span class="gauge-units text-xs text-slate-400">${units}</span>
-                </div>
-            </div>
-            <h4 class="mt-2 text-sm font-semibold text-slate-300">${label}</h4>
-        `;
+        // Clear container first
+        container.textContent = '';
+
+        // Create outer div
+        const outerDiv = document.createElement('div');
+        outerDiv.className = 'relative';
+        outerDiv.style.width = size + 'px';
+        outerDiv.style.height = size + 'px';
+
+        // Create SVG element
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'w-full h-full');
+        svg.setAttribute('viewBox', '0 0 ' + size + ' ' + size);
+
+        // Create background circle
+        const circleBg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circleBg.setAttribute('class', 'gauge-bg');
+        circleBg.setAttribute('cx', size/2);
+        circleBg.setAttribute('cy', size/2);
+        circleBg.setAttribute('r', radius);
+        circleBg.setAttribute('stroke-width', strokeWidth);
+
+        // Create foreground circle
+        const circleFg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circleFg.setAttribute('class', 'gauge-fg stroke-normal');
+        circleFg.setAttribute('cx', size/2);
+        circleFg.setAttribute('cy', size/2);
+        circleFg.setAttribute('r', radius);
+        circleFg.setAttribute('stroke-width', strokeWidth);
+        circleFg.setAttribute('stroke-dasharray', circumference);
+        circleFg.setAttribute('stroke-dashoffset', circumference);
+        circleFg.style.transition = 'stroke-dashoffset 0.5s';
+
+        svg.appendChild(circleBg);
+        svg.appendChild(circleFg);
+
+        // Create inner div with gauge value and units
+        const innerDiv = document.createElement('div');
+        innerDiv.className = 'absolute inset-0 flex flex-col items-center justify-center';
+
+        const valueSpan = document.createElement('span');
+        valueSpan.className = 'gauge-value text-2xl font-bold gauge-text text-normal';
+        valueSpan.textContent = '0';
+
+        const unitsSpan = document.createElement('span');
+        unitsSpan.className = 'gauge-units text-xs text-slate-400';
+        unitsSpan.textContent = units; // Auto-escaped
+
+        innerDiv.appendChild(valueSpan);
+        innerDiv.appendChild(unitsSpan);
+
+        outerDiv.appendChild(svg);
+        outerDiv.appendChild(innerDiv);
+
+        // Create label
+        const labelH4 = document.createElement('h4');
+        labelH4.className = 'mt-2 text-sm font-semibold text-slate-300';
+        labelH4.textContent = label; // Auto-escaped
+
+        container.appendChild(outerDiv);
+        container.appendChild(labelH4);
     }
 
     /**
@@ -204,16 +262,44 @@ document.addEventListener('DOMContentLoaded', async function() {
     function createBarGauge(containerId, label, units, maxValue) {
         const container = document.getElementById(containerId);
         if (!container) return;
-        container.innerHTML = `
-            <h4 class="text-sm font-semibold text-slate-300">${label}</h4>
-            <div class="w-full bar-bg rounded-full h-2.5 my-2">
-                <div class="bar-fg bg-normal h-2.5 rounded-full" style="width: 0%"></div>
-            </div>
-            <div class="text-center">
-                <span class="bar-value text-2xl font-bold gauge-text text-normal">0</span>
-                <span class="bar-units text-xs text-slate-400">${units}</span>
-            </div>
-        `;
+        // Clear container first
+        container.textContent = '';
+
+        // Create label
+        const labelH4 = document.createElement('h4');
+        labelH4.className = 'text-sm font-semibold text-slate-300';
+        labelH4.textContent = label; // Auto-escaped
+
+        // Create outer bar container
+        const outerBarDiv = document.createElement('div');
+        outerBarDiv.className = 'w-full bar-bg rounded-full h-2.5 my-2';
+
+        // Create inner bar (foreground)
+        const innerBarDiv = document.createElement('div');
+        innerBarDiv.className = 'bar-fg bg-normal h-2.5 rounded-full';
+        innerBarDiv.style.width = '0%';
+
+        outerBarDiv.appendChild(innerBarDiv);
+
+        // Create value display container
+        const valueDiv = document.createElement('div');
+        valueDiv.className = 'text-center';
+
+        const valueSpan = document.createElement('span');
+        valueSpan.className = 'bar-value text-2xl font-bold gauge-text text-normal';
+        valueSpan.textContent = '0';
+
+        const unitsSpan = document.createElement('span');
+        unitsSpan.className = 'bar-units text-xs text-slate-400';
+        unitsSpan.textContent = units; // Auto-escaped
+
+        valueDiv.appendChild(valueSpan);
+        valueDiv.appendChild(document.createTextNode(' '));
+        valueDiv.appendChild(unitsSpan);
+
+        container.appendChild(labelH4);
+        container.appendChild(outerBarDiv);
+        container.appendChild(valueDiv);
     }
 
     /**
@@ -285,7 +371,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     ];
     const aiRecommendations = {
         prob1: [ 
-            { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis of case study <strong>M-21 (The Montrose Squeeze)</strong> confirms an expandable steel patch is the standard, high-success-rate rigless solution for this specific failure mode in this field.' } 
+            { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis of case study <strong>11 (The Brahan Squeeze)</strong> confirms an expandable steel patch is the standard, high-success-rate rigless solution for this specific failure mode in this field.' } 
         ],
         prob2: [ 
             { objectiveId: 'obj2', confidence: 92, outcome: 'Blockage cleared, production restored', reason: 'Based on the successful intervention on case study <strong>S-15 (The Scale Trap)</strong>, a two-stage chemical (DTPA) and mechanical (jetting) intervention has the highest probability of success. This avoids the high risk of stuck pipe associated with milling.' } 
@@ -658,7 +744,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const renderWellCards = () => { 
         wellSelectionGrid.innerHTML = wellData.map(well => {
-            const isWellFromHell = well.id === 'W666';
+            const isWellFromHell = well.id === '666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
             const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
             
@@ -707,7 +793,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const renderProblems = () => {
         // Only show problems relevant to the "Well From Hell"
-        if (appState.selectedWell && appState.selectedWell.id === 'W666') {
+        if (appState.selectedWell && appState.selectedWell.id === '666') {
              problemsFieldset.innerHTML = problemsData.map(prob => `
                 <div class="objective-card light-card" data-problem-id="${prob.id}">
                     <input type="radio" name="problem" id="${prob.id}" value="${prob.id}" class="sr-only">
@@ -725,7 +811,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         } else {
             problemsFieldset.innerHTML = `
                 <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
-                    <p class="text-yellow-800 dark:text-yellow-200">Please select the 'Well From Hell' (W666) to use the AI Advisor.</p>
+                    <p class="text-yellow-800 dark:text-yellow-200">Please select the 'Well From Hell' (666) to use the AI Advisor.</p>
                 </div>
             `;
         }
@@ -2320,10 +2406,10 @@ document.addEventListener('DOMContentLoaded', async function() {
             manualPlanningView.classList.toggle('hidden', e.target.checked);
             aiAdvisorView.classList.toggle('hidden', !e.target.checked);
 
-            if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== 'W666') {
+            if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== '666') {
                 aiAdvisorView.innerHTML = `
                 <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
-                    <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (W666) scenario. Please select W666 to see AI recommendations.</p>
+                    <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (666) scenario. Please select 666 to see AI recommendations.</p>
                 </div>
             `;
             } else {
@@ -2641,30 +2727,30 @@ document.addEventListener('DOMContentLoaded', async function() {
         const container = document.getElementById('home-well-cards-grid');
         if (!container) return;
 
-        // Sort wells: W666 last, others first
+        // Sort wells: 666 last, others first
         const sortedWells = [...wellData].sort((a, b) => {
-            if (a.id === 'W666') return 1;
-            if (b.id === 'W666') return -1;
+            if (a.id === '666') return 1;
+            if (b.id === '666') return -1;
             return 0;
         });
 
         container.innerHTML = sortedWells.map(well => {
-            const isW666 = well.id === 'W666';
+            const is666 = well.id === '666';
             const isDark = body.classList.contains('theme-dark');
 
             // Calculate total NPT
             const totalNPT = well.dailyReports.reduce((sum, report) => sum + (report.npt || 0), 0);
 
             return `
-                <div class="well-detail-card ${isW666 ? 'critical-well-card' : 'case-study-card'}" data-well-id="${well.id}">
+                <div class="well-detail-card ${is666 ? 'critical-well-card' : 'case-study-card'}" data-well-id="${well.id}">
                     <!-- Card Header -->
-                    <div class="card-header-detailed ${isW666 ? 'bg-gradient-to-r from-red-600 to-red-700' : 'bg-gradient-to-r from-blue-600 to-blue-700'}">
+                    <div class="card-header-detailed ${is666 ? 'bg-gradient-to-r from-red-600 to-red-700' : 'bg-gradient-to-r from-blue-600 to-blue-700'}">
                         <div class="flex justify-between items-start">
                             <div class="flex-1">
                                 <div class="flex items-center gap-3 mb-2">
                                     <h3 class="text-2xl font-extrabold text-white">${well.id}</h3>
-                                    <span class="px-3 py-1 rounded-full text-xs font-bold ${isW666 ? 'bg-red-900 text-red-100' : 'bg-blue-900 text-blue-100'}">
-                                        ${isW666 ? 'CRITICAL - SHUT IN' : 'CASE STUDY'}
+                                    <span class="px-3 py-1 rounded-full text-xs font-bold ${is666 ? 'bg-red-900 text-red-100' : 'bg-blue-900 text-blue-100'}">
+                                        ${is666 ? 'CRITICAL - SHUT IN' : 'CASE STUDY'}
                                     </span>
                                 </div>
                                 <h4 class="text-xl font-bold text-white mb-2">${well.name}</h4>
@@ -2685,8 +2771,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                             <p class="text-sm font-semibold text-white mb-1">Status:</p>
                             <p class="text-sm text-white/90">${well.status}</p>
                         </div>
-                        <div class="mt-3 p-3 ${isW666 ? 'bg-red-900/50' : 'bg-blue-900/50'} rounded-lg">
-                            <p class="text-sm font-semibold text-white mb-1">${isW666 ? 'Problem Description:' : 'Solution Overview:'}</p>
+                        <div class="mt-3 p-3 ${is666 ? 'bg-red-900/50' : 'bg-blue-900/50'} rounded-lg">
+                            <p class="text-sm font-semibold text-white mb-1">${is666 ? 'Problem Description:' : 'Solution Overview:'}</p>
                             <p class="text-sm text-white/90">${well.issue}</p>
                         </div>
                     </div>
@@ -2740,7 +2826,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                                     ${well.history.length ? `
                                         <div class="space-y-4">
                                             ${well.history.map((h, idx) => `
-                                                <div class="history-item p-5 rounded-lg border-l-4 ${isW666 ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'}">
+                                                <div class="history-item p-5 rounded-lg border-l-4 ${is666 ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'}">
                                                     <div class="flex items-start justify-between mb-3">
                                                         <div>
                                                             <h5 class="font-bold text-lg text-slate-900 dark:text-slate-100">${h.operation}</h5>
