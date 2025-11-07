@@ -3001,6 +3001,49 @@ document.addEventListener('DOMContentLoaded', async function() {
         renderProblems();
         initSavingsChart();
         updateNavLinks();
+
+        // Wire up navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const viewName = link.id.replace('-nav-link', '');
+                if (!link.classList.contains('disabled')) {
+                    switchView(viewName);
+                    window.location.hash = `#${viewName}-view`;
+                }
+            });
+        });
+
+        // Wire up hero "Try the Planner" button
+        const heroPlannerBtn = document.getElementById('hero-planner-btn');
+        if (heroPlannerBtn) {
+            heroPlannerBtn.addEventListener('click', () => {
+                switchView('planner');
+                window.location.hash = '#planner-view';
+            });
+        }
+
+        // Handle browser back/forward with hash navigation
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.slice(1); // Remove the #
+            if (hash) {
+                const viewName = hash.replace('-view', '');
+                const navLink = document.getElementById(`${viewName}-nav-link`);
+                if (navLink && !navLink.classList.contains('disabled')) {
+                    switchView(viewName);
+                }
+            }
+        });
+
+        // Handle initial hash on page load
+        if (window.location.hash) {
+            const hash = window.location.hash.slice(1);
+            const viewName = hash.replace('-view', '');
+            const navLink = document.getElementById(`${viewName}-nav-link`);
+            if (navLink && !navLink.classList.contains('disabled')) {
+                switchView(viewName);
+            }
+        }
     };
 
     init();
