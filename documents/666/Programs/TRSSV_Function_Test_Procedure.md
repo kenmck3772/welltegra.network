@@ -1,7 +1,7 @@
 # TRSSV Function Test Procedure
 ## Tubing Retrievable Subsurface Safety Valve Testing
 
-**Well:** W666 - "The Perfect Storm" - Montrose Field
+**Well:** 666 - "The Perfect Storm" - Brahan Field
 **Document Type:** Standard Operating Procedure
 **Revision:** 3.1
 **Effective Date:** January 2024
@@ -11,7 +11,7 @@
 
 ## Purpose
 
-To verify the operational integrity and fail-safe closure capability of the Tubing Retrievable Subsurface Safety Valve (TRSSV) installed at 1,800 ft MD in Well W666.
+To verify the operational integrity and fail-safe closure capability of the Tubing Retrievable Subsurface Safety Valve (TRSSV) installed at 1,800 ft MD in Well 666.
 
 ## Regulatory Requirements
 
@@ -273,6 +273,6 @@ To verify the operational integrity and fail-safe closure capability of the Tubi
 - **Prepared By:** Dr. Isla Munro, Operations Manager
 - **Approved By:** Rowan Ross, Asset Integrity Lead
 - **Next Review Date:** January 2025
-- **Document Reference:** W666-PROC-TRSSV-001
+- **Document Reference:** 666-PROC-TRSSV-001
 
 **Distribution:** Wellsite Engineers, Rig Supervisors, NSTA (Regulatory), Company Well File
