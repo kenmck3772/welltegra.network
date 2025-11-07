@@ -130,6 +130,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
+    // --- SECURITY UTILITIES ---
+    /**
+     * Escapes HTML special characters to prevent XSS attacks
+     * @param {string} text - The text to escape
+     * @returns {string} The escaped text safe for HTML insertion
+     */
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
     // --- UI COMPONENT BUILDERS ---
     /**
      * Creates a radial gauge component and injects it into a container.
