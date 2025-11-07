@@ -344,6 +344,29 @@
             outline: 2px solid #3b82f6;
             outline-offset: 2px;
         }
+
+        /* --- Hero Section Styles --- */
+        .hero-section { position: relative; overflow: hidden; }
+        #hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            transform: translateX(-50%) translateY(-50%);
+            background-size: cover;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(15, 23, 42, 0.8);
+            z-index: -50;
+        }
+        .hero-section h2 { text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); }
+        .hero-section p { text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); }
     </style>
 </head>
 
@@ -423,6 +446,35 @@
 
     <main id="main-content" class="flex-1" role="main">
         <div id="home-view" class="view-container">
+            <section class="hero-section py-20 px-4 relative" aria-describedby="hero-video-description">
+                <video loop muted playsinline preload="none" id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description" data-lazy-video="assets/hero.mp4">
+                    <source data-src="assets/hero.mp4" type="video/mp4">
+                    <track kind="descriptions" srclang="en" label="English descriptions" src="assets/hero-video-descriptions.vtt" default>
+                </video>
+                <div class="hero-overlay"></div>
+                <p id="hero-video-description" class="sr-only">Looping montage showing engineers collaborating over drilling dashboards and subsurface schematics.</p>
+                <div class="max-w-4xl mx-auto text-center relative z-10">
+
+                    <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">Stop Pushing Square Wheels.</h2>
+
+                    <p class="mt-6 text-lg md:text-xl text-slate-100">
+                        The industry is caught in the "tyranny of the urgent." Your best engineers are so focused on just **pushing**—on hunting for data, fixing spreadsheets, and managing the day-to-day chaos—that no one has time to stop and see the **shape**.
+                    </p>
+                    <p class="mt-4 text-lg md:text-xl font-semibold text-white">
+                        Well-Tegra gives you the power to see the shape. We automate the "pushing" so you can build round wheels.
+                    </p>
+
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Request a Demo
+                        </a>
+                        <button id="hero-planner-btn" class="px-8 py-4 bg-white hover:bg-slate-100 text-slate-900 text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Try the Planner
+                        </button>
+                    </div>
+                </div>
+            </section>
+
             <section class="py-12 px-4 relative">
                 <div class="max-w-7xl mx-auto">
                     <div class="text-center mb-12">
