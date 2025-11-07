@@ -1679,85 +1679,195 @@ document.addEventListener('DOMContentLoaded', function() {
         ]
     };
     const proceduresData = {
-        obj1: { 
-            name: "Expandable Casing Patch Installation", 
-            personnel: ["Wellsite Engineer", "HWU Supervisor"], 
+        obj1: {
+            name: "Expandable Casing Patch Installation",
+            personnel: ["Wellsite Engineer", "HWU Supervisor"],
             steps: [
-                "Perform wellbore cleanout trip with scraper and gauge ring.",
-                "RIH with expandable patch on jointed pipe.",
-                "Position patch across deformed interval using GR/CCL correlation.",
-                "Set patch using hydraulic setting tool.",
-                "Pressure test patch to verify seal.",
-                "POOH and return well to service."
-            ], 
-            risks: { operational: 4, geological: 2, equipment: 4, hse: 3, financial: 3 }, 
-            cost: 1200000, 
-            duration: 8, 
-            tfaModel: { pickUp: [[0,0], [9000, 60]], slackOff: [[0,0], [9000, -60]], alarmUpper: [[0,10], [9000, 70]], alarmLower: [[0,-10], [9000, -70]] } 
+                { step: "Perform wellbore cleanout trip with scraper and gauge ring.", duration: "12 hrs", lead: "HWU Supervisor", success: "Gauge passes through restriction, returns clean" },
+                { step: "RIH with expandable patch on jointed pipe.", duration: "8 hrs", lead: "Wellsite Engineer", success: "Patch at target depth, no excessive torque/drag" },
+                { step: "Position patch across deformed interval using GR/CCL correlation.", duration: "2 hrs", lead: "Wellsite Engineer", success: "GR correlation confirms correct depth ±5ft" },
+                { step: "Set patch using hydraulic setting tool.", duration: "4 hrs", lead: "HWU Supervisor", success: "Setting pressure achieved, shear pins activated" },
+                { step: "Pressure test patch to verify seal.", duration: "6 hrs", lead: "Wellsite Engineer", success: "Hold 5,000 psi for 30 min, <1% pressure drop" },
+                { step: "POOH and return well to service.", duration: "16 hrs", lead: "HWU Supervisor", success: "Tools recovered, well flowing at design rate" }
+            ],
+            preJobRequirements: {
+                permits: ["Permit to Work (Hot Work)", "Confined Space Entry (if required)", "Lifting Operations Plan"],
+                safety: ["Pre-job safety briefing", "HAZID review with all personnel", "Emergency response drill", "H2S contingency plan review"],
+                weather: ["Max wind speed: 45 knots", "Max wave height: 4.5m", "Min visibility: 500m"],
+                certifications: ["All personnel BOSIET/HUET current", "HWU operator valid certification", "Crane operator valid certification"]
+            },
+            mobilization: [
+                { item: "Hydraulic Workover Unit", arrival: "Day -2", status: "Confirm booking", serial: "HWU-2024-447" },
+                { item: "Expandable Patch & Tools", arrival: "Day -1", status: "Factory tested", serial: "EP-9625-REV4-221" },
+                { item: "HWU Supervisor", arrival: "Day -1", status: "Travel booked", cert: "Valid until 2025-08" },
+                { item: "Wellsite Engineer", arrival: "Day 0", status: "On location", cert: "Valid until 2025-12" }
+            ],
+            contingencies: [
+                { scenario: "Patch fails to expand properly", action: "Retrieve patch, run backup solid liner hanger system", cost: 450000, time: "3 days" },
+                { scenario: "Cannot position patch at target depth", action: "Perform additional cleanout run, re-attempt", cost: 180000, time: "1 day" },
+                { scenario: "Weather delay >48hrs", action: "Demobilize HWU, reschedule for next weather window", cost: 250000, time: "5-7 days" }
+            ],
+            postJobRequirements: {
+                deliverables: ["Final well schematic (as-built)", "Pressure test certification", "MDT/PLT survey results", "Lessons learned report"],
+                kpis: ["Zero NPT events", "Patch integrity verified >5,000 psi", "Well back online within 10 days", "Cost within 10% of AFE"],
+                signoff: ["Wellsite Engineer", "Operations Manager", "Well Integrity Engineer", "HSE Representative"]
+            },
+            risks: { operational: 4, geological: 2, equipment: 4, hse: 3, financial: 3 },
+            cost: 1200000,
+            duration: 8,
+            tfaModel: { pickUp: [[0,0], [9000, 60]], slackOff: [[0,0], [9000, -60]], alarmUpper: [[0,10], [9000, 70]], alarmLower: [[0,-10], [9000, -70]] }
         },
-        obj2: { 
-            name: "CT Chemical & Mechanical Scale Removal", 
-            personnel: ["Coiled Tubing Supervisor", "Pump Operator"], 
+        obj2: {
+            name: "CT Chemical & Mechanical Scale Removal",
+            personnel: ["Coiled Tubing Supervisor", "Pump Operator"],
             steps: [
-                "RIH with CT and spot DTPA chemical dissolver across scale.",
-                "POOH with CT and let chemical soak for 36 hours.",
-                "RIH with CT and rotating jetting BHA.",
-                "Mechanically break up and circulate out softened scale.",
-                "Circulate well clean and POOH.",
-                "Return well to production."
-            ], 
-            risks: { operational: 5, geological: 2, equipment: 4, hse: 4, financial: 3 }, 
-            cost: 950000, 
-            duration: 6, 
-            tfaModel: { pickUp: [[0,0], [14500, 35]], slackOff: [[0,0], [14500, -35]], alarmUpper: [[0,2], [14500, 37]], alarmLower: [[0,-2], [14500, -37]] } 
+                { step: "RIH with CT and spot DTPA chemical dissolver across scale.", duration: "6 hrs", lead: "CT Supervisor", success: "850 gallons DTPA spotted across scale bridge" },
+                { step: "POOH with CT and let chemical soak for 36 hours.", duration: "36 hrs", lead: "Wellsite Engineer", success: "Chemical soak period completed, well monitored" },
+                { step: "RIH with CT and rotating jetting BHA.", duration: "8 hrs", lead: "CT Supervisor", success: "BHA at target depth, jetting tool functional" },
+                { step: "Mechanically break up and circulate out softened scale.", duration: "18 hrs", lead: "CT Supervisor", success: "Scale debris circulated out, returns clean" },
+                { step: "Circulate well clean and POOH.", duration: "10 hrs", lead: "CT Supervisor", success: "No scale debris in returns, CT recovered safely" },
+                { step: "Return well to production.", duration: "6 hrs", lead: "Wellsite Engineer", success: "Well producing, flow rate restored to design" }
+            ],
+            preJobRequirements: {
+                permits: ["Permit to Work", "Chemical Handling Permit", "Pressure Testing Permit"],
+                safety: ["DTPA chemical MSDS review", "H2S/CO2 hazard briefing", "High-pressure operation briefing", "Dropped object prevention plan"],
+                weather: ["Max wind speed: 50 knots", "Max wave height: 5.0m", "Deck operations restricted if >40 knots"],
+                certifications: ["CT operator certified", "Pump operator certified", "Hazardous chemical handling trained"]
+            },
+            mobilization: [
+                { item: "Coiled Tubing Unit", arrival: "Day -3", status: "Equipment inspected", serial: "CTU-2024-885" },
+                { item: "DTPA Chemical (850 gal)", arrival: "Day -2", status: "Chemical certified", batch: "DTPA-2024-Q3-112" },
+                { item: "Rotating Jetting BHA", arrival: "Day -1", status: "Pressure tested", serial: "RJT-15K-2024-33" },
+                { item: "CT Supervisor", arrival: "Day -1", status: "Travel confirmed", cert: "Valid until 2025-09" }
+            ],
+            contingencies: [
+                { scenario: "Chemical soak ineffective", action: "Extend soak period to 72 hrs, add mechanical milling run", cost: 320000, time: "3 days" },
+                { scenario: "CT gets stuck in scale", action: "Initiate jarring operations, potential CT sever and fishing", cost: 850000, time: "7-10 days" },
+                { scenario: "Scale bridge too hard for jetting", action: "Switch to aggressive milling, circulate cuttings", cost: 420000, time: "4 days" }
+            ],
+            postJobRequirements: {
+                deliverables: ["Scale analysis report", "Chemical treatment summary", "Production restoration report", "CT run data log"],
+                kpis: ["100% scale removal confirmed", "Production >90% of pre-blockage rate", "Zero HSE incidents", "Job completed within budget"],
+                signoff: ["CT Supervisor", "Wellsite Engineer", "Production Engineer", "HSE Representative"]
+            },
+            risks: { operational: 5, geological: 2, equipment: 4, hse: 4, financial: 3 },
+            cost: 950000,
+            duration: 6,
+            tfaModel: { pickUp: [[0,0], [14500, 35]], slackOff: [[0,0], [14500, -35]], alarmUpper: [[0,2], [14500, 37]], alarmLower: [[0,-2], [14500, -37]] }
         },
-        obj3: { 
-            name: "Slickline Insert Safety Valve Installation", 
-            personnel: ["Slickline Supervisor"], 
+        obj3: {
+            name: "Slickline Insert Safety Valve Installation",
+            personnel: ["Slickline Supervisor"],
             steps: [
-                "RIH with heavy-duty toolstring and mechanically lock open the failed TRSSV.",
-                "POOH and confirm lock-open.",
-                "RIH with new Wireline-Retrievable Safety Valve (WRSV) on a running tool.",
-                "Set and lock the new WRSV in the old valve's nipple profile.",
-                "Pressure up control line to hold new valve open, then retrieve running tool.",
-                "Perform full inflow and function test of new valve to certify.",
-                "Return well to production."
-            ], 
-            risks: { operational: 3, geological: 1, equipment: 4, hse: 3, financial: 2 }, 
-            cost: 350000, 
-            duration: 3, 
-            tfaModel: { pickUp: [[0, 100], [9800, 160]], slackOff: [[0, 100], [9800, 40]], alarmUpper: [[0, 110], [9800, 170]], alarmLower: [[0, 90], [9800, 30]] } 
+                { step: "RIH with heavy-duty toolstring and mechanically lock open the failed TRSSV.", duration: "4 hrs", lead: "Slickline Supervisor", success: "Lock-open tool engaged, shear pins activated" },
+                { step: "POOH and confirm lock-open.", duration: "3 hrs", lead: "Slickline Supervisor", success: "Failed valve confirmed locked in open position" },
+                { step: "RIH with new Wireline-Retrievable Safety Valve (WRSV) on a running tool.", duration: "4 hrs", lead: "Slickline Supervisor", success: "New valve at depth, no obstructions encountered" },
+                { step: "Set and lock the new WRSV in the old valve's nipple profile.", duration: "3 hrs", lead: "Slickline Supervisor", success: "Setting pressure achieved, valve locked in place" },
+                { step: "Pressure up control line to hold new valve open, then retrieve running tool.", duration: "2 hrs", lead: "Slickline Supervisor", success: "Running tool released, control line pressurized" },
+                { step: "Perform full inflow and function test of new valve to certify.", duration: "6 hrs", lead: "Slickline Supervisor", success: "Valve cycles properly, closure time <5 seconds" },
+                { step: "Return well to production.", duration: "2 hrs", lead: "Wellsite Engineer", success: "Well flowing, barrier envelope intact" }
+            ],
+            preJobRequirements: {
+                permits: ["Permit to Work", "Barrier Management Plan Update", "Well Control Equipment Test"],
+                safety: ["Barrier philosophy review", "Emergency well shut-in procedure", "Well control drill", "Dropped object prevention"],
+                weather: ["Max wind speed: 40 knots", "Max wave height: 4.0m", "Operations suspended if deck flooded"],
+                certifications: ["Slickline operator IWCF Level 3", "All personnel well control certified", "Valve manufacturer training completed"]
+            },
+            mobilization: [
+                { item: "Slickline Unit", arrival: "Day -2", status: "Pressure tested", serial: "SL-2024-332" },
+                { item: "WRSV Insert Valve", arrival: "Day -1", status: "Factory certified", serial: "WRSV-BH-2024-771" },
+                { item: "Lock-Open Tool", arrival: "Day -1", status: "Function tested", serial: "LOT-2024-118" },
+                { item: "Slickline Supervisor", arrival: "Day 0", status: "On location", cert: "Valid until 2026-01" }
+            ],
+            contingencies: [
+                { scenario: "Cannot lock open failed valve", action: "Retrieve tubing string, replace entire DHSV", cost: 1250000, time: "14 days" },
+                { scenario: "New valve won't set in profile", action: "Retrieve, verify dimensions, run backup valve design", cost: 180000, time: "2 days" },
+                { scenario: "Function test fails", action: "Retrieve valve, troubleshoot, run replacement unit", cost: 220000, time: "2 days" }
+            ],
+            postJobRequirements: {
+                deliverables: ["DHSV function test certificate", "Barrier schematic update", "Installation report", "6-month test schedule"],
+                kpis: ["Valve closure time <5 sec", "Zero well control incidents", "Regulatory compliance achieved", "Job completed <5 days"],
+                signoff: ["Slickline Supervisor", "Well Integrity Engineer", "Operations Manager", "Regulatory Affairs"]
+            },
+            risks: { operational: 3, geological: 1, equipment: 4, hse: 3, financial: 2 },
+            cost: 350000,
+            duration: 3,
+            tfaModel: { pickUp: [[0, 100], [9800, 160]], slackOff: [[0, 100], [9800, 40]], alarmUpper: [[0, 110], [9800, 170]], alarmLower: [[0, 90], [9800, 30]] }
         },
-        obj4: { 
-            name: "Through-Tubing ESS Patch Installation", 
-            personnel: ["Wellsite Engineer", "HWU Supervisor"], 
+        obj4: {
+            name: "Through-Tubing ESS Patch Installation",
+            personnel: ["Wellsite Engineer", "HWU Supervisor"],
             steps: [
-                "Perform CT cleanout of sand from inside existing screen.",
-                "RIH with Expandable Sand Screen (ESS) patch on jointed pipe.",
-                "Position patch across failed screen interval.",
-                "Expand patch using mechanical expansion tool.",
-                "POOH and slowly bring well back online, monitoring sand production."
-            ], 
-            risks: { operational: 4, geological: 3, equipment: 5, hse: 3, financial: 4 }, 
-            cost: 1500000, 
-            duration: 10, 
-            tfaModel: { pickUp: [[0,0], [10000, 50]], slackOff: [[0,0], [10000, -50]], alarmUpper: [[0,5], [10000, 55]], alarmLower: [[0,-5], [10000, -55]] } 
+                { step: "Perform CT cleanout of sand from inside existing screen.", duration: "16 hrs", lead: "CT Supervisor", success: "All sand circulated out, screen interior clean" },
+                { step: "RIH with Expandable Sand Screen (ESS) patch on jointed pipe.", duration: "12 hrs", lead: "HWU Supervisor", success: "ESS patch at target depth, no hang-ups" },
+                { step: "Position patch across failed screen interval.", duration: "4 hrs", lead: "Wellsite Engineer", success: "GR/CCL correlation confirms correct placement" },
+                { step: "Expand patch using mechanical expansion tool.", duration: "8 hrs", lead: "HWU Supervisor", success: "Expansion complete, patch deployed successfully" },
+                { step: "POOH and slowly bring well back online, monitoring sand production.", duration: "20 hrs", lead: "Wellsite Engineer", success: "Zero sand production, flow rate at design" }
+            ],
+            preJobRequirements: {
+                permits: ["Permit to Work", "Sand Production Monitoring Plan", "Pressure Test Permit"],
+                safety: ["Sand production hazard briefing", "Well control procedures", "Emergency shutdown drill", "Chemical exposure (if inhibitor used)"],
+                weather: ["Max wind speed: 45 knots", "Max wave height: 4.5m", "No deck operations if visibility <300m"],
+                certifications: ["CT operator certified", "HWU operator certified", "Sand monitoring equipment trained"]
+            },
+            mobilization: [
+                { item: "Coiled Tubing Unit (cleanout)", arrival: "Day -4", status: "Equipment checked", serial: "CTU-2024-665" },
+                { item: "Hydraulic Workover Unit", arrival: "Day -2", status: "Rig tested", serial: "HWU-2024-448" },
+                { item: "Expandable Sand Screen Patch", arrival: "Day -1", status: "Factory certified", serial: "ESS-9625-2024-91" },
+                { item: "HWU Supervisor + Wellsite Engineer", arrival: "Day 0", status: "On location", cert: "Both valid 2025+" }
+            ],
+            contingencies: [
+                { scenario: "Patch fails to expand", action: "Retrieve patch, run solid liner alternative", cost: 620000, time: "5 days" },
+                { scenario: "Sand production continues post-installation", action: "Install additional gravel pack or chemical consolidation", cost: 780000, time: "7 days" },
+                { scenario: "Cannot clean out existing screen", action: "Abandon failed screen, set new screen above", cost: 950000, time: "8 days" }
+            ],
+            postJobRequirements: {
+                deliverables: ["Sand production monitoring report", "Screen expansion certification", "Production test results", "Well schematic update"],
+                kpis: ["Zero sand production (continuous monitoring)", "Production >85% of design rate", "Screen integrity maintained >12 months", "Zero NPT"],
+                signoff: ["Wellsite Engineer", "Reservoir Engineer", "Well Integrity Engineer", "Production Manager"]
+            },
+            risks: { operational: 4, geological: 3, equipment: 5, hse: 3, financial: 4 },
+            cost: 1500000,
+            duration: 10,
+            tfaModel: { pickUp: [[0,0], [10000, 50]], slackOff: [[0,0], [10000, -50]], alarmUpper: [[0,5], [10000, 55]], alarmLower: [[0,-5], [10000, -55]] }
         },
-        obj5: { 
-            name: "CT Wax Removal", 
-            personnel: ["Coiled Tubing Supervisor", "Pump Operator"], 
+        obj5: {
+            name: "CT Wax Removal",
+            personnel: ["Coiled Tubing Supervisor", "Pump Operator"],
             steps: [
-                "Rig up Coiled Tubing unit.",
-                "Pump heated solvent to dissolve wax.",
-                "RIH with CT and a mechanical scraper BHA to clear remaining deposits.",
-                "Circulate well clean with hot fluid.",
-                "POOH with CT.",
-                "Return well to production."
-            ], 
-            risks: { operational: 4, geological: 2, equipment: 3, hse: 3, financial: 2 }, 
-            cost: 650000, 
-            duration: 4, 
-            tfaModel: { pickUp: [[0,0], [7500, 20]], slackOff: [[0,0], [7500, -20]], alarmUpper: [[0,2], [7500, 22]], alarmLower: [[0,-2], [7500, -22]] } 
+                { step: "Rig up Coiled Tubing unit.", duration: "8 hrs", lead: "CT Supervisor", success: "CT unit rigged, pressure tested to 10,000 psi" },
+                { step: "Pump heated solvent to dissolve wax.", duration: "12 hrs", lead: "Pump Operator", success: "180 ft wax bridge dissolved, returns show wax" },
+                { step: "RIH with CT and a mechanical scraper BHA to clear remaining deposits.", duration: "10 hrs", lead: "CT Supervisor", success: "Scraper BHA at TD, circulating clean" },
+                { step: "Circulate well clean with hot fluid.", duration: "14 hrs", lead: "Pump Operator", success: "No wax in returns, wellbore clean" },
+                { step: "POOH with CT.", duration: "6 hrs", lead: "CT Supervisor", success: "CT recovered safely, rig down complete" },
+                { step: "Return well to production.", duration: "4 hrs", lead: "Wellsite Engineer", success: "Production restored to 2,200 bopd" }
+            ],
+            preJobRequirements: {
+                permits: ["Permit to Work", "Hot Work Permit (heated fluids)", "Chemical Handling Permit"],
+                safety: ["Hot fluid handling procedures", "Pressure equipment briefing", "Wax dissolver chemical MSDS", "Thermal burns first aid"],
+                weather: ["Max wind speed: 50 knots", "Deck temp monitoring for hot fluid ops", "Operations cease if freezing conditions"],
+                certifications: ["CT operator certified", "Hot oiling procedures trained", "Chemical handling certified"]
+            },
+            mobilization: [
+                { item: "Coiled Tubing Unit", arrival: "Day -2", status: "Heat exchange tested", serial: "CTU-2024-772" },
+                { item: "Wax Dissolver Chemical (500 gal)", arrival: "Day -1", status: "Chemical certified", batch: "WAX-SOLV-2024-Q4" },
+                { item: "Mechanical Scraper BHA", arrival: "Day -1", status: "Dimension verified", serial: "SCR-3.5-2024-42" },
+                { item: "CT Supervisor + Pump Operator", arrival: "Day 0", status: "Crew mobilized", cert: "Valid 2025+" }
+            ],
+            contingencies: [
+                { scenario: "Heated solvent ineffective", action: "Switch to aggressive mechanical scraping + xylene flush", cost: 120000, time: "2 days" },
+                { scenario: "Wax re-deposits during operation", action: "Maintain hot fluid circulation, install continuous chemical injection", cost: 85000, time: "1 day" },
+                { scenario: "CT gets stuck in wax", action: "Apply jarring, CT sever if required, fishing operation", cost: 450000, time: "5-7 days" }
+            ],
+            postJobRequirements: {
+                deliverables: ["Wax sample analysis", "Temperature profile log", "Production restoration certificate", "Continuous wax prevention plan"],
+                kpis: ["Production >2,000 bopd (>90% of historical)", "No wax re-deposition within 6 months", "Job completed <5 days", "Chemical injection system installed"],
+                signoff: ["CT Supervisor", "Wellsite Engineer", "Production Engineer", "Facilities Engineer"]
+            },
+            risks: { operational: 4, geological: 2, equipment: 3, hse: 3, financial: 2 },
+            cost: 650000,
+            duration: 4,
+            tfaModel: { pickUp: [[0,0], [7500, 20]], slackOff: [[0,0], [7500, -20]], alarmUpper: [[0,2], [7500, 22]], alarmLower: [[0,-2], [7500, -22]] }
         }
     };
     const equipmentRequirements = {
@@ -2166,20 +2276,144 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        // Create timeline for procedure steps
+        // Pre-Job Requirements
+        const preJobHtml = `
+            <div class="plan-summary-card light-card overflow-hidden">
+                <div class="card-header bg-indigo-500">
+                    <h4 class="text-xl font-semibold text-white">Pre-Job Requirements</h4>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <h5 class="font-semibold mb-2 text-indigo-600 dark:text-indigo-400">Permits Required</h5>
+                        <ul class="space-y-1 text-sm">
+                            ${procedure.preJobRequirements.permits.map(p => `<li class="flex items-start"><span class="mr-2">✓</span>${p}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2 text-indigo-600 dark:text-indigo-400">Safety Briefings</h5>
+                        <ul class="space-y-1 text-sm">
+                            ${procedure.preJobRequirements.safety.map(s => `<li class="flex items-start"><span class="mr-2">✓</span>${s}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2 text-indigo-600 dark:text-indigo-400">Weather Limits</h5>
+                        <ul class="space-y-1 text-sm">
+                            ${procedure.preJobRequirements.weather.map(w => `<li class="flex items-start"><span class="mr-2">⚠️</span>${w}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2 text-indigo-600 dark:text-indigo-400">Certifications</h5>
+                        <ul class="space-y-1 text-sm">
+                            ${procedure.preJobRequirements.certifications.map(c => `<li class="flex items-start"><span class="mr-2">📋</span>${c}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Equipment Mobilization Schedule
+        const mobilizationHtml = `
+            <div class="plan-summary-card light-card overflow-hidden">
+                <div class="card-header bg-cyan-500">
+                    <h4 class="text-xl font-semibold text-white">Equipment Mobilization Schedule</h4>
+                </div>
+                <div class="p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="p-2 text-left">Item</th>
+                                    <th class="p-2 text-left">Arrival</th>
+                                    <th class="p-2 text-left">Status</th>
+                                    <th class="p-2 text-left">Serial/Cert</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${procedure.mobilization.map((item, i) => `
+                                    <tr class="${i % 2 === 0 ? 'table-row-alt' : ''}">
+                                        <td class="p-2 font-medium">${item.item}</td>
+                                        <td class="p-2">${item.arrival}</td>
+                                        <td class="p-2"><span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded text-xs">${item.status}</span></td>
+                                        <td class="p-2 text-xs">${item.serial || item.cert || item.batch}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Create detailed timeline for procedure steps
         const timelineHtml = `
             <div class="plan-summary-card light-card overflow-hidden">
                 <div class="card-header bg-green-500">
-                    <h4 class="text-xl font-semibold text-white">Procedure Timeline</h4>
+                    <h4 class="text-xl font-semibold text-white">Detailed Procedure Timeline</h4>
                 </div>
                 <div class="p-6">
                     <div class="space-y-4">
-                        ${procedure.steps.map((step, index) => `
-                            <div class="timeline-step">
-                                <h5 class="font-semibold">Step ${index + 1}</h5>
-                                <p class="text-sm">${step}</p>
+                        ${procedure.steps.map((stepObj, index) => `
+                            <div class="timeline-step border-l-4 border-green-400 pl-4">
+                                <div class="flex justify-between items-start mb-1">
+                                    <h5 class="font-semibold">Step ${index + 1}: ${stepObj.duration}</h5>
+                                    <span class="text-xs bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">${stepObj.lead}</span>
+                                </div>
+                                <p class="text-sm mb-2">${stepObj.step}</p>
+                                <p class="text-xs text-green-600 dark:text-green-400"><strong>Success Criteria:</strong> ${stepObj.success}</p>
                             </div>
                         `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Contingency Plans
+        const contingencyHtml = `
+            <div class="plan-summary-card light-card overflow-hidden">
+                <div class="card-header bg-orange-500">
+                    <h4 class="text-xl font-semibold text-white">Contingency Plans</h4>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        ${procedure.contingencies.map((cont, i) => `
+                            <div class="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg border-l-4 border-orange-400">
+                                <h5 class="font-semibold text-orange-800 dark:text-orange-300 mb-2">Scenario ${i + 1}: ${cont.scenario}</h5>
+                                <p class="text-sm mb-2"><strong>Action:</strong> ${cont.action}</p>
+                                <div class="flex gap-4 text-xs">
+                                    <span class="text-orange-700 dark:text-orange-400"><strong>Additional Cost:</strong> $${cont.cost.toLocaleString()}</span>
+                                    <span class="text-orange-700 dark:text-orange-400"><strong>Additional Time:</strong> ${cont.time}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Post-Job Requirements & KPIs
+        const postJobHtml = `
+            <div class="plan-summary-card light-card overflow-hidden">
+                <div class="card-header bg-teal-500">
+                    <h4 class="text-xl font-semibold text-white">Post-Job Requirements & Success Metrics</h4>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <h5 class="font-semibold mb-2 text-teal-600 dark:text-teal-400">Deliverables</h5>
+                        <ul class="space-y-1 text-sm">
+                            ${procedure.postJobRequirements.deliverables.map(d => `<li class="flex items-start"><span class="mr-2">📄</span>${d}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2 text-teal-600 dark:text-teal-400">Key Performance Indicators (KPIs)</h5>
+                        <ul class="space-y-1 text-sm">
+                            ${procedure.postJobRequirements.kpis.map(k => `<li class="flex items-start"><span class="mr-2">🎯</span>${k}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2 text-teal-600 dark:text-teal-400">Required Sign-offs</h5>
+                        <div class="flex flex-wrap gap-2">
+                            ${procedure.postJobRequirements.signoff.map(s => `<span class="px-3 py-1 bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 rounded-full text-sm">${s}</span>`).join('')}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2237,8 +2471,9 @@ document.addEventListener('DOMContentLoaded', function() {
         planOutput.innerHTML = `
             <div class="plan-summary-card light-card overflow-hidden mb-8">
                 <div class="card-header bg-gradient-to-r from-blue-600 to-teal-500">
-                    <h3 class="text-2xl font-bold text-white">Intervention Plan: ${well.name}</h3>
+                    <h3 class="text-2xl font-bold text-white">📋 Comprehensive Intervention Program: ${well.name}</h3>
                     <p class="text-lg text-blue-100">${appState.selectedObjective.name}</p>
+                    <p class="text-sm text-blue-200 mt-1">AFE-Ready Field Program | Equipment Mobilization to Job Completion</p>
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
@@ -2257,18 +2492,36 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             </div>
-            
+
+            <h3 class="text-xl font-bold mb-4 mt-8">Phase 1: Pre-Job Planning & Mobilization</h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                ${timelineHtml}
-                ${equipmentHtml}
+                ${preJobHtml}
+                ${mobilizationHtml}
             </div>
-            
-            <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
-                ${riskHtml}
+
+            <h3 class="text-xl font-bold mb-4 mt-8">Phase 2: Equipment & Resources</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                ${equipmentHtml}
                 ${costHtml}
             </div>
-            
-            ${logisticsHtml}
+
+            <h3 class="text-xl font-bold mb-4 mt-8">Phase 3: Execution Plan</h3>
+            <div class="grid grid-cols-1 gap-8">
+                ${timelineHtml}
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 mt-8">Phase 4: Risk Management</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                ${riskHtml}
+                ${contingencyHtml}
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 mt-8">Phase 5: Post-Job & Quality Assurance</h3>
+            <div class="grid grid-cols-1 gap-8">
+                ${postJobHtml}
+            </div>
+
+            ${logisticsHtml ? `<h3 class="text-xl font-bold mb-4 mt-8">⚠️ Resource Conflicts</h3>${logisticsHtml}` : ''}
         `;
         
         // Initialize risk chart
