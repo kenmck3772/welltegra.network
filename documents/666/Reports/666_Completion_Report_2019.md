@@ -1,16 +1,16 @@
-# Well W666 - Completion Report
-## "The Perfect Storm" - Montrose Field
+# Well 666 - Completion Report
+## "The Perfect Storm" - Brahan Field
 
 **Report Date:** August 28, 2019
 **Contractor:** Halliburton
-**Well ID:** W666-MONT-UKCS-2019-001
-**API Number:** GB-UKCS-666-MONT-2019
+**Well ID:** 666-BRAH-SEER-2019-001
+**API Number:** GB-SEER-666-BRAH-2019
 
 ---
 
 ## Executive Summary
 
-Initial well completion successfully executed for HPHT gas condensate producer Well W666 in the Montrose Field. All objectives achieved within planned timeframe with zero NPT.
+Initial well completion successfully executed for HPHT gas condensate producer Well 666 in the Brahan Field. All objectives achieved within planned timeframe with zero NPT.
 
 ### Key Achievements
 - ✅ 7" HPHT tubing string successfully run to 18,350 ft MD
@@ -185,7 +185,7 @@ Well performance exceeds pre-drill estimates by 15%. No indication of formation 
 
 ## Conclusions
 
-Well W666 completion was executed flawlessly, achieving all technical and commercial objectives. The well is now ready for production with initial rates exceeding expectations. All safety and environmental standards were met or exceeded.
+Well 666 completion was executed flawlessly, achieving all technical and commercial objectives. The well is now ready for production with initial rates exceeding expectations. All safety and environmental standards were met or exceeded.
 
 ### Next Steps
 1. Hand over well to production operations team
@@ -200,6 +200,6 @@ Jamie Henderson, Lead Completion Engineer, Hess Corporation
 **Approved By:**
 Dr. Isla Munro, Operations Manager
 
-**Document Reference:** W666-COMP-RPT-2019-001
+**Document Reference:** 666-COMP-RPT-2019-001
 **Classification:** Company Confidential
 **Distribution:** Asset Team, Regulatory Authority (NSTA)

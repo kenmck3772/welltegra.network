@@ -6,13 +6,13 @@ This directory contains well-specific documentation, reports, programs, and data
 
 ```
 documents/
-├── W666/                    # Well W666 "The Perfect Storm" - Montrose Field
+├── 666/                    # Well 666 "The Perfect Storm" - Brahan Field
 │   ├── Programs/            # Work programs and procedures
 │   │   ├── TRSSV_Function_Test_Procedure.md
-│   │   ├── W666_Completion_Program_2019.pdf (pending)
+│   │   ├── 666_Completion_Program_2019.pdf (pending)
 │   │   └── DHSV_Test_Procedure_Standard.pdf (pending)
 │   ├── Reports/             # Operational reports and summaries
-│   │   ├── W666_Completion_Report_2019.md ✅
+│   │   ├── 666_Completion_Report_2019.md ✅
 │   │   ├── Fishing_Operation_Report_2023-08.md ✅
 │   │   ├── First_Production_Test_2019.pdf (pending)
 │   │   └── PLT_Analysis_Report_2022-11.pdf (pending)
@@ -21,10 +21,10 @@ documents/
 │   │   ├── PLT_2022-11-16.las (pending)
 │   │   └── MFC_2024-03-18.las (pending)
 │   └── Schematics/          # Well schematics and diagrams
-│       ├── W666_As_Built_Schematic_Rev3.svg (pending)
-│       └── W666_Completion_Diagram.png (pending)
+│       ├── 666_As_Built_Schematic_Rev3.svg (pending)
+│       └── 666_Completion_Diagram.png (pending)
 │
-├── W777/                    # Well W777 - (structure mirrors W666)
+├── 777/                    # Well 777 - (structure mirrors 666)
 ├── W888/                    # Well W888
 ├── W901/                    # Well W901
 ├── W902/                    # Well W902
@@ -81,14 +81,14 @@ Documents are referenced in `comprehensive-well-data.json` via the following fie
     "events": [
       {
         "eventId": "EVT-001",
-        "linkedProgram": "/documents/W666/Programs/W666_Completion_Program_2019.pdf",
-        "linkedReport": "/documents/W666/Reports/W666_Completion_Report_2019.md"
+        "linkedProgram": "/documents/666/Programs/666_Completion_Program_2019.pdf",
+        "linkedReport": "/documents/666/Reports/666_Completion_Report_2019.md"
       }
     ],
     "dataLogRepository": [
       {
         "logId": "LOG-001",
-        "linkedFile": "/documents/W666/Logs/CCL_GR_2021-06-23.las"
+        "linkedFile": "/documents/666/Logs/CCL_GR_2021-06-23.las"
       }
     ]
   }
@@ -113,7 +113,7 @@ Documents are referenced in `comprehensive-well-data.json` via the following fie
 
 ### Markdown Reports (Recommended for Demo)
 Use the existing reports as templates:
-- `W666_Completion_Report_2019.md` - Technical report template
+- `666_Completion_Report_2019.md` - Technical report template
 - `Fishing_Operation_Report_2023-08.md` - Incident report template
 - `TRSSV_Function_Test_Procedure.md` - SOP template
 
@@ -126,12 +126,12 @@ Use the existing reports as templates:
 ### Adding PDF Documents
 For production use, place PDF files in appropriate directories:
 ```bash
-cp MyReport.pdf /documents/W666/Reports/
+cp MyReport.pdf /documents/666/Reports/
 ```
 
 Then update `comprehensive-well-data.json` to reference the file:
 ```json
-"linkedReport": "/documents/W666/Reports/MyReport.pdf"
+"linkedReport": "/documents/666/Reports/MyReport.pdf"
 ```
 
 ### Well Log Files (LAS Format)
