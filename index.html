@@ -1934,16 +1934,17 @@
 
             <!-- HIRO Marker + Live BOP Model -->
             <a-marker preset="hiro" id="hiro-marker-performer">
-                <!-- BOP Model (color changes based on pressure) -->
-                <a-entity
+                <!-- BOP Model (simple geometry for now - 3D model removed) -->
+                <a-box
                     id="bop-model-performer"
-                    gltf-model="/models/pce/bop_5ram.glb"
-                    scale="0.5 0.5 0.5"
-                    position="0 0 0"
+                    color="#4a5568"
+                    metalness="0.7"
+                    roughness="0.3"
+                    scale="0.5 1.5 0.5"
+                    position="0 0.75 0"
                     rotation="-90 0 0"
-                    material="color: #4a5568; metalness: 0.7; roughness: 0.3"
                     animation="property: rotation; to: -90 360 0; loop: true; dur: 10000; easing: linear">
-                </a-entity>
+                </a-box>
 
                 <!-- 3D Pressure Text (floating above BOP) -->
                 <a-text
