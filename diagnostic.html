@@ -218,6 +218,19 @@
     let failCount = 0;
     let warnCount = 0;
 
+    // HTML escape function to prevent XSS
+    function escapeHtml(unsafe) {
+      if (typeof unsafe !== 'string') {
+        unsafe = String(unsafe);
+      }
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
     function log(message, type = 'info') {
       const output = document.getElementById('console-output');
       const time = new Date().toLocaleTimeString();
@@ -227,12 +240,17 @@
         error: '#ef4444',
         warn: '#f59e0b'
       };
-      output.innerHTML += `<div style="color: ${colors[type]}">[${time}] ${message}</div>`;
+
+      // Use DOM methods instead of innerHTML to prevent XSS
+      const logEntry = document.createElement('div');
+      logEntry.style.color = colors[type];
+      logEntry.textContent = `[${time}] ${message}`;
+      output.appendChild(logEntry);
       output.scrollTop = output.scrollHeight;
     }
 
     function clearConsole() {
-      document.getElementById('console-output').innerHTML = '';
+      document.getElementById('console-output').textContent = '';
       log('Console cleared', 'info');
     }
 
@@ -248,18 +266,33 @@
       else if (result === 'fail') failCount++;
       else if (result === 'warn') warnCount++;
 
-      let html = `
-        <span class="status ${statusClass}">${statusText}</span>
-        <strong>${testName}</strong>: ${message}
-      `;
+      // Create status badge
+      const statusBadge = document.createElement('span');
+      statusBadge.className = `status ${statusClass}`;
+      statusBadge.textContent = statusText;
 
+      // Create test name
+      const testNameElement = document.createElement('strong');
+      testNameElement.textContent = testName;
+
+      // Create message text
+      const messageText = document.createTextNode(`: ${message}`);
+
+      // Append elements safely
+      testItem.appendChild(statusBadge);
+      testItem.appendChild(document.createTextNode(' '));
+      testItem.appendChild(testNameElement);
+      testItem.appendChild(messageText);
+
+      // Add details if provided (escaped)
       if (details) {
-        html += `<div class="code">${details}</div>`;
+        const detailsDiv = document.createElement('div');
+        detailsDiv.className = 'code';
+        detailsDiv.textContent = details;
+        testItem.appendChild(detailsDiv);
       }
 
-      testItem.innerHTML = html;
       container.appendChild(testItem);
-
       updateSummary();
     }
 
@@ -486,10 +519,10 @@
       passCount = 0;
       failCount = 0;
       warnCount = 0;
-      document.getElementById('dom-tests').innerHTML = '';
-      document.getElementById('js-tests').innerHTML = '';
-      document.getElementById('csp-tests').innerHTML = '';
-      document.getElementById('network-tests').innerHTML = '';
+      document.getElementById('dom-tests').textContent = '';
+      document.getElementById('js-tests').textContent = '';
+      document.getElementById('csp-tests').textContent = '';
+      document.getElementById('network-tests').textContent = '';
 
       log('========================================', 'info');
       log('Starting diagnostic tests...', 'info');
