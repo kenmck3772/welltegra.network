@@ -130,6 +130,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 
+    // --- SECURITY UTILITIES ---
+    /**
+     * Escapes HTML special characters to prevent XSS attacks
+     * @param {string} text - The text to escape
+     * @returns {string} The escaped text safe for HTML insertion
+     */
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
     // --- UI COMPONENT BUILDERS ---
     /**
      * Creates a radial gauge component and injects it into a container.
@@ -146,21 +158,67 @@ document.addEventListener('DOMContentLoaded', async function() {
         const radius = (size / 2) - (strokeWidth * 2);
         const circumference = radius * 2 * Math.PI;
 
-        container.innerHTML = `
-            <div class="relative" style="width:${size}px; height:${size}px;">
-                <svg class="w-full h-full" viewBox="0 0 ${size} ${size}">
-                    <circle class="gauge-bg" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"></circle>
-                    <circle class="gauge-fg stroke-normal" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"
-                            stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"
-                            style="transition: stroke-dashoffset 0.5s;"></circle>
-                </svg>
-                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <span class="gauge-value text-2xl font-bold gauge-text text-normal">0</span>
-                    <span class="gauge-units text-xs text-slate-400">${units}</span>
-                </div>
-            </div>
-            <h4 class="mt-2 text-sm font-semibold text-slate-300">${label}</h4>
-        `;
+        // Clear container first
+        container.textContent = '';
+
+        // Create outer div
+        const outerDiv = document.createElement('div');
+        outerDiv.className = 'relative';
+        outerDiv.style.width = size + 'px';
+        outerDiv.style.height = size + 'px';
+
+        // Create SVG element
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'w-full h-full');
+        svg.setAttribute('viewBox', '0 0 ' + size + ' ' + size);
+
+        // Create background circle
+        const circleBg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circleBg.setAttribute('class', 'gauge-bg');
+        circleBg.setAttribute('cx', size/2);
+        circleBg.setAttribute('cy', size/2);
+        circleBg.setAttribute('r', radius);
+        circleBg.setAttribute('stroke-width', strokeWidth);
+
+        // Create foreground circle
+        const circleFg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circleFg.setAttribute('class', 'gauge-fg stroke-normal');
+        circleFg.setAttribute('cx', size/2);
+        circleFg.setAttribute('cy', size/2);
+        circleFg.setAttribute('r', radius);
+        circleFg.setAttribute('stroke-width', strokeWidth);
+        circleFg.setAttribute('stroke-dasharray', circumference);
+        circleFg.setAttribute('stroke-dashoffset', circumference);
+        circleFg.style.transition = 'stroke-dashoffset 0.5s';
+
+        svg.appendChild(circleBg);
+        svg.appendChild(circleFg);
+
+        // Create inner div with gauge value and units
+        const innerDiv = document.createElement('div');
+        innerDiv.className = 'absolute inset-0 flex flex-col items-center justify-center';
+
+        const valueSpan = document.createElement('span');
+        valueSpan.className = 'gauge-value text-2xl font-bold gauge-text text-normal';
+        valueSpan.textContent = '0';
+
+        const unitsSpan = document.createElement('span');
+        unitsSpan.className = 'gauge-units text-xs text-slate-400';
+        unitsSpan.textContent = units; // Auto-escaped
+
+        innerDiv.appendChild(valueSpan);
+        innerDiv.appendChild(unitsSpan);
+
+        outerDiv.appendChild(svg);
+        outerDiv.appendChild(innerDiv);
+
+        // Create label
+        const labelH4 = document.createElement('h4');
+        labelH4.className = 'mt-2 text-sm font-semibold text-slate-300';
+        labelH4.textContent = label; // Auto-escaped
+
+        container.appendChild(outerDiv);
+        container.appendChild(labelH4);
     }
 
     /**
@@ -204,16 +262,44 @@ document.addEventListener('DOMContentLoaded', async function() {
     function createBarGauge(containerId, label, units, maxValue) {
         const container = document.getElementById(containerId);
         if (!container) return;
-        container.innerHTML = `
-            <h4 class="text-sm font-semibold text-slate-300">${label}</h4>
-            <div class="w-full bar-bg rounded-full h-2.5 my-2">
-                <div class="bar-fg bg-normal h-2.5 rounded-full" style="width: 0%"></div>
-            </div>
-            <div class="text-center">
-                <span class="bar-value text-2xl font-bold gauge-text text-normal">0</span>
-                <span class="bar-units text-xs text-slate-400">${units}</span>
-            </div>
-        `;
+        // Clear container first
+        container.textContent = '';
+
+        // Create label
+        const labelH4 = document.createElement('h4');
+        labelH4.className = 'text-sm font-semibold text-slate-300';
+        labelH4.textContent = label; // Auto-escaped
+
+        // Create outer bar container
+        const outerBarDiv = document.createElement('div');
+        outerBarDiv.className = 'w-full bar-bg rounded-full h-2.5 my-2';
+
+        // Create inner bar (foreground)
+        const innerBarDiv = document.createElement('div');
+        innerBarDiv.className = 'bar-fg bg-normal h-2.5 rounded-full';
+        innerBarDiv.style.width = '0%';
+
+        outerBarDiv.appendChild(innerBarDiv);
+
+        // Create value display container
+        const valueDiv = document.createElement('div');
+        valueDiv.className = 'text-center';
+
+        const valueSpan = document.createElement('span');
+        valueSpan.className = 'bar-value text-2xl font-bold gauge-text text-normal';
+        valueSpan.textContent = '0';
+
+        const unitsSpan = document.createElement('span');
+        unitsSpan.className = 'bar-units text-xs text-slate-400';
+        unitsSpan.textContent = units; // Auto-escaped
+
+        valueDiv.appendChild(valueSpan);
+        valueDiv.appendChild(document.createTextNode(' '));
+        valueDiv.appendChild(unitsSpan);
+
+        container.appendChild(labelH4);
+        container.appendChild(outerBarDiv);
+        container.appendChild(valueDiv);
     }
 
     /**
@@ -588,11 +674,51 @@ document.addEventListener('DOMContentLoaded', async function() {
         headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
 
         if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
-            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">â— LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            // Clear and rebuild headerDetails with safe DOM methods
+            headerDetails.textContent = '';
+
+            const statusSpan = document.createElement('span');
+            statusSpan.id = 'job-status';
+            statusSpan.className = 'text-lg font-semibold text-emerald-400';
+            statusSpan.textContent = '● LIVE';
+
+            const detailsDiv = document.createElement('div');
+            detailsDiv.className = 'text-right';
+
+            const wellP = document.createElement('p');
+            wellP.className = 'text-sm';
+            wellP.textContent = 'Well: ' + appState.selectedWell.name; // Auto-escaped
+
+            const jobP = document.createElement('p');
+            jobP.className = 'text-sm';
+            jobP.textContent = 'Job: ' + appState.generatedPlan.name; // Auto-escaped
+
+            detailsDiv.appendChild(wellP);
+            detailsDiv.appendChild(jobP);
+
+            headerDetails.appendChild(statusSpan);
+            headerDetails.appendChild(detailsDiv);
             initializePerformer();
         } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
             if(appState.selectedWell && appState.generatedPlan) {
-                headerDetails.innerHTML = `<div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+                // Clear and rebuild headerDetails with safe DOM methods
+                headerDetails.textContent = '';
+
+                const detailsDiv = document.createElement('div');
+                detailsDiv.className = 'text-right';
+
+                const wellP = document.createElement('p');
+                wellP.className = 'text-sm';
+                wellP.textContent = 'Well: ' + appState.selectedWell.name; // Auto-escaped
+
+                const jobP = document.createElement('p');
+                jobP.className = 'text-sm';
+                jobP.textContent = 'Job: ' + appState.generatedPlan.name; // Auto-escaped
+
+                detailsDiv.appendChild(wellP);
+                detailsDiv.appendChild(jobP);
+
+                headerDetails.appendChild(detailsDiv);
             }
             if (viewName === 'commercial') renderCommercialView();
             if (viewName === 'hse') renderHSEView();
@@ -657,77 +783,198 @@ document.addEventListener('DOMContentLoaded', async function() {
     // --- PLANNER LOGIC ---
 
     const renderWellCards = () => { 
-        wellSelectionGrid.innerHTML = wellData.map(well => {
+        wellSelectionGrid.textContent = '';
+        wellData.forEach(well => {
             const isWellFromHell = well.id === '666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
             const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
-            
-            return `
-                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}">
-                    <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-xl font-bold text-white">${well.name}</h3>
-                            ${isWellFromHell ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full">CRITICAL</span>' : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full">CASE STUDY</span>'}
-                        </div>
-                        <p class="text-sm text-blue-100">${well.field} - ${well.type}</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
-                        </div>
-                        <p class="text-sm">${well.issue}</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
-                            <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold" data-well-id="${well.id}">View Details</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }).join(''); 
+
+            const card = document.createElement('div');
+            card.className = 'well-card-enhanced planner-card light-card ' + (isWellFromHell ? 'border-red-500' : 'border-gray-200');
+            card.setAttribute('data-well-id', well.id);
+
+            const cardHeader = document.createElement('div');
+            cardHeader.className = 'card-header ' + (isWellFromHell ? 'bg-red-500' : 'bg-blue-500');
+
+            const headerFlex = document.createElement('div');
+            headerFlex.className = 'flex justify-between items-center';
+
+            const h3 = document.createElement('h3');
+            h3.className = 'text-xl font-bold text-white';
+            h3.textContent = well.name; // Auto-escaped
+
+            const badge = document.createElement('span');
+            badge.className = (isWellFromHell ? 'bg-red-700' : 'bg-blue-700') + ' text-white text-xs px-2 py-1 rounded-full';
+            badge.textContent = isWellFromHell ? 'CRITICAL' : 'CASE STUDY';
+
+            headerFlex.appendChild(h3);
+            headerFlex.appendChild(badge);
+
+            const headerP = document.createElement('p');
+            headerP.className = 'text-sm text-blue-100';
+            headerP.textContent = well.field + ' - ' + well.type; // Auto-escaped
+
+            cardHeader.appendChild(headerFlex);
+            cardHeader.appendChild(headerP);
+
+            const cardBody = document.createElement('div');
+            cardBody.className = 'card-body';
+
+            const bodyDiv = document.createElement('div');
+            bodyDiv.className = 'mb-3';
+
+            const statusSpan = document.createElement('span');
+            statusSpan.className = 'inline-block px-2 py-1 text-xs font-medium rounded-full status-' + statusClass;
+            statusSpan.textContent = well.status; // Auto-escaped
+
+            bodyDiv.appendChild(statusSpan);
+
+            const issueP = document.createElement('p');
+            issueP.className = 'text-sm';
+            issueP.textContent = well.issue; // Auto-escaped
+
+            cardBody.appendChild(bodyDiv);
+            cardBody.appendChild(issueP);
+
+            const cardFooter = document.createElement('div');
+            cardFooter.className = 'card-footer';
+
+            const footerFlex = document.createElement('div');
+            footerFlex.className = 'flex justify-between items-center';
+
+            const depthSpan = document.createElement('span');
+            depthSpan.className = 'text-xs text-gray-500';
+            depthSpan.textContent = 'Depth: ' + well.depth; // Auto-escaped
+
+            const viewBtn = document.createElement('button');
+            viewBtn.className = 'view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold';
+            viewBtn.setAttribute('data-well-id', well.id);
+            viewBtn.textContent = 'View Details';
+
+            footerFlex.appendChild(depthSpan);
+            footerFlex.appendChild(viewBtn);
+
+            cardFooter.appendChild(footerFlex);
+
+            card.appendChild(cardHeader);
+            card.appendChild(cardBody);
+            card.appendChild(cardFooter);
+
+            wellSelectionGrid.appendChild(card);
+        }) 
     };
 
-    const renderObjectives = () => { 
-        objectivesFieldset.innerHTML = objectivesData.map(obj => `
-            <div class="objective-card light-card" data-objective-id="${obj.id}">
-                <input type="radio" name="objective" id="${obj.id}" value="${obj.id}" class="sr-only">
-                <label for="${obj.id}" class="cursor-pointer h-full">
-                    <div class="flex items-start">
-                        <span class="text-2xl mr-3">${obj.icon}</span>
-                        <div>
-                            <span class="font-semibold text-lg">${obj.name}</span>
-                            <p class="text-sm mt-1">${obj.description}</p>
-                        </div>
-                    </div>
-                </label>
-            </div>
-        `).join(''); 
+    const renderObjectives = () => {
+        objectivesFieldset.textContent = '';
+        objectivesData.forEach(obj => {
+            const card = document.createElement('div');
+            card.className = 'objective-card light-card';
+            card.setAttribute('data-objective-id', obj.id);
+
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = 'objective';
+            input.id = obj.id;
+            input.value = obj.id;
+            input.className = 'sr-only';
+
+            const label = document.createElement('label');
+            label.setAttribute('for', obj.id);
+            label.className = 'cursor-pointer h-full';
+
+            const flexDiv = document.createElement('div');
+            flexDiv.className = 'flex items-start';
+
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'text-2xl mr-3';
+            iconSpan.textContent = obj.icon; // Auto-escaped
+
+            const contentDiv = document.createElement('div');
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'font-semibold text-lg';
+            nameSpan.textContent = obj.name; // Auto-escaped
+
+            const descP = document.createElement('p');
+            descP.className = 'text-sm mt-1';
+            descP.textContent = obj.description; // Auto-escaped
+
+            contentDiv.appendChild(nameSpan);
+            contentDiv.appendChild(descP);
+
+            flexDiv.appendChild(iconSpan);
+            flexDiv.appendChild(contentDiv);
+
+            label.appendChild(flexDiv);
+
+            card.appendChild(input);
+            card.appendChild(label);
+
+            objectivesFieldset.appendChild(card);
+        });
     };
 
     const renderProblems = () => {
         // Only show problems relevant to the "Well From Hell"
         if (appState.selectedWell && appState.selectedWell.id === '666') {
-             problemsFieldset.innerHTML = problemsData.map(prob => `
-                <div class="objective-card light-card" data-problem-id="${prob.id}">
-                    <input type="radio" name="problem" id="${prob.id}" value="${prob.id}" class="sr-only">
-                    <label for="${prob.id}" class="cursor-pointer h-full">
-                        <div class="flex items-start">
-                            <span class="text-2xl mr-3">${prob.icon}</span>
-                            <div>
-                                <span class="font-semibold text-lg">${prob.name}</span>
-                                <p class="text-sm mt-1">${prob.description}</p>
-                            </div>
-                        </div>
-                    </label>
-                </div>
-            `).join('');
+             problemsFieldset.textContent = '';
+             problemsData.forEach(prob => {
+                const card = document.createElement('div');
+                card.className = 'objective-card light-card';
+                card.setAttribute('data-problem-id', prob.id);
+
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = 'problem';
+                input.id = prob.id;
+                input.value = prob.id;
+                input.className = 'sr-only';
+
+                const label = document.createElement('label');
+                label.setAttribute('for', prob.id);
+                label.className = 'cursor-pointer h-full';
+
+                const flexDiv = document.createElement('div');
+                flexDiv.className = 'flex items-start';
+
+                const iconSpan = document.createElement('span');
+                iconSpan.className = 'text-2xl mr-3';
+                iconSpan.textContent = prob.icon; // Auto-escaped
+
+                const contentDiv = document.createElement('div');
+
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'font-semibold text-lg';
+                nameSpan.textContent = prob.name; // Auto-escaped
+
+                const descP = document.createElement('p');
+                descP.className = 'text-sm mt-1';
+                descP.textContent = prob.description; // Auto-escaped
+
+                contentDiv.appendChild(nameSpan);
+                contentDiv.appendChild(descP);
+
+                flexDiv.appendChild(iconSpan);
+                flexDiv.appendChild(contentDiv);
+
+                label.appendChild(flexDiv);
+
+                card.appendChild(input);
+                card.appendChild(label);
+
+                problemsFieldset.appendChild(card);
+            });
         } else {
-            problemsFieldset.innerHTML = `
-                <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
-                    <p class="text-yellow-800 dark:text-yellow-200">Please select the 'Well From Hell' (666) to use the AI Advisor.</p>
-                </div>
-            `;
+            problemsFieldset.textContent = '';
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center';
+
+            const messageP = document.createElement('p');
+            messageP.className = 'text-yellow-800 dark:text-yellow-200';
+            messageP.textContent = "Please select the 'Well From Hell' (666) to use the AI Advisor.";
+
+            messageDiv.appendChild(messageP);
+            problemsFieldset.appendChild(messageDiv);
         }
     };
 
@@ -754,7 +1001,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                         ${logisticsConflicts.map(c => `
                             <li class="flex items-start p-3 rounded-md bg-red-50 dark:bg-red-900/50 border-l-4 border-red-400">
                                 <span class="text-red-600 mr-2 font-bold">âš ï¸</span>
-                                <span class="text-red-800 dark:text-red-300">${c}</span>
+                                <span class="text-red-800 dark:text-red-300">${escapeHtml(c)}</span>
                             </li>
                         `).join('')}
                     </ul>
@@ -776,9 +1023,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                                     <div class="flex items-center">
                                         <input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500 mr-4" ${item.source !== 'Vendor' ? 'checked disabled' : ''}>
                                         <div>
-                                            <p class="font-semibold">${item.name}</p>
+                                            <p class="font-semibold">${escapeHtml(item.name)}</p>
                                             <p class="text-xs text-gray-500 dark:text-gray-400">
-                                                Source: ${item.source}
+                                                Source: ${escapeHtml(item.source)}
                                             </p>
                                         </div>
                                     </div>
@@ -802,7 +1049,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                         ${procedure.steps.map((step, index) => `
                             <div class="timeline-step">
                                 <h5 class="font-semibold">Step ${index + 1}</h5>
-                                <p class="text-sm">${step}</p>
+                                <p class="text-sm">${escapeHtml(step)}</p>
                             </div>
                         `).join('')}
                     </div>
@@ -862,14 +1109,14 @@ document.addEventListener('DOMContentLoaded', async function() {
         planOutput.innerHTML = `
             <div class="plan-summary-card light-card overflow-hidden mb-8">
                 <div class="card-header bg-gradient-to-r from-blue-600 to-teal-500">
-                    <h3 class="text-2xl font-bold text-white">Intervention Plan: ${well.name}</h3>
-                    <p class="text-lg text-blue-100">${appState.selectedObjective.name}</p>
+                    <h3 class="text-2xl font-bold text-white">Intervention Plan: ${escapeHtml(well.name)}</h3>
+                    <p class="text-lg text-blue-100">${escapeHtml(appState.selectedObjective.name)}</p>
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                         <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
                             <p class="text-sm font-medium">Selected Well</p>
-                            <p class="text-lg font-semibold">${well.name}</p>
+                            <p class="text-lg font-semibold">${escapeHtml(well.name)}</p>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
                             <p class="text-sm font-medium">Est. Duration</p>
@@ -1217,26 +1464,49 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const renderPerformerProcedure = () => {
         const currentStepId = appState.liveData.currentStep;
-        procedureStepsContainer.innerHTML = appState.generatedPlan.procedure.map(step => `
-            <div id="step-${step.id}" data-step-id="${step.id}" class="procedure-step p-3 rounded-md ${step.completed ? 'completed' : ''} ${currentStepId === step.id ? 'active' : ''}">
-                <p class="font-semibold text-sm">${step.id}. ${step.text}</p>
-            </div>
-        `).join('');
-        
+        procedureStepsContainer.textContent = '';
+        appState.generatedPlan.procedure.forEach(step => {
+            const stepDiv = document.createElement('div');
+            stepDiv.id = 'step-' + step.id;
+            stepDiv.setAttribute('data-step-id', step.id);
+            stepDiv.className = 'procedure-step p-3 rounded-md';
+            if (step.completed) stepDiv.classList.add('completed');
+            if (currentStepId === step.id) stepDiv.classList.add('active');
+
+            const p = document.createElement('p');
+            p.className = 'font-semibold text-sm';
+            p.textContent = step.id + '. ' + step.text; // Auto-escaped
+
+            stepDiv.appendChild(p);
+            procedureStepsContainer.appendChild(stepDiv);
+        });
+
         const activeStepElement = document.getElementById(`step-${currentStepId}`);
-        if (activeStepElement) { 
-            activeStepElement.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
+        if (activeStepElement) {
+            activeStepElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     };
 
-    const renderPerformerLog = () => { 
-        logEntriesContainer.innerHTML = appState.logEntries.slice().reverse().map(entry => `
-            <div class="log-entry p-2">
-                <p class="text-xs text-gray-400">${entry.time.toLocaleTimeString()} - ${entry.user}</p>
-                <p class="text-sm">${entry.text}</p>
-            </div>
-        `).join(''); 
-        logEntriesContainer.scrollTop = 0; 
+    const renderPerformerLog = () => {
+        logEntriesContainer.textContent = '';
+        appState.logEntries.slice().reverse().forEach(entry => {
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'log-entry p-2';
+
+            const timeP = document.createElement('p');
+            timeP.className = 'text-xs text-gray-400';
+            timeP.textContent = entry.time.toLocaleTimeString() + ' - ' + entry.user; // Auto-escaped
+
+            const textP = document.createElement('p');
+            textP.className = 'text-sm';
+            textP.textContent = entry.text; // Auto-escaped
+
+            entryDiv.appendChild(timeP);
+            entryDiv.appendChild(textP);
+
+            logEntriesContainer.appendChild(entryDiv);
+        });
+        logEntriesContainer.scrollTop = 0;
     };
 
     const addLogEntry = (user, text) => { 
@@ -1318,12 +1588,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         
         const renderKPI = (label, plan, actual) => `
             <div class="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
-                <p class="text-sm font-medium">${label}</p>
-                <p class="text-lg font-semibold">${actual} <span class="text-sm font-normal">(Plan: ${plan})</span></p>
+                <p class="text-sm font-medium">${escapeHtml(label)}</p>
+                <p class="text-lg font-semibold">${escapeHtml(actual)} <span class="text-sm font-normal">(Plan: ${escapeHtml(plan)})</span></p>
             </div>
         `;
-        
-        summaryKpis.innerHTML = renderKPI('Job Duration (Days)', plannedDuration.toFixed(1), actualDuration.toFixed(1)) + 
+
+        summaryKpis.innerHTML = renderKPI('Job Duration (Days)', plannedDuration.toFixed(1), actualDuration.toFixed(1)) +
                               renderKPI('Total Cost (USD)', `$${plannedCost.toLocaleString()}`, `$${actualCost.toLocaleString()}`);
         
         if (appState.nptChartInstance) appState.nptChartInstance.destroy();
@@ -1360,14 +1630,14 @@ document.addEventListener('DOMContentLoaded', async function() {
         renderLessons();
     };
 
-    const renderLessons = () => { 
-        lessonsLearnedList.innerHTML = appState.lessonsLearned.length ? 
+    const renderLessons = () => {
+        lessonsLearnedList.innerHTML = appState.lessonsLearned.length ?
             appState.lessonsLearned.map(lesson => `
                 <div class="bg-gray-100 dark:bg-gray-700/50 p-3 rounded-md">
-                    <p>${lesson}</p>
+                    <p>${escapeHtml(lesson)}</p>
                 </div>
-            `).join('') : 
-            '<p class="text-center">No lessons learned have been added for this job.</p>'; 
+            `).join('') :
+            '<p class="text-center">No lessons learned have been added for this job.</p>';
     };
     
     // --- ASSET & POB LOGIC ---
@@ -1394,22 +1664,47 @@ document.addEventListener('DOMContentLoaded', async function() {
             (e.id.toLowerCase().includes(eqF) || e.type.toLowerCase().includes(eqF))
         );
         
-        equipmentTableBody.innerHTML = filteredEquipment.map(e => `
-            <tr>
-                <td class="p-2">${e.id}</td>
-                <td class="p-2">${e.type}</td>
-                <td class="p-2">${e.location}</td>
-                <td class="p-2">
-                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${e.status.toLowerCase()}">${e.status}</span>
-                </td>
-                <td class="p-2">
-                    <button class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full hover:bg-blue-200 disabled:opacity-50" 
-                            ${e.location === 'Onboard - Pump Room' && e.testStatus === 'Pending' ? '' : 'disabled'}>
-                        Test
-                    </button>
-                </td>
-            </tr>
-        `).join('');
+        equipmentTableBody.textContent = '';
+        filteredEquipment.forEach(e => {
+            const tr = document.createElement('tr');
+
+            const idTd = document.createElement('td');
+            idTd.className = 'p-2';
+            idTd.textContent = e.id; // Auto-escaped
+
+            const typeTd = document.createElement('td');
+            typeTd.className = 'p-2';
+            typeTd.textContent = e.type; // Auto-escaped
+
+            const locationTd = document.createElement('td');
+            locationTd.className = 'p-2';
+            locationTd.textContent = e.location; // Auto-escaped
+
+            const statusTd = document.createElement('td');
+            statusTd.className = 'p-2';
+            const statusSpan = document.createElement('span');
+            statusSpan.className = 'px-2 py-1 text-xs font-medium rounded-full status-' + e.status.toLowerCase();
+            statusSpan.textContent = e.status; // Auto-escaped
+            statusTd.appendChild(statusSpan);
+
+            const actionTd = document.createElement('td');
+            actionTd.className = 'p-2';
+            const testBtn = document.createElement('button');
+            testBtn.className = 'text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full hover:bg-blue-200 disabled:opacity-50';
+            testBtn.textContent = 'Test';
+            if (!(e.location === 'Onboard - Pump Room' && e.testStatus === 'Pending')) {
+                testBtn.disabled = true;
+            }
+            actionTd.appendChild(testBtn);
+
+            tr.appendChild(idTd);
+            tr.appendChild(typeTd);
+            tr.appendChild(locationTd);
+            tr.appendChild(statusTd);
+            tr.appendChild(actionTd);
+
+            equipmentTableBody.appendChild(tr);
+        });
 
         const persF = persFilter.toLowerCase();
         const filteredPersonnel = personnelData.filter(p => 
@@ -1417,16 +1712,36 @@ document.addEventListener('DOMContentLoaded', async function() {
             (p.name.toLowerCase().includes(persF) || p.role.toLowerCase().includes(persF))
         );
         
-        personnelTableBody.innerHTML = filteredPersonnel.map(p => `
-            <tr>
-                <td class="p-2">${p.name}</td>
-                <td class="p-2">${p.role}</td>
-                <td class="p-2">
-                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.status.toLowerCase().replace(/\s/g, '')}">${p.status}</span>
-                </td>
-                <td class="p-2">${p.certsValid ? 'âœ… Valid' : 'âŒ Expired'}</td>
-            </tr>
-        `).join('');
+        personnelTableBody.textContent = '';
+        filteredPersonnel.forEach(p => {
+            const tr = document.createElement('tr');
+
+            const nameTd = document.createElement('td');
+            nameTd.className = 'p-2';
+            nameTd.textContent = p.name; // Auto-escaped
+
+            const roleTd = document.createElement('td');
+            roleTd.className = 'p-2';
+            roleTd.textContent = p.role; // Auto-escaped
+
+            const statusTd = document.createElement('td');
+            statusTd.className = 'p-2';
+            const statusSpan = document.createElement('span');
+            statusSpan.className = 'px-2 py-1 text-xs font-medium rounded-full status-' + p.status.toLowerCase().replace(/\s/g, '');
+            statusSpan.textContent = p.status; // Auto-escaped
+            statusTd.appendChild(statusSpan);
+
+            const certsTd = document.createElement('td');
+            certsTd.className = 'p-2';
+            certsTd.textContent = p.certsValid ? '✅ Valid' : '❌ Expired';
+
+            tr.appendChild(nameTd);
+            tr.appendChild(roleTd);
+            tr.appendChild(statusTd);
+            tr.appendChild(certsTd);
+
+            personnelTableBody.appendChild(tr);
+        });
     };
 
     const checkLogistics = () => {
@@ -1473,6 +1788,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         
         pobSubtitle.textContent = `Live POB manifest for ${appState.generatedPlan.name} on ${appState.selectedWell.name}`;
 
+
+
         const totalPOB = appState.pob.personnel.length;
         const musteredCount = appState.pob.personnel.filter(p => p.musterStatus === 'Mustered').length;
         
@@ -1499,7 +1816,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         
         const musterStationHtml = musterStations.map(ms => `
             <div class="light-card p-4 rounded-lg">
-                <h4 class="font-semibold">${ms.name}</h4>
+                <h4 class="font-semibold">${escapeHtml(ms.name)}</h4>
                 <p class="text-sm">Capacity: ${ms.capacity}</p>
                 <p class="text-2xl font-bold">${ms.current}</p>
             </div>
@@ -1522,12 +1839,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                         <tbody>
                             ${appState.pob.personnel.map(p => `
                                 <tr class="border-b table-row-alt dark:border-gray-700">
-                                    <td class="p-2">${p.name}</td>
-                                    <td class="p-2">${p.company}</td>
-                                    <td class="p-2">${p.role}</td>
-                                    <td class="p-2">${p.muster}</td>
+                                    <td class="p-2">${escapeHtml(p.name)}</td>
+                                    <td class="p-2">${escapeHtml(p.company)}</td>
+                                    <td class="p-2">${escapeHtml(p.role)}</td>
+                                    <td class="p-2">${escapeHtml(p.muster)}</td>
                                     <td class="p-2">
-                                        <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.musterStatus.toLowerCase().replace(' ', '')}">${p.musterStatus}</span>
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.musterStatus.toLowerCase().replace(' ', '')}">${escapeHtml(p.musterStatus)}</span>
                                     </td>
                                 </tr>
                             `).join('')}
@@ -1594,6 +1911,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
         
         commercialSubtitle.textContent = `Live financial tracking for ${appState.generatedPlan.name} on ${appState.selectedWell.name}`;
+
+
         appState.commercial.afe = appState.generatedPlan.cost;
         appState.commercial.actualCost = 0;
         appState.commercial.serviceTickets = [];
@@ -1655,7 +1974,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                             <tbody id="service-ticket-body">
                                 ${appState.commercial.serviceTickets.map(t => `
                                     <tr class="border-b table-row-alt dark:border-gray-700">
-                                        <td class="p-2">${t.description}</td>
+                                        <td class="p-2">${escapeHtml(t.description)}</td>
                                         <td class="p-2">$${t.cost.toLocaleString()}</td>
                                         <td class="p-2">
                                             <span class="status-approved px-2 py-1 text-xs font-medium rounded-full">Validated</span>
@@ -1689,27 +2008,27 @@ document.addEventListener('DOMContentLoaded', async function() {
         const validatedCost = appState.commercial.actualCost;
         const resultContainer = document.getElementById('invoice-result');
         
-        if(isNaN(invoiceAmount)) { 
+        if(isNaN(invoiceAmount)) {
             resultContainer.innerHTML = `
                 <div class="p-3 rounded-md bg-yellow-50 dark:bg-yellow-900/50 border-l-4 border-yellow-400 text-yellow-800 dark:text-yellow-300">
                     Please enter a valid amount.
                 </div>
-            `; 
-            return; 
+            `;
+            return;
         }
-        
+
         const difference = invoiceAmount - validatedCost;
-        
-        if (Math.abs(difference) < 0.01) { 
+
+        if (Math.abs(difference) < 0.01) {
             resultContainer.innerHTML = `
                 <div class="p-3 rounded-md bg-green-50 dark:bg-green-900/50 border-l-4 border-green-400 text-green-800 dark:text-green-300">
-                    <strong>Match!</strong> Invoice amount of $${invoiceAmount.toLocaleString()} matches validated system cost.
+                    <strong>Match!</strong> Invoice amount of $${escapeHtml(invoiceAmount.toLocaleString())} matches validated system cost.
                 </div>
             `;
-        } else { 
+        } else {
             resultContainer.innerHTML = `
                 <div class="p-3 rounded-md bg-red-50 dark:bg-red-900/50 border-l-4 border-red-400 text-red-800 dark:text-red-300">
-                    <strong>Discrepancy Found!</strong> Invoice is <strong>$${Math.abs(difference).toLocaleString()} ${difference > 0 ? 'over' : 'under'}</strong> system-validated cost.
+                    <strong>Discrepancy Found!</strong> Invoice is <strong>$${escapeHtml(Math.abs(difference).toLocaleString())} ${difference > 0 ? 'over' : 'under'}</strong> system-validated cost.
                 </div>
             `;
         }
@@ -1727,6 +2046,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
         
         hseSubtitle.textContent = `Risk register and permits for ${appState.generatedPlan.name} on ${appState.selectedWell.name}`;
+
+
         appState.hse.permits = [ 
             { id: 'PTW001', name: 'General Permit to Work', status: 'Approved' }, 
             { id: 'PTW002', name: 'Hot Work Permit', status: 'Pending' }, 
@@ -1773,11 +2094,11 @@ document.addEventListener('DOMContentLoaded', async function() {
                         <tbody>
                             ${appState.hse.riskRegister.map(r => `
                                 <tr class="border-b table-row-alt dark:border-gray-700">
-                                    <td class="p-2">${r.hazard}</td>
-                                    <td class="p-2">${r.consequence}</td>
-                                    <td class="p-2">${r.mitigation}</td>
+                                    <td class="p-2">${escapeHtml(r.hazard)}</td>
+                                    <td class="p-2">${escapeHtml(r.consequence)}</td>
+                                    <td class="p-2">${escapeHtml(r.mitigation)}</td>
                                     <td class="p-2">
-                                        <span class="risk-${r.risk.toLowerCase()} px-2 py-1 text-xs font-medium rounded-full">${r.risk}</span>
+                                        <span class="risk-${r.risk.toLowerCase()} px-2 py-1 text-xs font-medium rounded-full">${escapeHtml(r.risk)}</span>
                                     </td>
                                 </tr>
                             `).join('')}
@@ -1793,8 +2114,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                 <div class="space-y-3">
                     ${appState.hse.permits.map(p => `
                         <div class="flex justify-between items-center bg-gray-50 dark:bg-gray-700/50 p-3 rounded-md">
-                            <span class="font-medium">${p.name}</span>
-                            <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.status.toLowerCase()}">${p.status}</span>
+                            <span class="font-medium">${escapeHtml(p.name)}</span>
+                            <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.status.toLowerCase()}">${escapeHtml(p.status)}</span>
                         </div>
                     `).join('')}
                 </div>
@@ -1813,17 +2134,43 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const initializeFaqAccordion = () => {
         const accordion = document.getElementById('faq-accordion');
-        accordion.innerHTML = faqData.map(item => `
-            <div>
-                <button class="faq-question flex justify-between items-center">
-                    <span>${item.question}</span>
-                    <svg class="icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="faq-answer">${item.answer}</div>
-            </div>
-        `).join('');
+        accordion.textContent = '';
+        faqData.forEach(item => {
+            const container = document.createElement('div');
+
+            const button = document.createElement('button');
+            button.className = 'faq-question flex justify-between items-center';
+
+            const questionSpan = document.createElement('span');
+            questionSpan.textContent = item.question; // Auto-escaped
+
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', 'icon w-5 h-5');
+            svg.setAttribute('fill', 'none');
+            svg.setAttribute('stroke', 'currentColor');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
+            path.setAttribute('stroke-width', '2');
+            path.setAttribute('d', 'M19 9l-7 7-7-7');
+
+            svg.appendChild(path);
+
+            button.appendChild(questionSpan);
+            button.appendChild(svg);
+
+            const answerDiv = document.createElement('div');
+            answerDiv.className = 'faq-answer';
+            answerDiv.textContent = item.answer; // Auto-escaped
+
+            container.appendChild(button);
+            container.appendChild(answerDiv);
+
+            accordion.appendChild(container);
+        });
 
         accordion.addEventListener('click', (e) => {
             const questionButton = e.target.closest('.faq-question');
@@ -1889,20 +2236,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     const renderModalTabs = (well) => {
         document.getElementById('history-content').innerHTML = well.history.length ? well.history.map(h => `
             <div class="p-4 mb-4 border dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800/50">
-                <p class="font-bold text-lg">${h.operation} <span class="text-sm font-normal">- ${h.date}</span></p>
+                <p class="font-bold text-lg">${escapeHtml(h.operation)} <span class="text-sm font-normal">- ${escapeHtml(h.date)}</span></p>
                 <div class="mt-3 space-y-3">
                     <div class="flex items-start">
                         <span class="text-xl mr-3">âš ï¸</span>
                         <div>
                             <strong class="font-semibold text-red-600 dark:text-red-400">Problem:</strong>
-                            <p class="text-sm">${h.problem}</p>
+                            <p class="text-sm">${escapeHtml(h.problem)}</p>
                         </div>
                     </div>
                     <div class="flex items-start">
                         <span class="text-xl mr-3">ðŸ’¡</span>
                         <div>
                             <strong class="font-semibold text-green-600 dark:text-green-400">Lesson Learned:</strong>
-                            <p class="text-sm">${h.lesson}</p>
+                            <p class="text-sm">${escapeHtml(h.lesson)}</p>
                         </div>
                     </div>
                 </div>
@@ -1922,12 +2269,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                 <tbody>
                     ${well.dailyReports.map(r => `
                         <tr class="border-b table-row-alt dark:border-gray-700">
-                            <td class="p-2 align-top">${r.date}</td>
-                            <td class="p-2 align-top">${r.summary}</td>
+                            <td class="p-2 align-top">${escapeHtml(r.date)}</td>
+                            <td class="p-2 align-top">${escapeHtml(r.summary)}</td>
                             <td class="p-2 align-top">${r.npt}</td>
                             <td class="p-2 align-top font-mono text-xs">
                                 <ul class="space-y-1">
-                                    ${r.toolstringRun.map(item => `<li>${item}</li>`).join('')}
+                                    ${r.toolstringRun.map(item => `<li>${escapeHtml(item)}</li>`).join('')}
                                 </ul>
                             </td>
                         </tr>
@@ -2280,18 +2627,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         aiRecommendationsContainer.innerHTML = `
             <h3 class="text-lg font-semibold text-center mb-4 mt-6">AI Recommendations</h3>
             <div class="space-y-4">
-                ${recommendations.map((rec, i) => { 
-                    const objective = objectivesData.find(o => o.id === rec.objectiveId); 
+                ${recommendations.map((rec, i) => {
+                    const objective = objectivesData.find(o => o.id === rec.objectiveId);
                     return `
                         <div class="ai-recommendation-enhanced" data-rec-index="${i}">
                             <div class="confidence-badge">${rec.confidence}% Confidence</div>
                             <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-bold text-lg text-teal-700 dark:text-teal-400">${objective.icon} ${objective.name}</h4>
+                                <h4 class="font-bold text-lg text-teal-700 dark:text-teal-400">${objective.icon} ${escapeHtml(objective.name)}</h4>
                             </div>
-                            <p class="text-sm mb-1"><strong>Projected Outcome:</strong> ${rec.outcome}</p>
+                            <p class="text-sm mb-1"><strong>Projected Outcome:</strong> ${escapeHtml(rec.outcome)}</p>
                             <p class="text-xs"><strong>Reasoning:</strong> ${rec.reason}</p>
                         </div>
-                    `; 
+                    `;
                 }).join('')}
             </div>
         `;
@@ -2323,7 +2670,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== '666') {
                 aiAdvisorView.innerHTML = `
                 <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
-                    <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (666) scenario. Please select 666 to see AI recommendations.</p>
+                    <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (${escapeHtml(appState.selectedWell.id)}) scenario. Please select 666 to see AI recommendations.</p>
                 </div>
             `;
             } else {
@@ -2522,15 +2869,15 @@ document.addEventListener('DOMContentLoaded', async function() {
                 <div class="text-2xl anomaly-icon-${anomaly.type}">${anomaly.icon}</div>
                 <div class="flex-1">
                     <div class="flex justify-between items-start mb-2">
-                        <h4 class="font-bold text-lg">${anomaly.message}</h4>
+                        <h4 class="font-bold text-lg">${escapeHtml(anomaly.message)}</h4>
                         <span class="text-sm opacity-75">t=${time} min</span>
                     </div>
                     <div class="text-sm mb-2">
-                        <strong>${anomaly.parameter}:</strong> ${anomaly.value.toFixed(1)}
-                        (Threshold: ${anomaly.threshold})
+                        <strong>${escapeHtml(anomaly.parameter)}:</strong> ${anomaly.value.toFixed(1)}
+                        (Threshold: ${escapeHtml(anomaly.threshold)})
                     </div>
                     <div class="bg-white/20 p-3 rounded text-sm">
-                        <strong>Recommendation:</strong> ${anomaly.recommendation}
+                        <strong>Recommendation:</strong> ${escapeHtml(anomaly.recommendation)}
                     </div>
                 </div>
             </div>
@@ -2656,26 +3003,26 @@ document.addEventListener('DOMContentLoaded', async function() {
             const totalNPT = well.dailyReports.reduce((sum, report) => sum + (report.npt || 0), 0);
 
             return `
-                <div class="well-detail-card ${is666 ? 'critical-well-card' : 'case-study-card'}" data-well-id="${well.id}">
+                <div class="well-detail-card ${is666 ? 'critical-well-card' : 'case-study-card'}" data-well-id="${escapeHtml(well.id)}">
                     <!-- Card Header -->
                     <div class="card-header-detailed ${is666 ? 'bg-gradient-to-r from-red-600 to-red-700' : 'bg-gradient-to-r from-blue-600 to-blue-700'}">
                         <div class="flex justify-between items-start">
                             <div class="flex-1">
                                 <div class="flex items-center gap-3 mb-2">
-                                    <h3 class="text-2xl font-extrabold text-white">${well.id}</h3>
+                                    <h3 class="text-2xl font-extrabold text-white">${escapeHtml(well.id)}</h3>
                                     <span class="px-3 py-1 rounded-full text-xs font-bold ${is666 ? 'bg-red-900 text-red-100' : 'bg-blue-900 text-blue-100'}">
                                         ${is666 ? 'CRITICAL - SHUT IN' : 'CASE STUDY'}
                                     </span>
                                 </div>
-                                <h4 class="text-xl font-bold text-white mb-2">${well.name}</h4>
+                                <h4 class="text-xl font-bold text-white mb-2">${escapeHtml(well.name)}</h4>
                                 <div class="grid grid-cols-2 gap-2 text-sm text-white/90">
-                                    <div><span class="font-semibold">Field:</span> ${well.field}</div>
-                                    <div><span class="font-semibold">Region:</span> ${well.region}</div>
-                                    <div><span class="font-semibold">Type:</span> ${well.type}</div>
-                                    <div><span class="font-semibold">Depth:</span> ${well.depth}</div>
+                                    <div><span class="font-semibold">Field:</span> ${escapeHtml(well.field)}</div>
+                                    <div><span class="font-semibold">Region:</span> ${escapeHtml(well.region)}</div>
+                                    <div><span class="font-semibold">Type:</span> ${escapeHtml(well.type)}</div>
+                                    <div><span class="font-semibold">Depth:</span> ${escapeHtml(well.depth)}</div>
                                 </div>
                             </div>
-                            <button class="toggle-card-btn text-white hover:bg-white/20 p-2 rounded-lg transition" data-well-id="${well.id}">
+                            <button class="toggle-card-btn text-white hover:bg-white/20 p-2 rounded-lg transition" data-well-id="${escapeHtml(well.id)}">
                                 <svg class="w-8 h-8 transform transition-transform expand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                 </svg>
@@ -2683,16 +3030,16 @@ document.addEventListener('DOMContentLoaded', async function() {
                         </div>
                         <div class="mt-4 p-3 bg-white/10 rounded-lg">
                             <p class="text-sm font-semibold text-white mb-1">Status:</p>
-                            <p class="text-sm text-white/90">${well.status}</p>
+                            <p class="text-sm text-white/90">${escapeHtml(well.status)}</p>
                         </div>
                         <div class="mt-3 p-3 ${is666 ? 'bg-red-900/50' : 'bg-blue-900/50'} rounded-lg">
                             <p class="text-sm font-semibold text-white mb-1">${is666 ? 'Problem Description:' : 'Solution Overview:'}</p>
-                            <p class="text-sm text-white/90">${well.issue}</p>
+                            <p class="text-sm text-white/90">${escapeHtml(well.issue)}</p>
                         </div>
                     </div>
 
                     <!-- Expandable Content -->
-                    <div class="card-expandable-content hidden" data-well-id="${well.id}">
+                    <div class="card-expandable-content hidden" data-well-id="${escapeHtml(well.id)}">
                         <div class="p-6 space-y-6">
                             <!-- Quick Stats -->
                             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -2717,16 +3064,16 @@ document.addEventListener('DOMContentLoaded', async function() {
                             <!-- Tabs -->
                             <div class="border-b border-gray-200 dark:border-gray-700">
                                 <nav class="-mb-px flex space-x-4" aria-label="Tabs">
-                                    <button class="well-detail-tab active" data-well-id="${well.id}" data-tab="history">
+                                    <button class="well-detail-tab active" data-well-id="${escapeHtml(well.id)}" data-tab="history">
                                         History & Lessons
                                     </button>
-                                    <button class="well-detail-tab" data-well-id="${well.id}" data-tab="schematic">
+                                    <button class="well-detail-tab" data-well-id="${escapeHtml(well.id)}" data-tab="schematic">
                                         Wellbore Schematic
                                     </button>
-                                    <button class="well-detail-tab" data-well-id="${well.id}" data-tab="reports">
+                                    <button class="well-detail-tab" data-well-id="${escapeHtml(well.id)}" data-tab="reports">
                                         Daily Reports
                                     </button>
-                                    <button class="well-detail-tab" data-well-id="${well.id}" data-tab="completion">
+                                    <button class="well-detail-tab" data-well-id="${escapeHtml(well.id)}" data-tab="completion">
                                         Completion Details
                                     </button>
                                 </nav>
@@ -2735,7 +3082,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                             <!-- Tab Content -->
                             <div class="tab-content-container">
                                 <!-- History Tab -->
-                                <div class="tab-pane active" data-well-id="${well.id}" data-tab-content="history">
+                                <div class="tab-pane active" data-well-id="${escapeHtml(well.id)}" data-tab-content="history">
                                     <h4 class="text-xl font-bold mb-4 text-slate-900 dark:text-slate-100">Operational History</h4>
                                     ${well.history.length ? `
                                         <div class="space-y-4">
@@ -2743,8 +3090,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                                                 <div class="history-item p-5 rounded-lg border-l-4 ${is666 ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'}">
                                                     <div class="flex items-start justify-between mb-3">
                                                         <div>
-                                                            <h5 class="font-bold text-lg text-slate-900 dark:text-slate-100">${h.operation}</h5>
-                                                            <p class="text-sm text-slate-600 dark:text-slate-400">${h.date}</p>
+                                                            <h5 class="font-bold text-lg text-slate-900 dark:text-slate-100">${escapeHtml(h.operation)}</h5>
+                                                            <p class="text-sm text-slate-600 dark:text-slate-400">${escapeHtml(h.date)}</p>
                                                         </div>
                                                         <span class="text-sm font-semibold px-3 py-1 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
                                                             Entry ${idx + 1} of ${well.history.length}
@@ -2757,7 +3104,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                                                             </svg>
                                                             <div class="flex-1">
                                                                 <strong class="font-semibold text-red-700 dark:text-red-400">Problem Encountered:</strong>
-                                                                <p class="text-sm mt-1 text-slate-700 dark:text-slate-300">${h.problem}</p>
+                                                                <p class="text-sm mt-1 text-slate-700 dark:text-slate-300">${escapeHtml(h.problem)}</p>
                                                             </div>
                                                         </div>
                                                         <div class="flex items-start gap-3">
@@ -2766,7 +3113,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                                                             </svg>
                                                             <div class="flex-1">
                                                                 <strong class="font-semibold text-green-700 dark:text-green-400">Lesson Learned:</strong>
-                                                                <p class="text-sm mt-1 text-slate-700 dark:text-slate-300">${h.lesson}</p>
+                                                                <p class="text-sm mt-1 text-slate-700 dark:text-slate-300">${escapeHtml(h.lesson)}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2777,7 +3124,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                                 </div>
 
                                 <!-- Schematic Tab -->
-                                <div class="tab-pane hidden" data-well-id="${well.id}" data-tab-content="schematic">
+                                <div class="tab-pane hidden" data-well-id="${escapeHtml(well.id)}" data-tab-content="schematic">
                                     <h4 class="text-xl font-bold mb-4 text-slate-900 dark:text-slate-100">Wellbore Schematic</h4>
                                     <div class="schematic-container bg-white dark:bg-slate-800 p-6 rounded-lg border-2 border-slate-200 dark:border-slate-700">
                                         ${renderWellSchematic(well)}
@@ -2794,7 +3141,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                                 </div>
 
                                 <!-- Daily Reports Tab -->
-                                <div class="tab-pane hidden" data-well-id="${well.id}" data-tab-content="reports">
+                                <div class="tab-pane hidden" data-well-id="${escapeHtml(well.id)}" data-tab-content="reports">
                                     <h4 class="text-xl font-bold mb-4 text-slate-900 dark:text-slate-100">Daily Operational Reports</h4>
                                     ${well.dailyReports.length ? `
                                         <div class="overflow-x-auto">
@@ -2810,8 +3157,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                                                 <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
                                                     ${well.dailyReports.map(r => `
                                                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                                                            <td class="p-3 align-top font-mono text-xs whitespace-nowrap">${r.date}</td>
-                                                            <td class="p-3 align-top">${r.summary}</td>
+                                                            <td class="p-3 align-top font-mono text-xs whitespace-nowrap">${escapeHtml(r.date)}</td>
+                                                            <td class="p-3 align-top">${escapeHtml(r.summary)}</td>
                                                             <td class="p-3 align-top">
                                                                 <span class="px-2 py-1 rounded text-xs font-bold ${r.npt > 2 ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'}">
                                                                     ${r.npt}
@@ -2822,7 +3169,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                                                                     ${r.toolstringRun.map((item, idx) => `
                                                                         <div class="flex gap-2">
                                                                             <span class="text-cyan-600 dark:text-cyan-400 font-bold">${idx + 1}.</span>
-                                                                            <span class="text-slate-700 dark:text-slate-300">${item}</span>
+                                                                            <span class="text-slate-700 dark:text-slate-300">${escapeHtml(item)}</span>
                                                                         </div>
                                                                     `).join('')}
                                                                 </div>
@@ -2840,7 +3187,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                                 </div>
 
                                 <!-- Completion Details Tab -->
-                                <div class="tab-pane hidden" data-well-id="${well.id}" data-tab-content="completion">
+                                <div class="tab-pane hidden" data-well-id="${escapeHtml(well.id)}" data-tab-content="completion">
                                     <h4 class="text-xl font-bold mb-4 text-slate-900 dark:text-slate-100">Completion Architecture</h4>
 
                                     <!-- Casing -->
@@ -3310,8 +3657,8 @@ function renderHistoricalToolStrings() {
         <div class="p-6 mb-4 rounded-lg border-2 border-cyan-500 bg-gradient-to-br from-cyan-900/20 to-blue-900/10">
             <div class="flex justify-between items-start mb-4">
                 <div class="flex-1">
-                    <h4 class="text-lg font-bold text-cyan-400">${ts.summary}</h4>
-                    <p class="text-sm text-gray-400 mt-1">Date: ${ts.date} | Well: ${ts.wellName}</p>
+                    <h4 class="text-lg font-bold text-cyan-400">${escapeHtml(ts.summary)}</h4>
+                    <p class="text-sm text-gray-400 mt-1">Date: ${escapeHtml(ts.date)} | Well: ${escapeHtml(ts.wellName)}</p>
                 </div>
                 <button onclick='loadHistoricalToolString(${JSON.stringify(ts).replace(/'/g, "\\'")})'
                         class="px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded-md transition-colors">
@@ -3323,7 +3670,7 @@ function renderHistoricalToolStrings() {
                 <ul class="space-y-1">
                     ${ts.components.map((comp, idx) => `
                         <li class="text-sm text-gray-300">
-                            <span class="text-cyan-400 font-mono">${idx + 1}.</span> ${comp}
+                            <span class="text-cyan-400 font-mono">${idx + 1}.</span> ${escapeHtml(comp)}
                         </li>
                     `).join('')}
                 </ul>
@@ -3369,9 +3716,9 @@ function renderSavedToolStrings() {
         <div class="p-6 mb-4 rounded-lg border-2 border-teal-500 bg-gradient-to-br from-teal-900/20 to-emerald-900/10">
             <div class="flex justify-between items-start mb-4">
                 <div class="flex-1">
-                    <h4 class="text-lg font-bold text-teal-400">${toolString.name}</h4>
+                    <h4 class="text-lg font-bold text-teal-400">${escapeHtml(toolString.name)}</h4>
                     <div class="mt-1 flex items-center gap-2">
-                        <span class="px-2 py-1 bg-teal-600 text-white text-xs font-bold rounded">${toolString.serviceLine}</span>
+                        <span class="px-2 py-1 bg-teal-600 text-white text-xs font-bold rounded">${escapeHtml(toolString.serviceLine)}</span>
                         <span class="text-xs text-gray-400">Created: ${new Date(toolString.createdAt).toLocaleDateString()}</span>
                     </div>
                 </div>
@@ -3391,7 +3738,7 @@ function renderSavedToolStrings() {
                 <ul class="space-y-1">
                     ${toolString.components.map((comp, idx) => `
                         <li class="text-sm text-gray-300">
-                            <span class="text-teal-400 font-mono">${idx + 1}.</span> ${comp}
+                            <span class="text-teal-400 font-mono">${idx + 1}.</span> ${escapeHtml(comp)}
                         </li>
                     `).join('')}
                 </ul>
@@ -3416,11 +3763,15 @@ function updateBuilderPreview() {
         .filter(line => line.length > 0);
 
     if (components.length === 0) {
-        componentsList.innerHTML = '<li class="text-gray-500 italic">No components added yet</li>';
+        componentsList.textContent = '';
+        const li = document.createElement('li');
+        li.className = 'text-gray-500 italic';
+        li.textContent = 'No components added yet';
+        componentsList.appendChild(li);
     } else {
         componentsList.innerHTML = components.map((comp, index) => `
             <li class="text-sm text-gray-300 py-1 border-l-3 border-cyan-500 pl-3">
-                ${index + 1}. ${comp}
+                ${index + 1}. ${escapeHtml(comp)}
             </li>
         `).join('');
     }
