@@ -158,21 +158,67 @@ document.addEventListener('DOMContentLoaded', async function() {
         const radius = (size / 2) - (strokeWidth * 2);
         const circumference = radius * 2 * Math.PI;
 
-        container.innerHTML = `
-            <div class="relative" style="width:${size}px; height:${size}px;">
-                <svg class="w-full h-full" viewBox="0 0 ${size} ${size}">
-                    <circle class="gauge-bg" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"></circle>
-                    <circle class="gauge-fg stroke-normal" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"
-                            stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"
-                            style="transition: stroke-dashoffset 0.5s;"></circle>
-                </svg>
-                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <span class="gauge-value text-2xl font-bold gauge-text text-normal">0</span>
-                    <span class="gauge-units text-xs text-slate-400">${units}</span>
-                </div>
-            </div>
-            <h4 class="mt-2 text-sm font-semibold text-slate-300">${label}</h4>
-        `;
+        // Clear container first
+        container.textContent = '';
+
+        // Create outer div
+        const outerDiv = document.createElement('div');
+        outerDiv.className = 'relative';
+        outerDiv.style.width = size + 'px';
+        outerDiv.style.height = size + 'px';
+
+        // Create SVG element
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'w-full h-full');
+        svg.setAttribute('viewBox', '0 0 ' + size + ' ' + size);
+
+        // Create background circle
+        const circleBg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circleBg.setAttribute('class', 'gauge-bg');
+        circleBg.setAttribute('cx', size/2);
+        circleBg.setAttribute('cy', size/2);
+        circleBg.setAttribute('r', radius);
+        circleBg.setAttribute('stroke-width', strokeWidth);
+
+        // Create foreground circle
+        const circleFg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circleFg.setAttribute('class', 'gauge-fg stroke-normal');
+        circleFg.setAttribute('cx', size/2);
+        circleFg.setAttribute('cy', size/2);
+        circleFg.setAttribute('r', radius);
+        circleFg.setAttribute('stroke-width', strokeWidth);
+        circleFg.setAttribute('stroke-dasharray', circumference);
+        circleFg.setAttribute('stroke-dashoffset', circumference);
+        circleFg.style.transition = 'stroke-dashoffset 0.5s';
+
+        svg.appendChild(circleBg);
+        svg.appendChild(circleFg);
+
+        // Create inner div with gauge value and units
+        const innerDiv = document.createElement('div');
+        innerDiv.className = 'absolute inset-0 flex flex-col items-center justify-center';
+
+        const valueSpan = document.createElement('span');
+        valueSpan.className = 'gauge-value text-2xl font-bold gauge-text text-normal';
+        valueSpan.textContent = '0';
+
+        const unitsSpan = document.createElement('span');
+        unitsSpan.className = 'gauge-units text-xs text-slate-400';
+        unitsSpan.textContent = units; // Auto-escaped
+
+        innerDiv.appendChild(valueSpan);
+        innerDiv.appendChild(unitsSpan);
+
+        outerDiv.appendChild(svg);
+        outerDiv.appendChild(innerDiv);
+
+        // Create label
+        const labelH4 = document.createElement('h4');
+        labelH4.className = 'mt-2 text-sm font-semibold text-slate-300';
+        labelH4.textContent = label; // Auto-escaped
+
+        container.appendChild(outerDiv);
+        container.appendChild(labelH4);
     }
 
     /**
@@ -216,16 +262,44 @@ document.addEventListener('DOMContentLoaded', async function() {
     function createBarGauge(containerId, label, units, maxValue) {
         const container = document.getElementById(containerId);
         if (!container) return;
-        container.innerHTML = `
-            <h4 class="text-sm font-semibold text-slate-300">${label}</h4>
-            <div class="w-full bar-bg rounded-full h-2.5 my-2">
-                <div class="bar-fg bg-normal h-2.5 rounded-full" style="width: 0%"></div>
-            </div>
-            <div class="text-center">
-                <span class="bar-value text-2xl font-bold gauge-text text-normal">0</span>
-                <span class="bar-units text-xs text-slate-400">${units}</span>
-            </div>
-        `;
+        // Clear container first
+        container.textContent = '';
+
+        // Create label
+        const labelH4 = document.createElement('h4');
+        labelH4.className = 'text-sm font-semibold text-slate-300';
+        labelH4.textContent = label; // Auto-escaped
+
+        // Create outer bar container
+        const outerBarDiv = document.createElement('div');
+        outerBarDiv.className = 'w-full bar-bg rounded-full h-2.5 my-2';
+
+        // Create inner bar (foreground)
+        const innerBarDiv = document.createElement('div');
+        innerBarDiv.className = 'bar-fg bg-normal h-2.5 rounded-full';
+        innerBarDiv.style.width = '0%';
+
+        outerBarDiv.appendChild(innerBarDiv);
+
+        // Create value display container
+        const valueDiv = document.createElement('div');
+        valueDiv.className = 'text-center';
+
+        const valueSpan = document.createElement('span');
+        valueSpan.className = 'bar-value text-2xl font-bold gauge-text text-normal';
+        valueSpan.textContent = '0';
+
+        const unitsSpan = document.createElement('span');
+        unitsSpan.className = 'bar-units text-xs text-slate-400';
+        unitsSpan.textContent = units; // Auto-escaped
+
+        valueDiv.appendChild(valueSpan);
+        valueDiv.appendChild(document.createTextNode(' '));
+        valueDiv.appendChild(unitsSpan);
+
+        container.appendChild(labelH4);
+        container.appendChild(outerBarDiv);
+        container.appendChild(valueDiv);
     }
 
     /**
@@ -600,11 +674,51 @@ document.addEventListener('DOMContentLoaded', async function() {
         headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
 
         if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
-            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">â— LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            // Clear and rebuild headerDetails with safe DOM methods
+            headerDetails.textContent = '';
+
+            const statusSpan = document.createElement('span');
+            statusSpan.id = 'job-status';
+            statusSpan.className = 'text-lg font-semibold text-emerald-400';
+            statusSpan.textContent = '● LIVE';
+
+            const detailsDiv = document.createElement('div');
+            detailsDiv.className = 'text-right';
+
+            const wellP = document.createElement('p');
+            wellP.className = 'text-sm';
+            wellP.textContent = 'Well: ' + appState.selectedWell.name; // Auto-escaped
+
+            const jobP = document.createElement('p');
+            jobP.className = 'text-sm';
+            jobP.textContent = 'Job: ' + appState.generatedPlan.name; // Auto-escaped
+
+            detailsDiv.appendChild(wellP);
+            detailsDiv.appendChild(jobP);
+
+            headerDetails.appendChild(statusSpan);
+            headerDetails.appendChild(detailsDiv);
             initializePerformer();
         } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
             if(appState.selectedWell && appState.generatedPlan) {
-                headerDetails.innerHTML = `<div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+                // Clear and rebuild headerDetails with safe DOM methods
+                headerDetails.textContent = '';
+
+                const detailsDiv = document.createElement('div');
+                detailsDiv.className = 'text-right';
+
+                const wellP = document.createElement('p');
+                wellP.className = 'text-sm';
+                wellP.textContent = 'Well: ' + appState.selectedWell.name; // Auto-escaped
+
+                const jobP = document.createElement('p');
+                jobP.className = 'text-sm';
+                jobP.textContent = 'Job: ' + appState.generatedPlan.name; // Auto-escaped
+
+                detailsDiv.appendChild(wellP);
+                detailsDiv.appendChild(jobP);
+
+                headerDetails.appendChild(detailsDiv);
             }
             if (viewName === 'commercial') renderCommercialView();
             if (viewName === 'hse') renderHSEView();
@@ -669,77 +783,198 @@ document.addEventListener('DOMContentLoaded', async function() {
     // --- PLANNER LOGIC ---
 
     const renderWellCards = () => { 
-        wellSelectionGrid.innerHTML = wellData.map(well => {
+        wellSelectionGrid.textContent = '';
+        wellData.forEach(well => {
             const isWellFromHell = well.id === '666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
             const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
-            
-            return `
-                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}">
-                    <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-xl font-bold text-white">${well.name}</h3>
-                            ${isWellFromHell ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full">CRITICAL</span>' : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full">CASE STUDY</span>'}
-                        </div>
-                        <p class="text-sm text-blue-100">${well.field} - ${well.type}</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
-                        </div>
-                        <p class="text-sm">${well.issue}</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
-                            <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold" data-well-id="${well.id}">View Details</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }).join(''); 
+
+            const card = document.createElement('div');
+            card.className = 'well-card-enhanced planner-card light-card ' + (isWellFromHell ? 'border-red-500' : 'border-gray-200');
+            card.setAttribute('data-well-id', well.id);
+
+            const cardHeader = document.createElement('div');
+            cardHeader.className = 'card-header ' + (isWellFromHell ? 'bg-red-500' : 'bg-blue-500');
+
+            const headerFlex = document.createElement('div');
+            headerFlex.className = 'flex justify-between items-center';
+
+            const h3 = document.createElement('h3');
+            h3.className = 'text-xl font-bold text-white';
+            h3.textContent = well.name; // Auto-escaped
+
+            const badge = document.createElement('span');
+            badge.className = (isWellFromHell ? 'bg-red-700' : 'bg-blue-700') + ' text-white text-xs px-2 py-1 rounded-full';
+            badge.textContent = isWellFromHell ? 'CRITICAL' : 'CASE STUDY';
+
+            headerFlex.appendChild(h3);
+            headerFlex.appendChild(badge);
+
+            const headerP = document.createElement('p');
+            headerP.className = 'text-sm text-blue-100';
+            headerP.textContent = well.field + ' - ' + well.type; // Auto-escaped
+
+            cardHeader.appendChild(headerFlex);
+            cardHeader.appendChild(headerP);
+
+            const cardBody = document.createElement('div');
+            cardBody.className = 'card-body';
+
+            const bodyDiv = document.createElement('div');
+            bodyDiv.className = 'mb-3';
+
+            const statusSpan = document.createElement('span');
+            statusSpan.className = 'inline-block px-2 py-1 text-xs font-medium rounded-full status-' + statusClass;
+            statusSpan.textContent = well.status; // Auto-escaped
+
+            bodyDiv.appendChild(statusSpan);
+
+            const issueP = document.createElement('p');
+            issueP.className = 'text-sm';
+            issueP.textContent = well.issue; // Auto-escaped
+
+            cardBody.appendChild(bodyDiv);
+            cardBody.appendChild(issueP);
+
+            const cardFooter = document.createElement('div');
+            cardFooter.className = 'card-footer';
+
+            const footerFlex = document.createElement('div');
+            footerFlex.className = 'flex justify-between items-center';
+
+            const depthSpan = document.createElement('span');
+            depthSpan.className = 'text-xs text-gray-500';
+            depthSpan.textContent = 'Depth: ' + well.depth; // Auto-escaped
+
+            const viewBtn = document.createElement('button');
+            viewBtn.className = 'view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold';
+            viewBtn.setAttribute('data-well-id', well.id);
+            viewBtn.textContent = 'View Details';
+
+            footerFlex.appendChild(depthSpan);
+            footerFlex.appendChild(viewBtn);
+
+            cardFooter.appendChild(footerFlex);
+
+            card.appendChild(cardHeader);
+            card.appendChild(cardBody);
+            card.appendChild(cardFooter);
+
+            wellSelectionGrid.appendChild(card);
+        }) 
     };
 
-    const renderObjectives = () => { 
-        objectivesFieldset.innerHTML = objectivesData.map(obj => `
-            <div class="objective-card light-card" data-objective-id="${obj.id}">
-                <input type="radio" name="objective" id="${obj.id}" value="${obj.id}" class="sr-only">
-                <label for="${obj.id}" class="cursor-pointer h-full">
-                    <div class="flex items-start">
-                        <span class="text-2xl mr-3">${obj.icon}</span>
-                        <div>
-                            <span class="font-semibold text-lg">${obj.name}</span>
-                            <p class="text-sm mt-1">${obj.description}</p>
-                        </div>
-                    </div>
-                </label>
-            </div>
-        `).join(''); 
+    const renderObjectives = () => {
+        objectivesFieldset.textContent = '';
+        objectivesData.forEach(obj => {
+            const card = document.createElement('div');
+            card.className = 'objective-card light-card';
+            card.setAttribute('data-objective-id', obj.id);
+
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = 'objective';
+            input.id = obj.id;
+            input.value = obj.id;
+            input.className = 'sr-only';
+
+            const label = document.createElement('label');
+            label.setAttribute('for', obj.id);
+            label.className = 'cursor-pointer h-full';
+
+            const flexDiv = document.createElement('div');
+            flexDiv.className = 'flex items-start';
+
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'text-2xl mr-3';
+            iconSpan.textContent = obj.icon; // Auto-escaped
+
+            const contentDiv = document.createElement('div');
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'font-semibold text-lg';
+            nameSpan.textContent = obj.name; // Auto-escaped
+
+            const descP = document.createElement('p');
+            descP.className = 'text-sm mt-1';
+            descP.textContent = obj.description; // Auto-escaped
+
+            contentDiv.appendChild(nameSpan);
+            contentDiv.appendChild(descP);
+
+            flexDiv.appendChild(iconSpan);
+            flexDiv.appendChild(contentDiv);
+
+            label.appendChild(flexDiv);
+
+            card.appendChild(input);
+            card.appendChild(label);
+
+            objectivesFieldset.appendChild(card);
+        });
     };
 
     const renderProblems = () => {
         // Only show problems relevant to the "Well From Hell"
         if (appState.selectedWell && appState.selectedWell.id === '666') {
-             problemsFieldset.innerHTML = problemsData.map(prob => `
-                <div class="objective-card light-card" data-problem-id="${prob.id}">
-                    <input type="radio" name="problem" id="${prob.id}" value="${prob.id}" class="sr-only">
-                    <label for="${prob.id}" class="cursor-pointer h-full">
-                        <div class="flex items-start">
-                            <span class="text-2xl mr-3">${prob.icon}</span>
-                            <div>
-                                <span class="font-semibold text-lg">${prob.name}</span>
-                                <p class="text-sm mt-1">${prob.description}</p>
-                            </div>
-                        </div>
-                    </label>
-                </div>
-            `).join('');
+             problemsFieldset.textContent = '';
+             problemsData.forEach(prob => {
+                const card = document.createElement('div');
+                card.className = 'objective-card light-card';
+                card.setAttribute('data-problem-id', prob.id);
+
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = 'problem';
+                input.id = prob.id;
+                input.value = prob.id;
+                input.className = 'sr-only';
+
+                const label = document.createElement('label');
+                label.setAttribute('for', prob.id);
+                label.className = 'cursor-pointer h-full';
+
+                const flexDiv = document.createElement('div');
+                flexDiv.className = 'flex items-start';
+
+                const iconSpan = document.createElement('span');
+                iconSpan.className = 'text-2xl mr-3';
+                iconSpan.textContent = prob.icon; // Auto-escaped
+
+                const contentDiv = document.createElement('div');
+
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'font-semibold text-lg';
+                nameSpan.textContent = prob.name; // Auto-escaped
+
+                const descP = document.createElement('p');
+                descP.className = 'text-sm mt-1';
+                descP.textContent = prob.description; // Auto-escaped
+
+                contentDiv.appendChild(nameSpan);
+                contentDiv.appendChild(descP);
+
+                flexDiv.appendChild(iconSpan);
+                flexDiv.appendChild(contentDiv);
+
+                label.appendChild(flexDiv);
+
+                card.appendChild(input);
+                card.appendChild(label);
+
+                problemsFieldset.appendChild(card);
+            });
         } else {
-            problemsFieldset.innerHTML = `
-                <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
-                    <p class="text-yellow-800 dark:text-yellow-200">Please select the 'Well From Hell' (666) to use the AI Advisor.</p>
-                </div>
-            `;
+            problemsFieldset.textContent = '';
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center';
+
+            const messageP = document.createElement('p');
+            messageP.className = 'text-yellow-800 dark:text-yellow-200';
+            messageP.textContent = "Please select the 'Well From Hell' (666) to use the AI Advisor.";
+
+            messageDiv.appendChild(messageP);
+            problemsFieldset.appendChild(messageDiv);
         }
     };
 
@@ -1229,26 +1464,49 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const renderPerformerProcedure = () => {
         const currentStepId = appState.liveData.currentStep;
-        procedureStepsContainer.innerHTML = appState.generatedPlan.procedure.map(step => `
-            <div id="step-${step.id}" data-step-id="${step.id}" class="procedure-step p-3 rounded-md ${step.completed ? 'completed' : ''} ${currentStepId === step.id ? 'active' : ''}">
-                <p class="font-semibold text-sm">${step.id}. ${step.text}</p>
-            </div>
-        `).join('');
-        
+        procedureStepsContainer.textContent = '';
+        appState.generatedPlan.procedure.forEach(step => {
+            const stepDiv = document.createElement('div');
+            stepDiv.id = 'step-' + step.id;
+            stepDiv.setAttribute('data-step-id', step.id);
+            stepDiv.className = 'procedure-step p-3 rounded-md';
+            if (step.completed) stepDiv.classList.add('completed');
+            if (currentStepId === step.id) stepDiv.classList.add('active');
+
+            const p = document.createElement('p');
+            p.className = 'font-semibold text-sm';
+            p.textContent = step.id + '. ' + step.text; // Auto-escaped
+
+            stepDiv.appendChild(p);
+            procedureStepsContainer.appendChild(stepDiv);
+        });
+
         const activeStepElement = document.getElementById(`step-${currentStepId}`);
-        if (activeStepElement) { 
-            activeStepElement.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
+        if (activeStepElement) {
+            activeStepElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     };
 
-    const renderPerformerLog = () => { 
-        logEntriesContainer.innerHTML = appState.logEntries.slice().reverse().map(entry => `
-            <div class="log-entry p-2">
-                <p class="text-xs text-gray-400">${entry.time.toLocaleTimeString()} - ${entry.user}</p>
-                <p class="text-sm">${entry.text}</p>
-            </div>
-        `).join(''); 
-        logEntriesContainer.scrollTop = 0; 
+    const renderPerformerLog = () => {
+        logEntriesContainer.textContent = '';
+        appState.logEntries.slice().reverse().forEach(entry => {
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'log-entry p-2';
+
+            const timeP = document.createElement('p');
+            timeP.className = 'text-xs text-gray-400';
+            timeP.textContent = entry.time.toLocaleTimeString() + ' - ' + entry.user; // Auto-escaped
+
+            const textP = document.createElement('p');
+            textP.className = 'text-sm';
+            textP.textContent = entry.text; // Auto-escaped
+
+            entryDiv.appendChild(timeP);
+            entryDiv.appendChild(textP);
+
+            logEntriesContainer.appendChild(entryDiv);
+        });
+        logEntriesContainer.scrollTop = 0;
     };
 
     const addLogEntry = (user, text) => { 
@@ -1406,22 +1664,47 @@ document.addEventListener('DOMContentLoaded', async function() {
             (e.id.toLowerCase().includes(eqF) || e.type.toLowerCase().includes(eqF))
         );
         
-        equipmentTableBody.innerHTML = filteredEquipment.map(e => `
-            <tr>
-                <td class="p-2">${e.id}</td>
-                <td class="p-2">${e.type}</td>
-                <td class="p-2">${e.location}</td>
-                <td class="p-2">
-                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${e.status.toLowerCase()}">${e.status}</span>
-                </td>
-                <td class="p-2">
-                    <button class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full hover:bg-blue-200 disabled:opacity-50" 
-                            ${e.location === 'Onboard - Pump Room' && e.testStatus === 'Pending' ? '' : 'disabled'}>
-                        Test
-                    </button>
-                </td>
-            </tr>
-        `).join('');
+        equipmentTableBody.textContent = '';
+        filteredEquipment.forEach(e => {
+            const tr = document.createElement('tr');
+
+            const idTd = document.createElement('td');
+            idTd.className = 'p-2';
+            idTd.textContent = e.id; // Auto-escaped
+
+            const typeTd = document.createElement('td');
+            typeTd.className = 'p-2';
+            typeTd.textContent = e.type; // Auto-escaped
+
+            const locationTd = document.createElement('td');
+            locationTd.className = 'p-2';
+            locationTd.textContent = e.location; // Auto-escaped
+
+            const statusTd = document.createElement('td');
+            statusTd.className = 'p-2';
+            const statusSpan = document.createElement('span');
+            statusSpan.className = 'px-2 py-1 text-xs font-medium rounded-full status-' + e.status.toLowerCase();
+            statusSpan.textContent = e.status; // Auto-escaped
+            statusTd.appendChild(statusSpan);
+
+            const actionTd = document.createElement('td');
+            actionTd.className = 'p-2';
+            const testBtn = document.createElement('button');
+            testBtn.className = 'text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full hover:bg-blue-200 disabled:opacity-50';
+            testBtn.textContent = 'Test';
+            if (!(e.location === 'Onboard - Pump Room' && e.testStatus === 'Pending')) {
+                testBtn.disabled = true;
+            }
+            actionTd.appendChild(testBtn);
+
+            tr.appendChild(idTd);
+            tr.appendChild(typeTd);
+            tr.appendChild(locationTd);
+            tr.appendChild(statusTd);
+            tr.appendChild(actionTd);
+
+            equipmentTableBody.appendChild(tr);
+        });
 
         const persF = persFilter.toLowerCase();
         const filteredPersonnel = personnelData.filter(p => 
@@ -1429,16 +1712,36 @@ document.addEventListener('DOMContentLoaded', async function() {
             (p.name.toLowerCase().includes(persF) || p.role.toLowerCase().includes(persF))
         );
         
-        personnelTableBody.innerHTML = filteredPersonnel.map(p => `
-            <tr>
-                <td class="p-2">${p.name}</td>
-                <td class="p-2">${p.role}</td>
-                <td class="p-2">
-                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.status.toLowerCase().replace(/\s/g, '')}">${p.status}</span>
-                </td>
-                <td class="p-2">${p.certsValid ? 'âœ… Valid' : 'âŒ Expired'}</td>
-            </tr>
-        `).join('');
+        personnelTableBody.textContent = '';
+        filteredPersonnel.forEach(p => {
+            const tr = document.createElement('tr');
+
+            const nameTd = document.createElement('td');
+            nameTd.className = 'p-2';
+            nameTd.textContent = p.name; // Auto-escaped
+
+            const roleTd = document.createElement('td');
+            roleTd.className = 'p-2';
+            roleTd.textContent = p.role; // Auto-escaped
+
+            const statusTd = document.createElement('td');
+            statusTd.className = 'p-2';
+            const statusSpan = document.createElement('span');
+            statusSpan.className = 'px-2 py-1 text-xs font-medium rounded-full status-' + p.status.toLowerCase().replace(/\s/g, '');
+            statusSpan.textContent = p.status; // Auto-escaped
+            statusTd.appendChild(statusSpan);
+
+            const certsTd = document.createElement('td');
+            certsTd.className = 'p-2';
+            certsTd.textContent = p.certsValid ? '✅ Valid' : '❌ Expired';
+
+            tr.appendChild(nameTd);
+            tr.appendChild(roleTd);
+            tr.appendChild(statusTd);
+            tr.appendChild(certsTd);
+
+            personnelTableBody.appendChild(tr);
+        });
     };
 
     const checkLogistics = () => {
@@ -1825,17 +2128,43 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const initializeFaqAccordion = () => {
         const accordion = document.getElementById('faq-accordion');
-        accordion.innerHTML = faqData.map(item => `
-            <div>
-                <button class="faq-question flex justify-between items-center">
-                    <span>${item.question}</span>
-                    <svg class="icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="faq-answer">${item.answer}</div>
-            </div>
-        `).join('');
+        accordion.textContent = '';
+        faqData.forEach(item => {
+            const container = document.createElement('div');
+
+            const button = document.createElement('button');
+            button.className = 'faq-question flex justify-between items-center';
+
+            const questionSpan = document.createElement('span');
+            questionSpan.textContent = item.question; // Auto-escaped
+
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', 'icon w-5 h-5');
+            svg.setAttribute('fill', 'none');
+            svg.setAttribute('stroke', 'currentColor');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
+            path.setAttribute('stroke-width', '2');
+            path.setAttribute('d', 'M19 9l-7 7-7-7');
+
+            svg.appendChild(path);
+
+            button.appendChild(questionSpan);
+            button.appendChild(svg);
+
+            const answerDiv = document.createElement('div');
+            answerDiv.className = 'faq-answer';
+            answerDiv.textContent = item.answer; // Auto-escaped
+
+            container.appendChild(button);
+            container.appendChild(answerDiv);
+
+            accordion.appendChild(container);
+        });
 
         accordion.addEventListener('click', (e) => {
             const questionButton = e.target.closest('.faq-question');
@@ -3428,7 +3757,11 @@ function updateBuilderPreview() {
         .filter(line => line.length > 0);
 
     if (components.length === 0) {
-        componentsList.innerHTML = '<li class="text-gray-500 italic">No components added yet</li>';
+        componentsList.textContent = '';
+        const li = document.createElement('li');
+        li.className = 'text-gray-500 italic';
+        li.textContent = 'No components added yet';
+        componentsList.appendChild(li);
     } else {
         componentsList.innerHTML = components.map((comp, index) => `
             <li class="text-sm text-gray-300 py-1 border-l-3 border-cyan-500 pl-3">
