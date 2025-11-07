@@ -402,15 +402,18 @@
       if (csp) {
         const content = csp.getAttribute('content');
 
-        // Check for cdn.aframe.io
-        if (content.includes('cdn.aframe.io')) {
+        // Check for cdn.aframe.io (using regex for precise domain matching)
+        // This checks for the domain as a complete token in the CSP, not as a substring
+        const cdnAframePattern = /(?:^|[\s;])https?:\/\/cdn\.aframe\.io(?:[\s;]|$)/;
+        if (cdnAframePattern.test(content)) {
           addTest('csp-tests', 'A-Frame CDN Allowed', 'pass', 'cdn.aframe.io in CSP');
         } else {
           addTest('csp-tests', 'A-Frame CDN Allowed', 'fail', 'cdn.aframe.io NOT in CSP', 'A-Frame fonts will fail to load');
         }
 
-        // Check for aframe.io
-        if (content.includes('aframe.io')) {
+        // Check for aframe.io (using regex for precise domain matching)
+        const aframePattern = /(?:^|[\s;])https?:\/\/(?:cdn\.)?aframe\.io(?:[\s;]|$)/;
+        if (aframePattern.test(content)) {
           addTest('csp-tests', 'A-Frame Scripts Allowed', 'pass', 'aframe.io in CSP');
         } else {
           addTest('csp-tests', 'A-Frame Scripts Allowed', 'warn', 'aframe.io not in CSP');
