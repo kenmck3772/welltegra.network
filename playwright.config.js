@@ -58,6 +58,21 @@ module.exports = defineConfig({
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
+
+    // Special project for video recording (instructional videos)
+    {
+      name: 'video-recording',
+      use: {
+        ...devices['Desktop Chrome'],
+        video: 'on', // Always record video
+        trace: 'on', // Always capture trace
+        screenshot: 'on', // Take screenshots
+        viewport: { width: 1920, height: 1080 }, // Full HD
+        launchOptions: {
+          slowMo: 500, // Slow down actions by 500ms for better visibility
+        },
+      },
+    },
   ],
 
   // Run your local dev server before starting the tests
