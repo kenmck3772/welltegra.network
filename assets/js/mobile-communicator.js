@@ -75,6 +75,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function closeCommunicator() {
         console.log('[MobileCommunicator] Closing...');
         if (mobileCommunicator) {
+            // Remove focus from any element inside the modal before hiding
+            // This prevents aria-hidden accessibility warnings
+            if (document.activeElement && mobileCommunicator.contains(document.activeElement)) {
+                document.activeElement.blur();
+            }
+
             mobileCommunicator.classList.add('hidden');
             mobileCommunicator.classList.remove('grid');
             mobileCommunicator.setAttribute('aria-hidden', 'true');
