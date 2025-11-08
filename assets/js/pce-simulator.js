@@ -686,7 +686,7 @@
             {
                 id: 'BOP-5K',
                 name: '5-Ram BOP',
-                modelPath: '/models/pce/bop_5ram.glb',
+                modelPath: null, // 3D model removed - using placeholder
                 connectionPoints: ['flange-top', 'flange-bottom']
             },
             {
