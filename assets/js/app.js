@@ -2240,8 +2240,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                 document.getElementById('modal-tab-reports').classList.toggle('hidden', e.target.dataset.tab !== 'reports');
             });
         });
-        
+
         modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
     };
 
     const renderModalTabs = (well) => {
@@ -2295,7 +2296,15 @@ document.addEventListener('DOMContentLoaded', async function() {
         ` : '<p>No daily reports available.</p>';
     };
 
-    const closeModal = () => modal.classList.add('hidden');
+    const closeModal = () => {
+        // Remove focus from any element inside the modal before hiding
+        // This prevents aria-hidden accessibility warnings
+        if (document.activeElement && modal.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+        modal.classList.add('hidden');
+        modal.setAttribute('aria-hidden', 'true');
+    };
 
     const renderWellSchematic = (well) => {
         const isDark = body.classList.contains('theme-dark');
