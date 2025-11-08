@@ -57,11 +57,15 @@ document.addEventListener('DOMContentLoaded', function() {
      * Open mobile communicator dialog
      */
     function openCommunicator() {
+        console.log('[MobileCommunicator] Opening...');
         if (mobileCommunicator) {
             mobileCommunicator.classList.remove('hidden');
             mobileCommunicator.classList.add('grid');
             mobileCommunicator.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
+            console.log('[MobileCommunicator] Opened successfully');
+        } else {
+            console.error('[MobileCommunicator] Element not found!');
         }
     }
 
@@ -69,11 +73,15 @@ document.addEventListener('DOMContentLoaded', function() {
      * Close mobile communicator dialog
      */
     function closeCommunicator() {
+        console.log('[MobileCommunicator] Closing...');
         if (mobileCommunicator) {
             mobileCommunicator.classList.add('hidden');
             mobileCommunicator.classList.remove('grid');
             mobileCommunicator.setAttribute('aria-hidden', 'true');
             document.body.style.overflow = '';
+            console.log('[MobileCommunicator] Closed successfully');
+        } else {
+            console.error('[MobileCommunicator] Element not found!');
         }
     }
 
@@ -266,11 +274,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event Listeners
     const openCommunicatorBtn = document.getElementById('open-mobile-communicator');
     if (openCommunicatorBtn) {
-        openCommunicatorBtn.addEventListener('click', openCommunicator);
+        console.log('[MobileCommunicator] Attaching open button listener');
+        openCommunicatorBtn.addEventListener('click', function(e) {
+            console.log('[MobileCommunicator] Open button clicked');
+            e.preventDefault();
+            openCommunicator();
+        });
+    } else {
+        console.error('[MobileCommunicator] Open button not found!');
     }
 
     if (closeCommunicatorBtn) {
-        closeCommunicatorBtn.addEventListener('click', closeCommunicator);
+        console.log('[MobileCommunicator] Attaching close button listener');
+        closeCommunicatorBtn.addEventListener('click', function(e) {
+            console.log('[MobileCommunicator] Close button clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            closeCommunicator();
+        });
+    } else {
+        console.error('[MobileCommunicator] Close button not found!');
     }
 
     // Handle approve/reject buttons
