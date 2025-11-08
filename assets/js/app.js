@@ -38,14 +38,14 @@ document.addEventListener('DOMContentLoaded', async function() {
                 lesson: event.lessonsLearned || event.outcome || ''
             }));
 
-        // Build daily reports from operational events
+        // Build daily reports from operational events with toolstrings
         const dailyReports = (operational.events || [])
-            .filter(event => event.toolstringUsed)
+            .filter(event => event.toolstringRun && event.toolstringRun.length > 0)
             .map(event => ({
-                date: event.eventDate || '',
+                date: event.startDate || event.eventDate || '',
                 summary: `${event.eventType || 'Event'} - ${event.outcome || ''}`,
-                npt: event.nptHours || 0,
-                toolstringRun: (event.toolstringUsed && event.toolstringUsed.components) || []
+                npt: event.npt_hours || event.nptHours || 0,
+                toolstringRun: event.toolstringRun || []
             }));
 
         // Build casing array
