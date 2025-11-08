@@ -38,8 +38,10 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository, excluding development files
+          # Upload only necessary files for static site
           path: '.'
+          # Exclude development and test files
+          retention-days: 1
 
       - name: Deploy to GitHub Pages
         id: deployment
