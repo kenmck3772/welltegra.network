@@ -1229,11 +1229,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         stepIndicators[currentStep].classList.add('active');
         stepIndicators[currentStep].classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-500');
         stepIndicators[currentStep].classList.add('bg-blue-600', 'text-white');
-        
+
         // Show/hide step sections
         Object.keys(stepSections).forEach(key => {
             stepSections[key].classList.toggle('hidden', key != currentStep);
         });
+
+        // If moving to step 3, render historical toolstrings
+        if (currentStep === 3) {
+            renderHistoricalToolStrings();
+            renderSavedToolStrings();
+            switchEquipmentTab('historical');
+        }
     };
 
     // --- PERFORMER LOGIC ---
