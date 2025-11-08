@@ -34,38 +34,56 @@ jobs:
 
       - name: Prepare deployment files
         run: |
-          # Create deployment directory
+          set -euo pipefail
+
+          echo "Contents of repo root:"
+          ls -la
+
+          # Clean and create deployment directory
+          rm -rf _site
           mkdir -p _site
 
-          # Copy HTML files
-          cp *.html _site/ 2>/dev/null || true
+          # Copy everything except excluded directories using rsync
+          rsync -av \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='tests' \
+            --exclude='playwright-report' \
+            --exclude='test-results' \
+            --exclude='*.backup' \
+            --exclude='*.md' \
+            --exclude='.gitignore' \
+            --exclude='.gitattributes' \
+            --exclude='package.json' \
+            --exclude='package-lock.json' \
+            --exclude='playwright.config.js' \
+            --exclude='tailwind.config.js' \
+            --exclude='_site' \
+            ./ _site/
 
-          # Copy essential directories
-          cp -r assets _site/ 2>/dev/null || true
-          cp -r models _site/ 2>/dev/null || true
-          cp -r edge-core _site/ 2>/dev/null || true
-          cp -r api _site/ 2>/dev/null || true
+          echo "After rsync - Contents of _site root:"
+          ls -la _site
 
-          # Copy video file
-          cp Hero77.mp4 _site/ 2>/dev/null || true
+          echo "Recursive listing (first 200 lines):"
+          find _site -maxdepth 5 -print | head -n 200
 
-          # Copy configuration files
-          cp .htaccess _site/ 2>/dev/null || true
-          cp .nojekyll _site/ 2>/dev/null || true
-          cp CNAME _site/ 2>/dev/null || true
-
-          # Copy favicon and icons
-          cp favicon*.* _site/ 2>/dev/null || true
-          cp apple-touch-icon*.png _site/ 2>/dev/null || true
-          cp android-chrome*.png _site/ 2>/dev/null || true
-          cp site.webmanifest _site/ 2>/dev/null || true
-
-          # Copy robots.txt and sitemap
-          cp robots.txt _site/ 2>/dev/null || true
-          cp sitemap.xml _site/ 2>/dev/null || true
-
-          echo "Deployment directory prepared"
+          echo "Size of _site:"
           du -sh _site
+
+          echo "Checking for index.html:"
+          if [ -f _site/index.html ]; then
+            echo "✓ index.html exists in _site"
+            ls -lh _site/index.html
+          else
+            echo "✗ ERROR: index.html NOT FOUND in _site"
+            exit 1
+          fi
+
+          echo "Checking for critical files:"
+          [ -f _site/.nojekyll ] && echo "✓ .nojekyll exists" || echo "✗ .nojekyll missing"
+          [ -f _site/CNAME ] && echo "✓ CNAME exists" || echo "✗ CNAME missing"
+          [ -f _site/.htaccess ] && echo "✓ .htaccess exists" || echo "✗ .htaccess missing"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
