@@ -12,27 +12,13 @@
     <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous"></script>
 
-<!-- Equipment Catalog & Tool String Builder -->
-<script src="/assets/js/toast.js"></script>
-<script src="/assets/js/auth.js"></script>
-<script src="/assets/js/equipment-catalog.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
-    
+
     <!-- PDF Export Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<!-- Equipment Catalog & Tool String Builder -->
-<script src="/assets/js/toast.js"></script>
-<script src="/assets/js/auth.js"></script>
-<script src="/assets/js/equipment-catalog.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<!-- Equipment Catalog & Tool String Builder -->
-<script src="/assets/js/toast.js"></script>
-<script src="/assets/js/auth.js"></script>
-<script src="/assets/js/equipment-catalog.js"></script>
     
     <style>
         /* --- Base & Theme Setup --- */
@@ -876,23 +862,7 @@
 
 <body class="theme-dark">
 
-<div id="welcome-screen" class="fixed inset-0 bg-slate-900 flex items-center justify-center z-50 transition-opacity duration-500">
-    <div class="text-center">
-        <img src="assets/logo.jpg" alt="Well-Tegra Data Solutions Logo" class="h-24 w-auto mx-auto mb-8 animate-pulse">
-        <div class="bg-slate-800 p-8 rounded-lg shadow-2xl w-80">
-            <h2 class="text-2xl font-bold text-white mb-6">Platform Login</h2>
-            <div class="space-y-4">
-                <input type="text" id="username" placeholder="Username" value="demo@welltegra.com" class="w-full p-3 rounded-md bg-slate-700 border border-slate-600 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500">
-                <input type="password" id="password" placeholder="Password" value="password" class="w-full p-3 rounded-md bg-slate-700 border border-slate-600 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500">
-            </div>
-            <button id="login-btn" class="mt-6 w-full bg-teal-600 hover:bg-teal-500 text-white font-bold py-3 px-4 rounded-md transition-colors">
-                Login
-            </button>
-        </div>
-    </div>
-</div>
-
-<div id="app-container" class="min-h-screen flex-col hidden">
+<div id="app-container" class="min-h-screen flex-col flex">
 
     <header id="app-header" class="header sticky top-0 z-30 transition-colors">
         <div class="max-w-full mx-auto py-3 px-4 sm:px-6 lg:px-8">
@@ -1399,21 +1369,67 @@ document.addEventListener('DOMContentLoaded', function() {
         const radius = (size / 2) - (strokeWidth * 2);
         const circumference = radius * 2 * Math.PI;
 
-        container.innerHTML = `
-            <div class="relative" style="width:${size}px; height:${size}px;">
-                <svg class="w-full h-full" viewBox="0 0 ${size} ${size}">
-                    <circle class="gauge-bg" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"></circle>
-                    <circle class="gauge-fg stroke-normal" cx="${size/2}" cy="${size/2}" r="${radius}" stroke-width="${strokeWidth}"
-                            stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"
-                            style="transition: stroke-dashoffset 0.5s;"></circle>
-                </svg>
-                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <span class="gauge-value text-2xl font-bold gauge-text text-normal">0</span>
-                    <span class="gauge-units text-xs text-slate-400">${units}</span>
-                </div>
-            </div>
-            <h4 class="mt-2 text-sm font-semibold text-slate-300">${label}</h4>
-        `;
+        // Clear container first
+        container.textContent = '';
+
+        // Create outer div
+        const outerDiv = document.createElement('div');
+        outerDiv.className = 'relative';
+        outerDiv.style.width = size + 'px';
+        outerDiv.style.height = size + 'px';
+
+        // Create SVG
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'w-full h-full');
+        svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+
+        // Create background circle
+        const circleBg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circleBg.setAttribute('class', 'gauge-bg');
+        circleBg.setAttribute('cx', size/2);
+        circleBg.setAttribute('cy', size/2);
+        circleBg.setAttribute('r', radius);
+        circleBg.setAttribute('stroke-width', strokeWidth);
+
+        // Create foreground circle
+        const circleFg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circleFg.setAttribute('class', 'gauge-fg stroke-normal');
+        circleFg.setAttribute('cx', size/2);
+        circleFg.setAttribute('cy', size/2);
+        circleFg.setAttribute('r', radius);
+        circleFg.setAttribute('stroke-width', strokeWidth);
+        circleFg.setAttribute('stroke-dasharray', circumference);
+        circleFg.setAttribute('stroke-dashoffset', circumference);
+        circleFg.style.transition = 'stroke-dashoffset 0.5s';
+
+        svg.appendChild(circleBg);
+        svg.appendChild(circleFg);
+
+        // Create inner div with gauge value and units
+        const innerDiv = document.createElement('div');
+        innerDiv.className = 'absolute inset-0 flex flex-col items-center justify-center';
+
+        const valueSpan = document.createElement('span');
+        valueSpan.className = 'gauge-value text-2xl font-bold gauge-text text-normal';
+        valueSpan.textContent = '0';
+
+        const unitsSpan = document.createElement('span');
+        unitsSpan.className = 'gauge-units text-xs text-slate-400';
+        unitsSpan.textContent = units; // Auto-escaped
+
+        innerDiv.appendChild(valueSpan);
+        innerDiv.appendChild(unitsSpan);
+
+        outerDiv.appendChild(svg);
+        outerDiv.appendChild(innerDiv);
+
+        // Create label
+        const labelH4 = document.createElement('h4');
+        labelH4.className = 'mt-2 text-sm font-semibold text-slate-300';
+        labelH4.textContent = label; // Auto-escaped
+
+        container.appendChild(outerDiv);
+        container.appendChild(labelH4);
     }
 
     /**
@@ -1457,16 +1473,44 @@ document.addEventListener('DOMContentLoaded', function() {
     function createBarGauge(containerId, label, units, maxValue) {
         const container = document.getElementById(containerId);
         if (!container) return;
-        container.innerHTML = `
-            <h4 class="text-sm font-semibold text-slate-300">${label}</h4>
-            <div class="w-full bar-bg rounded-full h-2.5 my-2">
-                <div class="bar-fg bg-normal h-2.5 rounded-full" style="width: 0%"></div>
-            </div>
-            <div class="text-center">
-                <span class="bar-value text-2xl font-bold gauge-text text-normal">0</span>
-                <span class="bar-units text-xs text-slate-400">${units}</span>
-            </div>
-        `;
+        // Clear container first
+        container.textContent = '';
+
+        // Create label
+        const labelH4 = document.createElement('h4');
+        labelH4.className = 'text-sm font-semibold text-slate-300';
+        labelH4.textContent = label; // Auto-escaped
+
+        // Create outer bar container
+        const outerBarDiv = document.createElement('div');
+        outerBarDiv.className = 'w-full bar-bg rounded-full h-2.5 my-2';
+
+        // Create inner bar (foreground)
+        const innerBarDiv = document.createElement('div');
+        innerBarDiv.className = 'bar-fg bg-normal h-2.5 rounded-full';
+        innerBarDiv.style.width = '0%';
+
+        outerBarDiv.appendChild(innerBarDiv);
+
+        // Create value display container
+        const valueDiv = document.createElement('div');
+        valueDiv.className = 'text-center';
+
+        const valueSpan = document.createElement('span');
+        valueSpan.className = 'bar-value text-2xl font-bold gauge-text text-normal';
+        valueSpan.textContent = '0';
+
+        const unitsSpan = document.createElement('span');
+        unitsSpan.className = 'bar-units text-xs text-slate-400';
+        unitsSpan.textContent = units; // Auto-escaped
+
+        valueDiv.appendChild(valueSpan);
+        valueDiv.appendChild(document.createTextNode(' '));
+        valueDiv.appendChild(unitsSpan);
+
+        container.appendChild(labelH4);
+        container.appendChild(outerBarDiv);
+        container.appendChild(valueDiv);
     }
 
     /**
@@ -1502,7 +1546,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { 
             id: 'W666', 
             name: 'The Perfect Storm',
-            field: 'Montrose', 
+            field: 'Brahan Field', 
             region: 'UKCS', 
             type: 'HPHT Gas Condensate', 
             depth: '18,500ft', 
@@ -1527,9 +1571,9 @@ document.addEventListener('DOMContentLoaded', function() {
             } 
         },
         { 
-            id: 'M-21', 
-            name: 'CASE STUDY: The Montrose Squeeze', 
-            field: 'Montrose', 
+            id: '11', 
+            name: 'CASE STUDY: The Brahan Squeeze', 
+            field: 'Brahan Field', 
             region: 'UKCS', 
             type: 'HPHT Gas Condensate', 
             depth: '9,000ft', 
@@ -1554,7 +1598,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { 
             id: 'S-15', 
             name: 'CASE STUDY: The Scale Trap', 
-            field: 'Montrose', 
+            field: 'Brahan Field', 
             region: 'UKCS', 
             type: 'HPHT Gas Condensate', 
             depth: '11,000ft', 
@@ -1575,7 +1619,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { 
             id: 'F-11', 
             name: 'CASE STUDY: The Broken Barrier', 
-            field: 'Montrose', 
+            field: 'Brahan Field', 
             region: 'UKCS', 
             type: 'HPHT Gas Condensate', 
             depth: '9,800ft', 
@@ -1596,7 +1640,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { 
             id: 'C-08', 
             name: 'CASE STUDY: The Sandstorm', 
-            field: 'Montrose', 
+            field: 'Brahan Field', 
             region: 'UKCS', 
             type: 'HPHT Gas Condensate', 
             depth: '10,000ft', 
@@ -1679,7 +1723,7 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
     const aiRecommendations = {
         prob1: [ 
-            { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis of case study <strong>M-21 (The Montrose Squeeze)</strong> confirms an expandable steel patch is the standard, high-success-rate rigless solution for this specific failure mode in this field.' } 
+            { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis of case study <strong>11 (The Brahan Squeeze)</strong> confirms an expandable steel patch is the standard, high-success-rate rigless solution for this specific failure mode in this field.' } 
         ],
         prob2: [ 
             { objectiveId: 'obj2', confidence: 92, outcome: 'Blockage cleared, production restored', reason: 'Based on the successful intervention on case study <strong>S-15 (The Scale Trap)</strong>, a two-stage chemical (DTPA) and mechanical (jetting) intervention has the highest probability of success. This avoids the high risk of stuck pipe associated with milling.' } 
@@ -1695,85 +1739,195 @@ document.addEventListener('DOMContentLoaded', function() {
         ]
     };
     const proceduresData = {
-        obj1: { 
-            name: "Expandable Casing Patch Installation", 
-            personnel: ["Wellsite Engineer", "HWU Supervisor"], 
+        obj1: {
+            name: "Expandable Casing Patch Installation",
+            personnel: ["Wellsite Engineer", "HWU Supervisor"],
             steps: [
-                "Perform wellbore cleanout trip with scraper and gauge ring.",
-                "RIH with expandable patch on jointed pipe.",
-                "Position patch across deformed interval using GR/CCL correlation.",
-                "Set patch using hydraulic setting tool.",
-                "Pressure test patch to verify seal.",
-                "POOH and return well to service."
-            ], 
-            risks: { operational: 4, geological: 2, equipment: 4, hse: 3, financial: 3 }, 
-            cost: 1200000, 
-            duration: 8, 
-            tfaModel: { pickUp: [[0,0], [9000, 60]], slackOff: [[0,0], [9000, -60]], alarmUpper: [[0,10], [9000, 70]], alarmLower: [[0,-10], [9000, -70]] } 
+                { step: "Perform wellbore cleanout trip with scraper and gauge ring.", duration: "12 hrs", lead: "HWU Supervisor", success: "Gauge passes through restriction, returns clean" },
+                { step: "RIH with expandable patch on jointed pipe.", duration: "8 hrs", lead: "Wellsite Engineer", success: "Patch at target depth, no excessive torque/drag" },
+                { step: "Position patch across deformed interval using GR/CCL correlation.", duration: "2 hrs", lead: "Wellsite Engineer", success: "GR correlation confirms correct depth ±5ft" },
+                { step: "Set patch using hydraulic setting tool.", duration: "4 hrs", lead: "HWU Supervisor", success: "Setting pressure achieved, shear pins activated" },
+                { step: "Pressure test patch to verify seal.", duration: "6 hrs", lead: "Wellsite Engineer", success: "Hold 5,000 psi for 30 min, <1% pressure drop" },
+                { step: "POOH and return well to service.", duration: "16 hrs", lead: "HWU Supervisor", success: "Tools recovered, well flowing at design rate" }
+            ],
+            preJobRequirements: {
+                permits: ["Permit to Work (Hot Work)", "Confined Space Entry (if required)", "Lifting Operations Plan"],
+                safety: ["Pre-job safety briefing", "HAZID review with all personnel", "Emergency response drill", "H2S contingency plan review"],
+                weather: ["Max wind speed: 45 knots", "Max wave height: 4.5m", "Min visibility: 500m"],
+                certifications: ["All personnel BOSIET/HUET current", "HWU operator valid certification", "Crane operator valid certification"]
+            },
+            mobilization: [
+                { item: "Hydraulic Workover Unit", arrival: "Day -2", status: "Confirm booking", serial: "HWU-2024-447" },
+                { item: "Expandable Patch & Tools", arrival: "Day -1", status: "Factory tested", serial: "EP-9625-REV4-221" },
+                { item: "HWU Supervisor", arrival: "Day -1", status: "Travel booked", cert: "Valid until 2025-08" },
+                { item: "Wellsite Engineer", arrival: "Day 0", status: "On location", cert: "Valid until 2025-12" }
+            ],
+            contingencies: [
+                { scenario: "Patch fails to expand properly", action: "Retrieve patch, run backup solid liner hanger system", cost: 450000, time: "3 days" },
+                { scenario: "Cannot position patch at target depth", action: "Perform additional cleanout run, re-attempt", cost: 180000, time: "1 day" },
+                { scenario: "Weather delay >48hrs", action: "Demobilize HWU, reschedule for next weather window", cost: 250000, time: "5-7 days" }
+            ],
+            postJobRequirements: {
+                deliverables: ["Final well schematic (as-built)", "Pressure test certification", "MDT/PLT survey results", "Lessons learned report"],
+                kpis: ["Zero NPT events", "Patch integrity verified >5,000 psi", "Well back online within 10 days", "Cost within 10% of AFE"],
+                signoff: ["Wellsite Engineer", "Operations Manager", "Well Integrity Engineer", "HSE Representative"]
+            },
+            risks: { operational: 4, geological: 2, equipment: 4, hse: 3, financial: 3 },
+            cost: 1200000,
+            duration: 8,
+            tfaModel: { pickUp: [[0,0], [9000, 60]], slackOff: [[0,0], [9000, -60]], alarmUpper: [[0,10], [9000, 70]], alarmLower: [[0,-10], [9000, -70]] }
         },
-        obj2: { 
-            name: "CT Chemical & Mechanical Scale Removal", 
-            personnel: ["Coiled Tubing Supervisor", "Pump Operator"], 
+        obj2: {
+            name: "CT Chemical & Mechanical Scale Removal",
+            personnel: ["Coiled Tubing Supervisor", "Pump Operator"],
             steps: [
-                "RIH with CT and spot DTPA chemical dissolver across scale.",
-                "POOH with CT and let chemical soak for 36 hours.",
-                "RIH with CT and rotating jetting BHA.",
-                "Mechanically break up and circulate out softened scale.",
-                "Circulate well clean and POOH.",
-                "Return well to production."
-            ], 
-            risks: { operational: 5, geological: 2, equipment: 4, hse: 4, financial: 3 }, 
-            cost: 950000, 
-            duration: 6, 
-            tfaModel: { pickUp: [[0,0], [14500, 35]], slackOff: [[0,0], [14500, -35]], alarmUpper: [[0,2], [14500, 37]], alarmLower: [[0,-2], [14500, -37]] } 
+                { step: "RIH with CT and spot DTPA chemical dissolver across scale.", duration: "6 hrs", lead: "CT Supervisor", success: "850 gallons DTPA spotted across scale bridge" },
+                { step: "POOH with CT and let chemical soak for 36 hours.", duration: "36 hrs", lead: "Wellsite Engineer", success: "Chemical soak period completed, well monitored" },
+                { step: "RIH with CT and rotating jetting BHA.", duration: "8 hrs", lead: "CT Supervisor", success: "BHA at target depth, jetting tool functional" },
+                { step: "Mechanically break up and circulate out softened scale.", duration: "18 hrs", lead: "CT Supervisor", success: "Scale debris circulated out, returns clean" },
+                { step: "Circulate well clean and POOH.", duration: "10 hrs", lead: "CT Supervisor", success: "No scale debris in returns, CT recovered safely" },
+                { step: "Return well to production.", duration: "6 hrs", lead: "Wellsite Engineer", success: "Well producing, flow rate restored to design" }
+            ],
+            preJobRequirements: {
+                permits: ["Permit to Work", "Chemical Handling Permit", "Pressure Testing Permit"],
+                safety: ["DTPA chemical MSDS review", "H2S/CO2 hazard briefing", "High-pressure operation briefing", "Dropped object prevention plan"],
+                weather: ["Max wind speed: 50 knots", "Max wave height: 5.0m", "Deck operations restricted if >40 knots"],
+                certifications: ["CT operator certified", "Pump operator certified", "Hazardous chemical handling trained"]
+            },
+            mobilization: [
+                { item: "Coiled Tubing Unit", arrival: "Day -3", status: "Equipment inspected", serial: "CTU-2024-885" },
+                { item: "DTPA Chemical (850 gal)", arrival: "Day -2", status: "Chemical certified", batch: "DTPA-2024-Q3-112" },
+                { item: "Rotating Jetting BHA", arrival: "Day -1", status: "Pressure tested", serial: "RJT-15K-2024-33" },
+                { item: "CT Supervisor", arrival: "Day -1", status: "Travel confirmed", cert: "Valid until 2025-09" }
+            ],
+            contingencies: [
+                { scenario: "Chemical soak ineffective", action: "Extend soak period to 72 hrs, add mechanical milling run", cost: 320000, time: "3 days" },
+                { scenario: "CT gets stuck in scale", action: "Initiate jarring operations, potential CT sever and fishing", cost: 850000, time: "7-10 days" },
+                { scenario: "Scale bridge too hard for jetting", action: "Switch to aggressive milling, circulate cuttings", cost: 420000, time: "4 days" }
+            ],
+            postJobRequirements: {
+                deliverables: ["Scale analysis report", "Chemical treatment summary", "Production restoration report", "CT run data log"],
+                kpis: ["100% scale removal confirmed", "Production >90% of pre-blockage rate", "Zero HSE incidents", "Job completed within budget"],
+                signoff: ["CT Supervisor", "Wellsite Engineer", "Production Engineer", "HSE Representative"]
+            },
+            risks: { operational: 5, geological: 2, equipment: 4, hse: 4, financial: 3 },
+            cost: 950000,
+            duration: 6,
+            tfaModel: { pickUp: [[0,0], [14500, 35]], slackOff: [[0,0], [14500, -35]], alarmUpper: [[0,2], [14500, 37]], alarmLower: [[0,-2], [14500, -37]] }
         },
-        obj3: { 
-            name: "Slickline Insert Safety Valve Installation", 
-            personnel: ["Slickline Supervisor"], 
+        obj3: {
+            name: "Slickline Insert Safety Valve Installation",
+            personnel: ["Slickline Supervisor"],
             steps: [
-                "RIH with heavy-duty toolstring and mechanically lock open the failed TRSSV.",
-                "POOH and confirm lock-open.",
-                "RIH with new Wireline-Retrievable Safety Valve (WRSV) on a running tool.",
-                "Set and lock the new WRSV in the old valve's nipple profile.",
-                "Pressure up control line to hold new valve open, then retrieve running tool.",
-                "Perform full inflow and function test of new valve to certify.",
-                "Return well to production."
-            ], 
-            risks: { operational: 3, geological: 1, equipment: 4, hse: 3, financial: 2 }, 
-            cost: 350000, 
-            duration: 3, 
-            tfaModel: { pickUp: [[0, 100], [9800, 160]], slackOff: [[0, 100], [9800, 40]], alarmUpper: [[0, 110], [9800, 170]], alarmLower: [[0, 90], [9800, 30]] } 
+                { step: "RIH with heavy-duty toolstring and mechanically lock open the failed TRSSV.", duration: "4 hrs", lead: "Slickline Supervisor", success: "Lock-open tool engaged, shear pins activated" },
+                { step: "POOH and confirm lock-open.", duration: "3 hrs", lead: "Slickline Supervisor", success: "Failed valve confirmed locked in open position" },
+                { step: "RIH with new Wireline-Retrievable Safety Valve (WRSV) on a running tool.", duration: "4 hrs", lead: "Slickline Supervisor", success: "New valve at depth, no obstructions encountered" },
+                { step: "Set and lock the new WRSV in the old valve's nipple profile.", duration: "3 hrs", lead: "Slickline Supervisor", success: "Setting pressure achieved, valve locked in place" },
+                { step: "Pressure up control line to hold new valve open, then retrieve running tool.", duration: "2 hrs", lead: "Slickline Supervisor", success: "Running tool released, control line pressurized" },
+                { step: "Perform full inflow and function test of new valve to certify.", duration: "6 hrs", lead: "Slickline Supervisor", success: "Valve cycles properly, closure time <5 seconds" },
+                { step: "Return well to production.", duration: "2 hrs", lead: "Wellsite Engineer", success: "Well flowing, barrier envelope intact" }
+            ],
+            preJobRequirements: {
+                permits: ["Permit to Work", "Barrier Management Plan Update", "Well Control Equipment Test"],
+                safety: ["Barrier philosophy review", "Emergency well shut-in procedure", "Well control drill", "Dropped object prevention"],
+                weather: ["Max wind speed: 40 knots", "Max wave height: 4.0m", "Operations suspended if deck flooded"],
+                certifications: ["Slickline operator IWCF Level 3", "All personnel well control certified", "Valve manufacturer training completed"]
+            },
+            mobilization: [
+                { item: "Slickline Unit", arrival: "Day -2", status: "Pressure tested", serial: "SL-2024-332" },
+                { item: "WRSV Insert Valve", arrival: "Day -1", status: "Factory certified", serial: "WRSV-BH-2024-771" },
+                { item: "Lock-Open Tool", arrival: "Day -1", status: "Function tested", serial: "LOT-2024-118" },
+                { item: "Slickline Supervisor", arrival: "Day 0", status: "On location", cert: "Valid until 2026-01" }
+            ],
+            contingencies: [
+                { scenario: "Cannot lock open failed valve", action: "Retrieve tubing string, replace entire DHSV", cost: 1250000, time: "14 days" },
+                { scenario: "New valve won't set in profile", action: "Retrieve, verify dimensions, run backup valve design", cost: 180000, time: "2 days" },
+                { scenario: "Function test fails", action: "Retrieve valve, troubleshoot, run replacement unit", cost: 220000, time: "2 days" }
+            ],
+            postJobRequirements: {
+                deliverables: ["DHSV function test certificate", "Barrier schematic update", "Installation report", "6-month test schedule"],
+                kpis: ["Valve closure time <5 sec", "Zero well control incidents", "Regulatory compliance achieved", "Job completed <5 days"],
+                signoff: ["Slickline Supervisor", "Well Integrity Engineer", "Operations Manager", "Regulatory Affairs"]
+            },
+            risks: { operational: 3, geological: 1, equipment: 4, hse: 3, financial: 2 },
+            cost: 350000,
+            duration: 3,
+            tfaModel: { pickUp: [[0, 100], [9800, 160]], slackOff: [[0, 100], [9800, 40]], alarmUpper: [[0, 110], [9800, 170]], alarmLower: [[0, 90], [9800, 30]] }
         },
-        obj4: { 
-            name: "Through-Tubing ESS Patch Installation", 
-            personnel: ["Wellsite Engineer", "HWU Supervisor"], 
+        obj4: {
+            name: "Through-Tubing ESS Patch Installation",
+            personnel: ["Wellsite Engineer", "HWU Supervisor"],
             steps: [
-                "Perform CT cleanout of sand from inside existing screen.",
-                "RIH with Expandable Sand Screen (ESS) patch on jointed pipe.",
-                "Position patch across failed screen interval.",
-                "Expand patch using mechanical expansion tool.",
-                "POOH and slowly bring well back online, monitoring sand production."
-            ], 
-            risks: { operational: 4, geological: 3, equipment: 5, hse: 3, financial: 4 }, 
-            cost: 1500000, 
-            duration: 10, 
-            tfaModel: { pickUp: [[0,0], [10000, 50]], slackOff: [[0,0], [10000, -50]], alarmUpper: [[0,5], [10000, 55]], alarmLower: [[0,-5], [10000, -55]] } 
+                { step: "Perform CT cleanout of sand from inside existing screen.", duration: "16 hrs", lead: "CT Supervisor", success: "All sand circulated out, screen interior clean" },
+                { step: "RIH with Expandable Sand Screen (ESS) patch on jointed pipe.", duration: "12 hrs", lead: "HWU Supervisor", success: "ESS patch at target depth, no hang-ups" },
+                { step: "Position patch across failed screen interval.", duration: "4 hrs", lead: "Wellsite Engineer", success: "GR/CCL correlation confirms correct placement" },
+                { step: "Expand patch using mechanical expansion tool.", duration: "8 hrs", lead: "HWU Supervisor", success: "Expansion complete, patch deployed successfully" },
+                { step: "POOH and slowly bring well back online, monitoring sand production.", duration: "20 hrs", lead: "Wellsite Engineer", success: "Zero sand production, flow rate at design" }
+            ],
+            preJobRequirements: {
+                permits: ["Permit to Work", "Sand Production Monitoring Plan", "Pressure Test Permit"],
+                safety: ["Sand production hazard briefing", "Well control procedures", "Emergency shutdown drill", "Chemical exposure (if inhibitor used)"],
+                weather: ["Max wind speed: 45 knots", "Max wave height: 4.5m", "No deck operations if visibility <300m"],
+                certifications: ["CT operator certified", "HWU operator certified", "Sand monitoring equipment trained"]
+            },
+            mobilization: [
+                { item: "Coiled Tubing Unit (cleanout)", arrival: "Day -4", status: "Equipment checked", serial: "CTU-2024-665" },
+                { item: "Hydraulic Workover Unit", arrival: "Day -2", status: "Rig tested", serial: "HWU-2024-448" },
+                { item: "Expandable Sand Screen Patch", arrival: "Day -1", status: "Factory certified", serial: "ESS-9625-2024-91" },
+                { item: "HWU Supervisor + Wellsite Engineer", arrival: "Day 0", status: "On location", cert: "Both valid 2025+" }
+            ],
+            contingencies: [
+                { scenario: "Patch fails to expand", action: "Retrieve patch, run solid liner alternative", cost: 620000, time: "5 days" },
+                { scenario: "Sand production continues post-installation", action: "Install additional gravel pack or chemical consolidation", cost: 780000, time: "7 days" },
+                { scenario: "Cannot clean out existing screen", action: "Abandon failed screen, set new screen above", cost: 950000, time: "8 days" }
+            ],
+            postJobRequirements: {
+                deliverables: ["Sand production monitoring report", "Screen expansion certification", "Production test results", "Well schematic update"],
+                kpis: ["Zero sand production (continuous monitoring)", "Production >85% of design rate", "Screen integrity maintained >12 months", "Zero NPT"],
+                signoff: ["Wellsite Engineer", "Reservoir Engineer", "Well Integrity Engineer", "Production Manager"]
+            },
+            risks: { operational: 4, geological: 3, equipment: 5, hse: 3, financial: 4 },
+            cost: 1500000,
+            duration: 10,
+            tfaModel: { pickUp: [[0,0], [10000, 50]], slackOff: [[0,0], [10000, -50]], alarmUpper: [[0,5], [10000, 55]], alarmLower: [[0,-5], [10000, -55]] }
         },
-        obj5: { 
-            name: "CT Wax Removal", 
-            personnel: ["Coiled Tubing Supervisor", "Pump Operator"], 
+        obj5: {
+            name: "CT Wax Removal",
+            personnel: ["Coiled Tubing Supervisor", "Pump Operator"],
             steps: [
-                "Rig up Coiled Tubing unit.",
-                "Pump heated solvent to dissolve wax.",
-                "RIH with CT and a mechanical scraper BHA to clear remaining deposits.",
-                "Circulate well clean with hot fluid.",
-                "POOH with CT.",
-                "Return well to production."
-            ], 
-            risks: { operational: 4, geological: 2, equipment: 3, hse: 3, financial: 2 }, 
-            cost: 650000, 
-            duration: 4, 
-            tfaModel: { pickUp: [[0,0], [7500, 20]], slackOff: [[0,0], [7500, -20]], alarmUpper: [[0,2], [7500, 22]], alarmLower: [[0,-2], [7500, -22]] } 
+                { step: "Rig up Coiled Tubing unit.", duration: "8 hrs", lead: "CT Supervisor", success: "CT unit rigged, pressure tested to 10,000 psi" },
+                { step: "Pump heated solvent to dissolve wax.", duration: "12 hrs", lead: "Pump Operator", success: "180 ft wax bridge dissolved, returns show wax" },
+                { step: "RIH with CT and a mechanical scraper BHA to clear remaining deposits.", duration: "10 hrs", lead: "CT Supervisor", success: "Scraper BHA at TD, circulating clean" },
+                { step: "Circulate well clean with hot fluid.", duration: "14 hrs", lead: "Pump Operator", success: "No wax in returns, wellbore clean" },
+                { step: "POOH with CT.", duration: "6 hrs", lead: "CT Supervisor", success: "CT recovered safely, rig down complete" },
+                { step: "Return well to production.", duration: "4 hrs", lead: "Wellsite Engineer", success: "Production restored to 2,200 bopd" }
+            ],
+            preJobRequirements: {
+                permits: ["Permit to Work", "Hot Work Permit (heated fluids)", "Chemical Handling Permit"],
+                safety: ["Hot fluid handling procedures", "Pressure equipment briefing", "Wax dissolver chemical MSDS", "Thermal burns first aid"],
+                weather: ["Max wind speed: 50 knots", "Deck temp monitoring for hot fluid ops", "Operations cease if freezing conditions"],
+                certifications: ["CT operator certified", "Hot oiling procedures trained", "Chemical handling certified"]
+            },
+            mobilization: [
+                { item: "Coiled Tubing Unit", arrival: "Day -2", status: "Heat exchange tested", serial: "CTU-2024-772" },
+                { item: "Wax Dissolver Chemical (500 gal)", arrival: "Day -1", status: "Chemical certified", batch: "WAX-SOLV-2024-Q4" },
+                { item: "Mechanical Scraper BHA", arrival: "Day -1", status: "Dimension verified", serial: "SCR-3.5-2024-42" },
+                { item: "CT Supervisor + Pump Operator", arrival: "Day 0", status: "Crew mobilized", cert: "Valid 2025+" }
+            ],
+            contingencies: [
+                { scenario: "Heated solvent ineffective", action: "Switch to aggressive mechanical scraping + xylene flush", cost: 120000, time: "2 days" },
+                { scenario: "Wax re-deposits during operation", action: "Maintain hot fluid circulation, install continuous chemical injection", cost: 85000, time: "1 day" },
+                { scenario: "CT gets stuck in wax", action: "Apply jarring, CT sever if required, fishing operation", cost: 450000, time: "5-7 days" }
+            ],
+            postJobRequirements: {
+                deliverables: ["Wax sample analysis", "Temperature profile log", "Production restoration certificate", "Continuous wax prevention plan"],
+                kpis: ["Production >2,000 bopd (>90% of historical)", "No wax re-deposition within 6 months", "Job completed <5 days", "Chemical injection system installed"],
+                signoff: ["CT Supervisor", "Wellsite Engineer", "Production Engineer", "Facilities Engineer"]
+            },
+            risks: { operational: 4, geological: 2, equipment: 3, hse: 3, financial: 2 },
+            cost: 650000,
+            duration: 4,
+            tfaModel: { pickUp: [[0,0], [7500, 20]], slackOff: [[0,0], [7500, -20]], alarmUpper: [[0,2], [7500, 22]], alarmLower: [[0,-2], [7500, -22]] }
         }
     };
     const equipmentRequirements = {
@@ -1832,6 +1986,20 @@ document.addEventListener('DOMContentLoaded', function() {
         },
     ];
 
+    // --- SECURITY: HTML ESCAPING UTILITY ---
+    // Prevents XSS attacks by escaping HTML special characters
+    function escapeHtml(unsafe) {
+        if (typeof unsafe !== 'string') {
+            unsafe = String(unsafe);
+        }
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
     // --- GLOBAL STATE ---
 
     let appState = {
@@ -1855,9 +2023,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- DOM ELEMENTS ---
 
     const body = document.body;
-    const welcomeScreen = document.getElementById('welcome-screen');
-    const appContainer = document.getElementById('app-container');
-    const loginBtn = document.getElementById('login-btn');
     const views = document.querySelectorAll('.view-container');
     const navLinks = document.querySelectorAll('.nav-link');
     const headerTitle = document.getElementById('header-title');
@@ -1982,11 +2147,52 @@ document.addEventListener('DOMContentLoaded', function() {
         headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
 
         if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
-            headerDetails.innerHTML = `<span id="job-status" class="text-lg font-semibold text-emerald-400">â— LIVE</span><div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+            // Clear and rebuild headerDetails with safe DOM methods
+            headerDetails.textContent = '';
+
+            const statusSpan = document.createElement('span');
+            statusSpan.id = 'job-status';
+            statusSpan.className = 'text-lg font-semibold text-emerald-400';
+            statusSpan.textContent = '● LIVE';
+
+            const detailsDiv = document.createElement('div');
+            detailsDiv.className = 'text-right';
+
+            const wellP = document.createElement('p');
+            wellP.className = 'text-sm';
+            wellP.textContent = 'Well: ' + appState.selectedWell.name; // Auto-escaped
+
+            const jobP = document.createElement('p');
+            jobP.className = 'text-sm';
+            jobP.textContent = 'Job: ' + appState.generatedPlan.name; // Auto-escaped
+
+            detailsDiv.appendChild(wellP);
+            detailsDiv.appendChild(jobP);
+
+            headerDetails.appendChild(statusSpan);
+            headerDetails.appendChild(detailsDiv);
+
             initializePerformer();
         } else if (['analyzer', 'commercial', 'hse', 'pob'].includes(viewName)) {
             if(appState.selectedWell && appState.generatedPlan) {
-                headerDetails.innerHTML = `<div class="text-right"><p class="text-sm">Well: ${appState.selectedWell.name}</p><p class="text-sm">Job: ${appState.generatedPlan.name}</p></div>`;
+                // Clear and rebuild headerDetails with safe DOM methods
+                headerDetails.textContent = '';
+
+                const detailsDiv = document.createElement('div');
+                detailsDiv.className = 'text-right';
+
+                const wellP = document.createElement('p');
+                wellP.className = 'text-sm';
+                wellP.textContent = 'Well: ' + appState.selectedWell.name; // Auto-escaped
+
+                const jobP = document.createElement('p');
+                jobP.className = 'text-sm';
+                jobP.textContent = 'Job: ' + appState.generatedPlan.name; // Auto-escaped
+
+                detailsDiv.appendChild(wellP);
+                detailsDiv.appendChild(jobP);
+
+                headerDetails.appendChild(detailsDiv);
             }
             if (viewName === 'commercial') renderCommercialView();
             if (viewName === 'hse') renderHSEView();
@@ -2050,78 +2256,212 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- PLANNER LOGIC ---
 
-    const renderWellCards = () => { 
-        wellSelectionGrid.innerHTML = wellData.map(well => {
+    const renderWellCards = () => {
+        // Clear grid first
+        wellSelectionGrid.textContent = '';
+
+        // Create cards using safe DOM methods
+        wellData.forEach(well => {
             const isWellFromHell = well.id === 'W666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
-            const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
-            
-            return `
-                <div class="well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}" data-well-id="${well.id}">
-                    <div class="card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-xl font-bold text-white">${well.name}</h3>
-                            ${isWellFromHell ? '<span class="bg-red-700 text-white text-xs px-2 py-1 rounded-full">CRITICAL</span>' : '<span class="bg-blue-700 text-white text-xs px-2 py-1 rounded-full">CASE STUDY</span>'}
-                        </div>
-                        <p class="text-sm text-blue-100">${well.field} - ${well.type}</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}">${well.status}</span>
-                        </div>
-                        <p class="text-sm">${well.issue}</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">Depth: ${well.depth}</span>
-                            <button class="view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold" data-well-id="${well.id}">View Details</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }).join(''); 
+
+            // Create card container
+            const cardDiv = document.createElement('div');
+            cardDiv.className = `well-card-enhanced planner-card light-card ${isWellFromHell ? 'border-red-500' : 'border-gray-200'}`;
+            cardDiv.setAttribute('data-well-id', well.id);
+
+            // Create card header
+            const headerDiv = document.createElement('div');
+            headerDiv.className = `card-header ${isWellFromHell ? 'bg-red-500' : 'bg-blue-500'}`;
+
+            const headerFlex = document.createElement('div');
+            headerFlex.className = 'flex justify-between items-center';
+
+            const h3 = document.createElement('h3');
+            h3.className = 'text-xl font-bold text-white';
+            h3.textContent = well.name; // Auto-escaped
+
+            const badge = document.createElement('span');
+            badge.className = isWellFromHell ? 'bg-red-700 text-white text-xs px-2 py-1 rounded-full' : 'bg-blue-700 text-white text-xs px-2 py-1 rounded-full';
+            badge.textContent = isWellFromHell ? 'CRITICAL' : 'CASE STUDY';
+
+            headerFlex.appendChild(h3);
+            headerFlex.appendChild(badge);
+
+            const fieldP = document.createElement('p');
+            fieldP.className = 'text-sm text-blue-100';
+            fieldP.textContent = well.field + ' - ' + well.type; // Auto-escaped
+
+            headerDiv.appendChild(headerFlex);
+            headerDiv.appendChild(fieldP);
+
+            // Create card body
+            const bodyDiv = document.createElement('div');
+            bodyDiv.className = 'card-body';
+
+            const statusDiv = document.createElement('div');
+            statusDiv.className = 'mb-3';
+
+            const statusSpan = document.createElement('span');
+            statusSpan.className = `inline-block px-2 py-1 text-xs font-medium rounded-full status-${statusClass}`;
+            statusSpan.textContent = well.status; // Auto-escaped
+
+            statusDiv.appendChild(statusSpan);
+
+            const issueP = document.createElement('p');
+            issueP.className = 'text-sm';
+            issueP.textContent = well.issue; // Auto-escaped
+
+            bodyDiv.appendChild(statusDiv);
+            bodyDiv.appendChild(issueP);
+
+            // Create card footer
+            const footerDiv = document.createElement('div');
+            footerDiv.className = 'card-footer';
+
+            const footerFlex = document.createElement('div');
+            footerFlex.className = 'flex justify-between items-center';
+
+            const depthSpan = document.createElement('span');
+            depthSpan.className = 'text-xs text-gray-500';
+            depthSpan.textContent = 'Depth: ' + well.depth; // Auto-escaped
+
+            const detailsBtn = document.createElement('button');
+            detailsBtn.className = 'view-details-btn text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 font-semibold';
+            detailsBtn.setAttribute('data-well-id', well.id);
+            detailsBtn.textContent = 'View Details';
+
+            footerFlex.appendChild(depthSpan);
+            footerFlex.appendChild(detailsBtn);
+            footerDiv.appendChild(footerFlex);
+
+            // Assemble card
+            cardDiv.appendChild(headerDiv);
+            cardDiv.appendChild(bodyDiv);
+            cardDiv.appendChild(footerDiv);
+
+            // Add to grid
+            wellSelectionGrid.appendChild(cardDiv);
+        });
     };
 
-    const renderObjectives = () => { 
-        objectivesFieldset.innerHTML = objectivesData.map(obj => `
-            <div class="objective-card light-card" data-objective-id="${obj.id}">
-                <input type="radio" name="objective" id="${obj.id}" value="${obj.id}" class="sr-only">
-                <label for="${obj.id}" class="cursor-pointer h-full">
-                    <div class="flex items-start">
-                        <span class="text-2xl mr-3">${obj.icon}</span>
-                        <div>
-                            <span class="font-semibold text-lg">${obj.name}</span>
-                            <p class="text-sm mt-1">${obj.description}</p>
-                        </div>
-                    </div>
-                </label>
-            </div>
-        `).join(''); 
+    const renderObjectives = () => {
+        // Clear fieldset first
+        objectivesFieldset.textContent = '';
+
+        // Create objective cards using safe DOM methods
+        objectivesData.forEach(obj => {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'objective-card light-card';
+            cardDiv.setAttribute('data-objective-id', obj.id);
+
+            const input = document.createElement('input');
+            input.type = 'radio';
+            input.name = 'objective';
+            input.id = obj.id;
+            input.value = obj.id;
+            input.className = 'sr-only';
+
+            const label = document.createElement('label');
+            label.htmlFor = obj.id;
+            label.className = 'cursor-pointer h-full';
+
+            const flexDiv = document.createElement('div');
+            flexDiv.className = 'flex items-start';
+
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'text-2xl mr-3';
+            iconSpan.textContent = obj.icon; // Auto-escaped
+
+            const contentDiv = document.createElement('div');
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'font-semibold text-lg';
+            nameSpan.textContent = obj.name; // Auto-escaped
+
+            const descP = document.createElement('p');
+            descP.className = 'text-sm mt-1';
+            descP.textContent = obj.description; // Auto-escaped
+
+            contentDiv.appendChild(nameSpan);
+            contentDiv.appendChild(descP);
+
+            flexDiv.appendChild(iconSpan);
+            flexDiv.appendChild(contentDiv);
+
+            label.appendChild(flexDiv);
+
+            cardDiv.appendChild(input);
+            cardDiv.appendChild(label);
+
+            objectivesFieldset.appendChild(cardDiv);
+        });
     };
 
     const renderProblems = () => {
+        // Clear fieldset first
+        problemsFieldset.textContent = '';
+
         // Only show problems relevant to the "Well From Hell"
         if (appState.selectedWell && appState.selectedWell.id === 'W666') {
-             problemsFieldset.innerHTML = problemsData.map(prob => `
-                <div class="objective-card light-card" data-problem-id="${prob.id}">
-                    <input type="radio" name="problem" id="${prob.id}" value="${prob.id}" class="sr-only">
-                    <label for="${prob.id}" class="cursor-pointer h-full">
-                        <div class="flex items-start">
-                            <span class="text-2xl mr-3">${prob.icon}</span>
-                            <div>
-                                <span class="font-semibold text-lg">${prob.name}</span>
-                                <p class="text-sm mt-1">${prob.description}</p>
-                            </div>
-                        </div>
-                    </label>
-                </div>
-            `).join('');
+            // Create problem cards using safe DOM methods
+            problemsData.forEach(prob => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'objective-card light-card';
+                cardDiv.setAttribute('data-problem-id', prob.id);
+
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = 'problem';
+                input.id = prob.id;
+                input.value = prob.id;
+                input.className = 'sr-only';
+
+                const label = document.createElement('label');
+                label.htmlFor = prob.id;
+                label.className = 'cursor-pointer h-full';
+
+                const flexDiv = document.createElement('div');
+                flexDiv.className = 'flex items-start';
+
+                const iconSpan = document.createElement('span');
+                iconSpan.className = 'text-2xl mr-3';
+                iconSpan.textContent = prob.icon; // Auto-escaped
+
+                const contentDiv = document.createElement('div');
+
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'font-semibold text-lg';
+                nameSpan.textContent = prob.name; // Auto-escaped
+
+                const descP = document.createElement('p');
+                descP.className = 'text-sm mt-1';
+                descP.textContent = prob.description; // Auto-escaped
+
+                contentDiv.appendChild(nameSpan);
+                contentDiv.appendChild(descP);
+
+                flexDiv.appendChild(iconSpan);
+                flexDiv.appendChild(contentDiv);
+
+                label.appendChild(flexDiv);
+
+                cardDiv.appendChild(input);
+                cardDiv.appendChild(label);
+
+                problemsFieldset.appendChild(cardDiv);
+            });
         } else {
-            problemsFieldset.innerHTML = `
-                <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
-                    <p class="text-yellow-800 dark:text-yellow-200">Please select the 'Well From Hell' (W666) to use the AI Advisor.</p>
-                </div>
-            `;
+            // Create warning message
+            const warningDiv = document.createElement('div');
+            warningDiv.className = 'bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center';
+
+            const warningP = document.createElement('p');
+            warningP.className = 'text-yellow-800 dark:text-yellow-200';
+            warningP.textContent = "Please select the 'Well From Hell' (W666) to use the AI Advisor.";
+
+            warningDiv.appendChild(warningP);
+            problemsFieldset.appendChild(warningDiv);
         }
     };
 
@@ -2185,20 +2525,144 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
 
-        // Create timeline for procedure steps
+        // Pre-Job Requirements
+        const preJobHtml = `
+            <div class="plan-summary-card light-card overflow-hidden">
+                <div class="card-header bg-indigo-500">
+                    <h4 class="text-xl font-semibold text-white">Pre-Job Requirements</h4>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <h5 class="font-semibold mb-2 text-indigo-600 dark:text-indigo-400">Permits Required</h5>
+                        <ul class="space-y-1 text-sm">
+                            ${procedure.preJobRequirements.permits.map(p => `<li class="flex items-start"><span class="mr-2">✓</span>${p}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2 text-indigo-600 dark:text-indigo-400">Safety Briefings</h5>
+                        <ul class="space-y-1 text-sm">
+                            ${procedure.preJobRequirements.safety.map(s => `<li class="flex items-start"><span class="mr-2">✓</span>${s}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2 text-indigo-600 dark:text-indigo-400">Weather Limits</h5>
+                        <ul class="space-y-1 text-sm">
+                            ${procedure.preJobRequirements.weather.map(w => `<li class="flex items-start"><span class="mr-2">⚠️</span>${w}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2 text-indigo-600 dark:text-indigo-400">Certifications</h5>
+                        <ul class="space-y-1 text-sm">
+                            ${procedure.preJobRequirements.certifications.map(c => `<li class="flex items-start"><span class="mr-2">📋</span>${c}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Equipment Mobilization Schedule
+        const mobilizationHtml = `
+            <div class="plan-summary-card light-card overflow-hidden">
+                <div class="card-header bg-cyan-500">
+                    <h4 class="text-xl font-semibold text-white">Equipment Mobilization Schedule</h4>
+                </div>
+                <div class="p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="table-header">
+                                <tr>
+                                    <th class="p-2 text-left">Item</th>
+                                    <th class="p-2 text-left">Arrival</th>
+                                    <th class="p-2 text-left">Status</th>
+                                    <th class="p-2 text-left">Serial/Cert</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${procedure.mobilization.map((item, i) => `
+                                    <tr class="${i % 2 === 0 ? 'table-row-alt' : ''}">
+                                        <td class="p-2 font-medium">${item.item}</td>
+                                        <td class="p-2">${item.arrival}</td>
+                                        <td class="p-2"><span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded text-xs">${item.status}</span></td>
+                                        <td class="p-2 text-xs">${item.serial || item.cert || item.batch}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Create detailed timeline for procedure steps
         const timelineHtml = `
             <div class="plan-summary-card light-card overflow-hidden">
                 <div class="card-header bg-green-500">
-                    <h4 class="text-xl font-semibold text-white">Procedure Timeline</h4>
+                    <h4 class="text-xl font-semibold text-white">Detailed Procedure Timeline</h4>
                 </div>
                 <div class="p-6">
                     <div class="space-y-4">
-                        ${procedure.steps.map((step, index) => `
-                            <div class="timeline-step">
-                                <h5 class="font-semibold">Step ${index + 1}</h5>
-                                <p class="text-sm">${step}</p>
+                        ${procedure.steps.map((stepObj, index) => `
+                            <div class="timeline-step border-l-4 border-green-400 pl-4">
+                                <div class="flex justify-between items-start mb-1">
+                                    <h5 class="font-semibold">Step ${index + 1}: ${stepObj.duration}</h5>
+                                    <span class="text-xs bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">${stepObj.lead}</span>
+                                </div>
+                                <p class="text-sm mb-2">${stepObj.step}</p>
+                                <p class="text-xs text-green-600 dark:text-green-400"><strong>Success Criteria:</strong> ${stepObj.success}</p>
                             </div>
                         `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Contingency Plans
+        const contingencyHtml = `
+            <div class="plan-summary-card light-card overflow-hidden">
+                <div class="card-header bg-orange-500">
+                    <h4 class="text-xl font-semibold text-white">Contingency Plans</h4>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        ${procedure.contingencies.map((cont, i) => `
+                            <div class="bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg border-l-4 border-orange-400">
+                                <h5 class="font-semibold text-orange-800 dark:text-orange-300 mb-2">Scenario ${i + 1}: ${cont.scenario}</h5>
+                                <p class="text-sm mb-2"><strong>Action:</strong> ${cont.action}</p>
+                                <div class="flex gap-4 text-xs">
+                                    <span class="text-orange-700 dark:text-orange-400"><strong>Additional Cost:</strong> $${cont.cost.toLocaleString()}</span>
+                                    <span class="text-orange-700 dark:text-orange-400"><strong>Additional Time:</strong> ${cont.time}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Post-Job Requirements & KPIs
+        const postJobHtml = `
+            <div class="plan-summary-card light-card overflow-hidden">
+                <div class="card-header bg-teal-500">
+                    <h4 class="text-xl font-semibold text-white">Post-Job Requirements & Success Metrics</h4>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <h5 class="font-semibold mb-2 text-teal-600 dark:text-teal-400">Deliverables</h5>
+                        <ul class="space-y-1 text-sm">
+                            ${procedure.postJobRequirements.deliverables.map(d => `<li class="flex items-start"><span class="mr-2">📄</span>${d}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2 text-teal-600 dark:text-teal-400">Key Performance Indicators (KPIs)</h5>
+                        <ul class="space-y-1 text-sm">
+                            ${procedure.postJobRequirements.kpis.map(k => `<li class="flex items-start"><span class="mr-2">🎯</span>${k}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-semibold mb-2 text-teal-600 dark:text-teal-400">Required Sign-offs</h5>
+                        <div class="flex flex-wrap gap-2">
+                            ${procedure.postJobRequirements.signoff.map(s => `<span class="px-3 py-1 bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 rounded-full text-sm">${s}</span>`).join('')}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2256,8 +2720,9 @@ document.addEventListener('DOMContentLoaded', function() {
         planOutput.innerHTML = `
             <div class="plan-summary-card light-card overflow-hidden mb-8">
                 <div class="card-header bg-gradient-to-r from-blue-600 to-teal-500">
-                    <h3 class="text-2xl font-bold text-white">Intervention Plan: ${well.name}</h3>
+                    <h3 class="text-2xl font-bold text-white">📋 Comprehensive Intervention Program: ${well.name}</h3>
                     <p class="text-lg text-blue-100">${appState.selectedObjective.name}</p>
+                    <p class="text-sm text-blue-200 mt-1">AFE-Ready Field Program | Equipment Mobilization to Job Completion</p>
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
@@ -2276,18 +2741,36 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             </div>
-            
+
+            <h3 class="text-xl font-bold mb-4 mt-8">Phase 1: Pre-Job Planning & Mobilization</h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                ${timelineHtml}
-                ${equipmentHtml}
+                ${preJobHtml}
+                ${mobilizationHtml}
             </div>
-            
-            <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
-                ${riskHtml}
+
+            <h3 class="text-xl font-bold mb-4 mt-8">Phase 2: Equipment & Resources</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                ${equipmentHtml}
                 ${costHtml}
             </div>
-            
-            ${logisticsHtml}
+
+            <h3 class="text-xl font-bold mb-4 mt-8">Phase 3: Execution Plan</h3>
+            <div class="grid grid-cols-1 gap-8">
+                ${timelineHtml}
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 mt-8">Phase 4: Risk Management</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                ${riskHtml}
+                ${contingencyHtml}
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 mt-8">Phase 5: Post-Job & Quality Assurance</h3>
+            <div class="grid grid-cols-1 gap-8">
+                ${postJobHtml}
+            </div>
+
+            ${logisticsHtml ? `<h3 class="text-xl font-bold mb-4 mt-8">⚠️ Resource Conflicts</h3>${logisticsHtml}` : ''}
         `;
         
         // Initialize risk chart
@@ -2611,26 +3094,57 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const renderPerformerProcedure = () => {
         const currentStepId = appState.liveData.currentStep;
-        procedureStepsContainer.innerHTML = appState.generatedPlan.procedure.map(step => `
-            <div id="step-${step.id}" data-step-id="${step.id}" class="procedure-step p-3 rounded-md ${step.completed ? 'completed' : ''} ${currentStepId === step.id ? 'active' : ''}">
-                <p class="font-semibold text-sm">${step.id}. ${step.text}</p>
-            </div>
-        `).join('');
-        
+
+        // Clear container first
+        procedureStepsContainer.textContent = '';
+
+        // Create procedure steps using safe DOM methods
+        appState.generatedPlan.procedure.forEach(step => {
+            const stepDiv = document.createElement('div');
+            stepDiv.id = `step-${step.id}`;
+            stepDiv.setAttribute('data-step-id', step.id);
+            stepDiv.className = 'procedure-step p-3 rounded-md';
+            if (step.completed) stepDiv.classList.add('completed');
+            if (currentStepId === step.id) stepDiv.classList.add('active');
+
+            const stepP = document.createElement('p');
+            stepP.className = 'font-semibold text-sm';
+            stepP.textContent = step.id + '. ' + step.text; // Auto-escaped
+
+            stepDiv.appendChild(stepP);
+            procedureStepsContainer.appendChild(stepDiv);
+        });
+
         const activeStepElement = document.getElementById(`step-${currentStepId}`);
-        if (activeStepElement) { 
-            activeStepElement.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
+        if (activeStepElement) {
+            activeStepElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     };
 
-    const renderPerformerLog = () => { 
-        logEntriesContainer.innerHTML = appState.logEntries.slice().reverse().map(entry => `
-            <div class="log-entry p-2">
-                <p class="text-xs text-gray-400">${entry.time.toLocaleTimeString()} - ${entry.user}</p>
-                <p class="text-sm">${entry.text}</p>
-            </div>
-        `).join(''); 
-        logEntriesContainer.scrollTop = 0; 
+    const renderPerformerLog = () => {
+        // Clear container first
+        logEntriesContainer.textContent = '';
+
+        // Create log entries using safe DOM methods
+        appState.logEntries.slice().reverse().forEach(entry => {
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'log-entry p-2';
+
+            const timeP = document.createElement('p');
+            timeP.className = 'text-xs text-gray-400';
+            timeP.textContent = entry.time.toLocaleTimeString() + ' - ' + entry.user; // Auto-escaped
+
+            const textP = document.createElement('p');
+            textP.className = 'text-sm';
+            textP.textContent = entry.text; // Auto-escaped
+
+            entryDiv.appendChild(timeP);
+            entryDiv.appendChild(textP);
+
+            logEntriesContainer.appendChild(entryDiv);
+        });
+
+        logEntriesContainer.scrollTop = 0;
     };
 
     const addLogEntry = (user, text) => { 
@@ -2754,14 +3268,28 @@ document.addEventListener('DOMContentLoaded', function() {
         renderLessons();
     };
 
-    const renderLessons = () => { 
-        lessonsLearnedList.innerHTML = appState.lessonsLearned.length ? 
-            appState.lessonsLearned.map(lesson => `
-                <div class="bg-gray-100 dark:bg-gray-700/50 p-3 rounded-md">
-                    <p>${lesson}</p>
-                </div>
-            `).join('') : 
-            '<p class="text-center">No lessons learned have been added for this job.</p>'; 
+    const renderLessons = () => {
+        // Clear list first
+        lessonsLearnedList.textContent = '';
+
+        if (appState.lessonsLearned.length) {
+            // Create lesson items using safe DOM methods
+            appState.lessonsLearned.forEach(lesson => {
+                const lessonDiv = document.createElement('div');
+                lessonDiv.className = 'bg-gray-100 dark:bg-gray-700/50 p-3 rounded-md';
+
+                const lessonP = document.createElement('p');
+                lessonP.textContent = lesson; // Auto-escaped
+
+                lessonDiv.appendChild(lessonP);
+                lessonsLearnedList.appendChild(lessonDiv);
+            });
+        } else {
+            const emptyP = document.createElement('p');
+            emptyP.className = 'text-center';
+            emptyP.textContent = 'No lessons learned have been added for this job.';
+            lessonsLearnedList.appendChild(emptyP);
+        }
     };
     
     // --- ASSET & POB LOGIC ---
@@ -2788,22 +3316,50 @@ document.addEventListener('DOMContentLoaded', function() {
             (e.id.toLowerCase().includes(eqF) || e.type.toLowerCase().includes(eqF))
         );
         
-        equipmentTableBody.innerHTML = filteredEquipment.map(e => `
-            <tr>
-                <td class="p-2">${e.id}</td>
-                <td class="p-2">${e.type}</td>
-                <td class="p-2">${e.location}</td>
-                <td class="p-2">
-                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${e.status.toLowerCase()}">${e.status}</span>
-                </td>
-                <td class="p-2">
-                    <button class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full hover:bg-blue-200 disabled:opacity-50" 
-                            ${e.location === 'Onboard - Pump Room' && e.testStatus === 'Pending' ? '' : 'disabled'}>
-                        Test
-                    </button>
-                </td>
-            </tr>
-        `).join('');
+        // Clear equipment table body first
+        equipmentTableBody.textContent = '';
+
+        // Create equipment table rows using safe DOM methods
+        filteredEquipment.forEach(e => {
+            const tr = document.createElement('tr');
+
+            const idTd = document.createElement('td');
+            idTd.className = 'p-2';
+            idTd.textContent = e.id; // Auto-escaped
+
+            const typeTd = document.createElement('td');
+            typeTd.className = 'p-2';
+            typeTd.textContent = e.type; // Auto-escaped
+
+            const locationTd = document.createElement('td');
+            locationTd.className = 'p-2';
+            locationTd.textContent = e.location; // Auto-escaped
+
+            const statusTd = document.createElement('td');
+            statusTd.className = 'p-2';
+            const statusSpan = document.createElement('span');
+            statusSpan.className = `px-2 py-1 text-xs font-medium rounded-full status-${e.status.toLowerCase()}`;
+            statusSpan.textContent = e.status; // Auto-escaped
+            statusTd.appendChild(statusSpan);
+
+            const actionTd = document.createElement('td');
+            actionTd.className = 'p-2';
+            const testBtn = document.createElement('button');
+            testBtn.className = 'text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full hover:bg-blue-200 disabled:opacity-50';
+            testBtn.textContent = 'Test';
+            if (!(e.location === 'Onboard - Pump Room' && e.testStatus === 'Pending')) {
+                testBtn.disabled = true;
+            }
+            actionTd.appendChild(testBtn);
+
+            tr.appendChild(idTd);
+            tr.appendChild(typeTd);
+            tr.appendChild(locationTd);
+            tr.appendChild(statusTd);
+            tr.appendChild(actionTd);
+
+            equipmentTableBody.appendChild(tr);
+        });
 
         const persF = persFilter.toLowerCase();
         const filteredPersonnel = personnelData.filter(p => 
@@ -2811,16 +3367,39 @@ document.addEventListener('DOMContentLoaded', function() {
             (p.name.toLowerCase().includes(persF) || p.role.toLowerCase().includes(persF))
         );
         
-        personnelTableBody.innerHTML = filteredPersonnel.map(p => `
-            <tr>
-                <td class="p-2">${p.name}</td>
-                <td class="p-2">${p.role}</td>
-                <td class="p-2">
-                    <span class="px-2 py-1 text-xs font-medium rounded-full status-${p.status.toLowerCase().replace(/\s/g, '')}">${p.status}</span>
-                </td>
-                <td class="p-2">${p.certsValid ? 'âœ… Valid' : 'âŒ Expired'}</td>
-            </tr>
-        `).join('');
+        // Clear personnel table body first
+        personnelTableBody.textContent = '';
+
+        // Create personnel table rows using safe DOM methods
+        filteredPersonnel.forEach(p => {
+            const tr = document.createElement('tr');
+
+            const nameTd = document.createElement('td');
+            nameTd.className = 'p-2';
+            nameTd.textContent = p.name; // Auto-escaped
+
+            const roleTd = document.createElement('td');
+            roleTd.className = 'p-2';
+            roleTd.textContent = p.role; // Auto-escaped
+
+            const statusTd = document.createElement('td');
+            statusTd.className = 'p-2';
+            const statusSpan = document.createElement('span');
+            statusSpan.className = `px-2 py-1 text-xs font-medium rounded-full status-${p.status.toLowerCase().replace(/\s/g, '')}`;
+            statusSpan.textContent = p.status; // Auto-escaped
+            statusTd.appendChild(statusSpan);
+
+            const certsTd = document.createElement('td');
+            certsTd.className = 'p-2';
+            certsTd.textContent = p.certsValid ? '✅ Valid' : '❌ Expired';
+
+            tr.appendChild(nameTd);
+            tr.appendChild(roleTd);
+            tr.appendChild(statusTd);
+            tr.appendChild(certsTd);
+
+            personnelTableBody.appendChild(tr);
+        });
     };
 
     const checkLogistics = () => {
@@ -3207,17 +3786,50 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const initializeFaqAccordion = () => {
         const accordion = document.getElementById('faq-accordion');
-        accordion.innerHTML = faqData.map(item => `
-            <div>
-                <button class="faq-question flex justify-between items-center">
-                    <span>${item.question}</span>
-                    <svg class="icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="faq-answer">${item.answer}</div>
-            </div>
-        `).join('');
+        // Clear accordion first
+        accordion.textContent = '';
+
+        // Create FAQ items using safe DOM methods
+        faqData.forEach(item => {
+            const itemDiv = document.createElement('div');
+
+            // Create question button
+            const button = document.createElement('button');
+            button.className = 'faq-question flex justify-between items-center';
+
+            const questionSpan = document.createElement('span');
+            questionSpan.textContent = item.question; // Auto-escaped
+
+            // Create SVG icon
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('class', 'icon w-5 h-5');
+            svg.setAttribute('fill', 'none');
+            svg.setAttribute('stroke', 'currentColor');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
+            path.setAttribute('stroke-width', '2');
+            path.setAttribute('d', 'M19 9l-7 7-7-7');
+
+            svg.appendChild(path);
+            button.appendChild(questionSpan);
+            button.appendChild(svg);
+
+            // Create answer div
+            // NOTE: item.answer contains intentional HTML markup from static FAQ data
+            // This is safe because faqData is defined in the code, not from user input
+            const answerDiv = document.createElement('div');
+            answerDiv.className = 'faq-answer';
+            answerDiv.innerHTML = item.answer; // Static data from code, contains intentional HTML
+
+            itemDiv.appendChild(button);
+            itemDiv.appendChild(answerDiv);
+
+            accordion.appendChild(itemDiv);
+        });
 
         accordion.addEventListener('click', (e) => {
             const questionButton = e.target.closest('.faq-question');
@@ -3576,17 +4188,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- EVENT LISTENERS ---
 
-    loginBtn.addEventListener('click', () => {
-        welcomeScreen.style.opacity = '0';
-        setTimeout(() => {
-            welcomeScreen.classList.add('hidden');
-            appContainer.classList.remove('hidden');
-            appContainer.classList.add('flex');
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            setTheme(savedTheme);
-            switchView('home');
-        }, 500);
-    });
+    // Initialize app on page load
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(savedTheme);
+    switchView('home');
 
     themeToggleBtn.addEventListener('click', () => {
         const currentTheme = body.classList.contains('theme-dark') ? 'dark' : 'light';

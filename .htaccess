@@ -103,6 +103,10 @@
     ExpiresByType video/webm "access plus 6 months"
     ExpiresByType video/ogg "access plus 6 months"
 
+    # 3D Models: 6 months
+    ExpiresByType model/gltf-binary "access plus 6 months"
+    ExpiresByType model/gltf+json "access plus 6 months"
+
     # Fonts: 1 year
     ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
     ExpiresByType application/x-font-ttf "access plus 1 year"
@@ -135,6 +139,11 @@
 
     # 6 MONTHS - Videos
     <FilesMatch "\.(mp4|webm|ogg)$">
+        Header set Cache-Control "public, max-age=15552000, immutable"
+    </FilesMatch>
+
+    # 6 MONTHS - 3D Models (GLB/GLTF)
+    <FilesMatch "\.(glb|gltf)$">
         Header set Cache-Control "public, max-age=15552000, immutable"
     </FilesMatch>
 
@@ -264,6 +273,10 @@ AddDefaultCharset UTF-8
     AddType application/font-woff2 woff2
     AddType application/x-font-ttf ttf ttc
     AddType font/opentype otf
+
+    # 3D Models
+    AddType model/gltf-binary glb
+    AddType model/gltf+json gltf
 </IfModule>
 
 # ==================================================

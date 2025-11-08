@@ -5,10 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' 'unsafe-eval' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.socket.io https://aframe.io https://raw.githack.com; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file: blob:; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com ws://api.welltegra.local:8080; media-src 'self' data: file: blob:; worker-src 'self' blob:; base-uri 'self'; form-action 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' 'unsafe-eval' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.socket.io https://aframe.io https://cdn.aframe.io https://raw.githack.com; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file: blob: https://cdn.aframe.io; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://aframe.io https://cdn.aframe.io https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com ws://api.welltegra.local:8080; media-src 'self' data: file: blob:; worker-src 'self' blob:; base-uri 'self'; form-action 'self'">
 
     <!-- SEO Meta Tags -->
-    <title>Well-Tegra | AI-Powered Well Engineering Platform - Reduce NPT by 30%</title>
+    <title>Well-Tegra | Stop Pushing Square Wheels</title>
     <meta name="description" content="Transform well intervention planning with Well-Tegra's AI-assisted platform. Reduce NPT by 15-30%, reclaim 2-3 hours/day of engineer time, and cut planning cycles from days to hours. Try it free.">
     <meta name="keywords" content="well engineering, intervention planning, NPT reduction, drilling optimization, well data management, oil and gas software, well planning software, drilling automation">
     <meta name="author" content="Well-Tegra Data Solutions">
@@ -17,7 +17,7 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://welltegra.network/">
-    <meta property="og:title" content="Well-Tegra | From Data Chaos to Predictive Clarity">
+    <meta property="og:title" content="Well-Tegra | Stop Pushing Square Wheels">
     <meta property="og:description" content="AI-powered well engineering platform that reduces NPT by 15-30% and reclaims hours of engineer time daily. Transform your well intervention planning.">
     <meta property="og:image" content="/assets/og-image.jpg">
     <meta property="og:site_name" content="Well-Tegra">
@@ -25,7 +25,7 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://welltegra.network/">
-    <meta name="twitter:title" content="Well-Tegra | AI-Powered Well Engineering Platform">
+    <meta name="twitter:title" content="Well-Tegra | Stop Pushing Square Wheels">
     <meta name="twitter:description" content="Reduce NPT by 15-30%, reclaim 2-3 hours/day, cut planning cycles from days to hours. Try Well-Tegra free.">
     <meta name="twitter:image" content="/assets/twitter-card.jpg">
 
@@ -344,6 +344,29 @@
             outline: 2px solid #3b82f6;
             outline-offset: 2px;
         }
+
+        /* --- Hero Section Styles --- */
+        .hero-section { position: relative; overflow: hidden; }
+        #hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            transform: translateX(-50%) translateY(-50%);
+            background-size: cover;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(15, 23, 42, 0.8);
+            z-index: -50;
+        }
+        .hero-section h2 { text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); }
+        .hero-section p { text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); }
     </style>
 </head>
 
@@ -423,12 +446,235 @@
 
     <main id="main-content" class="flex-1" role="main">
         <div id="home-view" class="view-container">
+            <section class="hero-section py-20 px-4 relative" aria-describedby="hero-video-description">
+                <video loop muted playsinline preload="none" id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description" data-lazy-video="assets/hero.mp4">
+                    <source data-src="assets/hero.mp4" type="video/mp4">
+                    <track kind="descriptions" srclang="en" label="English descriptions" src="assets/hero-video-descriptions.vtt" default>
+                </video>
+                <div class="hero-overlay"></div>
+                <p id="hero-video-description" class="sr-only">Looping montage showing engineers collaborating over drilling dashboards and subsurface schematics.</p>
+                <div class="max-w-4xl mx-auto text-center relative z-10">
+
+                    <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">Stop Pushing Square Wheels.</h2>
+
+                    <p class="mt-6 text-lg md:text-xl text-slate-100">
+                        The industry is caught in the "tyranny of the urgent." Your best engineers are so focused on just **pushing**—on hunting for data, fixing spreadsheets, and managing the day-to-day chaos—that no one has time to stop and see the **shape**.
+                    </p>
+                    <p class="mt-4 text-lg md:text-xl font-semibold text-white">
+                        Well-Tegra gives you the power to see the shape. We automate the "pushing" so you can build round wheels.
+                    </p>
+
+                    <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Request a Demo
+                        </a>
+                        <button id="hero-planner-btn" class="px-8 py-4 bg-white hover:bg-slate-100 text-slate-900 text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
+                            Try the Planner
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Brahan Capability Section -->
+            <section class="py-16 px-4 relative bg-gradient-to-br from-slate-900 via-slate-800 to-cyan-900">
+                <div class="max-w-7xl mx-auto">
+                    <!-- Two-Column Hero Layout: Video + Text -->
+                    <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                        <!-- Column A: Video -->
+                        <div class="relative rounded-2xl overflow-hidden shadow-2xl border-4 border-cyan-500/30">
+                            <video
+                                autoplay
+                                loop
+                                muted
+                                playsinline
+                                class="w-full h-auto"
+                                poster="assets/logo.jpg"
+                                aria-label="Digital Seer predicts oil reserves - AI visualization">
+                                <source src="assets/Digital_Seer_Predicts_Oil_Reserves.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+
+                        <!-- Column B: Text Content -->
+                        <div class="text-left">
+                            <h2 class="text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-6">
+                                From Insight to Action
+                            </h2>
+                            <p class="text-2xl md:text-3xl font-semibold text-cyan-300 mb-6">
+                                The 'Brahan' Predictive Engine
+                            </p>
+                            <p class="text-lg text-slate-300 mb-6">
+                                Named after the legendary Brahan Seer, Brahan is an <strong class="text-white">integrated AI system</strong> that represents a fundamental shift:
+                                from dashboards that <em>show you what happened</em> to an AI-powered engine that
+                                <strong class="text-white">tells you what's coming—and what to do about it.</strong>
+                            </p>
+                            <p class="text-base text-slate-400">
+                                This AI system continuously scrapes and analyzes data, forecasting high-stakes, long-term operational events before they happen—and automatically connecting
+                                every prediction to <strong class="text-cyan-300">concrete operational changes</strong> in the field.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- The What: The Capability -->
+                    <div class="bg-slate-800/60 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-cyan-500/30 shadow-2xl">
+                        <h3 class="text-3xl font-bold text-white mb-4 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                            The Capability: Predictive Failure Modeling
+                        </h3>
+                        <p class="text-lg text-slate-300 mb-4">
+                            This isn't about anomaly detection or alerting you to problems <em>after</em> they occur.
+                            <strong class="text-white">Brahan is an integrated AI system that forecasts high-stakes, long-term operational events before they happen.</strong>
+                        </p>
+                        <div class="grid md:grid-cols-2 gap-6 mt-6">
+                            <div class="bg-slate-900/50 rounded-lg p-6 border-l-4 border-cyan-500">
+                                <h4 class="text-xl font-bold text-cyan-300 mb-2">
+                                    Principal Well Integrity Modeler
+                                </h4>
+                                <p class="text-base text-slate-400">
+                                    <strong class="text-white">AI-Powered Predictive Function</strong><br>
+                                    Our core AI system evolved from simple anomaly detection to <strong>predictive failure modeling</strong>
+                                    for long-term well integrity. The system continuously analyzes data to forecast casing degradation, cement bond failure,
+                                    and tubing corrosion—years before conventional monitoring would detect them.
+                                </p>
+                            </div>
+                            <div class="bg-slate-900/50 rounded-lg p-6 border-l-4 border-green-500">
+                                <h4 class="text-xl font-bold text-green-300 mb-2">
+                                    VP of Financial Modeling
+                                </h4>
+                                <p class="text-base text-slate-400">
+                                    <strong class="text-white">AI-Powered Validation Function</strong><br>
+                                    Every prediction is automatically validated by our financial modeling subsystem using <strong>Monte Carlo simulations</strong>
+                                    and <strong>geopolitical risk quantification</strong>. The AI models the <em>true</em>
+                                    long-term cost and risk of each scenario, ensuring every decision is auditable and defensible.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- The So What: The Change -->
+                    <div class="bg-slate-800/60 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-orange-500/30 shadow-2xl">
+                        <h3 class="text-3xl font-bold text-white mb-4 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-orange-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                <line x1="12" y1="22.08" x2="12" y2="12"/>
+                            </svg>
+                            The Change: From Prophecy to Action
+                        </h3>
+                        <p class="text-lg text-slate-300 mb-6">
+                            Predictions are worthless if they don't drive <strong class="text-white">concrete operational changes</strong>.
+                            Brahan connects the forecast to the field—ensuring every insight translates into a physical intervention.
+                        </p>
+
+                        <div class="space-y-6">
+                            <!-- Step 1: Prediction -->
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-red-500/20 border-2 border-red-500 flex items-center justify-center text-red-400 font-bold text-lg">
+                                    1
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-xl font-bold text-red-400 mb-2">The Prediction</h4>
+                                    <p class="text-base text-slate-300">
+                                        Our <strong class="text-white">Principal Well Integrity Modeler</strong> function, powered by the core AI, analyzes historical corrosion data,
+                                        production chemistry, and mechanical stress profiles for Well XYZ.
+                                        The forecast: <strong class="text-red-300">"75% probability of casing integrity failure after Year 8."</strong>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Action -->
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-cyan-500/20 border-2 border-cyan-500 flex items-center justify-center text-cyan-400 font-bold text-lg">
+                                    2
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-xl font-bold text-cyan-400 mb-2">The Action</h4>
+                                    <p class="text-base text-slate-300">
+                                        This insight automatically triggers our <strong class="text-white">Drilling & Production Engineer</strong>
+                                        function to <strong class="text-cyan-300">re-model the well design and cement program</strong>—upgrading to a corrosion-resistant alloy and modifying
+                                        the cement formulation to engineer out the predicted risk.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Validation -->
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-green-500/20 border-2 border-green-500 flex items-center justify-center text-green-400 font-bold text-lg">
+                                    3
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-xl font-bold text-green-400 mb-2">The Validation</h4>
+                                    <p class="text-base text-slate-300">
+                                        The new plan is then processed by our <strong class="text-white">VP of Financial Modeling</strong> function to quantify the ROI:
+                                        the <strong class="text-yellow-300">$200k proactive CAPEX increase</strong>
+                                        prevents a <strong class="text-red-300">$15M future intervention</strong>
+                                        and avoids catastrophic environmental liability. The ROI is undeniable—and auditable.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- The Why: Business Impact -->
+                    <div class="bg-gradient-to-r from-cyan-900/40 to-green-900/40 backdrop-blur-sm rounded-2xl p-8 border border-green-500/40 shadow-2xl">
+                        <h3 class="text-3xl font-bold text-white mb-4 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="2" x2="12" y2="22"/>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                            </svg>
+                            The Business Impact: Future-Proof Your Assets
+                        </h3>
+                        <p class="text-lg text-slate-300 mb-6">
+                            Brahan isn't an academic exercise. It's a <strong class="text-white">strategic weapon</strong>
+                            that transforms how you manage long-term asset risk.
+                        </p>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="text-center">
+                                <div class="text-4xl font-extrabold text-cyan-400 mb-2">Proactive</div>
+                                <p class="text-sm text-slate-400">
+                                    Move from <strong>reactive cleanup</strong> to <strong>proactive intervention</strong>.
+                                    Fix problems before they become disasters.
+                                </p>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl font-extrabold text-green-400 mb-2">De-Risked</div>
+                                <p class="text-sm text-slate-400">
+                                    <strong>De-risk long-term assets</strong> and prevent future environmental
+                                    and financial disasters before they're written into your balance sheet.
+                                </p>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl font-extrabold text-yellow-400 mb-2">Auditable</div>
+                                <p class="text-sm text-slate-400">
+                                    Make <strong>financially-auditable, future-proof decisions</strong> today.
+                                    Every prediction is backed by Monte Carlo simulations and quantified risk.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Call to Action -->
+                    <div class="text-center mt-12">
+                        <p class="text-xl text-slate-300 mb-6">
+                            Ready to see how Brahan can future-proof your well portfolio?
+                        </p>
+                        <a href="mailto:contact@welltegra.network?subject=Brahan%20Demo%20Request"
+                           class="inline-block px-10 py-5 bg-gradient-to-r from-cyan-600 to-green-600 hover:from-cyan-500 hover:to-green-500 text-white text-xl font-bold rounded-lg shadow-2xl transition transform hover:scale-105">
+                            Request a Brahan Demo
+                        </a>
+                    </div>
+                </div>
+            </section>
+
             <section class="py-12 px-4 relative">
                 <div class="max-w-7xl mx-auto">
                     <div class="text-center mb-12">
-                        <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">Well Portfolio Overview</h2>
-                        <p class="text-lg md:text-xl text-slate-300 max-w-4xl mx-auto">Comprehensive Well Engineering Intelligence System - Montrose Field Case Study</p>
-                        <p class="mt-4 text-base text-slate-400 max-w-3xl mx-auto">Six successful interventions inform the restoration of <strong class="text-red-400">W666 - The Perfect Storm</strong>, a critical well with compound integrity challenges requiring integrated multi-discipline remediation.</p>
+                        <h2 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">From Square Wheels to Round Wheels</h2>
+                        <p class="text-lg md:text-xl text-slate-300 max-w-4xl mx-auto">Well-Tegra automates the "pushing"—data aggregation, integrity checks, risk modeling—so engineers can focus on the "shape": strategic planning, optimization, and long-term asset performance.</p>
+                        <p class="mt-4 text-base text-slate-400 max-w-3xl mx-auto">This demo portfolio shows <strong>seven wells</strong> from the Brahan Field. Six successful interventions now inform the restoration of <strong class="text-red-400">666 - The Perfect Storm</strong>, a high-stakes well that requires integrated multi-discipline remediation—exactly the kind of challenge that's only solvable when you can "see the shape."</p>
                     </div>
 
                     <!-- Well Cards Grid -->
@@ -481,7 +727,7 @@
             <section id="step-1" class="mb-12">
                 <div class="text-center mb-8">
                     <h3 class="text-2xl font-bold tracking-tight">Step 1: Ingest Portfolio Data</h3>
-                    <p class="mt-4 max-w-3xl mx-auto text-sm">Welcome to the "Well From Hell" case study. The portfolio below contains one critical problem well, <strong>W666 - The Perfect Storm</strong>, which is shut-in with multiple, complex issues. The other wells are historical case studies from the same field, each representing a successful intervention that fixed one of the problems now facing W666. Start by selecting the target well so the platform can pull all relevant offset data, historical lessons, and completion architecture.</p>
+                    <p class="mt-4 max-w-3xl mx-auto text-sm">Welcome to the "Well From Hell" case study. The portfolio below contains one critical problem well, <strong>666 - The Perfect Storm</strong>, which is shut-in with multiple, complex issues. The other wells are historical case studies from the same field, each representing a successful intervention that fixed one of the problems now facing 666. Start by selecting the target well so the platform can pull all relevant offset data, historical lessons, and completion architecture.</p>
                 </div>
                 <div class="mt-10 space-y-6">
                     <section id="portfolio-signals" class="grid gap-4 md:grid-cols-2 xl:grid-cols-4" aria-label="Portfolio signals"></section>
@@ -489,7 +735,7 @@
                 <div id="well-selection-grid" class="mt-6 grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
                 <section id="data-scrubbing-panel" class="mt-12 hidden">
                     <div class="text-center mb-8">
-                        <h4 class="text-xl font-semibold tracking-tight">How W666 Data Gets Scrubbed Before Planning</h4>
+                        <h4 class="text-xl font-semibold tracking-tight">How 666 Data Gets Scrubbed Before Planning</h4>
                         <p id="data-scrubbing-overview" class="mt-3 max-w-3xl mx-auto text-sm text-slate-400"></p>
                     </div>
                     <div id="data-scrubbing-stages" class="grid gap-4 md:grid-cols-3"></div>
@@ -523,7 +769,7 @@
             <section id="step-2" class="mb-12 hidden">
                 <div class="text-center mb-8">
                     <h3 class="text-2xl font-bold tracking-tight">Step 2: Define Objectives & Strategy</h3>
-                    <p class="mt-4 max-w-3xl mx-auto text-lg">With <strong>W666</strong> selected, choose how you want to scope the job. Use the <strong>AI Advisor</strong> to cross-reference known issues with offset case studies or drive manually from engineering objectives. Your selection sets the design basis for the rest of the workflow.</p>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg">With <strong>666</strong> selected, choose how you want to scope the job. Use the <strong>AI Advisor</strong> to cross-reference known issues with offset case studies or drive manually from engineering objectives. Your selection sets the design basis for the rest of the workflow.</p>
                 </div>
                 <div class="mt-8 max-w-4xl mx-auto">
                     <div class="flex items-center justify-center mb-6">
@@ -810,8 +1056,8 @@
             <div id="data-export-hub" class="mt-10 grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
                 <article class="light-card p-6 rounded-lg flex flex-col h-full" aria-labelledby="data-well-666-heading">
                     <div>
-                        <h3 id="data-well-666-heading" class="text-xl font-semibold mb-2">W666 Intervention Dataset</h3>
-                        <p class="text-sm text-slate-400">Single-well export covering the Montrose &ldquo;Well From Hell&rdquo; with history, completion architecture, and active risk signals.</p>
+                        <h3 id="data-well-666-heading" class="text-xl font-semibold mb-2">666 Intervention Dataset</h3>
+                        <p class="text-sm text-slate-400">Single-well export covering the Brahan &ldquo;Well From Hell&rdquo; with history, completion architecture, and active risk signals.</p>
                         <dl class="mt-4 space-y-3">
                             <div class="flex items-start justify-between gap-4">
                                 <dt class="text-xs uppercase tracking-wide text-slate-400">Records</dt>
@@ -859,7 +1105,7 @@
                         </dl>
                     </div>
                     <a href="data-well-666.csv" download class="mt-6 inline-flex items-center justify-center rounded-md bg-cyan-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 transition-colors">
-                        Download W666 CSV
+                        Download 666 CSV
                     </a>
                     <button type="button" data-export-copy="data-well-666" class="mt-3 inline-flex items-center justify-center rounded-md border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-200 hover:border-cyan-500 hover:text-white transition-colors">
                         Copy pandas import snippet
@@ -1688,16 +1934,17 @@
 
             <!-- HIRO Marker + Live BOP Model -->
             <a-marker preset="hiro" id="hiro-marker-performer">
-                <!-- BOP Model (color changes based on pressure) -->
-                <a-entity
+                <!-- BOP Model (simple geometry for now - 3D model removed) -->
+                <a-box
                     id="bop-model-performer"
-                    gltf-model="/models/pce/bop_5ram.glb"
-                    scale="0.5 0.5 0.5"
-                    position="0 0 0"
+                    color="#4a5568"
+                    metalness="0.7"
+                    roughness="0.3"
+                    scale="0.5 1.5 0.5"
+                    position="0 0.75 0"
                     rotation="-90 0 0"
-                    material="color: #4a5568; metalness: 0.7; roughness: 0.3"
                     animation="property: rotation; to: -90 360 0; loop: true; dur: 10000; easing: linear">
-                </a-entity>
+                </a-box>
 
                 <!-- 3D Pressure Text (floating above BOP) -->
                 <a-text

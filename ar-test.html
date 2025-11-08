@@ -140,14 +140,16 @@
 
         <!-- HIRO Marker + BOP Model -->
         <a-marker preset="hiro" id="hiro-marker">
-            <a-entity
+            <a-box
                 id="bop-model"
-                gltf-model="/models/pce/bop_5ram.glb"
-                scale="0.5 0.5 0.5"
-                position="0 0 0"
+                color="#4a5568"
+                metalness="0.7"
+                roughness="0.3"
+                scale="0.5 1.5 0.5"
+                position="0 0.75 0"
                 rotation="-90 0 0"
                 animation="property: rotation; to: -90 360 0; loop: true; dur: 10000; easing: linear">
-            </a-entity>
+            </a-box>
         </a-marker>
 
     </a-scene>
