@@ -31,13 +31,50 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Prepare deployment files
+        run: |
+          # Create deployment directory
+          mkdir -p _site
+
+          # Copy HTML files
+          cp *.html _site/ 2>/dev/null || true
+
+          # Copy essential directories
+          cp -r assets _site/ 2>/dev/null || true
+          cp -r models _site/ 2>/dev/null || true
+          cp -r edge-core _site/ 2>/dev/null || true
+          cp -r api _site/ 2>/dev/null || true
+
+          # Copy video file
+          cp Hero77.mp4 _site/ 2>/dev/null || true
+
+          # Copy configuration files
+          cp .htaccess _site/ 2>/dev/null || true
+          cp .nojekyll _site/ 2>/dev/null || true
+          cp CNAME _site/ 2>/dev/null || true
+
+          # Copy favicon and icons
+          cp favicon*.* _site/ 2>/dev/null || true
+          cp apple-touch-icon*.png _site/ 2>/dev/null || true
+          cp android-chrome*.png _site/ 2>/dev/null || true
+          cp site.webmanifest _site/ 2>/dev/null || true
+
+          # Copy robots.txt and sitemap
+          cp robots.txt _site/ 2>/dev/null || true
+          cp sitemap.xml _site/ 2>/dev/null || true
+
+          echo "Deployment directory prepared"
+          du -sh _site
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          path: '_site'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
