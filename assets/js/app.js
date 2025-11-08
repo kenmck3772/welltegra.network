@@ -3387,6 +3387,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         // Render UI components
         renderHomeWellCards();
+        renderWellCards(); // Render planner well cards
         renderObjectives();
         renderProblems();
         initSavingsChart();

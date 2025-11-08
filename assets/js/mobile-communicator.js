@@ -264,6 +264,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Event Listeners
+    const openCommunicatorBtn = document.getElementById('open-mobile-communicator');
+    if (openCommunicatorBtn) {
+        openCommunicatorBtn.addEventListener('click', openCommunicator);
+    }
+
     if (closeCommunicatorBtn) {
         closeCommunicatorBtn.addEventListener('click', closeCommunicator);
     }
