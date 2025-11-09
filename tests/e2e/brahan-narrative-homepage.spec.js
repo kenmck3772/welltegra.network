@@ -69,9 +69,10 @@ test.describe('Brahan Narrative Homepage - Complete Walkthrough', () => {
       console.log('⚠️ Video playback rate check skipped (video may not be loaded)');
     }
 
-    // Verify hero heading
-    await expect(page.locator('h2').filter({ hasText: 'Stop Pushing Square Wheels' })).toBeVisible();
-    console.log('✅ Hero heading visible');
+    // Verify hero CTA buttons are visible
+    await expect(page.locator('a').filter({ hasText: 'Request a Demo' })).toBeVisible();
+    await expect(page.locator('button').filter({ hasText: 'Try the Planner' })).toBeVisible();
+    console.log('✅ Hero CTA buttons visible');
 
     // Pause to show hero section (reduced for CI)
     await page.waitForTimeout(1000);
