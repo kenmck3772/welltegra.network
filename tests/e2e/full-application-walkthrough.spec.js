@@ -29,7 +29,8 @@ test.describe('Full Application Walkthrough - Complete Workflow', () => {
     // ============================================
     console.log('📍 STEP 1: Loading homepage and dashboard...');
 
-    await page.goto('http://localhost:8000', { waitUntil: 'networkidle' });
+    // Use baseURL from playwright.config.js (http://127.0.0.1:8080)
+    await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 30000 });
 
     // Verify we're on the homepage
     await expect(page.locator('#app-header')).toBeVisible();
@@ -318,7 +319,7 @@ test.describe('Full Application Walkthrough - Complete Workflow', () => {
 
     console.log('📍 Starting Feature Showcase Walkthrough...');
 
-    await page.goto('http://localhost:8000/feature-showcase.html', { waitUntil: 'networkidle' });
+    await page.goto('/feature-showcase.html', { waitUntil: 'domcontentloaded', timeout: 30000 });
 
     // Verify showcase page loaded
     await expect(page.locator('h1')).toContainText('Feature Showcase');
@@ -362,7 +363,7 @@ test.describe('Full Application Walkthrough - Complete Workflow', () => {
     console.log('📍 Starting Quick Demo (2 minutes)...');
 
     // Step 1: Homepage (10 seconds)
-    await page.goto('http://localhost:8000', { waitUntil: 'networkidle' });
+    await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForTimeout(3000);
     console.log('✅ Homepage shown');
 
@@ -382,22 +383,22 @@ test.describe('Full Application Walkthrough - Complete Workflow', () => {
     console.log('✅ Analyzer shown');
 
     // Step 5: Show Equipment Catalog (15 seconds)
-    await page.goto('http://localhost:8000/equipment-catalog-integration.html');
+    await page.goto('/equipment-catalog-integration.html', { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForTimeout(4000);
     console.log('✅ Equipment catalog shown');
 
     // Step 6: Show 3D Visualization (15 seconds)
-    await page.goto('http://localhost:8000/3d-well-path.html');
+    await page.goto('/3d-well-path.html', { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForTimeout(4000);
     console.log('✅ 3D visualization shown');
 
     // Step 7: Show Pricing (10 seconds)
-    await page.goto('http://localhost:8000/pricing.html');
+    await page.goto('/pricing.html', { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForTimeout(3000);
     console.log('✅ Pricing page shown');
 
     // Return to homepage (5 seconds)
-    await page.goto('http://localhost:8000');
+    await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForTimeout(2000);
 
     console.log('✅ Quick demo complete (~ 2 minutes)');
