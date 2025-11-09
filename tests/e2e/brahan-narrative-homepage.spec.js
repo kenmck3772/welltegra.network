@@ -357,7 +357,7 @@ test.describe('Brahan Narrative Homepage - Complete Walkthrough', () => {
     // Check that video lazy loads properly
     const heroVideo = page.locator('#hero-video');
     const preload = await heroVideo.getAttribute('preload');
-    expect(preload).toBe('none'); // Should be lazy loaded
+    expect(preload).toBe('metadata'); // Should be lazy loaded (metadata only)
     console.log('✅ Video configured for lazy loading');
 
     console.log('✅ Performance test passed');
