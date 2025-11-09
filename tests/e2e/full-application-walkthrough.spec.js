@@ -13,14 +13,14 @@
 
 const { test, expect } = require('@playwright/test');
 
-test.describe('Full Application Walkthrough - Complete Workflow', () => {
+// Configure this test to always record video (even on success)
+test.use({
+  video: 'on',
+  screenshot: 'on',
+  trace: 'on'
+});
 
-  // Configure this test to always record video (even on success)
-  test.use({
-    video: 'on',
-    screenshot: 'on',
-    trace: 'on'
-  });
+test.describe('Full Application Walkthrough - Complete Workflow', () => {
 
   test('Complete workflow: Homepage → Planner → Performer → Analyzer → PDF Export', async ({ page }) => {
 
