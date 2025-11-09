@@ -472,9 +472,8 @@
     <main id="main-content" class="flex-1" role="main">
         <div id="home-view" class="view-container">
             <section class="hero-section py-12 sm:py-16 md:py-20 px-4 relative min-h-[60vh] sm:min-h-[70vh] flex items-center" aria-describedby="hero-video-description">
-                <video loop muted playsinline preload="none" id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description">
-                    <!-- Video source removed temporarily - causing browser crashes in headless test environments -->
-                    <!-- <source src="assets/hero33.mp4" type="video/mp4"> -->
+                <video autoplay loop muted playsinline preload="metadata" id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description">
+                    <source src="assets/hero33.mp4" type="video/mp4">
                     <track kind="descriptions" srclang="en" label="English descriptions" src="assets/hero-video-descriptions.vtt" default>
                 </video>
                 <script>
