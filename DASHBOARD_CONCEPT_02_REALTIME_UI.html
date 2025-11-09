@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WellTegra Data Ingestion Dashboard - Real-Time UI Concept</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto auto auto auto;
+            gap: 16px;
+            padding: 20px;
+            max-width: 100%;
+        }
+
+        /* HEADER */
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 2px solid #334155;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            50% { opacity: 0.8; box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+        }
+
+        /* CARDS */
+        .card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #475569;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+
+        /* DIS SCORE (LARGE CARD) */
+        .dis-score-card {
+            grid-column: 1 / 2;
+            grid-row: 1 / 3;
+        }
+
+        .dis-large {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 40px 20px;
+        }
+
+        .dis-number {
+            font-size: 72px;
+            font-weight: 700;
+            margin: 20px 0;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dis-status {
+            font-size: 16px;
+            font-weight: 600;
+            color: #10b981;
+            margin-bottom: 12px;
+        }
+
+        .dis-description {
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        /* INGESTION STATS */
+        .stats-grid {
+            grid-column: 2 / -1;
+            grid-row: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin-bottom: 4px;
+        }
+
+        .stat-subtext {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .stat-card.success {
+            border-color: #10b981;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%);
+        }
+
+        .stat-card.warning {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, transparent 100%);
+        }
+
+        /* REAL-TIME INGESTION LOG */
+        .log-card {
+            grid-column: 2 / -1;
+            grid-row: 2;
+        }
+
+        .log-content {
+            height: 300px;
+            background: #020617;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 12px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+        }
+
+        .log-entry {
+            padding: 4px 0;
+            border-left: 3px solid transparent;
+            padding-left: 8px;
+            margin-bottom: 4px;
+            opacity: 0;
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .log-entry.success {
+            color: #10b981;
+            border-left-color: #10b981;
+        }
+
+        .log-entry.warning {
+            color: #f59e0b;
+            border-left-color: #f59e0b;
+        }
+
+        .log-entry.error {
+            color: #ef4444;
+            border-left-color: #ef4444;
+        }
+
+        .log-entry.info {
+            color: #3b82f6;
+            border-left-color: #3b82f6;
+        }
+
+        .log-entry:nth-child(1) { animation-delay: 0s; }
+        .log-entry:nth-child(2) { animation-delay: 0.1s; }
+        .log-entry:nth-child(3) { animation-delay: 0.2s; }
+        .log-entry:nth-child(4) { animation-delay: 0.3s; }
+        .log-entry:nth-child(5) { animation-delay: 0.4s; }
+
+        /* DATA SOURCES */
+        .sources-card {
+            grid-column: 1 / 2;
+            grid-row: 3 / 4;
+        }
+
+        .source-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .source-item {
+            background: #020617;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .source-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .source-name {
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .source-status {
+            font-size: 10px;
+            color: #64748b;
+        }
+
+        .source-health {
+            font-weight: 700;
+            font-size: 12px;
+            color: #10b981;
+        }
+
+        /* VALIDATION RULES */
+        .validation-card {
+            grid-column: 2 / 3;
+            grid-row: 3 / 4;
+        }
+
+        .rule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .rule-item {
+            background: #020617;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 11px;
+        }
+
+        .rule-icon {
+            min-width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 10px;
+        }
+
+        .rule-icon.pass {
+            background: #10b981;
+            color: #020617;
+        }
+
+        .rule-icon.fail {
+            background: #ef4444;
+            color: white;
+        }
+
+        .rule-text {
+            flex: 1;
+        }
+
+        .rule-count {
+            font-weight: 700;
+            color: #94a3b8;
+        }
+
+        /* THROUGHPUT */
+        .throughput-card {
+            grid-column: 3 / 4;
+            grid-row: 3 / 4;
+        }
+
+        .throughput-chart {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            background: #020617;
+            border-radius: 6px;
+            padding: 10px;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(180deg, #3b82f6 0%, #1e40af 100%);
+            border-radius: 2px;
+            min-height: 20px;
+            opacity: 0.7;
+            animation: barGrow 0.6s ease forwards;
+        }
+
+        @keyframes barGrow {
+            from { height: 0; }
+            to { height: var(--height); }
+        }
+
+        .bar:nth-child(1) { --height: 40%; animation-delay: 0s; }
+        .bar:nth-child(2) { --height: 60%; animation-delay: 0.1s; }
+        .bar:nth-child(3) { --height: 85%; animation-delay: 0.2s; }
+        .bar:nth-child(4) { --height: 75%; animation-delay: 0.3s; }
+        .bar:nth-child(5) { --height: 90%; animation-delay: 0.4s; }
+        .bar:nth-child(6) { --height: 100%; animation-delay: 0.5s; }
+
+        /* ALERTS */
+        .alerts-card {
+            grid-column: 1 / -1;
+            grid-row: 4;
+        }
+
+        .alert-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 12px;
+        }
+
+        .alert {
+            background: #020617;
+            border-left: 4px solid #f59e0b;
+            border-radius: 4px;
+            padding: 12px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .alert.critical {
+            border-left-color: #ef4444;
+        }
+
+        .alert.success {
+            border-left-color: #10b981;
+        }
+
+        .alert-icon {
+            font-size: 18px;
+            min-width: 24px;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 600;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .alert-message {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .alert-time {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 6px;
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .dis-score-card {
+                grid-column: 1 / -1;
+                grid-row: 1;
+            }
+
+            .stats-grid {
+                grid-column: 1 / -1;
+                grid-row: 2;
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .log-card {
+                grid-column: 1 / -1;
+                grid-row: 3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>🔒 Data Ingestion & Validation Dashboard</h1>
+        </div>
+        <div class="status-indicator">
+            <div class="status-dot"></div>
+            <span>Live • All Systems Operational</span>
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <!-- DIS SCORE -->
+        <div class="card dis-score-card">
+            <div class="card-title">Data Integrity Score</div>
+            <div class="dis-large">
+                <div class="dis-status">✓ TRUSTED</div>
+                <div class="dis-number">92.3</div>
+                <div class="dis-description">
+                    High-quality data ready for<br>production analytics & predictions
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS GRID -->
+        <div class="stats-grid">
+            <div class="stat-card success">
+                <div class="stat-label">Records Ingested</div>
+                <div class="stat-value">1.2M</div>
+                <div class="stat-subtext">Last 24 hours</div>
+            </div>
+
+            <div class="stat-card success">
+                <div class="stat-label">Success Rate</div>
+                <div class="stat-value">99.8%</div>
+                <div class="stat-subtext">Validated & clean</div>
+            </div>
+
+            <div class="stat-card warning">
+                <div class="stat-label">Records Flagged</div>
+                <div class="stat-value">2,456</div>
+                <div class="stat-subtext">Requiring review</div>
+            </div>
+
+            <div class="stat-card success">
+                <div class="stat-label">Processing Latency</div>
+                <div class="stat-value">187ms</div>
+                <div class="stat-subtext">Avg. validation time</div>
+            </div>
+        </div>
+
+        <!-- REAL-TIME LOG -->
+        <div class="card log-card">
+            <div class="card-title">Real-Time Ingestion Log</div>
+            <div class="log-content">
+                <div class="log-entry success">✓ [14:35:22] WITSML stream connected (Well A-52)</div>
+                <div class="log-entry success">✓ [14:35:23] Schema validation passed (5,847 records)</div>
+                <div class="log-entry info">ℹ [14:35:24] Applying DIS scoring algorithm...</div>
+                <div class="log-entry warning">⚠ [14:35:25] Found 12 duplicate records (removed)</div>
+                <div class="log-entry success">✓ [14:35:26] Type checking passed (all numeric pressure values)</div>
+                <div class="log-entry info">ℹ [14:35:27] Running anomaly detection (LSTM model)...</div>
+                <div class="log-entry warning">⚠ [14:35:28] Flagged 3 outliers for review (pressure spikes)</div>
+                <div class="log-entry success">✓ [14:35:29] Data encryption applied (AES-256)</div>
+                <div class="log-entry success">✓ [14:35:30] Audit log entry created</div>
+                <div class="log-entry success">✓ [14:35:31] DIS Score updated: 91.7 → 92.3</div>
+            </div>
+        </div>
+
+        <!-- DATA SOURCES -->
+        <div class="card sources-card">
+            <div class="card-title">Data Sources</div>
+            <div class="source-list">
+                <div class="source-item">
+                    <div class="source-info">
+                        <div class="source-name">WITSML 2.0</div>
+                        <div class="source-status">Well A-52 (Connected)</div>
+                    </div>
+                    <div class="source-health">✓ 99.9%</div>
+                </div>
+
+                <div class="source-item">
+                    <div class="source-info">
+                        <div class="source-name">OPC UA</div>
+                        <div class="source-status">Wellhead SCADA (Connected)</div>
+                    </div>
+                    <div class="source-health">✓ 99.8%</div>
+                </div>
+
+                <div class="source-item">
+                    <div class="source-info">
+                        <div class="source-name">REST API</div>
+                        <div class="source-status">EDM System (Connected)</div>
+                    </div>
+                    <div class="source-health">✓ 98.5%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VALIDATION RULES -->
+        <div class="card validation-card">
+            <div class="card-title">Validation Rules</div>
+            <div class="rule-list">
+                <div class="rule-item">
+                    <div class="rule-icon pass">✓</div>
+                    <div class="rule-text">Schema validation</div>
+                    <div class="rule-count">5,847</div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-icon pass">✓</div>
+                    <div class="rule-text">Type checking</div>
+                    <div class="rule-count">5,847</div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-icon fail">✗</div>
+                    <div class="rule-text">Range validation (pressure)</div>
+                    <div class="rule-count">12 flagged</div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-icon pass">✓</div>
+                    <div class="rule-text">Duplicate detection</div>
+                    <div class="rule-count">12 removed</div>
+                </div>
+
+                <div class="rule-item">
+                    <div class="rule-icon pass">✓</div>
+                    <div class="rule-text">Temporal alignment</div>
+                    <div class="rule-count">5,835</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- THROUGHPUT CHART -->
+        <div class="card throughput-card">
+            <div class="card-title">Throughput (Records/Min)</div>
+            <div class="throughput-chart">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+
+        <!-- ALERTS -->
+        <div class="card alerts-card">
+            <div class="card-title">System Alerts & Notifications</div>
+            <div class="alert-list">
+                <div class="alert success">
+                    <div class="alert-icon">✓</div>
+                    <div class="alert-content">
+                        <div class="alert-title">All Data Sources Connected</div>
+                        <div class="alert-message">WITSML, OPC UA, and EDM integrations active</div>
+                        <div class="alert-time">2 minutes ago</div>
+                    </div>
+                </div>
+
+                <div class="alert warning">
+                    <div class="alert-icon">⚠</div>
+                    <div class="alert-content">
+                        <div class="alert-title">Records Require Review</div>
+                        <div class="alert-message">12 duplicate records and 3 pressure outliers flagged</div>
+                        <div class="alert-time">1 minute ago</div>
+                    </div>
+                </div>
+
+                <div class="alert success">
+                    <div class="alert-icon">✓</div>
+                    <div class="alert-content">
+                        <div class="alert-title">DIS Score Improved</div>
+                        <div class="alert-message">Data Integrity Score updated to 92.3 (from 89.1)</div>
+                        <div class="alert-time">30 seconds ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
