@@ -7,10 +7,10 @@ const { defineConfig, devices } = require('@playwright/test');
  * @see https://playwright.dev/docs/test-configuration
  */
 module.exports = defineConfig({
-  testDir: './tests/e2e',
+  testDir: './tests',
 
   // Maximum time one test can run for
-  timeout: 30 * 1000,
+  timeout: 60 * 1000, // Increased for video tests
 
   // Test artifacts
   fullyParallel: true,
@@ -20,14 +20,17 @@ module.exports = defineConfig({
 
   // Reporter to use
   reporter: [
-    ['html', { outputFolder: 'test-results/html' }],
+    ['html', { outputFolder: 'playwright-report' }],
     ['json', { outputFile: 'test-results/results.json' }],
     ['list']
   ],
 
+  // Output directory for test artifacts
+  outputDir: 'test-results',
+
   use: {
     // Base URL for tests
-    baseURL: 'http://127.0.0.1:8000',
+    baseURL: 'http://127.0.0.1:8080',
 
     // Collect trace when retrying the failed test
     trace: 'on-first-retry',
@@ -77,8 +80,8 @@ module.exports = defineConfig({
 
   // Run your local dev server before starting the tests
   webServer: {
-    command: 'python3 -m http.server 8000',
-    port: 8000,
+    command: 'npx http-server . -p 8080 -c-1',
+    url: 'http://127.0.0.1:8080',
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
   },
