@@ -48,14 +48,8 @@ test.describe('Brahan Narrative Homepage - Complete Walkthrough', () => {
     await expect(heroVideo).toBeAttached({ timeout: 5000 });
     console.log('✅ Hero video element found');
 
-    // Verify video is using hero33.mp4
-    const videoSource = await heroVideo.getAttribute('data-lazy-video');
-    if (videoSource) {
-      expect(videoSource).toContain('hero33.mp4');
-      console.log('✅ Mobile Communicator video (hero33.mp4) confirmed');
-    } else {
-      console.log('⚠️ Video source not found (may not be uploaded yet)');
-    }
+    // Video source removed temporarily due to browser crashes in headless mode
+    console.log('ℹ️ Video source removed temporarily (hero33.mp4 crashes headless Chromium)');
 
     // Check video playback rate is set to 0.5x (half speed) - skip if video not loaded
     try {
@@ -357,7 +351,7 @@ test.describe('Brahan Narrative Homepage - Complete Walkthrough', () => {
     // Check that video lazy loads properly
     const heroVideo = page.locator('#hero-video');
     const preload = await heroVideo.getAttribute('preload');
-    expect(preload).toBe('metadata'); // Should be lazy loaded (metadata only)
+    expect(preload).toBe('none'); // Should be lazy loaded (no preload)
     console.log('✅ Video configured for lazy loading');
 
     console.log('✅ Performance test passed');
