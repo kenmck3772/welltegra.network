@@ -458,6 +458,19 @@
                     <source data-src="assets/hero33.mp4" type="video/mp4">
                     <track kind="descriptions" srclang="en" label="English descriptions" src="assets/hero-video-descriptions.vtt" default>
                 </video>
+                <script>
+                    // Set hero video playback speed to 0.5x (half speed) for dramatic effect
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const heroVideo = document.getElementById('hero-video');
+                        if (heroVideo) {
+                            heroVideo.addEventListener('loadeddata', function() {
+                                heroVideo.playbackRate = 0.5;
+                            });
+                            // Also set immediately in case video is already loaded
+                            heroVideo.playbackRate = 0.5;
+                        }
+                    });
+                </script>
                 <div class="hero-overlay"></div>
                 <p id="hero-video-description" class="sr-only">Mobile Communicator interface showing real-time well data and AI-powered insights on a handheld device.</p>
                 <div class="max-w-4xl mx-auto text-center relative z-10">
