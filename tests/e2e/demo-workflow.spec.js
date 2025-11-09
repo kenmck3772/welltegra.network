@@ -11,10 +11,10 @@ const { test, expect } = require('@playwright/test');
 test.describe('Demo Workflow - Complete 5-Act Narrative', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to the main application
-    await page.goto('/index-v23-fresh.html');
+    await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 30000 });
 
-    // Wait for the page to load
-    await page.waitForLoadState('networkidle');
+    // Wait for the page to stabilize
+    await page.waitForTimeout(1000);
 
     // Mock authentication for demo
     await page.evaluate(() => {
