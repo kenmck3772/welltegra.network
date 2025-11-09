@@ -7,10 +7,11 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : 1,
   reporter: [
-    ['html'],
+    ['html', { outputFolder: 'playwright-report' }],
     ['list'],
     ['json', { outputFile: 'test-results/results.json' }]
   ],
+  outputDir: 'test-results',
   use: {
     baseURL: 'file://' + process.cwd(),
     trace: 'on-first-retry',
