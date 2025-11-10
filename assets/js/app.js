@@ -786,12 +786,19 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // --- PLANNER LOGIC ---
 
-    const renderWellCards = () => { 
+    const renderWellCards = () => {
         wellSelectionGrid.textContent = '';
         wellData.forEach(well => {
             const isWellFromHell = well.id === '666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
             const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
+            const compData = well._comprehensiveData || {};
+            const foundation = compData.foundationalIdentity || {};
+            const design = compData.designAndConstruction || {};
+            const operational = compData.operationalHistory || {};
+            const integrity = compData.wellIntegrityAndRisk || {};
+            const equipment = compData.equipmentAndAssets || {};
+            const safety = compData.safetyAndCompliance || {};
 
             const card = document.createElement('div');
             card.className = 'well-card-enhanced planner-card light-card ' + (isWellFromHell ? 'border-red-500' : 'border-gray-200');
@@ -834,11 +841,204 @@ document.addEventListener('DOMContentLoaded', async function() {
             bodyDiv.appendChild(statusSpan);
 
             const issueP = document.createElement('p');
-            issueP.className = 'text-sm';
+            issueP.className = 'text-sm mb-4';
             issueP.textContent = well.issue; // Auto-escaped
 
             cardBody.appendChild(bodyDiv);
             cardBody.appendChild(issueP);
+
+            // Comprehensive Information Section
+            const comprehensiveSection = document.createElement('div');
+            comprehensiveSection.className = 'border-t border-gray-200 pt-4 mt-4';
+
+            // Create collapsible comprehensive details
+            const detailsToggle = document.createElement('button');
+            detailsToggle.className = 'w-full flex justify-between items-center text-sm font-semibold text-blue-600 hover:text-blue-800 mb-2';
+            detailsToggle.innerHTML = '<span>Show Comprehensive Details</span><span class="toggle-icon">▼</span>';
+
+            const detailsContent = document.createElement('div');
+            detailsContent.className = 'comprehensive-details hidden mt-3 space-y-4 text-sm';
+
+            // Foundational Identity
+            if (Object.keys(foundation).length > 0) {
+                const identitySection = document.createElement('div');
+                identitySection.className = 'bg-gray-50 p-3 rounded';
+                identitySection.innerHTML = `
+                    <h4 class="font-bold text-gray-700 mb-2">📋 Foundational Identity</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                        ${foundation.apiNumber ? `<div><span class="font-semibold">API Number:</span> ${foundation.apiNumber}</div>` : ''}
+                        ${foundation.blockNumber ? `<div><span class="font-semibold">Block:</span> ${foundation.blockNumber}</div>` : ''}
+                        ${foundation.licenseNumber ? `<div><span class="font-semibold">License:</span> ${foundation.licenseNumber}</div>` : ''}
+                        ${foundation.operator ? `<div><span class="font-semibold">Operator:</span> ${foundation.operator}</div>` : ''}
+                        ${foundation.operatorShare_percent ? `<div><span class="font-semibold">Operator Share:</span> ${foundation.operatorShare_percent}%</div>` : ''}
+                        ${foundation.slotIdentifier ? `<div><span class="font-semibold">Slot:</span> ${foundation.slotIdentifier}</div>` : ''}
+                        ${foundation.waterDepth_ft ? `<div><span class="font-semibold">Water Depth:</span> ${foundation.waterDepth_ft.toLocaleString()}ft</div>` : ''}
+                        ${foundation.totalDepthMD_ft ? `<div><span class="font-semibold">Total Depth (MD):</span> ${foundation.totalDepthMD_ft.toLocaleString()}ft</div>` : ''}
+                        ${foundation.totalDepthTVD_ft ? `<div><span class="font-semibold">Total Depth (TVD):</span> ${foundation.totalDepthTVD_ft.toLocaleString()}ft</div>` : ''}
+                        ${foundation.wellProfile ? `<div><span class="font-semibold">Well Profile:</span> ${foundation.wellProfile}</div>` : ''}
+                    </div>
+                    ${foundation.surfaceCoordinates ? `
+                        <div class="mt-2 text-xs">
+                            <span class="font-semibold">Coordinates:</span>
+                            ${foundation.surfaceCoordinates.latitude}°N, ${foundation.surfaceCoordinates.longitude}°E
+                        </div>
+                    ` : ''}
+                    ${foundation.jointVenturePartners && foundation.jointVenturePartners.length > 0 ? `
+                        <div class="mt-2 text-xs">
+                            <span class="font-semibold">JV Partners:</span>
+                            <ul class="ml-4 mt-1">
+                                ${foundation.jointVenturePartners.map(p => `<li>${p.company} (${p.share}%)</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                `;
+                detailsContent.appendChild(identitySection);
+            }
+
+            // Design & Construction
+            if (Object.keys(design).length > 0) {
+                const designSection = document.createElement('div');
+                designSection.className = 'bg-blue-50 p-3 rounded';
+                let designHTML = '<h4 class="font-bold text-gray-700 mb-2">🏗️ Design & Construction</h4>';
+
+                if (design.spudDate || design.completionDate || design.firstProductionDate) {
+                    designHTML += '<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs mb-2">';
+                    if (design.spudDate) designHTML += `<div><span class="font-semibold">Spud Date:</span> ${design.spudDate}</div>`;
+                    if (design.completionDate) designHTML += `<div><span class="font-semibold">Completion:</span> ${design.completionDate}</div>`;
+                    if (design.firstProductionDate) designHTML += `<div><span class="font-semibold">First Production:</span> ${design.firstProductionDate}</div>`;
+                    designHTML += '</div>';
+                }
+
+                if (design.drillingContractor || design.drillingRig) {
+                    designHTML += '<div class="text-xs mb-2">';
+                    if (design.drillingContractor) designHTML += `<span class="font-semibold">Contractor:</span> ${design.drillingContractor}`;
+                    if (design.drillingRig) designHTML += ` | <span class="font-semibold">Rig:</span> ${design.drillingRig}`;
+                    designHTML += '</div>';
+                }
+
+                if (design.casingStrings && design.casingStrings.length > 0) {
+                    designHTML += '<div class="mt-2"><span class="font-semibold text-xs">Casing Strings:</span>';
+                    designHTML += '<ul class="ml-4 mt-1 text-xs space-y-1">';
+                    design.casingStrings.forEach(csg => {
+                        const criticalClass = csg.integrityStatus && csg.integrityStatus.includes('CRITICAL') ? 'text-red-600 font-semibold' : '';
+                        designHTML += `<li class="${criticalClass}">${csg.type} - ${csg.outerDiameter_in}" ${csg.grade || ''} (${csg.topDepthMD_ft}-${csg.bottomDepthMD_ft}ft) - ${csg.integrityStatus || 'Good'}</li>`;
+                    });
+                    designHTML += '</ul></div>';
+                }
+
+                if (design.tubingStrings && design.tubingStrings.length > 0) {
+                    designHTML += '<div class="mt-2"><span class="font-semibold text-xs">Tubing:</span>';
+                    designHTML += '<ul class="ml-4 mt-1 text-xs">';
+                    design.tubingStrings.forEach(tbg => {
+                        designHTML += `<li>${tbg.type || 'Tubing'} - ${tbg.outerDiameter_in}" ${tbg.grade || ''} (${tbg.topDepthMD_ft}-${tbg.bottomDepthMD_ft}ft)</li>`;
+                    });
+                    designHTML += '</ul></div>';
+                }
+
+                if (design.downholeEquipment && design.downholeEquipment.length > 0) {
+                    designHTML += '<div class="mt-2"><span class="font-semibold text-xs">Downhole Equipment:</span>';
+                    designHTML += '<ul class="ml-4 mt-1 text-xs space-y-1">';
+                    design.downholeEquipment.forEach(eq => {
+                        const criticalClass = (eq.integrityStatus && (eq.integrityStatus.includes('CRITICAL') || eq.integrityStatus.includes('FAILED'))) ? 'text-red-600 font-semibold' : '';
+                        designHTML += `<li class="${criticalClass}">${eq.itemType} @ ${eq.settingDepthMD_ft || eq.depthMD_ft || 'N/A'}ft - ${eq.integrityStatus || eq.functionalStatus || 'OK'}</li>`;
+                    });
+                    designHTML += '</ul></div>';
+                }
+
+                designSection.innerHTML = designHTML;
+                detailsContent.appendChild(designSection);
+            }
+
+            // Operational History
+            if (operational.events && operational.events.length > 0) {
+                const opSection = document.createElement('div');
+                opSection.className = 'bg-green-50 p-3 rounded';
+                let opHTML = '<h4 class="font-bold text-gray-700 mb-2">📊 Operational History</h4>';
+                opHTML += `<div class="text-xs mb-2"><span class="font-semibold">Total Events:</span> ${operational.events.length}</div>`;
+                opHTML += '<div class="max-h-40 overflow-y-auto"><ul class="ml-4 text-xs space-y-1">';
+                operational.events.slice(0, 5).forEach(event => {
+                    opHTML += `<li><span class="font-semibold">${event.eventDate || event.startDate}:</span> ${event.eventType} - ${event.outcome || event.description || ''}</li>`;
+                });
+                if (operational.events.length > 5) {
+                    opHTML += `<li class="italic text-gray-500">... and ${operational.events.length - 5} more events</li>`;
+                }
+                opHTML += '</ul></div>';
+                opSection.innerHTML = opHTML;
+                detailsContent.appendChild(opSection);
+            }
+
+            // Well Integrity & Risk
+            if (integrity.liveAnomalies && integrity.liveAnomalies.length > 0) {
+                const integritySection = document.createElement('div');
+                integritySection.className = 'bg-red-50 p-3 rounded border-2 border-red-300';
+                let intHTML = '<h4 class="font-bold text-red-700 mb-2">⚠️ Well Integrity & Risk</h4>';
+                intHTML += `<div class="text-xs mb-2 font-semibold text-red-600">Active Anomalies: ${integrity.liveAnomalies.length}</div>`;
+                intHTML += '<ul class="ml-4 text-xs space-y-2">';
+                integrity.liveAnomalies.forEach(anomaly => {
+                    const severityClass = anomaly.severity === 'Critical' ? 'text-red-700 font-bold' : 'text-orange-600';
+                    intHTML += `<li class="${severityClass}">
+                        <div><span class="font-semibold">${anomaly.type}</span> (${anomaly.severity})</div>
+                        <div class="text-gray-700 ml-2">${anomaly.description}</div>
+                        ${anomaly.locationMD_ft ? `<div class="text-gray-600 ml-2">Location: ${anomaly.locationMD_ft}ft MD</div>` : ''}
+                    </li>`;
+                });
+                intHTML += '</ul>';
+                integritySection.innerHTML = intHTML;
+                detailsContent.appendChild(integritySection);
+            }
+
+            // Equipment & Assets
+            if (equipment.majorAssets && equipment.majorAssets.length > 0) {
+                const assetSection = document.createElement('div');
+                assetSection.className = 'bg-yellow-50 p-3 rounded';
+                let assetHTML = '<h4 class="font-bold text-gray-700 mb-2">🔧 Equipment & Assets</h4>';
+                assetHTML += '<ul class="ml-4 text-xs space-y-1">';
+                equipment.majorAssets.forEach(asset => {
+                    assetHTML += `<li><span class="font-semibold">${asset.assetType}:</span> ${asset.description || asset.model || ''} - ${asset.currentStatus || 'OK'}</li>`;
+                });
+                assetHTML += '</ul>';
+                assetSection.innerHTML = assetHTML;
+                detailsContent.appendChild(assetSection);
+            }
+
+            // Safety & Compliance
+            if (safety.barrierStatus || (safety.compliance && safety.compliance.length > 0)) {
+                const safetySection = document.createElement('div');
+                safetySection.className = 'bg-purple-50 p-3 rounded';
+                let safetyHTML = '<h4 class="font-bold text-gray-700 mb-2">🛡️ Safety & Compliance</h4>';
+
+                if (safety.barrierStatus) {
+                    safetyHTML += '<div class="text-xs mb-2">';
+                    if (safety.barrierStatus.primaryBarriers) safetyHTML += `<div><span class="font-semibold">Primary Barriers:</span> ${safety.barrierStatus.primaryBarriers}</div>`;
+                    if (safety.barrierStatus.secondaryBarriers) safetyHTML += `<div><span class="font-semibold">Secondary Barriers:</span> ${safety.barrierStatus.secondaryBarriers}</div>`;
+                    if (safety.barrierStatus.overallStatus) safetyHTML += `<div><span class="font-semibold">Overall Status:</span> ${safety.barrierStatus.overallStatus}</div>`;
+                    safetyHTML += '</div>';
+                }
+
+                if (safety.compliance && safety.compliance.length > 0) {
+                    safetyHTML += '<div class="mt-2"><span class="font-semibold text-xs">Compliance Records:</span>';
+                    safetyHTML += '<ul class="ml-4 mt-1 text-xs">';
+                    safety.compliance.forEach(comp => {
+                        safetyHTML += `<li>${comp.requirement || comp.type}: ${comp.status || 'Compliant'}</li>`;
+                    });
+                    safetyHTML += '</ul></div>';
+                }
+
+                safetySection.innerHTML = safetyHTML;
+                detailsContent.appendChild(safetySection);
+            }
+
+            // Toggle functionality
+            detailsToggle.addEventListener('click', () => {
+                const isHidden = detailsContent.classList.contains('hidden');
+                detailsContent.classList.toggle('hidden');
+                detailsToggle.querySelector('.toggle-icon').textContent = isHidden ? '▲' : '▼';
+                detailsToggle.querySelector('span:first-child').textContent = isHidden ? 'Hide Comprehensive Details' : 'Show Comprehensive Details';
+            });
+
+            comprehensiveSection.appendChild(detailsToggle);
+            comprehensiveSection.appendChild(detailsContent);
+            cardBody.appendChild(comprehensiveSection);
 
             const cardFooter = document.createElement('div');
             cardFooter.className = 'card-footer';
@@ -865,7 +1065,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             card.appendChild(cardFooter);
 
             wellSelectionGrid.appendChild(card);
-        }) 
+        })
     };
 
     const renderObjectives = () => {
