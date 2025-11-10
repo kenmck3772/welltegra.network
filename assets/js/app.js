@@ -2942,10 +2942,111 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
+    // Function to render the engineering blueprint
+    const renderEngineeringBlueprint = () => {
+        const blueprintContainer = document.getElementById('design-blueprint');
+        if (!blueprintContainer) return;
+
+        // Get the objective - either from manual selection or AI recommendation
+        let objective = appState.selectedObjective;
+        if (!objective && appState.ai.selectedRecommendation) {
+            objective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId);
+        }
+
+        if (!objective) {
+            blueprintContainer.innerHTML = `<p class="text-sm text-slate-400 text-center">Select an objective or AI recommendation to load the engineering blueprint.</p>`;
+            return;
+        }
+
+        const procedure = proceduresData[objective.id];
+        if (!procedure) {
+            blueprintContainer.innerHTML = `<p class="text-sm text-red-400 text-center">Blueprint data not found for this objective.</p>`;
+            return;
+        }
+
+        // Build the blueprint HTML
+        blueprintContainer.innerHTML = `
+            <div class="space-y-6">
+                <div class="border-b border-slate-700 pb-4">
+                    <h4 class="text-2xl font-bold text-teal-600 dark:text-teal-400">${objective.icon} ${escapeHtml(objective.name)}</h4>
+                    <p class="mt-2 text-sm text-slate-300">${escapeHtml(objective.description)}</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <h5 class="text-lg font-semibold text-blue-400">Procedure Name</h5>
+                        <p class="text-sm">${escapeHtml(procedure.name)}</p>
+                    </div>
+                    <div class="space-y-2">
+                        <h5 class="text-lg font-semibold text-blue-400">Key Personnel</h5>
+                        <ul class="text-sm space-y-1">
+                            ${procedure.personnel.map(p => `<li>• ${escapeHtml(p)}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-lg font-semibold text-blue-400 mb-3">Execution Steps</h5>
+                    <ol class="space-y-2 text-sm">
+                        ${procedure.steps.map((step, i) => `<li class="flex"><span class="font-bold text-teal-500 mr-2">${i + 1}.</span><span>${escapeHtml(step)}</span></li>`).join('')}
+                    </ol>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-slate-800/50 rounded-lg p-4">
+                        <h5 class="text-sm font-semibold text-slate-400 mb-1">Estimated Cost</h5>
+                        <p class="text-2xl font-bold text-emerald-400">$${(procedure.cost / 1000000).toFixed(2)}M</p>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-lg p-4">
+                        <h5 class="text-sm font-semibold text-slate-400 mb-1">Duration</h5>
+                        <p class="text-2xl font-bold text-blue-400">${procedure.duration} days</p>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-lg p-4">
+                        <h5 class="text-sm font-semibold text-slate-400 mb-1">Overall Risk</h5>
+                        <p class="text-2xl font-bold text-amber-400">${Math.round((procedure.risks.operational + procedure.risks.equipment + procedure.risks.hse) / 3)}/5</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-lg font-semibold text-blue-400 mb-3">Risk Profile</h5>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-sm">
+                        <div class="flex flex-col items-center p-3 bg-slate-800/50 rounded">
+                            <span class="text-slate-400">Operational</span>
+                            <span class="text-xl font-bold ${procedure.risks.operational >= 4 ? 'text-red-400' : procedure.risks.operational >= 3 ? 'text-amber-400' : 'text-emerald-400'}">${procedure.risks.operational}/5</span>
+                        </div>
+                        <div class="flex flex-col items-center p-3 bg-slate-800/50 rounded">
+                            <span class="text-slate-400">Geological</span>
+                            <span class="text-xl font-bold ${procedure.risks.geological >= 4 ? 'text-red-400' : procedure.risks.geological >= 3 ? 'text-amber-400' : 'text-emerald-400'}">${procedure.risks.geological}/5</span>
+                        </div>
+                        <div class="flex flex-col items-center p-3 bg-slate-800/50 rounded">
+                            <span class="text-slate-400">Equipment</span>
+                            <span class="text-xl font-bold ${procedure.risks.equipment >= 4 ? 'text-red-400' : procedure.risks.equipment >= 3 ? 'text-amber-400' : 'text-emerald-400'}">${procedure.risks.equipment}/5</span>
+                        </div>
+                        <div class="flex flex-col items-center p-3 bg-slate-800/50 rounded">
+                            <span class="text-slate-400">HSE</span>
+                            <span class="text-xl font-bold ${procedure.risks.hse >= 4 ? 'text-red-400' : procedure.risks.hse >= 3 ? 'text-amber-400' : 'text-emerald-400'}">${procedure.risks.hse}/5</span>
+                        </div>
+                        <div class="flex flex-col items-center p-3 bg-slate-800/50 rounded">
+                            <span class="text-slate-400">Financial</span>
+                            <span class="text-xl font-bold ${procedure.risks.financial >= 4 ? 'text-red-400' : procedure.risks.financial >= 3 ? 'text-amber-400' : 'text-emerald-400'}">${procedure.risks.financial}/5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Enable the "Generate Integrated Program" button
+        const generateProgramBtn = document.getElementById('generate-program-btn');
+        if (generateProgramBtn) {
+            generateProgramBtn.disabled = false;
+        }
+    };
+
     // Step 2 Continue button event listener
     if (step2ContinueBtn) {
         step2ContinueBtn.addEventListener('click', () => {
             if (appState.selectedObjective || appState.ai.selectedRecommendation) {
+                renderEngineeringBlueprint();
                 updatePlannerStepUI(3);
             }
         });
