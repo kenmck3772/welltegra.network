@@ -862,30 +862,30 @@ document.addEventListener('DOMContentLoaded', async function() {
             // Foundational Identity
             if (Object.keys(foundation).length > 0) {
                 const identitySection = document.createElement('div');
-                identitySection.className = 'bg-gray-50 p-3 rounded';
+                identitySection.className = 'bg-gray-100 p-3 rounded';
                 identitySection.innerHTML = `
-                    <h4 class="font-bold text-gray-700 mb-2">📋 Foundational Identity</h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                        ${foundation.apiNumber ? `<div><span class="font-semibold">API Number:</span> ${foundation.apiNumber}</div>` : ''}
-                        ${foundation.blockNumber ? `<div><span class="font-semibold">Block:</span> ${foundation.blockNumber}</div>` : ''}
-                        ${foundation.licenseNumber ? `<div><span class="font-semibold">License:</span> ${foundation.licenseNumber}</div>` : ''}
-                        ${foundation.operator ? `<div><span class="font-semibold">Operator:</span> ${foundation.operator}</div>` : ''}
-                        ${foundation.operatorShare_percent ? `<div><span class="font-semibold">Operator Share:</span> ${foundation.operatorShare_percent}%</div>` : ''}
-                        ${foundation.slotIdentifier ? `<div><span class="font-semibold">Slot:</span> ${foundation.slotIdentifier}</div>` : ''}
-                        ${foundation.waterDepth_ft ? `<div><span class="font-semibold">Water Depth:</span> ${foundation.waterDepth_ft.toLocaleString()}ft</div>` : ''}
-                        ${foundation.totalDepthMD_ft ? `<div><span class="font-semibold">Total Depth (MD):</span> ${foundation.totalDepthMD_ft.toLocaleString()}ft</div>` : ''}
-                        ${foundation.totalDepthTVD_ft ? `<div><span class="font-semibold">Total Depth (TVD):</span> ${foundation.totalDepthTVD_ft.toLocaleString()}ft</div>` : ''}
-                        ${foundation.wellProfile ? `<div><span class="font-semibold">Well Profile:</span> ${foundation.wellProfile}</div>` : ''}
+                    <h4 class="font-bold text-gray-900 mb-2">📋 Foundational Identity</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-800">
+                        ${foundation.apiNumber ? `<div><span class="font-semibold text-gray-900">API Number:</span> ${foundation.apiNumber}</div>` : ''}
+                        ${foundation.blockNumber ? `<div><span class="font-semibold text-gray-900">Block:</span> ${foundation.blockNumber}</div>` : ''}
+                        ${foundation.licenseNumber ? `<div><span class="font-semibold text-gray-900">License:</span> ${foundation.licenseNumber}</div>` : ''}
+                        ${foundation.operator ? `<div><span class="font-semibold text-gray-900">Operator:</span> ${foundation.operator}</div>` : ''}
+                        ${foundation.operatorShare_percent ? `<div><span class="font-semibold text-gray-900">Operator Share:</span> ${foundation.operatorShare_percent}%</div>` : ''}
+                        ${foundation.slotIdentifier ? `<div><span class="font-semibold text-gray-900">Slot:</span> ${foundation.slotIdentifier}</div>` : ''}
+                        ${foundation.waterDepth_ft ? `<div><span class="font-semibold text-gray-900">Water Depth:</span> ${foundation.waterDepth_ft.toLocaleString()}ft</div>` : ''}
+                        ${foundation.totalDepthMD_ft ? `<div><span class="font-semibold text-gray-900">Total Depth (MD):</span> ${foundation.totalDepthMD_ft.toLocaleString()}ft</div>` : ''}
+                        ${foundation.totalDepthTVD_ft ? `<div><span class="font-semibold text-gray-900">Total Depth (TVD):</span> ${foundation.totalDepthTVD_ft.toLocaleString()}ft</div>` : ''}
+                        ${foundation.wellProfile ? `<div><span class="font-semibold text-gray-900">Well Profile:</span> ${foundation.wellProfile}</div>` : ''}
                     </div>
                     ${foundation.surfaceCoordinates ? `
-                        <div class="mt-2 text-xs">
-                            <span class="font-semibold">Coordinates:</span>
+                        <div class="mt-2 text-xs text-gray-800">
+                            <span class="font-semibold text-gray-900">Coordinates:</span>
                             ${foundation.surfaceCoordinates.latitude}°N, ${foundation.surfaceCoordinates.longitude}°E
                         </div>
                     ` : ''}
                     ${foundation.jointVenturePartners && foundation.jointVenturePartners.length > 0 ? `
-                        <div class="mt-2 text-xs">
-                            <span class="font-semibold">JV Partners:</span>
+                        <div class="mt-2 text-xs text-gray-800">
+                            <span class="font-semibold text-gray-900">JV Partners:</span>
                             <ul class="ml-4 mt-1">
                                 ${foundation.jointVenturePartners.map(p => `<li>${p.company} (${p.share}%)</li>`).join('')}
                             </ul>
@@ -899,36 +899,36 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (Object.keys(design).length > 0) {
                 const designSection = document.createElement('div');
                 designSection.className = 'bg-blue-50 p-3 rounded';
-                let designHTML = '<h4 class="font-bold text-gray-700 mb-2">🏗️ Design & Construction</h4>';
+                let designHTML = '<h4 class="font-bold text-gray-900 mb-2">🏗️ Design & Construction</h4>';
 
                 if (design.spudDate || design.completionDate || design.firstProductionDate) {
-                    designHTML += '<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs mb-2">';
-                    if (design.spudDate) designHTML += `<div><span class="font-semibold">Spud Date:</span> ${design.spudDate}</div>`;
-                    if (design.completionDate) designHTML += `<div><span class="font-semibold">Completion:</span> ${design.completionDate}</div>`;
-                    if (design.firstProductionDate) designHTML += `<div><span class="font-semibold">First Production:</span> ${design.firstProductionDate}</div>`;
+                    designHTML += '<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-gray-800 mb-2">';
+                    if (design.spudDate) designHTML += `<div><span class="font-semibold text-gray-900">Spud Date:</span> ${design.spudDate}</div>`;
+                    if (design.completionDate) designHTML += `<div><span class="font-semibold text-gray-900">Completion:</span> ${design.completionDate}</div>`;
+                    if (design.firstProductionDate) designHTML += `<div><span class="font-semibold text-gray-900">First Production:</span> ${design.firstProductionDate}</div>`;
                     designHTML += '</div>';
                 }
 
                 if (design.drillingContractor || design.drillingRig) {
-                    designHTML += '<div class="text-xs mb-2">';
-                    if (design.drillingContractor) designHTML += `<span class="font-semibold">Contractor:</span> ${design.drillingContractor}`;
-                    if (design.drillingRig) designHTML += ` | <span class="font-semibold">Rig:</span> ${design.drillingRig}`;
+                    designHTML += '<div class="text-xs text-gray-800 mb-2">';
+                    if (design.drillingContractor) designHTML += `<span class="font-semibold text-gray-900">Contractor:</span> ${design.drillingContractor}`;
+                    if (design.drillingRig) designHTML += ` | <span class="font-semibold text-gray-900">Rig:</span> ${design.drillingRig}`;
                     designHTML += '</div>';
                 }
 
                 if (design.casingStrings && design.casingStrings.length > 0) {
-                    designHTML += '<div class="mt-2"><span class="font-semibold text-xs">Casing Strings:</span>';
-                    designHTML += '<ul class="ml-4 mt-1 text-xs space-y-1">';
+                    designHTML += '<div class="mt-2"><span class="font-semibold text-xs text-gray-900">Casing Strings:</span>';
+                    designHTML += '<ul class="ml-4 mt-1 text-xs text-gray-800 space-y-1">';
                     design.casingStrings.forEach(csg => {
-                        const criticalClass = csg.integrityStatus && csg.integrityStatus.includes('CRITICAL') ? 'text-red-600 font-semibold' : '';
+                        const criticalClass = csg.integrityStatus && csg.integrityStatus.includes('CRITICAL') ? 'text-red-700 font-semibold' : '';
                         designHTML += `<li class="${criticalClass}">${csg.type} - ${csg.outerDiameter_in}" ${csg.grade || ''} (${csg.topDepthMD_ft}-${csg.bottomDepthMD_ft}ft) - ${csg.integrityStatus || 'Good'}</li>`;
                     });
                     designHTML += '</ul></div>';
                 }
 
                 if (design.tubingStrings && design.tubingStrings.length > 0) {
-                    designHTML += '<div class="mt-2"><span class="font-semibold text-xs">Tubing:</span>';
-                    designHTML += '<ul class="ml-4 mt-1 text-xs">';
+                    designHTML += '<div class="mt-2"><span class="font-semibold text-xs text-gray-900">Tubing:</span>';
+                    designHTML += '<ul class="ml-4 mt-1 text-xs text-gray-800">';
                     design.tubingStrings.forEach(tbg => {
                         designHTML += `<li>${tbg.type || 'Tubing'} - ${tbg.outerDiameter_in}" ${tbg.grade || ''} (${tbg.topDepthMD_ft}-${tbg.bottomDepthMD_ft}ft)</li>`;
                     });
@@ -936,10 +936,10 @@ document.addEventListener('DOMContentLoaded', async function() {
                 }
 
                 if (design.downholeEquipment && design.downholeEquipment.length > 0) {
-                    designHTML += '<div class="mt-2"><span class="font-semibold text-xs">Downhole Equipment:</span>';
-                    designHTML += '<ul class="ml-4 mt-1 text-xs space-y-1">';
+                    designHTML += '<div class="mt-2"><span class="font-semibold text-xs text-gray-900">Downhole Equipment:</span>';
+                    designHTML += '<ul class="ml-4 mt-1 text-xs text-gray-800 space-y-1">';
                     design.downholeEquipment.forEach(eq => {
-                        const criticalClass = (eq.integrityStatus && (eq.integrityStatus.includes('CRITICAL') || eq.integrityStatus.includes('FAILED'))) ? 'text-red-600 font-semibold' : '';
+                        const criticalClass = (eq.integrityStatus && (eq.integrityStatus.includes('CRITICAL') || eq.integrityStatus.includes('FAILED'))) ? 'text-red-700 font-semibold' : '';
                         designHTML += `<li class="${criticalClass}">${eq.itemType} @ ${eq.settingDepthMD_ft || eq.depthMD_ft || 'N/A'}ft - ${eq.integrityStatus || eq.functionalStatus || 'OK'}</li>`;
                     });
                     designHTML += '</ul></div>';
@@ -953,14 +953,14 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (operational.events && operational.events.length > 0) {
                 const opSection = document.createElement('div');
                 opSection.className = 'bg-green-50 p-3 rounded';
-                let opHTML = '<h4 class="font-bold text-gray-700 mb-2">📊 Operational History</h4>';
-                opHTML += `<div class="text-xs mb-2"><span class="font-semibold">Total Events:</span> ${operational.events.length}</div>`;
-                opHTML += '<div class="max-h-40 overflow-y-auto"><ul class="ml-4 text-xs space-y-1">';
+                let opHTML = '<h4 class="font-bold text-gray-900 mb-2">📊 Operational History</h4>';
+                opHTML += `<div class="text-xs text-gray-800 mb-2"><span class="font-semibold text-gray-900">Total Events:</span> ${operational.events.length}</div>`;
+                opHTML += '<div class="max-h-40 overflow-y-auto"><ul class="ml-4 text-xs text-gray-800 space-y-1">';
                 operational.events.slice(0, 5).forEach(event => {
-                    opHTML += `<li><span class="font-semibold">${event.eventDate || event.startDate}:</span> ${event.eventType} - ${event.outcome || event.description || ''}</li>`;
+                    opHTML += `<li><span class="font-semibold text-gray-900">${event.eventDate || event.startDate}:</span> ${event.eventType} - ${event.outcome || event.description || ''}</li>`;
                 });
                 if (operational.events.length > 5) {
-                    opHTML += `<li class="italic text-gray-500">... and ${operational.events.length - 5} more events</li>`;
+                    opHTML += `<li class="italic text-gray-600">... and ${operational.events.length - 5} more events</li>`;
                 }
                 opHTML += '</ul></div>';
                 opSection.innerHTML = opHTML;
@@ -991,10 +991,10 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (equipment.majorAssets && equipment.majorAssets.length > 0) {
                 const assetSection = document.createElement('div');
                 assetSection.className = 'bg-yellow-50 p-3 rounded';
-                let assetHTML = '<h4 class="font-bold text-gray-700 mb-2">🔧 Equipment & Assets</h4>';
-                assetHTML += '<ul class="ml-4 text-xs space-y-1">';
+                let assetHTML = '<h4 class="font-bold text-gray-900 mb-2">🔧 Equipment & Assets</h4>';
+                assetHTML += '<ul class="ml-4 text-xs text-gray-800 space-y-1">';
                 equipment.majorAssets.forEach(asset => {
-                    assetHTML += `<li><span class="font-semibold">${asset.assetType}:</span> ${asset.description || asset.model || ''} - ${asset.currentStatus || 'OK'}</li>`;
+                    assetHTML += `<li><span class="font-semibold text-gray-900">${asset.assetType}:</span> ${asset.description || asset.model || ''} - ${asset.currentStatus || 'OK'}</li>`;
                 });
                 assetHTML += '</ul>';
                 assetSection.innerHTML = assetHTML;
@@ -1005,19 +1005,19 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (safety.barrierStatus || (safety.compliance && safety.compliance.length > 0)) {
                 const safetySection = document.createElement('div');
                 safetySection.className = 'bg-purple-50 p-3 rounded';
-                let safetyHTML = '<h4 class="font-bold text-gray-700 mb-2">🛡️ Safety & Compliance</h4>';
+                let safetyHTML = '<h4 class="font-bold text-gray-900 mb-2">🛡️ Safety & Compliance</h4>';
 
                 if (safety.barrierStatus) {
-                    safetyHTML += '<div class="text-xs mb-2">';
-                    if (safety.barrierStatus.primaryBarriers) safetyHTML += `<div><span class="font-semibold">Primary Barriers:</span> ${safety.barrierStatus.primaryBarriers}</div>`;
-                    if (safety.barrierStatus.secondaryBarriers) safetyHTML += `<div><span class="font-semibold">Secondary Barriers:</span> ${safety.barrierStatus.secondaryBarriers}</div>`;
-                    if (safety.barrierStatus.overallStatus) safetyHTML += `<div><span class="font-semibold">Overall Status:</span> ${safety.barrierStatus.overallStatus}</div>`;
+                    safetyHTML += '<div class="text-xs text-gray-800 mb-2">';
+                    if (safety.barrierStatus.primaryBarriers) safetyHTML += `<div><span class="font-semibold text-gray-900">Primary Barriers:</span> ${safety.barrierStatus.primaryBarriers}</div>`;
+                    if (safety.barrierStatus.secondaryBarriers) safetyHTML += `<div><span class="font-semibold text-gray-900">Secondary Barriers:</span> ${safety.barrierStatus.secondaryBarriers}</div>`;
+                    if (safety.barrierStatus.overallStatus) safetyHTML += `<div><span class="font-semibold text-gray-900">Overall Status:</span> ${safety.barrierStatus.overallStatus}</div>`;
                     safetyHTML += '</div>';
                 }
 
                 if (safety.compliance && safety.compliance.length > 0) {
-                    safetyHTML += '<div class="mt-2"><span class="font-semibold text-xs">Compliance Records:</span>';
-                    safetyHTML += '<ul class="ml-4 mt-1 text-xs">';
+                    safetyHTML += '<div class="mt-2"><span class="font-semibold text-xs text-gray-900">Compliance Records:</span>';
+                    safetyHTML += '<ul class="ml-4 mt-1 text-xs text-gray-800">';
                     safety.compliance.forEach(comp => {
                         safetyHTML += `<li>${comp.requirement || comp.type}: ${comp.status || 'Compliant'}</li>`;
                     });
@@ -1027,6 +1027,137 @@ document.addEventListener('DOMContentLoaded', async function() {
                 safetySection.innerHTML = safetyHTML;
                 detailsContent.appendChild(safetySection);
             }
+
+            // Well Schematic
+            const schematicSection = document.createElement('div');
+            schematicSection.className = 'bg-indigo-50 p-3 rounded';
+            schematicSection.innerHTML = `
+                <h4 class="font-bold text-gray-900 mb-2">📐 Well Schematic</h4>
+                <div class="bg-white p-4 rounded border border-indigo-200">
+                    <svg viewBox="0 0 400 600" class="w-full max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Water line -->
+                        <line x1="0" y1="50" x2="400" y2="50" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,5"/>
+                        <text x="10" y="45" fill="#3b82f6" font-size="10" class="font-semibold">Sea Level</text>
+                        <text x="350" y="45" fill="#3b82f6" font-size="10">${foundation.waterDepth_ft || 0}ft</text>
+
+                        <!-- Conductor (30") -->
+                        ${design.casingStrings && design.casingStrings.find(c => c.type === 'Conductor') ? `
+                        <rect x="180" y="50" width="40" height="60" fill="#94a3b8" stroke="#475569" stroke-width="2"/>
+                        <text x="230" y="80" fill="#1e293b" font-size="9">30" Conductor</text>
+                        ` : ''}
+
+                        <!-- Surface Casing (20") -->
+                        ${design.casingStrings && design.casingStrings.find(c => c.type === 'Surface Casing') ? `
+                        <rect x="185" y="110" width="30" height="100" fill="#cbd5e1" stroke="#475569" stroke-width="2"/>
+                        <text x="225" y="160" fill="#1e293b" font-size="9">20" Surface</text>
+                        ` : ''}
+
+                        <!-- Intermediate Casing (13 3/8") -->
+                        ${design.casingStrings && design.casingStrings.find(c => c.type === 'Intermediate Casing') ? `
+                        <rect x="190" y="210" width="20" height="150" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>
+                        <text x="220" y="285" fill="#1e293b" font-size="9">13⅜" Int</text>
+                        ` : ''}
+
+                        <!-- Production Casing (9 5/8") with deformation -->
+                        ${design.casingStrings && design.casingStrings.find(c => c.type === 'Production Casing') ? `
+                        <rect x="192" y="360" width="16" height="220" fill="${design.casingStrings.find(c => c.type === 'Production Casing').integrityStatus?.includes('CRITICAL') ? '#fee2e2' : '#f1f5f9'}" stroke="${design.casingStrings.find(c => c.type === 'Production Casing').integrityStatus?.includes('CRITICAL') ? '#dc2626' : '#475569'}" stroke-width="2"/>
+                        <text x="218" y="470" fill="#1e293b" font-size="9">9⅝" Prod</text>
+                        ${design.casingStrings.find(c => c.type === 'Production Casing').integrityStatus?.includes('CRITICAL') ? `
+                        <circle cx="200" cy="430" r="8" fill="none" stroke="#dc2626" stroke-width="2"/>
+                        <text x="215" y="435" fill="#dc2626" font-size="8" class="font-bold">Deformation</text>
+                        ` : ''}
+                        ` : ''}
+
+                        <!-- Tubing (4.5") -->
+                        ${design.tubingStrings && design.tubingStrings.length > 0 ? `
+                        <rect x="195" y="110" width="10" height="470" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+                        <text x="210" y="350" fill="#92400e" font-size="9">4½" Tbg</text>
+                        ` : ''}
+
+                        <!-- Depth markers -->
+                        <text x="10" y="110" fill="#64748b" font-size="9">${design.casingStrings?.find(c => c.type === 'Conductor')?.bottomDepthMD_ft || 325}ft</text>
+                        <text x="10" y="210" fill="#64748b" font-size="9">${design.casingStrings?.find(c => c.type === 'Surface Casing')?.bottomDepthMD_ft || 3850}ft</text>
+                        <text x="10" y="360" fill="#64748b" font-size="9">${design.casingStrings?.find(c => c.type === 'Intermediate Casing')?.bottomDepthMD_ft || 14200}ft</text>
+                        <text x="10" y="580" fill="#64748b" font-size="9">${foundation.totalDepthMD_ft || 18500}ft TD</text>
+
+                        <!-- Perforations -->
+                        ${design.perforations && design.perforations.length > 0 ? `
+                        <circle cx="200" cy="560" r="3" fill="#10b981"/>
+                        <circle cx="195" cy="565" r="3" fill="#10b981"/>
+                        <circle cx="205" cy="565" r="3" fill="#10b981"/>
+                        <text x="210" y="565" fill="#065f46" font-size="9">Perfs</text>
+                        ` : ''}
+                    </svg>
+                    <div class="mt-3 text-xs text-gray-800 text-center">
+                        <span class="font-semibold text-gray-900">Well Profile:</span> ${foundation.wellProfile || 'Vertical'}
+                    </div>
+                </div>
+            `;
+            detailsContent.appendChild(schematicSection);
+
+            // 3D Deviation Survey
+            const deviationSection = document.createElement('div');
+            deviationSection.className = 'bg-cyan-50 p-3 rounded';
+            const maxDeviation = foundation.wellProfile?.match(/(\d+)°/) ? parseInt(foundation.wellProfile.match(/(\d+)°/)[1]) : 0;
+            const isDeviated = maxDeviation > 5;
+
+            deviationSection.innerHTML = `
+                <h4 class="font-bold text-gray-900 mb-2">📍 3D Deviation Survey</h4>
+                <div class="bg-white p-4 rounded border border-cyan-200">
+                    <svg viewBox="0 0 400 400" class="w-full max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 3D Grid -->
+                        <defs>
+                            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+                            </pattern>
+                        </defs>
+                        <rect width="400" height="400" fill="url(#grid)" />
+
+                        <!-- Coordinate labels -->
+                        <text x="10" y="20" fill="#6b7280" font-size="10" class="font-semibold">North →</text>
+                        <text x="10" y="390" fill="#6b7280" font-size="10" class="font-semibold">East →</text>
+
+                        <!-- Surface location -->
+                        <circle cx="200" cy="200" r="6" fill="#3b82f6" stroke="#1e3a8a" stroke-width="2"/>
+                        <text x="210" y="205" fill="#1e3a8a" font-size="11" class="font-bold">Surface</text>
+
+                        ${isDeviated ? `
+                        <!-- Deviated well path -->
+                        <path d="M 200 200 Q 200 250, ${200 + (maxDeviation * 2)} 300 T ${200 + (maxDeviation * 3)} 400"
+                              stroke="#f59e0b" stroke-width="3" fill="none" stroke-dasharray="5,5"/>
+
+                        <!-- Well path trajectory points -->
+                        <circle cx="200" cy="250" r="4" fill="#f59e0b" />
+                        <text x="210" y="255" fill="#92400e" font-size="9">${Math.round(foundation.totalDepthMD_ft / 4)}ft</text>
+
+                        <circle cx="${200 + (maxDeviation * 2)}" cy="300" r="4" fill="#f59e0b" />
+                        <text x="${210 + (maxDeviation * 2)}" y="305" fill="#92400e" font-size="9">${Math.round(foundation.totalDepthMD_ft / 2)}ft</text>
+
+                        <circle cx="${200 + (maxDeviation * 3)}" cy="350" r="4" fill="#f59e0b" />
+                        <text x="${210 + (maxDeviation * 3)}" y="355" fill="#92400e" font-size="9">${Math.round(foundation.totalDepthMD_ft * 0.75)}ft</text>
+
+                        <!-- Target location -->
+                        <circle cx="${200 + (maxDeviation * 3)}" cy="390" r="6" fill="#10b981" stroke="#065f46" stroke-width="2"/>
+                        <text x="${210 + (maxDeviation * 3)}" y="395" fill="#065f46" font-size="11" class="font-bold">TD</text>
+
+                        <!-- Deviation angle -->
+                        <text x="250" y="330" fill="#dc2626" font-size="11" class="font-bold">${maxDeviation}° max</text>
+                        ` : `
+                        <!-- Vertical well -->
+                        <line x1="200" y1="200" x2="200" y2="390" stroke="#10b981" stroke-width="3" stroke-dasharray="5,5"/>
+                        <circle cx="200" cy="390" r="6" fill="#10b981" stroke="#065f46" stroke-width="2"/>
+                        <text x="210" y="395" fill="#065f46" font-size="11" class="font-bold">TD (Vertical)</text>
+                        `}
+                    </svg>
+                    <div class="mt-3 grid grid-cols-2 gap-2 text-xs text-gray-800">
+                        <div><span class="font-semibold text-gray-900">Total Depth MD:</span> ${foundation.totalDepthMD_ft?.toLocaleString() || 'N/A'}ft</div>
+                        <div><span class="font-semibold text-gray-900">Total Depth TVD:</span> ${foundation.totalDepthTVD_ft?.toLocaleString() || 'N/A'}ft</div>
+                        <div><span class="font-semibold text-gray-900">Max Deviation:</span> ${maxDeviation}°</div>
+                        <div><span class="font-semibold text-gray-900">Profile Type:</span> ${isDeviated ? 'Deviated' : 'Vertical'}</div>
+                    </div>
+                </div>
+            `;
+            detailsContent.appendChild(deviationSection);
 
             // Toggle functionality
             detailsToggle.addEventListener('click', () => {
