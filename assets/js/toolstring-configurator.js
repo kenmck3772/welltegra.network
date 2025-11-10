@@ -30,6 +30,29 @@
         username: 'finlay',
     };
 
+    // ==================== SECURITY ====================
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Safely set status text with icon - avoids innerHTML with dynamic content
+    function setStatusText(element, iconClass, textContent) {
+        // Clear existing content
+        element.textContent = '';
+
+        // Create icon element
+        const icon = document.createElement('i');
+        icon.className = iconClass;
+        element.appendChild(icon);
+
+        // Add text as text node (safe from XSS)
+        element.appendChild(document.createTextNode(' ' + textContent));
+    }
+
     // ==================== INDEXEDDB SETUP ====================
 
     function initIndexedDB() {
@@ -114,18 +137,61 @@
 
     // ==================== CONNECTION DETECTION ====================
 
-    function updateConnectionStatus() {
+    async function updateConnectionStatus() {
         isOnline = navigator.onLine;
         const indicator = document.getElementById('connection-indicator');
         const text = document.getElementById('connection-text');
 
         if (isOnline) {
             indicator.className = 'offline-indicator online';
-            text.textContent = 'Connected to Edge Core';
+
+            // Check sync status
+            try {
+                const syncQueue = await getAllFromIndexedDB('syncQueue');
+                const pendingCount = parseInt(syncQueue.filter(item => !item.synced).length, 10);
+
+                if (pendingCount > 0) {
+                    const statusText = `Online - Syncing ${pendingCount} item${pendingCount > 1 ? 's' : ''}...`;
+                    setStatusText(text, 'fas fa-wifi', statusText);
+                } else {
+                    setStatusText(text, 'fas fa-wifi', 'Connected to Edge Core');
+                }
+
+                // Try to get sync status from API
+                if (authToken) {
+                    try {
+                        const response = await apiCall('/sync/status');
+                        if (response.success && response.pendingCount > 0) {
+                            const cloudPending = parseInt(response.pendingCount, 10);
+                            const statusText = `Online - ${cloudPending} item${cloudPending > 1 ? 's' : ''} pending cloud sync`;
+                            setStatusText(text, 'fas fa-wifi', statusText);
+                        }
+                    } catch (err) {
+                        // Ignore API errors, use local count
+                    }
+                }
+            } catch (err) {
+                setStatusText(text, 'fas fa-wifi', 'Connected to Edge Core');
+            }
+
             syncPendingData();
         } else {
             indicator.className = 'offline-indicator offline';
-            text.textContent = 'Offline Mode (Data will sync when connected)';
+
+            // Show pending count in offline mode
+            try {
+                const syncQueue = await getAllFromIndexedDB('syncQueue');
+                const pendingCount = parseInt(syncQueue.filter(item => !item.synced).length, 10);
+
+                if (pendingCount > 0) {
+                    const statusText = `Offline - ${pendingCount} item${pendingCount > 1 ? 's' : ''} to sync`;
+                    setStatusText(text, 'fas fa-wifi-slash', statusText);
+                } else {
+                    setStatusText(text, 'fas fa-wifi-slash', 'Offline Mode');
+                }
+            } catch (err) {
+                setStatusText(text, 'fas fa-wifi-slash', 'Offline Mode');
+            }
         }
     }
 
@@ -338,6 +404,8 @@
 
     // ==================== SAVE CONFIGURATION ====================
 
+    let editingConfigId = null;
+
     async function saveConfiguration() {
         const name = document.getElementById('config-name').value.trim();
         const wellId = document.getElementById('well-id').value;
@@ -361,6 +429,15 @@
             return;
         }
 
+        // Check if editing or creating new
+        if (editingConfigId) {
+            await updateConfiguration(editingConfigId, name, wellId, operationType);
+        } else {
+            await createConfiguration(name, wellId, operationType);
+        }
+    }
+
+    async function createConfiguration(name, wellId, operationType) {
         const config = {
             id: crypto.randomUUID(),
             name,
@@ -388,30 +465,43 @@
 
                 if (response.success) {
                     config.id = response.toolstring.id;
-                    config.synced = false; // Will be synced by sync service
+                    config.synced = false; // Will be synced to cloud by sync service
+
+                    // Save to IndexedDB for offline access
+                    await saveToIndexedDB('toolstrings', config);
+
                     if (window.Toast) {
-                        window.Toast.success('Configuration saved! Queued for sync to cloud.');
+                        window.Toast.success('Configuration saved to Edge Core! Queued for cloud sync.');
                     } else {
-                        alert('Configuration saved! Queued for sync to cloud.');
+                        alert('Configuration saved to Edge Core! Queued for cloud sync.');
                     }
+
+                    clearForm();
+                    console.log('[Toolstring] Configuration created:', config);
                 }
             } else {
                 // Save to IndexedDB only
                 config.synced = false;
+                await saveToIndexedDB('toolstrings', config);
+
+                // Add to sync queue for later
+                await saveToIndexedDB('syncQueue', {
+                    action: 'CREATE',
+                    entity: 'toolstring',
+                    data: config,
+                    timestamp: new Date().toISOString(),
+                    synced: false,
+                });
+
                 if (window.Toast) {
                     window.Toast.info('Saved offline! Will sync when connection is restored.');
                 } else {
                     alert('Saved offline! Will sync when connection is restored.');
                 }
+
+                clearForm();
+                console.log('[Toolstring] Configuration saved offline:', config);
             }
-
-            // Always save to IndexedDB for offline access
-            await saveToIndexedDB('toolstrings', config);
-
-            // Clear form
-            clearForm();
-
-            console.log('[Toolstring] Configuration saved:', config);
         } catch (error) {
             console.error('[Toolstring] Save failed:', error);
 
@@ -430,7 +520,191 @@
             } else {
                 alert('Saved offline! Will sync when connection is restored.');
             }
+
+            clearForm();
         }
+    }
+
+    async function updateConfiguration(id, name, wellId, operationType) {
+        const config = {
+            id,
+            name,
+            wellId,
+            operationType,
+            tools: selectedTools,
+            updatedAt: new Date().toISOString(),
+            synced: false,
+        };
+
+        try {
+            if (isOnline && authToken) {
+                // Update via Edge Core API
+                const response = await apiCall(`/toolstrings/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        name: config.name,
+                        wellId: config.wellId,
+                        operationType: config.operationType,
+                        tools: config.tools,
+                    }),
+                });
+
+                if (response.success) {
+                    // Update in IndexedDB
+                    const existingConfig = await getFromIndexedDB('toolstrings', id);
+                    const updatedConfig = { ...existingConfig, ...config };
+                    await saveToIndexedDB('toolstrings', updatedConfig);
+
+                    if (window.Toast) {
+                        window.Toast.success('Configuration updated! Queued for cloud sync.');
+                    } else {
+                        alert('Configuration updated! Queued for cloud sync.');
+                    }
+
+                    clearForm();
+                    editingConfigId = null;
+
+                    // Reload saved configs if visible
+                    const savedSection = document.getElementById('saved-configs-section');
+                    if (!savedSection.classList.contains('hidden')) {
+                        loadSavedConfigs();
+                    }
+                }
+            } else {
+                // Update in IndexedDB only
+                const existingConfig = await getFromIndexedDB('toolstrings', id);
+                const updatedConfig = { ...existingConfig, ...config };
+                await saveToIndexedDB('toolstrings', updatedConfig);
+
+                // Add to sync queue
+                await saveToIndexedDB('syncQueue', {
+                    action: 'UPDATE',
+                    entity: 'toolstring',
+                    entityId: id,
+                    data: config,
+                    timestamp: new Date().toISOString(),
+                    synced: false,
+                });
+
+                if (window.Toast) {
+                    window.Toast.info('Updated offline! Will sync when connection is restored.');
+                } else {
+                    alert('Updated offline! Will sync when connection is restored.');
+                }
+
+                clearForm();
+                editingConfigId = null;
+            }
+        } catch (error) {
+            console.error('[Toolstring] Update failed:', error);
+
+            if (window.Toast) {
+                window.Toast.error('Failed to update configuration');
+            } else {
+                alert('Failed to update configuration');
+            }
+        }
+    }
+
+    async function deleteConfiguration(id) {
+        if (!confirm('Are you sure you want to delete this configuration?')) {
+            return;
+        }
+
+        try {
+            if (isOnline && authToken) {
+                // Delete via Edge Core API
+                const response = await apiCall(`/toolstrings/${id}`, {
+                    method: 'DELETE',
+                });
+
+                if (response.success) {
+                    // Remove from IndexedDB
+                    await deleteFromIndexedDB('toolstrings', id);
+
+                    if (window.Toast) {
+                        window.Toast.success('Configuration deleted!');
+                    } else {
+                        alert('Configuration deleted!');
+                    }
+
+                    loadSavedConfigs();
+                }
+            } else {
+                // Delete from IndexedDB only
+                await deleteFromIndexedDB('toolstrings', id);
+
+                // Add to sync queue
+                await saveToIndexedDB('syncQueue', {
+                    action: 'DELETE',
+                    entity: 'toolstring',
+                    entityId: id,
+                    timestamp: new Date().toISOString(),
+                    synced: false,
+                });
+
+                if (window.Toast) {
+                    window.Toast.info('Deleted offline! Will sync when connection is restored.');
+                } else {
+                    alert('Deleted offline! Will sync when connection is restored.');
+                }
+
+                loadSavedConfigs();
+            }
+        } catch (error) {
+            console.error('[Toolstring] Delete failed:', error);
+
+            if (window.Toast) {
+                window.Toast.error('Failed to delete configuration');
+            } else {
+                alert('Failed to delete configuration');
+            }
+        }
+    }
+
+    function editConfiguration(config) {
+        // Populate form with config data
+        document.getElementById('config-name').value = config.name;
+        document.getElementById('well-id').value = config.wellId || config.well_id || '';
+        document.getElementById('operation-type').value = config.operationType || config.operation_type || '';
+
+        // Parse tools if it's a JSON string
+        let tools = config.tools;
+        if (typeof tools === 'string') {
+            tools = JSON.parse(tools);
+        }
+
+        selectedTools = Array.isArray(tools) ? tools : [];
+        editingConfigId = config.id;
+
+        // Update UI
+        renderSelectedTools();
+        renderToolsGrid();
+
+        // Update button text
+        const saveBtn = document.getElementById('save-config-btn');
+        saveBtn.innerHTML = '<i class="fas fa-save"></i> Update Configuration';
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Close saved configs section
+        document.getElementById('saved-configs-section').classList.add('hidden');
+
+        if (window.Toast) {
+            window.Toast.info(`Editing: ${config.name}`);
+        }
+    }
+
+    function getFromIndexedDB(storeName, id) {
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction([storeName], 'readonly');
+            const store = transaction.objectStore(storeName);
+            const request = store.get(id);
+
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
     }
 
     function clearForm() {
@@ -438,6 +712,12 @@
         document.getElementById('well-id').value = '';
         document.getElementById('operation-type').value = '';
         selectedTools = [];
+        editingConfigId = null;
+
+        // Reset button text
+        const saveBtn = document.getElementById('save-config-btn');
+        saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Configuration';
+
         renderSelectedTools();
         renderToolsGrid();
     }
@@ -469,12 +749,34 @@
                             method: 'POST',
                             body: JSON.stringify(item.data),
                         });
+                    } else if (item.action === 'UPDATE') {
+                        response = await apiCall(`/toolstrings/${item.entityId}`, {
+                            method: 'PUT',
+                            body: JSON.stringify(item.data),
+                        });
+                    } else if (item.action === 'DELETE') {
+                        response = await apiCall(`/toolstrings/${item.entityId}`, {
+                            method: 'DELETE',
+                        });
                     }
 
                     if (response && response.success) {
-                        // Mark as synced in IndexedDB
+                        // Mark as synced by removing from queue
                         await deleteFromIndexedDB('syncQueue', item.id);
-                        console.log('[Toolstring] Synced:', item.id);
+                        console.log(`[Toolstring] Synced ${item.action}:`, item.id);
+
+                        // Update sync status in toolstrings table if not deleted
+                        if (item.action !== 'DELETE' && item.entityId) {
+                            try {
+                                const config = await getFromIndexedDB('toolstrings', item.entityId);
+                                if (config) {
+                                    config.synced = false; // Still pending cloud sync
+                                    await saveToIndexedDB('toolstrings', config);
+                                }
+                            } catch (err) {
+                                // Ignore if config no longer exists
+                            }
+                        }
                     }
                 } catch (error) {
                     console.error('[Toolstring] Sync failed for item:', item.id, error);
@@ -482,6 +784,9 @@
             }
 
             console.log('[Toolstring] Background sync complete');
+
+            // Update connection status to refresh pending count
+            updateConnectionStatus();
         } catch (error) {
             console.error('[Toolstring] Sync error:', error);
         }
@@ -500,13 +805,23 @@
             let configs = [];
 
             if (isOnline && authToken) {
-                // Try to load from API
-                const response = await apiCall('/toolstrings');
-                if (response.success) {
-                    configs = response.toolstrings;
+                // Try to load from API first
+                try {
+                    const response = await apiCall('/toolstrings');
+                    if (response.success) {
+                        configs = response.toolstrings;
+
+                        // Also update IndexedDB with fresh data
+                        for (const config of configs) {
+                            await saveToIndexedDB('toolstrings', config);
+                        }
+                    }
+                } catch (apiError) {
+                    console.log('[Toolstring] API failed, loading from IndexedDB');
+                    configs = await getAllFromIndexedDB('toolstrings');
                 }
             } else {
-                // Load from IndexedDB
+                // Load from IndexedDB when offline
                 configs = await getAllFromIndexedDB('toolstrings');
             }
 
@@ -515,20 +830,56 @@
                 return;
             }
 
-            list.innerHTML = configs.map(config => `
-                <div class="bg-gray-700 rounded-lg p-4">
-                    <div class="flex items-start justify-between mb-2">
-                        <h3 class="text-white font-semibold">${config.name}</h3>
-                        <span class="sync-badge ${config.synced ? 'synced' : 'pending'}">
-                            ${config.synced ? '✓ Synced' : '⟳ Pending'}
-                        </span>
+            list.innerHTML = configs.map(config => {
+                // SECURITY: Escape all user-controllable data to prevent XSS
+                const wellId = escapeHtml(config.wellId || config.well_id || 'N/A');
+                const operationType = escapeHtml(config.operationType || config.operation_type || 'N/A');
+                const createdBy = escapeHtml(config.createdBy || config.created_by || 'Unknown');
+                const configName = escapeHtml(config.name || 'Unnamed');
+                const configId = escapeHtml(config.id || '');
+                const toolsCount = Array.isArray(config.tools) ? config.tools.length : (typeof config.tools === 'string' ? JSON.parse(config.tools).length : 0);
+
+                return `
+                    <div class="bg-gray-700 rounded-lg p-4">
+                        <div class="flex items-start justify-between mb-2">
+                            <h3 class="text-white font-semibold">${configName}</h3>
+                            <span class="sync-badge ${config.synced ? 'synced' : 'pending'}">
+                                ${config.synced ? '✓ Synced' : '⟳ Pending'}
+                            </span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-1"><i class="fas fa-oil-well"></i> Well: ${wellId}</p>
+                        <p class="text-gray-400 text-sm mb-1"><i class="fas fa-wrench"></i> Operation: ${operationType}</p>
+                        <p class="text-gray-400 text-sm mb-2"><i class="fas fa-tools"></i> Tools: ${toolsCount}</p>
+                        <p class="text-gray-500 text-xs mb-3"><i class="fas fa-user"></i> By: ${createdBy}</p>
+                        <div class="flex gap-2">
+                            <button class="edit-config-btn flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition" data-config-id="${configId}">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="delete-config-btn flex-1 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm transition" data-config-id="${configId}">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
                     </div>
-                    <p class="text-gray-400 text-sm mb-1"><i class="fas fa-well"></i> Well: ${config.wellId || 'N/A'}</p>
-                    <p class="text-gray-400 text-sm mb-1"><i class="fas fa-wrench"></i> Operation: ${config.operationType || 'N/A'}</p>
-                    <p class="text-gray-400 text-sm mb-2"><i class="fas fa-tools"></i> Tools: ${Array.isArray(config.tools) ? config.tools.length : JSON.parse(config.tools).length}</p>
-                    <p class="text-gray-500 text-xs"><i class="fas fa-user"></i> By: ${config.createdBy || config.created_by}</p>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+
+            // Add event listeners for edit and delete buttons
+            list.querySelectorAll('.edit-config-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const configId = btn.getAttribute('data-config-id');
+                    const config = configs.find(c => c.id === configId);
+                    if (config) {
+                        editConfiguration(config);
+                    }
+                });
+            });
+
+            list.querySelectorAll('.delete-config-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const configId = btn.getAttribute('data-config-id');
+                    await deleteConfiguration(configId);
+                });
+            });
         } catch (error) {
             console.error('[Toolstring] Load configs error:', error);
             list.innerHTML = '<p class="text-red-400 text-center py-8 col-span-3">Error loading configurations</p>';
@@ -551,6 +902,11 @@
 
         // Update connection status
         updateConnectionStatus();
+
+        // Periodic sync status check (every 5 seconds)
+        setInterval(() => {
+            updateConnectionStatus();
+        }, 5000);
 
         // Category tabs
         document.querySelectorAll('.category-tab').forEach(tab => {

@@ -973,6 +973,101 @@ app.get('/api/v1/sync/status', authenticateJWT, async (req, res) => {
     }
 });
 
+// Get audit logs
+app.get('/api/v1/audit-logs', authenticateJWT, async (req, res) => {
+    try {
+        // Only allow admins or users to view their own logs
+        const limit = parseInt(req.query.limit, 10) || 100;
+        const offset = parseInt(req.query.offset, 10) || 0;
+        const action = req.query.action;
+        const entityType = req.query.entityType;
+
+        let query = `
+            SELECT
+                al.id,
+                al.timestamp,
+                al.user_id,
+                u.username,
+                al.action,
+                al.entity_type,
+                al.entity_id,
+                al.ip_address,
+                al.details
+            FROM audit_log al
+            LEFT JOIN users u ON al.user_id = u.id
+            WHERE 1=1
+        `;
+        const params = [];
+        let paramIndex = 1;
+
+        // Filter by action if provided
+        if (action) {
+            const validatedAction = validateAction(action);
+            if (validatedAction) {
+                query += ` AND al.action = $${paramIndex}`;
+                params.push(validatedAction);
+                paramIndex++;
+            }
+        }
+
+        // Filter by entity type if provided
+        if (entityType) {
+            const validatedEntityType = validateEntityType(entityType);
+            if (validatedEntityType) {
+                query += ` AND al.entity_type = $${paramIndex}`;
+                params.push(validatedEntityType);
+                paramIndex++;
+            }
+        }
+
+        query += ` ORDER BY al.timestamp DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
+        params.push(limit, offset);
+
+        const result = await pool.query(query, params);
+
+        // SECURITY: Sanitize all database results
+        const safeLogs = result.rows.map(row => createSafeAuditLogPayload(row));
+
+        res.json({
+            success: true,
+            count: safeLogs.length,
+            logs: safeLogs,
+        });
+    } catch (error) {
+        console.error('[Edge Core API] Get audit logs failed');
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+});
+
+// Helper function to validate action
+function validateAction(action) {
+    const allowedActions = ['LOGIN', 'CREATE', 'UPDATE', 'DELETE'];
+    return allowedActions.includes(action) ? action : null;
+}
+
+// Helper function to validate entity type
+function validateEntityType(entityType) {
+    const allowedTypes = ['toolstring', 'procedure', 'user'];
+    return allowedTypes.includes(entityType) ? entityType : null;
+}
+
+// Helper function to create safe audit log payload
+function createSafeAuditLogPayload(row) {
+    if (!row) return null;
+
+    return {
+        id: parseInt(String(row.id || 0), 10),
+        timestamp: String(row.timestamp || new Date().toISOString()),
+        user_id: parseInt(String(row.user_id || 0), 10),
+        username: String(row.username || 'unknown'),
+        action: String(row.action || ''),
+        entity_type: row.entity_type ? String(row.entity_type) : null,
+        entity_id: row.entity_id ? String(row.entity_id) : null,
+        ip_address: row.ip_address ? String(row.ip_address) : null,
+        details: row.details ? String(row.details) : null,
+    };
+}
+
 // 404 handler
 app.use((req, res) => {
     res.status(404).json({ success: false, error: 'Not found' });
