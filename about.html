@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>About Us | WellTegra – From Prophecy to Prediction</title>
+    <meta name="description" content="WellTegra transforms well engineering from gut feel to quantifiable prediction. Our integrated team of data scientists, field engineers, and financial modelers turn your data into auditable, actionable intelligence.">
+    <meta name="keywords" content="well engineering team, data science, AI well prediction, field operations, financial modeling, well integrity, data engineering, OT security">
+    <meta name="author" content="WellTegra Data Solutions">
+    <link rel="canonical" href="https://welltegra.network/about.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://welltegra.network/about.html">
+    <meta property="og:title" content="About Us | WellTegra – From Prophecy to Prediction">
+    <meta property="og:description" content="Meet the integrated team turning well engineering data into quantifiable, auditable predictions. No black boxes. No gut feel. Just proof.">
+    <meta property="og:image" content="/assets/og-image.jpg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://welltegra.network/about.html">
+    <meta name="twitter:title" content="About Us | WellTegra – From Prophecy to Prediction">
+    <meta name="twitter:description" content="The integrated team transforming well engineering from prophecy to prediction.">
+
+    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+
+    <style>
+        /* --- Base Typography for Professional Readability --- */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 18px;
+            line-height: 1.7;
+            font-weight: 450;
+            color: #1f2937;
+            background-color: #ffffff;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 800;
+            color: #111827;
+            line-height: 1.2;
+        }
+
+        h1 { font-size: 40px; margin-bottom: 1.5rem; }
+        h2 { font-size: 32px; margin-bottom: 1.25rem; }
+        h3 { font-size: 24px; margin-bottom: 1rem; }
+
+        /* --- Ensure WCAG AAA Contrast --- */
+        .text-body { color: #1f2937; } /* 11.83:1 on white */
+        .text-headline { color: #111827; } /* 15.3:1 on white */
+        .text-muted { color: #374151; } /* 9.74:1 on white */
+
+        /* --- Section Backgrounds (Alternating for Visual Separation) --- */
+        .section-white { background-color: #ffffff; }
+        .section-light { background-color: #f9fafb; }
+
+        /* --- Text-Safe Zone for Hero Section --- */
+        .hero-section {
+            position: relative;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #ffffff;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            color: #ffffff;
+            font-size: 48px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-content p {
+            color: #e5e7eb;
+            font-size: 20px;
+            line-height: 1.7;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        /* --- Content Container (Max Line Length) --- */
+        .content-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+
+        .content-container p {
+            margin-bottom: 1.5rem;
+            max-width: 75ch;
+        }
+
+        /* --- Function Cards --- */
+        .function-card {
+            background-color: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .function-card:hover {
+            border-color: #0d9488;
+            box-shadow: 0 10px 30px rgba(13, 148, 136, 0.15);
+        }
+
+        .function-card h3 {
+            color: #0d9488;
+            margin-bottom: 0.75rem;
+        }
+
+        .function-card .role-title {
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        /* --- CTA Button (High Contrast) --- */
+        .cta-button {
+            display: inline-block;
+            background-color: #0d9488;
+            color: #ffffff;
+            padding: 1rem 2.5rem;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 2px solid #0d9488;
+        }
+
+        .cta-button:hover {
+            background-color: #0f766e;
+            border-color: #0f766e;
+            box-shadow: 0 8px 20px rgba(13, 148, 136, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .cta-button:focus {
+            outline: 3px solid #5eead4;
+            outline-offset: 3px;
+        }
+
+        /* --- Link Styling (High Contrast) --- */
+        a {
+            color: #0d9488;
+            text-decoration: underline;
+        }
+
+        a:hover {
+            color: #0f766e;
+        }
+
+        /* --- Responsive Typography --- */
+        @media (max-width: 768px) {
+            body { font-size: 16px; }
+            h1 { font-size: 32px; }
+            h2 { font-size: 28px; }
+            h3 { font-size: 22px; }
+            .hero-content h1 { font-size: 36px; }
+            .hero-content p { font-size: 18px; }
+        }
+
+        /* --- Watermark Background (Subtle Brand Identity) --- */
+        .watermark-bg {
+            position: relative;
+        }
+
+        .watermark-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('assets/watermark.jpg');
+            background-repeat: repeat;
+            background-position: center;
+            background-size: 350px;
+            opacity: 0.02;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .watermark-bg > * {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Hero Section: The Founding Philosophy -->
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>From Prophecy to Prediction</h1>
+            <p>
+                The Brahan Seer predicted the resource. We predict its performance.
+            </p>
+        </div>
+    </section>
+
+    <!-- Section 1: Core Philosophy & Origin Story -->
+    <section class="section-white watermark-bg">
+        <div class="content-container">
+            <h2>The Age of Prophecy Is Over</h2>
+            <p>
+                In 1660, the <strong>Brahan Seer</strong> stood on the hills above Aberdeen and made an impossible prophecy: one day, "black rain" would fall from the sky, bringing unimaginable wealth to the region. Three centuries later, his vision became reality—not through magic, but through the discovery of North Sea oil.
+            </p>
+            <p>
+                The Seer's prophecy worked once. But prophecy isn't a business model.
+            </p>
+            <p>
+                In today's high-stakes energy environment, <strong>"gut feel" isn't auditable.</strong> "Experience" doesn't scale. And when a well intervention costs $2 million per day, you can't afford to rely on intuition. The industry has moved beyond the era of visionary predictions. What's needed now is <strong>quantifiable, repeatable, and transparent prediction</strong>—built not on folklore, but on your own operational data.
+            </p>
+            <p>
+                That's the philosophy at the heart of WellTegra: <strong>Stop guessing. Start calculating.</strong>
+            </p>
+        </div>
+    </section>
+
+    <!-- Section 2: Our Differentiator – The Integrated Team -->
+    <section class="section-light watermark-bg">
+        <div class="content-container">
+            <h2>We're Not a Software Company. We're a Complete Team.</h2>
+            <p>
+                Here's what makes WellTegra different: <strong>we're not selling you another dashboard.</strong> We're not asking you to plug in a black-box algorithm and "trust the AI." We're not handing you a toolkit and wishing you luck.
+            </p>
+            <p>
+                <strong>WellTegra is an integrated, end-to-end team</strong> of data scientists, field engineers, financial modelers, well integrity specialists, data engineers, and security architects—all working together to transform your raw, fragmented data into <strong>auditable, actionable, and safe intelligence.</strong>
+            </p>
+            <p>
+                This isn't a feature. It's our competitive advantage.
+            </p>
+            <p>
+                Most vendors specialize in one slice of the problem: they build the model, or they analyze the data, or they consult on field operations. But <strong>the real value comes from integration.</strong> A predictive model is worthless if your field team can't execute on it. A recommendation is meaningless if your CFO can't justify it. An insight is dangerous if it's not validated against real-world well mechanics, safety protocols, and regulatory compliance.
+            </p>
+            <p>
+                That's why every WellTegra project brings together <strong>the full spectrum of expertise</strong>—from machine learning to metallurgy, from Bayesian statistics to barrier integrity, from cloud security to coiled tubing friction modeling. We don't just build predictions. We build <strong>proof</strong>—and we ensure that proof is <strong>transparent, defensible, and executable.</strong>
+            </p>
+        </div>
+    </section>
+
+    <!-- Section 3: Key Functions Profile -->
+    <section class="section-white watermark-bg">
+        <div class="content-container">
+            <h2>How Our Team Turns Your Data Into Value</h2>
+            <p>
+                Here's how each function in our integrated platform collaborates to deliver quantifiable results from your existing data streams:
+            </p>
+
+            <!-- Function 1: Data Science -->
+            <div class="function-card">
+                <div class="role-title">Data Science</div>
+                <h3>We Make Data Make Sense</h3>
+                <p>
+                    Our <strong>Chief Data Scientist</strong> doesn't believe in black boxes. Every machine learning model we build is grounded in <strong>Explainable AI (XAI)</strong> principles, meaning every prediction comes with a transparent audit trail. You'll know <em>why</em> the model flagged a casing deformation risk at 8,500 feet—not just <em>that</em> it did.
+                </p>
+                <p>
+                    We use advanced time-series analysis, Bayesian methods, and continuous model validation to ensure predictions are statistically rigorous and operationally relevant. Our models don't just learn from your data—they <strong>earn your trust</strong> through transparency, repeatability, and empirical validation.
+                </p>
+            </div>
+
+            <!-- Function 2: Data Engineering -->
+            <div class="function-card">
+                <div class="role-title">Data Engineering</div>
+                <h3>We Build Unbreakable Pipelines</h3>
+                <p>
+                    Our <strong>Lead Data Engineer</strong> architects the foundation that everything else depends on: <strong>reliable, secure, and scalable data pipelines.</strong> WITSML feeds, EDM systems, daily drilling reports, completion records—if it's trapped in a silo, we integrate it. If it's unstructured, we structure it. If it's vulnerable, we secure it.
+                </p>
+                <p>
+                    Using technologies like Apache Kafka, Spark, and Kubernetes, we ensure that data flows continuously, accurately, and securely from wellhead to cloud—with encryption in transit (TLS 1.3) and at rest (FIPS 140-2 compliant KMS). <strong>If your data pipelines aren't perfect, everything built on them will crumble.</strong> We build them to last.
+                </p>
+            </div>
+
+            <!-- Function 3: Field Operations & Technical Feasibility -->
+            <div class="function-card">
+                <div class="role-title">Field Operations & Technical Feasibility</div>
+                <h3>We Make Insight Actionable</h3>
+                <p>
+                    A prediction is worthless if your field team can't execute on it. That's why our <strong>Chief Field Operations Validator</strong> and <strong>Drilling & Production Engineer</strong> validate every recommendation against real-world constraints: rig capabilities, weather windows, equipment availability, and—most importantly—<strong>crew safety.</strong>
+                </p>
+                <p>
+                    Our Chief Field Operations Validator ensures that every digital tool meets HSE requirements and is usable in extreme offshore conditions. Our Drilling & Production Engineer grounds AI recommendations in the physical realities of well mechanics, hydraulics, and intervention design. If the model says "run coiled tubing," we'll tell you if the friction modeling supports it, the wellbore geometry allows it, and the rig has the capacity for it. <strong>No recommendations leave our platform without passing the "field feasibility test."</strong>
+                </p>
+            </div>
+
+            <!-- Function 4: Financial Modeling -->
+            <div class="function-card">
+                <div class="role-title">Financial Modeling</div>
+                <h3>We Make It Auditable</h3>
+                <p>
+                    Your CFO doesn't care about "cool tech." They care about ROI, risk mitigation, and contract compliance. That's why our <strong>VP of Financial Modeling</strong> translates every technical prediction into a <strong>quantified financial reality.</strong>
+                </p>
+                <p>
+                    Monte Carlo simulations for NPT reduction. DCF models for intervention payback periods. Risk-weighted valuations that meet GAAP/IFRS standards. Every recommendation we generate comes with a <strong>boardroom-ready business case</strong>—auditable, defensible, and tied directly to your bottom line. We don't just predict operational outcomes. We predict their financial impact.
+                </p>
+            </div>
+
+            <!-- Function 5: Well Integrity -->
+            <div class="function-card">
+                <div class="role-title">Well Integrity</div>
+                <h3>We Make It Last</h3>
+                <p>
+                    Short-term fixes create long-term liabilities. Our <strong>Principal Well Integrity Modeler</strong> uses advanced finite element analysis, cement science, and corrosion dynamics to predict the <strong>life-cycle health of your well barriers.</strong>
+                </p>
+                <p>
+                    We don't just tell you what's broken today—we tell you what will fail in five years, so you can plan interventions proactively, not reactively. It's the difference between crisis management and strategic asset stewardship. <strong>Every recommendation we make is evaluated not just for immediate performance, but for long-term integrity and environmental responsibility.</strong>
+                </p>
+            </div>
+
+            <!-- Function 6: Security & Cloud Architecture -->
+            <div class="function-card">
+                <div class="role-title">Security & Cloud Architecture</div>
+                <h3>We Protect What Matters</h3>
+                <p>
+                    Your data is your most valuable asset—and your most vulnerable. Our <strong>Lead Security & Cloud Architect</strong> designs and enforces the digital security architecture that protects your platform, your data, and your clients' trust.
+                </p>
+                <p>
+                    We implement Zero Trust network architectures, identity and access management (IAM), and enterprise-grade certifications (SOC 2, ISO 27001). We secure hybrid cloud deployments, prevent lateral movement attacks, and ensure data residency compliance. <strong>We treat your data security with the gravity it deserves</strong>—because a breach doesn't just cost you data. It costs you reputation, contracts, and regulatory standing.
+                </p>
+            </div>
+
+            <!-- Function 7: Strategic Vision -->
+            <div class="function-card">
+                <div class="role-title">Technology Strategy</div>
+                <h3>We Drive Long-Term Value</h3>
+                <p>
+                    Technology adoption isn't just about picking the right tools—it's about <strong>organizational readiness, change management, and long-term ROI.</strong> Our <strong>Chief Technology Strategist</strong> bridges the gap between emerging innovation and operational reality, ensuring that every technology investment delivers measurable value and gains internal adoption.
+                </p>
+                <p>
+                    We use frameworks like ADKAR for change management, technology roadmapping for strategic planning, and scenario analysis to de-risk long-term investments. We don't just ask "Can this work?" We ask: <strong>"Will your team adopt it? Will your CFO fund it? Will it still be relevant in five years?"</strong> If the answer to any of those is "no," we redesign the approach.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Call to Action -->
+    <section class="section-light watermark-bg">
+        <div class="content-container" style="text-align: center;">
+            <h2>The Proof Is Already Yours. Let Us Help You See It.</h2>
+            <p>
+                We know what you're thinking: <em>"Show me a case study. Prove this works."</em>
+            </p>
+            <p>
+                Here's the challenge: we can't show you another operator's proprietary data. And frankly, you shouldn't trust a model built on someone else's wells. <strong>The only proof that matters is <em>your</em> proof—and you're already sitting on it.</strong>
+            </p>
+            <p>
+                So don't ask us for a case study. Let's build <strong>your</strong> case study.
+            </p>
+            <p style="margin-top: 2.5rem;">
+                <a href="mailto:contact@welltegra.network?subject=Data%20Integrity%20Audit%20Request" class="cta-button">Book Your Data Integrity Audit</a>
+            </p>
+            <p style="font-size: 16px; color: #6b7280; margin-top: 1.5rem;">
+                Let's connect our platform to one of your data streams. In 48 hours, we won't show you our old successes. We'll show you the untapped value, hidden risks, and optimization potential in <strong>your own data.</strong> No NDAs. No long-term commitments. Just a transparent look at what you're leaving on the table.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background-color: #111827; color: #e5e7eb; padding: 3rem 1.5rem; text-align: center;">
+        <p style="margin-bottom: 0.5rem;">
+            &copy; 2025 WellTegra Data Solutions. All rights reserved.
+        </p>
+        <p style="font-size: 14px; color: #9ca3af;">
+            <a href="index.html" style="color: #5eead4; text-decoration: none;">Home</a> |
+            <a href="about.html" style="color: #5eead4; text-decoration: none;">About Us</a> |
+            <a href="mailto:contact@welltegra.network" style="color: #5eead4; text-decoration: none;">Contact</a>
+        </p>
+    </footer>
+
+</body>
+</html>
