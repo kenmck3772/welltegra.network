@@ -13,6 +13,22 @@
     let pendingCount = 0;
     let indicatorElement = null;
 
+    // ==================== SECURITY ====================
+
+    // Safely set status text with icon - avoids innerHTML with dynamic content
+    function setStatusText(element, iconClass, textContent) {
+        // Clear existing content
+        element.textContent = '';
+
+        // Create icon element
+        const icon = document.createElement('i');
+        icon.className = iconClass;
+        element.appendChild(icon);
+
+        // Add text as text node (safe from XSS)
+        element.appendChild(document.createTextNode(' ' + textContent));
+    }
+
     // Create the indicator element if it doesn't exist
     function createIndicator() {
         // Check if already exists
@@ -72,18 +88,20 @@
             indicatorElement.style.color = 'white';
 
             if (pendingCount > 0) {
-                indicatorElement.innerHTML = `<i class="fas fa-sync fa-spin"></i> Syncing ${pendingCount} item${pendingCount > 1 ? 's' : ''}...`;
+                const statusText = `Syncing ${pendingCount} item${pendingCount > 1 ? 's' : ''}...`;
+                setStatusText(indicatorElement, 'fas fa-sync fa-spin', statusText);
             } else {
-                indicatorElement.innerHTML = '<i class="fas fa-wifi"></i> Online';
+                setStatusText(indicatorElement, 'fas fa-wifi', 'Online');
             }
         } else {
             indicatorElement.style.background = '#ef4444';
             indicatorElement.style.color = 'white';
 
             if (pendingCount > 0) {
-                indicatorElement.innerHTML = `<i class="fas fa-wifi-slash"></i> Offline - ${pendingCount} to sync`;
+                const statusText = `Offline - ${pendingCount} to sync`;
+                setStatusText(indicatorElement, 'fas fa-wifi-slash', statusText);
             } else {
-                indicatorElement.innerHTML = '<i class="fas fa-wifi-slash"></i> Offline';
+                setStatusText(indicatorElement, 'fas fa-wifi-slash', 'Offline');
             }
         }
     }

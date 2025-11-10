@@ -39,6 +39,20 @@
         return div.innerHTML;
     }
 
+    // Safely set status text with icon - avoids innerHTML with dynamic content
+    function setStatusText(element, iconClass, textContent) {
+        // Clear existing content
+        element.textContent = '';
+
+        // Create icon element
+        const icon = document.createElement('i');
+        icon.className = iconClass;
+        element.appendChild(icon);
+
+        // Add text as text node (safe from XSS)
+        element.appendChild(document.createTextNode(' ' + textContent));
+    }
+
     // ==================== INDEXEDDB SETUP ====================
 
     function initIndexedDB() {
@@ -137,9 +151,10 @@
                 const pendingCount = parseInt(syncQueue.filter(item => !item.synced).length, 10);
 
                 if (pendingCount > 0) {
-                    text.innerHTML = `<i class="fas fa-wifi"></i> Online - Syncing ${pendingCount} item${pendingCount > 1 ? 's' : ''}...`;
+                    const statusText = `Online - Syncing ${pendingCount} item${pendingCount > 1 ? 's' : ''}...`;
+                    setStatusText(text, 'fas fa-wifi', statusText);
                 } else {
-                    text.innerHTML = '<i class="fas fa-wifi"></i> Connected to Edge Core';
+                    setStatusText(text, 'fas fa-wifi', 'Connected to Edge Core');
                 }
 
                 // Try to get sync status from API
@@ -148,14 +163,15 @@
                         const response = await apiCall('/sync/status');
                         if (response.success && response.pendingCount > 0) {
                             const cloudPending = parseInt(response.pendingCount, 10);
-                            text.innerHTML = `<i class="fas fa-wifi"></i> Online - ${cloudPending} item${cloudPending > 1 ? 's' : ''} pending cloud sync`;
+                            const statusText = `Online - ${cloudPending} item${cloudPending > 1 ? 's' : ''} pending cloud sync`;
+                            setStatusText(text, 'fas fa-wifi', statusText);
                         }
                     } catch (err) {
                         // Ignore API errors, use local count
                     }
                 }
             } catch (err) {
-                text.innerHTML = '<i class="fas fa-wifi"></i> Connected to Edge Core';
+                setStatusText(text, 'fas fa-wifi', 'Connected to Edge Core');
             }
 
             syncPendingData();
@@ -168,12 +184,13 @@
                 const pendingCount = parseInt(syncQueue.filter(item => !item.synced).length, 10);
 
                 if (pendingCount > 0) {
-                    text.innerHTML = `<i class="fas fa-wifi-slash"></i> Offline - ${pendingCount} item${pendingCount > 1 ? 's' : ''} to sync`;
+                    const statusText = `Offline - ${pendingCount} item${pendingCount > 1 ? 's' : ''} to sync`;
+                    setStatusText(text, 'fas fa-wifi-slash', statusText);
                 } else {
-                    text.innerHTML = '<i class="fas fa-wifi-slash"></i> Offline Mode';
+                    setStatusText(text, 'fas fa-wifi-slash', 'Offline Mode');
                 }
             } catch (err) {
-                text.innerHTML = '<i class="fas fa-wifi-slash"></i> Offline Mode';
+                setStatusText(text, 'fas fa-wifi-slash', 'Offline Mode');
             }
         }
     }
