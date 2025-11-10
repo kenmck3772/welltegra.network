@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
             openCommunicator();
         });
     } else {
-        console.error('[MobileCommunicator] Open button not found!');
+        console.log('[MobileCommunicator] Open button not available (mobile communicator UI removed from planner)');
     }
 
     if (closeCommunicatorBtn) {
@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
             closeCommunicator();
         });
     } else {
-        console.error('[MobileCommunicator] Close button not found!');
+        console.log('[MobileCommunicator] Close button not available');
     }
 
     // Handle approve/reject buttons

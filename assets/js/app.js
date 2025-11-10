@@ -3857,8 +3857,15 @@ function saveToolStringsToStorage() {
 
 // Switch between tabs
 function switchEquipmentTab(tabName) {
+    // Guard clause: check if equipment tabs exist
+    const equipmentTabs = document.querySelectorAll('.equipment-tab');
+    if (equipmentTabs.length === 0) {
+        console.log('[Equipment Tabs] Equipment catalog UI not available');
+        return;
+    }
+
     // Update tab buttons
-    document.querySelectorAll('.equipment-tab').forEach(tab => {
+    equipmentTabs.forEach(tab => {
         const isActive = tab.dataset.tab === tabName;
         tab.classList.toggle('active', isActive);
         tab.style.color = isActive ? '#14b8a6' : '#94a3b8';
@@ -3869,7 +3876,11 @@ function switchEquipmentTab(tabName) {
     document.querySelectorAll('.equipment-tab-content').forEach(content => {
         content.classList.add('hidden');
     });
-    document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+    const targetTab = document.getElementById(`tab-${tabName}`);
+    if (targetTab) {
+        targetTab.classList.remove('hidden');
+    }
 
     // Refresh content if needed
     if (tabName === 'historical') {
@@ -3885,6 +3896,12 @@ function switchEquipmentTab(tabName) {
 function renderHistoricalToolStrings() {
     const list = document.getElementById('historical-toolstrings-list');
     const empty = document.getElementById('empty-historical');
+
+    // Guard clause: if elements don't exist (removed from DOM), exit gracefully
+    if (!list || !empty) {
+        console.log('[Tool Strings] Historical tool strings UI not available');
+        return;
+    }
 
     if (!appState.selectedWell) {
         list.innerHTML = '';
@@ -3963,6 +3980,12 @@ function renderSavedToolStrings() {
     const list = document.getElementById('saved-toolstrings-list');
     const empty = document.getElementById('empty-toolstrings');
 
+    // Guard clause: if elements don't exist (removed from DOM), exit gracefully
+    if (!list || !empty) {
+        console.log('[Tool Strings] Saved tool strings UI not available');
+        return;
+    }
+
     if (savedToolStrings.length === 0) {
         list.classList.add('hidden');
         empty.classList.remove('hidden');
@@ -4013,6 +4036,12 @@ function updateBuilderPreview() {
     const textarea = document.getElementById('toolstring-components-input');
     const previewName = document.getElementById('preview-name');
     const componentsList = document.getElementById('builder-components-list');
+
+    // Guard clause: if builder elements don't exist, exit gracefully
+    if (!nameInput || !textarea || !previewName || !componentsList) {
+        console.log('[Tool String Builder] Builder UI not available');
+        return;
+    }
 
     previewName.textContent = nameInput.value || 'Untitled Assembly';
 
