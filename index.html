@@ -4,7 +4,18 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+    <!-- Mobile Web App Meta Tags for App-Like Experience -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="WellTegra">
+    <meta name="application-name" content="WellTegra">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="msapplication-navbutton-color" content="#0f172a">
+    <meta name="msapplication-TileColor" content="#0f172a">
+
     <!-- TEMPORARILY DISABLED: CSP may be causing browser crashes in test environment -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' 'unsafe-eval' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.socket.io https://aframe.io https://cdn.aframe.io https://raw.githack.com; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file: blob: https://cdn.aframe.io; font-src 'self' data: file: https://fonts.gstatic.com; connect-src 'self' https://aframe.io https://cdn.aframe.io https://www.data.boem.gov https://gdr.openei.org https://factpages.npd.no https://raw.githubusercontent.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com ws://api.welltegra.local:8080; media-src 'self' data: file: blob:; worker-src 'self' blob:; base-uri 'self'; form-action 'self'"> -->
 
@@ -50,6 +61,45 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/ar.js@3.4.5/aframe/build/aframe-ar.min.js"></script> -->
 
     <style>
+        /* --- Mobile App-Like Experience --- */
+        html {
+            /* Prevent bounce scrolling on iOS */
+            overscroll-behavior-y: none;
+            /* Enable smooth scrolling */
+            scroll-behavior: smooth;
+            /* Prevent text size adjustment on iOS */
+            -webkit-text-size-adjust: 100%;
+            /* Support for notched devices (iPhone X+) */
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        body {
+            /* Prevent bounce scrolling */
+            overscroll-behavior-y: none;
+            /* Disable user select for app-like feel (except inputs) */
+            -webkit-user-select: none;
+            user-select: none;
+            /* Prevent tap highlight on mobile */
+            -webkit-tap-highlight-color: transparent;
+            /* Better font rendering on mobile */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* Prevent pull-to-refresh */
+            overscroll-behavior: contain;
+        }
+
+        /* Allow text selection where needed */
+        input, textarea, [contenteditable] {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+
+        /* Better touch interactions */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         /* --- Base & Theme Setup --- */
         body { font-family: 'Inter', sans-serif; font-weight: 500; }
         h1, h2, h3, h4, h5, h6 { font-weight: 800; }
@@ -379,17 +429,59 @@
 
         /* --- Mobile Optimizations --- */
         @media (max-width: 640px) {
-            /* Improve touch targets on mobile */
-            button, a {
+            /* Improve touch targets on mobile (Apple HIG: 44x44pt minimum) */
+            button, a, .nav-link {
                 min-height: 44px;
+                min-width: 44px;
             }
+
             /* Better line-height for mobile readability */
             body {
                 line-height: 1.6;
             }
+
             /* Prevent text zoom on input focus in iOS */
             input, select, textarea {
-                font-size: 16px;
+                font-size: 16px !important;
+            }
+
+            /* Optimize hero video for mobile */
+            #hero-video {
+                object-fit: cover;
+                min-height: 100%;
+            }
+
+            /* Better spacing for mobile cards */
+            .well-detail-card, .function-card {
+                margin-bottom: 1rem;
+            }
+
+            /* Larger touch areas for navigation */
+            .nav-link {
+                padding: 12px 16px;
+            }
+
+            /* Full-width buttons on mobile */
+            .hero-section button,
+            .hero-section a {
+                width: 100%;
+                max-width: none;
+            }
+        }
+
+        /* Tablet optimizations */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            /* Optimize touch targets for tablets */
+            button, a {
+                min-height: 40px;
+            }
+        }
+
+        /* Support for notched devices */
+        @supports (padding: max(0px)) {
+            header {
+                padding-left: max(1rem, env(safe-area-inset-left));
+                padding-right: max(1rem, env(safe-area-inset-right));
             }
         }
     </style>
@@ -472,20 +564,50 @@
     <main id="main-content" class="flex-1" role="main">
         <div id="home-view" class="view-container">
             <section class="hero-section py-12 sm:py-16 md:py-20 px-4 relative min-h-[60vh] sm:min-h-[70vh] flex items-center" aria-describedby="hero-video-description">
-                <video autoplay loop muted playsinline preload="metadata" id="hero-video" poster="assets/logo.jpg" aria-labelledby="hero-video-description">
+                <video
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    preload="auto"
+                    id="hero-video"
+                    poster="assets/logo.jpg"
+                    aria-labelledby="hero-video-description"
+                    webkit-playsinline
+                    x-webkit-airplay="allow"
+                >
                     <source src="assets/hero33.mp4" type="video/mp4">
                     <track kind="descriptions" srclang="en" label="English descriptions" src="assets/hero-video-descriptions.vtt" default>
                 </video>
                 <script>
-                    // Set hero video playback speed to 0.5x (half speed) for dramatic effect
+                    // Enhanced video playback for mobile devices
                     document.addEventListener('DOMContentLoaded', function() {
                         const heroVideo = document.getElementById('hero-video');
                         if (heroVideo) {
+                            // Set playback speed
+                            heroVideo.playbackRate = 0.5;
+
+                            // Force play on mobile devices (especially iOS)
+                            const playVideo = () => {
+                                heroVideo.play().catch(function(error) {
+                                    console.log('Video autoplay prevented:', error);
+                                });
+                            };
+
                             heroVideo.addEventListener('loadeddata', function() {
                                 heroVideo.playbackRate = 0.5;
+                                playVideo();
                             });
-                            // Also set immediately in case video is already loaded
-                            heroVideo.playbackRate = 0.5;
+
+                            // Ensure video plays after user interaction on iOS
+                            document.addEventListener('touchstart', function() {
+                                playVideo();
+                            }, { once: true });
+
+                            // Fallback for when video metadata is loaded
+                            heroVideo.addEventListener('loadedmetadata', function() {
+                                heroVideo.playbackRate = 0.5;
+                            });
                         }
                     });
                 </script>
