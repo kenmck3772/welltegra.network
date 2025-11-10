@@ -58,7 +58,8 @@
                 const db = await openIndexedDB();
                 if (db) {
                     const syncQueue = await getAllFromStore(db, 'syncQueue');
-                    pendingCount = syncQueue.filter(item => !item.synced).length;
+                    // SECURITY: Ensure pendingCount is always a safe integer
+                    pendingCount = parseInt(syncQueue.filter(item => !item.synced).length, 10);
                 }
             }
         } catch (err) {

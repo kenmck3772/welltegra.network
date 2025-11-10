@@ -23,6 +23,16 @@
 
     const API_BASE = '/api';
 
+    // ==================== SECURITY ====================
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+        if (text === null || text === undefined) return '';
+        const div = document.createElement('div');
+        div.textContent = String(text);
+        return div.innerHTML;
+    }
+
     // Initialize
     document.addEventListener('DOMContentLoaded', async () => {
         console.log('[AuditLog] Initializing...');
@@ -212,9 +222,16 @@
         }
 
         tbody.innerHTML = pageData.map(log => {
+            // SECURITY: Escape all user-controllable data to prevent XSS
             const timestamp = new Date(log.timestamp);
-            const timeStr = timestamp.toLocaleString();
-            const badgeClass = `badge badge-${log.action.toLowerCase()}`;
+            const timeStr = escapeHtml(timestamp.toLocaleString());
+            const username = escapeHtml(log.username);
+            const action = escapeHtml(log.action);
+            const entityType = log.entity_type ? escapeHtml(log.entity_type) : null;
+            const entityId = log.entity_id ? escapeHtml(log.entity_id) : null;
+            const ipAddress = escapeHtml(log.ip_address || '-');
+            const logId = parseInt(log.id, 10);
+            const badgeClass = `badge badge-${escapeHtml(log.action.toLowerCase())}`;
 
             return `
                 <tr class="audit-row">
@@ -222,20 +239,20 @@
                         ${timeStr}
                     </td>
                     <td class="px-6 py-4 text-sm text-white font-semibold">
-                        ${log.username}
+                        ${username}
                     </td>
                     <td class="px-6 py-4">
-                        <span class="${badgeClass}">${log.action}</span>
+                        <span class="${badgeClass}">${action}</span>
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-300">
-                        ${log.entity_type ? `<span class="text-blue-400">${log.entity_type}</span>` : '<span class="text-gray-500">-</span>'}
-                        ${log.entity_id ? `<span class="text-gray-500 text-xs ml-1">#${log.entity_id}</span>` : ''}
+                        ${entityType ? `<span class="text-blue-400">${entityType}</span>` : '<span class="text-gray-500">-</span>'}
+                        ${entityId ? `<span class="text-gray-500 text-xs ml-1">#${entityId}</span>` : ''}
                     </td>
                     <td class="px-6 py-4 text-sm text-gray-400 font-mono">
-                        ${log.ip_address || '-'}
+                        ${ipAddress}
                     </td>
                     <td class="px-6 py-4">
-                        <button class="details-btn text-blue-400 hover:text-blue-300 text-sm" data-log-id="${log.id}">
+                        <button class="details-btn text-blue-400 hover:text-blue-300 text-sm" data-log-id="${logId}">
                             <i class="fas fa-eye"></i> View
                         </button>
                     </td>
@@ -325,7 +342,9 @@
             details: details
         };
 
-        detailsContent.innerHTML = `<pre>${JSON.stringify(fullInfo, null, 2)}</pre>`;
+        // SECURITY: Escape HTML in JSON output to prevent XSS
+        const jsonString = escapeHtml(JSON.stringify(fullInfo, null, 2));
+        detailsContent.innerHTML = `<pre>${jsonString}</pre>`;
         detailsPanel.classList.remove('hidden');
 
         // Scroll to details

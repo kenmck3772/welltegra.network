@@ -30,6 +30,15 @@
         username: 'finlay',
     };
 
+    // ==================== SECURITY ====================
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
     // ==================== INDEXEDDB SETUP ====================
 
     function initIndexedDB() {
@@ -125,7 +134,7 @@
             // Check sync status
             try {
                 const syncQueue = await getAllFromIndexedDB('syncQueue');
-                const pendingCount = syncQueue.filter(item => !item.synced).length;
+                const pendingCount = parseInt(syncQueue.filter(item => !item.synced).length, 10);
 
                 if (pendingCount > 0) {
                     text.innerHTML = `<i class="fas fa-wifi"></i> Online - Syncing ${pendingCount} item${pendingCount > 1 ? 's' : ''}...`;
@@ -138,7 +147,8 @@
                     try {
                         const response = await apiCall('/sync/status');
                         if (response.success && response.pendingCount > 0) {
-                            text.innerHTML = `<i class="fas fa-wifi"></i> Online - ${response.pendingCount} item${response.pendingCount > 1 ? 's' : ''} pending cloud sync`;
+                            const cloudPending = parseInt(response.pendingCount, 10);
+                            text.innerHTML = `<i class="fas fa-wifi"></i> Online - ${cloudPending} item${cloudPending > 1 ? 's' : ''} pending cloud sync`;
                         }
                     } catch (err) {
                         // Ignore API errors, use local count
@@ -155,7 +165,7 @@
             // Show pending count in offline mode
             try {
                 const syncQueue = await getAllFromIndexedDB('syncQueue');
-                const pendingCount = syncQueue.filter(item => !item.synced).length;
+                const pendingCount = parseInt(syncQueue.filter(item => !item.synced).length, 10);
 
                 if (pendingCount > 0) {
                     text.innerHTML = `<i class="fas fa-wifi-slash"></i> Offline - ${pendingCount} item${pendingCount > 1 ? 's' : ''} to sync`;
@@ -804,15 +814,18 @@
             }
 
             list.innerHTML = configs.map(config => {
-                const wellId = config.wellId || config.well_id || 'N/A';
-                const operationType = config.operationType || config.operation_type || 'N/A';
-                const createdBy = config.createdBy || config.created_by || 'Unknown';
+                // SECURITY: Escape all user-controllable data to prevent XSS
+                const wellId = escapeHtml(config.wellId || config.well_id || 'N/A');
+                const operationType = escapeHtml(config.operationType || config.operation_type || 'N/A');
+                const createdBy = escapeHtml(config.createdBy || config.created_by || 'Unknown');
+                const configName = escapeHtml(config.name || 'Unnamed');
+                const configId = escapeHtml(config.id || '');
                 const toolsCount = Array.isArray(config.tools) ? config.tools.length : (typeof config.tools === 'string' ? JSON.parse(config.tools).length : 0);
 
                 return `
                     <div class="bg-gray-700 rounded-lg p-4">
                         <div class="flex items-start justify-between mb-2">
-                            <h3 class="text-white font-semibold">${config.name}</h3>
+                            <h3 class="text-white font-semibold">${configName}</h3>
                             <span class="sync-badge ${config.synced ? 'synced' : 'pending'}">
                                 ${config.synced ? '✓ Synced' : '⟳ Pending'}
                             </span>
@@ -822,10 +835,10 @@
                         <p class="text-gray-400 text-sm mb-2"><i class="fas fa-tools"></i> Tools: ${toolsCount}</p>
                         <p class="text-gray-500 text-xs mb-3"><i class="fas fa-user"></i> By: ${createdBy}</p>
                         <div class="flex gap-2">
-                            <button class="edit-config-btn flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition" data-config-id="${config.id}">
+                            <button class="edit-config-btn flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition" data-config-id="${configId}">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <button class="delete-config-btn flex-1 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm transition" data-config-id="${config.id}">
+                            <button class="delete-config-btn flex-1 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm transition" data-config-id="${configId}">
                                 <i class="fas fa-trash"></i> Delete
                             </button>
                         </div>
