@@ -2940,6 +2940,12 @@ document.addEventListener('DOMContentLoaded', async function() {
             step1ContinueBtn.disabled = false;
         }
 
+        // Show well analysis tools
+        const wellAnalysisTools = document.getElementById('well-analysis-tools');
+        if (wellAnalysisTools) {
+            wellAnalysisTools.classList.remove('hidden');
+        }
+
         renderProblems(); // Update the problems list based on selection
         });
     }
@@ -2950,6 +2956,61 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (appState.selectedWell) {
                 updatePlannerStepUI(2);
             }
+        });
+    }
+
+    // Step 1: Well Analysis Tools
+    const analyzeIntegrityBtn = document.getElementById('analyze-integrity-btn');
+    if (analyzeIntegrityBtn) {
+        analyzeIntegrityBtn.addEventListener('click', () => {
+            if (!appState.selectedWell) return;
+
+            window.FeatureLauncher.launch('integrity-analyzer', {
+                wellId: appState.selectedWell.id,
+                wellName: appState.selectedWell.name,
+                wellType: appState.selectedWell.type,
+                wellStatus: appState.selectedWell.status,
+                knownIssues: [appState.selectedWell.issue]
+            }, {
+                onLaunch: () => {
+                    console.log('Well Integrity Analyzer launched for', appState.selectedWell.name);
+                }
+            });
+        });
+    }
+
+    const view3DPathBtn = document.getElementById('view-3d-path-btn');
+    if (view3DPathBtn) {
+        view3DPathBtn.addEventListener('click', () => {
+            if (!appState.selectedWell) return;
+
+            window.FeatureLauncher.launch('3d-well-path', {
+                wellId: appState.selectedWell.id,
+                wellName: appState.selectedWell.name,
+                depth: appState.selectedWell.depth
+            }, {
+                onLaunch: () => {
+                    console.log('3D Well Path launched for', appState.selectedWell.name);
+                }
+            });
+        });
+    }
+
+    const viewPAForecastBtn = document.getElementById('view-pa-forecast-btn');
+    if (viewPAForecastBtn) {
+        viewPAForecastBtn.addEventListener('click', () => {
+            if (!appState.selectedWell) return;
+
+            window.FeatureLauncher.launch('pa-forecast', {
+                wellId: appState.selectedWell.id,
+                wellName: appState.selectedWell.name,
+                wellAge: 25, // Could calculate from completion date
+                wellType: appState.selectedWell.type
+            }, {
+                onLaunch: () => {
+                    console.log('P&A Forecast launched for', appState.selectedWell.name);
+                }
+            });
         });
     }
 
@@ -3690,6 +3751,61 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
         });
     }
+
+    // Global Tools Menu
+    const toolsMenuBtn = document.getElementById('tools-menu-btn');
+    const toolsMenuModal = document.getElementById('tools-menu-modal');
+    const toolsMenuClose = document.getElementById('tools-menu-close');
+
+    if (toolsMenuBtn && toolsMenuModal) {
+        toolsMenuBtn.addEventListener('click', () => {
+            toolsMenuModal.classList.remove('hidden');
+        });
+    }
+
+    if (toolsMenuClose && toolsMenuModal) {
+        toolsMenuClose.addEventListener('click', () => {
+            toolsMenuModal.classList.add('hidden');
+        });
+
+        // Close on backdrop click
+        toolsMenuModal.addEventListener('click', (e) => {
+            if (e.target === toolsMenuModal) {
+                toolsMenuModal.classList.add('hidden');
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !toolsMenuModal.classList.contains('hidden')) {
+                toolsMenuModal.classList.add('hidden');
+            }
+        });
+    }
+
+    // Handle tool button clicks
+    const toolBtns = document.querySelectorAll('.tool-btn');
+    toolBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const toolId = btn.getAttribute('data-tool');
+            if (!toolId) return;
+
+            // Close the tools menu
+            if (toolsMenuModal) {
+                toolsMenuModal.classList.add('hidden');
+            }
+
+            // Launch the feature
+            window.FeatureLauncher.launch(toolId, {
+                // Pass minimal data for standalone launch
+                source: 'tools-menu'
+            }, {
+                onLaunch: () => {
+                    console.log(`Launched ${toolId} from tools menu`);
+                }
+            });
+        });
+    });
 
     if (addLogBtn && logInput) {
         addLogBtn.addEventListener('click', () => {
