@@ -10,8 +10,8 @@
  * - Cache-first strategy for static assets
  */
 
-const CACHE_NAME = 'welltegra-edge-v1';
-const RUNTIME_CACHE = 'welltegra-runtime-v1';
+const CACHE_NAME = 'welltegra-edge-v2-brahan';
+const RUNTIME_CACHE = 'welltegra-runtime-v2-brahan';
 
 // Assets to cache immediately on install
 const PRECACHE_ASSETS = [
