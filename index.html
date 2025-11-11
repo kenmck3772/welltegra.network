@@ -557,6 +557,10 @@
                     </a>
                 </nav>
                 <div id="header-details" class="flex items-center space-x-4">
+                    <button id="tools-menu-btn" class="p-2 rounded-lg hover:bg-cyan-600/20 border border-cyan-500/30 text-cyan-400 flex items-center gap-2" aria-label="Open Tools Menu" title="Quick Access to All Features">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <span class="hidden xl:inline">Tools</span>
+                    </button>
                     <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700" aria-label="Toggle dark mode">
                         <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                         <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
@@ -735,6 +739,31 @@
                     <section id="portfolio-signals" class="grid gap-4 md:grid-cols-2 xl:grid-cols-4" aria-label="Portfolio signals"></section>
                 </div>
                 <div id="well-selection-grid" class="mt-6 grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
+
+                <!-- Well Analysis Tools (appears after well selection) -->
+                <div id="well-analysis-tools" class="mt-8 hidden">
+                    <div class="bg-gradient-to-br from-blue-900/20 to-cyan-900/20 border border-blue-500/30 rounded-lg p-6">
+                        <h5 class="text-lg font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+                            <span>🔍</span> Analyze Selected Well
+                        </h5>
+                        <p class="text-sm text-slate-300 mb-4">Deep-dive into well data before planning your intervention</p>
+                        <div class="flex flex-wrap gap-3">
+                            <button id="analyze-integrity-btn"
+                                    class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg shadow-lg transition transform hover:scale-105 flex items-center gap-2">
+                                <span>🛡️</span> Analyze Well Integrity
+                            </button>
+                            <button id="view-3d-path-btn"
+                                    class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg shadow-lg transition transform hover:scale-105 flex items-center gap-2">
+                                <span>🎯</span> View 3D Well Path
+                            </button>
+                            <button id="view-pa-forecast-btn"
+                                    class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-lg shadow-lg transition transform hover:scale-105 flex items-center gap-2">
+                                <span>📊</span> P&A 30-Year Forecast
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <section id="data-scrubbing-panel" class="mt-12 hidden">
                     <div class="text-center mb-8">
                         <h4 class="text-xl font-semibold tracking-tight">How 666 Data Gets Scrubbed Before Planning</h4>
@@ -1971,6 +2000,108 @@
                         class="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold transition">
                     Got It
                 </button>
+            </div>
+        </div>
+
+        <!-- Tools Menu Modal -->
+        <div id="tools-menu-modal" class="hidden fixed inset-0 z-[2002] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <div class="bg-slate-900 border-2 border-cyan-500 rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-3xl font-bold text-cyan-400 flex items-center gap-3">
+                        <span>🛠️</span> WellTegra Tools
+                    </h2>
+                    <button id="tools-menu-close" class="text-slate-400 hover:text-white text-3xl font-bold px-3 py-1 hover:bg-slate-800 rounded-lg">×</button>
+                </div>
+
+                <p class="text-slate-300 mb-6">Quick access to all platform features and analysis tools</p>
+
+                <!-- Planning & Engineering -->
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-blue-400 mb-3 flex items-center gap-2">
+                        <span>🎯</span> Planning & Engineering
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <button data-tool="toolstring-configurator" class="tool-btn text-left p-4 bg-slate-800 hover:bg-cyan-900/30 border border-slate-700 hover:border-cyan-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white">🔧 Toolstring Configurator</div>
+                            <div class="text-xs text-slate-400 mt-1">Visual drag-and-drop tool assembly builder</div>
+                        </button>
+                        <button data-tool="equipment-catalog" class="tool-btn text-left p-4 bg-slate-800 hover:bg-cyan-900/30 border border-slate-700 hover:border-cyan-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white">🔧 Equipment Catalog</div>
+                            <div class="text-xs text-slate-400 mt-1">Browse and select equipment for interventions</div>
+                        </button>
+                        <button data-tool="3d-well-path" class="tool-btn text-left p-4 bg-slate-800 hover:bg-cyan-900/30 border border-slate-700 hover:border-cyan-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white">🎯 3D Well Path Viewer</div>
+                            <div class="text-xs text-slate-400 mt-1">Interactive wellbore trajectory visualization</div>
+                        </button>
+                        <button data-tool="pce-simulator" class="tool-btn text-left p-4 bg-slate-800 hover:bg-cyan-900/30 border border-slate-700 hover:border-cyan-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white">🏗️ PCE Simulator</div>
+                            <div class="text-xs text-slate-400 mt-1">3D BOP/PCE rig-up simulator</div>
+                        </button>
+                        <button data-tool="planner-v2" class="tool-btn text-left p-4 bg-slate-800 hover:bg-cyan-900/30 border border-slate-700 hover:border-cyan-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white">🎯 Engineering Cockpit</div>
+                            <div class="text-xs text-slate-400 mt-1">Unified workspace with procedures & monitoring</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Risk & Safety -->
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-red-400 mb-3 flex items-center gap-2">
+                        <span>⚠️</span> Risk & Safety
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <button data-tool="hse-risk-v2" class="tool-btn text-left p-4 bg-slate-800 hover:bg-red-900/30 border border-slate-700 hover:border-red-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white">🦺 HSE Risk Assessment</div>
+                            <div class="text-xs text-slate-400 mt-1">Comprehensive risk analysis</div>
+                        </button>
+                        <button data-tool="risk-grid" class="tool-btn text-left p-4 bg-slate-800 hover:bg-red-900/30 border border-slate-700 hover:border-red-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white">⚠️ Executive Risk Grid</div>
+                            <div class="text-xs text-slate-400 mt-1">Real-time risk dashboard</div>
+                        </button>
+                        <button data-tool="integrity-analyzer" class="tool-btn text-left p-4 bg-slate-800 hover:bg-red-900/30 border border-slate-700 hover:border-red-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white">🛡️ Well Integrity Analyzer</div>
+                            <div class="text-xs text-slate-400 mt-1">Deep-dive integrity analysis</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Commercial & Compliance -->
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-purple-400 mb-3 flex items-center gap-2">
+                        <span>💰</span> Commercial & Compliance
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <button data-tool="commercial-v2" class="tool-btn text-left p-4 bg-slate-800 hover:bg-purple-900/30 border border-slate-700 hover:border-purple-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white">💰 Commercial Dashboard</div>
+                            <div class="text-xs text-slate-400 mt-1">AFE tracking and cost management</div>
+                        </button>
+                        <button data-tool="sustainability-calculator" class="tool-btn text-left p-4 bg-slate-800 hover:bg-purple-900/30 border border-slate-700 hover:border-purple-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white">🌱 Sustainability Calculator</div>
+                            <div class="text-xs text-slate-400 mt-1">Carbon emissions tracking</div>
+                        </button>
+                        <button data-tool="audit-log-viewer" class="tool-btn text-left p-4 bg-slate-800 hover:bg-purple-900/30 border border-slate-700 hover:border-purple-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white">📝 Audit Log Viewer</div>
+                            <div class="text-xs text-slate-400 mt-1">Complete decision audit trail</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Analytics & Reporting -->
+                <div>
+                    <h3 class="text-xl font-semibold text-emerald-400 mb-3 flex items-center gap-2">
+                        <span>📊</span> Analytics & Reporting
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <button data-tool="pa-forecast" class="tool-btn text-left p-4 bg-slate-800 hover:bg-emerald-900/30 border border-slate-700 hover:border-emerald-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white">📊 P&A 30-Year Forecast</div>
+                            <div class="text-xs text-slate-400 mt-1">Long-term abandonment risk</div>
+                        </button>
+                        <button data-tool="visual-metrics" class="tool-btn text-left p-4 bg-slate-800 hover:bg-emerald-900/30 border border-slate-700 hover:border-emerald-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white">📈 Performance Metrics</div>
+                            <div class="text-xs text-slate-400 mt-1">KPI dashboards and trends</div>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
