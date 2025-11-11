@@ -419,13 +419,18 @@
             transform: translateX(-50%) translateY(-50%);
         }
         .hero-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(15, 23, 42, 0.8);
-            z-index: -50;
+            display: none;
+        }
+        .hero-section h1 {
+            text-shadow: 0 0 20px rgba(0, 0, 0, 1),
+                         0 0 40px rgba(0, 0, 0, 0.9),
+                         2px 2px 10px rgba(0, 0, 0, 1);
         }
         .hero-section h2 { text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); }
-        .hero-section p { text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); }
+        .hero-section p {
+            text-shadow: 0 0 15px rgba(0, 0, 0, 0.9),
+                         1px 1px 6px rgba(0, 0, 0, 0.8);
+        }
 
         /* --- Mobile Optimizations --- */
         @media (max-width: 640px) {
