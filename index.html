@@ -539,6 +539,10 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                         <span>White Paper</span>
                     </a>
+                    <a id="analytics-nav-link" href="#analytics-view" role="tab" aria-selected="false" aria-controls="analytics-view" title="Performance Analytics & Dashboards" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+                        <span>Analytics</span>
+                    </a>
                     <a id="data-nav-link" href="#data-view" role="tab" aria-selected="false" aria-controls="data-view" title="Download structured Well-Tegra datasets" class="nav-link flex items-center space-x-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"></path><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"></path></svg>
                         <span>Data Exports</span>
@@ -1011,6 +1015,102 @@
                 <a href="https://docs.google.com/document/d/1HEIv2E17aWXYltLh17FvDxc5Q3jWI7FA6fzU1JAhRwg/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="mt-8 inline-block rounded-md bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-500 transition">
                     Download the White Paper
                 </a>
+            </div>
+        </div>
+
+        <!-- Analytics View -->
+        <div id="analytics-view" class="view-container hidden max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold tracking-tight bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Performance Analytics & Dashboards</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-300">Comprehensive analytics, risk monitoring, and data visualization tools for well intervention operations</p>
+            </div>
+
+            <!-- Quick Launch Cards -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <button id="launch-risk-grid-btn" class="analytics-card p-6 bg-gradient-to-br from-red-900/30 to-orange-900/30 border-2 border-red-500/30 hover:border-red-500 rounded-xl transition transform hover:scale-105">
+                    <div class="text-4xl mb-3">⚠️</div>
+                    <h3 class="text-lg font-bold text-white mb-2">Risk Grid</h3>
+                    <p class="text-sm text-slate-300">Real-time risk dashboard</p>
+                </button>
+                <button id="launch-performance-metrics-btn" class="analytics-card p-6 bg-gradient-to-br from-emerald-900/30 to-cyan-900/30 border-2 border-emerald-500/30 hover:border-emerald-500 rounded-xl transition transform hover:scale-105">
+                    <div class="text-4xl mb-3">📈</div>
+                    <h3 class="text-lg font-bold text-white mb-2">Performance Metrics</h3>
+                    <p class="text-sm text-slate-300">KPIs and trends</p>
+                </button>
+                <button id="launch-data-flow-btn" class="analytics-card p-6 bg-gradient-to-br from-blue-900/30 to-purple-900/30 border-2 border-blue-500/30 hover:border-blue-500 rounded-xl transition transform hover:scale-105">
+                    <div class="text-4xl mb-3">📊</div>
+                    <h3 class="text-lg font-bold text-white mb-2">Data Flow</h3>
+                    <p class="text-sm text-slate-300">Quality pipeline</p>
+                </button>
+                <button id="launch-data-journey-btn" class="analytics-card p-6 bg-gradient-to-br from-purple-900/30 to-pink-900/30 border-2 border-purple-500/30 hover:border-purple-500 rounded-xl transition transform hover:scale-105">
+                    <div class="text-4xl mb-3">🔄</div>
+                    <h3 class="text-lg font-bold text-white mb-2">Data Journey</h3>
+                    <p class="text-sm text-slate-300">5-stage timeline</p>
+                </button>
+            </div>
+
+            <!-- Embedded Dashboards Section -->
+            <div class="space-y-8">
+                <!-- Risk Grid Embed -->
+                <div class="light-card p-6 rounded-xl border-2 border-red-500/30">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-red-400 flex items-center gap-2">
+                            <span>⚠️</span> Executive Risk Grid
+                        </h3>
+                        <button id="view-full-risk-grid-btn" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg transition text-sm">
+                            View Full Dashboard →
+                        </button>
+                    </div>
+                    <p class="text-slate-400 text-sm mb-4">Real-time portfolio risk monitoring with live updates</p>
+                    <div id="risk-grid-preview" class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                        <p class="text-slate-400 text-center py-8">Click "View Full Dashboard" to open the interactive Risk Grid</p>
+                    </div>
+                </div>
+
+                <!-- Performance Metrics Embed -->
+                <div class="light-card p-6 rounded-xl border-2 border-emerald-500/30">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-emerald-400 flex items-center gap-2">
+                            <span>📈</span> Performance Metrics
+                        </h3>
+                        <button id="view-full-metrics-btn" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition text-sm">
+                            View Full Dashboard →
+                        </button>
+                    </div>
+                    <p class="text-slate-400 text-sm mb-4">Key performance indicators and operational trends</p>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                            <div class="text-3xl font-bold text-emerald-400">15%</div>
+                            <div class="text-sm text-slate-400 mt-1">NPT Reduction</div>
+                        </div>
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                            <div class="text-3xl font-bold text-cyan-400">$2.4M</div>
+                            <div class="text-sm text-slate-400 mt-1">Cost Savings</div>
+                        </div>
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                            <div class="text-3xl font-bold text-blue-400">47</div>
+                            <div class="text-sm text-slate-400 mt-1">Jobs Completed</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Visualizations -->
+                <div class="light-card p-6 rounded-xl border-2 border-cyan-500/30">
+                    <h3 class="text-2xl font-bold text-cyan-400 flex items-center gap-2 mb-4">
+                        <span>📊</span> Data Quality Dashboards
+                    </h3>
+                    <p class="text-slate-400 text-sm mb-4">Visual analytics for data pipeline and processing workflows</p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <button id="open-flow-diagram-btn" class="text-left p-4 bg-slate-900/50 hover:bg-blue-900/30 border border-slate-700 hover:border-blue-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white mb-1">Flow Diagram</div>
+                            <div class="text-xs text-slate-400">3-stage data quality pipeline (Before/During/After)</div>
+                        </button>
+                        <button id="open-data-journey-btn" class="text-left p-4 bg-slate-900/50 hover:bg-purple-900/30 border border-slate-700 hover:border-purple-500/50 rounded-lg transition">
+                            <div class="font-semibold text-white mb-1">Data Journey Timeline</div>
+                            <div class="text-xs text-slate-400">5-stage visualization from collection to action</div>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
