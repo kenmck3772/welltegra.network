@@ -3807,6 +3807,67 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     });
 
+    // Analytics View Buttons
+    const launchRiskGridBtn = document.getElementById('launch-risk-grid-btn');
+    const viewFullRiskGridBtn = document.getElementById('view-full-risk-grid-btn');
+    if (launchRiskGridBtn) {
+        launchRiskGridBtn.addEventListener('click', () => {
+            window.FeatureLauncher.launch('risk-grid', { source: 'analytics-quick-launch' });
+        });
+    }
+    if (viewFullRiskGridBtn) {
+        viewFullRiskGridBtn.addEventListener('click', () => {
+            window.FeatureLauncher.launch('risk-grid', { source: 'analytics-embed' });
+        });
+    }
+
+    const launchPerformanceMetricsBtn = document.getElementById('launch-performance-metrics-btn');
+    const viewFullMetricsBtn = document.getElementById('view-full-metrics-btn');
+    if (launchPerformanceMetricsBtn) {
+        launchPerformanceMetricsBtn.addEventListener('click', () => {
+            window.FeatureLauncher.launch('visual-metrics', { source: 'analytics-quick-launch' });
+        });
+    }
+    if (viewFullMetricsBtn) {
+        viewFullMetricsBtn.addEventListener('click', () => {
+            window.FeatureLauncher.launch('visual-metrics', { source: 'analytics-embed' });
+        });
+    }
+
+    const launchDataFlowBtn = document.getElementById('launch-data-flow-btn');
+    const openFlowDiagramBtn = document.getElementById('open-flow-diagram-btn');
+    if (launchDataFlowBtn) {
+        launchDataFlowBtn.addEventListener('click', () => {
+            window.open('DASHBOARD_CONCEPT_01_FLOW_DIAGRAM.html', '_blank');
+        });
+    }
+    if (openFlowDiagramBtn) {
+        openFlowDiagramBtn.addEventListener('click', () => {
+            window.open('DASHBOARD_CONCEPT_01_FLOW_DIAGRAM.html', '_blank');
+        });
+    }
+
+    const launchDataJourneyBtn = document.getElementById('launch-data-journey-btn');
+    const openDataJourneyBtn = document.getElementById('open-data-journey-btn');
+    if (launchDataJourneyBtn) {
+        launchDataJourneyBtn.addEventListener('click', () => {
+            window.open('DASHBOARD_CONCEPT_03_DATA_JOURNEY.html', '_blank');
+        });
+    }
+    if (openDataJourneyBtn) {
+        openDataJourneyBtn.addEventListener('click', () => {
+            window.open('DASHBOARD_CONCEPT_03_DATA_JOURNEY.html', '_blank');
+        });
+    }
+
+    // Step 6: Post-Job Analysis button - Navigate to Analytics view
+    const reviewAnalysisBtnFinal = document.getElementById('review-analysis-btn-final');
+    if (reviewAnalysisBtnFinal) {
+        reviewAnalysisBtnFinal.addEventListener('click', () => {
+            switchView('analytics');
+        });
+    }
+
     if (addLogBtn && logInput) {
         addLogBtn.addEventListener('click', () => {
             addLogEntry('Operator', logInput.value);
