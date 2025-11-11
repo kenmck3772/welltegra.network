@@ -3043,6 +3043,24 @@ document.addEventListener('DOMContentLoaded', async function() {
                         </div>
                     </div>
                 </div>
+
+                <!-- Planning Tools -->
+                <div class="bg-gradient-to-br from-cyan-900/20 to-blue-900/20 border border-cyan-500/30 rounded-lg p-6">
+                    <h5 class="text-lg font-semibold text-cyan-400 mb-4 flex items-center gap-2">
+                        <span>🛠️</span> Planning Tools
+                    </h5>
+                    <p class="text-sm text-slate-300 mb-4">Use these tools to design and validate your intervention plan</p>
+                    <div class="flex flex-wrap gap-3">
+                        <button id="configure-toolstring-btn"
+                                class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg shadow-lg transition transform hover:scale-105 flex items-center gap-2">
+                            <span>🔧</span> Configure Toolstring
+                        </button>
+                        <button id="browse-equipment-btn"
+                                class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg shadow-lg transition transform hover:scale-105 flex items-center gap-2">
+                            <span>🔧</span> Browse Equipment
+                        </button>
+                    </div>
+                </div>
             </div>
         `;
 
@@ -3050,6 +3068,44 @@ document.addEventListener('DOMContentLoaded', async function() {
         const generateProgramBtn = document.getElementById('generate-program-btn');
         if (generateProgramBtn) {
             generateProgramBtn.disabled = false;
+        }
+
+        // Add event listeners for planning tools
+        const configureToolstringBtn = document.getElementById('configure-toolstring-btn');
+        if (configureToolstringBtn) {
+            configureToolstringBtn.addEventListener('click', () => {
+                window.FeatureLauncher.launch('toolstring-configurator', {
+                    wellId: appState.selectedWell.id,
+                    objective: objective.id,
+                    objectiveName: objective.name
+                }, {
+                    onClose: () => {
+                        console.log('Toolstring Configurator closed');
+                    },
+                    onData: (toolstring) => {
+                        console.log('User configured toolstring:', toolstring);
+                        // TODO: Store toolstring in appState
+                    }
+                });
+            });
+        }
+
+        const browseEquipmentBtn = document.getElementById('browse-equipment-btn');
+        if (browseEquipmentBtn) {
+            browseEquipmentBtn.addEventListener('click', () => {
+                window.FeatureLauncher.launch('equipment-catalog', {
+                    objectiveType: objective.id,
+                    objectiveName: objective.name
+                }, {
+                    onClose: () => {
+                        console.log('Equipment Catalog closed');
+                    },
+                    onData: (equipment) => {
+                        console.log('User selected equipment:', equipment);
+                        // TODO: Store equipment in appState
+                    }
+                });
+            });
         }
     };
 
@@ -3442,6 +3498,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                             </div>
                         `).join('')}
                     </div>
+                    <div class="mt-4 text-center">
+                        <button id="view-detailed-risk-btn"
+                                class="px-6 py-3 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg shadow-lg transition transform hover:scale-105 flex items-center gap-2 mx-auto">
+                            <span>🦺</span> View Detailed Risk Assessment
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -3465,6 +3527,27 @@ document.addEventListener('DOMContentLoaded', async function() {
         const step4ContinueBtn = document.getElementById('step-4-continue');
         if (step4ContinueBtn) {
             step4ContinueBtn.disabled = false;
+        }
+
+        // Add event listener for detailed risk assessment button
+        const viewDetailedRiskBtn = document.getElementById('view-detailed-risk-btn');
+        if (viewDetailedRiskBtn) {
+            viewDetailedRiskBtn.addEventListener('click', () => {
+                // Get the current payload to pass risk data
+                const payload = collectBrahanEnginePayload();
+
+                window.FeatureLauncher.launch('hse-risk-v2', {
+                    wellId: appState.selectedWell.id,
+                    wellName: appState.selectedWell.name,
+                    procedure: payload.proposed_engineering_plan,
+                    risks: payload.human_led_assessment.risk_profile,
+                    brahanAnalysis: response
+                }, {
+                    onLaunch: () => {
+                        console.log('HSE Risk Assessment launched');
+                    }
+                });
+            });
         }
     }
 
@@ -3510,6 +3593,101 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (step5ContinueBtn) {
         step5ContinueBtn.addEventListener('click', () => {
             updatePlannerStepUI(6);
+        });
+    }
+
+    // Step 5: Commercial Dashboard button
+    const openCommercialBtn = document.getElementById('open-commercial-btn');
+    if (openCommercialBtn) {
+        openCommercialBtn.addEventListener('click', () => {
+            const payload = collectBrahanEnginePayload();
+
+            window.FeatureLauncher.launch('commercial-v2', {
+                wellId: appState.selectedWell.id,
+                wellName: appState.selectedWell.name,
+                program: payload.proposed_engineering_plan,
+                cost: payload.human_led_assessment.estimated_cost,
+                duration: payload.human_led_assessment.estimated_duration
+            }, {
+                onLaunch: () => {
+                    console.log('Commercial Dashboard launched');
+                }
+            });
+        });
+    }
+
+    // Step 5: HSE & Risk Dashboard button
+    const openHSEBtn = document.getElementById('open-hse-btn');
+    if (openHSEBtn) {
+        openHSEBtn.addEventListener('click', () => {
+            const payload = collectBrahanEnginePayload();
+
+            window.FeatureLauncher.launch('hse-risk-v2', {
+                wellId: appState.selectedWell.id,
+                wellName: appState.selectedWell.name,
+                procedure: payload.proposed_engineering_plan,
+                risks: payload.human_led_assessment.risk_profile
+            }, {
+                onLaunch: () => {
+                    console.log('HSE Risk Dashboard launched');
+                }
+            });
+        });
+    }
+
+    // Step 5: Calculate Emissions button
+    const calculateEmissionsBtn = document.getElementById('calculate-emissions-btn');
+    if (calculateEmissionsBtn) {
+        calculateEmissionsBtn.addEventListener('click', () => {
+            const payload = collectBrahanEnginePayload();
+
+            window.FeatureLauncher.launch('sustainability-calculator', {
+                procedure: payload.proposed_engineering_plan,
+                duration: payload.human_led_assessment.estimated_duration,
+                wellType: appState.selectedWell.type
+            }, {
+                onClose: () => {
+                    console.log('Sustainability Calculator closed');
+                },
+                onData: (emissions) => {
+                    console.log('Calculated emissions:', emissions);
+                    // TODO: Store emissions in appState
+                }
+            });
+        });
+    }
+
+    // Step 6: Launch Engineering Cockpit button
+    const launchCockpitBtn = document.getElementById('launch-cockpit-btn');
+    if (launchCockpitBtn) {
+        launchCockpitBtn.addEventListener('click', () => {
+            const payload = collectBrahanEnginePayload();
+
+            window.FeatureLauncher.launch('planner-v2', {
+                wellId: appState.selectedWell.id,
+                wellName: appState.selectedWell.name,
+                procedure: payload.proposed_engineering_plan,
+                program: payload
+            }, {
+                onLaunch: () => {
+                    console.log('Engineering Cockpit launched');
+                }
+            });
+        });
+    }
+
+    // Step 6: View Audit Log button
+    const viewAuditLogBtn = document.getElementById('view-audit-log-btn');
+    if (viewAuditLogBtn) {
+        viewAuditLogBtn.addEventListener('click', () => {
+            window.FeatureLauncher.launch('audit-log-viewer', {
+                wellId: appState.selectedWell.id,
+                sessionId: Date.now() // Simple session tracking
+            }, {
+                onLaunch: () => {
+                    console.log('Audit Log Viewer launched');
+                }
+            });
         });
     }
 
