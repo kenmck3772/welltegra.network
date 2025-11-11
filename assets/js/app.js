@@ -652,7 +652,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         appState.currentView = viewName;
-        body.className = `theme-${localStorage.getItem('theme') || 'light'}`;
+        body.className = `theme-${localStorage.getItem('theme') || 'dark'}`;
         if (viewName === 'performer') {
             body.classList.add('theme-dark');
         }
@@ -665,9 +665,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (activeLink) {
             activeLink.classList.add('active');
         }
-        
-        headerDetails.innerHTML = ''; 
-        const theme = viewName === 'performer' ? 'dark' : localStorage.getItem('theme') || 'light';
+
+        headerDetails.innerHTML = '';
+        const theme = viewName === 'performer' ? 'dark' : localStorage.getItem('theme') || 'dark';
         setTheme(theme);
 
         let viewTitle = viewName.charAt(0).toUpperCase() + viewName.slice(1);
