@@ -585,31 +585,43 @@
     </div>
 
     <script>
-        // Interactive tooltip on hover
-        document.querySelectorAll('.data-point').forEach((point, index) => {
-            point.addEventListener('mouseenter', function() {
-                const years = [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30];
-                const probabilities = [2, 4, 6, 11, 20, 35, 40, 45, 38, 28, 25];
+        // Ensure DOM is fully loaded before attaching event listeners (Firefox compatibility)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Interactive tooltip on hover
+            const dataPoints = document.querySelectorAll('.data-point');
 
-                if (index < years.length) {
-                    const tooltip = document.createElement('div');
-                    tooltip.className = 'tooltip visible';
-                    tooltip.innerHTML = `
-                        <div class="tooltip-title">Year ${years[index]}</div>
-                        <div class="tooltip-item">Failure Risk: ${probabilities[index]}%</div>
-                        <div class="tooltip-item">Corrosion Depth: ${(0.2 * years[index]).toFixed(1)} mm</div>
-                    `;
-                    document.body.appendChild(tooltip);
+            if (dataPoints.length === 0) {
+                console.warn('P&A Forecast: No data points found on page');
+                return;
+            }
 
-                    const rect = point.getBoundingClientRect();
-                    tooltip.style.left = (rect.left + rect.width) + 'px';
-                    tooltip.style.top = (rect.top - 60) + 'px';
+            dataPoints.forEach((point, index) => {
+                point.addEventListener('mouseenter', function() {
+                    const years = [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 30, 30];
+                    const probabilities = [2, 4, 6, 11, 20, 35, 40, 45, 38, 28, 25, 25, 25];
 
-                    point.addEventListener('mouseleave', function() {
-                        tooltip.remove();
-                    });
-                }
+                    if (index < years.length) {
+                        const tooltip = document.createElement('div');
+                        tooltip.className = 'tooltip visible';
+                        tooltip.innerHTML = `
+                            <div class="tooltip-title">Year ${years[index]}</div>
+                            <div class="tooltip-item">Failure Risk: ${probabilities[index]}%</div>
+                            <div class="tooltip-item">Corrosion Depth: ${(0.2 * years[index]).toFixed(1)} mm</div>
+                        `;
+                        document.body.appendChild(tooltip);
+
+                        const rect = point.getBoundingClientRect();
+                        tooltip.style.left = (rect.left + rect.width) + 'px';
+                        tooltip.style.top = (rect.top - 60) + 'px';
+
+                        point.addEventListener('mouseleave', function() {
+                            tooltip.remove();
+                        }, { once: true });
+                    }
+                });
             });
+
+            console.log(`P&A Forecast: ${dataPoints.length} data points initialized successfully`);
         });
     </script>
 </body>

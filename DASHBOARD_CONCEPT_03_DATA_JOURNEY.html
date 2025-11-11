@@ -70,14 +70,26 @@
             gap: 40px;
             align-items: center;
             padding: 40px 20px;
+            /* Ensure visibility in all browsers */
+            visibility: visible;
+            opacity: 1;
         }
 
-        .stage-block.reverse {
-            direction: rtl;
+        /* Use explicit grid positioning instead of direction: rtl for better cross-browser compatibility */
+        .stage-block > *:first-child {
+            grid-column: 1;
         }
 
-        .stage-block.reverse > * {
-            direction: ltr;
+        .stage-block > *:last-child {
+            grid-column: 2;
+        }
+
+        .stage-block.reverse > *:first-child {
+            grid-column: 2;
+        }
+
+        .stage-block.reverse > *:last-child {
+            grid-column: 1;
         }
 
         .stage-content {
