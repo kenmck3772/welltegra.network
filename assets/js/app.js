@@ -558,21 +558,30 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Planner
 
-    const stepIndicators = { 
-        1: document.getElementById('step-1-indicator'), 
-        2: document.getElementById('step-2-indicator'), 
-        3: document.getElementById('step-3-indicator') 
+    const stepIndicators = {
+        1: document.getElementById('step-1-indicator'),
+        2: document.getElementById('step-2-indicator'),
+        3: document.getElementById('step-3-indicator'),
+        4: document.getElementById('step-4-indicator'),
+        5: document.getElementById('step-5-indicator'),
+        6: document.getElementById('step-6-indicator')
     };
-    
+
     const stepConnectors = {
         1: document.getElementById('step-1-connector'),
-        2: document.getElementById('step-2-connector')
+        2: document.getElementById('step-2-connector'),
+        3: document.getElementById('step-3-connector'),
+        4: document.getElementById('step-4-connector'),
+        5: document.getElementById('step-5-connector')
     };
-    
-    const stepSections = { 
-        1: document.getElementById('step-1'), 
-        2: document.getElementById('step-2'), 
-        3: document.getElementById('step-3') 
+
+    const stepSections = {
+        1: document.getElementById('step-1'),
+        2: document.getElementById('step-2'),
+        3: document.getElementById('step-3'),
+        4: document.getElementById('step-4'),
+        5: document.getElementById('step-5'),
+        6: document.getElementById('step-6')
     };
     
     const wellSelectionGrid = document.getElementById('well-selection-grid');
@@ -590,6 +599,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     const aiRecommendationsContainer = document.getElementById('ai-recommendations');
     const step1ContinueBtn = document.getElementById('step-1-continue');
     const step2ContinueBtn = document.getElementById('step-2-continue');
+    const step4ContinueBtn = document.getElementById('step-4-continue');
+    const step5ContinueBtn = document.getElementById('step-5-continue');
 
     // Performer
 
@@ -3195,6 +3206,310 @@ document.addEventListener('DOMContentLoaded', async function() {
         beginOpBtn.addEventListener('click', () => {
             if (!appState.generatedPlan) return;
             switchView('performer');
+        });
+    }
+
+    // --- BRAHAN ENGINE INTEGRATION ---
+
+    /**
+     * Collects all context data for the Brahan Engine
+     * @returns {Object} Formatted JSON payload matching Brahan Engine input spec
+     */
+    function collectBrahanEnginePayload() {
+        // Get the objective - either from manual selection or AI recommendation
+        let objective = appState.selectedObjective;
+        if (!objective && appState.ai.selectedRecommendation) {
+            objective = objectivesData.find(o => o.id === appState.ai.selectedRecommendation.objectiveId);
+        }
+
+        const procedure = proceduresData[objective.id];
+        const well = appState.selectedWell;
+
+        // Build the payload in the exact format specified by the Brahan Engine prompt
+        return {
+            target_well: {
+                id: well.id + ' - ' + well.name,
+                type: well.type,
+                status: well.status,
+                known_issues: [well.issue],
+                depth: well.depth
+            },
+            selected_intervention_objective: {
+                title: objective.name,
+                description: objective.description
+            },
+            proposed_engineering_plan: procedure.steps,
+            human_led_assessment: {
+                estimated_cost: (procedure.cost / 1000000).toFixed(2) + 'M',
+                estimated_duration: procedure.duration + ' days',
+                overall_risk_score: Math.round((procedure.risks.operational + procedure.risks.equipment + procedure.risks.hse) / 3) + '/5',
+                risk_profile: {
+                    operational: procedure.risks.operational + '/5',
+                    geological: procedure.risks.geological + '/5',
+                    equipment: procedure.risks.equipment + '/5',
+                    hse: procedure.risks.hse + '/5',
+                    financial: procedure.risks.financial + '/5'
+                }
+            },
+            reference_offset_well_data: [
+                {
+                    id: 'The Brahan Squeeze (Case Study)',
+                    type: 'HPHT Gas Producer',
+                    status: 'Active - Restored Production',
+                    lessons_learned: [
+                        'Initial deformation remediation on this field took 11 days, not 8, due to unexpected setting tool failures.',
+                        'High operational risk (4/5) on similar jobs was linked to failure to perform adequate pre-job-simulation of hydraulic setting pressures.',
+                        'Equipment risk (4/5) was realized when the first-choice expandable patch failed to set, requiring a 2-day POOH and contingency mobilization.'
+                    ]
+                }
+            ]
+        };
+    }
+
+    /**
+     * Simulates the Brahan Engine AI response
+     * In production, this would call a backend API
+     * @param {Object} payload - The input payload
+     * @returns {Object} Formatted Brahan Engine response with analysis
+     */
+    function simulateBrahanEngineResponse(payload) {
+        // Mock AI response based on the payload
+        const isHighRisk = payload.human_led_assessment.risk_profile.operational === '4/5' &&
+                           payload.human_led_assessment.risk_profile.equipment === '4/5';
+
+        const duration = parseInt(payload.human_led_assessment.estimated_duration);
+        const cost = parseFloat(payload.human_led_assessment.estimated_cost);
+
+        // AI increases estimates based on offset data
+        const aiDuration = {
+            p50: duration + 2,
+            p90: duration + 3
+        };
+        const aiCost = {
+            p50: (cost * 1.15).toFixed(2) + 'M',
+            p90: (cost * 1.25).toFixed(2) + 'M'
+        };
+
+        return {
+            executive_summary: isHighRisk
+                ? `This plan is **feasible**, but the ${duration}-day estimate is **highly optimistic**. Historical data from **The Brahan Squeeze** case study shows similar jobs took ${aiDuration.p50} days (P50) due to setting tool failures. The high operational and equipment risk scores are validated by offset data.`
+                : `This plan is **feasible** with moderate risk. The ${duration}-day estimate aligns with historical data, though contingency time should be added for equipment-related delays.`,
+
+            validated_program: {
+                steps: payload.proposed_engineering_plan,
+                cost_analysis: {
+                    human_estimate: payload.human_led_assessment.estimated_cost,
+                    ai_estimate_p50: aiCost.p50,
+                    ai_estimate_p90: aiCost.p90,
+                    rationale: isHighRisk
+                        ? `The Brahan Squeeze case study shows contingency costs for backup equipment and extended rig time average 15-25% over initial estimates for high-risk operations.`
+                        : `Cost estimate is reasonable based on historical data for similar interventions.`
+                },
+                duration_analysis: {
+                    human_estimate: payload.human_led_assessment.estimated_duration,
+                    ai_estimate_p50: aiDuration.p50 + ' days',
+                    ai_estimate_p90: aiDuration.p90 + ' days',
+                    rationale: isHighRisk
+                        ? `Historical analysis shows setting tool failures and contingency mobilization add 2-3 days. The Brahan Squeeze took 11 days vs. planned 8 days.`
+                        : `Duration estimate aligns with offset data for similar operations.`
+                }
+            },
+
+            key_risks: [
+                {
+                    risk: 'Patch Setting Failure',
+                    probability: 'High (4/5)',
+                    impact: 'Critical',
+                    mitigation: 'Pre-job: Conduct full-scale hydraulic simulation of setting tool with vendor. Verify setting pressure compatibility with wellbore conditions.'
+                },
+                {
+                    risk: 'Equipment Failure',
+                    probability: 'High (4/5)',
+                    impact: 'Major',
+                    mitigation: 'Contingency: Mobilize backup expandable patch assembly to rig site before job starts. Reduces delay from 48hrs to 4hrs.'
+                },
+                {
+                    risk: 'Wellbore Access Issues',
+                    probability: 'Medium (3/5)',
+                    impact: 'Major',
+                    mitigation: 'Pre-job: Run gauge ring and scraper on first trip. If restrictions found, consider additional cleanout run before patch deployment.'
+                }
+            ],
+
+            recommendations: [
+                '**Pre-job Simulation:** Conduct full-scale hydraulic simulation of setting tool to validate setting pressures match wellbore conditions.',
+                '**Contingency Planning:** Mobilize backup expandable patch to rig site before job commencement to reduce NPT from equipment failure.',
+                '**Wellbore Survey:** Run advanced caliper log to map exact deformation geometry and confirm patch length/placement.',
+                '**Lessons Applied:** Review failure mode from The Brahan Squeeze case study with operations team before execution.'
+            ]
+        };
+    }
+
+    /**
+     * Renders the Brahan Engine output in Step 4
+     * @param {Object} response - The Brahan Engine response object
+     */
+    function renderBrahanEngineOutput(response) {
+        const planOutput = document.getElementById('plan-output');
+        if (!planOutput) return;
+
+        // Build the HTML for the Brahan Engine output
+        planOutput.innerHTML = `
+            <!-- Executive Summary -->
+            <div class="light-card p-6 rounded-lg border-l-4 border-teal-500">
+                <h4 class="text-xl font-bold text-teal-600 dark:text-teal-400 mb-3 flex items-center">
+                    <span class="mr-2">🧠</span> Executive Summary
+                </h4>
+                <p class="text-slate-700 dark:text-slate-300 leading-relaxed">${response.executive_summary}</p>
+            </div>
+
+            <!-- Validated Program & Risk Analysis -->
+            <div class="light-card p-6 rounded-lg">
+                <h4 class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-4 flex items-center">
+                    <span class="mr-2">📋</span> Validated Program & Risk Analysis
+                </h4>
+
+                <!-- Program Steps -->
+                <div class="mb-6">
+                    <h5 class="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-3">Engineering Steps</h5>
+                    <ol class="space-y-2 text-sm">
+                        ${response.validated_program.steps.map((step, i) => `
+                            <li class="flex">
+                                <span class="font-bold text-teal-600 dark:text-teal-400 mr-3">${i + 1}.</span>
+                                <span class="text-slate-700 dark:text-slate-300">${escapeHtml(step)}</span>
+                            </li>
+                        `).join('')}
+                    </ol>
+                </div>
+
+                <!-- Data-Driven Critique -->
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <!-- Cost Analysis -->
+                    <div class="bg-slate-100 dark:bg-slate-800/50 rounded-lg p-4">
+                        <h5 class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3 uppercase tracking-wide">Cost Analysis</h5>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-slate-500 dark:text-slate-400">Human Estimate:</span>
+                                <span class="font-bold text-slate-700 dark:text-slate-300">$${response.validated_program.cost_analysis.human_estimate}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500 dark:text-slate-400">AI Estimate (P50):</span>
+                                <span class="font-bold text-amber-600 dark:text-amber-400">$${response.validated_program.cost_analysis.ai_estimate_p50}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500 dark:text-slate-400">AI Estimate (P90):</span>
+                                <span class="font-bold text-red-600 dark:text-red-400">$${response.validated_program.cost_analysis.ai_estimate_p90}</span>
+                            </div>
+                        </div>
+                        <p class="mt-3 text-xs text-slate-600 dark:text-slate-400 italic">${response.validated_program.cost_analysis.rationale}</p>
+                    </div>
+
+                    <!-- Duration Analysis -->
+                    <div class="bg-slate-100 dark:bg-slate-800/50 rounded-lg p-4">
+                        <h5 class="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3 uppercase tracking-wide">Duration Analysis</h5>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-slate-500 dark:text-slate-400">Human Estimate:</span>
+                                <span class="font-bold text-slate-700 dark:text-slate-300">${response.validated_program.duration_analysis.human_estimate}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500 dark:text-slate-400">AI Estimate (P50):</span>
+                                <span class="font-bold text-amber-600 dark:text-amber-400">${response.validated_program.duration_analysis.ai_estimate_p50}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500 dark:text-slate-400">AI Estimate (P90):</span>
+                                <span class="font-bold text-red-600 dark:text-red-400">${response.validated_program.duration_analysis.ai_estimate_p90}</span>
+                            </div>
+                        </div>
+                        <p class="mt-3 text-xs text-slate-600 dark:text-slate-400 italic">${response.validated_program.duration_analysis.rationale}</p>
+                    </div>
+                </div>
+
+                <!-- Key Risk Dashboard -->
+                <div class="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 rounded-lg p-4">
+                    <h5 class="text-lg font-semibold text-red-700 dark:text-red-400 mb-3 flex items-center">
+                        <span class="mr-2">⚠️</span> Top 3 Risks
+                    </h5>
+                    <div class="space-y-3">
+                        ${response.key_risks.map((risk, i) => `
+                            <div class="bg-white dark:bg-slate-800 rounded-lg p-4 border-l-4 ${i === 0 ? 'border-red-500' : i === 1 ? 'border-orange-500' : 'border-yellow-500'}">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h6 class="font-bold text-slate-800 dark:text-slate-200">${i + 1}. ${escapeHtml(risk.risk)}</h6>
+                                    <span class="text-xs font-semibold px-2 py-1 rounded ${i === 0 ? 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300' : 'bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-300'}">${escapeHtml(risk.probability)}</span>
+                                </div>
+                                <p class="text-xs text-slate-600 dark:text-slate-400 mb-2"><strong>Impact:</strong> ${escapeHtml(risk.impact)}</p>
+                                <p class="text-xs text-slate-700 dark:text-slate-300"><strong>Mitigation:</strong> ${escapeHtml(risk.mitigation)}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actionable Recommendations -->
+            <div class="light-card p-6 rounded-lg border-l-4 border-emerald-500">
+                <h4 class="text-xl font-bold text-emerald-600 dark:text-emerald-400 mb-4 flex items-center">
+                    <span class="mr-2">💡</span> Actionable Recommendations (Lessons Learned)
+                </h4>
+                <ul class="space-y-3">
+                    ${response.recommendations.map(rec => `
+                        <li class="flex items-start">
+                            <span class="text-emerald-500 mr-2 mt-1">✓</span>
+                            <span class="text-slate-700 dark:text-slate-300">${rec}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        `;
+
+        // Enable the continue button
+        const step4ContinueBtn = document.getElementById('step-4-continue');
+        if (step4ContinueBtn) {
+            step4ContinueBtn.disabled = false;
+        }
+    }
+
+    // "Generate Integrated Program" button event listener
+    const generateProgramBtn = document.getElementById('generate-program-btn');
+    if (generateProgramBtn) {
+        generateProgramBtn.addEventListener('click', () => {
+            // Show loading state
+            generateProgramBtn.disabled = true;
+            generateProgramBtn.textContent = 'Generating...';
+
+            // Simulate API call delay
+            setTimeout(() => {
+                // Collect payload
+                const payload = collectBrahanEnginePayload();
+                console.log('Brahan Engine Payload:', payload);
+
+                // Simulate AI response
+                const response = simulateBrahanEngineResponse(payload);
+                console.log('Brahan Engine Response:', response);
+
+                // Render output
+                renderBrahanEngineOutput(response);
+
+                // Navigate to Step 4
+                updatePlannerStepUI(4);
+
+                // Reset button
+                generateProgramBtn.disabled = false;
+                generateProgramBtn.textContent = 'Generate Integrated Program';
+            }, 1500); // 1.5 second delay to simulate API call
+        });
+    }
+
+    // Step 4 Continue button event listener
+    if (step4ContinueBtn) {
+        step4ContinueBtn.addEventListener('click', () => {
+            updatePlannerStepUI(5);
+        });
+    }
+
+    // Step 5 Continue button event listener
+    if (step5ContinueBtn) {
+        step5ContinueBtn.addEventListener('click', () => {
+            updatePlannerStepUI(6);
         });
     }
 
