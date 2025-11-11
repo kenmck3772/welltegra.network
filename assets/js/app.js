@@ -2882,7 +2882,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 welcomeScreen.classList.add('hidden');
                 appContainer.classList.remove('hidden');
                 appContainer.classList.add('flex');
-                const savedTheme = localStorage.getItem('theme') || 'light';
+                const savedTheme = localStorage.getItem('theme') || 'dark';
                 setTheme(savedTheme);
                 switchView('home');
             }, 500);
