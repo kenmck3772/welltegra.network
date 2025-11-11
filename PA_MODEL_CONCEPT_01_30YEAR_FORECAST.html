@@ -601,13 +601,28 @@
                     const probabilities = [2, 4, 6, 11, 20, 35, 40, 45, 38, 28, 25, 25, 25];
 
                     if (index < years.length) {
+                        // Create tooltip with safe DOM manipulation (no innerHTML)
                         const tooltip = document.createElement('div');
                         tooltip.className = 'tooltip visible';
-                        tooltip.innerHTML = `
-                            <div class="tooltip-title">Year ${years[index]}</div>
-                            <div class="tooltip-item">Failure Risk: ${probabilities[index]}%</div>
-                            <div class="tooltip-item">Corrosion Depth: ${(0.2 * years[index]).toFixed(1)} mm</div>
-                        `;
+
+                        // Create and append title
+                        const title = document.createElement('div');
+                        title.className = 'tooltip-title';
+                        title.textContent = 'Year ' + years[index];
+                        tooltip.appendChild(title);
+
+                        // Create and append failure risk item
+                        const riskItem = document.createElement('div');
+                        riskItem.className = 'tooltip-item';
+                        riskItem.textContent = 'Failure Risk: ' + probabilities[index] + '%';
+                        tooltip.appendChild(riskItem);
+
+                        // Create and append corrosion depth item
+                        const corrosionItem = document.createElement('div');
+                        corrosionItem.className = 'tooltip-item';
+                        corrosionItem.textContent = 'Corrosion Depth: ' + (0.2 * years[index]).toFixed(1) + ' mm';
+                        tooltip.appendChild(corrosionItem);
+
                         document.body.appendChild(tooltip);
 
                         const rect = point.getBoundingClientRect();
