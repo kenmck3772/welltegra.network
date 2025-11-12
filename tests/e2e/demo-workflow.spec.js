@@ -30,8 +30,8 @@ test.describe('Demo Workflow - Complete 5-Act Narrative', () => {
 
   test('Act 1: Dashboard displays well overview and status', async ({ page }) => {
     // Verify dashboard is visible
-    const dashboardView = page.locator('#dashboard-view');
-    await expect(dashboardView).toBeVisible();
+    const homeView = page.locator('#home-view');
+    await expect(homeView).toBeVisible();
 
     // Check for well cards
     const wellCards = page.locator('.well-card');
@@ -217,7 +217,7 @@ test.describe('Demo Workflow - Complete 5-Act Narrative', () => {
     // This test runs through the entire workflow in sequence
 
     // Act 1: Dashboard
-    await expect(page.locator('#dashboard-view')).toBeVisible();
+    await expect(page.locator('#home-view')).toBeVisible();
 
     // Act 2: Navigate to Planner
     const plannerNav = page.locator('#planner-nav-link, a:has-text("Planner")');

@@ -13,7 +13,7 @@ export default defineConfig({
   ],
   outputDir: 'test-results',
   use: {
-    baseURL: 'file://' + process.cwd(),
+    baseURL: 'http://127.0.0.1:8080',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
