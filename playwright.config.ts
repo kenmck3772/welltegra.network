@@ -26,6 +26,12 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         video: 'on',
         videoDir: 'test-videos',
+        launchOptions: {
+          args: [
+            '--disable-dev-shm-usage',
+            '--no-sandbox'
+          ],
+        },
       },
     },
 

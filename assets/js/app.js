@@ -675,9 +675,75 @@ document.addEventListener('DOMContentLoaded', async function() {
         ]
     };
     const proceduresData = {
-        obj1: { 
-            name: "Expandable Casing Patch Installation", 
-            personnel: ["Wellsite Engineer", "HWU Supervisor"], 
+        // ========== P&A STRATEGIC PIVOT: P&A PROCEDURES ==========
+        'pa-obj1': {
+            name: "Permanent Plug & Abandonment (Full Decommissioning)",
+            personnel: ["P&A Engineer", "Cementing Supervisor", "Rig Supervisor"],
+            steps: [
+                "Perform wellbore cleanout and condition check.",
+                "Set first permanent barrier at reservoir interval.",
+                "Test and verify barrier integrity (pressure test).",
+                "Set additional barriers per regulatory requirements.",
+                "Remove wellhead and cut casing below mudline.",
+                "Complete regulatory documentation and final survey."
+            ],
+            risks: { operational: 5, geological: 3, equipment: 4, hse: 4, financial: 5 },
+            cost: 4200000,
+            duration: 28,
+            tfaModel: { pickUp: [[0,0], [18500, 80]], slackOff: [[0,0], [18500, -80]], alarmUpper: [[0,10], [18500, 90]], alarmLower: [[0,-10], [18500, -90]] }
+        },
+        'pa-obj2': {
+            name: "P&A Pre-Op: Zone Isolation",
+            personnel: ["P&A Engineer", "Cementing Supervisor"],
+            steps: [
+                "Perform wellbore survey to identify target zones.",
+                "Set isolation bridge plug at designated depth.",
+                "Place cement barrier above plug.",
+                "Pressure test barrier to regulatory standards.",
+                "Document barrier integrity results."
+            ],
+            risks: { operational: 4, geological: 2, equipment: 3, hse: 3, financial: 3 },
+            cost: 1500000,
+            duration: 9,
+            tfaModel: { pickUp: [[0,0], [12000, 50]], slackOff: [[0,0], [12000, -50]], alarmUpper: [[0,8], [12000, 58]], alarmLower: [[0,-8], [12000, -58]] }
+        },
+        'pa-obj3': {
+            name: "P&A Pre-Op: Casing Remediation",
+            personnel: ["P&A Engineer", "Milling Supervisor", "HWU Supervisor"],
+            steps: [
+                "Perform casing integrity survey (multi-finger caliper).",
+                "Apply chemical pre-treatment to scale/deposits.",
+                "Mill or patch casing as needed for barrier contact.",
+                "Clean wellbore to ensure competent formation access.",
+                "Verify casing condition with final survey.",
+                "Prepare for permanent barrier placement."
+            ],
+            risks: { operational: 5, geological: 3, equipment: 5, hse: 4, financial: 4 },
+            cost: 2800000,
+            duration: 16,
+            tfaModel: { pickUp: [[0,0], [18500, 75]], slackOff: [[0,0], [18500, -75]], alarmUpper: [[0,10], [18500, 85]], alarmLower: [[0,-10], [18500, -85]] }
+        },
+        'pa-obj4': {
+            name: "Set Permanent Environmental Barrier",
+            personnel: ["Cementing Supervisor", "P&A Engineer"],
+            steps: [
+                "Verify formation competency via logs.",
+                "Mix and pump cement slurry per design.",
+                "Wait on cement (WOC) per regulatory requirements.",
+                "Run cement bond log to verify quality.",
+                "Pressure test barrier to 1.5x formation pressure.",
+                "Document results for regulatory submission."
+            ],
+            risks: { operational: 3, geological: 3, equipment: 3, hse: 3, financial: 4 },
+            cost: 1100000,
+            duration: 6,
+            tfaModel: { pickUp: [[0,0], [15000, 60]], slackOff: [[0,0], [15000, -60]], alarmUpper: [[0,8], [15000, 68]], alarmLower: [[0,-8], [15000, -68]] }
+        },
+
+        // ========== LEGACY PRODUCTION INTERVENTION PROCEDURES ==========
+        'legacy-obj1': {
+            name: "Expandable Casing Patch Installation",
+            personnel: ["Wellsite Engineer", "HWU Supervisor"],
             steps: [
                 "Perform wellbore cleanout trip with scraper and gauge ring.",
                 "RIH with expandable patch on jointed pipe.",
@@ -685,15 +751,15 @@ document.addEventListener('DOMContentLoaded', async function() {
                 "Set patch using hydraulic setting tool.",
                 "Pressure test patch to verify seal.",
                 "POOH and return well to service."
-            ], 
-            risks: { operational: 4, geological: 2, equipment: 4, hse: 3, financial: 3 }, 
-            cost: 1200000, 
-            duration: 8, 
-            tfaModel: { pickUp: [[0,0], [9000, 60]], slackOff: [[0,0], [9000, -60]], alarmUpper: [[0,10], [9000, 70]], alarmLower: [[0,-10], [9000, -70]] } 
+            ],
+            risks: { operational: 4, geological: 2, equipment: 4, hse: 3, financial: 3 },
+            cost: 1200000,
+            duration: 8,
+            tfaModel: { pickUp: [[0,0], [9000, 60]], slackOff: [[0,0], [9000, -60]], alarmUpper: [[0,10], [9000, 70]], alarmLower: [[0,-10], [9000, -70]] }
         },
-        obj2: { 
-            name: "CT Chemical & Mechanical Scale Removal", 
-            personnel: ["Coiled Tubing Supervisor", "Pump Operator"], 
+        'legacy-obj2': {
+            name: "CT Chemical & Mechanical Scale Removal",
+            personnel: ["Coiled Tubing Supervisor", "Pump Operator"],
             steps: [
                 "RIH with CT and spot DTPA chemical dissolver across scale.",
                 "POOH with CT and let chemical soak for 36 hours.",
@@ -701,15 +767,15 @@ document.addEventListener('DOMContentLoaded', async function() {
                 "Mechanically break up and circulate out softened scale.",
                 "Circulate well clean and POOH.",
                 "Return well to production."
-            ], 
-            risks: { operational: 5, geological: 2, equipment: 4, hse: 4, financial: 3 }, 
-            cost: 950000, 
-            duration: 6, 
-            tfaModel: { pickUp: [[0,0], [14500, 35]], slackOff: [[0,0], [14500, -35]], alarmUpper: [[0,2], [14500, 37]], alarmLower: [[0,-2], [14500, -37]] } 
+            ],
+            risks: { operational: 5, geological: 2, equipment: 4, hse: 4, financial: 3 },
+            cost: 950000,
+            duration: 6,
+            tfaModel: { pickUp: [[0,0], [14500, 35]], slackOff: [[0,0], [14500, -35]], alarmUpper: [[0,2], [14500, 37]], alarmLower: [[0,-2], [14500, -37]] }
         },
-        obj3: { 
-            name: "Slickline Insert Safety Valve Installation", 
-            personnel: ["Slickline Supervisor"], 
+        'legacy-obj3': {
+            name: "Slickline Insert Safety Valve Installation",
+            personnel: ["Slickline Supervisor"],
             steps: [
                 "RIH with heavy-duty toolstring and mechanically lock open the failed TRSSV.",
                 "POOH and confirm lock-open.",
@@ -718,30 +784,30 @@ document.addEventListener('DOMContentLoaded', async function() {
                 "Pressure up control line to hold new valve open, then retrieve running tool.",
                 "Perform full inflow and function test of new valve to certify.",
                 "Return well to production."
-            ], 
-            risks: { operational: 3, geological: 1, equipment: 4, hse: 3, financial: 2 }, 
-            cost: 350000, 
-            duration: 3, 
-            tfaModel: { pickUp: [[0, 100], [9800, 160]], slackOff: [[0, 100], [9800, 40]], alarmUpper: [[0, 110], [9800, 170]], alarmLower: [[0, 90], [9800, 30]] } 
+            ],
+            risks: { operational: 3, geological: 1, equipment: 4, hse: 3, financial: 2 },
+            cost: 350000,
+            duration: 3,
+            tfaModel: { pickUp: [[0, 100], [9800, 160]], slackOff: [[0, 100], [9800, 40]], alarmUpper: [[0, 110], [9800, 170]], alarmLower: [[0, 90], [9800, 30]] }
         },
-        obj4: { 
-            name: "Through-Tubing ESS Patch Installation", 
-            personnel: ["Wellsite Engineer", "HWU Supervisor"], 
+        'legacy-obj4': {
+            name: "Through-Tubing ESS Patch Installation",
+            personnel: ["Wellsite Engineer", "HWU Supervisor"],
             steps: [
                 "Perform CT cleanout of sand from inside existing screen.",
                 "RIH with Expandable Sand Screen (ESS) patch on jointed pipe.",
                 "Position patch across failed screen interval.",
                 "Expand patch using mechanical expansion tool.",
                 "POOH and slowly bring well back online, monitoring sand production."
-            ], 
-            risks: { operational: 4, geological: 3, equipment: 5, hse: 3, financial: 4 }, 
-            cost: 1500000, 
-            duration: 10, 
-            tfaModel: { pickUp: [[0,0], [10000, 50]], slackOff: [[0,0], [10000, -50]], alarmUpper: [[0,5], [10000, 55]], alarmLower: [[0,-5], [10000, -55]] } 
+            ],
+            risks: { operational: 4, geological: 3, equipment: 5, hse: 3, financial: 4 },
+            cost: 1500000,
+            duration: 10,
+            tfaModel: { pickUp: [[0,0], [10000, 50]], slackOff: [[0,0], [10000, -50]], alarmUpper: [[0,5], [10000, 55]], alarmLower: [[0,-5], [10000, -55]] }
         },
-        obj5: { 
-            name: "CT Wax Removal", 
-            personnel: ["Coiled Tubing Supervisor", "Pump Operator"], 
+        'legacy-obj5': {
+            name: "CT Wax Removal",
+            personnel: ["Coiled Tubing Supervisor", "Pump Operator"],
             steps: [
                 "Rig up Coiled Tubing unit.",
                 "Pump heated solvent to dissolve wax.",
@@ -749,19 +815,25 @@ document.addEventListener('DOMContentLoaded', async function() {
                 "Circulate well clean with hot fluid.",
                 "POOH with CT.",
                 "Return well to production."
-            ], 
-            risks: { operational: 4, geological: 2, equipment: 3, hse: 3, financial: 2 }, 
-            cost: 650000, 
-            duration: 4, 
-            tfaModel: { pickUp: [[0,0], [7500, 20]], slackOff: [[0,0], [7500, -20]], alarmUpper: [[0,2], [7500, 22]], alarmLower: [[0,-2], [7500, -22]] } 
+            ],
+            risks: { operational: 4, geological: 2, equipment: 3, hse: 3, financial: 2 },
+            cost: 650000,
+            duration: 4,
+            tfaModel: { pickUp: [[0,0], [7500, 20]], slackOff: [[0,0], [7500, -20]], alarmUpper: [[0,2], [7500, 22]], alarmLower: [[0,-2], [7500, -22]] }
         }
     };
     const equipmentRequirements = {
-        obj1: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Steel Patch & Setting Tool", source: "Vendor", price: 500000 } ],
-        obj2: [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Rotating Jetting Nozzle", source: "Vendor", price: 25000 }, { name: "DTPA Chemical", source: "Vendor", price: 80000 } ],
-        obj3: [ { name: "Slickline Unit", source: "Vendor", price: 75000 }, { name: "Insert Safety Valve (WRSV)", source: "Vendor", price: 150000 }, { name: "Lock-Open Tool", source: "Vendor", price: 20000 } ],
-        obj4: [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Sand Screen & Expansion Tool", source: "Vendor", price: 600000 } ],
-        obj5: [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Wax Dissolver Chemical", source: "Vendor", price: 50000 }, { name: "Mechanical Scraper BHA", source: "Vendor", price: 15000 } ]
+        // P&A objectives equipment
+        'pa-obj1': [ { name: "P&A Workover Rig", source: "Vendor", price: 2500000 }, { name: "Cementing Services", source: "Vendor", price: 800000 }, { name: "Wellhead Removal Equipment", source: "Vendor", price: 200000 } ],
+        'pa-obj2': [ { name: "Bridge Plug System", source: "Vendor", price: 150000 }, { name: "Cementing Services", source: "Vendor", price: 400000 } ],
+        'pa-obj3': [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 400000 }, { name: "Milling BHA & Tools", source: "Vendor", price: 300000 }, { name: "Chemical Treatment Package", source: "Vendor", price: 180000 } ],
+        'pa-obj4': [ { name: "Cementing Services", source: "Vendor", price: 350000 }, { name: "Cement Bond Logging", source: "Vendor", price: 120000 } ],
+        // Legacy intervention objectives equipment
+        'legacy-obj1': [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Steel Patch & Setting Tool", source: "Vendor", price: 500000 } ],
+        'legacy-obj2': [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Rotating Jetting Nozzle", source: "Vendor", price: 25000 }, { name: "DTPA Chemical", source: "Vendor", price: 80000 } ],
+        'legacy-obj3': [ { name: "Slickline Unit", source: "Vendor", price: 75000 }, { name: "Insert Safety Valve (WRSV)", source: "Vendor", price: 150000 }, { name: "Lock-Open Tool", source: "Vendor", price: 20000 } ],
+        'legacy-obj4': [ { name: "Hydraulic Workover Unit (HWU)", source: "Vendor", price: 300000 }, { name: "Expandable Sand Screen & Expansion Tool", source: "Vendor", price: 600000 } ],
+        'legacy-obj5': [ { name: "Coiled Tubing Unit", source: "Vendor", price: 125000 }, { name: "Wax Dissolver Chemical", source: "Vendor", price: 50000 }, { name: "Mechanical Scraper BHA", source: "Vendor", price: 15000 } ]
     };
     const equipmentData = [ 
         { id: 'CTU-01', type: 'Coiled Tubing Unit', location: 'Onboard - Deck A', testStatus: 'Passed', nextMaint: '2025-09-15', rate: 25000, status: 'On Job' }, 

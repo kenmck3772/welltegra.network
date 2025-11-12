@@ -3,8 +3,10 @@
  */
 
 const { test, expect } = require('@playwright/test');
+const { setupCDNMocks } = require('../fixtures/cdn-mock.js');
 
 test('Simple page loads successfully', async ({ page }) => {
+  await setupCDNMocks(page);
   console.log('Testing simple page load...');
 
   const response = await page.goto('http://localhost:8080/test-simple.html', {
@@ -24,6 +26,7 @@ test('Simple page loads successfully', async ({ page }) => {
 });
 
 test('Index page loads without crashing', async ({ page }) => {
+  await setupCDNMocks(page);
   console.log('Testing index.html load...');
 
   const response = await page.goto('http://localhost:8080/index.html', {
