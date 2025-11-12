@@ -25,12 +25,12 @@ const ROLE_TEMPLATES = {
         ]
     },
     'supervisor': {
-        name: "Supervisor View",
-        description: "Oversight, approvals, and team management",
+        name: "P&A Manager View",
+        description: "P&A oversight, liability tracking, and regulatory compliance",
         layout: [
+            { type: "pa-liability-tracker", size: "widget-xl" },
+            { type: "pa-risk-dashboard", size: "widget-lg" },
             { type: "well-portfolio", size: "widget-md" },
-            { type: "brahan-engine", size: "widget-md" },
-            { type: "active-wells", size: "widget-md" },
             { type: "pending-approvals", size: "widget-md" }
         ]
     },

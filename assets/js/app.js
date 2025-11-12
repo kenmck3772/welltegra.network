@@ -355,35 +355,323 @@ document.addEventListener('DOMContentLoaded', async function() {
             return false;
         }
     }
-    const objectivesData = [ 
-        { id: 'obj1', name: 'Remediate Casing Deformation', description: 'Install an expandable steel patch to restore wellbore access.', icon: '🔧' }, 
-        { id: 'obj2', name: 'Remove BaSO4 Scale', description: 'Use a chemical and mechanical method to clear tubing blockage.', icon: '🧪' }, 
-        { id: 'obj3', name: 'Restore Downhole Safety Valve', description: 'Lock open the failed TRSSV and install a new insert valve.', icon: '🔒' }, 
-        { id: 'obj4', name: 'Repair Sand Control', description: 'Install a through-tubing expandable sand screen patch.', icon: '⚙️' },
-        { id: 'obj5', name: 'Paraffin Wax Removal', description: 'Use CT with chemicals and tools to remove wax blockage.', icon: '🕯️' } 
+    // ========== P&A STRATEGIC PIVOT: PRIMARY OBJECTIVES ==========
+    // These P&A objectives are now TOP PRIORITY per Bob Raker's mandate (12 Nov 2025)
+    // Focus: Decommissioning, cost-certainty, barrier integrity
+    const objectivesData = [
+        // TIER 1: PRIMARY P&A OBJECTIVES (New - Top Priority)
+        {
+            id: 'pa-obj1',
+            name: 'Permanent Plug & Abandonment (Isolate All Zones)',
+            description: 'Complete well abandonment with permanent environmental barriers per regulatory requirements.',
+            category: 'P&A - Full Decommissioning',
+            icon: '🔒',
+            priority: 'CRITICAL',
+            regulatoryCompliance: true,
+            estimatedCost: '$2.5M - $8.5M',
+            typicalDuration: '14-45 days',
+            isPrimary: true
+        },
+        {
+            id: 'pa-obj2',
+            name: 'P&A Pre-Op: Isolate Non-Productive Zone',
+            description: 'Set initial abandonment barrier to isolate depleted or water-bearing zones before final P&A.',
+            category: 'P&A - Staged Abandonment',
+            icon: '🛡️',
+            priority: 'HIGH',
+            regulatoryCompliance: true,
+            estimatedCost: '$800K - $2.2M',
+            typicalDuration: '5-12 days',
+            isPrimary: true
+        },
+        {
+            id: 'pa-obj3',
+            name: 'P&A Pre-Op: Casing Remediation for Barrier',
+            description: 'Repair or mill casing to establish competent formation contact for permanent cement barrier.',
+            category: 'P&A - Barrier Prep',
+            icon: '⚙️',
+            priority: 'HIGH',
+            regulatoryCompliance: true,
+            estimatedCost: '$1.2M - $4.5M',
+            typicalDuration: '8-28 days',
+            isPrimary: true,
+            brahanRecommended: true  // Highlighted for Well 666
+        },
+        {
+            id: 'pa-obj4',
+            name: 'Set Permanent Environmental Barrier',
+            description: 'Place verified cement barrier across reservoir interval to prevent hydrocarbon migration for 1,000+ years.',
+            category: 'P&A - Barrier Installation',
+            icon: '🌍',
+            priority: 'CRITICAL',
+            regulatoryCompliance: true,
+            estimatedCost: '$600K - $1.8M',
+            typicalDuration: '3-8 days',
+            isPrimary: true
+        },
+
+        // TIER 2: LEGACY PRODUCTION INTERVENTION OBJECTIVES (De-Prioritized)
+        {
+            id: 'legacy-obj1',
+            name: 'Remediate Casing Deformation',
+            description: 'Install an expandable steel patch to restore wellbore access (production intervention).',
+            category: 'Legacy - Production Intervention',
+            icon: '🔧',
+            priority: 'MEDIUM',
+            isLegacy: true
+        },
+        {
+            id: 'legacy-obj2',
+            name: 'Remove BaSO4 Scale',
+            description: 'Use a chemical and mechanical method to clear tubing blockage (production intervention).',
+            category: 'Legacy - Production Intervention',
+            icon: '🧪',
+            priority: 'MEDIUM',
+            isLegacy: true
+        },
+        {
+            id: 'legacy-obj3',
+            name: 'Restore Downhole Safety Valve',
+            description: 'Lock open the failed TRSSV and install a new insert valve (production intervention).',
+            category: 'Legacy - Production Intervention',
+            icon: '🔐',
+            priority: 'MEDIUM',
+            isLegacy: true
+        },
+        {
+            id: 'legacy-obj4',
+            name: 'Repair Sand Control',
+            description: 'Install a through-tubing expandable sand screen patch (production intervention).',
+            category: 'Legacy - Production Intervention',
+            icon: '🔩',
+            priority: 'MEDIUM',
+            isLegacy: true
+        },
+        {
+            id: 'legacy-obj5',
+            name: 'Paraffin Wax Removal',
+            description: 'Use CT with chemicals and tools to remove wax blockage (production intervention).',
+            category: 'Legacy - Production Intervention',
+            icon: '🕯️',
+            priority: 'MEDIUM',
+            isLegacy: true
+        }
     ];
-    const problemsData = [ 
-        { id: 'prob1', name: 'Loss of Well Access (Casing Deformation)', description: 'Wellbore is restricted due to geomechanical forces.', linked_objectives: ['obj1'], icon: '🚫' }, 
-        { id: 'prob2', name: 'Severe Scale Blockage', description: 'Production is blocked by hard, insoluble scale.', linked_objectives: ['obj2'], icon: '🚰' }, 
-        { id: 'prob3', name: 'Failed Primary Safety Barrier (DHSV)', description: 'Well is legally shut-in due to a failed safety valve.', linked_objectives: ['obj3'], icon: '⚠️' },
-        { id: 'prob4', name: 'Sand Control Failure', description: 'Excessive sand production is damaging equipment and limiting rates.', linked_objectives: ['obj4'], icon: '🏜️' },
-        { id: 'prob5', name: 'Flow Assurance Blockage (Wax)', description: 'Production is severely restricted by paraffin deposits.', linked_objectives: ['obj5'], icon: '🕯️' } 
+    // ========== P&A STRATEGIC PIVOT: PROBLEM DEFINITIONS ==========
+    const problemsData = [
+        // TIER 1: P&A-SPECIFIC CHALLENGES (Primary)
+        {
+            id: 'pa-prob1',
+            name: 'Complex Multi-Zone Isolation Required',
+            description: 'Well requires abandonment of 3+ distinct pressure regimes with varying formation competency.',
+            linked_objectives: ['pa-obj1', 'pa-obj2', 'pa-obj4'],
+            icon: '🗂️',
+            category: 'P&A Challenge',
+            costDriver: 'HIGH',
+            regulatoryRisk: 'CRITICAL',
+            isPrimary: true
+        },
+        {
+            id: 'pa-prob2',
+            name: 'Compromised Casing Integrity for P&A',
+            description: 'Casing deformation, corrosion, or defects prevent direct cement-to-formation contact for abandonment barrier.',
+            linked_objectives: ['pa-obj3', 'pa-obj1'],
+            icon: '⚠️',
+            category: 'P&A Challenge',
+            costDriver: 'VERY HIGH',
+            regulatoryRisk: 'CRITICAL',
+            isPrimary: true,
+            brahanInsight: 'Cross-reference intervention data from "The Brahan Squeeze" for cost-optimal milling solution'
+        },
+        {
+            id: 'pa-prob3',
+            name: 'Scale/Debris Obstruction in Abandonment Interval',
+            description: 'Wellbore blockage prevents access to target abandonment depths.',
+            linked_objectives: ['pa-obj3', 'pa-obj2'],
+            icon: '🚧',
+            category: 'P&A Challenge',
+            costDriver: 'HIGH',
+            regulatoryRisk: 'HIGH',
+            isPrimary: true,
+            brahanInsight: 'Apply chemical dissolution methods from "The Scale Trap" intervention case study'
+        },
+        {
+            id: 'pa-prob4',
+            name: 'Inadequate Formation Competency for Barrier',
+            description: 'Target abandonment formation shows poor cement bond or low mechanical strength.',
+            linked_objectives: ['pa-obj4', 'pa-obj1'],
+            icon: '🏜️',
+            category: 'P&A Challenge',
+            costDriver: 'MEDIUM',
+            regulatoryRisk: 'VERY HIGH',
+            isPrimary: true
+        },
+
+        // TIER 2: LEGACY PRODUCTION PROBLEMS (De-Prioritized)
+        {
+            id: 'legacy-prob1',
+            name: 'Loss of Well Access (Casing Deformation)',
+            description: 'Wellbore is restricted due to geomechanical forces (production issue).',
+            linked_objectives: ['legacy-obj1'],
+            icon: '🚫',
+            category: 'Legacy - Production Issue',
+            isLegacy: true
+        },
+        {
+            id: 'legacy-prob2',
+            name: 'Severe Scale Blockage',
+            description: 'Production is blocked by hard, insoluble scale.',
+            linked_objectives: ['legacy-obj2'],
+            icon: '🚰',
+            category: 'Legacy - Production Issue',
+            isLegacy: true
+        },
+        {
+            id: 'legacy-prob3',
+            name: 'Failed Primary Safety Barrier (DHSV)',
+            description: 'Well is legally shut-in due to a failed safety valve.',
+            linked_objectives: ['legacy-obj3'],
+            icon: '⚠️',
+            category: 'Legacy - Production Issue',
+            isLegacy: true
+        },
+        {
+            id: 'legacy-prob4',
+            name: 'Sand Control Failure',
+            description: 'Excessive sand production is damaging equipment and limiting rates.',
+            linked_objectives: ['legacy-obj4'],
+            icon: '🏜️',
+            category: 'Legacy - Production Issue',
+            isLegacy: true
+        },
+        {
+            id: 'legacy-prob5',
+            name: 'Flow Assurance Blockage (Wax)',
+            description: 'Production is severely restricted by paraffin deposits.',
+            linked_objectives: ['legacy-obj5'],
+            icon: '🕯️',
+            category: 'Legacy - Production Issue',
+            isLegacy: true
+        }
     ];
+    // ========== P&A STRATEGIC PIVOT: BRAHAN ENGINE AI RECOMMENDATIONS ==========
+    // Cross-domain analysis: Queries BOTH P&A and intervention case studies
+    // Optimization goal: Minimize rig time and cost while ensuring regulatory compliance
     const aiRecommendations = {
-        prob1: [ 
-            { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis of case study <strong>11 (The Brahan Squeeze)</strong> confirms an expandable steel patch is the standard, high-success-rate rigless solution for this specific failure mode in this field.' } 
+        // PRIMARY P&A PROBLEM RECOMMENDATIONS
+        'pa-prob1': [  // Complex Multi-Zone Isolation Required
+            {
+                objectiveId: 'pa-obj1',
+                confidence: 91,
+                outcome: 'All zones permanently isolated with regulatory compliance',
+                costSavings: 0,
+                estimatedCost: '$4.2M',
+                rigDays: 28,
+                reason: `Staged abandonment approach for multi-zone well:
+                    <ul>
+                        <li><strong>Phase 1:</strong> Isolate deepest zone with permanent cement barrier</li>
+                        <li><strong>Phase 2:</strong> Step-wise abandonment of intermediate zones</li>
+                        <li><strong>Phase 3:</strong> Final surface abandonment and wellhead removal</li>
+                    </ul>
+                    Meets BSEE/NSTA permanent barrier requirements for 1,000+ year isolation.`,
+                sourceAnalogs: [
+                    { id: 'PA-012', name: 'North Sea Multi-Zone P&A', type: 'P&A', relevance: 96 },
+                    { id: 'PA-008', name: 'GoM Staged Abandonment', type: 'P&A', relevance: 89 }
+                ],
+                regulatoryValidation: 'Fully compliant with BSEE and NSTA requirements'
+            }
         ],
-        prob2: [ 
-            { objectiveId: 'obj2', confidence: 92, outcome: 'Blockage cleared, production restored', reason: 'Based on the successful intervention on case study <strong>S-15 (The Scale Trap)</strong>, a two-stage chemical (DTPA) and mechanical (jetting) intervention has the highest probability of success. This avoids the high risk of stuck pipe associated with milling.' } 
+        'pa-prob2': [  // Compromised Casing Integrity for P&A - THE SIGNATURE USE CASE
+            {
+                objectiveId: 'pa-obj3',
+                confidence: 94,
+                outcome: 'Competent cement barrier established with $1.5M cost savings vs. conventional milling',
+                costSavings: 1500000,
+                estimatedCost: '$2.8M',
+                rigDays: 16,
+                reason: `<strong>🎯 BRAHAN ENGINE CROSS-DOMAIN INSIGHT:</strong>
+                    <p>Hybrid P&A approach combining lessons from production interventions:</p>
+                    <ul>
+                        <li><strong>Intervention Insight (The Brahan Squeeze - CS-011):</strong> Expandable patch technology proven effective on similar casing deformation at 9,000ft MD. Avoids high-risk section milling.</li>
+                        <li><strong>Production Insight (The Scale Trap - CS-S15):</strong> Chemical pre-treatment with DTPA reduces milling time by 40% when dealing with BaSO₄ scale deposits in casing annulus.</li>
+                        <li><strong>P&A Application:</strong> Use expandable liner to create competent casing section, apply chemical treatment to ensure clean cement bond, then set permanent barrier.</li>
+                    </ul>
+                    <p><strong>Cost-Certainty Analysis:</strong></p>
+                    <ul>
+                        <li>Conventional milling approach: $4.3M, 28 rig days, 35% NPT risk</li>
+                        <li>Hybrid approach: $2.8M, 16 rig days, 12% NPT risk</li>
+                        <li><strong>Net savings: $1.5M (35% reduction)</strong></li>
+                    </ul>`,
+                sourceAnalogs: [
+                    { id: 'CS-011', name: 'The Brahan Squeeze', type: 'Intervention', relevance: 92 },
+                    { id: 'CS-S15', name: 'The Scale Trap', type: 'Production', relevance: 87 },
+                    { id: 'PA-008', name: 'North Sea P&A Campaign', type: 'P&A', relevance: 95 }
+                ],
+                regulatoryValidation: 'Meets BSEE/NSTA permanent barrier requirements',
+                barrierIntegrity: {
+                    predictedLifespan: '1000+ years',
+                    cementBondQuality: 'Excellent (>95% bond log)',
+                    formationCompetency: 'Verified via sonic log correlation'
+                }
+            }
         ],
-        prob3: [ 
-            { objectiveId: 'obj3', confidence: 99, outcome: 'Well returned to safe, compliant production', reason: 'This is a standard operation. The critical lesson from case study <strong>F-11 (The Broken Barrier)</strong> is to use a reliable mechanical lock-open tool to avoid procedural failures and ensure a successful, single-run repair.' } 
+        'pa-prob3': [  // Scale/Debris Obstruction in Abandonment Interval
+            {
+                objectiveId: 'pa-obj3',
+                confidence: 89,
+                outcome: 'Abandonment interval accessed and prepared for barrier installation',
+                costSavings: 600000,
+                estimatedCost: '$1.4M',
+                rigDays: 9,
+                reason: `<strong>Cross-domain solution from production intervention data:</strong>
+                    <ul>
+                        <li><strong>Primary Insight (The Scale Trap - CS-S15):</strong> Two-stage chemical (DTPA) and mechanical (CT jetting) approach successfully cleared BaSO₄ scale in similar well conditions.</li>
+                        <li><strong>P&A Adaptation:</strong> Apply proven chemical dissolution before attempting mechanical milling - reduces stuck pipe risk by 60%.</li>
+                        <li><strong>Cost Impact:</strong> Chemical pre-treatment adds $200K but saves $800K in potential fishing/sidetrack operations.</li>
+                    </ul>`,
+                sourceAnalogs: [
+                    { id: 'CS-S15', name: 'The Scale Trap', type: 'Production', relevance: 91 },
+                    { id: 'PA-015', name: 'Scale Removal for P&A', type: 'P&A', relevance: 88 }
+                ],
+                regulatoryValidation: 'Preparation enables regulatory-compliant barrier placement'
+            }
         ],
-        prob4: [ 
-            { objectiveId: 'obj4', confidence: 88, outcome: 'Sand-free production at >80% potential', reason: 'The success on case study <strong>C-08 (The Sandstorm)</strong> proves a through-tubing expandable sand screen is the optimal rigless solution. This avoids a costly workover.' } 
+        'pa-prob4': [  // Inadequate Formation Competency for Barrier
+            {
+                objectiveId: 'pa-obj4',
+                confidence: 87,
+                outcome: 'Alternative barrier design approved for formation conditions',
+                costSavings: 400000,
+                estimatedCost: '$1.1M',
+                rigDays: 6,
+                reason: `Modified barrier design for weak formations:
+                    <ul>
+                        <li><strong>Solution:</strong> Use viscosified cement with extended tail length to distribute load across larger formation interval</li>
+                        <li><strong>Verification:</strong> Enhanced bond log and pressure test protocol for weak formation scenarios</li>
+                        <li><strong>Regulatory Approval:</strong> Pre-approved variance application for alternative barrier design</li>
+                    </ul>`,
+                sourceAnalogs: [
+                    { id: 'PA-019', name: 'Weak Formation Barrier', type: 'P&A', relevance: 93 }
+                ],
+                regulatoryValidation: 'Alternative barrier design meets performance requirements'
+            }
         ],
-        prob5: [ 
-            { objectiveId: 'obj5', confidence: 90, outcome: 'Wax blockage removed, production increased by >400%', reason: 'The case study from <strong>P-12 (The Wax Plug)</strong> shows that a Coiled Tubing intervention with both heated chemical dissolvers and a mechanical scraper tool is the most effective procedure.' } 
+
+        // LEGACY PRODUCTION PROBLEM RECOMMENDATIONS (Retained for backwards compatibility)
+        'legacy-prob1': [
+            { objectiveId: 'legacy-obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis of case study <strong>11 (The Brahan Squeeze)</strong> confirms an expandable steel patch is the standard, high-success-rate rigless solution for this specific failure mode in this field.' }
+        ],
+        'legacy-prob2': [
+            { objectiveId: 'legacy-obj2', confidence: 92, outcome: 'Blockage cleared, production restored', reason: 'Based on the successful intervention on case study <strong>S-15 (The Scale Trap)</strong>, a two-stage chemical (DTPA) and mechanical (jetting) intervention has the highest probability of success. This avoids the high risk of stuck pipe associated with milling.' }
+        ],
+        'legacy-prob3': [
+            { objectiveId: 'legacy-obj3', confidence: 99, outcome: 'Well returned to safe, compliant production', reason: 'This is a standard operation. The critical lesson from case study <strong>F-11 (The Broken Barrier)</strong> is to use a reliable mechanical lock-open tool to avoid procedural failures and ensure a successful, single-run repair.' }
+        ],
+        'legacy-prob4': [
+            { objectiveId: 'legacy-obj4', confidence: 88, outcome: 'Sand-free production at >80% potential', reason: 'The success on case study <strong>C-08 (The Sandstorm)</strong> proves a through-tubing expandable sand screen is the optimal rigless solution. This avoids a costly workover.' }
+        ],
+        'legacy-prob5': [
+            { objectiveId: 'legacy-obj5', confidence: 90, outcome: 'Wax blockage removed, production increased by >400%', reason: 'The case study from <strong>P-12 (The Wax Plug)</strong> shows that a Coiled Tubing intervention with both heated chemical dissolvers and a mechanical scraper tool is the most effective procedure.' }
         ]
     };
     const proceduresData = {
@@ -889,52 +1177,204 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     const renderObjectives = () => {
         objectivesFieldset.textContent = '';
-        objectivesData.forEach(obj => {
-            const card = document.createElement('div');
-            card.className = 'objective-card light-card';
-            card.setAttribute('data-objective-id', obj.id);
 
-            const input = document.createElement('input');
-            input.type = 'radio';
-            input.name = 'objective';
-            input.id = obj.id;
-            input.value = obj.id;
-            input.className = 'sr-only';
+        // ========== P&A STRATEGIC PIVOT: TIERED OBJECTIVE RENDERING ==========
+        // Tier 1: Primary P&A Objectives (Top Priority)
+        const primaryObjectives = objectivesData.filter(obj => obj.isPrimary);
+        const legacyObjectives = objectivesData.filter(obj => obj.isLegacy);
 
-            const label = document.createElement('label');
-            label.setAttribute('for', obj.id);
-            label.className = 'cursor-pointer h-full';
+        // Render P&A Section Header
+        if (primaryObjectives.length > 0) {
+            const paHeader = document.createElement('div');
+            paHeader.className = 'mb-4 pb-3 border-b-2 border-cyan-500/50';
+            paHeader.innerHTML = '<h3 class="text-xl font-bold text-cyan-400">🔒 PRIMARY P&A OBJECTIVES</h3><p class="text-sm text-slate-400 mt-1">Plug & Abandonment and Decommissioning - Cost-Certainty Focus</p>';
+            objectivesFieldset.appendChild(paHeader);
 
-            const flexDiv = document.createElement('div');
-            flexDiv.className = 'flex items-start';
+            // Render Primary P&A Objectives
+            primaryObjectives.forEach(obj => {
+                const card = document.createElement('div');
+                card.className = 'objective-card light-card';
+                if (obj.brahanRecommended) {
+                    card.className += ' border-2 border-amber-400 shadow-lg shadow-amber-400/20';
+                }
+                card.setAttribute('data-objective-id', obj.id);
 
-            const iconSpan = document.createElement('span');
-            iconSpan.className = 'text-2xl mr-3';
-            iconSpan.textContent = obj.icon; // Auto-escaped
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = 'objective';
+                input.id = obj.id;
+                input.value = obj.id;
+                input.className = 'sr-only';
 
-            const contentDiv = document.createElement('div');
+                const label = document.createElement('label');
+                label.setAttribute('for', obj.id);
+                label.className = 'cursor-pointer h-full';
 
-            const nameSpan = document.createElement('span');
-            nameSpan.className = 'font-semibold text-lg';
-            nameSpan.textContent = obj.name; // Auto-escaped
+                const flexDiv = document.createElement('div');
+                flexDiv.className = 'flex items-start';
 
-            const descP = document.createElement('p');
-            descP.className = 'text-sm mt-1';
-            descP.textContent = obj.description; // Auto-escaped
+                const iconSpan = document.createElement('span');
+                iconSpan.className = 'text-3xl mr-3';
+                iconSpan.textContent = obj.icon;
 
-            contentDiv.appendChild(nameSpan);
-            contentDiv.appendChild(descP);
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'flex-1';
 
-            flexDiv.appendChild(iconSpan);
-            flexDiv.appendChild(contentDiv);
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'font-semibold text-lg text-white';
+                nameSpan.textContent = obj.name;
 
-            label.appendChild(flexDiv);
+                const categoryP = document.createElement('p');
+                categoryP.className = 'text-xs text-cyan-400 font-medium mt-1';
+                categoryP.textContent = obj.category;
 
-            card.appendChild(input);
-            card.appendChild(label);
+                const descP = document.createElement('p');
+                descP.className = 'text-sm mt-2 text-slate-300';
+                descP.textContent = obj.description;
 
-            objectivesFieldset.appendChild(card);
-        });
+                // Add P&A metadata
+                const metaDiv = document.createElement('div');
+                metaDiv.className = 'mt-3 grid grid-cols-2 gap-2 text-xs';
+
+                const priorityBadge = document.createElement('div');
+                priorityBadge.className = 'flex items-center';
+                const priorityColor = obj.priority === 'CRITICAL' ? 'text-red-400' : obj.priority === 'HIGH' ? 'text-amber-400' : 'text-green-400';
+                priorityBadge.innerHTML = `<span class="${priorityColor}">⚡ ${obj.priority}</span>`;
+
+                const costBadge = document.createElement('div');
+                costBadge.className = 'text-slate-400';
+                costBadge.textContent = `💰 ${obj.estimatedCost}`;
+
+                const durationBadge = document.createElement('div');
+                durationBadge.className = 'text-slate-400';
+                durationBadge.textContent = `⏱️ ${obj.typicalDuration}`;
+
+                const complianceBadge = document.createElement('div');
+                complianceBadge.className = 'text-green-400';
+                complianceBadge.textContent = obj.regulatoryCompliance ? '✅ Regulatory Compliant' : '';
+
+                metaDiv.appendChild(priorityBadge);
+                metaDiv.appendChild(costBadge);
+                metaDiv.appendChild(durationBadge);
+                metaDiv.appendChild(complianceBadge);
+
+                // Add Brahan recommendation badge if applicable
+                if (obj.brahanRecommended) {
+                    const brahanBadge = document.createElement('div');
+                    brahanBadge.className = 'mt-2 px-3 py-1 bg-amber-500/20 border border-amber-400 rounded text-xs font-bold text-amber-400';
+                    brahanBadge.textContent = '⭐ RECOMMENDED BY BRAHAN ENGINE';
+                    contentDiv.appendChild(brahanBadge);
+                }
+
+                contentDiv.appendChild(nameSpan);
+                contentDiv.appendChild(categoryP);
+                contentDiv.appendChild(descP);
+                contentDiv.appendChild(metaDiv);
+
+                flexDiv.appendChild(iconSpan);
+                flexDiv.appendChild(contentDiv);
+
+                label.appendChild(flexDiv);
+
+                card.appendChild(input);
+                card.appendChild(label);
+
+                objectivesFieldset.appendChild(card);
+            });
+        }
+
+        // Render Legacy Section (Collapsible)
+        if (legacyObjectives.length > 0) {
+            const legacySection = document.createElement('div');
+            legacySection.className = 'mt-8';
+
+            const legacyHeader = document.createElement('div');
+            legacyHeader.className = 'mb-4 pb-3 border-b-2 border-gray-600/50 cursor-pointer';
+            legacyHeader.innerHTML = `
+                <h3 class="text-lg font-bold text-gray-400">
+                    📦 LEGACY PRODUCTION INTERVENTION OBJECTIVES
+                    <span class="text-xs ml-2 text-gray-500">[Click to Expand]</span>
+                </h3>
+                <p class="text-xs text-gray-500 mt-1">Production-focused interventions (de-prioritized)</p>
+            `;
+
+            const legacyContent = document.createElement('div');
+            legacyContent.id = 'legacy-objectives-content';
+            legacyContent.className = 'hidden'; // Start collapsed
+            legacyContent.style.maxHeight = '0';
+            legacyContent.style.overflow = 'hidden';
+            legacyContent.style.transition = 'max-height 0.3s ease-out';
+
+            // Toggle collapse on header click
+            legacyHeader.addEventListener('click', () => {
+                if (legacyContent.classList.contains('hidden')) {
+                    legacyContent.classList.remove('hidden');
+                    legacyContent.style.maxHeight = '2000px';
+                    legacyHeader.querySelector('span').textContent = '[Click to Collapse]';
+                } else {
+                    legacyContent.classList.add('hidden');
+                    legacyContent.style.maxHeight = '0';
+                    legacyHeader.querySelector('span').textContent = '[Click to Expand]';
+                }
+            });
+
+            // Render Legacy Objectives
+            legacyObjectives.forEach(obj => {
+                const card = document.createElement('div');
+                card.className = 'objective-card light-card opacity-75';
+                card.setAttribute('data-objective-id', obj.id);
+
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = 'objective';
+                input.id = obj.id;
+                input.value = obj.id;
+                input.className = 'sr-only';
+
+                const label = document.createElement('label');
+                label.setAttribute('for', obj.id);
+                label.className = 'cursor-pointer h-full';
+
+                const flexDiv = document.createElement('div');
+                flexDiv.className = 'flex items-start';
+
+                const iconSpan = document.createElement('span');
+                iconSpan.className = 'text-2xl mr-3';
+                iconSpan.textContent = obj.icon;
+
+                const contentDiv = document.createElement('div');
+
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'font-semibold text-base text-gray-400';
+                nameSpan.textContent = obj.name;
+
+                const categoryP = document.createElement('p');
+                categoryP.className = 'text-xs text-gray-500 italic mt-1';
+                categoryP.textContent = obj.category;
+
+                const descP = document.createElement('p');
+                descP.className = 'text-sm mt-2 text-gray-500';
+                descP.textContent = obj.description;
+
+                contentDiv.appendChild(nameSpan);
+                contentDiv.appendChild(categoryP);
+                contentDiv.appendChild(descP);
+
+                flexDiv.appendChild(iconSpan);
+                flexDiv.appendChild(contentDiv);
+
+                label.appendChild(flexDiv);
+
+                card.appendChild(input);
+                card.appendChild(label);
+
+                legacyContent.appendChild(card);
+            });
+
+            legacySection.appendChild(legacyHeader);
+            legacySection.appendChild(legacyContent);
+            objectivesFieldset.appendChild(legacySection);
+        }
     };
 
     const renderProblems = () => {

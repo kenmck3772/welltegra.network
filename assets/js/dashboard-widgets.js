@@ -101,6 +101,29 @@ const WIDGET_CATALOG = [
         defaultSize: "widget-md",
         minSize: "widget-md",
         availableForRoles: ['engineer', 'supervisor', 'financial-vp']
+    },
+    // ========== P&A STRATEGIC PIVOT: NEW WIDGETS ==========
+    {
+        id: "pa-liability-tracker",
+        name: "P&A Liability Tracker",
+        icon: "💼",
+        description: "Portfolio abandonment liability vs. optimized cost-to-abandon forecast",
+        category: "p&a",
+        defaultSize: "widget-xl",
+        minSize: "widget-lg",
+        availableForRoles: ['supervisor', 'financial-vp'],
+        isPAWidget: true
+    },
+    {
+        id: "pa-risk-dashboard",
+        name: "P&A Risk Dashboard",
+        icon: "🛡️",
+        description: "Barrier integrity status and regulatory compliance tracking",
+        category: "p&a",
+        defaultSize: "widget-lg",
+        minSize: "widget-md",
+        availableForRoles: ['supervisor', 'engineer'],
+        isPAWidget: true
     }
 ];
 
@@ -800,6 +823,364 @@ function renderRecentActivityWidget(containerId) {
 }
 
 // ============================================================================
+// P&A STRATEGIC PIVOT: NEW WIDGET RENDERING FUNCTIONS
+// ============================================================================
+
+function renderPALiabilityTrackerWidget(containerId) {
+    const data = getMockPALiabilityData();
+    const savingsPercentage = ((data.estimatedLiability - data.optimizedCost) / data.estimatedLiability * 100).toFixed(1);
+    const brahanImpact = data.optimizedCost - data.baselineCost;
+
+    const html = `
+        <div class="space-y-4">
+            <!-- Header Summary -->
+            <div class="bg-gradient-to-r from-cyan-900/30 to-blue-900/30 border-2 border-cyan-500/50 rounded-xl p-4">
+                <h3 class="text-lg font-bold text-cyan-400 mb-3">💼 Portfolio P&A Liability Overview</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <div class="text-xs text-slate-400 mb-1">Estimated Liability (Standard)</div>
+                        <div class="text-2xl font-bold text-red-400">$${(data.estimatedLiability / 1000000).toFixed(1)}M</div>
+                        <div class="text-xs text-slate-500 mt-1">${data.totalWells} wells</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 mb-1">Optimized Cost (Brahan)</div>
+                        <div class="text-2xl font-bold text-green-400">$${(data.optimizedCost / 1000000).toFixed(1)}M</div>
+                        <div class="text-xs text-green-500 mt-1">↓ ${savingsPercentage}% savings</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-400 mb-1">Total Savings</div>
+                        <div class="text-2xl font-bold text-amber-400">$${((data.estimatedLiability - data.optimizedCost) / 1000000).toFixed(1)}M</div>
+                        <div class="text-xs text-amber-500 mt-1">via cross-domain insights</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Well-by-Well Breakdown -->
+            <div class="bg-slate-800/40 rounded-lg p-4">
+                <h4 class="text-sm font-bold text-slate-300 mb-3">Well-by-Well P&A Cost Analysis</h4>
+                <div class="space-y-2 max-h-64 overflow-y-auto">
+                    ${data.wells.map(well => {
+                        const savings = well.standardCost - well.optimizedCost;
+                        const savingsPct = (savings / well.standardCost * 100).toFixed(0);
+                        return `
+                            <div class="bg-slate-900/50 rounded-lg p-3 hover:bg-slate-900/70 transition-colors">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-lg">${well.icon}</span>
+                                        <div>
+                                            <div class="text-sm font-semibold text-white">${well.name}</div>
+                                            <div class="text-xs text-slate-400">${well.depth.toLocaleString()}ft MD • ${well.complexity}</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-slate-400">Savings</div>
+                                        <div class="text-sm font-bold text-green-400">$${(savings / 1000).toFixed(0)}K (${savingsPct}%)</div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <div class="text-slate-500">
+                                        Standard: <span class="text-red-400">$${(well.standardCost / 1000000).toFixed(2)}M</span>
+                                    </div>
+                                    <div class="text-slate-500">
+                                        Optimized: <span class="text-green-400">$${(well.optimizedCost / 1000000).toFixed(2)}M</span>
+                                    </div>
+                                </div>
+                                ${well.brahanInsight ? `
+                                    <div class="mt-2 text-xs text-amber-400 bg-amber-500/10 rounded px-2 py-1">
+                                        💡 ${well.brahanInsight}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+
+            <!-- Brahan Engine Impact Summary -->
+            <div class="bg-gradient-to-r from-amber-900/20 to-orange-900/20 border border-amber-500/30 rounded-lg p-3">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-xl">🤖</span>
+                    <h4 class="text-sm font-bold text-amber-400">Brahan Engine Cost-Certainty Impact</h4>
+                </div>
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                    <div>
+                        <div class="text-slate-400 mb-1">Cross-Domain Insights Applied</div>
+                        <div class="text-lg font-bold text-white">${data.crossDomainInsights}</div>
+                    </div>
+                    <div>
+                        <div class="text-slate-400 mb-1">Avg. NPT Risk Reduction</div>
+                        <div class="text-lg font-bold text-green-400">${data.nptRiskReduction}%</div>
+                    </div>
+                </div>
+                <div class="mt-2 text-xs text-slate-400">
+                    Using intervention & production data to optimize P&A execution
+                </div>
+            </div>
+        </div>
+    `;
+    document.getElementById(containerId).innerHTML = html;
+}
+
+function renderPARiskDashboardWidget(containerId) {
+    const data = getMockPARiskData();
+
+    const html = `
+        <div class="space-y-4">
+            <!-- Barrier Integrity Status -->
+            <div class="bg-gradient-to-r from-blue-900/30 to-cyan-900/30 border-2 border-blue-500/50 rounded-xl p-4">
+                <h3 class="text-lg font-bold text-blue-400 mb-3">🛡️ Barrier Integrity Status</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-slate-800/40 rounded-lg p-3">
+                        <div class="text-xs text-slate-400 mb-1">Wells Requiring P&A</div>
+                        <div class="text-3xl font-bold text-white">${data.wellsRequiringPA}</div>
+                        <div class="text-xs text-slate-500 mt-1">of ${data.totalWells} total</div>
+                    </div>
+                    <div class="bg-slate-800/40 rounded-lg p-3">
+                        <div class="text-xs text-slate-400 mb-1">Barrier Integrity Score</div>
+                        <div class="text-3xl font-bold text-cyan-400">${data.barrierIntegrityScore}/10</div>
+                        <div class="text-xs text-green-500 mt-1">↑ Excellent</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Regulatory Compliance -->
+            <div class="bg-slate-800/40 rounded-lg p-4">
+                <h4 class="text-sm font-bold text-slate-300 mb-3 flex items-center gap-2">
+                    <span>✅</span> Regulatory Compliance Tracker
+                </h4>
+                <div class="space-y-2">
+                    ${data.regulatoryItems.map(item => {
+                        const statusColors = {
+                            'compliant': 'bg-green-500/20 border-green-500 text-green-400',
+                            'pending': 'bg-yellow-500/20 border-yellow-500 text-yellow-400',
+                            'overdue': 'bg-red-500/20 border-red-500 text-red-400'
+                        };
+                        return `
+                            <div class="bg-slate-900/50 rounded-lg p-3">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="text-sm font-semibold text-white">${item.requirement}</div>
+                                    <div class="px-2 py-1 rounded text-xs font-bold border ${statusColors[item.status]}">
+                                        ${item.status.toUpperCase()}
+                                    </div>
+                                </div>
+                                <div class="text-xs text-slate-400">
+                                    ${item.authority} • Due: ${item.dueDate}
+                                </div>
+                                ${item.notes ? `
+                                    <div class="mt-2 text-xs text-slate-500 bg-slate-800/50 rounded px-2 py-1">
+                                        ${item.notes}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+
+            <!-- Barrier Verification Status -->
+            <div class="bg-slate-800/40 rounded-lg p-4">
+                <h4 class="text-sm font-bold text-slate-300 mb-3">🔬 Barrier Verification Status</h4>
+                <div class="space-y-2">
+                    ${data.barrierVerifications.map(barrier => {
+                        const qualityColors = {
+                            'excellent': 'text-green-400',
+                            'good': 'text-blue-400',
+                            'acceptable': 'text-yellow-400',
+                            'poor': 'text-red-400'
+                        };
+                        return `
+                            <div class="bg-slate-900/50 rounded-lg p-3">
+                                <div class="flex items-center justify-between mb-1">
+                                    <div class="text-sm font-semibold text-white">${barrier.wellName}</div>
+                                    <div class="text-xs ${qualityColors[barrier.quality]}">${barrier.quality.toUpperCase()}</div>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2 text-xs text-slate-400 mt-2">
+                                    <div>Bond: <span class="text-white">${barrier.bondQuality}%</span></div>
+                                    <div>Depth: <span class="text-white">${barrier.depth.toLocaleString()}ft</span></div>
+                                    <div>Age: <span class="text-white">${barrier.ageYears}yr</span></div>
+                                </div>
+                                <div class="text-xs text-slate-500 mt-2">
+                                    Last verified: ${barrier.lastVerified}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+
+            <!-- Quantum Simulation Preview -->
+            <div class="bg-gradient-to-r from-purple-900/20 to-pink-900/20 border border-purple-500/30 rounded-lg p-3">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-xl">⚛️</span>
+                    <h4 class="text-sm font-bold text-purple-400">Long-Term Barrier Integrity (Quantum Sim)</h4>
+                </div>
+                <div class="text-xs text-slate-300 mb-2">
+                    Modeling 1,000-year cement degradation for regulatory validation
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-slate-800/40 rounded p-2">
+                        <div class="text-slate-400">Predicted Lifespan</div>
+                        <div class="text-base font-bold text-purple-400">1,247 years</div>
+                    </div>
+                    <div class="bg-slate-800/40 rounded p-2">
+                        <div class="text-slate-400">Confidence Level</div>
+                        <div class="text-base font-bold text-cyan-400">96.3%</div>
+                    </div>
+                </div>
+                <div class="mt-2 text-xs text-purple-400 italic">
+                    Phase 3 R&D: Ultimate proof for regulators
+                </div>
+            </div>
+        </div>
+    `;
+    document.getElementById(containerId).innerHTML = html;
+}
+
+// ============================================================================
+// P&A MOCK DATA GENERATORS
+// ============================================================================
+
+function getMockPALiabilityData() {
+    return {
+        totalWells: 7,
+        estimatedLiability: 31500000,  // $31.5M standard P&A cost
+        baselineCost: 28200000,        // $28.2M without Brahan optimization
+        optimizedCost: 19800000,       // $19.8M with Brahan cross-domain insights
+        crossDomainInsights: 12,       // Number of intervention/production insights applied to P&A
+        nptRiskReduction: 58,          // Average NPT risk reduction percentage
+        wells: [
+            {
+                name: '666 - Perfect Storm',
+                icon: '🔴',
+                depth: 18500,
+                complexity: 'Very High',
+                standardCost: 8500000,
+                optimizedCost: 5800000,
+                brahanInsight: 'Hybrid approach from "Brahan Squeeze" + "Scale Trap" saves $2.7M'
+            },
+            {
+                name: 'The Brahan Squeeze',
+                icon: '🟢',
+                depth: 9000,
+                complexity: 'Medium',
+                standardCost: 4200000,
+                optimizedCost: 3100000,
+                brahanInsight: 'Staged abandonment reduces rig time by 8 days'
+            },
+            {
+                name: 'The Scale Trap',
+                icon: '🟢',
+                depth: 11000,
+                complexity: 'High',
+                standardCost: 5100000,
+                optimizedCost: 3600000,
+                brahanInsight: 'Chemical pre-treatment avoids expensive milling operation'
+            },
+            {
+                name: 'The Broken Barrier',
+                icon: '🟡',
+                depth: 7500,
+                complexity: 'Low',
+                standardCost: 2800000,
+                optimizedCost: 2300000,
+                brahanInsight: null
+            },
+            {
+                name: 'The Sandstorm',
+                icon: '🟢',
+                depth: 12000,
+                complexity: 'Medium',
+                standardCost: 4500000,
+                optimizedCost: 2900000,
+                brahanInsight: 'Through-tubing approach eliminates workover rig mobilization'
+            },
+            {
+                name: 'The Wax Plug',
+                icon: '🟡',
+                depth: 8200,
+                complexity: 'Low',
+                standardCost: 3200000,
+                optimizedCost: 1400000,
+                brahanInsight: 'CT cleanout enables simple barrier placement'
+            },
+            {
+                name: 'The Deep Challenge',
+                icon: '🟡',
+                depth: 15000,
+                complexity: 'High',
+                standardCost: 3200000,
+                optimizedCost: 700000,
+                brahanInsight: null
+            }
+        ]
+    };
+}
+
+function getMockPARiskData() {
+    return {
+        totalWells: 7,
+        wellsRequiringPA: 7,
+        barrierIntegrityScore: 8.7,
+        regulatoryItems: [
+            {
+                requirement: 'BSEE P&A Plan Approval',
+                authority: 'BSEE Gulf of Mexico',
+                status: 'compliant',
+                dueDate: '2025-12-31',
+                notes: 'Approved 2024-11-01 - Valid for 12 months'
+            },
+            {
+                requirement: 'Environmental Impact Assessment',
+                authority: 'EPA',
+                status: 'pending',
+                dueDate: '2025-06-30',
+                notes: 'Awaiting final review - expected approval Q1 2025'
+            },
+            {
+                requirement: 'Barrier Design Validation (Well 666)',
+                authority: 'NSTA',
+                status: 'compliant',
+                dueDate: '2025-03-15',
+                notes: 'Hybrid approach pre-approved under variance application'
+            },
+            {
+                requirement: 'Decommissioning Financial Security',
+                authority: 'BSEE',
+                status: 'compliant',
+                dueDate: 'Ongoing',
+                notes: '$19.8M bond posted (covers optimized portfolio cost)'
+            }
+        ],
+        barrierVerifications: [
+            {
+                wellName: '666 - Perfect Storm',
+                quality: 'good',
+                bondQuality: 89,
+                depth: 18500,
+                ageYears: 0,
+                lastVerified: 'Planned Q1 2025'
+            },
+            {
+                wellName: 'The Brahan Squeeze',
+                quality: 'excellent',
+                bondQuality: 96,
+                depth: 9000,
+                ageYears: 2,
+                lastVerified: '2024-09-12'
+            },
+            {
+                wellName: 'The Scale Trap',
+                quality: 'excellent',
+                bondQuality: 94,
+                depth: 11000,
+                ageYears: 1,
+                lastVerified: '2024-10-28'
+            }
+        ]
+    };
+}
+
+// ============================================================================
 // WIDGET RENDERER REGISTRY
 // ============================================================================
 
@@ -812,7 +1193,10 @@ const WIDGET_RENDERERS = {
     'team-schedule': renderTeamScheduleWidget,
     'pending-approvals': renderPendingApprovalsWidget,
     'kpi-summary': renderKPISummaryWidget,
-    'recent-activity': renderRecentActivityWidget
+    'recent-activity': renderRecentActivityWidget,
+    // P&A Strategic Pivot: New Widgets
+    'pa-liability-tracker': renderPALiabilityTrackerWidget,
+    'pa-risk-dashboard': renderPARiskDashboardWidget
 };
 
 // ============================================================================
