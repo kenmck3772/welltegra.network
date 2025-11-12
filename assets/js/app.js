@@ -237,7 +237,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         const radius = gaugeFg.r.baseVal.value;
         const circumference = radius * 2 * Math.PI;
         const offset = circumference - (value / maxValue) * circumference;
-        gaugeFg.style.strokeDashoffset = Math.max(0, Math.min(circumference, offset));
+        const dashOffset = Math.max(0, Math.min(circumference, offset));
+        if (isFinite(dashOffset)) {
+            gaugeFg.style.strokeDashoffset = dashOffset;
+        }
 
         gaugeValue.textContent = value.toFixed(0);
 
