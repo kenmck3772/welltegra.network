@@ -356,18 +356,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
     const objectivesData = [ 
-        { id: 'obj1', name: 'Remediate Casing Deformation', description: 'Install an expandable steel patch to restore wellbore access.', icon: 'ðŸ”§' }, 
-        { id: 'obj2', name: 'Remove BaSO4 Scale', description: 'Use a chemical and mechanical method to clear tubing blockage.', icon: 'ðŸ§ª' }, 
-        { id: 'obj3', name: 'Restore Downhole Safety Valve', description: 'Lock open the failed TRSSV and install a new insert valve.', icon: 'ðŸ”’' }, 
-        { id: 'obj4', name: 'Repair Sand Control', description: 'Install a through-tubing expandable sand screen patch.', icon: 'ðŸ–ï¸' }, 
-        { id: 'obj5', name: 'Paraffin Wax Removal', description: 'Use CT with chemicals and tools to remove wax blockage.', icon: 'ðŸ•¯ï¸' } 
+        { id: 'obj1', name: 'Remediate Casing Deformation', description: 'Install an expandable steel patch to restore wellbore access.', icon: '🔧' }, 
+        { id: 'obj2', name: 'Remove BaSO4 Scale', description: 'Use a chemical and mechanical method to clear tubing blockage.', icon: '🧪' }, 
+        { id: 'obj3', name: 'Restore Downhole Safety Valve', description: 'Lock open the failed TRSSV and install a new insert valve.', icon: '🔒' }, 
+        { id: 'obj4', name: 'Repair Sand Control', description: 'Install a through-tubing expandable sand screen patch.', icon: '⚙️' },
+        { id: 'obj5', name: 'Paraffin Wax Removal', description: 'Use CT with chemicals and tools to remove wax blockage.', icon: '🕯️' } 
     ];
     const problemsData = [ 
-        { id: 'prob1', name: 'Loss of Well Access (Casing Deformation)', description: 'Wellbore is restricted due to geomechanical forces.', linked_objectives: ['obj1'], icon: 'ðŸš«' }, 
-        { id: 'prob2', name: 'Severe Scale Blockage', description: 'Production is blocked by hard, insoluble scale.', linked_objectives: ['obj2'], icon: 'ðŸš°' }, 
-        { id: 'prob3', name: 'Failed Primary Safety Barrier (DHSV)', description: 'Well is legally shut-in due to a failed safety valve.', linked_objectives: ['obj3'], icon: 'âš ï¸' }, 
-        { id: 'prob4', name: 'Sand Control Failure', description: 'Excessive sand production is damaging equipment and limiting rates.', linked_objectives: ['obj4'], icon: 'ðŸœï¸' }, 
-        { id: 'prob5', name: 'Flow Assurance Blockage (Wax)', description: 'Production is severely restricted by paraffin deposits.', linked_objectives: ['obj5'], icon: 'ðŸ•¯ï¸' } 
+        { id: 'prob1', name: 'Loss of Well Access (Casing Deformation)', description: 'Wellbore is restricted due to geomechanical forces.', linked_objectives: ['obj1'], icon: '🚫' }, 
+        { id: 'prob2', name: 'Severe Scale Blockage', description: 'Production is blocked by hard, insoluble scale.', linked_objectives: ['obj2'], icon: '🚰' }, 
+        { id: 'prob3', name: 'Failed Primary Safety Barrier (DHSV)', description: 'Well is legally shut-in due to a failed safety valve.', linked_objectives: ['obj3'], icon: '⚠️' },
+        { id: 'prob4', name: 'Sand Control Failure', description: 'Excessive sand production is damaging equipment and limiting rates.', linked_objectives: ['obj4'], icon: '🏜️' },
+        { id: 'prob5', name: 'Flow Assurance Blockage (Wax)', description: 'Production is severely restricted by paraffin deposits.', linked_objectives: ['obj5'], icon: '🕯️' } 
     ];
     const aiRecommendations = {
         prob1: [ 
@@ -2602,29 +2602,29 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (Object.keys(foundation).length > 0) {
             sections.push({
                 title: '📋 Foundational Identity',
-                className: 'bg-gray-100',
+                className: 'bg-slate-800/50 border border-cyan-500/30',
                 content: `
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-800">
-                        ${foundation.apiNumber ? `<div><span class="font-semibold text-gray-900">API Number:</span> ${foundation.apiNumber}</div>` : ''}
-                        ${foundation.blockNumber ? `<div><span class="font-semibold text-gray-900">Block:</span> ${foundation.blockNumber}</div>` : ''}
-                        ${foundation.licenseNumber ? `<div><span class="font-semibold text-gray-900">License:</span> ${foundation.licenseNumber}</div>` : ''}
-                        ${foundation.operator ? `<div><span class="font-semibold text-gray-900">Operator:</span> ${foundation.operator}</div>` : ''}
-                        ${foundation.operatorShare_percent ? `<div><span class="font-semibold text-gray-900">Operator Share:</span> ${foundation.operatorShare_percent}%</div>` : ''}
-                        ${foundation.slotIdentifier ? `<div><span class="font-semibold text-gray-900">Slot:</span> ${foundation.slotIdentifier}</div>` : ''}
-                        ${foundation.waterDepth_ft ? `<div><span class="font-semibold text-gray-900">Water Depth:</span> ${foundation.waterDepth_ft.toLocaleString()}ft</div>` : ''}
-                        ${foundation.totalDepthMD_ft ? `<div><span class="font-semibold text-gray-900">Total Depth (MD):</span> ${foundation.totalDepthMD_ft.toLocaleString()}ft</div>` : ''}
-                        ${foundation.totalDepthTVD_ft ? `<div><span class="font-semibold text-gray-900">Total Depth (TVD):</span> ${foundation.totalDepthTVD_ft.toLocaleString()}ft</div>` : ''}
-                        ${foundation.wellProfile ? `<div><span class="font-semibold text-gray-900">Well Profile:</span> ${foundation.wellProfile}</div>` : ''}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-300">
+                        ${foundation.apiNumber ? `<div><span class="font-semibold text-cyan-400">API Number:</span> ${foundation.apiNumber}</div>` : ''}
+                        ${foundation.blockNumber ? `<div><span class="font-semibold text-cyan-400">Block:</span> ${foundation.blockNumber}</div>` : ''}
+                        ${foundation.licenseNumber ? `<div><span class="font-semibold text-cyan-400">License:</span> ${foundation.licenseNumber}</div>` : ''}
+                        ${foundation.operator ? `<div><span class="font-semibold text-cyan-400">Operator:</span> ${foundation.operator}</div>` : ''}
+                        ${foundation.operatorShare_percent ? `<div><span class="font-semibold text-cyan-400">Operator Share:</span> ${foundation.operatorShare_percent}%</div>` : ''}
+                        ${foundation.slotIdentifier ? `<div><span class="font-semibold text-cyan-400">Slot:</span> ${foundation.slotIdentifier}</div>` : ''}
+                        ${foundation.waterDepth_ft ? `<div><span class="font-semibold text-cyan-400">Water Depth:</span> ${foundation.waterDepth_ft.toLocaleString()}ft</div>` : ''}
+                        ${foundation.totalDepthMD_ft ? `<div><span class="font-semibold text-cyan-400">Total Depth (MD):</span> ${foundation.totalDepthMD_ft.toLocaleString()}ft</div>` : ''}
+                        ${foundation.totalDepthTVD_ft ? `<div><span class="font-semibold text-cyan-400">Total Depth (TVD):</span> ${foundation.totalDepthTVD_ft.toLocaleString()}ft</div>` : ''}
+                        ${foundation.wellProfile ? `<div><span class="font-semibold text-cyan-400">Well Profile:</span> ${foundation.wellProfile}</div>` : ''}
                     </div>
                     ${foundation.surfaceCoordinates ? `
-                        <div class="mt-3 text-sm text-gray-800">
-                            <span class="font-semibold text-gray-900">Coordinates:</span>
+                        <div class="mt-3 text-sm text-slate-300">
+                            <span class="font-semibold text-cyan-400">Coordinates:</span>
                             ${foundation.surfaceCoordinates.latitude}°N, ${foundation.surfaceCoordinates.longitude}°E
                         </div>
                     ` : ''}
                     ${foundation.jointVenturePartners && foundation.jointVenturePartners.length > 0 ? `
-                        <div class="mt-3 text-sm text-gray-800">
-                            <span class="font-semibold text-gray-900">JV Partners:</span>
+                        <div class="mt-3 text-sm text-slate-300">
+                            <span class="font-semibold text-cyan-400">JV Partners:</span>
                             <ul class="ml-4 mt-2">
                                 ${foundation.jointVenturePartners.map(p => `<li>${p.company} (${p.share}%)</li>`).join('')}
                             </ul>
@@ -2639,17 +2639,17 @@ document.addEventListener('DOMContentLoaded', async function() {
             let designContent = '';
 
             if (design.spudDate || design.completionDate || design.firstProductionDate) {
-                designContent += '<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-gray-800 mb-4">';
-                if (design.spudDate) designContent += `<div><span class="font-semibold text-gray-900">Spud Date:</span> ${design.spudDate}</div>`;
-                if (design.completionDate) designContent += `<div><span class="font-semibold text-gray-900">Completion:</span> ${design.completionDate}</div>`;
-                if (design.firstProductionDate) designContent += `<div><span class="font-semibold text-gray-900">First Production:</span> ${design.firstProductionDate}</div>`;
+                designContent += '<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm text-slate-300 mb-4">';
+                if (design.spudDate) designContent += `<div><span class="font-semibold text-cyan-400">Spud Date:</span> ${design.spudDate}</div>`;
+                if (design.completionDate) designContent += `<div><span class="font-semibold text-cyan-400">Completion:</span> ${design.completionDate}</div>`;
+                if (design.firstProductionDate) designContent += `<div><span class="font-semibold text-cyan-400">First Production:</span> ${design.firstProductionDate}</div>`;
                 designContent += '</div>';
             }
 
             // Well Schematic
             designContent += `
                 <div class="mt-6 mb-6">
-                    <h4 class="text-lg font-bold text-gray-900 mb-3">📐 Well Schematic</h4>
+                    <h4 class="text-lg font-bold text-white mb-3">📐 Well Schematic</h4>
                     <div class="bg-white p-6 rounded-lg border-2 border-indigo-300">
                         <svg viewBox="0 0 400 600" class="w-full max-w-2xl mx-auto" xmlns="http://www.w3.org/2000/svg">
                             <!-- Water line -->
@@ -2709,7 +2709,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 </div>
 
                 <div class="mt-6 mb-6">
-                    <h4 class="text-lg font-bold text-gray-900 mb-3">📍 3D Deviation Survey</h4>
+                    <h4 class="text-lg font-bold text-white mb-3">📍 3D Deviation Survey</h4>
                     <div class="bg-white p-6 rounded-lg border-2 border-cyan-300">
                         <svg viewBox="0 0 400 400" class="w-full max-w-2xl mx-auto" xmlns="http://www.w3.org/2000/svg">
                             <!-- Grid -->
@@ -2767,7 +2767,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             sections.push({
                 title: '🏗️ Design & Construction',
-                className: 'bg-blue-50',
+                className: 'bg-slate-800/50 border border-blue-500/30',
                 content: designContent
             });
         }
@@ -2841,7 +2841,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             sections.push({
                 title: '📊 Intervention History',
-                className: 'bg-green-50',
+                className: 'bg-slate-800/50 border border-green-500/30',
                 content: interventionHTML
             });
         }
@@ -2864,7 +2864,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             sections.push({
                 title: '⚠️ Well Integrity & Risk',
-                className: 'bg-red-50',
+                className: 'bg-slate-800/50 border border-red-500/30',
                 content: integrityContent
             });
         }
@@ -2872,9 +2872,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         // Render all sections
         sections.forEach(section => {
             const sectionDiv = document.createElement('div');
-            sectionDiv.className = `${section.className} p-6 rounded-lg shadow`;
+            sectionDiv.className = `${section.className} p-6 rounded-lg shadow-lg`;
             sectionDiv.innerHTML = `
-                <h3 class="text-xl font-bold text-gray-900 mb-4">${section.title}</h3>
+                <h3 class="text-xl font-bold text-white mb-4">${section.title}</h3>
                 ${section.content}
             `;
             contentContainer.appendChild(sectionDiv);
