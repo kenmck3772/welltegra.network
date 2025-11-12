@@ -13,6 +13,16 @@
 
 const WIDGET_CATALOG = [
     {
+        id: "well-portfolio",
+        name: "Well Portfolio Overview",
+        icon: "📊",
+        description: "Comprehensive table of all Brahan Field wells with status",
+        category: "operations",
+        defaultSize: "widget-xl",
+        minSize: "widget-md",
+        availableForRoles: ['engineer', 'supervisor', 'financial-vp']
+    },
+    {
         id: "active-wells",
         name: "Active Wells List",
         icon: "📋",
@@ -95,16 +105,139 @@ const WIDGET_CATALOG = [
 ];
 
 // ============================================================================
+// REAL BRAHAN FIELD DATA
+// ============================================================================
+
+const BRAHAN_FIELD_WELLS = [
+    {
+        id: 'well-666',
+        name: '666 - Perfect Storm',
+        type: 'Gas Condensate',
+        depth: 18500,
+        status: 'shut-in',
+        statusColor: 'red',
+        statusIcon: '🔴',
+        primaryChallenge: 'Multiple integrity issues',
+        field: 'Brahan Field',
+        isHPHT: true,
+        detailedIssues: 'Casing deformation, scale obstruction, TRSSV failure, sand control issues, wax accumulation',
+        interventionRequired: 'Multi-stage intervention approach'
+    },
+    {
+        id: 'brahan-squeeze',
+        name: 'The Brahan Squeeze',
+        type: 'Gas Condensate',
+        depth: 9000,
+        status: 'active',
+        statusColor: 'green',
+        statusIcon: '🟢',
+        primaryChallenge: 'Wellbore stability',
+        field: 'Brahan Field',
+        isHPHT: true,
+        currentDay: 8,
+        totalDays: 11,
+        operator: 'McKenzie'
+    },
+    {
+        id: 'scale-trap',
+        name: 'The Scale Trap',
+        type: 'Gas Condensate',
+        depth: 11000,
+        status: 'active',
+        statusColor: 'green',
+        statusIcon: '🟢',
+        primaryChallenge: 'BaSO₄ scale obstruction',
+        field: 'Brahan Field',
+        isHPHT: true,
+        currentDay: 5,
+        totalDays: 7,
+        operator: 'Anderson',
+        solution: 'Coiled tubing with specialized milling tools and scale dissolvers'
+    },
+    {
+        id: 'broken-barrier',
+        name: 'The Broken Barrier',
+        type: 'Gas Condensate',
+        depth: 9800,
+        status: 'active',
+        statusColor: 'green',
+        statusIcon: '🟢',
+        primaryChallenge: 'TRSSV failure',
+        field: 'Brahan Field',
+        isHPHT: true,
+        currentDay: 2,
+        totalDays: 6,
+        operator: 'Thompson'
+    },
+    {
+        id: 'sandstorm',
+        name: 'The Sandstorm',
+        type: 'Gas Condensate',
+        depth: 10000,
+        status: 'active',
+        statusColor: 'green',
+        statusIcon: '🟢',
+        primaryChallenge: 'Sand control failure',
+        field: 'Brahan Field',
+        isHPHT: true,
+        currentDay: 4,
+        totalDays: 9,
+        operator: 'Rodriguez'
+    },
+    {
+        id: 'wax-plug',
+        name: 'The Wax Plug',
+        type: 'Oil',
+        depth: 7500,
+        status: 'active',
+        statusColor: 'green',
+        statusIcon: '🟢',
+        primaryChallenge: 'Paraffin wax blockage',
+        field: 'Brahan Field',
+        isHPHT: false,
+        currentDay: 3,
+        totalDays: 5,
+        operator: 'Williams'
+    },
+    {
+        id: 'field-of-dreams',
+        name: 'Field of Dreams',
+        type: 'Oil',
+        depth: 19200,
+        status: 'active',
+        statusColor: 'green',
+        statusIcon: '🟢',
+        primaryChallenge: 'Benchmark performance',
+        field: 'Brahan Field',
+        isHPHT: false,
+        currentDay: 1,
+        totalDays: 3,
+        operator: 'Johnson'
+    }
+];
+
+// ============================================================================
 // MOCK DATA GENERATORS
 // ============================================================================
 
+function getBrahanFieldPortfolio() {
+    return BRAHAN_FIELD_WELLS;
+}
+
 function getMockActiveWells() {
-    return [
-        { id: 'A-12', name: 'Well A-12', currentDay: 3, totalDays: 8, status: 'on-track', operator: 'Smith' },
-        { id: 'B-07', name: 'Well B-07', currentDay: 1, totalDays: 5, status: 'on-track', operator: 'Jones' },
-        { id: 'C-19', name: 'Well C-19', currentDay: 6, totalDays: 11, status: 'delayed', operator: 'Chen' },
-        { id: 'D-31', name: 'Well D-31', currentDay: 4, totalDays: 7, status: 'at-risk', operator: 'Davis' }
-    ];
+    // Return only wells that are currently active (not shut-in)
+    return BRAHAN_FIELD_WELLS
+        .filter(well => well.status === 'active')
+        .map(well => ({
+            id: well.id,
+            name: well.name,
+            currentDay: well.currentDay || 1,
+            totalDays: well.totalDays || 7,
+            status: well.currentDay > well.totalDays * 0.8 ? 'delayed' : 'on-track',
+            operator: well.operator || 'Unassigned',
+            depth: well.depth,
+            type: well.type
+        }));
 }
 
 function getMockCostData() {
@@ -133,10 +266,65 @@ function getMockRiskProfile() {
 
 function getMockBrahanInsights() {
     return [
-        { wellId: 'A-12', wellName: 'Well A-12', type: 'warning', message: 'Duration estimate may be 2-3 days low based on offset data', timestamp: new Date(Date.now() - 1000 * 60 * 30) },
-        { wellId: 'B-07', wellName: 'Well B-07', type: 'success', message: 'Procedure aligns well with Brahan case study best practices', timestamp: new Date(Date.now() - 1000 * 60 * 90) },
-        { wellId: 'C-19', wellName: 'Well C-19', type: 'warning', message: 'High equipment risk detected - consider pre-job simulation', timestamp: new Date(Date.now() - 1000 * 60 * 120) },
-        { wellId: 'D-31', wellName: 'Well D-31', type: 'info', message: 'Cost estimate within 10% of similar operations', timestamp: new Date(Date.now() - 1000 * 60 * 240) }
+        {
+            id: 'rec-001',
+            title: 'Intervention Success Prediction',
+            type: 'recommendation',
+            icon: '💡',
+            message: 'New Model Available: Estimate success probability for planned interventions based on offset well data and historical performance.',
+            impact: 'High',
+            priority: 'Critical',
+            lastUpdated: '2 hours ago',
+            wellId: 'well-666',
+            wellName: '666 - Perfect Storm',
+            actionText: 'Apply to 666 - Perfect Storm',
+            timestamp: new Date(Date.now() - 1000 * 60 * 120)
+        },
+        {
+            id: 'rec-002',
+            title: 'Cost Optimization Algorithms',
+            type: 'recommendation',
+            icon: '💰',
+            message: 'Implement cost-benefit analysis tools to identify the most economically viable intervention strategies and reduce NPT.',
+            impact: 'High',
+            priority: 'High',
+            projectedSavings: '$850K/year',
+            lastUpdated: '5 hours ago',
+            actionText: 'View Full Analysis',
+            timestamp: new Date(Date.now() - 1000 * 60 * 300)
+        },
+        {
+            id: 'rec-003',
+            title: 'Risk Quantification',
+            type: 'recommendation',
+            icon: '⚠️',
+            message: 'Enhanced risk assessment with quantitative probability values (P10/P50/P90) for operational, HSE, and equipment risks.',
+            impact: 'High',
+            priority: 'Medium',
+            status: 'Beta Testing',
+            wellsAnalyzed: 47,
+            accuracy: '87%',
+            actionText: 'Enable for Brahan Field',
+            timestamp: new Date(Date.now() - 1000 * 60 * 420)
+        },
+        {
+            id: 'insight-001',
+            wellId: 'scale-trap',
+            wellName: 'The Scale Trap',
+            type: 'success',
+            icon: '✅',
+            message: 'Intervention on track - production recovery at 92% of target with cost at 95% of budget',
+            timestamp: new Date(Date.now() - 1000 * 60 * 45)
+        },
+        {
+            id: 'insight-002',
+            wellId: 'brahan-squeeze',
+            wellName: 'The Brahan Squeeze',
+            type: 'warning',
+            icon: '⚠️',
+            message: 'Day 8 of 11 - Monitor wellbore stability closely during final stages',
+            timestamp: new Date(Date.now() - 1000 * 60 * 90)
+        }
     ];
 }
 
@@ -181,6 +369,86 @@ function getMockRecentActivity() {
 // ============================================================================
 // WIDGET RENDERING FUNCTIONS
 // ============================================================================
+
+function renderWellPortfolioWidget(containerId) {
+    const wells = getBrahanFieldPortfolio();
+    const activeCount = wells.filter(w => w.status === 'active').length;
+    const shutInCount = wells.filter(w => w.status === 'shut-in').length;
+    const avgDepth = Math.round(wells.reduce((sum, w) => sum + w.depth, 0) / wells.length);
+    const gasWells = wells.filter(w => w.type === 'Gas Condensate').length;
+    const oilWells = wells.filter(w => w.type === 'Oil').length;
+
+    const html = `
+        <div class="space-y-4">
+            <div class="flex items-center justify-between mb-3">
+                <div class="text-sm text-slate-400">
+                    Portfolio Summary: <span class="font-semibold text-cyan-400">${wells.length} Wells</span> |
+                    ${activeCount} Active | ${shutInCount} Shut-in
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700 text-left">
+                            <th class="py-2 px-2 font-semibold text-cyan-400">Well Name</th>
+                            <th class="py-2 px-2 font-semibold text-cyan-400">Type</th>
+                            <th class="py-2 px-2 font-semibold text-cyan-400 text-right">Depth (ft)</th>
+                            <th class="py-2 px-2 font-semibold text-cyan-400">Status</th>
+                            <th class="py-2 px-2 font-semibold text-cyan-400">Primary Challenge</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${wells.map(well => `
+                            <tr class="border-b border-slate-800 hover:bg-slate-800/40 transition-colors cursor-pointer" onclick="navigateToWellDetails('${well.id}')">
+                                <td class="py-3 px-2 font-semibold text-slate-200">${well.name}</td>
+                                <td class="py-3 px-2 text-slate-400">${well.type}</td>
+                                <td class="py-3 px-2 text-slate-300 text-right">${well.depth.toLocaleString()}</td>
+                                <td class="py-3 px-2">
+                                    <span class="${well.statusColor === 'red' ? 'text-red-400' : 'text-green-400'} flex items-center gap-1">
+                                        <span>${well.statusIcon}</span>
+                                        <span class="capitalize">${well.status === 'shut-in' ? 'Shut-in' : 'Live'}</span>
+                                    </span>
+                                </td>
+                                <td class="py-3 px-2 text-slate-400 truncate max-w-xs">${well.primaryChallenge}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="bg-gradient-to-br from-slate-800/40 to-slate-700/40 rounded-lg p-4 mt-4">
+                <div class="text-sm font-semibold text-cyan-400 mb-3">Field Statistics</div>
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div>
+                        <span class="text-slate-400">Average Depth:</span>
+                        <span class="text-slate-200 ml-2 font-semibold">${avgDepth.toLocaleString()} ft</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400">Gas Condensate Wells:</span>
+                        <span class="text-slate-200 ml-2 font-semibold">${gasWells} (${Math.round(gasWells/wells.length*100)}%)</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400">Oil Wells:</span>
+                        <span class="text-slate-200 ml-2 font-semibold">${oilWells} (${Math.round(oilWells/wells.length*100)}%)</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400">Critical Issues:</span>
+                        <span class="text-red-400 ml-2 font-semibold">${shutInCount} well${shutInCount !== 1 ? 's' : ''} requiring attention</span>
+                    </div>
+                </div>
+                <div class="mt-3 text-xs text-slate-500">
+                    Brahan Field - HPHT Gas Condensate Producer Field
+                </div>
+            </div>
+
+            <button onclick="navigateToPlanner()" class="w-full px-4 py-2 bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-400 font-semibold rounded-lg border border-cyan-500/30 transition-colors">
+                View Detailed Well Reports →
+            </button>
+        </div>
+    `;
+    document.getElementById(containerId).innerHTML = html;
+}
 
 function renderActiveWellsWidget(containerId) {
     const wells = getMockActiveWells();
@@ -309,25 +577,71 @@ function renderRiskProfileWidget(containerId) {
 
 function renderBrahanEngineWidget(containerId) {
     const insights = getMockBrahanInsights();
-    const iconMap = {
-        'warning': '⚠️',
-        'success': '✅',
-        'info': 'ℹ️'
-    };
+    const recommendations = insights.filter(i => i.type === 'recommendation');
+    const alerts = insights.filter(i => i.type !== 'recommendation');
+
     const colorMap = {
+        'recommendation': 'border-cyan-500/30 bg-cyan-900/10',
         'warning': 'border-yellow-500/30 bg-yellow-900/10',
         'success': 'border-green-500/30 bg-green-900/10',
         'info': 'border-blue-500/30 bg-blue-900/10'
     };
 
+    const priorityColors = {
+        'Critical': 'text-red-400',
+        'High': 'text-orange-400',
+        'Medium': 'text-yellow-400',
+        'Low': 'text-blue-400'
+    };
+
     const html = `
-        <div class="space-y-2 max-h-64 overflow-y-auto">
-            ${insights.map(insight => {
+        <div class="space-y-3 max-h-96 overflow-y-auto">
+            ${recommendations.length > 0 ? `
+                <div class="text-xs font-semibold text-cyan-400 mb-2">New Recommendations Available (${recommendations.length})</div>
+            ` : ''}
+
+            ${recommendations.map(rec => {
+                return `
+                    <div class="border ${colorMap['recommendation']} rounded-lg p-4 hover:bg-opacity-20 transition-colors">
+                        <div class="flex items-start gap-2 mb-2">
+                            <div class="text-xl">${rec.icon}</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-bold text-slate-200 mb-1">${rec.title}</div>
+                                <div class="text-xs text-slate-300 mb-2">${rec.message}</div>
+
+                                <div class="flex items-center gap-3 text-xs mb-2">
+                                    <span class="text-slate-400">Impact: <span class="${priorityColors[rec.priority]}">${rec.impact}</span></span>
+                                    <span class="text-slate-400">Priority: <span class="${priorityColors[rec.priority]}">${rec.priority}</span></span>
+                                    ${rec.lastUpdated ? `<span class="text-slate-500">${rec.lastUpdated}</span>` : ''}
+                                </div>
+
+                                ${rec.projectedSavings ? `
+                                    <div class="text-xs text-green-400 mb-2">💰 Projected Savings: ${rec.projectedSavings}</div>
+                                ` : ''}
+
+                                ${rec.status ? `
+                                    <div class="text-xs text-blue-400 mb-2">Status: ${rec.status}${rec.wellsAnalyzed ? ` | Wells Analyzed: ${rec.wellsAnalyzed}` : ''}${rec.accuracy ? ` | Accuracy: ${rec.accuracy}` : ''}</div>
+                                ` : ''}
+
+                                <button onclick="navigateToWellDetails('${rec.wellId || 'well-666}')" class="text-xs px-3 py-1 bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-400 rounded border border-cyan-500/30 transition-colors">
+                                    ${rec.actionText} →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('')}
+
+            ${alerts.length > 0 ? `
+                <div class="text-xs font-semibold text-slate-400 mt-4 mb-2">Recent Alerts</div>
+            ` : ''}
+
+            ${alerts.map(insight => {
                 const timeAgo = Math.floor((Date.now() - insight.timestamp) / 60000);
                 return `
                     <div class="border ${colorMap[insight.type]} rounded-lg p-3 hover:bg-opacity-20 transition-colors cursor-pointer" onclick="navigateToWellDetails('${insight.wellId}')">
                         <div class="flex items-start gap-2">
-                            <div class="text-lg">${iconMap[insight.type]}</div>
+                            <div class="text-lg">${insight.icon}</div>
                             <div class="flex-1">
                                 <div class="text-sm font-semibold text-slate-200 mb-1">${insight.wellName}</div>
                                 <div class="text-sm text-slate-300">${insight.message}</div>
@@ -337,6 +651,10 @@ function renderBrahanEngineWidget(containerId) {
                     </div>
                 `;
             }).join('')}
+
+            <button onclick="navigateToPlanner()" class="w-full mt-3 px-4 py-2 bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-400 font-semibold rounded-lg border border-cyan-500/30 transition-colors text-sm">
+                View All Recommendations (8) →
+            </button>
         </div>
     `;
     document.getElementById(containerId).innerHTML = html;
@@ -486,6 +804,7 @@ function renderRecentActivityWidget(containerId) {
 // ============================================================================
 
 const WIDGET_RENDERERS = {
+    'well-portfolio': renderWellPortfolioWidget,
     'active-wells': renderActiveWellsWidget,
     'cost-tracker': renderCostTrackerWidget,
     'risk-profile': renderRiskProfileWidget,
