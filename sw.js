@@ -130,8 +130,10 @@ async function networkFirst(request) {
     try {
         const networkResponse = await fetch(request);
 
-        // Cache successful responses
-        if (networkResponse.ok) {
+        // Cache successful responses (but skip partial content responses)
+        // HTTP 206 (Partial Content) is used for range requests like video streaming
+        // and cannot be cached by the Cache API
+        if (networkResponse.ok && networkResponse.status !== 206) {
             const cache = await caches.open(RUNTIME_CACHE);
             cache.put(request, networkResponse.clone());
         }
@@ -179,8 +181,10 @@ async function cacheFirst(request) {
     try {
         const networkResponse = await fetch(request);
 
-        // Cache successful responses
-        if (networkResponse.ok) {
+        // Cache successful responses (but skip partial content responses)
+        // HTTP 206 (Partial Content) is used for range requests like video streaming
+        // and cannot be cached by the Cache API
+        if (networkResponse.ok && networkResponse.status !== 206) {
             const cache = await caches.open(RUNTIME_CACHE);
             cache.put(request, networkResponse.clone());
         }
