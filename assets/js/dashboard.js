@@ -28,11 +28,10 @@ const ROLE_TEMPLATES = {
         name: "Supervisor View",
         description: "Oversight, approvals, and team management",
         layout: [
-            { type: "pending-approvals", size: "widget-lg" },
+            { type: "well-portfolio", size: "widget-md" },
+            { type: "brahan-engine", size: "widget-md" },
             { type: "active-wells", size: "widget-md" },
-            { type: "team-schedule", size: "widget-md" },
-            { type: "cost-tracker", size: "widget-md" },
-            { type: "risk-profile", size: "widget-md" }
+            { type: "pending-approvals", size: "widget-md" }
         ]
     },
     'financial-vp': {
