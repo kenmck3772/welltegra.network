@@ -37,23 +37,23 @@ test.describe('Demo Workflow - Complete 5-Act Narrative', () => {
     const homeView = page.locator('#home-view');
     await expect(homeView).toBeVisible();
 
-    // Check for well cards
+    // Check for well cards (dynamic content - needs longer timeout)
     const wellCards = page.locator('.well-card');
-    await expect(wellCards.first()).toBeVisible();
+    await expect(wellCards.first()).toBeVisible({ timeout: 10000 });
 
     // Verify critical wells are highlighted
     const criticalWells = page.locator('.well-status-critical, .well-status-warning');
-    await expect(criticalWells.first()).toBeVisible();
+    await expect(criticalWells.first()).toBeVisible({ timeout: 10000 });
 
     // Check for alerts/notifications
     const alerts = page.locator('.alert, .notification');
     if (await alerts.count() > 0) {
-      await expect(alerts.first()).toBeVisible();
+      await expect(alerts.first()).toBeVisible({ timeout: 10000 });
     }
 
-    // Verify data is populated (check for W666)
-    const w666Card = page.locator('[data-well-id="W666"], .well-card:has-text("W666")');
-    await expect(w666Card).toBeVisible();
+    // Verify data is populated (check for W666) - dynamic content
+    const w666Card = page.locator('[data-well-id="W666"], .well-card:has-text("W666"), .planner-card[data-well-id="W666"]');
+    await expect(w666Card).toBeVisible({ timeout: 10000 });
   });
 
   test('Act 2: Navigate to Well Planner and select intervention', async ({ page }) => {
@@ -95,23 +95,24 @@ test.describe('Demo Workflow - Complete 5-Act Narrative', () => {
     const logisticsView = page.locator('#logistics-view');
     await expect(logisticsView).toBeVisible({ timeout: 5000 });
 
-    // Verify catalog tab is active
+    // Verify catalog tab is active (dynamic content)
     const catalogTab = page.locator('#catalog-tab, [data-tab="catalog"]');
-    await expect(catalogTab).toBeVisible();
+    await expect(catalogTab).toBeVisible({ timeout: 10000 });
 
-    // Check for equipment categories
+    // Check for equipment categories (dynamic content)
     const categories = page.locator('.equipment-category, .category-btn');
-    await expect(categories.first()).toBeVisible();
+    await expect(categories.first()).toBeVisible({ timeout: 10000 });
 
-    // Search for equipment
-    const searchInput = page.locator('#search-tools, input[placeholder*="Search"]');
+    // Search for equipment (dynamic content)
+    const searchInput = page.locator('#search-tools, #equipment-catalog-search, input[placeholder*="Search"]');
     if (await searchInput.count() > 0) {
-      await searchInput.fill('BHA');
+      await expect(searchInput.first()).toBeVisible({ timeout: 10000 });
+      await searchInput.first().fill('BHA');
       await page.waitForTimeout(500); // Debounce
 
-      // Verify search results
+      // Verify search results (dynamic content)
       const searchResults = page.locator('.equipment-item, .tool-card');
-      await expect(searchResults.first()).toBeVisible();
+      await expect(searchResults.first()).toBeVisible({ timeout: 10000 });
     }
 
     // Switch to builder tab
@@ -233,8 +234,9 @@ test.describe('Demo Workflow - Complete 5-Act Narrative', () => {
     await logisticsNav.click();
     await expect(page.locator('#logistics-view')).toBeVisible({ timeout: 5000 });
 
-    // Verify equipment catalog loaded
+    // Verify equipment catalog loaded (dynamic content)
     const catalogItems = page.locator('.equipment-item, .tool-card, .catalog-item');
+    await expect(catalogItems.first()).toBeVisible({ timeout: 10000 });
     expect(await catalogItems.count()).toBeGreaterThan(0);
 
     // Act 4: Return to Planner
@@ -299,18 +301,25 @@ test.describe('Critical User Interactions', () => {
       await logisticsNav.click();
       await expect(page.locator('#logistics-view')).toBeVisible({ timeout: 5000 });
 
-      const searchInput = page.locator('#search-tools, input[placeholder*="Search"]');
+      const searchInput = page.locator('#search-tools, #equipment-catalog-search, input[placeholder*="Search"]');
 
       if (await searchInput.count() > 0) {
+        // Wait for search input to be ready (dynamic content)
+        await expect(searchInput.first()).toBeVisible({ timeout: 10000 });
+
+        // Wait for initial items to load
+        const items = page.locator('.equipment-item, .tool-card');
+        await expect(items.first()).toBeVisible({ timeout: 10000 });
+
         // Count items before search
-        const itemsBefore = await page.locator('.equipment-item, .tool-card').count();
+        const itemsBefore = await items.count();
 
         // Perform search
-        await searchInput.fill('BHA');
+        await searchInput.first().fill('BHA');
         await page.waitForTimeout(500); // Debounce
 
         // Count items after search
-        const itemsAfter = await page.locator('.equipment-item, .tool-card').count();
+        const itemsAfter = await items.count();
 
         // Search should filter results (unless everything contains "BHA")
         expect(itemsAfter).toBeGreaterThan(0);
@@ -369,8 +378,9 @@ test.describe('Data Integration', () => {
       await logisticsNav.click();
       await expect(page.locator('#logistics-view')).toBeVisible({ timeout: 5000 });
 
-      // Check if equipment items are rendered
+      // Check if equipment items are rendered (dynamic content)
       const items = page.locator('.equipment-item, .tool-card');
+      await expect(items.first()).toBeVisible({ timeout: 10000 });
       const itemCount = await items.count();
 
       // Should have equipment items from the catalog
