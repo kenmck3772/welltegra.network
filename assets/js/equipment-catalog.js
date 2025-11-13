@@ -1,551 +1,286 @@
-/**
- * Equipment Catalog & Tool String Builder
- * Integrated equipment management for WellTegra
- */
+// ==========================================
+// WELL-TEGRA EQUIPMENT CATALOG DATABASE
+// ==========================================
 
-// Equipment Catalog State
-let equipmentCatalog = {};
-let savedToolStrings = [];
-let builderComponents = [];
-let currentEquipmentFilter = 'all';
-let equipmentSearchQuery = '';
+const equipmentDatabase = [
+    // --- FISHING TOOLS ---
+    {
+        id: 'FSH-001',
+        name: 'Bowen Series 150 Overshot',
+        category: 'fishing',
+        manufacturer: 'Nov',
+        od: '4.625 in',
+        connection: '3-1/2 Reg',
+        description: 'The industry standard for external catching. Features a spiral grapple and basket grapple control.',
+        specs: { tensile: '350,000 lbs', maxCatch: '3.75 in' },
+        image: 'https://welltegra.network/assets/equipment/overshot.png'
+    },
+    {
+        id: 'FSH-002',
+        name: 'Itco Type Spear',
+        category: 'fishing',
+        manufacturer: 'Logan',
+        od: '3.500 in',
+        connection: '2-3/8 PAC',
+        description: 'Internal catch fishing tool. heavy duty design for jarring operations.',
+        specs: { tensile: '280,000 lbs', minCatch: '2.00 in' },
+        image: 'https://welltegra.network/assets/equipment/spear.png'
+    },
+    {
+        id: 'FSH-003',
+        name: 'Reverse Circulating Junk Basket',
+        category: 'fishing',
+        manufacturer: 'Baker',
+        od: '4.500 in',
+        connection: '3-1/2 IF',
+        description: 'Uses venturi effect to retrieve small debris and junk from the wellbore.',
+        specs: { type: 'RCJB', capacity: '0.5 bbl' },
+        image: 'https://welltegra.network/assets/equipment/junk-basket.png'
+    },
+    {
+        id: 'FSH-004',
+        name: 'Concave Mill',
+        category: 'fishing',
+        manufacturer: 'Smith',
+        od: '4.500 in',
+        connection: '3-1/2 Reg',
+        description: 'Dressed with crushed tungsten carbide for milling out bit cones and other loose junk.',
+        specs: { face: 'Concave', carbide: 'Medium' },
+        image: 'https://welltegra.network/assets/equipment/mill.png'
+    },
 
-// Load equipment catalog from JSON
-async function loadEquipmentCatalog() {
-    try {
-        const response = await fetch('/equipment-catalog.json');
-        equipmentCatalog = await response.json();
-        console.log('[Equipment] Catalog loaded:', Object.keys(equipmentCatalog).length, 'categories');
-        renderEquipmentCatalog();
-        populateEquipmentSelector();
-        renderServiceTemplates();
-    } catch (error) {
-        console.error('[Equipment] Failed to load catalog:', error);
-        const grid = document.getElementById('equipment-catalog-grid');
-        if (grid) {
-            grid.innerHTML = '<p class="text-red-500">Failed to load equipment catalog. Please check that equipment-catalog.json exists.</p>';
-        }
+    // --- COILED TUBING TOOLS ---
+    {
+        id: 'CT-001',
+        name: 'High-Torque Motor',
+        category: 'coiled-tubing',
+        manufacturer: 'Bico',
+        od: '2.875 in',
+        connection: '2-3/8 PAC',
+        description: 'Positive displacement motor (PDM) optimized for milling hard scale and composite plugs.',
+        specs: { flow: '1.5-3.5 bpm', torque: '1200 ft-lbs' },
+        image: 'https://welltegra.network/assets/equipment/motor.png'
+    },
+    {
+        id: 'CT-002',
+        name: 'Rotating Jetting Nozzle',
+        category: 'coiled-tubing',
+        manufacturer: 'StoneAge',
+        od: '1.688 in',
+        connection: '1 in AMMT',
+        description: 'Self-rotating nozzle for 360-degree wellbore cleaning and scale removal.',
+        specs: { pressure: '5000 psi', flow: '1.0 bpm' },
+        image: 'https://welltegra.network/assets/equipment/nozzle.png'
+    },
+    {
+        id: 'CT-003',
+        name: 'Dimple Connector',
+        category: 'coiled-tubing',
+        manufacturer: 'Global',
+        od: '2.000 in',
+        connection: '1-1/2 MT',
+        description: 'External grapple connector for coiled tubing. Grub screw retention.',
+        specs: { pull: '50,000 lbs', pressure: '10,000 psi' },
+        image: 'https://welltegra.network/assets/equipment/connector.png'
+    },
+    {
+        id: 'CT-004',
+        name: 'Hydraulic Disconnect',
+        category: 'coiled-tubing',
+        manufacturer: 'Hunting',
+        od: '2.875 in',
+        connection: '2-3/8 PAC',
+        description: 'Allows controlled release of the BHA via ball drop in event of stuck pipe.',
+        specs: { ballSize: '0.75 in', shear: 'Adjustable' },
+        image: 'https://welltegra.network/assets/equipment/disconnect.png'
+    },
+
+    // --- WIRELINE TOOLS ---
+    {
+        id: 'WL-001',
+        name: 'Rope Socket (Pear Drop)',
+        category: 'wireline',
+        manufacturer: 'Elmar',
+        od: '1.500 in',
+        connection: '15/16 SR',
+        description: 'Standard attachment point for slickline. Wedges wire for secure hold.',
+        specs: { wire: '0.108 / 0.125', break: 'Wire dependent' },
+        image: 'https://welltegra.network/assets/equipment/rope-socket.png'
+    },
+    {
+        id: 'WL-002',
+        name: 'Spang Jar',
+        category: 'wireline',
+        manufacturer: 'Otis',
+        od: '1.500 in',
+        connection: '15/16 SR',
+        description: 'Mechanical link jar for delivering upward and downward impact.',
+        specs: { stroke: '20 in', type: 'Mechanical' },
+        image: 'https://welltegra.network/assets/equipment/jar.png'
+    },
+    {
+        id: 'WL-003',
+        name: 'Gauge Cutter / Blind Box',
+        category: 'wireline',
+        manufacturer: 'Generic',
+        od: '2.313 in',
+        connection: '15/16 SR',
+        description: 'Used to verify tubing ID and clear light obstructions like wax or scale.',
+        specs: { hardfaced: 'Yes', bottom: 'Flat' },
+        image: 'https://welltegra.network/assets/equipment/gauge-cutter.png'
+    },
+    {
+        id: 'WL-004',
+        name: 'Impression Block (LIB)',
+        category: 'wireline',
+        manufacturer: 'Generic',
+        od: '2.200 in',
+        connection: '15/16 SR',
+        description: 'Lead-filled housing used to take an impression of an obstruction (fish).',
+        specs: { face: 'Soft Lead', refillable: 'Yes' },
+        image: 'https://welltegra.network/assets/equipment/lib.png'
+    },
+
+    // --- COMPLETION & PCE ---
+    {
+        id: 'PCE-001',
+        name: 'Quad BOP',
+        category: 'pce',
+        manufacturer: 'Texas Oil Tools',
+        od: 'N/A',
+        connection: '4-1/16 10K',
+        description: 'Wireline blowout preventer with Blind, Shear, Slip, and Pipe rams.',
+        specs: { rating: '10,000 psi', service: 'H2S' },
+        image: 'https://welltegra.network/assets/equipment/bop.png'
+    },
+    {
+        id: 'CMP-001',
+        name: 'Retrievable Bridge Plug',
+        category: 'completion',
+        manufacturer: 'Halliburton',
+        od: '4.300 in',
+        connection: 'Baker #10',
+        description: 'High-performance plug for temporary zonal isolation.',
+        specs: { rating: '7,500 psi', temp: '350F' },
+        image: 'https://welltegra.network/assets/equipment/plug.png'
     }
-}
+];
 
-// Load saved tool strings from localStorage
-function loadSavedToolStrings() {
-    const saved = localStorage.getItem('welltegra_toolstrings');
-    savedToolStrings = saved ? JSON.parse(saved) : [];
-    renderSavedToolStrings();
-}
+// ==========================================
+// CATALOG LOGIC
+// ==========================================
 
-// Save tool strings to localStorage
-function saveToolStringsToStorage() {
-    localStorage.setItem('welltegra_toolstrings', JSON.stringify(savedToolStrings));
-}
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Equipment Catalog Module Loaded');
+    
+    // Initialize if we are on the equipment view
+    const catalogGrid = document.getElementById('equipment-catalog-grid');
+    if (catalogGrid) {
+        renderCatalog(equipmentDatabase);
+        setupSearch();
+    }
+});
 
-// Render equipment catalog
-function renderEquipmentCatalog() {
+function renderCatalog(data) {
     const grid = document.getElementById('equipment-catalog-grid');
     if (!grid) return;
 
     grid.innerHTML = '';
 
-    Object.keys(equipmentCatalog).forEach(categoryKey => {
-        const category = equipmentCatalog[categoryKey];
+    if (data.length === 0) {
+        grid.innerHTML = `
+            <div class="col-span-full text-center p-8 text-gray-500">
+                <p class="text-xl">No equipment found matching your criteria.</p>
+            </div>
+        `;
+        return;
+    }
+
+    data.forEach(item => {
+        // Determine badge color based on category
+        let badgeColor = 'bg-gray-600';
+        if (item.category === 'fishing') badgeColor = 'bg-red-600';
+        if (item.category === 'coiled-tubing') badgeColor = 'bg-blue-600';
+        if (item.category === 'wireline') badgeColor = 'bg-yellow-600';
 
         const card = document.createElement('div');
-        card.className = 'equipment-category-card';
-
-        const itemsHTML = category.items
-            .filter(item => {
-                // Category filter
-                if (currentEquipmentFilter !== 'all' && item.category !== currentEquipmentFilter) {
-                    return false;
-                }
-
-                // Search filter
-                if (equipmentSearchQuery) {
-                    const searchLower = equipmentSearchQuery.toLowerCase();
-                    return (
-                        item.name.toLowerCase().includes(searchLower) ||
-                        item.category.toLowerCase().includes(searchLower) ||
-                        (item.manufacturer && item.manufacturer.toLowerCase().includes(searchLower)) ||
-                        (item.applications && item.applications.some(app => app.toLowerCase().includes(searchLower)))
-                    );
-                }
-
-                return true;
-            })
-            .map(item => `
-                <div class="equipment-item">
-                    <div>
-                        <div class="equipment-item-name">
-                            ${item.name}
-                            ${item.manufacturer ? `<span class="manufacturer-badge">${item.manufacturer}</span>` : ''}
-                        </div>
-                        <div class="equipment-item-meta">
-                            ${item.applications ? item.applications.slice(0, 2).map(app => `<span class="application-tag">${app}</span>`).join('') : ''}
-                        </div>
-                    </div>
-                    <button class="btn-add-equipment" onclick='addEquipmentToBuilderDirect(${JSON.stringify(item)})'>
-                        Add
-                    </button>
-                </div>
-            `).join('');
-
-        // Skip category if no items match filters
-        if (!itemsHTML) return;
-
+        card.className = 'equipment-category-card relative group cursor-pointer';
         card.innerHTML = `
-            <h4 class="text-lg font-bold mb-4 text-cyan-400">${category.name}</h4>
-            <p class="text-sm text-gray-400 mb-4">${category.description}</p>
-            <div>${itemsHTML}</div>
-        `;
+            <div class="absolute top-4 right-4">
+                <span class="px-2 py-1 text-xs font-bold text-white rounded ${badgeColor} uppercase tracking-wider">
+                    ${item.category.replace('-', ' ')}
+                </span>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">${item.name}</h3>
+                <p class="text-sm text-gray-400">${item.manufacturer} | ${item.id}</p>
+            </div>
+            <p class="text-sm text-gray-300 mb-4 h-12 overflow-hidden">${item.description}</p>
+            
+            <div class="grid grid-cols-2 gap-2 text-xs text-gray-400 mb-4 bg-slate-800/50 p-2 rounded">
+                <div>OD: <span class="text-white">${item.od}</span></div>
+                <div>Conn: <span class="text-white">${item.connection}</span></div>
+                ${Object.entries(item.specs).map(([key, val]) => 
+                    `<div>${key}: <span class="text-white">${val}</span></div>`
+                ).join('')}
+            </div>
 
+            <button class="w-full py-2 bg-teal-600 hover:bg-teal-500 text-white rounded font-bold transition-colors flex items-center justify-center gap-2" onclick="addToToolString('${item.id}')">
+                <span>+</span> Add to Tool String
+            </button>
+        `;
         grid.appendChild(card);
     });
 }
 
-// Filter equipment by category
-function filterEquipmentCategory(category) {
-    currentEquipmentFilter = category;
-    renderEquipmentCatalog();
-}
-
-// Populate equipment selector dropdown
-function populateEquipmentSelector() {
-    const selector = document.getElementById('equipment-selector');
-    if (!selector) return;
-
-    selector.innerHTML = '<option value="">-- Choose equipment --</option>';
-
-    Object.keys(equipmentCatalog).forEach(categoryKey => {
-        const category = equipmentCatalog[categoryKey];
-        const optgroup = document.createElement('optgroup');
-        optgroup.label = category.name;
-
-        category.items.forEach(item => {
-            const option = document.createElement('option');
-            option.value = JSON.stringify(item);
-            option.textContent = `${item.name}${item.manufacturer ? ' (' + item.manufacturer + ')' : ''}`;
-            optgroup.appendChild(option);
-        });
-
-        selector.appendChild(optgroup);
-    });
-}
-
-// Add equipment to builder from dropdown
-function addEquipmentToBuilder() {
-    const selector = document.getElementById('equipment-selector');
-    if (!selector || !selector.value) {
-        if (window.Toast) {
-            window.Toast.warning('Please select equipment from the dropdown');
-        } else {
-            alert('Please select equipment from the dropdown');
-        }
-        return;
-    }
-
-    const item = JSON.parse(selector.value);
-    builderComponents.push(item);
-    updateBuilderPreview();
-    selector.value = '';
-
-    if (window.Toast) {
-        window.Toast.success(`Added ${item.name} to builder`);
-    }
-}
-
-// Add equipment directly to builder (from catalog cards)
-function addEquipmentToBuilderDirect(item) {
-    // Switch to builder tab
-    switchEquipmentTab('builder');
-
-    // Add to builder
-    builderComponents.push(item);
-    updateBuilderPreview();
-
-    // Show toast notification
-    if (window.Toast) {
-        window.Toast.success(`Added ${item.name} to builder`);
-    } else {
-        console.log('[Equipment] Added to builder:', item.name);
-    }
-}
-
-// Update builder preview
-function updateBuilderPreview() {
-    const nameInput = document.getElementById('new-toolstring-name');
-    const previewName = document.getElementById('preview-name');
-    const componentsList = document.getElementById('builder-components-list');
-
-    if (!previewName || !componentsList) return;
-
-    if (nameInput) {
-        previewName.textContent = nameInput.value || 'Untitled Assembly';
-    }
-
-    if (builderComponents.length === 0) {
-        componentsList.innerHTML = '<li class="text-gray-500 italic">No components added yet</li>';
-    } else {
-        componentsList.innerHTML = builderComponents.map((comp, i) => `
-            <li class="tool-string-component">
-                ${i + 1}. ${comp.name}
-                <button class="float-right text-red-400 hover:text-red-300" onclick="removeBuilderComponent(${i})">✕</button>
-            </li>
-        `).join('');
-    }
-}
-
-// Remove component from builder
-function removeBuilderComponent(index) {
-    builderComponents.splice(index, 1);
-    updateBuilderPreview();
-}
-
-// Save tool string
-function saveToolString() {
-    const nameInput = document.getElementById('new-toolstring-name');
-    const serviceSelect = document.getElementById('new-toolstring-service');
-
-    if (!nameInput || !serviceSelect) return;
-
-    const name = nameInput.value.trim();
-    const serviceLine = serviceSelect.value;
-
-    if (!name) {
-        if (window.Toast) {
-            window.Toast.warning('Please enter a name for the tool string');
-        } else {
-            alert('Please enter a name for the tool string');
-        }
-        return;
-    }
-
-    if (builderComponents.length === 0) {
-        if (window.Toast) {
-            window.Toast.warning('Please add at least one component');
-        } else {
-            alert('Please add at least one component');
-        }
-        return;
-    }
-
-    const toolString = {
-        id: `ts-${Date.now()}`,
-        name,
-        serviceLine,
-        components: [...builderComponents],
-        createdAt: new Date().toISOString()
-    };
-
-    savedToolStrings.push(toolString);
-    saveToolStringsToStorage();
-
-    // Clear builder
-    nameInput.value = '';
-    serviceSelect.value = 'CT';
-    builderComponents = [];
-    updateBuilderPreview();
-
-    // Switch to saved strings tab
-    switchEquipmentTab('toolstrings');
-
-    if (window.Toast) {
-        window.Toast.success(`Tool string "${name}" saved successfully!`);
-    } else {
-        alert(`Tool string "${name}" saved successfully!`);
-    }
-}
-
-// Render saved tool strings
-function renderSavedToolStrings() {
-    const list = document.getElementById('saved-toolstrings-list');
-    const emptyState = document.getElementById('empty-toolstrings');
-
-    if (!list || !emptyState) return;
-
-    if (savedToolStrings.length === 0) {
-        list.innerHTML = '';
-        emptyState.style.display = 'block';
-        return;
-    }
-
-    emptyState.style.display = 'none';
-    list.innerHTML = savedToolStrings.map((toolString, index) => `
-        <div class="tool-string-card">
-            <div class="tool-string-header">
-                <div>
-                    <div class="tool-string-name">${toolString.name}</div>
-                    <span class="service-line-badge">${toolString.serviceLine}</span>
-                </div>
-                <div class="flex gap-2">
-                    <button class="btn-add-equipment text-sm" onclick="useToolString(${index})">
-                        Add to Plan
-                    </button>
-                    <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm" onclick="deleteToolString(${index})">
-                        Delete
-                    </button>
-                </div>
-            </div>
-            <ul class="tool-string-components">
-                ${toolString.components.map((comp, i) => `
-                    <li class="tool-string-component">${i + 1}. ${comp.name}</li>
-                `).join('')}
-            </ul>
-            <p class="text-xs text-gray-500 mt-2">Created: ${new Date(toolString.createdAt).toLocaleString()}</p>
-        </div>
-    `).join('');
-}
-
-// Use a tool string (add to current plan)
-function useToolString(index) {
-    const toolString = savedToolStrings[index];
-
-    // Store the tool string for the current plan
-    const planToolString = {
-        id: toolString.id || `ts-${Date.now()}`,
-        name: toolString.name,
-        components: toolString.components,
-        addedAt: new Date().toISOString(),
-        serviceLine: toolString.serviceLine || 'General'
-    };
-
-    // Save to localStorage for integration with main planner
-    const currentPlanTools = JSON.parse(localStorage.getItem('welltegra_current_plan_tools') || '[]');
-    currentPlanTools.push(planToolString);
-    localStorage.setItem('welltegra_current_plan_tools', JSON.stringify(currentPlanTools));
-
-    // If main app's appState exists, integrate directly
-    if (window.appState && window.appState.generatedPlan) {
-        // Add to the generated plan's equipment list
-        if (!window.appState.generatedPlan.equipment) {
-            window.appState.generatedPlan.equipment = [];
-        }
-        window.appState.generatedPlan.equipment.push(...toolString.components);
-
-        if (window.Toast) {
-            window.Toast.success(`Tool string "${toolString.name}" added to ${window.appState.generatedPlan.name}!`);
-        } else {
-            alert(`Tool string "${toolString.name}" added to ${window.appState.generatedPlan.name}!`);
-        }
-        console.log('[Equipment] Tool string added to active plan:', planToolString);
-    } else {
-        // Store for later integration
-        if (window.Toast) {
-            window.Toast.success(`Tool string "${toolString.name}" saved to plan! Open the planner to view.`);
-        } else {
-            alert(`Tool string "${toolString.name}" saved to plan! Open the planner to view.`);
-        }
-        console.log('[Equipment] Tool string queued for plan integration:', planToolString);
-    }
-
-    // Dispatch event for other modules to listen
-    window.dispatchEvent(new CustomEvent('toolstring:added', {
-        detail: planToolString
-    }));
-}
-
-// Delete a tool string
-function deleteToolString(index) {
-    const toolString = savedToolStrings[index];
-    if (confirm(`Are you sure you want to delete "${toolString.name}"?`)) {
-        savedToolStrings.splice(index, 1);
-        saveToolStringsToStorage();
-        renderSavedToolStrings();
-        if (window.Toast) {
-            window.Toast.info(`Tool string "${toolString.name}" deleted`);
-        }
-    }
-}
-
-// Render service templates
-function renderServiceTemplates() {
-    const templates = {
-        ct: {
-            name: 'Coiled Tubing Standard Package',
-            description: 'Standard CT package for wellbore cleanout and circulation',
-            serviceLine: 'CT',
-            components: ['CT Reel', 'Injector Head', 'BHA Assembly', 'Jetting Tools']
-        },
-        els_fishing: {
-            name: 'E-Line Fishing Assembly',
-            description: 'Complete fishing assembly for wireline operations',
-            serviceLine: 'ELS',
-            components: ['Rope Socket', 'Power Jar', 'Internal Spear', 'Pressure Gauge']
-        },
-        slk_gaslift: {
-            name: 'Slickline Gas Lift Service',
-            description: 'Standard slickline setup for gas lift valve operations',
-            serviceLine: 'SLK',
-            components: ['Running Tool', 'Gas Lift Valve', 'Lock Mandrel', 'Equalizing Prong']
-        },
-        whm_completion: {
-            name: 'WHM Completion Assembly',
-            description: 'Wireline completion tools package',
-            serviceLine: 'WHM',
-            components: ['Setting Tool', 'Plug Assembly', 'Bridge Plug', 'Tubing Cutter']
-        }
-    };
-
-    const grid = document.getElementById('service-templates-grid');
-    if (!grid) return;
-
-    grid.innerHTML = Object.keys(templates).map(key => {
-        const template = templates[key];
-        return `
-            <div class="tool-string-card cursor-pointer" onclick="loadTemplate('${key}')">
-                <div class="tool-string-header">
-                    <div>
-                        <div class="tool-string-name">${template.name}</div>
-                        <span class="service-line-badge">${template.serviceLine}</span>
-                    </div>
-                </div>
-                <p class="text-sm text-gray-400 mb-3">${template.description}</p>
-                <ul class="tool-string-components">
-                    ${template.components.map((comp, i) => `
-                        <li class="tool-string-component">${i + 1}. ${comp}</li>
-                    `).join('')}
-                </ul>
-                <button class="btn-add-equipment mt-3 w-full" onclick="event.stopPropagation(); loadTemplate('${key}')">
-                    Load Template
-                </button>
-            </div>
-        `;
-    }).join('');
-}
-
-// Load a template into builder
-function loadTemplate(templateKey) {
-    const templates = {
-        ct: {
-            name: 'Coiled Tubing Standard Package',
-            description: 'Standard CT package for wellbore cleanout and circulation',
-            serviceLine: 'CT',
-            components: ['CT Reel', 'Injector Head', 'BHA Assembly', 'Jetting Tools']
-        },
-        els_fishing: {
-            name: 'E-Line Fishing Assembly',
-            description: 'Complete fishing assembly for wireline operations',
-            serviceLine: 'ELS',
-            components: ['Rope Socket', 'Power Jar', 'Internal Spear', 'Pressure Gauge']
-        },
-        slk_gaslift: {
-            name: 'Slickline Gas Lift Service',
-            description: 'Standard slickline setup for gas lift valve operations',
-            serviceLine: 'SLK',
-            components: ['Running Tool', 'Gas Lift Valve', 'Lock Mandrel', 'Equalizing Prong']
-        },
-        whm_completion: {
-            name: 'WHM Completion Assembly',
-            description: 'Wireline completion tools package',
-            serviceLine: 'WHM',
-            components: ['Setting Tool', 'Plug Assembly', 'Bridge Plug', 'Tubing Cutter']
-        }
-    };
-
-    const template = templates[templateKey];
-    if (!template) {
-        if (window.Toast) {
-            window.Toast.error('Template not found');
-        }
-        return;
-    }
-
-    // Clear existing builder components
-    builderComponents = [];
-
-    // Add template components to builder
-    template.components.forEach(componentName => {
-        builderComponents.push({
-            id: `template-${Date.now()}-${Math.random()}`,
-            name: componentName,
-            category: template.serviceLine,
-            manufacturer: 'Template',
-            applications: [template.description]
-        });
-    });
-
-    // Set the tool string name
-    const nameInput = document.getElementById('new-toolstring-name');
-    if (nameInput) {
-        nameInput.value = template.name;
-    }
-
-    // Switch to builder tab and update preview
-    switchEquipmentTab('builder');
-    updateBuilderPreview();
-
-    if (window.Toast) {
-        window.Toast.success(`Loaded template: ${template.name}`);
-    }
-}
-
-// Switch equipment tabs
-function switchEquipmentTab(tabName) {
-    // Update tab buttons
-    document.querySelectorAll('.equipment-tab').forEach(tab => {
-        tab.classList.remove('active');
-        if (tab.dataset.tab === tabName) {
-            tab.classList.add('active');
-        }
-    });
-
-    // Show/hide tab content
-    document.querySelectorAll('.equipment-tab-content').forEach(content => {
-        content.classList.add('hidden');
-    });
-
-    const activeContent = document.getElementById(`tab-${tabName}`);
-    if (activeContent) {
-        activeContent.classList.remove('hidden');
-    }
-
-    // Load data if needed
-    if (tabName === 'toolstrings') {
-        renderSavedToolStrings();
-    }
-}
-
-// Initialize equipment catalog when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    // Equipment search
+function setupSearch() {
     const searchInput = document.getElementById('equipment-catalog-search');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            equipmentSearchQuery = e.target.value.trim();
-            renderEquipmentCatalog();
-        });
-    }
+    if (!searchInput) return;
 
-    // Update builder preview when name changes
-    const nameInput = document.getElementById('new-toolstring-name');
-    if (nameInput) {
-        nameInput.addEventListener('input', updateBuilderPreview);
-    }
+    searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = equipmentDatabase.filter(item => 
+            item.name.toLowerCase().includes(term) || 
+            item.manufacturer.toLowerCase().includes(term) || 
+            item.description.toLowerCase().includes(term) ||
+            item.category.toLowerCase().includes(term)
+        );
+        renderCatalog(filtered);
+    });
+}
 
-    // Return to planner button
-    const returnBtn = document.getElementById('return-to-planner-btn');
-    if (returnBtn) {
-        returnBtn.addEventListener('click', () => {
-            if (window.navigateTo) {
-                navigateTo('planner');
-            }
-        });
+// Global function to handle filtering by category buttons
+window.filterEquipmentCategory = function(category) {
+    if (category === 'all') {
+        renderCatalog(equipmentDatabase);
+    } else {
+        // Partial match to handle 'fishing', 'coiled-tubing' etc.
+        const filtered = equipmentDatabase.filter(item => item.category.includes(category));
+        renderCatalog(filtered);
     }
+};
 
-    // Equipment nav link
-    const equipmentNav = document.getElementById('equipment-nav-link');
-    if (equipmentNav) {
-        equipmentNav.addEventListener('click', () => {
-            if (window.navigateTo) {
-                navigateTo('equipment');
-            }
-            // Load equipment catalog if not already loaded
-            if (Object.keys(equipmentCatalog).length === 0) {
-                loadEquipmentCatalog();
-                loadSavedToolStrings();
-            }
-        });
+// Global function to handle tabs
+window.switchEquipmentTab = function(tabName) {
+    // Hide all content
+    document.querySelectorAll('.equipment-tab-content').forEach(el => el.classList.add('hidden'));
+    // Show selected content
+    document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+    
+    // Update tab styling
+    document.querySelectorAll('.equipment-tab').forEach(el => el.classList.remove('active'));
+    document.querySelector(`button[data-tab="${tabName}"]`).classList.add('active');
+};
+
+// Global function stub for adding to tool string (functionality to be expanded later)
+window.addToToolString = function(id) {
+    const item = equipmentDatabase.find(i => i.id === id);
+    if (item) {
+        // Create a simple toast notification
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded shadow-lg z-50 animate-bounce';
+        toast.textContent = `Added ${item.name} to Tool String`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
     }
-
-    console.log('[Equipment] Equipment Catalog module loaded');
-});
+};
