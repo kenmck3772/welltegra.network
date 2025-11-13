@@ -24,7 +24,7 @@ export default defineConfig({
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        video: 'on',
+        video: 'off', // Disabled - was causing crashes
         videoDir: 'test-videos',
         launchOptions: {
           args: [
