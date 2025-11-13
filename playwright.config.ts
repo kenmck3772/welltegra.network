@@ -29,7 +29,12 @@ export default defineConfig({
         launchOptions: {
           args: [
             '--disable-dev-shm-usage',
-            '--no-sandbox'
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-gpu',
+            '--disable-software-rasterizer',
+            '--disable-extensions',
+            '--js-flags=--max-old-space-size=4096', // Increase memory
           ],
         },
       },
