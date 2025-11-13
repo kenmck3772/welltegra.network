@@ -1,5 +1,6 @@
 // @ts-check
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
+import { setupCDNMocks } from '../fixtures/cdn-mock.js';
 
 /**
  * WellTegra Demo Workflow E2E Tests
@@ -10,6 +11,9 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('Demo Workflow - Complete 5-Act Narrative', () => {
   test.beforeEach(async ({ page }) => {
+    // Setup CDN mocking to prevent crashes from external libraries
+    await setupCDNMocks(page);
+
     // Navigate to the main application
     await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 30000 });
 
