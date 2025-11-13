@@ -87,13 +87,13 @@ test.describe('Demo Workflow - Complete 5-Act Narrative', () => {
   });
 
   test('Act 3: Navigate to Equipment Catalog and build tool string', async ({ page }) => {
-    // Navigate to equipment catalog
-    const equipmentNav = page.locator('#equipment-nav-link');
-    await equipmentNav.click();
+    // Navigate to logistics (equipment and personnel management)
+    const logisticsNav = page.locator('#logistics-nav-link');
+    await logisticsNav.click();
 
-    // Wait for equipment view to load
-    const equipmentView = page.locator('#equipment-view');
-    await expect(equipmentView).toBeVisible({ timeout: 5000 });
+    // Wait for logistics view to load
+    const logisticsView = page.locator('#logistics-view');
+    await expect(logisticsView).toBeVisible({ timeout: 5000 });
 
     // Verify catalog tab is active
     const catalogTab = page.locator('#catalog-tab, [data-tab="catalog"]');
@@ -130,10 +130,10 @@ test.describe('Demo Workflow - Complete 5-Act Narrative', () => {
   });
 
   test('Act 4: Return to Planner with selected tool string', async ({ page }) => {
-    // First build a tool string in equipment catalog
-    const equipmentNav = page.locator('#equipment-nav-link');
-    await equipmentNav.click();
-    await expect(page.locator('#equipment-view')).toBeVisible({ timeout: 5000 });
+    // First build a tool string in logistics
+    const logisticsNav = page.locator('#logistics-nav-link');
+    await logisticsNav.click();
+    await expect(page.locator('#logistics-view')).toBeVisible({ timeout: 5000 });
 
     // Navigate to builder tab
     const builderTab = page.locator('#builder-tab, [data-tab="builder"], button:has-text("Builder")');
@@ -228,10 +228,10 @@ test.describe('Demo Workflow - Complete 5-Act Narrative', () => {
     await plannerNav.click();
     await expect(page.locator('#planner-view')).toBeVisible({ timeout: 5000 });
 
-    // Act 3: Navigate to Equipment
-    const equipmentNav = page.locator('#equipment-nav-link');
-    await equipmentNav.click();
-    await expect(page.locator('#equipment-view')).toBeVisible({ timeout: 5000 });
+    // Act 3: Navigate to Logistics
+    const logisticsNav = page.locator('#logistics-nav-link');
+    await logisticsNav.click();
+    await expect(page.locator('#logistics-view')).toBeVisible({ timeout: 5000 });
 
     // Verify equipment catalog loaded
     const catalogItems = page.locator('.equipment-item, .tool-card, .catalog-item');
@@ -293,11 +293,11 @@ test.describe('Critical User Interactions', () => {
   });
 
   test('Search functionality filters equipment', async ({ page }) => {
-    // Navigate to equipment
-    const equipmentNav = page.locator('#equipment-nav-link');
-    if (await equipmentNav.count() > 0) {
-      await equipmentNav.click();
-      await expect(page.locator('#equipment-view')).toBeVisible({ timeout: 5000 });
+    // Navigate to logistics
+    const logisticsNav = page.locator('#logistics-nav-link');
+    if (await logisticsNav.count() > 0) {
+      await logisticsNav.click();
+      await expect(page.locator('#logistics-view')).toBeVisible({ timeout: 5000 });
 
       const searchInput = page.locator('#search-tools, input[placeholder*="Search"]');
 
@@ -363,11 +363,11 @@ test.describe('Data Integration', () => {
   });
 
   test('Equipment catalog data loads successfully', async ({ page }) => {
-    const equipmentNav = page.locator('#equipment-nav-link');
+    const logisticsNav = page.locator('#logistics-nav-link');
 
-    if (await equipmentNav.count() > 0) {
-      await equipmentNav.click();
-      await expect(page.locator('#equipment-view')).toBeVisible({ timeout: 5000 });
+    if (await logisticsNav.count() > 0) {
+      await logisticsNav.click();
+      await expect(page.locator('#logistics-view')).toBeVisible({ timeout: 5000 });
 
       // Check if equipment items are rendered
       const items = page.locator('.equipment-item, .tool-card');
