@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://welltegra.network; font-src 'self' https://fonts.gstatic.com; connect-src 'self'; media-src 'self' data:;  base-uri 'self'; form-action 'self'">
+    <title>Pricing - Well-Tegra | Choose Your Plan</title>
+    <meta name="description" content="Simple, transparent pricing for Well-Tegra. From free planning tools to enterprise solutions with AI, we have a plan that fits your needs.">
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, #0b1220 0%, #020617 100%);
+        }
+
+        .pricing-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.8));
+            border: 2px solid #334155;
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(20, 184, 166, 0.2);
+            border-color: #14b8a6;
+        }
+
+        .pricing-card.featured {
+            border-color: #14b8a6;
+            box-shadow: 0 12px 40px rgba(20, 184, 166, 0.3);
+            transform: scale(1.02);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.02) translateY(-8px);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            color: #0b1220;
+            padding: 8px 24px;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);
+        }
+
+        .price {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #14b8a6, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .price-period {
+            font-size: 1.125rem;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 2rem 0;
+            flex-grow: 1;
+        }
+
+        .feature-list li {
+            padding: 0.875rem 0;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #14b8a6, #22d3ee);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0b1220;
+            font-weight: 900;
+            font-size: 0.75rem;
+        }
+
+        .cta-button {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button-secondary {
+            background: #475569;
+            color: #e2e8f0;
+            border-color: #64748b;
+        }
+
+        .cta-button-secondary:hover {
+            background: #64748b;
+            transform: scale(1.02);
+        }
+
+        .cta-button-primary {
+            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            color: #0b1220;
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3);
+        }
+
+        .cta-button-primary:hover {
+            box-shadow: 0 12px 30px rgba(20, 184, 166, 0.5);
+            transform: scale(1.05);
+        }
+
+        .cta-button-enterprise {
+            background: transparent;
+            color: #14b8a6;
+            border-color: #14b8a6;
+        }
+
+        .cta-button-enterprise:hover {
+            background: rgba(20, 184, 166, 0.1);
+            transform: scale(1.02);
+        }
+
+        .comparison-table {
+            overflow-x: auto;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            background: rgba(15, 23, 42, 0.9);
+            color: #14b8a6;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 800;
+            border-bottom: 2px solid #14b8a6;
+        }
+
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #334155;
+            color: #e2e8f0;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(20, 184, 166, 0.05);
+        }
+
+        .check-icon {
+            color: #14b8a6;
+            font-weight: 900;
+            font-size: 1.25rem;
+        }
+
+        .faq-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: #14b8a6;
+            background: rgba(20, 184, 166, 0.05);
+        }
+
+        .faq-question {
+            font-weight: 700;
+            color: #e2e8f0;
+            font-size: 1.125rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            color: #94a3b8;
+            margin-top: 1rem;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+            color: #14b8a6;
+        }
+
+        .savings-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen">
+    <!-- Header -->
+    <header class="py-6 px-4 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="/" class="text-2xl font-black">
+                <span class="bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">Well-Tegra</span>
+            </a>
+            <nav class="hidden md:flex gap-6">
+                <a href="/" class="hover:text-cyan-400 transition">Home</a>
+                <a href="#pricing" class="text-cyan-400 font-bold">Pricing</a>
+                <a href="/login" class="hover:text-cyan-400 transition">Login</a>
+            </nav>
+            <a href="/signup" class="bg-cyan-600 hover:bg-cyan-500 px-6 py-2 rounded-lg font-bold transition">
+                Get Started Free
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-16 px-4 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-6xl font-black mb-6">
+                Simple, Transparent <span class="bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">Pricing</span>
+            </h1>
+            <p class="text-xl text-gray-400 mb-8">
+                Choose the plan that fits your needs. Start free, scale as you grow.
+            </p>
+            <div class="flex justify-center gap-4 mb-12">
+                <button id="monthly-toggle" onclick="toggleBilling('monthly')" class="px-6 py-3 bg-cyan-600 text-white font-bold rounded-lg transition">
+                    Monthly
+                </button>
+                <button id="annual-toggle" onclick="toggleBilling('annual')" class="px-6 py-3 bg-gray-700 text-gray-300 font-bold rounded-lg transition hover:bg-gray-600">
+                    Annual <span class="savings-badge">Save 17%</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Cards -->
+    <section id="pricing" class="py-12 px-4">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Free Tier -->
+            <div class="pricing-card">
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold mb-2">Planner</h3>
+                    <p class="text-gray-400 text-sm mb-4">For individuals getting started</p>
+                    <div class="price">$0</div>
+                    <div class="price-period">forever</div>
+                </div>
+
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✓</span> Up to 5 wells</li>
+                    <li><span class="feature-icon">✓</span> Basic planner module</li>
+                    <li><span class="feature-icon">✓</span> Community support</li>
+                    <li><span class="feature-icon">✓</span> Read-only API access</li>
+                    <li><span class="feature-icon">✓</span> Equipment catalog</li>
+                </ul>
+
+                <a href="/signup?plan=free" class="cta-button cta-button-secondary">
+                    Get Started Free
+                </a>
+            </div>
+
+            <!-- Professional Tier -->
+            <div class="pricing-card">
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold mb-2">Professional</h3>
+                    <p class="text-gray-400 text-sm mb-4">For consultants & small teams</p>
+                    <div class="price monthly-price">$299</div>
+                    <div class="price annual-price" style="display:none;">$249</div>
+                    <div class="price-period">/month</div>
+                    <div class="annual-savings" style="display:none;">
+                        <span class="text-sm text-green-400">$600 saved annually</span>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✓</span> Up to 50 wells</li>
+                    <li><span class="feature-icon">✓</span> Full platform access</li>
+                    <li><span class="feature-icon">✓</span> Email support (48h)</li>
+                    <li><span class="feature-icon">✓</span> Standard API (1K req/hr)</li>
+                    <li><span class="feature-icon">✓</span> Equipment catalog</li>
+                    <li><span class="feature-icon">✓</span> Survey tools</li>
+                    <li><span class="feature-icon">✓</span> PDF exports</li>
+                </ul>
+
+                <a href="/signup?plan=professional" class="cta-button cta-button-primary">
+                    Start 14-Day Free Trial
+                </a>
+            </div>
+
+            <!-- Team Tier (Most Popular) -->
+            <div class="pricing-card featured">
+                <div class="popular-badge">Most Popular</div>
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold mb-2">Team</h3>
+                    <p class="text-gray-400 text-sm mb-4">For growing service companies</p>
+                    <div class="price monthly-price">$999</div>
+                    <div class="price annual-price" style="display:none;">$829</div>
+                    <div class="price-period">/month</div>
+                    <div class="annual-savings" style="display:none;">
+                        <span class="text-sm text-green-400">$2,040 saved annually</span>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✓</span> Up to 200 wells</li>
+                    <li><span class="feature-icon">✓</span> All Professional features</li>
+                    <li><span class="feature-icon">✓</span> Priority support (24h)</li>
+                    <li><span class="feature-icon">✓</span> Advanced API (10K req/hr)</li>
+                    <li><span class="feature-icon">✓</span> Real-time dashboards</li>
+                    <li><span class="feature-icon">✓</span> Sustainability tracking</li>
+                    <li><span class="feature-icon">✓</span> 5 team members</li>
+                    <li><span class="feature-icon">✓</span> Custom branding</li>
+                </ul>
+
+                <a href="/signup?plan=team" class="cta-button cta-button-primary">
+                    Start 14-Day Free Trial
+                </a>
+            </div>
+
+            <!-- Enterprise Tier -->
+            <div class="pricing-card">
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
+                    <p class="text-gray-400 text-sm mb-4">For operators & large organizations</p>
+                    <div class="price" style="font-size: 2.5rem;">Custom</div>
+                    <div class="price-period">contact sales</div>
+                </div>
+
+                <ul class="feature-list">
+                    <li><span class="feature-icon">✓</span> Unlimited wells</li>
+                    <li><span class="feature-icon">✓</span> All Team features</li>
+                    <li><span class="feature-icon">✓</span> Dedicated account manager</li>
+                    <li><span class="feature-icon">✓</span> Custom integrations</li>
+                    <li><span class="feature-icon">✓</span> AI Co-Pilot (coming soon)</li>
+                    <li><span class="feature-icon">✓</span> Predictive maintenance</li>
+                    <li><span class="feature-icon">✓</span> On-premise option</li>
+                    <li><span class="feature-icon">✓</span> SLA guarantee (99.9%)</li>
+                    <li><span class="feature-icon">✓</span> Unlimited users</li>
+                </ul>
+
+                <a href="mailto:sales@welltegra.network?subject=Enterprise%20Inquiry" class="cta-button cta-button-enterprise">
+                    Contact Sales
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Comparison Table -->
+    <section class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-black text-center mb-12">
+                Compare <span class="bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">Features</span>
+            </h2>
+
+            <div class="comparison-table bg-gray-900/50 rounded-xl p-6 border border-gray-800">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th class="text-center">Planner</th>
+                            <th class="text-center">Professional</th>
+                            <th class="text-center">Team</th>
+                            <th class="text-center">Enterprise</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Wells</strong></td>
+                            <td class="text-center">5</td>
+                            <td class="text-center">50</td>
+                            <td class="text-center">200</td>
+                            <td class="text-center">Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Users</strong></td>
+                            <td class="text-center">1</td>
+                            <td class="text-center">1</td>
+                            <td class="text-center">5</td>
+                            <td class="text-center">Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Planner Module</strong></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performer Module</strong></td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Analyzer Module</strong></td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Equipment Catalog</strong></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Survey Tools</strong></td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Real-Time Dashboards</strong></td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sustainability Tracking</strong></td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>API Access</strong></td>
+                            <td class="text-center">Read-only</td>
+                            <td class="text-center">1K req/hr</td>
+                            <td class="text-center">10K req/hr</td>
+                            <td class="text-center">Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Support</strong></td>
+                            <td class="text-center">Community</td>
+                            <td class="text-center">Email (48h)</td>
+                            <td class="text-center">Priority (24h)</td>
+                            <td class="text-center">Dedicated</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AI Co-Pilot</strong></td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>On-Premise Deployment</strong></td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center"><span class="check-icon">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>SLA</strong></td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center text-gray-600">—</td>
+                            <td class="text-center">99.9%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 px-4 bg-gray-900/30">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-black text-center mb-12">
+                Frequently Asked <span class="bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">Questions</span>
+            </h2>
+
+            <div class="space-y-4">
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <span>Can I start with a free trial?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes! Professional and Team tiers include a 14-day free trial. No credit card required. The Planner tier is free forever.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <span>Can I upgrade or downgrade my plan?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Absolutely! You can upgrade or downgrade at any time. Changes take effect immediately, and we'll pro-rate your billing accordingly.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <span>What payment methods do you accept?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        We accept all major credit cards (Visa, Mastercard, American Express), bank transfers (wire/ACH), and purchase orders for Enterprise customers.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <span>Is my data secure?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes. We use bank-level encryption (AES-256), regular security audits, and comply with SOC 2, GDPR, and industry standards. Your data never leaves our secure servers unless you explicitly share it.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <span>What happens to my data if I cancel?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        You can export all your data before canceling. We retain your data for 90 days after cancellation in case you change your mind, then permanently delete it per your request.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <span>Do you offer custom enterprise solutions?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes! Our Enterprise tier includes custom integrations, on-premise deployment options, dedicated support, and tailored features. Contact our sales team to discuss your specific needs.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <span>What's included in the API access?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        Our REST API provides programmatic access to wells, surveys, plans, and real-time data. Rate limits vary by tier. Full documentation and code examples are available in our developer portal.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <div class="faq-question">
+                        <span>Can I get a refund?</span>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        We offer a 30-day money-back guarantee for all paid plans. If you're not satisfied for any reason, contact us within 30 days for a full refund.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl font-black mb-6">
+                Ready to Transform Your <span class="bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">Well Planning?</span>
+            </h2>
+            <p class="text-xl text-gray-400 mb-8">
+                Join hundreds of engineers and operators who trust Well-Tegra for their intervention planning.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/signup?plan=free" class="cta-button cta-button-secondary inline-block px-8 py-4 text-lg">
+                    Start Free Forever
+                </a>
+                <a href="/signup?plan=professional" class="cta-button cta-button-primary inline-block px-8 py-4 text-lg">
+                    Try Professional Free for 14 Days
+                </a>
+            </div>
+            <p class="mt-6 text-sm text-gray-500">
+                No credit card required • Cancel anytime • 30-day money-back guarantee
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto text-center text-gray-500">
+            <p>&copy; 2025 Well-Tegra. All rights reserved.</p>
+            <div class="mt-4 flex justify-center gap-6">
+                <a href="/terms" class="hover:text-cyan-400 transition">Terms</a>
+                <a href="/privacy" class="hover:text-cyan-400 transition">Privacy</a>
+                <a href="mailto:support@welltegra.network" class="hover:text-cyan-400 transition">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle FAQ
+        function toggleFAQ(element) {
+            element.classList.toggle('active');
+        }
+
+        // Toggle monthly/annual billing
+        function toggleBilling(period) {
+            const monthlyBtn = document.getElementById('monthly-toggle');
+            const annualBtn = document.getElementById('annual-toggle');
+            const monthlyPrices = document.querySelectorAll('.monthly-price');
+            const annualPrices = document.querySelectorAll('.annual-price');
+            const savingsBadges = document.querySelectorAll('.annual-savings');
+
+            if (period === 'monthly') {
+                monthlyBtn.classList.add('bg-cyan-600', 'text-white');
+                monthlyBtn.classList.remove('bg-gray-700', 'text-gray-300');
+                annualBtn.classList.remove('bg-cyan-600', 'text-white');
+                annualBtn.classList.add('bg-gray-700', 'text-gray-300');
+
+                monthlyPrices.forEach(el => el.style.display = 'block');
+                annualPrices.forEach(el => el.style.display = 'none');
+                savingsBadges.forEach(el => el.style.display = 'none');
+            } else {
+                annualBtn.classList.add('bg-cyan-600', 'text-white');
+                annualBtn.classList.remove('bg-gray-700', 'text-gray-300');
+                monthlyBtn.classList.remove('bg-cyan-600', 'text-white');
+                monthlyBtn.classList.add('bg-gray-700', 'text-gray-300');
+
+                monthlyPrices.forEach(el => el.style.display = 'none');
+                annualPrices.forEach(el => el.style.display = 'block');
+                savingsBadges.forEach(el => el.style.display = 'block');
+            }
+        }
+
+        // Track pricing interactions
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const plan = this.closest('.pricing-card')?.querySelector('h3')?.textContent || 'Unknown';
+                console.log('Pricing CTA clicked:', plan);
+                // Add your analytics tracking here (Google Analytics, Mixpanel, etc.)
+                // ga('send', 'event', 'Pricing', 'CTA Click', plan);
+            });
+        });
+    </script>
+</body>
+</html>

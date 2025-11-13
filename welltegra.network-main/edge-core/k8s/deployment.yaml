@@ -1,0 +1,429 @@
+# WellTegra Edge Core - Kubernetes Deployment
+# Sprint 12: Edge Core & Sync
+#
+# This deployment is designed for ruggedized Kubernetes clusters on oil rigs
+# Features:
+# - StatefulSet for persistent storage
+# - Local storage for data persistence
+# - Resource limits for edge hardware
+# - Health checks and auto-restart
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: welltegra-edge
+  labels:
+    name: welltegra-edge
+    environment: production
+
+---
+
+# ConfigMap for environment variables
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: edge-core-config
+  namespace: welltegra-edge
+data:
+  NODE_ENV: "production"
+  EDGE_MODE: "true"
+  API_PORT: "3001"
+  NGINX_PORT: "8080"
+  KAFKA_BROKERS: "kafka:9092"
+  SYNC_INTERVAL_SECONDS: "300"
+  CLOUD_SYNC_ENABLED: "true"
+  FIPS_MODE: "true"
+
+---
+
+# Secret for sensitive data (REPLACE IN PRODUCTION)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: edge-core-secrets
+  namespace: welltegra-edge
+type: Opaque
+stringData:
+  DB_PASSWORD: "changeme_in_production"
+  JWT_SECRET: "changeme_in_production"
+  CLOUD_SYNC_ENDPOINT: "https://cloud.welltegra.com/api/edge-sync"
+  EDGE_CORE_ID: "rig-001"
+
+---
+
+# PostgreSQL StatefulSet
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: welltegra-edge
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        env:
+        - name: POSTGRES_DB
+          value: welltegra_edge
+        - name: POSTGRES_USER
+          value: edge
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: edge-core-secrets
+              key: DB_PASSWORD
+        - name: POSTGRES_INITDB_ARGS
+          value: "--encoding=UTF8 --data-checksums"
+        ports:
+        - containerPort: 5432
+          name: postgres
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+        - name: init-script
+          mountPath: /docker-entrypoint-initdb.d
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - edge
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - edge
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: init-script
+        configMap:
+          name: postgres-init-script
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: local-storage
+      resources:
+        requests:
+          storage: 10Gi
+
+---
+
+# PostgreSQL Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: welltegra-edge
+spec:
+  selector:
+    app: postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+  clusterIP: None
+
+---
+
+# Kafka Zookeeper StatefulSet
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+  namespace: welltegra-edge
+spec:
+  serviceName: zookeeper
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+      - name: zookeeper
+        image: confluentinc/cp-zookeeper:7.5.0
+        env:
+        - name: ZOOKEEPER_CLIENT_PORT
+          value: "2181"
+        - name: ZOOKEEPER_TICK_TIME
+          value: "2000"
+        ports:
+        - containerPort: 2181
+          name: client
+        volumeMounts:
+        - name: zookeeper-data
+          mountPath: /var/lib/zookeeper/data
+        - name: zookeeper-logs
+          mountPath: /var/lib/zookeeper/log
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+  volumeClaimTemplates:
+  - metadata:
+      name: zookeeper-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: local-storage
+      resources:
+        requests:
+          storage: 5Gi
+  - metadata:
+      name: zookeeper-logs
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: local-storage
+      resources:
+        requests:
+          storage: 5Gi
+
+---
+
+# Zookeeper Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+  namespace: welltegra-edge
+spec:
+  selector:
+    app: zookeeper
+  ports:
+  - port: 2181
+    targetPort: 2181
+  clusterIP: None
+
+---
+
+# Kafka StatefulSet
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kafka
+  namespace: welltegra-edge
+spec:
+  serviceName: kafka
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+      - name: kafka
+        image: confluentinc/cp-kafka:7.5.0
+        env:
+        - name: KAFKA_BROKER_ID
+          value: "1"
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          value: "zookeeper:2181"
+        - name: KAFKA_ADVERTISED_LISTENERS
+          value: "PLAINTEXT://kafka:9092"
+        - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+          value: "1"
+        - name: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+          value: "1"
+        - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
+          value: "1"
+        - name: KAFKA_LOG_RETENTION_HOURS
+          value: "168"
+        ports:
+        - containerPort: 9092
+          name: kafka
+        volumeMounts:
+        - name: kafka-data
+          mountPath: /var/lib/kafka/data
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+  volumeClaimTemplates:
+  - metadata:
+      name: kafka-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: local-storage
+      resources:
+        requests:
+          storage: 10Gi
+
+---
+
+# Kafka Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka
+  namespace: welltegra-edge
+spec:
+  selector:
+    app: kafka
+  ports:
+  - port: 9092
+    targetPort: 9092
+  clusterIP: None
+
+---
+
+# Edge Core Application Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-core
+  namespace: welltegra-edge
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: edge-core
+  template:
+    metadata:
+      labels:
+        app: edge-core
+    spec:
+      containers:
+      - name: edge-core
+        image: welltegra/edge-core:latest
+        envFrom:
+        - configMapRef:
+            name: edge-core-config
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://edge:$(DB_PASSWORD)@postgres:5432/welltegra_edge"
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: edge-core-secrets
+              key: JWT_SECRET
+        - name: CLOUD_SYNC_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: edge-core-secrets
+              key: CLOUD_SYNC_ENDPOINT
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 3001
+          name: api
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+
+---
+
+# Edge Core Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-core
+  namespace: welltegra-edge
+spec:
+  selector:
+    app: edge-core
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  - name: api
+    port: 3001
+    targetPort: 3001
+
+---
+
+# Sync Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sync-service
+  namespace: welltegra-edge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sync-service
+  template:
+    metadata:
+      labels:
+        app: sync-service
+    spec:
+      containers:
+      - name: sync-service
+        image: welltegra/edge-sync:latest
+        envFrom:
+        - configMapRef:
+            name: edge-core-config
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://edge:$(DB_PASSWORD)@postgres:5432/welltegra_edge"
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: edge-core-secrets
+              key: JWT_SECRET
+        - name: CLOUD_SYNC_ENDPOINT
+          valueFrom:
+            secretKeyRef:
+              name: edge-core-secrets
+              key: CLOUD_SYNC_ENDPOINT
+        - name: EDGE_CORE_ID
+          valueFrom:
+            secretKeyRef:
+              name: edge-core-secrets
+              key: EDGE_CORE_ID
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"

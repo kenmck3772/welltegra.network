@@ -1,0 +1,2503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Well-Tegra - Job Management Tool (v11)</title>
+    <link rel="stylesheet" href="css/tailwind.css">
+    <link rel="icon" href="logo.jpg" type="image/jpeg">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712; /* gray-950 */
+        }
+        
+        /* --- Main Mode Tabs --- */
+        .mode-tab {
+            @apply px-6 py-3 text-lg font-bold text-gray-400 border-b-4 border-transparent hover:text-white;
+        }
+        .mode-tab.active {
+            @apply text-cyan-400 border-cyan-400;
+        }
+
+        /* --- Planner Styles --- */
+        .main-tab { transition: all 0.2s ease-in-out; }
+        .main-tab.active {
+            background-color: #22d3ee; /* cyan-400 */
+            color: #1f2937; /* gray-800 */
+            border-color: #22d3ee;
+        }
+        .sub-tab { 
+            @apply text-base font-semibold py-2 px-4 border-b-2 border-transparent text-gray-400 hover:text-cyan-300;
+            transition: all 0.2s ease-in-out; 
+        }
+        .sub-tab.active {
+            border-bottom-color: #22d3ee; /* cyan-400 */
+            color: #22d3ee;
+        }
+        .add-btn {
+            @apply px-3 py-1 bg-cyan-600 text-white text-xs font-bold rounded-full shadow-md hover:bg-cyan-500 transition-all;
+        }
+        .step-card {
+            @apply bg-gray-900 border-2 border-gray-700 rounded-lg mb-4 shadow-lg transition-all;
+        }
+        .step-card.active {
+            @apply border-cyan-400 shadow-cyan-900/30 shadow-xl;
+        }
+        .step-header {
+            @apply flex justify-between items-center p-4 bg-gray-800 rounded-t-lg border-b border-gray-700 cursor-pointer;
+        }
+        .step-header h3 {
+            @apply text-lg font-bold text-cyan-400;
+        }
+        .remove-step-btn {
+            @apply text-gray-500 hover:text-red-400 font-bold text-sm;
+        }
+        .step-item {
+            @apply flex justify-between items-center p-3;
+        }
+        .step-item-name {
+            @apply text-sm text-gray-200;
+        }
+        .remove-item-btn {
+            @apply text-red-500 hover:text-red-400 text-xs font-semibold ml-4;
+        }
+        .step-footer {
+            @apply p-3 bg-gray-800 rounded-b-lg text-right;
+        }
+        .step-footer strong {
+            @apply text-base font-bold text-cyan-400;
+        }
+        select.op-code-select {
+            @apply flex-grow bg-gray-800 border-gray-700 rounded-md shadow-sm text-white focus:ring-cyan-500 focus:border-cyan-500;
+        }
+        .burn-rate-card {
+            @apply bg-gray-800 p-4 rounded-md text-center;
+        }
+        .burn-rate-title {
+            @apply block text-sm font-semibold text-cyan-400;
+        }
+        .burn-rate-value {
+            @apply block text-2xl font-black text-white;
+        }
+        .assembly-card {
+            @apply bg-gray-800 border border-gray-700 rounded-lg p-4 mb-3;
+        }
+        .assembly-card:hover {
+            @apply bg-gray-700/50;
+        }
+        .assembly-title {
+            @apply text-lg font-bold text-cyan-400;
+        }
+        .assembly-component {
+            @apply text-sm text-gray-300 pl-4;
+        }
+        .catalogue-table-container {
+            @apply max-h-[60vh] overflow-y-auto;
+        }
+
+
+        /* --- Execute & Report Mode Styles --- */
+        .summary-card {
+            @apply bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700;
+        }
+        .summary-card-title {
+            @apply block text-sm font-medium text-cyan-400 uppercase tracking-wider;
+        }
+        .summary-card-value {
+            @apply text-4xl font-black text-white;
+        }
+        .summary-card-value.positive { @apply text-green-400; }
+        .summary-card-value.negative { @apply text-red-400; }
+
+        .report-table { @apply w-full text-left; }
+        .report-table thead { @apply bg-gray-800 text-cyan-400 uppercase text-xs; }
+        .report-table th, .report-table td { @apply p-4; }
+        
+        .report-step-header { @apply bg-gray-800; }
+        .report-step-header td { @apply font-bold text-lg text-white; }
+
+        .report-time-row { @apply bg-gray-800/60 border-t border-gray-700; }
+        .report-time-row td { @apply font-semibold; }
+        .actual-time-input {
+            @apply bg-gray-700 border border-gray-600 rounded-md text-white p-2 w-24 text-right font-bold focus:bg-gray-600 focus:ring-cyan-500 focus:border-cyan-500;
+        }
+
+        .report-item-row { @apply border-b border-gray-700; }
+        .report-item-row:hover { @apply bg-gray-800/50; }
+        .report-item-row.standing-cost { @apply bg-gray-800/40; }
+        
+        .report-item-row td { @apply text-sm; }
+        .report-item-row .code { @apply font-mono text-gray-400; }
+        
+        .actual-cost-input {
+            @apply bg-gray-700 border border-gray-600 rounded-md text-white p-2 w-32 text-right font-bold focus:bg-gray-600 focus:ring-cyan-500 focus:border-cyan-500;
+        }
+        
+        .variance-cell { @apply font-bold text-base; }
+        .variance-cell.positive { @apply text-green-400; }
+        .variance-cell.negative { @apply text-red-400; }
+
+        .report-step-footer { @apply bg-gray-800 border-b-8 border-gray-950; }
+        .report-step-footer td { @apply font-bold text-cyan-400 text-right; }
+
+        /* --- Admin Mode Styles --- */
+        .admin-select {
+            @apply bg-gray-800 border-gray-700 rounded-md shadow-sm text-white font-bold text-lg focus:ring-cyan-500 focus:border-cyan-500 p-3;
+        }
+        .admin-table { @apply w-full text-left; }
+        .admin-table thead { @apply bg-gray-800 text-cyan-400 uppercase text-xs; }
+        .admin-table th, .admin-table td { @apply p-3; }
+        .admin-table-row { @apply border-b border-gray-700; }
+        .admin-table-row:hover { @apply bg-gray-800/50; }
+        
+        .admin-input {
+            @apply bg-transparent text-white w-full p-1 rounded-md border border-transparent focus:border-cyan-500 focus:bg-gray-700;
+        }
+        .admin-input-rate {
+            @apply bg-transparent text-white w-24 p-1 rounded-md border border-transparent focus:border-cyan-500 focus:bg-gray-700;
+        }
+        .admin-input-unit {
+            @apply bg-transparent text-white w-20 p-1 rounded-md border border-transparent focus:border-cyan-500 focus:bg-gray-700;
+        }
+
+        .admin-form-input {
+             @apply bg-gray-800 border-gray-700 rounded-md shadow-sm text-white focus:ring-cyan-500 focus:border-cyan-500;
+        }
+        
+        .delete-btn {
+            @apply text-gray-500 font-bold hover:text-red-400;
+        }
+        
+        /* --- Analytics Mode Styles --- */
+        .chart-container {
+            @apply bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700;
+        }
+        
+        .analytics-header {
+            @apply text-xl font-bold text-white mb-4;
+        }
+        
+        .hotspot-table { @apply w-full text-left; }
+        .hotspot-table thead { @apply bg-gray-800 text-cyan-400 uppercase text-xs; }
+        .hotspot-table th, .hotspot-table td { @apply p-3 border-b border-gray-700; }
+        .hotspot-table tbody tr:hover { @apply bg-gray-800/50; }
+
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-200">
+
+    <div class="container mx-auto p-6 md:p-10">
+        
+        <header class="mb-6">
+            <h1 class="text-4xl md:text-5xl font-black tracking-tight text-white">Well-Tegra Job Management</h1>
+            <p class="mt-2 text-lg text-cyan-400">Plan, Execute, Report, Analyze, and Manage your well intervention operations.</p>
+        </header>
+
+        <!-- Main Mode Tabs -->
+        <nav class="flex border-b border-gray-700 mb-8">
+            <button id="tab-planner" class="mode-tab active" onclick="showMode('planner')">1. Planner</button>
+            <button id="tab-execute" class="mode-tab" onclick="showMode('execute')">2. Execute & Report</button>
+            <button id="tab-admin" class="mode-tab" onclick="showMode('admin')">3. Admin</button>
+            <button id="tab-analytics" class="mode-tab" onclick="showMode('analytics')">4. Analytics</button>
+        </nav>
+
+        <!-- =================================================================== -->
+        <!-- PLANNER MODE -->
+        <!-- =================================================================== -->
+        <div id="planner-mode">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-10">
+
+                <!-- COLUMN 1: SERVICE CATALOGUE -->
+                <div class="lg:col-span-1">
+                    <h2 class="text-2xl font-bold text-white mb-4">Service Catalogue</h2>
+                    <!-- Main Discipline Tabs -->
+                    <nav id="main-tabs" class="flex flex-wrap border-b border-gray-700">
+                        <button class="main-tab text-lg font-bold py-3 px-5 -mb-px border-b-2 border-transparent hover:text-cyan-400" 
+                                onclick="showMainTab('ct', event)">
+                            CT
+                        </button>
+                        <button class="main-tab text-lg font-bold py-3 px-5 -mb-px border-b-2 border-transparent hover:text-cyan-400" 
+                                onclick="showMainTab('els', event)">
+                            ELS
+                        </button>
+                        <button class="main-tab text-lg font-bold py-3 px-5 -mb-px border-b-2 border-transparent hover:text-cyan-400" 
+                                onclick="showMainTab('slk', event)">
+                            SLK
+                        </button>
+                        <button class="main-tab text-lg font-bold py-3 px-5 -mb-px border-b-2 border-transparent hover:text-cyan-400" 
+                                onclick="showMainTab('whm', event)">
+                            WHM
+                        </button>
+                        <button class="main-tab text-lg font-bold py-3 px-5 -mb-px border-b-2 border-transparent hover:text-cyan-400" 
+                                onclick="showMainTab('assemblies', event)">
+                            My Tool Strings
+                        </button>
+                    </nav>
+
+                    <!-- Main Content Panels -->
+                    <div id="main-content-panels" class="py-6">
+                        <!-- Coiled Tubing Panel -->
+                        <div id="content-ct" class="main-content">
+                            <div class="flex flex-wrap border-b border-gray-600">
+                                <button class="sub-tab" onclick="showSubTab('ct', 'personnel')">Personnel</button>
+                                <button class="sub-tab" onclick="showSubTab('ct', 'equipment')">Main Equipment</button>
+                                <button class="sub-tab" onclick="showSubTab('ct', 'tools')">Downhole Tools</button>
+                            </div>
+                            
+                            <div class="catalogue-table-container">
+                                <div class="sub-content-ct mt-6" id="content-ct-personnel">
+                                    <table class="w-full text-left" id="table-ct-personnel"></table>
+                                </div>
+                                <div class="sub-content-ct mt-6" id="content-ct-equipment" style="display:none;">
+                                    <table class="w-full text-left" id="table-ct-equipment"></table>
+                                </div>
+                                <div class="sub-content-ct mt-6" id="content-ct-tools" style="display:none;">
+                                    <table class="w-full text-left" id="table-ct-tools"></table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Electric Line Panel -->
+                        <div id="content-els" class="main-content" style="display:none;">
+                            <div class="flex flex-wrap border-b border-gray-600">
+                                <button class="sub-tab" onclick="showSubTab('els', 'personnel')">Personnel</button>
+                                <button class="sub-tab" onclick="showSubTab('els', 'equipment')">Main Equipment</button>
+                                <button class="sub-tab" onclick="showSubTab('els', 'tools')">Logging & Perf. Tools</button>
+                            </div>
+                            <div class="catalogue-table-container">
+                                <div class="sub-content-els mt-6" id="content-els-personnel">
+                                    <table class="w-full text-left" id="table-els-personnel"></table>
+                                </div>
+                                <div class="sub-content-els mt-6" id="content-els-equipment" style="display:none;">
+                                    <table class="w-full text-left" id="table-els-equipment"></table>
+                                </div>
+                                <div class="sub-content-els mt-6" id="content-els-tools" style="display:none;">
+                                    <table class="w-full text-left" id="table-els-tools"></table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slickline Panel (NEW STRUCTURE) -->
+                        <div id="content-slk" class="main-content" style="display:none;">
+                            <div class="flex flex-wrap border-b border-gray-600">
+                                <button class="sub-tab" onclick="showSubTab('slk', 'personnel')">Personnel</button>
+                                <button class="sub-tab" onclick="showSubTab('slk', 'equipment')">Main Equipment</button>
+                                <button class="sub-tab" onclick="showSubTab('slk', 'toolstring')">Toolstring</button>
+                                <button class="sub-tab" onclick="showSubTab('slk', 'intervention')">Intervention</button>
+                                <button class="sub-tab" onclick="showSubTab('slk', 'fishing')">Fishing</button>
+                                <button class="sub-tab" onclick="showSubTab('slk', 'plugs')">Plugs & Locks</button>
+                                <button class="sub-tab" onclick="showSubTab('slk', 'gaslift')">Gas Lift</button>
+                            </div>
+                            <div class="catalogue-table-container">
+                                <div class="sub-content-slk mt-6" id="content-slk-personnel">
+                                    <table class="w-full text-left" id="table-slk-personnel"></table>
+                                </div>
+                                <div class="sub-content-slk mt-6" id="content-slk-equipment" style="display:none;">
+                                    <table class="w-full text-left" id="table-slk-equipment"></table>
+                                </div>
+                                <div class="sub-content-slk mt-6" id="content-slk-toolstring" style="display:none;">
+                                    <table class="w-full text-left" id="table-slk-toolstring"></table>
+                                </div>
+                                <div class="sub-content-slk mt-6" id="content-slk-intervention" style="display:none;">
+                                    <table class="w-full text-left" id="table-slk-intervention"></table>
+                                </div>
+                                <div class="sub-content-slk mt-6" id="content-slk-fishing" style="display:none;">
+                                    <table class="w-full text-left" id="table-slk-fishing"></table>
+                                </div>
+                                <div class="sub-content-slk mt-6" id="content-slk-plugs" style="display:none;">
+                                    <table class="w-full text-left" id="table-slk-plugs"></table>
+                                </div>
+                                <div class="sub-content-slk mt-6" id="content-slk-gaslift" style="display:none;">
+                                    <table class="w-full text-left" id="table-slk-gaslift"></table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Wellhead Maint. Panel -->
+                        <div id="content-whm" class="main-content" style="display:none;">
+                            <div class="flex flex-wrap border-b border-gray-600">
+                                <button class="sub-tab" onclick="showSubTab('whm', 'personnel')">Personnel</button>
+                                <button class="sub-tab" onclick="showSubTab('whm', 'equipment')">Service Equipment</button>
+                                <button class="sub-tab" onclick="showSubTab('whm', 'consumables')">Consumables</button>
+                            </div>
+                            <div class="catalogue-table-container">
+                                <div class="sub-content-whm mt-6" id="content-whm-personnel">
+                                    <table class="w-full text-left" id="table-whm-personnel"></table>
+                                </div>
+                                <div class="sub-content-whm mt-6" id="content-whm-equipment" style="display:none;">
+                                    <table class="w-full text-left" id="table-whm-equipment"></table>
+                                </div>
+                                <div class="sub-content-whm mt-6" id="content-whm-consumables" style="display:none;">
+                                    <table class="w-full text-left" id="table-whm-consumables"></table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- My Tool Strings Panel -->
+                        <div id="content-assemblies" class="main-content" style="display:none;">
+                            <p class="text-sm text-gray-400 mb-4">Add saved tool string assemblies to your active job step. Manage assemblies in the 'Admin' tab.</p>
+                            <div id="tool-string-list-planner" class="catalogue-table-container">
+                                <!-- Assembly cards will be rendered here by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMN 2: JOB PROCEDURE & COST -->
+                <div class="lg:col-span-1 sticky top-10">
+                    <div class="bg-gray-900 rounded-lg shadow-2xl border border-gray-700">
+                        <div class="p-6 border-b border-gray-700">
+                            <h2 class="text-2xl font-bold text-white">Job Plan & Cost (AFE)</h2>
+                        </div>
+                        
+                        <!-- Job Setup / Standing Assets -->
+                        <div id="job-setup-container" class="p-6 border-b border-gray-700">
+                            <h3 class="text-lg font-semibold text-cyan-400 mb-3">Job Setup (Standing Assets)</h3>
+                            <p class="text-sm text-gray-400 mb-4">Add all '/Day' items here. Their cost will be automatically applied to each timed step below based on the 'Hourly Burn Rate'.</p>
+                            
+                            <ul id="standing-assets-list" class="space-y-2 mb-4 max-h-40 overflow-y-auto">
+                                <li id="standing-assets-placeholder" class="text-center text-gray-500 py-2">Add '/Day' items from the catalogue.</li>
+                                <!-- Standing assets will be added here -->
+                            </ul>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="burn-rate-card">
+                                    <span class="burn-rate-title">Total Daily Burn Rate</span>
+                                    <span id="daily-burn-rate-display" class="burn-rate-value">£0.00</span>
+                                </div>
+                                <div class="burn-rate-card">
+                                    <span class="burn-rate-title">Hourly Burn Rate</span>
+                                    <span id="hourly-burn-rate-display" class="burn-rate-value">£0.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- "On the Fly" Custom Item Form -->
+                        <div id="custom-item-container" class="p-6 border-b border-gray-700">
+                            <h3 class="text-lg font-semibold text-cyan-400 mb-3">Add Custom Line Item (to selected step)</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="custom-desc" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                                    <input type="text" id="custom-desc" placeholder="e.g., Third-Party NDT" class="w-full bg-gray-800 border-gray-700 rounded-md shadow-sm text-white focus:ring-cyan-500 focus:border-cyan-500">
+                                </div>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div>
+                                        <label for="custom-cost" class="block text-sm font-medium text-gray-300 mb-1">Total Cost (GBP)</label>
+                                        <input type="number" id="custom-cost" placeholder="1500" class="w-full bg-gray-800 border-gray-700 rounded-md shadow-sm text-white focus:ring-cyan-500 focus:border-cyan-500">
+                                    </div>
+                                    <div>
+                                        <label for="custom-unit" class="block text-sm font-medium text-gray-300 mb-1">Unit</LAbel>
+                                        <select id="custom-unit" class="w-full h-10 bg-gray-800 border-gray-700 rounded-md shadow-sm text-white focus:ring-cyan-500 focus:border-cyan-500">
+                                            <option value="Job">Job (Flat Fee)</option>
+                                            <option value="Item">Item</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-span-1">
+                                        <label class="block text-sm font-medium text-transparent mb-1">Add</label>
+                                        <button id="add-custom-btn" class="w-full h-10 bg-cyan-600 text-white font-bold rounded-md shadow-md hover:bg-cyan-500 transition-all">Add Item</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Add New Job Step Form -->
+                        <div id="add-step-container" class="p-6 border-b border-gray-700">
+                            <h3 class="text-lg font-semibold text-cyan-400 mb-3">Job Procedure Steps</h3>
+                            
+                            <div class="grid grid-cols-5 gap-4">
+                                <div class="col-span-3">
+                                    <label for="step-select-input" class="block text-sm font-medium text-gray-300 mb-1">Operational Code</label>
+                                    <select id="step-select-input" class="op-code-select h-10 w-full">
+                                        <!-- Options will be populated by JS -->
+                                    </select>
+                                </div>
+                                <div class="col-span-2">
+                                    <label for="step-planned-time" class="block text-sm font-medium text-gray-300 mb-1">Planned Time (Hrs)</label>
+                                    <input type="number" id="step-planned-time" value="2.0" step="0.5" min="0" class="w-full bg-gray-800 border-gray-700 rounded-md shadow-sm text-white h-10">
+                                </div>
+                            </div>
+                            <button id="add-step-btn" class="w-full mt-4 h-10 bg-cyan-600 text-white font-bold rounded-md shadow-md hover:bg-cyan-500 transition-all">Add Coded Step</button>
+                            
+                            <div class="mt-4 border-t border-gray-700 pt-4">
+                                <label for="custom-step-title" class="text-sm text-gray-400">Or add custom step (e.g., "Mob/Demob"):</label>
+                                <div class="flex gap-4 mt-1">
+                                    <input type="text" id="custom-step-title" placeholder="Custom Step Title" class="flex-grow bg-gray-800 border-gray-700 rounded-md shadow-sm text-white focus:ring-cyan-500 focus:border-cyan-500 h-10">
+                                    <button id="add-custom-step-btn" class="w-32 h-10 bg-gray-600 text-white font-bold rounded-md shadow-md hover:bg-gray-500 transition-all">Add Custom</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Procedure Step List -->
+                        <div id="procedure-list-container" class="max-h-[50vh] overflow-y-auto p-6">
+                            <ul id="procedure-list">
+                                <li id="procedure-placeholder" class="py-6 text-center text-gray-500">
+                                    Add a job step to begin building your procedure.
+                                </li>
+                                <!-- Job steps will be dynamically added here -->
+                            </ul>
+                        </div>
+
+                        <!-- Ticket Total -->
+                        <div class="p-6 bg-gray-800 rounded-b-lg flex justify-between items-center sticky bottom-0">
+                            <div>
+                                <span class="text-xl font-bold text-white uppercase">Total Planned Cost</span>
+                                <span id="job-total" class="text-3xl font-black text-cyan-400 block">£0.00</span>
+                            </div>
+                            <button id="lock-plan-btn" class="px-6 py-4 bg-blue-600 text-white text-lg font-bold rounded-md shadow-lg hover:bg-blue-500 transition-all">
+                                Lock Plan &amp; Move to Execute
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- EXECUTE & REPORT MODE -->
+        <!-- =================================================================== -->
+        <div id="execute-mode" style="display:none;">
+            
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="summary-card">
+                    <span class="summary-card-title">Total Planned Cost</span>
+                    <span id="summary-planned" class="summary-card-value">£0.00</span>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-card-title">Total Actual Cost</span>
+                    <span id="summary-actual" class="summary-card-value">£0.00</span>
+                </div>
+                <div class="summary-card">
+                    <span class="summary-card-title">Total Variance</span>
+                    <span id="summary-variance" class="summary-card-value">£0.00</span>
+                </div>
+            </div>
+
+            <!-- Report Actions -->
+            <div class="flex justify-between items-center mb-6">
+                 <div class="text-sm text-gray-400">
+                    <p>Enter `Actual Time` for each step to auto-calculate time-based costs.</p>
+                    <p>Manually enter `Actual Cost` for any flat-fee items.</p>
+                 </div>
+                <div class="flex gap-4">
+                    <button id="export-csv-btn" class="px-6 py-3 bg-cyan-600 text-white text-base font-bold rounded-md shadow-lg hover:bg-cyan-500 transition-all">
+                        Export Report to CSV
+                    </button>
+                    <button id="finalize-job-btn" class="px-6 py-3 bg-green-600 text-white text-base font-bold rounded-md shadow-lg hover:bg-green-500 transition-all">
+                        Finalize & Save Job
+                    </button>
+                </div>
+            </div>
+
+            <!-- Report Table -->
+            <div id="report-table-container" class="bg-gray-900 rounded-lg shadow-2xl border border-gray-700 overflow-hidden">
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th class="w-2/5">Description</th>
+                            <th class="w-1/5">Planned Cost</th>
+                            <th class="w-1/5">Actual Cost</th>
+                            <th class="w-1/5">Variance</th>
+                        </tr>
+                    </thead>
+                    <tbody id="report-table-body">
+                        <!-- Report rows will be built by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- ADMIN (CATALOGUE) MODE -->
+        <!-- =================================================================== -->
+        <div id="admin-mode" style="display:none;">
+            <div class="bg-gray-900 rounded-lg shadow-2xl border border-gray-700 overflow-hidden mb-8">
+                <div class="p-6 border-b border-gray-700">
+                    <h2 class="text-2xl font-bold text-white">Catalogue Management</h2>
+                    <p class="text-gray-400 mt-1">Manage service catalogue line items.</p>
+                </div>
+
+                <!-- Admin Controls -->
+                <div class="p-6 border-b border-gray-700 flex gap-6">
+                    <div>
+                        <label for="admin-select-discipline" class="block text-lg font-semibold text-cyan-400 mb-2">Discipline</label>
+                        <select id="admin-select-discipline" class="admin-select">
+                            <option value="ct">Coiled Tubing (CT)</option>
+                            <option value="els">Electric Line (ELS)</option>
+                            <option value="slk">Slickline (SLK)</option>
+                            <option value="whm">Wellhead Maint. (WHM)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="admin-select-category" class="block text-lg font-semibold text-cyan-400 mb-2">Category</label>
+                        <select id="admin-select-category" class="admin-select">
+                            <!-- Categories will be populated by JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Admin Table -->
+                <div class="p-6">
+                    <div class="flex justify-end mb-4">
+                        <button id="admin-save-btn" class="px-6 py-3 bg-green-600 text-white text-base font-bold rounded-md shadow-lg hover:bg-green-500 transition-all">
+                            Save Changes to Catalogue
+                        </button>
+                    </div>
+                    <table id="admin-table" class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Code</th>
+                                <th>Base Rate (£)</th>
+                                <th>Unit</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body">
+                            <!-- Admin table rows will be built by JS -->
+                        </tbody>
+                    </table>
+
+                    <!-- Add New Item Form -->
+                    <div class="mt-8 border-t border-gray-700 pt-6">
+                        <h3 class="text-xl font-bold text-white mb-4">Add New Catalogue Item</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                            <div id="admin-form-desc" class="md:col-span-2">
+                                <label for="admin-new-desc" class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                                <input type="text" id="admin-new-desc" placeholder="e.g., 3.125'' Bridge Plug" class="w-full admin-form-input">
+                            </div>
+                            <div>
+                                <label for="admin-new-code" class="block text-sm font-medium text-gray-300 mb-1">Code</label>
+                                <input type="text" id="admin-new-code" placeholder="SLK-PLUG-3125" class="w-full admin-form-input">
+                            </div>
+                            <div>
+                                <label for="admin-new-rate" class="block text-sm font-medium text-gray-300 mb-1">Rate (£)</label>
+                                <input type="number" id="admin-new-rate" placeholder="2500" class="w-full admin-form-input">
+                            </div>
+                            <div class="flex-1">
+                                <label for="admin-new-unit" class="block text-sm font-medium text-gray-300 mb-1">Unit</label>
+                                <select id="admin-new-unit" class="w-full admin-form-input p-2 h-[42px]">
+                                    <option value="Day">Day</option>
+                                    <option value="Job">Job</option>
+                                    <option value="Item">Item</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button id="admin-add-item-btn" class="mt-4 px-6 py-3 bg-cyan-600 text-white text-base font-bold rounded-md shadow-lg hover:bg-cyan-500 transition-all">
+                            Add New Item
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tool String Management -->
+            <div class="bg-gray-900 rounded-lg shadow-2xl border border-gray-700 overflow-hidden mb-8">
+                <div class="p-6 border-b border-gray-700">
+                    <h2 class="text-2xl font-bold text-white">Tool String Assembly Management</h2>
+                    <p class="text-gray-400 mt-1">Create re-usable tool string assemblies from catalogue items.</p>
+                </div>
+                
+                <div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Builder -->
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-4">New Assembly Builder</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="asm-new-name" class="block text-sm font-medium text-gray-300 mb-1">Assembly Name</label>
+                                <input type="text" id="asm-new-name" placeholder="e.g., CT Milling BHA" class="w-full admin-form-input">
+                            </div>
+                            <div>
+                                <label for="asm-select-discipline" class="block text-sm font-medium text-gray-300 mb-1">Filter Catalogue</label>
+                                <select id="asm-select-discipline" class="w-full admin-form-input p-2 h-[42px]">
+                                    <option value="ct">Coiled Tubing (CT)</option>
+                                    <option value="els">Electric Line (ELS)</option>
+                                    <option value="slk">Slickline (SLK)</option>
+                                    <option value="whm">Wellhead Maint. (WHM)</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Components in new assembly -->
+                            <div class="bg-gray-800 p-4 rounded-md border border-gray-700">
+                                <h4 class="font-semibold text-cyan-400 mb-2">Assembly Components:</h4>
+                                <ul id="asm-temp-components" class="space-y-2 max-h-40 overflow-y-auto">
+                                    <li id="asm-temp-placeholder" class="text-gray-500 text-sm">Add items from the catalogue...</li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Mini-Catalogue -->
+                            <div id="asm-mini-catalogue-container" class="max-h-64 overflow-y-auto">
+                                <table class="w-full text-left">
+                                    <thead class="bg-gray-700 text-cyan-400 uppercase tracking-wider text-xs">
+                                        <tr><th class="p-2">Item</th><th class="p-2"></th></tr>
+                                    </thead>
+                                    <tbody id="asm-mini-catalogue-body">
+                                        <!-- mini catalogue items -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <button id="asm-save-btn" class="w-full px-6 py-3 bg-green-600 text-white text-base font-bold rounded-md shadow-lg hover:bg-green-500 transition-all">
+                                Save New Assembly
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Existing Assemblies -->
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-4">Saved Assemblies</h3>
+                        <div id="tool-string-list-admin" class="space-y-3 max-h-[70vh] overflow-y-auto">
+                            <!-- saved assemblies list -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job History Management -->
+            <div class="bg-gray-900 rounded-lg shadow-2xl border border-gray-700 overflow-hidden">
+                <div class="p-6 border-b border-gray-700">
+                    <h2 class="text-2xl font-bold text-white">Job History Management</h2>
+                </div>
+                <div class="p-6">
+                    <p class="text-gray-400 mb-4">You currently have <strong id="job-history-count" class="text-cyan-400">0</strong> jobs saved in your history.</p>
+                    <button id="clear-history-btn" class="px-6 py-3 bg-red-700 text-white text-base font-bold rounded-md shadow-lg hover:bg-red-600 transition-all">
+                        Clear All Job History
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- =================================================================== -->
+        <!-- ANALYTICS MODE -->
+        <!-- =================================================================== -->
+        <div id="analytics-mode" style="display:none;">
+            <div id="analytics-placeholder" class="text-center py-20">
+                <h2 class="text-3xl font-bold text-gray-500">No Job History Found</h2>
+                <p class="text-xl text-gray-600 mt-4">Complete a job in "Execute & Report" mode and save it to see analytics.</p>
+            </div>
+            
+            <div id="analytics-content" class="space-y-8" style="display:none;">
+                
+                <!-- Row 1: NPT & Job Performance -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- NPT Breakdown -->
+                    <div class="chart-container">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="analytics-header">NPT (Non-Productive Time) Breakdown</h3>
+                            <select id="npt-chart-toggle" class="admin-select p-2 text-sm">
+                                <option value="cost">By Cost</option>
+                                <option value="time">By Time</option>
+                            </select>
+                        </div>
+                        <canvas id="npt-chart-canvas"></canvas>
+                        <p id="npt-chart-placeholder" class="text-gray-500 text-center py-16" style="display:none;">No NPT data recorded in job history.</p>
+                    </div>
+                    
+                    <!-- Job Performance (Planned vs Actual) -->
+                    <div class="chart-container">
+                        <h3 class="analytics-header">Job Performance (Planned vs. Actual Cost)</h3>
+                        <canvas id="job-performance-chart-canvas"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Row 2: Operational Hotspots -->
+                <div class="chart-container">
+                    <h3 class="analytics-header">Operational Variance "Hotspots"</h3>
+                    <p class="text-gray-400 text-sm mb-4">Find which operational steps consistently over-run planned time or cost. (Excludes NPT)</p>
+                    <div id="hotspot-table-container" class="max-h-[600px] overflow-y-auto">
+                        <table class="hotspot-table">
+                            <thead>
+                                <tr>
+                                    <th>Op Code</th>
+                                    <th>Description</th>
+                                    <th>Total Time Variance (Hrs)</th>
+                                    <th>Total Cost Variance (£)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hotspot-table-body">
+                                <!-- data populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- MODALS & NOTIFICATIONS -->
+    <!-- =================================================================== -->
+
+    <!-- Finalize Job Modal -->
+    <div id="finalize-modal" class="fixed inset-0 bg-gray-900 bg-opacity-80 flex items-center justify-center z-50" style="display:none;">
+        <div class="bg-gray-800 p-8 rounded-lg shadow-2xl w-full max-w-md border border-gray-700">
+            <h2 class="text-2xl font-bold text-white mb-4">Finalize & Save Job</h2>
+            <p class="text-gray-400 mb-6">Please enter a unique name for this job report. This name will be used in the Analytics Dashboard.</p>
+            <div>
+                <label for="job-name-input" class="block text-sm font-medium text-cyan-400 mb-2">Job Name</label>
+                <input type="text" id="job-name-input" placeholder="e.g., Well-001 Plug Mill" class="w-full bg-gray-700 border-gray-600 rounded-md shadow-sm text-white focus:ring-cyan-500 focus:border-cyan-500 p-3">
+            </div>
+            <div class="flex justify-end gap-4 mt-8">
+                <button id="cancel-finalize-btn" class="px-6 py-2 bg-gray-600 text-white font-bold rounded-md hover:bg-gray-500">Cancel</button>
+                <button id="confirm-finalize-btn" class="px-6 py-2 bg-green-600 text-white font-bold rounded-md hover:bg-green-500">Save Job to History</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast-notification" class="fixed top-5 right-5 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg" style="display:none; z-index: 100;">
+        Job saved to history!
+    </div>
+
+
+    <script>
+        // --- ================================================= ---
+        // --- DATABASE & STATE MANAGEMENT ---
+        // --- ================================================= ---
+
+        const HOURLY_DIVISOR = 12; // Assume a 12-hour operational day for '/Day' rates
+
+        // --- DEFAULT CATALOGUE (Fallback) ---
+        // --- THIS IS NOW POPULATED WITH YOUR 20 YEARS OF DATA ---
+        const DEFAULT_CATALOGUE = {
+            ct: {
+                personnel: [
+                    { code: 'CT-CREW-SUP', name: 'Supervisor (Crew Lead)', baseRate: 1400, unit: 'Day' },
+                    { code: 'CT-CREW-SOP', name: 'Senior Operator (Control Cabin)', baseRate: 1100, unit: 'Day' },
+                    { code: 'CT-CREW-PUMP', name: 'Pumping Operator (Fluids/N2)', baseRate: 900, unit: 'Day' },
+                    { code: 'CT-CREW-OP', name: 'Operator (Rig-Up/Tools)', baseRate: 800, unit: 'Day' },
+                    { code: 'CT-CREW-CHEM', name: 'Chemist (Stimulation Fluids)', baseRate: 1000, unit: 'Day' },
+                    { code: 'GEN-CREW-TRN', name: 'Trainee / Roustabout', baseRate: 600, unit: 'Day' },
+                ],
+                equipment: [
+                    { code: 'CT-EQP-UNIT', name: 'CT Unit (Reel, Injector, Cabin)', baseRate: 18000, unit: 'Day' },
+                    { code: 'CT-EQP-PCE', name: 'Pressure Control (Stripper, BOPs)', baseRate: 5000, unit: 'Day' },
+                    { code: 'CT-EQP-PUMP', name: 'High-Pressure Pump Unit (15k)', baseRate: 4500, unit: 'Day' },
+                    { code: 'CT-EQP-N2', name: 'Nitrogen Unit (Pumper & Tank)', baseRate: 4000, unit: 'Day' },
+                    { code: 'CT-EQP-TANK', name: 'Fluid/Acid Tanks (Bulk)', baseRate: 1200, unit: 'Day' },
+                ],
+                tools: [
+                    { code: 'CT-EQP-BHA', name: 'Basic BHA (Connector, Check Valves)', baseRate: 800, unit: 'Job' }, 
+                    { code: 'CT-EQP-MOTOR', name: 'Downhole Motor (Milling)', baseRate: 2500, unit: 'Job' }, 
+                    { code: 'CT-EQP-JAR', name: 'Hydraulic Jars', baseRate: 1000, unit: 'Job' }, 
+                    { code: 'CT-EQP-NOZZLE', name: 'Jetting Nozzle (Wash)', baseRate: 700, unit: 'Job' }, 
+                    { code: 'CT-EQP-MILL', name: 'Mill / Bit (e.g., for Plugs)', baseRate: 1300, unit: 'Job' }, 
+                    { code: 'CT-EQP-VIB', name: 'Vibratory / Agitator Tool', baseRate: 1800, unit: 'Job' }, 
+                    { code: 'CT-EQP-INFL', name: 'Inflatable Packer / Plug', baseRate: 2200, unit: 'Job' }, 
+                    { code: 'CT-EQP-SHIFT', name: 'Hydraulic Shifting Tool', baseRate: 1100, unit: 'Job' }, 
+                    { code: 'CT-EQP-E-COIL', name: 'E-Coil BHA (Logging Head)', baseRate: 2000, unit: 'Job' }, 
+                ]
+            },
+            els: {
+                personnel: [
+                    { code: 'ELS-CREW-SUP', name: 'Supervisor (Crew Lead)', baseRate: 1300, unit: 'Day' },
+                    { code: 'ELS-CREW-SOP', name: 'Senior Operator (Logging Unit)', baseRate: 1000, unit: 'Day' },
+                    { code: 'ELS-CREW-OP', name: 'Operator (Winch/Tools)', baseRate: 750, unit: 'Day' },
+                    { code: 'GEN-CREW-TRN', name: 'Trainee / Roustabout', baseRate: 600, unit: 'Day' },
+                ],
+                equipment: [
+                    { code: 'ELS-EQP-UNIT', name: 'E-Line Unit (Winch & Cabin)', baseRate: 6000, unit: 'Day' },
+                    { code: 'ELS-EQP-PCE', name: 'Pressure Control (BOP, Lubricator)', baseRate: 2000, unit: 'Day' },
+                    { code: 'ELS-EQP-WINCH-HD', name: 'Heavy Duty Winch (e.g., for Tractor)', baseRate: 8000, unit: 'Day' },
+                ],
+                tools: [
+                    { code: 'ELS-EQP-TOOL-CCL', name: 'CCL / Gamma Ray Tool', baseRate: 1200, unit: 'Job' },
+                    { code: 'ELS-EQP-TOOL-PLT', name: 'Production Logging Tool (PLT)', baseRate: 4000, unit: 'Job' },
+                    { code: 'ELS-EQP-TOOL-CBL', name: 'Cement Bond Log (CBL)', baseRate: 3500, unit: 'Job' },
+                    { code: 'ELS-EQP-TOOL-RBT', name: 'Radial Bond Tool (Advanced CBL)', baseRate: 4500, unit: 'Job' },
+                    { code: 'ELS-EQP-TOOL-MFC', name: 'Multi-Finger Caliper (Integrity)', baseRate: 3800, unit: 'Job' },
+                    { code: 'ELS-EQP-TOOL-PERF', name: 'Perforating Guns (Base Charge)', baseRate: 2500, unit: 'Job' },
+                    { code: 'ELS-EQP-TOOL-PLUG', name: 'Bridge Plug Setting Tool', baseRate: 1500, unit: 'Job' },
+                    { code: 'ELS-EQP-TOOL-THUMP', name: 'Free Point & Back-Off Tool', baseRate: 2800, unit: 'Job' },
+                    { code: 'ELS-EQP-TOOL-CUT', name: 'Tubing/Casing Cutter', baseRate: 2200, unit: 'Job' },
+                    { code: 'ELS-EQP-TOOL-DUMP', name: 'Dump Bailer (Cement/Sand)', baseRate: 1400, unit: 'Job' },
+                ]
+            },
+            slk: {
+                personnel: [
+                    { code: 'SLK-CREW-SUP', name: 'Supervisor (Crew Lead)', baseRate: 1200, unit: 'Day' },
+                    { code: 'SLK-CREW-SOP', name: 'Senior Operator (Winch)', baseRate: 950, unit: 'Day' },
+                    { code: 'SLK-CREW-OP', name: 'Operator (Tools)', baseRate: 700, unit: 'Day' },
+                    { code: 'GEN-CREW-TRN', name: 'Trainee / Roustabout', baseRate: 600, unit: 'Day' },
+                ],
+                equipment: [
+                    { code: 'SLK-EQP-UNIT', name: 'Slickline Unit (Winch & Powerpack)', baseRate: 3000, unit: 'Day' },
+                    { code: 'SLK-EQP-PCE', name: 'Pressure Control (BOP, Lubricator)', baseRate: 1500, unit: 'Day' },
+                    { code: 'SLK-EQP-WINCH-COMBO', name: 'Combo E-Line/Slickline Unit', baseRate: 7000, unit: 'Day' },
+                ],
+                toolstring: [
+                    { code: 'SLK-TS-RS', name: 'Rope Socket', baseRate: 250, unit: 'Job' },
+                    { code: 'SLK-TS-ACC', name: 'Accelerator', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-TS-STEM', name: 'Stem (Standard)', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-TS-STEM-R', name: 'Roller Stem', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-TS-STEM-H', name: 'Heavy Weight Stem', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-TS-BOGIE', name: 'Roller Bogie', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-TS-JAR-P', name: 'Power Jar', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-TS-JAR-S', name: 'Spang Jar', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-TS-JAR-T', name: 'Tubular / Linear Jar', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-TS-JAR-K', name: 'Knuckle Jar', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-TS-XOVER-SR', name: 'SR X-over', baseRate: 200, unit: 'Job' },
+                    { code: 'SLK-TS-XOVER-QLS', name: 'QLS X-over', baseRate: 200, unit: 'Job' },
+                    { code: 'SLK-TS-KNUCKLE', name: 'Knuckle Joint', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-TS-SWIVEL', name: 'Swivel', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-TS-CENTR-BOW', name: 'Bow Spring Centraliser', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-TS-CENTR-ROL', name: 'Spring Roller Centraliser', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-TS-GAUGE-PT', name: 'Pressure Temp Gauge', baseRate: 600, unit: 'Job' },
+                    { code: 'SLK-TS-CAT', name: 'CAT tool / HIIT tool', baseRate: 500, unit: 'Job' },
+                    { code: 'SLK-TS-LOADER', name: 'Wireline Engineering Low Loader', baseRate: 450, unit: 'Job' },
+                ],
+                intervention: [
+                    { code: 'SLK-INT-GC-S', name: 'Serrated Gauge Cutter', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-INT-GC', name: 'Gauge Cutter', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-INT-LIB', name: 'L.I.B (Lead Impression Block)', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-INT-TAR', name: 'Tar Baby', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-INT-BLINDBOX', name: 'Blind Box', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-INT-SWF', name: 'Solid Wire Finder', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-INT-SWAGE', name: 'Tubing Swage', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-INT-CENTR-F', name: 'Fluted Centraliser', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-INT-MAGNET', name: 'Magnet', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-INT-SCRATCH-W', name: 'Wire Scratcher', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-INT-TEL', name: 'Tubing End Locator', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-INT-SHOCK', name: 'Shock Absorber', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-INT-BROACH', name: 'Tubing Broach', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-PULL-JD', name: 'JD Pulling Tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-PULL-JU', name: 'JU Pulling Tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-PULL-S', name: 'S Pulling Tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-PULL-R', name: 'R Pulling Tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-PULL-GS', name: 'GS Pulling Tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-PULL-GU', name: 'GU Pulling Tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-PULL-PRS', name: 'PRS Pulling Tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-SHIFT-B', name: 'B Shifting Tool', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-SHIFT-D2', name: 'D2 Shifting Tool', baseRate: 400, unit: 'Job' },
+                ],
+                fishing: [
+                    { code: 'SLK-FISH-GRAB-2', name: '2 Prong Grab', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-FISH-GRAB-34', name: '3/4 Prong Grab', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-FISH-SPEAR-I', name: 'Internal Spear', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-FISH-CUTTERBAR', name: 'Cutter bar', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-FISH-GODEVIL', name: 'Go-Devil', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-FISH-BAILER-DD', name: 'Drive down Bailer', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-FISH-BAILER-P', name: 'Pump Bailer', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-FISH-BAILER-H', name: 'Hydrostatic Bailer', baseRate: 500, unit: 'Job' },
+                    { code: 'SLK-FISH-PULL-HD', name: 'Heavy Duty Pulling tool', baseRate: 500, unit: 'Job' },
+                    { code: 'SLK-FISH-OS-HD', name: 'Heavy Duty Releasable Overshot', baseRate: 550, unit: 'Job' },
+                    { code: 'SLK-FISH-GRAB-ALL', name: 'Alligator grab', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-FISH-BOWEN', name: 'Bowen Finder Retriever', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-FISH-CARRIER', name: 'Tool Carrier', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-FISH-GUIDE', name: 'Bell Guide', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-FISH-SPEAR-F', name: 'Finder spear', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-FISH-SPEAR-W', name: 'Wire spear', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-FISH-CUTTER-SW', name: 'Sidewall Cutter', baseRate: 450, unit: 'Job' },
+                ],
+                plugs: [
+                    { code: 'SLK-OTIS-RUN-RX', name: 'Otis R/X line running tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-OTIS-PLUG', name: 'Otis Plug', baseRate: 1200, unit: 'Job' },
+                    { code: 'SLK-OTIS-PRONG-EQ', name: 'Otis equalising prong', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-OTIS-LOCK', name: 'Otis lock mandrel', baseRate: 800, unit: 'Job' },
+                    { code: 'SLK-OTIS-WRSSV', name: 'OtIS WRSSV', baseRate: 1500, unit: 'Job' },
+                    { code: 'SLK-OTIS-BBD', name: 'Otis BBD', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-OTIS-PRONG-RUN', name: 'Otis Running Equalising prong', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-OTIS-SPACER', name: 'Otis spacer tube', baseRate: 200, unit: 'Job' },
+                    { code: 'SLK-OTIS-TEST', name: 'Otis N test tool', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-BAKER-RUN-A', name: 'Baker A-running Tool c/w D probe', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-BAKER-LOCK-SS', name: 'Baker Sure-Set Lock', baseRate: 800, unit: 'Job' },
+                    { code: 'SLK-BAKER-PRONG-H', name: 'Baker H-bottom equalising prong', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-BAKER-SV-SS', name: 'Baker Sure Set Standing Valve', baseRate: 900, unit: 'Job' },
+                    { code: 'SLK-BAKER-RUN-C1', name: 'Baker C1 running tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-BAKER-SV-FBRB2', name: 'Baker FB-RB 2 Standing Valve', baseRate: 900, unit: 'Job' },
+                    { code: 'SLK-BAKER-PLUG-FWGRZG', name: 'Baker FWG/RZG Plug', baseRate: 1200, unit: 'Job' },
+                    { code: 'SLK-BAKER-BOMB-FWBRZB', name: 'Baker FWB/RZB Bomb hanger', baseRate: 700, unit: 'Job' },
+                    { code: 'SLK-BAKER-PLUG-FSG', name: 'Baker FSG Plug', baseRate: 1200, unit: 'Job' },
+                    { code: 'SLK-BAKER-PLUG-FMHRKH', name: 'Baker FMH/RKH Plug', baseRate: 1200, unit: 'Job' },
+                    { code: 'SLK-BAKER-N-PLUG', name: 'Baker N Plug', baseRate: 1200, unit: 'Job' },
+                    { code: 'SLK-BAKER-PROBE-M1', name: 'Baker M1 Probe', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-BAKER-PROBE-B', name: 'Baker B Probe', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-BAKER-SHANK-A', name: 'Baker A shank', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-BAKER-PROBE-N1', name: 'Baker N1 probe', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-BAKER-SHANK-N1', name: 'Baker N1 shank', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-CAMCO-PLUG-DB', name: 'Camco DB PLUG', baseRate: 1200, unit: 'Job' },
+                    { code: 'SLK-CAMCO-PRONG-DBP', name: 'Camco DBP Prong', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-CAMCO-RUN-Z6', name: 'Camco Z-6 running tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-CAMCO-LOCK-DB-A1', name: 'Camco DB lock c/w A1 Injection Valve', baseRate: 900, unit: 'Job' },
+                    { code: 'SLK-CAMCO-LOCK-DB', name: 'Camco DB lock', baseRate: 800, unit: 'Job' },
+                    { code: 'SLK-CAMCO-DUMMY', name: 'Camco Dummy Pack -off', baseRate: 400, unit: 'Job' },
+                    { code: 'SLK-CAMCO-WRSSV', name: 'Camco WRSSV', baseRate: 1500, unit: 'Job' },
+                    { code: 'SLK-CAMCO-PRONG-RUN', name: 'Camco Running Equalising prong', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-CAMCO-SPACER', name: 'Camco spacer tube', baseRate: 200, unit: 'Job' },
+                    { code: 'SLK-CAMCO-SV-A2', name: 'Camco A 2 standing Valve', baseRate: 900, unit: 'Job' },
+                    { code: 'SLK-CAMCO-PLUG-CA', name: 'Camco CA Blanking Plug', baseRate: 1200, unit: 'Job' },
+                    { code: 'SLK-CAMCO-RUN-DT', name: 'Camco DT running tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-PES-BPLUG', name: 'PES Bridge Plug', baseRate: 1500, unit: 'Job' },
+                    { code: 'SLK-PES-PULL-PO', name: 'PES PO pulling tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-PES-DRIFT', name: 'PES Drift', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-PES-STRADDLE', name: 'PES Straddle', baseRate: 900, unit: 'Job' },
+                    { code: 'SLK-PES-PULL-PK', name: 'PES PK Pulling tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-PETRO-PLUG-QX', name: 'Petroline QX PLUG', baseRate: 1200, unit: 'Job' },
+                    { code: 'SLK-PETRO-RUN-QX', name: 'Petroline QX Running Tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-PETRO-PRONG-H', name: 'Petroline H-Bottom Prong', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-PETRO-PROBE-QX', name: 'Petroline QX Pulling Probe', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-PETRO-QXT-BPV', name: 'Petroline QXT c/w ABD BPV', baseRate: 1300, unit: 'Job' },
+                    { code: 'SLK-PETRO-RUN-QXT', name: 'Petroline QXT running tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-PETRO-PROBE-QXT', name: 'Petroline QX pulling probe & ABD equalising prong', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-PETRO-JUNK', name: 'Petroline Junk Catcher Prong for QXT', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-PETRO-SLICK-RUN', name: 'Petroline Slickplug c/w Running Tool', baseRate: 1300, unit: 'Job' },
+                    { code: 'SLK-PETRO-SLICK-DRIFT', name: 'Petroline Slickplug Drift', baseRate: 300, unit: 'Job' },
+                    { code: 'SLK-PETRO-SLICK', name: 'Petroline Slickplug', baseRate: 1200, unit: 'Job' },
+                    { code: 'SLK-PETRO-PRONG-EQ', name: 'Petroline Equalising Prong', baseRate: 350, unit: 'Job' },
+                    { code: 'SLK-PETRO-PRONG-PULL', name: 'Petroline Pulling Prong for Slickplug', baseRate: 350, unit: 'Job' },
+                ],
+                gaslift: [
+                    { code: 'SLK-GL-MERLA-KOT', name: 'Merla KOT', baseRate: 500, unit: 'Job' },
+                    { code: 'SLK-GL-CAMCO-OMOK', name: 'Camco OM/ OK series', baseRate: 500, unit: 'Job' },
+                    { code: 'SLK-GL-VALVE', name: 'Gas Lift Valve', baseRate: 900, unit: 'Job' },
+                    { code: 'SLK-GL-RUN-JKRK', name: 'JK/RK running tool', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-GL-RUN-JDS', name: 'JDS + spacer bar', baseRate: 450, unit: 'Job' },
+                    { code: 'SLK-GL-CATCHER', name: 'Gas lift valve catcher', baseRate: 350, unit: 'Job' },
+                ]
+            },
+            whm: {
+                personnel: [
+                    { code: 'WHM-CREW-SUP', name: 'Supervisor (Lead Technician)', baseRate: 1200, unit: 'Day' },
+                    { code: 'WHM-CREW-TECH', name: 'Wellhead Technician', baseRate: 900, unit: 'Day' },
+                    { code: 'WHM-CREW-TRN', name: 'Trainee / Technician\'s Asst.', baseRate: 650, unit: 'Day' },
+                ],
+                equipment: [
+                    { code: 'WHM-EQP-GREASE', name: 'Grease/Sealant Injection Pump (15k)', baseRate: 1200, unit: 'Day' },
+                    { code: 'WHM-EQP-TEST', name: 'Test Pump & Chart Recorder', baseRate: 1000, unit: 'Day' },
+                    { code: 'WHM-EQP-FLUSH', name: 'Wellhead Flushing Unit', baseRate: 900, unit: 'Day' },
+                    { code: 'WHM-EQP-HPU', name: 'Hydraulic Power Unit (HPU)', baseRate: 1100, unit: 'Day' },
+                    { code: 'WHM-EQP-VR', name: 'VR Plug Tools (Test/Retrieval)', baseRate: 700, unit: 'Day' },
+                    { code: 'WHM-EQP-FLANGE', name: 'Flange Spreader (Hydraulic)', baseRate: 600, unit: 'Day' },
+                    { code: 'WHM-EQP-TORQUE', name: 'Torque Wrench (Hydraulic)', baseRate: 800, unit: 'Day' },
+                    { code: 'WHM-EQP-LOGGER', name: 'Annulus Pressure Logger', baseRate: 500, unit: 'Day' },
+                ],
+                consumables: [
+                    { code: 'WHM-MAT-SEAL', name: 'Valve Sealant (Stick/Bulk)', baseRate: 500, unit: 'Job' },
+                    { code: 'WHM-MAT-GREASE', name: 'Valve Grease (Bulk)', baseRate: 400, unit: 'Job' },
+                    { code: 'WHM-MAT-FLUSH', name: 'Valve Flush (Chemical)', baseRate: 350, unit: 'Job' },
+                    { code: 'WHM-MAT-PACKING', name: 'Stem Packing (e.g., Kevlar)', baseRate: 200, unit: 'Item' },
+                    { code: 'WHM-MAT-RING', name: 'Ring Gasket (e.g., R, RX)', baseRate: 250, unit: 'Item' },
+                ]
+            }
+        };
+
+        // --- OPERATIONAL CODES ---
+        const opCodes = {
+            "General Operations": {
+                "OP-GEN-PREP": "Prepare & Pre-Job",
+                "OP-GEN-RU-PCE": "Rig Up Pressure Control",
+                "OP-GEN-PT": "Pressure Testing",
+                "OP-GEN-RIH": "Run In Hole",
+                "OP-GEN-POOH": "Pull Out Of Hole",
+                "OP-GEN-RD": "Rig Down"
+            },
+            "Slickline Tasks": {
+                "OP-TASK-SLK-SET": "Set Plug/Packer",
+                "OP-TASK-SLK-PULL": "Pull Plug/Packer",
+                "OP-TASK-SLK-SHIFT": "Shift Sleeve",
+                "OP-TASK-SLK-GAUGE": "Run Gauge Cutter",
+                "OP-TASK-SLK-BAIL": "Bailing",
+                "OP-TASK-SLK-FISH": "Fishing"
+            },
+            "E-Line Tasks": {
+                "OP-TASK-ELS-LOG-PLT": "Run PLT",
+                "OP-TASK-ELS-LOG-CBL": "Run CBL",
+                "OP-TASK-ELS-LOG-MFC": "Run Caliper",
+                "OP-TASK-ELS-PERF": "Perforating",
+                "OP-TASK-ELS-CUT": "Run Cutter",
+                "OP-TASK-ELS-SET": "Set Plug"
+            },
+            "Coiled Tubing Tasks": {
+                "OP-TASK-CT-WASH": "Sand/Fill Washing",
+                "OP-TASK-CT-MILL": "Milling",
+                "OP-TASK-CT-STIM": "Stimulation / Acid",
+                "OP-TASK-CT-LIFT": "Nitrogen Lift",
+                "OP-TASK-CT-LOG": "E-Coil Logging"
+            },
+            "WHM Tasks": {
+                "OP-TASK-WHM-INJ-G": "Valve Greasing",
+                "OP-TASK-WHM-FLUSH": "Valve Flushing",
+                "OP-TASK-WHM-TEST-A": "Annulus Test",
+                "OP-TASK-WHM-CHG": "Change Component"
+            },
+            "NPT & Downtime": {
+                "NPT-EQP-FAIL": "NPT: Equipment Failure",
+                "NPT-WELL-STUCK": "NPT: Stuck Tool",
+                "NPT-W8T-WTR": "NPT: Waiting on Weather",
+                "NPT-W8T-3RD": "NPT: Waiting on 3rd Party",
+                "NPT-W8T-PERMIT": "NPT: Waiting on Permit",
+                "NPT-SAFE-STAND": "NPT: Safety Stand-down",
+                "DWT-SIMOPS": "DWT: SIMOPS Standby"
+            }
+        };
+
+
+        // --- APPLICATION STATE ---
+        let catalogue = {}; 
+        let toolStrings = []; 
+        let tempAssemblyComponents = []; 
+
+        let standingAssets = []; 
+        let jobSteps = [];
+        let activeStepId = null;
+        let globalPlannedCost = 0;
+        let dailyBurnRate = 0; 
+        let hourlyBurnRate = 0; 
+        
+        let jobReport = {
+            plannedCost: 0,
+            actualCost: 0,
+            standingAssets: [],
+            steps: [] 
+        };
+        let jobHistory = [];
+        
+        // Chart.js instances
+        let nptChartInstance = null;
+        let jobPerformanceChartInstance = null;
+
+        // --- DOM ELEMENTS ---
+        const plannerModeDiv = document.getElementById('planner-mode');
+        const executeModeDiv = document.getElementById('execute-mode');
+        const adminModeDiv = document.getElementById('admin-mode');
+        const analyticsModeDiv = document.getElementById('analytics-mode');
+        
+        const tabPlanner = document.getElementById('tab-planner');
+        const tabExecute = document.getElementById('tab-execute');
+        const tabAdmin = document.getElementById('tab-admin');
+        const tabAnalytics = document.getElementById('tab-analytics');
+        
+        // --- Planner DOM ---
+        const standingAssetsList = document.getElementById('standing-assets-list');
+        const standingAssetsPlaceholder = document.getElementById('standing-assets-placeholder');
+        const dailyBurnRateDisplay = document.getElementById('daily-burn-rate-display');
+        const hourlyBurnRateDisplay = document.getElementById('hourly-burn-rate-display');
+        const toolStringListPlanner = document.getElementById('tool-string-list-planner');
+        
+        const procedureList = document.getElementById('procedure-list');
+        const procedurePlaceholder = document.getElementById('procedure-placeholder');
+        const totalDisplay = document.getElementById('job-total');
+        const addStepBtn = document.getElementById('add-step-btn');
+        const stepSelectInput = document.getElementById('step-select-input');
+        const stepPlannedTimeInput = document.getElementById('step-planned-time');
+        const addCustomStepBtn = document.getElementById('add-custom-step-btn');
+        const customStepTitleInput = document.getElementById('custom-step-title');
+        const addCustomBtn = document.getElementById('add-custom-btn');
+        const customDescInput = document.getElementById('custom-desc');
+        const customCostInput = document.getElementById('custom-cost');
+        const customUnitInput = document.getElementById('custom-unit');
+        const lockPlanBtn = document.getElementById('lock-plan-btn');
+
+        // --- Execute DOM ---
+        const summaryPlanned = document.getElementById('summary-planned');
+        const summaryActual = document.getElementById('summary-actual');
+        const summaryVariance = document.getElementById('summary-variance');
+        const exportCsvBtn = document.getElementById('export-csv-btn');
+        const reportTableBody = document.getElementById('report-table-body');
+        
+        // --- Modal DOM ---
+        const finalizeJobBtn = document.getElementById('finalize-job-btn');
+        const finalizeModal = document.getElementById('finalize-modal');
+        const jobNameInput = document.getElementById('job-name-input');
+        const cancelFinalizeBtn = document.getElementById('cancel-finalize-btn');
+        const confirmFinalizeBtn = document.getElementById('confirm-finalize-btn');
+        const toastNotification = document.getElementById('toast-notification');
+
+        // --- Admin DOM ---
+        const adminSelectDiscipline = document.getElementById('admin-select-discipline');
+        const adminSelectCategory = document.getElementById('admin-select-category');
+        const adminTableBody = document.getElementById('admin-table-body');
+        const adminSaveBtn = document.getElementById('admin-save-btn');
+        const adminAddItemBtn = document.getElementById('admin-add-item-btn');
+        const adminNewDesc = document.getElementById('admin-new-desc');
+        const adminNewCode = document.getElementById('admin-new-code');
+        const adminNewRate = document.getElementById('admin-new-rate');
+        const adminNewUnit = document.getElementById('admin-new-unit');
+        const jobHistoryCount = document.getElementById('job-history-count');
+        const clearHistoryBtn = document.getElementById('clear-history-btn');
+
+        // --- Admin Tool String DOM ---
+        const asmNewNameInput = document.getElementById('asm-new-name');
+        const asmSelectDiscipline = document.getElementById('asm-select-discipline');
+        const asmTempComponentsList = document.getElementById('asm-temp-components');
+        const asmTempPlaceholder = document.getElementById('asm-temp-placeholder');
+        const asmMiniCatalogueBody = document.getElementById('asm-mini-catalogue-body');
+        const asmSaveBtn = document.getElementById('asm-save-btn');
+        const toolStringListAdmin = document.getElementById('tool-string-list-admin');
+
+        // --- Analytics DOM Elements ---
+        const analyticsPlaceholder = document.getElementById('analytics-placeholder');
+        const analyticsContent = document.getElementById('analytics-content');
+        const nptChartCanvas = document.getElementById('npt-chart-canvas').getContext('2d');
+        const nptChartToggle = document.getElementById('npt-chart-toggle');
+        const nptChartPlaceholder = document.getElementById('npt-chart-placeholder');
+        const jobPerformanceChartCanvas = document.getElementById('job-performance-chart-canvas').getContext('2d');
+        const hotspotTableBody = document.getElementById('hotspot-table-body');
+
+
+        // --- ================================================= ---
+        // --- CORE FUNCTIONS ---
+        // --- ================================================= ---
+
+        // --- CATALOGUE DATA FUNCTIONS ---
+        function loadCatalogue() {
+            const storedCatalogue = localStorage.getItem('wellTegraCatalogue');
+            if (storedCatalogue) {
+                catalogue = JSON.parse(storedCatalogue);
+            } else {
+                catalogue = JSON.parse(JSON.stringify(DEFAULT_CATALOGUE));
+                saveCatalogue();
+            }
+        }
+
+        function saveCatalogue() {
+            localStorage.setItem('wellTegraCatalogue', JSON.stringify(catalogue));
+            renderAllCatalogueTables();
+            if (adminModeDiv.style.display === 'block') {
+                renderAdminTable();
+                renderToolStringAdminMiniCatalogue(); // Refresh mini-catalogue
+            }
+            if (plannerModeDiv.style.display === 'block') {
+                calculateBurnRate();
+                renderProcedure();
+            }
+        }
+        
+        // --- TOOL STRING FUNCTIONS ---
+        function loadToolStrings() {
+            toolStrings = JSON.parse(localStorage.getItem('wellTegraToolStrings')) || [];
+        }
+        
+        function saveToolStrings() {
+            localStorage.setItem('wellTegraToolStrings', JSON.stringify(toolStrings));
+        }
+        
+        function findCatalogueItem(itemCode) {
+            for (const discipline in catalogue) {
+                for (const category in catalogue[discipline]) {
+                    const item = catalogue[discipline][category].find(i => i.code === itemCode);
+                    if (item) return item;
+                }
+            }
+            return null; // Not found
+        }
+
+        // --- JOB HISTORY FUNCTIONS ---
+        function loadJobHistory() {
+            jobHistory = JSON.parse(localStorage.getItem('wellTegraJobHistory')) || [];
+            jobHistoryCount.textContent = jobHistory.length;
+        }
+
+        function saveJobHistory() {
+            localStorage.setItem('wellTegraJobHistory', JSON.stringify(jobHistory));
+            jobHistoryCount.textContent = jobHistory.length;
+        }
+
+        function clearJobHistory() {
+            if (confirm('Are you sure you want to delete all saved job reports? This action cannot be undone.')) {
+                jobHistory = [];
+                localStorage.removeItem('wellTegraJobHistory');
+                jobHistoryCount.textContent = 0;
+                showToast('All job history has been cleared.');
+                
+                if (analyticsModeDiv.style.display === 'block') {
+                    renderAnalytics();
+                }
+            }
+        }
+
+        // --- MODE SWITCHING ---
+        function showMode(mode) {
+            plannerModeDiv.style.display = 'none';
+            executeModeDiv.style.display = 'none';
+            adminModeDiv.style.display = 'none';
+            analyticsModeDiv.style.display = 'none';
+            
+            tabPlanner.classList.remove('active');
+            tabExecute.classList.remove('active');
+            tabAdmin.classList.remove('active');
+            tabAnalytics.classList.remove('active');
+
+            if (mode === 'planner') {
+                plannerModeDiv.style.display = 'block';
+                tabPlanner.classList.add('active');
+            } else if (mode === 'execute') {
+                if (jobReport.steps.length === 0) {
+                    plannerModeDiv.style.display = 'block';
+                    tabPlanner.classList.add('active');
+                    return;
+                }
+                executeModeDiv.style.display = 'block';
+                tabExecute.classList.add('active');
+            } else if (mode === 'admin') {
+                adminModeDiv.style.display = 'block';
+                tabAdmin.classList.add('active');
+                updateAdminCategorySelect(); 
+                renderAdminTable(); 
+                renderToolStringAdmin(); // Render tool string builder
+            } else if (mode === 'analytics') {
+                analyticsModeDiv.style.display = 'block';
+                tabAnalytics.classList.add('active');
+                renderAnalytics(); 
+            }
+        }
+
+        
+        // --- ================================================= ---
+        // --- PLANNER MODE FUNCTIONS ---
+        // --- ================================================= ---
+        let currentDiscipline = 'ct';
+        let currentCategories = {
+            ct: 'personnel',
+            els: 'personnel',
+            slk: 'personnel', // Default for SLK
+            whm: 'personnel'
+        };
+
+        // --- FIX: Updated showMainTab ---
+        function showMainTab(discipline, event = null) {
+            currentDiscipline = discipline;
+            document.querySelectorAll('.main-content').forEach(panel => panel.style.display = 'none');
+            
+            const contentPanel = document.getElementById(`content-${discipline}`);
+            if (contentPanel) {
+                contentPanel.style.display = 'block';
+            } else {
+                console.error(`Content panel for discipline "${discipline}" not found.`);
+                return; // Exit if panel doesn't exist
+            }
+            
+            document.querySelectorAll('#main-tabs .main-tab').forEach(tab => tab.classList.remove('active'));
+
+            // Find the correct tab button to activate, using the function call string
+            const targetTabButton = Array.from(document.querySelectorAll('#main-tabs .main-tab'))
+                                      .find(tab => tab.onclick && tab.onclick.toString().includes(`showMainTab('${discipline}'`));
+            if (targetTabButton) {
+                targetTabButton.classList.add('active');
+            }
+
+            if (discipline === 'assemblies') {
+                renderToolStringListPlanner();
+            } else {
+                if (!catalogue[discipline]) {
+                     console.error(`Catalogue data missing for discipline: ${discipline}`);
+                     return; // Avoid further errors
+                }
+                // Ensure a valid category is selected for the discipline before calling showSubTab
+                if (!currentCategories[discipline] || !catalogue[discipline][currentCategories[discipline]]) {
+                     currentCategories[discipline] = Object.keys(catalogue[discipline])[0];
+                }
+                // Check if the determined category actually exists before showing it
+                if (catalogue[discipline][currentCategories[discipline]]) {
+                    showSubTab(discipline, currentCategories[discipline], true);
+                } else {
+                    console.error(`Default category "${currentCategories[discipline]}" not found for discipline "${discipline}".`);
+                    // Fallback: Show the first available category if the default isn't found
+                    const firstCategory = Object.keys(catalogue[discipline])[0];
+                    if (firstCategory) {
+                        showSubTab(discipline, firstCategory, true);
+                    }
+                }
+            }
+        }
+        // --- END FIX ---
+
+        function showSubTab(discipline, category, isMainTabClick = false) {
+            currentCategories[discipline] = category;
+            document.querySelectorAll(`.sub-content-${discipline}`).forEach(panel => panel.style.display = 'none');
+            
+            const panel = document.getElementById(`content-${discipline}-${category}`);
+            if (panel) {
+                panel.style.display = 'block';
+            }
+            
+            document.querySelectorAll(`#content-${discipline} .sub-tab`).forEach(tab => tab.classList.remove('active'));
+            const subTabButtons = document.querySelectorAll(`#content-${discipline} .sub-tab`);
+            const targetButton = Array.from(subTabButtons).find(btn => btn.onclick.toString().includes(`'${category}'`));
+            if(targetButton) targetButton.classList.add('active');
+        }
+
+        function createTableHeader() {
+            return `
+                <thead class="bg-gray-700 text-cyan-400 uppercase tracking-wider text-xs">
+                    <tr>
+                        <th class="p-3">Description</th>
+                        <th class="p-3">Code</th>
+                        <th class="p-3">Rate/Unit</th>
+                        <th class="p-3"></th>
+                    </tr>
+                </thead>`;
+        }
+
+        function createCatalogueRow(item) {
+            const itemJSON = JSON.stringify(item);
+            return `
+                <tr class="border-b border-gray-700 hover:bg-gray-800">
+                    <td class="p-3 font-medium">${item.name}</td>
+                    <td class="p-3 font-mono text-gray-400 text-xs">${item.code}</td>
+                    <td class="p-3 font-bold">£${item.baseRate}<span class="text-xs font-normal text-gray-400">/${item.unit}</span></td>
+                    <td class="p-3 text-right">
+                        <button class="add-btn" onclick='addItemFromCatalogue(${itemJSON})'>Add</button>
+                    </td>
+                </tr>`;
+        }
+
+        function renderAllCatalogueTables() {
+            for (const discipline in catalogue) {
+                for (const category in catalogue[discipline]) {
+                    const tableId = `table-${discipline}-${category}`;
+                    const tableEl = document.getElementById(tableId);
+                    if (tableEl) {
+                        let tableHTML = createTableHeader() + '<tbody>';
+                        catalogue[discipline][category].forEach(item => {
+                            tableHTML += createCatalogueRow(item);
+                        });
+                        tableHTML += '</tbody>';
+                        tableEl.innerHTML = tableHTML;
+                    } else {
+                         console.warn(`Table element with ID "${tableId}" not found.`);
+                    }
+                }
+            }
+        }
+        
+        function renderToolStringListPlanner() {
+            toolStringListPlanner.innerHTML = '';
+            if (toolStrings.length === 0) {
+                toolStringListPlanner.innerHTML = '<p class="text-gray-500">No tool string assemblies created. Go to the Admin tab to build one.</p>';
+                return;
+            }
+            
+            toolStrings.forEach((asm, index) => {
+                const card = document.createElement('div');
+                card.className = 'assembly-card cursor-pointer';
+                let totalCost = 0;
+                let componentsHTML = asm.componentCodes.map(code => {
+                    const item = findCatalogueItem(code);
+                    if (item) {
+                        totalCost += item.baseRate;
+                        return `<li class="assembly-component">${item.name} (£${item.baseRate})</li>`;
+                    }
+                    return `<li class="assembly-component text-red-400">${code} (Not Found)</li>`;
+                }).join('');
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="assembly-title">${asm.name}</span>
+                        <button class="add-btn" onclick="addAssemblyToActiveStep(${index})">Add to Step</button>
+                    </div>
+                    <ul class="list-disc list-inside mt-2 mb-2">
+                        ${componentsHTML}
+                    </ul>
+                    <strong class="text-right block text-cyan-300">Total Assembly Cost: £${totalCost.toFixed(2)}</strong>
+                `;
+                toolStringListPlanner.appendChild(card);
+            });
+        }
+
+        function populateOpCodeDropdown() {
+            let html = '';
+            for (const group in opCodes) {
+                html += `<optgroup label="${group}">`;
+                for (const code in opCodes[group]) {
+                    html += `<option value="${code}:${opCodes[group][code]}">${code}: ${opCodes[group][code]}</option>`;
+                }
+                html += `</optgroup>`;
+            }
+            stepSelectInput.innerHTML = html;
+        }
+        
+        // --- Burn Rate Logic ---
+        
+        function addItemFromCatalogue(item) {
+            if (item.unit === 'Day') {
+                standingAssets.push(item);
+                renderStandingAssets();
+            } else {
+                addItemToActiveStep(item);
+            }
+        }
+        
+        function renderStandingAssets() {
+            standingAssetsList.innerHTML = '';
+            if (standingAssets.length === 0) {
+                standingAssetsList.appendChild(standingAssetsPlaceholder);
+            } else {
+                standingAssets.forEach((item, index) => {
+                    const assetItem = document.createElement('li');
+                    assetItem.className = 'step-item';
+                    assetItem.innerHTML = `
+                        <div class="flex-1 pr-4">
+                            <span class="step-item-name">${item.name}</span>
+                            <span class="block text-xs text-gray-400 font-mono">${item.code}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-bold text-white">£${item.baseRate.toFixed(2)}<span class="text-xs font-normal text-gray-400">/Day</span></span>
+                        </div>
+                        <button class="remove-item-btn" onclick="event.stopPropagation(); removeStandingAsset(${index})">remove</button>
+                    `;
+                    standingAssetsList.appendChild(assetItem);
+                });
+            }
+            calculateBurnRate();
+            renderProcedure(); // Recalculate all step costs
+        }
+        
+        function removeStandingAsset(index) {
+            standingAssets.splice(index, 1);
+            renderStandingAssets();
+        }
+        
+        function calculateBurnRate() {
+            dailyBurnRate = standingAssets.reduce((sum, item) => sum + item.baseRate, 0);
+            hourlyBurnRate = dailyBurnRate / HOURLY_DIVISOR;
+            
+            dailyBurnRateDisplay.textContent = `£${dailyBurnRate.toFixed(2)}`;
+            hourlyBurnRateDisplay.textContent = `£${hourlyBurnRate.toFixed(2)}`;
+        }
+        
+        // --- End Burn Rate Logic ---
+
+
+        function addJobStep() {
+            const selected = stepSelectInput.value;
+            if (!selected) return;
+
+            const plannedTime = parseFloat(stepPlannedTimeInput.value) || 0;
+            if (plannedTime < 0) {
+                stepPlannedTimeInput.value = 0;
+                return;
+            }
+
+            const [code, title] = selected.split(':');
+            const newStep = {
+                id: crypto.randomUUID(),
+                code: code,
+                title: title,
+                plannedTime: plannedTime,
+                activityItems: [] 
+            };
+            jobSteps.push(newStep);
+            activeStepId = newStep.id;
+            renderProcedure();
+        }
+
+        function addCustomJobStep() {
+            const title = customStepTitleInput.value.trim();
+            if (!title) {
+                customStepTitleInput.focus();
+                return;
+            }
+            const newStep = {
+                id: crypto.randomUUID(),
+                code: "CUSTOM",
+                title: title,
+                plannedTime: 0, 
+                activityItems: [] 
+            };
+            jobSteps.push(newStep);
+            activeStepId = newStep.id;
+            customStepTitleInput.value = '';
+            renderProcedure();
+        }
+
+        function addCustomItemToStep() {
+            if (!activeStepId) {
+                showToast("Please add or select a job step first.", true);
+                return;
+            }
+            const desc = customDescInput.value;
+            const cost = parseFloat(customCostInput.value);
+            const unit = customUnitInput.value;
+
+            if (unit === 'Day') {
+                showToast("Time-based items must be added to 'Job Setup'.", true);
+                return;
+            }
+
+            if (desc && cost > 0) {
+                const item = {
+                    code: 'CUSTOM',
+                    name: desc,
+                    baseRate: cost,
+                    unit: unit
+                };
+                
+                const step = jobSteps.find(s => s.id === activeStepId);
+                if (step) {
+                    step.activityItems.push(item);
+                    renderProcedure();
+                    customDescInput.value = '';
+                    customCostInput.value = '';
+                }
+            } else {
+                showToast("Please enter a valid description and cost.", true);
+            }
+        }
+
+        function addItemToActiveStep(item) {
+            if (item.unit === 'Day') {
+                showToast("'/Day' items should be added to 'Job Setup'.", true);
+                return;
+            }
+            if (!activeStepId) {
+                showToast("Please add or select a job step first.", true);
+                return;
+            }
+            const step = jobSteps.find(s => s.id === activeStepId);
+            if (step) {
+                step.activityItems.push(item);
+                renderProcedure();
+            }
+        }
+        
+        function addAssemblyToActiveStep(assemblyIndex) {
+            if (!activeStepId) {
+                showToast("Please add or select a job step first.", true);
+                return;
+            }
+            
+            const assembly = toolStrings[assemblyIndex];
+            if (!assembly) return;
+            
+            const step = jobSteps.find(s => s.id === activeStepId);
+            if (!step) return;
+            
+            let itemsAdded = 0;
+            assembly.componentCodes.forEach(code => {
+                const item = findCatalogueItem(code);
+                if (item) {
+                    if (item.unit !== 'Day') {
+                        step.activityItems.push(JSON.parse(JSON.stringify(item)));
+                        itemsAdded++;
+                    }
+                }
+            });
+            
+            showToast(`Added ${itemsAdded} items from "${assembly.name}" to step.`);
+            renderProcedure();
+        }
+
+        function removeStep(stepId) {
+            jobSteps = jobSteps.filter(s => s.id !== stepId);
+            if (activeStepId === stepId) {
+                activeStepId = jobSteps.length > 0 ? jobSteps[jobSteps.length - 1].id : null;
+            }
+            renderProcedure();
+        }
+
+        function removeItemFromStep(stepId, itemIndex) {
+            const step = jobSteps.find(s => s.id === stepId);
+            if (step) {
+                step.activityItems.splice(itemIndex, 1);
+                renderProcedure();
+            }
+        }
+
+        function setActiveStep(stepId) {
+            activeStepId = stepId;
+            renderProcedure();
+        }
+
+        function getPlannedStepCost(step) {
+            const standingCost = hourlyBurnRate * step.plannedTime;
+            const activityCost = step.activityItems.reduce((sum, item) => sum + item.baseRate, 0);
+            return { standingCost, activityCost, total: standingCost + activityCost };
+        }
+
+        function renderProcedure() {
+            procedureList.innerHTML = '';
+            globalPlannedCost = 0;
+
+            if (jobSteps.length === 0) {
+                procedureList.appendChild(procedurePlaceholder);
+            } else {
+                jobSteps.forEach(step => {
+                    const stepCost = getPlannedStepCost(step);
+                    
+                    const stepCard = document.createElement('li');
+                    stepCard.id = `step-${step.id}`;
+                    stepCard.className = 'step-card';
+                    if (step.id === activeStepId) {
+                        stepCard.classList.add('active');
+                    }
+                    
+                    let itemsHTML = '<ul class="step-item-list">';
+                    
+                    itemsHTML += `
+                        <li class="step-item bg-gray-800/50">
+                            <div classs="flex-1 pr-4">
+                                <span class="step-item-name font-semibold text-cyan-300">Standing Cost (Burn Rate)</span>
+                                <span class="block text-xs text-gray-400 font-mono">${step.plannedTime} Hrs @ £${hourlyBurnRate.toFixed(2)}/hr</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="font-bold text-white">£${stepCost.standingCost.toFixed(2)}</span>
+                            </div>
+                            <div></div>
+                        </li>
+                    `;
+                    
+                    step.activityItems.forEach((item, index) => {
+                        itemsHTML += `
+                            <li class="step-item">
+                                <div classs="flex-1 pr-4">
+                                    <span class="step-item-name">${item.name}</span>
+                                    <span class="block text-xs text-gray-400 font-mono">${item.code} / ${item.unit}</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-bold text-white">£${item.baseRate.toFixed(2)}</span>
+                                </div>
+                                <button class="remove-item-btn" onclick="event.stopPropagation(); removeItemFromStep('${step.id}', ${index})">remove</button>
+                            </li>
+                        `;
+                    });
+                    itemsHTML += '</ul>';
+                    
+                    globalPlannedCost += stepCost.total;
+
+                    stepCard.innerHTML = `
+                        <div class="step-header" onclick="setActiveStep('${step.id}')">
+                            <h3 class="flex-1">${step.code}: ${step.title} (${step.plannedTime} Hrs)</h3>
+                            <button class="remove-step-btn" onclick="event.stopPropagation(); removeStep('${step.id}')">REMOVE STEP</button>
+                        </div>
+                        ${itemsHTML}
+                        <div class="step-footer">
+                            <strong>Step Subtotal: £${stepCost.total.toFixed(2)}</strong>
+                        </div>
+                    `;
+                    procedureList.appendChild(stepCard);
+                });
+            }
+            totalDisplay.textContent = `£${globalPlannedCost.toFixed(2)}`;
+        }
+
+        // --- ================================================= ---
+        // --- EXECUTE & REPORT MODE FUNCTIONS ---
+        // --- ================================================= ---
+
+        function lockPlan() {
+            if (jobSteps.length === 0) {
+                showToast("Please add at least one step to the plan.", true);
+                return;
+            }
+            if (standingAssets.length === 0) {
+                showToast("Please add at least one '/Day' item to 'Job Setup' to set a burn rate.", true);
+                return;
+            }
+            
+            const reportSteps = JSON.parse(JSON.stringify(jobSteps)).map(step => {
+                const stepCost = getPlannedStepCost(step);
+                const activityItems = step.activityItems.map(item => ({
+                    ...item,
+                    plannedCost: item.baseRate,
+                    actualCost: item.baseRate, 
+                }));
+                
+                return {
+                    ...step,
+                    actualTime: step.plannedTime,
+                    standingCostPlanned: stepCost.standingCost,
+                    standingCostActual: stepCost.standingCost,
+                    activityItems: activityItems
+                };
+            });
+
+            jobReport = {
+                id: `job-${new Date().toISOString()}`, 
+                jobName: "Untitled Job", 
+                plannedCost: globalPlannedCost,
+                actualCost: globalPlannedCost,
+                dailyBurnRate: dailyBurnRate, 
+                hourlyBurnRate: hourlyBurnRate, 
+                standingAssets: JSON.parse(JSON.stringify(standingAssets)), 
+                steps: reportSteps
+            };
+            
+            jobSteps = [];
+            standingAssets = [];
+            activeStepId = null;
+            renderStandingAssets(); 
+            renderProcedure(); 
+            
+            renderReportTable();
+            updateReportSummaries();
+            showMode('execute');
+        }
+
+        function renderReportTable() {
+            reportTableBody.innerHTML = '';
+            
+            jobReport.steps.forEach((step, stepIndex) => {
+                let stepPlannedCost = 0;
+                let stepActualCost = 0;
+
+                const headerRow = reportTableBody.insertRow();
+                headerRow.className = 'report-step-header';
+                headerRow.innerHTML = `<td colspan="4">${step.code}: ${step.title}</td>`;
+
+                const timeRow = reportTableBody.insertRow();
+                timeRow.className = 'report-time-row';
+                const timeVariance = step.actualTime - step.plannedTime;
+                const standingCostVariance = step.standingCostActual - step.standingCostPlanned;
+                stepPlannedCost += step.standingCostPlanned;
+                stepActualCost += step.standingCostActual;
+                
+                timeRow.innerHTML = `
+                    <td>
+                        <b>Standing Cost (Burn Rate)</b>
+                        <span class="block text-xs code">${step.plannedTime.toFixed(1)} Hrs (Planned) vs ${step.actualTime.toFixed(1)} Hrs (Actual)</span>
+                    </td>
+                    <td>£${step.standingCostPlanned.toFixed(2)}</td>
+                    <td>
+                        <input type="number" step="0.5" 
+                               class="actual-time-input" 
+                               value="${step.actualTime.toFixed(1)}" 
+                               oninput="updateActualTime(${stepIndex}, this.value)"> Hrs
+                    </td>
+                    <td class="variance-cell ${standingCostVariance > 0 ? 'negative' : (standingCostVariance < 0 ? 'positive' : '')}">
+                        £${standingCostVariance.toFixed(2)}
+                    </td>
+                `;
+
+                step.activityItems.forEach((item, itemIndex) => {
+                    stepPlannedCost += item.plannedCost;
+                    stepActualCost += item.actualCost;
+                    const costVariance = item.actualCost - item.plannedCost;
+
+                    const itemRow = reportTableBody.insertRow();
+                    itemRow.className = 'report-item-row';
+                    
+                    itemRow.innerHTML = `
+                        <td class="pl-10">
+                            ${item.name}
+                            <span class="block text-xs code">${item.code} / ${item.unit}</span>
+                        </td>
+                        <td>£${item.plannedCost.toFixed(2)}</td>
+                        <td>
+                            <input type="number" 
+                                class="actual-cost-input" 
+                                value="${item.actualCost.toFixed(2)}" 
+                                oninput="updateActualItemCost(${stepIndex}, ${itemIndex}, this.value)">
+                        </td>
+                        <td class="variance-cell ${costVariance > 0 ? 'negative' : (costVariance < 0 ? 'positive' : '')}">
+                            £${costVariance.toFixed(2)}
+                        </td>
+                    `;
+                });
+
+                const footerRow = reportTableBody.insertRow();
+                footerRow.className = 'report-step-footer';
+                const stepCostVariance = stepActualCost - stepPlannedCost;
+                footerRow.innerHTML = `
+                    <td colspan="1" class="font-bold text-base text-white">Step Subtotal</td>
+                    <td>£${stepPlannedCost.toFixed(2)}</td>
+                    <td>£${stepActualCost.toFixed(2)}</td>
+                    <td class="${stepCostVariance > 0 ? 'negative' : (stepCostVariance < 0 ? 'positive' : '')}">
+                        £${stepCostVariance.toFixed(2)}
+                    </td>
+                `;
+            });
+        }
+
+        function updateActualTime(stepIndex, newValue) {
+            const step = jobReport.steps[stepIndex];
+            step.actualTime = parseFloat(newValue) || 0;
+            step.standingCostActual = jobReport.hourlyBurnRate * step.actualTime;
+            renderReportTable();
+            updateReportSummaries();
+        }
+
+        function updateActualItemCost(stepIndex, itemIndex, newValue) {
+            const item = jobReport.steps[stepIndex].activityItems[itemIndex];
+            item.actualCost = parseFloat(newValue) || 0;
+            renderReportTable();
+            updateReportSummaries();
+        }
+
+        function updateReportSummaries() {
+            let totalPlanned = 0;
+            let totalActual = 0;
+
+            jobReport.steps.forEach(step => {
+                totalPlanned += step.standingCostPlanned;
+                totalActual += step.standingCostActual;
+                step.activityItems.forEach(item => {
+                    totalPlanned += item.plannedCost;
+                    totalActual += item.actualCost;
+                });
+            });
+
+            jobReport.plannedCost = totalPlanned;
+            jobReport.actualCost = totalActual;
+            const totalVariance = totalActual - totalPlanned;
+
+            summaryPlanned.textContent = `£${jobReport.plannedCost.toFixed(2)}`;
+            summaryActual.textContent = `£${jobReport.actualCost.toFixed(2)}`;
+            summaryVariance.textContent = `£${totalVariance.toFixed(2)}`;
+
+            summaryVariance.classList.remove('positive', 'negative');
+            if (totalVariance > 0) {
+                summaryVariance.classList.add('negative');
+            } else if (totalVariance < 0) {
+                summaryVariance.classList.add('positive');
+            }
+        }
+
+        function exportToCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Job Name,Job ID,Daily Burn Rate,Hourly Burn Rate\r\n";
+            csvContent += `"${jobReport.jobName || 'Not Finalized'}",${jobReport.id},${jobReport.dailyBurnRate},${jobReport.hourlyBurnRate}\r\n\r\n`;
+            
+            csvContent += "Standing Assets\r\n";
+            csvContent += "Code,Name,Base Rate (/Day)\r\n";
+            jobReport.standingAssets.forEach(item => {
+                csvContent += `${item.code},"${item.name}",${item.baseRate}\r\n`;
+            });
+            
+            csvContent += "\r\nStep Code,Step Title,Category,Item Code,Item Name,Unit,Planned Time (Hrs),Actual Time (Hrs),Time Variance (Hrs),Planned Cost,Actual Cost,Cost Variance\r\n";
+
+            jobReport.steps.forEach(step => {
+                const timeVariance = step.actualTime - step.plannedTime;
+                const costVariance = step.standingCostActual - step.standingCostPlanned;
+                csvContent += `${step.code},"${step.title}",Standing Cost,,,,${step.plannedTime.toFixed(1)},${step.actualTime.toFixed(1)},${timeVariance.toFixed(1)},${step.standingCostPlanned.toFixed(2)},${step.standingCostActual.toFixed(2)},${costVariance.toFixed(2)}\r\n`;
+
+                let stepPlannedCost = step.standingCostPlanned;
+                let stepActualCost = step.standingCostActual;
+
+                step.activityItems.forEach(item => {
+                    const itemCostVariance = item.actualCost - item.plannedCost;
+                    stepPlannedCost += item.plannedCost;
+                    stepActualCost += item.actualCost;
+                    csvContent += `,"",Activity Cost,${item.code},"${item.name}",${item.unit},,,,,${item.plannedCost.toFixed(2)},${item.actualCost.toFixed(2)},${itemCostVariance.toFixed(2)}\r\n`;
+                });
+
+                const stepCostVariance = stepActualCost - stepPlannedCost;
+                csvContent += `,"Step Subtotal",,,,,,,,${stepPlannedCost.toFixed(2)},${stepActualCost.toFixed(2)},${stepCostVariance.toFixed(2)}\r\n`;
+            });
+
+            const totalVariance = jobReport.actualCost - jobReport.plannedCost;
+            csvContent += `\r\n"Grand Total",,,,,,,,,${jobReport.plannedCost.toFixed(2)},${jobReport.actualCost.toFixed(2)},${totalVariance.toFixed(2)}\r\n`;
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            const safeJobName = (jobReport.jobName || 'job-report').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `welltegra_report_${safeJobName}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // --- MODAL & SAVE FUNCTIONS ---
+        
+        function openFinalizeModal() {
+            jobNameInput.value = `Job Report ${new Date().toLocaleDateString('en-GB')} ${new Date().toLocaleTimeString('en-GB', {hour: '2-digit', minute:'2-digit'})}`;
+            jobNameInput.classList.remove('border-red-500');
+            finalizeModal.style.display = 'flex';
+        }
+
+        function closeFinalizeModal() {
+            finalizeModal.style.display = 'none';
+        }
+
+        function confirmFinalizeJob() {
+            const jobName = jobNameInput.value.trim();
+            if (!jobName) {
+                jobNameInput.classList.add('border-red-500');
+                jobNameInput.placeholder = "A job name is required.";
+                return;
+            }
+            
+            jobReport.jobName = jobName;
+            
+            jobHistory.push(jobReport);
+            saveJobHistory();
+            
+            jobReport = { plannedCost: 0, actualCost: 0, standingAssets: [], steps: [] }; 
+            
+            closeFinalizeModal();
+            showMode('planner'); 
+            
+            showToast(`Job "${jobName}" saved to history.`);
+        }
+
+        function showToast(message, isError = false) {
+            toastNotification.textContent = message;
+            toastNotification.style.display = 'block';
+            if(isError) {
+                toastNotification.classList.remove('bg-green-500');
+                toastNotification.classList.add('bg-red-500');
+            } else {
+                toastNotification.classList.remove('bg-red-500');
+                toastNotification.classList.add('bg-green-500');
+            }
+            
+            setTimeout(() => {
+                toastNotification.style.display = 'none';
+            }, 3000); 
+        }
+
+
+        // --- ================================================= ---
+        // --- ADMIN MODE FUNCTIONS ---
+        // --- ================================================= ---
+
+        function updateAdminCategorySelect() {
+            const disc = adminSelectDiscipline.value;
+            adminSelectCategory.innerHTML = '';
+            
+            if (!catalogue[disc]) return;
+
+            const categories = Object.keys(catalogue[disc]);
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+                adminSelectCategory.appendChild(opt);
+            });
+            // After updating, render the table for the new selection
+            renderAdminTable();
+        }
+
+        function renderAdminTable() {
+            const disc = adminSelectDiscipline.value;
+            const cat = adminSelectCategory.value;
+            
+            if (!catalogue[disc] || !catalogue[disc][cat]) {
+                adminTableBody.innerHTML = '<tr><td colspan="5" class="text-center p-4">No data found for this category.</td></tr>';
+                return;
+            }
+
+            adminTableBody.innerHTML = '';
+            catalogue[disc][cat].forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.className = 'admin-table-row';
+                row.dataset.index = index;
+                row.innerHTML = `
+                    <td><input value="${item.name}" class="admin-input" data-field="name"></td>
+                    <td><input value="${item.code}" class="admin-input" data-field="code"></td>
+                    <td><input type="number" value="${item.baseRate}" class="admin-input-rate" data-field="baseRate"></td>
+                    <td>
+                        <select class="admin-input-unit" data-field="unit">
+                            <option value="Day" ${item.unit === 'Day' ? 'selected' : ''}>Day</option>
+                            <option value="Job" ${item.unit === 'Job' ? 'selected' : ''}>Job</option>
+                            <option value="Item" ${item.unit === 'Item' ? 'selected' : ''}>Item</option>
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        <button class="delete-btn" onclick="deleteAdminItem(${index})">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </td>
+                `;
+                adminTableBody.appendChild(row);
+            });
+        }
+
+        function saveAdminChanges() {
+            const disc = adminSelectDiscipline.value;
+            const cat = adminSelectCategory.value;
+            const newCategoryData = [];
+
+            adminTableBody.querySelectorAll('tr').forEach(row => {
+                const name = row.querySelector('[data-field="name"]').value;
+                const code = row.querySelector('[data-field="code"]').value;
+                const baseRate = parseFloat(row.querySelector('[data-field="baseRate"]').value) || 0;
+                const unit = row.querySelector('[data-field="unit"]').value;
+                newCategoryData.push({ name, code, baseRate, unit });
+            });
+
+            catalogue[disc][cat] = newCategoryData;
+            saveCatalogue();
+            showToast('Catalogue changes saved!');
+        }
+
+        function deleteAdminItem(index) {
+            const disc = adminSelectDiscipline.value;
+            const cat = adminSelectCategory.value;
+            
+            if (confirm(`Are you sure you want to delete "${catalogue[disc][cat][index].name}"?`)) {
+                catalogue[disc][cat].splice(index, 1);
+                saveCatalogue();
+                renderAdminTable(); 
+            }
+        }
+
+        function addAdminItem() {
+            const disc = adminSelectDiscipline.value;
+            const cat = adminSelectCategory.value;
+            
+            const name = adminNewDesc.value;
+            const code = adminNewCode.value;
+            const baseRate = parseFloat(adminNewRate.value) || 0;
+            const unit = adminNewUnit.value;
+
+            if (!name || !code || baseRate <= 0) {
+                showToast('Please fill in all fields with valid data.', true);
+                return;
+            }
+
+            // Ensure the category exists before pushing
+            if (!catalogue[disc][cat]) {
+                 catalogue[disc][cat] = [];
+            }
+            catalogue[disc][cat].push({ name, code, baseRate, unit });
+            saveCatalogue();
+            renderAdminTable(); 
+
+            adminNewDesc.value = '';
+            adminNewCode.value = '';
+            adminNewRate.value = '';
+            adminNewUnit.value = 'Day';
+        }
+        
+        // --- ADMIN TOOL STRING FUNCTIONS ---
+        function renderToolStringAdmin() {
+            renderToolStringAdminList();
+            renderToolStringAdminMiniCatalogue();
+            renderTempAssemblyComponents();
+        }
+        
+        function renderToolStringAdminMiniCatalogue() {
+            const disc = asmSelectDiscipline.value;
+            asmMiniCatalogueBody.innerHTML = '';
+            
+            if (!catalogue[disc]) return; // Safety check
+
+            const categories = Object.keys(catalogue[disc]);
+            categories.forEach(cat => {
+                // Check if category actually exists and is an array
+                 if (catalogue[disc][cat] && Array.isArray(catalogue[disc][cat])) {
+                    catalogue[disc][cat].forEach(item => {
+                        if (item.unit !== 'Day') {
+                            const itemJSON = JSON.stringify(item);
+                            const row = asmMiniCatalogueBody.insertRow();
+                            row.innerHTML = `
+                                <td class="p-2 text-sm">${item.name} <span class="text-xs text-gray-400">(${item.code})</span></td>
+                                <td class="p-2 text-right"><button class="add-btn" onclick='addTempComponent(${itemJSON})'>Add</button></td>
+                            `;
+                        }
+                    });
+                }
+            });
+        }
+        
+        function addTempComponent(item) {
+            tempAssemblyComponents.push(item);
+            renderTempAssemblyComponents();
+        }
+        
+        function removeTempComponent(index) {
+            tempAssemblyComponents.splice(index, 1);
+            renderTempAssemblyComponents();
+        }
+        
+        function renderTempAssemblyComponents() {
+            asmTempComponentsList.innerHTML = '';
+            if (tempAssemblyComponents.length === 0) {
+                asmTempComponentsList.appendChild(asmTempPlaceholder);
+                return;
+            }
+            
+            tempAssemblyComponents.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = 'step-item';
+                li.innerHTML = `
+                    <span class="step-item-name">${item.name}</span>
+                    <button class="remove-item-btn" onclick="removeTempComponent(${index})">remove</button>
+                `;
+                asmTempComponentsList.appendChild(li);
+            });
+        }
+        
+        function saveNewAssembly() {
+            const name = asmNewNameInput.value.trim();
+            if (!name) {
+                showToast("Please enter an assembly name.", true);
+                return;
+            }
+            if (tempAssemblyComponents.length === 0) {
+                showToast("Please add at least one component.", true);
+                return;
+            }
+            
+            const newAssembly = {
+                id: crypto.randomUUID(),
+                name: name,
+                discipline: asmSelectDiscipline.value,
+                componentCodes: tempAssemblyComponents.map(item => item.code)
+            };
+            
+            toolStrings.push(newAssembly);
+            saveToolStrings();
+            
+            // Reset builder
+            asmNewNameInput.value = '';
+            tempAssemblyComponents = [];
+            renderTempAssemblyComponents();
+            renderToolStringAdminList();
+            showToast(`Assembly "${name}" saved!`);
+        }
+        
+        function renderToolStringAdminList() {
+            toolStringListAdmin.innerHTML = '';
+            if (toolStrings.length === 0) {
+                toolStringListAdmin.innerHTML = '<p class="text-gray-500 text-center py-4">No saved assemblies.</p>';
+                return;
+            }
+            
+            toolStrings.forEach((asm, index) => {
+                const card = document.createElement('div');
+                card.className = 'assembly-card';
+                let componentsHTML = asm.componentCodes.map(code => {
+                    const item = findCatalogueItem(code);
+                    return `<li class="assembly-component">${item ? item.name : code + ' (Not Found)'}</li>`;
+                }).join('');
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="assembly-title">${asm.name}</span>
+                        <button class="delete-btn" onclick="deleteAssembly(${index})">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </div>
+                    <ul class="list-disc list-inside mt-2">
+                        ${componentsHTML}
+                    </ul>
+                `;
+                toolStringListAdmin.appendChild(card);
+            });
+        }
+        
+        function deleteAssembly(index) {
+            const asmName = toolStrings[index].name;
+            if (confirm(`Are you sure you want to delete the assembly "${asmName}"?`)) {
+                toolStrings.splice(index, 1);
+                saveToolStrings();
+                renderToolStringAdminList();
+                showToast(`Assembly "${asmName}" deleted.`);
+            }
+        }
+
+        // --- ================================================= ---
+        // --- ANALYTICS MODE FUNCTIONS ---
+        // --- ================================================= ---
+
+        const CHART_COLORS = {
+            red: 'rgb(248, 113, 113)',
+            orange: 'rgb(251, 146, 60)',
+            yellow: 'rgb(250, 204, 21)',
+            green: 'rgb(74, 222, 128)',
+            cyan: 'rgb(34, 211, 238)',
+            blue: 'rgb(96, 165, 250)',
+            indigo: 'rgb(129, 140, 248)',
+            purple: 'rgb(192, 132, 252)',
+        };
+        const colorValues = Object.values(CHART_COLORS);
+
+        function renderAnalytics() {
+            loadJobHistory();
+
+            if (jobHistory.length === 0) {
+                analyticsPlaceholder.style.display = 'block';
+                analyticsContent.style.display = 'none';
+                return;
+            }
+            
+            analyticsPlaceholder.style.display = 'none';
+            analyticsContent.style.display = 'block';
+
+            // Process data
+            const nptData = processNPTData();
+            const jobData = processJobPerformanceData();
+            const hotspotData = processHotspotData();
+
+            // Render charts & tables
+            renderNPTChart(nptData);
+            renderJobPerformanceChart(jobData);
+            renderHotspotTable(hotspotData);
+        }
+
+        function processJobPerformanceData() {
+            const labels = [];
+            const planned = [];
+            const actual = [];
+            
+            jobHistory.forEach(job => {
+                labels.push(job.jobName);
+                planned.push(job.plannedCost);
+                actual.push(job.actualCost);
+            });
+            
+            return { labels, planned, actual };
+        }
+        
+        function processNPTData() {
+            const nptAgg = {}; // e.g., { 'NPT-W8T-WTR': { time: 0, cost: 0, title: '...' } }
+            
+            jobHistory.forEach(job => {
+                job.steps.forEach(step => {
+                    if (step.code.startsWith('NPT-')) {
+                        if (!nptAgg[step.code]) {
+                            nptAgg[step.code] = { time: 0, cost: 0, title: step.title };
+                        }
+                        
+                        const timeVariance = step.actualTime - step.plannedTime; // NPT time is pure variance
+                        nptAgg[step.code].time += timeVariance;
+                        
+                        // NPT cost is the standing cost + activity cost for that step
+                        const stepActualCost = step.standingCostActual + step.activityItems.reduce((sum, item) => sum + item.actualCost, 0);
+                        nptAgg[step.code].cost += stepActualCost;
+                    }
+                });
+            });
+            return nptAgg;
+        }
+        
+        function processHotspotData() {
+            const opAgg = {}; // e.g., { 'OP-GEN-PT': { time: 0, cost: 0, title: '...', count: 0 } }
+
+            jobHistory.forEach(job => {
+                job.steps.forEach(step => {
+                    if (step.code.startsWith('OP-') || step.code.startsWith('DWT-')) {
+                        if (!opAgg[step.code]) {
+                            opAgg[step.code] = { time: 0, cost: 0, title: step.title, count: 0 };
+                        }
+                        
+                        const timeVariance = step.actualTime - step.plannedTime;
+                        opAgg[step.code].time += timeVariance;
+                        
+                        const stepPlannedCost = step.standingCostPlanned + step.activityItems.reduce((sum, item) => sum + item.plannedCost, 0);
+                        const stepActualCost = step.standingCostActual + step.activityItems.reduce((sum, item) => sum + item.actualCost, 0);
+                        const costVariance = stepActualCost - stepPlannedCost;
+                        
+                        opAgg[step.code].cost += costVariance;
+                        opAgg[step.code].count += 1;
+                    }
+                });
+            });
+            
+            // Convert to array and sort
+            return Object.values(opAgg).sort((a, b) => b.cost - a.cost);
+        }
+
+        function renderNPTChart(nptData) {
+            if (nptChartInstance) {
+                nptChartInstance.destroy();
+            }
+            
+            const nptCodes = Object.keys(nptData);
+            if (nptCodes.length === 0) {
+                nptChartCanvas.style.display = 'none';
+                nptChartPlaceholder.style.display = 'block';
+                return;
+            }
+            nptChartCanvas.style.display = 'block';
+            nptChartPlaceholder.style.display = 'none';
+
+            const mode = nptChartToggle.value; // 'cost' or 'time'
+            
+            const labels = nptCodes.map(code => `${code} (${nptData[code].title})`);
+            const data = nptCodes.map(code => nptData[code][mode]);
+            
+            const chartData = {
+                labels: labels,
+                datasets: [{
+                    label: `NPT by ${mode.charAt(0).toUpperCase() + mode.slice(1)}`,
+                    data: data,
+                    backgroundColor: colorValues,
+                    borderColor: '#030712',
+                    borderWidth: 2,
+                }]
+            };
+
+            nptChartInstance = new Chart(nptChartCanvas, {
+                type: 'doughnut',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#e5e7eb' // gray-200
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    const value = context.parsed;
+                                    if (mode === 'cost') {
+                                        label += new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(value);
+                                    } else {
+                                        label += `${value.toFixed(1)} Hrs`;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderJobPerformanceChart(jobData) {
+            if (jobPerformanceChartInstance) {
+                jobPerformanceChartInstance.destroy();
+            }
+            
+            const data = {
+                labels: jobData.labels,
+                datasets: [
+                    {
+                        label: 'Planned Cost',
+                        data: jobData.planned,
+                        backgroundColor: CHART_COLORS.cyan,
+                        borderColor: CHART_COLORS.cyan,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Actual Cost',
+                        data: jobData.actual,
+                        backgroundColor: CHART_COLORS.red,
+                        borderColor: CHART_COLORS.red,
+                        borderWidth: 1
+                    }
+                ]
+            };
+            
+            jobPerformanceChartInstance = new Chart(jobPerformanceChartCanvas, {
+                type: 'bar',
+                data: data,
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#9ca3af' }, // gray-400
+                            grid: { color: '#374151' } // gray-700
+                        },
+                        x: {
+                            ticks: { color: '#9ca3af' }, // gray-400
+                            grid: { color: '#374151' } // gray-700
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#e5e7eb' // gray-200
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    const value = context.parsed.y;
+                                    label += new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(value);
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderHotspotTable(hotspotData) {
+            hotspotTableBody.innerHTML = '';
+            
+            if (hotspotData.length === 0) {
+                hotspotTableBody.innerHTML = '<tr><td colspan="4" class="text-center text-gray-500 py-8">No operational variance data recorded.</td></tr>';
+                return;
+            }
+            
+            hotspotData.forEach(op => {
+                const row = hotspotTableBody.insertRow();
+                row.innerHTML = `
+                    <td class="font-mono text-sm">${op.code}</td>
+                    <td class="text-sm">${op.title}</td>
+                    <td class="variance-cell ${op.time > 0 ? 'negative' : (op.time < 0 ? 'positive' : '')}">${op.time.toFixed(1)} Hrs</td>
+                    <td class="variance-cell ${op.cost > 0 ? 'negative' : (op.cost < 0 ? 'positive' : '')}">£${op.cost.toFixed(2)}</td>
+                `;
+            });
+        }
+
+
+        // --- ================================================= ---
+        // --- INITIALIZATION ---
+        // --- ================================================= ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCatalogue(); 
+            loadJobHistory(); 
+            loadToolStrings(); 
+            
+            // --- Planner Init ---
+            renderAllCatalogueTables(); 
+            populateOpCodeDropdown();
+            renderStandingAssets(); // Will calc burn rate
+            renderProcedure();
+
+            // --- FIX: Correct initialization for default active tabs ---
+            // Set default active main tab (CT)
+            showMainTab('ct'); // This function now handles setting the active class internally
+            // Set default active sub-tab within CT (Personnel)
+            showSubTab('ct', 'personnel'); 
+            // Also ensure default sub-tabs are set for other disciplines when they are first loaded/switched to
+            // This is handled within showMainTab now.
+            // --- END FIX ---
+
+
+            // --- Planner Listeners ---
+            addStepBtn.addEventListener('click', addJobStep);
+            addCustomStepBtn.addEventListener('click', addCustomJobStep);
+            addCustomBtn.addEventListener('click', addCustomItemToStep);
+            lockPlanBtn.addEventListener('click', lockPlan);
+
+            // --- Report Listeners ---
+            exportCsvBtn.addEventListener('click', exportToCSV);
+            finalizeJobBtn.addEventListener('click', openFinalizeModal);
+            cancelFinalizeBtn.addEventListener('click', closeFinalizeModal); 
+            confirmFinalizeBtn.addEventListener('click', confirmFinalizeJob);
+
+            // --- Admin Listeners ---
+            adminSelectDiscipline.addEventListener('change', () => {
+                updateAdminCategorySelect();
+            });
+            adminSelectCategory.addEventListener('change', renderAdminTable);
+            adminSaveBtn.addEventListener('click', saveAdminChanges);
+            adminAddItemBtn.addEventListener('click', addAdminItem);
+            clearHistoryBtn.addEventListener('click', clearJobHistory);
+            
+            // --- Admin Tool String Listeners ---
+            asmSelectDiscipline.addEventListener('change', renderToolStringAdminMiniCatalogue);
+            asmSaveBtn.addEventListener('click', saveNewAssembly);
+
+            // --- Analytics Listeners ---
+            nptChartToggle.addEventListener('change', () => {
+                const nptData = processNPTData();
+                renderNPTChart(nptData);
+            });
+        });
+    </script>
+</body>
+</html>
+

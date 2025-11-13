@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' 'unsafe-inline' file: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: file:; font-src 'self' data: file:; connect-src 'self' ws://api.welltegra.local:8080; media-src 'self' data: file:; base-uri 'self'; form-action 'self'">
+
+    <title>WellTegra | Dynamic Risk Grid - Executive Dashboard</title>
+    <meta name="description" content="Real-time risk monitoring dashboard for executive oversight. Powered by OpenSourceRisk (ORE) engine.">
+    <meta name="author" content="WellTegra Risk Analytics Team">
+
+    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF" crossorigin="anonymous" defer></script>
+
+    <!-- Socket.IO for real-time WebSocket connection -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js" integrity="sha512-Xm9qbB6Pu06k3PUwPj785dyTl6oHxgsv9nHp7ej7nCpAqGZT3OZpsELuCYX05DdonFpTlBpXMOxjavIAIUwr0w==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header-bar {
+            background: linear-gradient(90deg, #1e40af 0%, #3730a3 100%);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(30, 64, 175, 0.3);
+            border: 2px solid #3730a3;
+        }
+
+        .risk-card {
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 2px solid #334155;
+            transition: all 0.3s ease;
+        }
+
+        .risk-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+        }
+
+        .risk-card.critical {
+            border-color: #dc2626;
+            background: rgba(153, 27, 27, 0.2);
+        }
+
+        .risk-card.high {
+            border-color: #ea580c;
+            background: rgba(234, 88, 12, 0.15);
+        }
+
+        .risk-card.medium {
+            border-color: #eab308;
+            background: rgba(234, 179, 8, 0.1);
+        }
+
+        .risk-card.low {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 500px;
+            margin-top: 2rem;
+            background: rgba(30, 41, 59, 0.9);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 2px solid #334155;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .status-live {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 2px solid #22c55e;
+        }
+
+        .status-offline {
+            background: rgba(220, 38, 38, 0.2);
+            color: #dc2626;
+            border: 2px solid #dc2626;
+        }
+
+        .status-reconnecting {
+            background: rgba(234, 179, 8, 0.2);
+            color: #eab308;
+            border: 2px solid #eab308;
+        }
+
+        .well-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .risk-score {
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .risk-metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .risk-metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .pulse-animation {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="header-bar">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-4xl font-black text-white mb-2">
+                        DYNAMIC RISK GRID
+                    </h1>
+                    <p class="text-blue-200 text-lg">
+                        Executive Dashboard - Powered by OpenSourceRisk (ORE) Engine
+                    </p>
+                </div>
+                <div class="flex flex-col items-end gap-2">
+                    <div id="ws-connection-status" class="status-indicator status-offline">
+                        🔴 OFFLINE
+                    </div>
+                    <div class="text-sm text-blue-200">
+                        Last Updated: <span id="last-update-time">--:--:--</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Banner (shown when critical risks detected) -->
+        <div id="critical-alert-banner" class="hidden">
+            <div class="bg-red-900/80 border-4 border-red-500 rounded-xl p-6 mb-4 animate-pulse">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-3xl font-black text-red-200">
+                            🚨 CRITICAL RISK ALERT
+                        </p>
+                        <p id="critical-alert-message" class="text-xl text-red-100 mt-2">
+                            Critical risk levels detected in well portfolio
+                        </p>
+                    </div>
+                    <button id="acknowledge-risk-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                        ACKNOWLEDGE
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portfolio Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="risk-card">
+                <p class="metric-label">TOTAL WELLS</p>
+                <p class="risk-score text-blue-400" id="total-wells">7</p>
+            </div>
+            <div class="risk-card">
+                <p class="metric-label">AVG OVERALL RISK</p>
+                <p class="risk-score text-yellow-400" id="avg-risk">--</p>
+            </div>
+            <div class="risk-card">
+                <p class="metric-label">CRITICAL WELLS</p>
+                <p class="risk-score text-red-400" id="critical-wells">--</p>
+            </div>
+            <div class="risk-card">
+                <p class="metric-label">HEALTHY WELLS</p>
+                <p class="risk-score text-green-400" id="healthy-wells">--</p>
+            </div>
+        </div>
+
+        <!-- Chart Visualization -->
+        <div class="chart-container">
+            <h2 class="text-2xl font-bold text-white mb-4">Risk Analysis - All Wells</h2>
+            <canvas id="riskChart"></canvas>
+        </div>
+
+        <!-- Individual Well Cards -->
+        <div class="mt-8">
+            <h2 class="text-3xl font-bold text-white mb-4">Individual Well Risk Profiles</h2>
+            <div id="wells-grid" class="well-grid">
+                <!-- Well cards will be dynamically generated here -->
+                <div class="risk-card text-center py-12">
+                    <div class="loading-spinner mx-auto mb-4"></div>
+                    <p class="text-slate-400 text-lg">Waiting for live data...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center text-slate-400 text-sm">
+            <p>WellTegra Risk Grid | Integrity Risk: Isla's Module | Physical Risk: Rowan's API | Financial Risk: Marcus's Model</p>
+            <p class="mt-2">For Executive and Risk-Analyst roles only | Authenticated via JWT</p>
+        </div>
+    </div>
+
+    <!-- Load JavaScript modules -->
+    <script src="assets/js/webSocketService.js" defer></script>
+    <script src="assets/js/risk-grid.js" defer></script>
+</body>
+
+</html>

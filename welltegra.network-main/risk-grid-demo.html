@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Grid Demo - Test Data Generator</title>
+    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: #e2e8f0;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .demo-panel {
+            background: rgba(30, 41, 59, 0.9);
+            border: 2px solid #475569;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            font-weight: 700;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 0.5rem;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        .data-display {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="demo-panel">
+            <h1 class="text-4xl font-black mb-4">🧪 Risk Grid Demo - Test Data Generator</h1>
+            <p class="text-lg text-slate-300 mb-6">
+                This demo page simulates the risk-update events from Marcus's ORE engine.
+                Use this to test the Risk Grid dashboard before the WebSocket endpoint is live.
+            </p>
+
+            <div class="flex flex-wrap gap-4 mb-6">
+                <button class="btn" onclick="openRiskGrid()">📊 Open Risk Grid Dashboard</button>
+                <button class="btn" onclick="generateNormalData()">✅ Generate Normal Risk Data</button>
+                <button class="btn btn-danger" onclick="generateCriticalData()">🚨 Generate Critical Risk Data</button>
+                <button class="btn" onclick="generateRandomData()">🎲 Generate Random Data</button>
+            </div>
+
+            <div class="mb-4">
+                <h2 class="text-2xl font-bold mb-2">Instructions:</h2>
+                <ol class="list-decimal list-inside space-y-2 text-slate-300">
+                    <li>Click "Open Risk Grid Dashboard" to open the main dashboard in a new tab</li>
+                    <li>Come back to this page and click one of the data generation buttons</li>
+                    <li>The Risk Grid will update in real-time with simulated data</li>
+                    <li>Use the browser console to monitor WebSocket messages</li>
+                </ol>
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-bold mb-2">Last Generated Data:</h2>
+                <div id="data-display" class="data-display">
+                    <p class="text-slate-400">No data generated yet. Click a button above to generate test data.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-panel">
+            <h2 class="text-3xl font-bold mb-4">📋 Expected Data Format</h2>
+            <p class="text-slate-300 mb-4">
+                The Risk Grid expects an array of well risk objects from Marcus's ORE engine via the 'risk-update' event:
+            </p>
+            <div class="data-display">
+                <pre class="text-green-400">[
+  {
+    "wellId": "W666",
+    "wellName": "The Perfect Storm",
+    "integrityRisk": 8.2,  // From Isla's module (0-10)
+    "physicalRisk": 4.5,   // From Rowan's API (0-10)
+    "financialRisk": 7.1,  // From Marcus's model (0-10)
+    "overallRisk": 6.6     // Combined risk score (0-10)
+  },
+  {
+    "wellId": "W101",
+    "wellName": "Old Faithful",
+    "integrityRisk": 3.1,
+    "physicalRisk": 2.0,
+    "financialRisk": 1.5,
+    "overallRisk": 2.2
+  }
+  // ... and 5 more wells
+]</pre>
+            </div>
+        </div>
+
+        <div class="demo-panel">
+            <h2 class="text-3xl font-bold mb-4">🔧 Integration Notes for Gus</h2>
+            <div class="space-y-3 text-slate-300">
+                <p><strong>WebSocket Endpoint:</strong> <code class="bg-slate-700 px-2 py-1 rounded">ws://api.welltegra.local:8080/risk</code></p>
+                <p><strong>Event Name:</strong> <code class="bg-slate-700 px-2 py-1 rounded">risk-update</code></p>
+                <p><strong>Authentication:</strong> JWT token from localStorage (same as Performer view)</p>
+                <p><strong>Data Source:</strong> Kafka topic fed by Marcus's OpenSourceRisk (ORE) engine</p>
+                <p><strong>Update Frequency:</strong> Real-time as risk calculations complete</p>
+                <p><strong>Expected Clients:</strong> Executives and Risk Analysts only (role-based access via Catriona's auth)</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample well data
+        const wellTemplates = [
+            { wellId: "W666", wellName: "The Perfect Storm" },
+            { wellId: "W101", wellName: "Old Faithful" },
+            { wellId: "W234", wellName: "Deep Blue" },
+            { wellId: "W555", wellName: "Golden Opportunity" },
+            { wellId: "W789", wellName: "North Star" },
+            { wellId: "W432", wellName: "Rising Sun" },
+            { wellId: "W888", wellName: "Silver Lining" }
+        ];
+
+        let riskGridWindow = null;
+
+        function openRiskGrid() {
+            if (riskGridWindow && !riskGridWindow.closed) {
+                riskGridWindow.focus();
+            } else {
+                riskGridWindow = window.open('risk-grid.html', 'RiskGrid', 'width=1920,height=1080');
+            }
+        }
+
+        function generateNormalData() {
+            const data = wellTemplates.map(template => ({
+                wellId: template.wellId,
+                wellName: template.wellName,
+                integrityRisk: parseFloat((Math.random() * 3 + 1).toFixed(2)), // 1-4
+                physicalRisk: parseFloat((Math.random() * 3 + 1).toFixed(2)),  // 1-4
+                financialRisk: parseFloat((Math.random() * 3 + 1).toFixed(2)), // 1-4
+                overallRisk: parseFloat((Math.random() * 3 + 1).toFixed(2))    // 1-4
+            }));
+
+            displayData(data);
+            sendToRiskGrid(data);
+        }
+
+        function generateCriticalData() {
+            const data = wellTemplates.map((template, index) => {
+                const isCritical = index < 3; // Make first 3 wells critical
+                return {
+                    wellId: template.wellId,
+                    wellName: template.wellName,
+                    integrityRisk: isCritical ? parseFloat((Math.random() * 3 + 7).toFixed(2)) : parseFloat((Math.random() * 3 + 2).toFixed(2)),
+                    physicalRisk: isCritical ? parseFloat((Math.random() * 3 + 6).toFixed(2)) : parseFloat((Math.random() * 3 + 2).toFixed(2)),
+                    financialRisk: isCritical ? parseFloat((Math.random() * 3 + 7).toFixed(2)) : parseFloat((Math.random() * 3 + 2).toFixed(2)),
+                    overallRisk: isCritical ? parseFloat((Math.random() * 3 + 7).toFixed(2)) : parseFloat((Math.random() * 3 + 2).toFixed(2))
+                };
+            });
+
+            displayData(data);
+            sendToRiskGrid(data);
+        }
+
+        function generateRandomData() {
+            const data = wellTemplates.map(template => ({
+                wellId: template.wellId,
+                wellName: template.wellName,
+                integrityRisk: parseFloat((Math.random() * 10).toFixed(2)),
+                physicalRisk: parseFloat((Math.random() * 10).toFixed(2)),
+                financialRisk: parseFloat((Math.random() * 10).toFixed(2)),
+                overallRisk: parseFloat((Math.random() * 10).toFixed(2))
+            }));
+
+            displayData(data);
+            sendToRiskGrid(data);
+        }
+
+        function displayData(data) {
+            const display = document.getElementById('data-display');
+            display.innerHTML = `<pre class="text-green-400">${JSON.stringify(data, null, 2)}</pre>`;
+        }
+
+        function sendToRiskGrid(data) {
+            // Store in localStorage for the Risk Grid to pick up
+            localStorage.setItem('demoRiskData', JSON.stringify(data));
+            localStorage.setItem('demoRiskDataTimestamp', Date.now().toString());
+
+            // Try to send via postMessage if window is open
+            if (riskGridWindow && !riskGridWindow.closed) {
+                riskGridWindow.postMessage({
+                    type: 'risk-update',
+                    data: data
+                }, '*');
+                console.log('[Demo] Sent risk data to Risk Grid window');
+            }
+
+            console.log('[Demo] Generated risk data:', data);
+            alert('✅ Test data generated! If Risk Grid is open, it should update now.');
+        }
+
+        // Auto-generate normal data on load for testing
+        window.addEventListener('load', () => {
+            console.log('[Demo] Risk Grid Demo loaded. Ready to generate test data.');
+        });
+    </script>
+</body>
+</html>

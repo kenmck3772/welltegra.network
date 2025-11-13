@@ -1,0 +1,170 @@
+{
+  "features": [
+    {
+      "id": "toolstring-configurator",
+      "name": "Toolstring Configurator",
+      "description": "Visual drag-and-drop tool assembly builder",
+      "url": "toolstring-configurator.html",
+      "icon": "🔧",
+      "integrationType": "modal",
+      "availableAt": ["step-3"],
+      "dataRequired": ["wellId", "objective"],
+      "category": "planning"
+    },
+    {
+      "id": "3d-well-path",
+      "name": "3D Well Path Viewer",
+      "description": "Interactive 3D visualization of wellbore trajectory",
+      "url": "3d-well-path.html",
+      "icon": "🎯",
+      "integrationType": "iframe",
+      "availableAt": ["step-1", "planner-v2"],
+      "dataRequired": ["wellId"],
+      "category": "planning"
+    },
+    {
+      "id": "pce-simulator",
+      "name": "PCE Simulator",
+      "description": "3D rig-up simulator for Pressure Control Equipment",
+      "url": "pce-simulator.html",
+      "icon": "🏗️",
+      "integrationType": "iframe",
+      "availableAt": ["step-3", "planner-v2"],
+      "dataRequired": ["interventionType"],
+      "category": "planning"
+    },
+    {
+      "id": "hse-risk-v2",
+      "name": "HSE Risk Assessment",
+      "description": "Comprehensive health, safety, and environmental risk analysis",
+      "url": "hse-risk-v2.html",
+      "icon": "🦺",
+      "integrationType": "new-tab",
+      "availableAt": ["step-4", "step-5"],
+      "dataRequired": ["wellId", "procedure", "risks"],
+      "category": "risk"
+    },
+    {
+      "id": "risk-grid",
+      "name": "Executive Risk Grid",
+      "description": "Real-time risk dashboard with live updates",
+      "url": "risk-grid.html",
+      "icon": "⚠️",
+      "integrationType": "modal",
+      "availableAt": ["step-4", "dashboard"],
+      "dataRequired": ["risks"],
+      "category": "risk"
+    },
+    {
+      "id": "integrity-analyzer",
+      "name": "Well Integrity Analyzer",
+      "description": "Analyze well integrity issues and recommend interventions",
+      "url": "integrity-analyzer.html",
+      "icon": "🛡️",
+      "integrationType": "new-tab",
+      "availableAt": ["step-1"],
+      "dataRequired": ["wellId"],
+      "category": "risk"
+    },
+    {
+      "id": "planner-v2",
+      "name": "Engineering Cockpit",
+      "description": "Unified workspace with procedure checklists and live monitoring",
+      "url": "planner-v2.html",
+      "icon": "🎯",
+      "integrationType": "new-tab",
+      "availableAt": ["step-6"],
+      "dataRequired": ["wellId", "procedure", "program"],
+      "category": "execution"
+    },
+    {
+      "id": "commercial-v2",
+      "name": "Commercial Dashboard",
+      "description": "AFE tracking, actual costs, and service tickets",
+      "url": "commercial-v2.html",
+      "icon": "💰",
+      "integrationType": "new-tab",
+      "availableAt": ["step-5"],
+      "dataRequired": ["wellId", "program", "cost"],
+      "category": "commercial"
+    },
+    {
+      "id": "equipment-catalog",
+      "name": "Equipment Catalog",
+      "description": "Browse and select equipment for interventions",
+      "url": "equipment-catalog-integration.html",
+      "icon": "🔧",
+      "integrationType": "modal",
+      "availableAt": ["step-3"],
+      "dataRequired": ["objectiveType"],
+      "category": "planning"
+    },
+    {
+      "id": "sustainability-calculator",
+      "name": "Sustainability Calculator",
+      "description": "Calculate Scope 1/2/3 carbon emissions",
+      "url": "sustainability-calculator.html",
+      "icon": "🌱",
+      "integrationType": "modal",
+      "availableAt": ["step-5"],
+      "dataRequired": ["procedure", "duration"],
+      "category": "compliance"
+    },
+    {
+      "id": "audit-log-viewer",
+      "name": "Audit Log Viewer",
+      "description": "Comprehensive audit trail of all decisions and changes",
+      "url": "audit-log-viewer.html",
+      "icon": "📝",
+      "integrationType": "new-tab",
+      "availableAt": ["global", "step-6"],
+      "dataRequired": [],
+      "category": "compliance"
+    },
+    {
+      "id": "pa-forecast",
+      "name": "P&A 30-Year Forecast",
+      "description": "Predict well abandonment risk over 30 years",
+      "url": "PA_MODEL_CONCEPT_01_30YEAR_FORECAST.html",
+      "icon": "📊",
+      "integrationType": "new-tab",
+      "availableAt": ["analytics", "well-detail"],
+      "dataRequired": ["wellId", "wellAge"],
+      "category": "analytics"
+    },
+    {
+      "id": "visual-metrics",
+      "name": "Performance Metrics",
+      "description": "KPI dashboards and performance visualization",
+      "url": "visual-metrics.html",
+      "icon": "📈",
+      "integrationType": "new-tab",
+      "availableAt": ["analytics", "post-execution"],
+      "dataRequired": [],
+      "category": "analytics"
+    },
+    {
+      "id": "sync-status",
+      "name": "Sync Status Monitor",
+      "description": "Real-time synchronization status across edge devices",
+      "url": "sync-status.html",
+      "icon": "🔄",
+      "integrationType": "inline",
+      "availableAt": ["global"],
+      "dataRequired": [],
+      "category": "system"
+    },
+    {
+      "id": "mobile-communicator",
+      "name": "Mobile Field Communicator",
+      "description": "Mobile-optimized field communication interface",
+      "url": "mobile-communicator.html",
+      "icon": "📱",
+      "integrationType": "new-tab",
+      "availableAt": ["mobile-only"],
+      "dataRequired": ["program", "approvalRequest"],
+      "category": "execution",
+      "enabled": false
+    }
+  ]
+}
