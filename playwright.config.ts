@@ -38,7 +38,14 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         headless: true,
         launchOptions: {
-          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+          args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-gpu',
+            '--disable-dev-shm-usage',
+            '--disable-software-rasterizer',
+            '--disable-extensions',
+          ],
         },
       },
     },
