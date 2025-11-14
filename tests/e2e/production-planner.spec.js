@@ -23,8 +23,36 @@ const { test, expect } = require('@playwright/test');
  * This is the PRODUCTION READINESS test suite referenced in the P0 diagnostic.
  */
 
+// Global beforeEach: Add invincible mocks for all tests
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    const getMock = () => new Proxy(function() {}, {
+      get: () => getMock(),
+      apply: () => getMock(),
+      construct: () => getMock()
+    });
+
+    window.Chart = getMock();
+    window.jspdf = { jsPDF: getMock() };
+    window.html2canvas = getMock();
+  });
+});
+
 test.describe('P0: Critical Planner Navigation', () => {
   test.beforeEach(async ({ page }) => {
+    // Add invincible mocks for Chart.js, jsPDF, and html2canvas
+    await page.addInitScript(() => {
+      const getMock = () => new Proxy(function() {}, {
+        get: () => getMock(),
+        apply: () => getMock(),
+        construct: () => getMock()
+      });
+
+      window.Chart = getMock();
+      window.jspdf = { jsPDF: getMock() };
+      window.html2canvas = getMock();
+    });
+
     // Navigate to production index.html
     await page.goto('/');
     await page.waitForLoadState('networkidle');
