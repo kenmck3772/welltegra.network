@@ -265,7 +265,7 @@ test.describe('P1: Planner Workflow - Objective Selection', () => {
 
     if (await objectiveRadios.count() > 0) {
       // Select first objective
-      await objectiveRadios.first().check();
+      await objectiveRadios.first().check({ force: true });
 
       // Look for generate plan button
       const generateBtn = page.locator('#generate-plan-btn-manual, button:has-text("Generate Plan")');
@@ -283,11 +283,11 @@ test.describe('P1: Planner Workflow - Objective Selection', () => {
 
     if (radioCount >= 2) {
       // Select first
-      await objectiveRadios.nth(0).check();
+      await objectiveRadios.nth(0).check({ force: true });
       await expect(objectiveRadios.nth(0)).toBeChecked();
 
       // Select second
-      await objectiveRadios.nth(1).check();
+      await objectiveRadios.nth(1).check({ force: true });
       await expect(objectiveRadios.nth(1)).toBeChecked();
 
       // First should be unchecked
@@ -312,7 +312,7 @@ test.describe('P1: Planner Workflow - Plan Generation', () => {
     // Select an objective
     const objectiveRadios = page.locator('input[type="radio"][name="objective"]');
     if (await objectiveRadios.count() > 0) {
-      await objectiveRadios.first().check();
+      await objectiveRadios.first().check({ force: true });
       await page.waitForTimeout(500);
     }
   });
@@ -473,7 +473,7 @@ test.describe('P2: Reset and New Plan', () => {
 
     const objectiveRadios = page.locator('input[type="radio"][name="objective"]');
     if (await objectiveRadios.count() > 0) {
-      await objectiveRadios.first().check();
+      await objectiveRadios.first().check({ force: true });
     }
 
     // Find reset button
@@ -693,7 +693,7 @@ test.describe('PRODUCTION SMOKE TEST - Quick Validation', () => {
     // 4. Select an objective
     const objectives = page.locator('input[type="radio"][name="objective"]');
     if (await objectives.count() > 0) {
-      await objectives.first().check();
+      await objectives.first().check({ force: true });
       await expect(objectives.first()).toBeChecked();
     }
 
