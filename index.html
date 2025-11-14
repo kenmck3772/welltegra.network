@@ -935,9 +935,50 @@
                 </video>
                 <div class="hero-overlay"></div>
                 <div class="max-w-4xl mx-auto text-center relative z-10">
-                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white">From Data Chaos to Predictive Clarity.</h1>
-                    <p class="mt-6 text-lg md:text-xl text-slate-100">The oil and gas industry loses over $38 million per asset annually to unplanned downtime. Your engineers spend more than 50% of their time wrangling data. The cause? A disconnected digital ecosystem.</p>
-                    <p class="mt-4 text-lg md:text-xl font-semibold text-white">Well-Tegra: Engineering Insight, Amplified by Data.</p>
+                    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-6">Prevent $500K NPT Incidents Before They Happen</h1>
+                    <p class="mt-6 text-lg md:text-2xl text-slate-100 font-medium">AI-powered well intervention planning that catches problems at minute 75, not day 3.</p>
+                    <p class="mt-4 text-lg md:text-xl text-slate-200">What takes your team 3 days to plan, Well-Tegra does in 3 seconds.</p>
+
+                    <!-- CTA Buttons -->
+                    <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <button id="hero-demo-btn" class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg shadow-lg transform transition hover:scale-105 hover:shadow-xl">
+                            <span class="flex items-center gap-2">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Watch 5-Minute Demo
+                            </span>
+                        </button>
+                        <button id="hero-planner-btn" class="px-8 py-4 bg-transparent border-2 border-white text-white text-lg font-semibold rounded-lg hover:bg-white hover:text-blue-900 transform transition hover:scale-105 shadow-lg">
+                            Try the Planner →
+                        </button>
+                    </div>
+
+                    <!-- Trust Indicators -->
+                    <div class="mt-12 pt-8 border-t border-slate-400/30">
+                        <p class="text-sm text-slate-300 uppercase tracking-wider mb-4">Trusted By</p>
+                        <div class="flex flex-wrap justify-center gap-8 items-center text-slate-200">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="font-medium">1,200+ Historical Interventions</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="font-medium">$2.85M Avg. Cost Savings</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="font-medium">Zero NPT Incidents</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
             <section class="py-20 px-4 bg-white dark:bg-transparent">
@@ -4201,6 +4242,38 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentTheme = body.classList.contains('theme-dark') ? 'dark' : 'light';
         setTheme(currentTheme === 'dark' ? 'light' : 'dark');
     });
+
+    // Hero CTA button event listeners
+    const heroPlannerBtn = document.getElementById('hero-planner-btn');
+    const heroDemoBtn = document.getElementById('hero-demo-btn');
+
+    if (heroPlannerBtn) {
+        heroPlannerBtn.addEventListener('click', () => {
+            switchView('planner');
+            // Smooth scroll to top after view switch
+            setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+        });
+    }
+
+    if (heroDemoBtn) {
+        heroDemoBtn.addEventListener('click', () => {
+            // Show demo modal with instructions
+            alert('🎬 Welcome to the Well-Tegra Demo!\n\n' +
+                  'Follow these steps for the 5-minute demo experience:\n\n' +
+                  '1. Click "Try the Planner" to start\n' +
+                  '2. Select Well 666 - The Perfect Storm\n' +
+                  '3. Generate AI intervention plan\n' +
+                  '4. Switch to Performer view for live monitoring\n' +
+                  '5. Watch for anomaly detection alerts\n' +
+                  '6. View analysis and export PDF report\n\n' +
+                  'Pro tip: Check out DEMO_SCRIPT.md for the full demo narrative!');
+            // Auto-navigate to planner
+            setTimeout(() => {
+                switchView('planner');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 500);
+        });
+    }
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {

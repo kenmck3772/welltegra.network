@@ -283,6 +283,144 @@
         </div>
     </section>
 
+    <!-- ROI Calculator Section -->
+    <section class="py-20 px-4 bg-gradient-to-b from-transparent to-gray-900/50">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl md:text-5xl font-black mb-4">
+                    Calculate Your <span class="bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">ROI</span>
+                </h2>
+                <p class="text-xl text-gray-400">
+                    See how much Well-Tegra could save your operations. Most customers see ROI within 30 days.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Calculator Inputs -->
+                <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-8 backdrop-blur">
+                    <h3 class="text-2xl font-bold mb-6 text-cyan-400">Your Operations</h3>
+
+                    <div class="space-y-6">
+                        <!-- Number of Wells -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">
+                                Number of Active Wells
+                            </label>
+                            <input type="number" id="num-wells" value="25" min="1" max="10000"
+                                   class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none"
+                                   oninput="calculateROI()">
+                            <p class="text-xs text-gray-400 mt-1">Average: 25-50 wells per operator</p>
+                        </div>
+
+                        <!-- Interventions per Year -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">
+                                Interventions per Well per Year
+                            </label>
+                            <input type="number" id="interventions" value="2" min="0" max="12" step="0.5"
+                                   class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none"
+                                   oninput="calculateROI()">
+                            <p class="text-xs text-gray-400 mt-1">Industry average: 1.5-3 per year</p>
+                        </div>
+
+                        <!-- Average NPT Hours -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">
+                                Average NPT Hours per Intervention
+                            </label>
+                            <input type="number" id="npt-hours" value="48" min="0" max="720" step="6"
+                                   class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none"
+                                   oninput="calculateROI()">
+                            <p class="text-xs text-gray-400 mt-1">Industry average: 24-72 hours</p>
+                        </div>
+
+                        <!-- Rig Rate -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">
+                                Rig Day Rate ($)
+                            </label>
+                            <input type="number" id="rig-rate" value="150000" min="50000" max="1000000" step="10000"
+                                   class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none"
+                                   oninput="calculateROI()">
+                            <p class="text-xs text-gray-400 mt-1">Typical range: $100K-$500K per day</p>
+                        </div>
+
+                        <!-- Planning Time Savings -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">
+                                Engineering Hours per Plan
+                            </label>
+                            <input type="number" id="planning-hours" value="20" min="1" max="200" step="1"
+                                   class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none"
+                                   oninput="calculateROI()">
+                            <p class="text-xs text-gray-400 mt-1">Time saved with AI planning (typically 16-24 hours)</p>
+                        </div>
+
+                        <!-- Engineer Hourly Rate -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">
+                                Engineer Hourly Rate ($)
+                            </label>
+                            <input type="number" id="engineer-rate" value="150" min="50" max="500" step="10"
+                                   class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 outline-none"
+                                   oninput="calculateROI()">
+                            <p class="text-xs text-gray-400 mt-1">Fully loaded cost (salary + overhead)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROI Results -->
+                <div class="flex flex-col gap-6">
+                    <!-- Summary Card -->
+                    <div class="bg-gradient-to-br from-cyan-600 to-teal-600 rounded-2xl p-8 text-white">
+                        <h3 class="text-lg font-semibold mb-2 opacity-90">Annual Savings Potential</h3>
+                        <div class="text-5xl font-black mb-4" id="total-savings">$0</div>
+                        <p class="text-sm opacity-90">Based on your operational parameters</p>
+                    </div>
+
+                    <!-- Breakdown Cards -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                            <div class="text-sm text-gray-400 mb-1">NPT Reduction</div>
+                            <div class="text-2xl font-bold text-cyan-400" id="npt-savings">$0</div>
+                            <div class="text-xs text-gray-500 mt-1">25% reduction</div>
+                        </div>
+                        <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                            <div class="text-sm text-gray-400 mb-1">Planning Time</div>
+                            <div class="text-2xl font-bold text-teal-400" id="planning-savings">$0</div>
+                            <div class="text-xs text-gray-500 mt-1">80% faster</div>
+                        </div>
+                        <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                            <div class="text-sm text-gray-400 mb-1">Reporting Time</div>
+                            <div class="text-2xl font-bold text-cyan-400" id="reporting-savings">$0</div>
+                            <div class="text-xs text-gray-500 mt-1">3 days → 3 sec</div>
+                        </div>
+                        <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+                            <div class="text-sm text-gray-400 mb-1">ROI Timeline</div>
+                            <div class="text-2xl font-bold text-teal-400" id="roi-timeline">0 days</div>
+                            <div class="text-xs text-gray-500 mt-1">Payback period</div>
+                        </div>
+                    </div>
+
+                    <!-- CTA -->
+                    <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 text-center">
+                        <p class="text-sm text-gray-400 mb-4">
+                            Your estimated ROI: <span class="text-3xl font-bold text-cyan-400" id="roi-multiplier">0x</span>
+                        </p>
+                        <a href="#pricing" class="inline-block bg-cyan-600 hover:bg-cyan-500 px-8 py-3 rounded-lg font-bold transition">
+                            View Plans →
+                        </a>
+                    </div>
+
+                    <!-- Disclaimer -->
+                    <p class="text-xs text-gray-500 text-center">
+                        * Estimates based on industry averages and customer data. Actual results may vary.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Pricing Cards -->
     <section id="pricing" class="py-12 px-4">
         <div class="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -677,6 +815,69 @@
                 savingsBadges.forEach(el => el.style.display = 'block');
             }
         }
+
+        // ROI Calculator
+        function calculateROI() {
+            // Get input values
+            const numWells = parseFloat(document.getElementById('num-wells')?.value) || 25;
+            const interventions = parseFloat(document.getElementById('interventions')?.value) || 2;
+            const nptHours = parseFloat(document.getElementById('npt-hours')?.value) || 48;
+            const rigRate = parseFloat(document.getElementById('rig-rate')?.value) || 150000;
+            const planningHours = parseFloat(document.getElementById('planning-hours')?.value) || 20;
+            const engineerRate = parseFloat(document.getElementById('engineer-rate')?.value) || 150;
+
+            // Calculate total interventions per year
+            const totalInterventions = numWells * interventions;
+
+            // Calculate NPT savings (assume 25% reduction in NPT with Well-Tegra)
+            const nptReductionPercent = 0.25;
+            const nptHoursPerDay = 24;
+            const nptCostPerIntervention = (nptHours / nptHoursPerDay) * rigRate;
+            const nptSavingsPerIntervention = nptCostPerIntervention * nptReductionPercent;
+            const annualNPTSavings = nptSavingsPerIntervention * totalInterventions;
+
+            // Calculate planning time savings (assume 80% faster with AI)
+            const planningTimeSavedPercent = 0.80;
+            const planningCostPerIntervention = planningHours * engineerRate;
+            const planningSavingsPerIntervention = planningCostPerIntervention * planningTimeSavedPercent;
+            const annualPlanningSavings = planningSavingsPerIntervention * totalInterventions;
+
+            // Calculate reporting time savings (3 days → 3 seconds = ~16 hours saved per report)
+            const reportingHoursSaved = 16;
+            const reportingSavingsPerIntervention = reportingHoursSaved * engineerRate;
+            const annualReportingSavings = reportingSavingsPerIntervention * totalInterventions;
+
+            // Total annual savings
+            const totalAnnualSavings = annualNPTSavings + annualPlanningSavings + annualReportingSavings;
+
+            // Calculate ROI based on Team tier pricing ($999/month = $11,988/year)
+            const annualCost = 11988; // Team tier annual cost
+            const roiMultiplier = totalAnnualSavings / annualCost;
+            const paybackDays = (annualCost / totalAnnualSavings) * 365;
+
+            // Format currency
+            const formatCurrency = (value) => {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(value);
+            };
+
+            // Update DOM
+            document.getElementById('total-savings').textContent = formatCurrency(totalAnnualSavings);
+            document.getElementById('npt-savings').textContent = formatCurrency(annualNPTSavings);
+            document.getElementById('planning-savings').textContent = formatCurrency(annualPlanningSavings);
+            document.getElementById('reporting-savings').textContent = formatCurrency(annualReportingSavings);
+            document.getElementById('roi-multiplier').textContent = roiMultiplier.toFixed(1) + 'x';
+            document.getElementById('roi-timeline').textContent = Math.ceil(paybackDays) + ' days';
+        }
+
+        // Initialize calculator on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateROI();
+        });
 
         // Track pricing interactions
         document.querySelectorAll('.cta-button').forEach(button => {
