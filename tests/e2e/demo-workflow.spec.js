@@ -43,7 +43,7 @@ test.describe('Full Demo Workflow (FIXED)', () => {
     // ** GENERATE A PLAN **
     // ---------------------------------
     await page.locator('.planner-card[data-well-id="W666"]').click();
-    await page.locator('#ai-toggle').check();
+    await page.locator('label:has(#ai-toggle)').click();
     await page.locator('.objective-card[data-problem-id="prob1"]').click();
     await expect(page.locator('.ai-recommendation-enhanced')).toBeVisible({ timeout: 10000 });
     await page.locator('.ai-recommendation-enhanced').first().click();
