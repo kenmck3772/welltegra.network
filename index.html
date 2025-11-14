@@ -2910,6 +2910,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- PERFORMER LOGIC ---
 
     const initializePerformer = () => {
+        // Validate required data exists before initializing
+        if (!appState.generatedPlan || !appState.generatedPlan.name ||
+            !appState.generatedPlan.procedure || !Array.isArray(appState.generatedPlan.procedure)) {
+            console.error('[Performer] Cannot initialize: generatedPlan data is invalid');
+            return;
+        }
+
         const isSlickline = appState.generatedPlan.name.toLowerCase().includes('slickline');
         
         kpiGrid.innerHTML = `
