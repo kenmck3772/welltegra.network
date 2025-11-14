@@ -45,6 +45,7 @@ export default defineConfig({
             '--disable-dev-shm-usage',
             '--disable-software-rasterizer',
             '--disable-extensions',
+            '--single-process',
           ],
         },
       },
