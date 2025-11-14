@@ -2910,6 +2910,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- PERFORMER LOGIC ---
 
     const initializePerformer = () => {
+        // Validate required data exists before initializing
+        if (!appState.generatedPlan || !appState.generatedPlan.name ||
+            !appState.generatedPlan.procedure || !Array.isArray(appState.generatedPlan.procedure)) {
+            console.error('[Performer] Cannot initialize: generatedPlan data is invalid');
+            return;
+        }
+
         const isSlickline = appState.generatedPlan.name.toLowerCase().includes('slickline');
         
         kpiGrid.innerHTML = `
@@ -3048,7 +3055,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const step = appState.generatedPlan.procedure.find(s => s.id === appState.liveData.currentStep);
-        if (!step) return;
+        if (!step || !step.text || typeof step.text !== 'string') return;
 
         const stepText = step.text.toLowerCase();
         const targetDepth = 18500;
@@ -3207,9 +3214,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (current) current.completed = true;
         
         if (appState.liveData.currentStep < appState.generatedPlan.procedure.length) {
-            appState.liveData.currentStep++; 
-            const next = appState.generatedPlan.procedure.find(s => s.id === appState.liveData.currentStep); 
-            addLogEntry('System', `Starting Step ${next.id}: ${next.text}`); 
+            appState.liveData.currentStep++;
+            const next = appState.generatedPlan.procedure.find(s => s.id === appState.liveData.currentStep);
+            if (!next || !next.text || typeof next.text !== 'string') return;
+            addLogEntry('System', `Starting Step ${next.id}: ${next.text}`);
             appState.liveData.isRIH = next.text.toLowerCase().includes('rih');
             appState.liveData.stepStartTime = Date.now();
         } else { 
@@ -3235,11 +3243,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         appState.liveData.currentStep = targetStepId;
         const newStep = appState.generatedPlan.procedure.find(s => s.id === targetStepId);
+        if (!newStep || !newStep.text) return;
         addLogEntry('System', `Starting Step ${targetStepId}: ${newStep.text}`);
         
         let lastDepth = appState.liveData.depth;
         const previousStep = appState.generatedPlan.procedure.find(s => s.id === targetStepId - 1);
-        if (previousStep) {
+        if (previousStep && previousStep.text && typeof previousStep.text === 'string') {
             const prevStepText = previousStep.text.toLowerCase();
             if (prevStepText.includes('rih')) { lastDepth = 18500; }
             else if (prevStepText.includes('pooh')) { lastDepth = 0; }
