@@ -292,8 +292,10 @@ test.describe('P1: Planner Workflow - Objective Selection', () => {
     const objectiveRadios = page.locator('input[type="radio"][name="objective"]');
 
     if (await objectiveRadios.count() > 0) {
-      // Select first objective
-      await objectiveRadios.first().check({ force: true });
+      // Select first objective using click on label (more reliable than check)
+      const firstRadio = objectiveRadios.first();
+      const radioId = await firstRadio.getAttribute('id');
+      await page.locator(`label[for="${radioId}"]`).click();
 
       // Look for generate plan button
       const generateBtn = page.locator('#generate-plan-btn-manual, button:has-text("Generate Plan")');
@@ -310,12 +312,14 @@ test.describe('P1: Planner Workflow - Objective Selection', () => {
     const radioCount = await objectiveRadios.count();
 
     if (radioCount >= 2) {
-      // Select first
-      await objectiveRadios.nth(0).check({ force: true });
+      // Select first using label click
+      const firstRadioId = await objectiveRadios.nth(0).getAttribute('id');
+      await page.locator(`label[for="${firstRadioId}"]`).click();
       await expect(objectiveRadios.nth(0)).toBeChecked();
 
-      // Select second
-      await objectiveRadios.nth(1).check({ force: true });
+      // Select second using label click
+      const secondRadioId = await objectiveRadios.nth(1).getAttribute('id');
+      await page.locator(`label[for="${secondRadioId}"]`).click();
       await expect(objectiveRadios.nth(1)).toBeChecked();
 
       // First should be unchecked
@@ -337,10 +341,11 @@ test.describe('P1: Planner Workflow - Plan Generation', () => {
       await page.waitForTimeout(500);
     }
 
-    // Select an objective
+    // Select an objective using label click
     const objectiveRadios = page.locator('input[type="radio"][name="objective"]');
     if (await objectiveRadios.count() > 0) {
-      await objectiveRadios.first().check({ force: true });
+      const radioId = await objectiveRadios.first().getAttribute('id');
+      await page.locator(`label[for="${radioId}"]`).click();
       await page.waitForTimeout(500);
     }
   });
@@ -501,7 +506,8 @@ test.describe('P2: Reset and New Plan', () => {
 
     const objectiveRadios = page.locator('input[type="radio"][name="objective"]');
     if (await objectiveRadios.count() > 0) {
-      await objectiveRadios.first().check({ force: true });
+      const radioId = await objectiveRadios.first().getAttribute('id');
+      await page.locator(`label[for="${radioId}"]`).click();
     }
 
     // Find reset button
@@ -613,7 +619,7 @@ test.describe('P3: Error Handling and Edge Cases', () => {
 });
 
 test.describe('P3: Mobile Responsiveness', () => {
-  test.use({ viewport: { width: 375, height: 667 } }); // iPhone SE
+  test.use({ viewport: { width: 375, height: 667 }, hasTouch: true }); // iPhone SE + touch
 
   test('P3-006: Planner navigation works on mobile viewport', async ({ page }) => {
     await page.goto('/');
@@ -718,10 +724,11 @@ test.describe('PRODUCTION SMOKE TEST - Quick Validation', () => {
       await expect(wellCards.first()).toHaveClass(/selected/);
     }
 
-    // 4. Select an objective
+    // 4. Select an objective using label click
     const objectives = page.locator('input[type="radio"][name="objective"]');
     if (await objectives.count() > 0) {
-      await objectives.first().check({ force: true });
+      const radioId = await objectives.first().getAttribute('id');
+      await page.locator(`label[for="${radioId}"]`).click();
       await expect(objectives.first()).toBeChecked();
     }
 
