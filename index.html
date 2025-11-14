@@ -2180,8 +2180,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (activeLink) {
             activeLink.classList.add('active');
         }
-        
-        headerDetails.innerHTML = ''; 
+
+        // Update URL hash to match current view
+        window.location.hash = `#${viewName}-view`;
+
+        headerDetails.innerHTML = '';
         const theme = viewName === 'performer' ? 'dark' : localStorage.getItem('theme') || 'light';
         setTheme(theme);
 
@@ -4242,10 +4245,69 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- EVENT LISTENERS ---
 
+    // Handle hash-based navigation
+    const handleHashChange = () => {
+        const hash = window.location.hash.slice(1); // Remove '#' prefix
+        if (hash) {
+            // Extract view name from hash (e.g., '#planner-view' -> 'planner')
+            const viewName = hash.replace('-view', '');
+            // Check if view exists before switching
+            const viewElement = document.getElementById(`${viewName}-view`);
+            if (viewElement) {
+                // Don't update hash again in switchView to avoid recursion
+                if (appState.liveDataInterval) {
+                    clearInterval(appState.liveDataInterval);
+                    appState.liveDataInterval = null;
+                }
+
+                appState.currentView = viewName;
+                body.className = `theme-${localStorage.getItem('theme') || 'light'}`;
+                if (viewName === 'performer') {
+                    body.classList.add('theme-dark');
+                }
+
+                views.forEach(v => v.classList.add('hidden'));
+                viewElement.classList.remove('hidden');
+
+                navLinks.forEach(l => l.classList.remove('active'));
+                const activeLink = document.getElementById(`${viewName}-nav-link`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+
+                headerDetails.innerHTML = '';
+                const theme = viewName === 'performer' ? 'dark' : localStorage.getItem('theme') || 'light';
+                setTheme(theme);
+
+                let viewTitle = viewName.charAt(0).toUpperCase() + viewName.slice(1);
+                if(viewName === 'pob') viewTitle = 'POB & ER';
+                if(viewName === 'hse') viewTitle = 'HSE & Risk';
+                if(viewName === 'whitepaper') viewTitle = 'White Paper';
+                headerTitle.textContent = `Well-Tegra: ${viewTitle}`;
+
+                if (viewName === 'performer' && appState.selectedWell && appState.generatedPlan) {
+                    headerDetails.textContent = '';
+                    const statusSpan = document.createElement('span');
+                    statusSpan.id = 'job-status';
+                    statusSpan.className = 'text-lg font-semibold text-emerald-400';
+                    statusSpan.textContent = '● LIVE';
+                    headerDetails.appendChild(statusSpan);
+                }
+            }
+        } else {
+            // No hash, default to home
+            switchView('home');
+        }
+    };
+
+    // Listen for hash changes (browser back/forward, direct hash navigation)
+    window.addEventListener('hashchange', handleHashChange);
+
     // Initialize app on page load
     const savedTheme = localStorage.getItem('theme') || 'light';
     setTheme(savedTheme);
-    switchView('home');
+    // Check for hash on initial load
+    handleHashChange();
 
     themeToggleBtn.addEventListener('click', () => {
         const currentTheme = body.classList.contains('theme-dark') ? 'dark' : 'light';
