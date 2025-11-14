@@ -2965,11 +2965,11 @@ document.addEventListener('DOMContentLoaded', function() {
             text: 'Job initiated.' 
         }];
         
-        appState.generatedPlan.procedure = appState.generatedPlan.steps.map((s, i) => ({ 
-            id: i + 1, 
-            text: s, 
-            completed: false, 
-            active: false 
+        appState.generatedPlan.procedure = appState.generatedPlan.steps.map((s, i) => ({
+            id: i + 1,
+            text: (typeof s === 'object' && s.step) ? s.step : s,
+            completed: false,
+            active: false
         }));
         
         if (appState.tfaChartInstance) {
