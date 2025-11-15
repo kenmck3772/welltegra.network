@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellbore Viewer | The Brahan Engine - Foundation Module</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+            color: #e5e7eb;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .viewer-container {
+            display: grid;
+            grid-template-columns: 320px 1fr 280px;
+            height: 100vh;
+            gap: 0;
+        }
+
+        .panel {
+            background: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid rgba(6, 182, 212, 0.2);
+            overflow-y: auto;
+        }
+
+        .panel:last-child {
+            border-right: none;
+            border-left: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .panel-header {
+            background: rgba(6, 182, 212, 0.1);
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .panel-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #06b6d4;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .canvas-container {
+            background: rgba(30, 41, 59, 0.8);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #wellbore-canvas {
+            width: 100%;
+            height: 100%;
+            cursor: grab;
+        }
+
+        #wellbore-canvas:active {
+            cursor: grabbing;
+        }
+
+        .control-group {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+        }
+
+        .control-group h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .well-selector {
+            width: 100%;
+            background: rgba(30, 41, 59, 0.8);
+            border: 2px solid #475569;
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .well-selector:hover {
+            border-color: #06b6d4;
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .well-selector:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+        }
+
+        .layer-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .layer-toggle:hover .layer-name {
+            color: #06b6d4;
+        }
+
+        .layer-name {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            transition: color 0.2s;
+        }
+
+        .toggle-switch {
+            width: 44px;
+            height: 24px;
+            background: #475569;
+            border-radius: 12px;
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .toggle-switch.active {
+            background: #06b6d4;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.2s;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(20px);
+        }
+
+        .depth-info {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .depth-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 0.9rem;
+        }
+
+        .depth-info-label {
+            color: #94a3b8;
+        }
+
+        .depth-info-value {
+            color: #06b6d4;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        .equipment-list {
+            list-style: none;
+        }
+
+        .equipment-item {
+            background: rgba(30, 41, 59, 0.6);
+            border-left: 3px solid #6366f1;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .equipment-item:hover {
+            background: rgba(99, 102, 241, 0.1);
+            transform: translateX(4px);
+        }
+
+        .equipment-item.critical {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .equipment-item.warning {
+            border-left-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .equipment-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 4px;
+        }
+
+        .equipment-depth {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-family: 'Courier New', monospace;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 5;
+        }
+
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px solid rgba(6, 182, 212, 0.4);
+            border-radius: 8px;
+            color: #06b6d4;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(6, 182, 212, 0.2);
+            border-color: #06b6d4;
+            transform: scale(1.1);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-good {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid #22c55e;
+        }
+
+        .status-critical {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+
+        .status-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border: 1px solid #f59e0b;
+        }
+
+        .export-btn {
+            width: 100%;
+            padding: 10px;
+            background: rgba(6, 182, 212, 0.2);
+            border: 2px solid #06b6d4;
+            border-radius: 8px;
+            color: #06b6d4;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 8px;
+        }
+
+        .export-btn:hover {
+            background: rgba(6, 182, 212, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* SVG Schematic Styles */
+        .casing-string {
+            transition: opacity 0.3s, stroke-width 0.2s;
+        }
+
+        .casing-string:hover {
+            stroke-width: 3;
+        }
+
+        .equipment-marker {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .equipment-marker:hover {
+            transform: scale(1.15);
+        }
+
+        .depth-marker {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            fill: #94a3b8;
+        }
+
+        .depth-line {
+            stroke: #475569;
+            stroke-width: 0.5;
+            stroke-dasharray: 2, 2;
+        }
+
+        .highlight-depth {
+            stroke: #06b6d4;
+            stroke-width: 2;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Scrollbar styling */
+        .panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .panel::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        .panel::-webkit-scrollbar-thumb {
+            background: rgba(6, 182, 212, 0.3);
+            border-radius: 4px;
+        }
+
+        .panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(6, 182, 212, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="viewer-container">
+        <!-- Left Panel: Controls -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="16"/>
+                        <line x1="8" y1="12" x2="16" y2="12"/>
+                    </svg>
+                    Well Selection
+                </h2>
+            </div>
+
+            <div class="control-group">
+                <h3>Select Well</h3>
+                <select id="well-selector" class="well-selector">
+                    <option value="">-- Select a well --</option>
+                    <option value="666">Well 666 - The Perfect Storm</option>
+                    <option value="11">Well 11 - Asset Alpha</option>
+                    <option value="22">Well 22 - North Sea Pioneer</option>
+                    <option value="33">Well 33 - Deepwater Challenge</option>
+                    <option value="44">Well 44 - Mature Field</option>
+                    <option value="55">Well 55 - Sand Producer</option>
+                    <option value="777">Well 777 - Multi-Stage Complex</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <h3>Layers</h3>
+                <div id="layer-toggles">
+                    <div class="layer-toggle" data-layer="casings">
+                        <span class="layer-name">Casing Strings</span>
+                        <div class="toggle-switch active"></div>
+                    </div>
+                    <div class="layer-toggle" data-layer="tubing">
+                        <span class="layer-name">Tubing</span>
+                        <div class="toggle-switch active"></div>
+                    </div>
+                    <div class="layer-toggle" data-layer="equipment">
+                        <span class="layer-name">Equipment</span>
+                        <div class="toggle-switch active"></div>
+                    </div>
+                    <div class="layer-toggle" data-layer="cement">
+                        <span class="layer-name">Cement</span>
+                        <div class="toggle-switch"></div>
+                    </div>
+                    <div class="layer-toggle" data-layer="annotations">
+                        <span class="layer-name">Annotations</span>
+                        <div class="toggle-switch active"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3>View Options</h3>
+                <div class="layer-toggle" data-layer="grid">
+                    <span class="layer-name">Depth Grid</span>
+                    <div class="toggle-switch active"></div>
+                </div>
+                <div class="layer-toggle" data-layer="labels">
+                    <span class="layer-name">Labels</span>
+                    <div class="toggle-switch active"></div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3>Export</h3>
+                <button class="export-btn" onclick="WellboreViewer.exportAsPNG()">
+                    📥 Export as PNG
+                </button>
+                <button class="export-btn" onclick="WellboreViewer.exportAsSVG()">
+                    📄 Export as SVG
+                </button>
+            </div>
+        </div>
+
+        <!-- Center Panel: Schematic Canvas -->
+        <div class="canvas-container">
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="WellboreViewer.zoomIn()">+</button>
+                <button class="zoom-btn" onclick="WellboreViewer.resetZoom()">⊙</button>
+                <button class="zoom-btn" onclick="WellboreViewer.zoomOut()">−</button>
+            </div>
+            <svg id="wellbore-canvas" viewBox="0 0 800 1200" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                    <!-- Gradient for depth background -->
+                    <linearGradient id="depthGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:0.1" />
+                        <stop offset="100%" style="stop-color:#0f172a;stop-opacity:0.3" />
+                    </linearGradient>
+
+                    <!-- Equipment markers -->
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#06b6d4" />
+                    </marker>
+                </defs>
+
+                <!-- Background -->
+                <rect width="800" height="1200" fill="url(#depthGradient)" />
+
+                <!-- Main schematic group (for pan/zoom) -->
+                <g id="schematic-group" transform="translate(400, 50) scale(1)">
+                    <!-- Content will be dynamically generated here -->
+                </g>
+            </svg>
+        </div>
+
+        <!-- Right Panel: Information -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 16v-4M12 8h.01"/>
+                    </svg>
+                    Well Information
+                </h2>
+            </div>
+
+            <div class="control-group">
+                <div id="well-info">
+                    <p style="color: #94a3b8; text-align: center; padding: 40px 20px;">
+                        Select a well to view details
+                    </p>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3>Depth Information</h3>
+                <div class="depth-info">
+                    <div class="depth-info-row">
+                        <span class="depth-info-label">Total Depth (MD):</span>
+                        <span class="depth-info-value" id="total-depth-md">--</span>
+                    </div>
+                    <div class="depth-info-row">
+                        <span class="depth-info-label">Total Depth (TVD):</span>
+                        <span class="depth-info-value" id="total-depth-tvd">--</span>
+                    </div>
+                    <div class="depth-info-row">
+                        <span class="depth-info-label">Max Deviation:</span>
+                        <span class="depth-info-value" id="max-deviation">--</span>
+                    </div>
+                    <div class="depth-info-row">
+                        <span class="depth-info-label">Water Depth:</span>
+                        <span class="depth-info-value" id="water-depth">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3>Equipment List</h3>
+                <ul id="equipment-list" class="equipment-list">
+                    <!-- Populated dynamically -->
+                </ul>
+            </div>
+
+            <div class="control-group">
+                <h3>Casing Summary</h3>
+                <div id="casing-summary">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Loader Module -->
+    <script src="assets/js/wellbore-data-loader.js"></script>
+
+    <script>
+        // ========================================================================
+        // WELLBORE VIEWER - FOUNDATION MODULE
+        // The Brahan Engine - Core Visualization Component
+        // Now powered by CSV data loader
+        // ========================================================================
+
+        const WellboreViewer = (function() {
+            'use strict';
+
+            // State
+            let currentWell = null;
+            let viewState = {
+                zoom: 1,
+                panX: 0,
+                panY: 0,
+                layers: {
+                    casings: true,
+                    tubing: true,
+                    equipment: true,
+                    cement: false,
+                    annotations: true,
+                    grid: true,
+                    labels: true
+                }
+            };
+
+            // Well data cache
+            let wellDataCache = {};
+
+            // SVG references
+            let svg, schematicGroup;
+
+            // Initialize
+            function init() {
+                console.log('[WellboreViewer] Initializing...');
+
+                svg = document.getElementById('wellbore-canvas');
+                schematicGroup = document.getElementById('schematic-group');
+
+                setupEventListeners();
+                loadWellData();
+
+                console.log('[WellboreViewer] Initialized successfully');
+            }
+
+            // Setup event listeners
+            function setupEventListeners() {
+                // Well selector
+                document.getElementById('well-selector').addEventListener('change', function(e) {
+                    if (e.target.value) {
+                        loadWell(e.target.value);
+                    }
+                });
+
+                // Layer toggles
+                document.querySelectorAll('.layer-toggle').forEach(toggle => {
+                    toggle.addEventListener('click', function() {
+                        const layer = this.dataset.layer;
+                        const switchEl = this.querySelector('.toggle-switch');
+                        switchEl.classList.toggle('active');
+                        viewState.layers[layer] = switchEl.classList.contains('active');
+                        renderSchematic();
+                    });
+                });
+
+                // Pan and zoom
+                let isPanning = false;
+                let startX, startY;
+
+                svg.addEventListener('mousedown', (e) => {
+                    isPanning = true;
+                    startX = e.clientX - viewState.panX;
+                    startY = e.clientY - viewState.panY;
+                });
+
+                svg.addEventListener('mousemove', (e) => {
+                    if (!isPanning) return;
+                    viewState.panX = e.clientX - startX;
+                    viewState.panY = e.clientY - startY;
+                    updateTransform();
+                });
+
+                svg.addEventListener('mouseup', () => {
+                    isPanning = false;
+                });
+
+                svg.addEventListener('mouseleave', () => {
+                    isPanning = false;
+                });
+
+                // Zoom with mouse wheel
+                svg.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const delta = e.deltaY > 0 ? 0.9 : 1.1;
+                    viewState.zoom = Math.max(0.1, Math.min(5, viewState.zoom * delta));
+                    updateTransform();
+                });
+            }
+
+            // Update SVG transform
+            function updateTransform() {
+                schematicGroup.setAttribute('transform',
+                    `translate(${400 + viewState.panX}, ${50 + viewState.panY}) scale(${viewState.zoom})`
+                );
+            }
+
+            // Load well data using CSV data loader
+            async function loadWellData() {
+                try {
+                    console.log('[WellboreViewer] Loading data using CSV data loader...');
+
+                    // Load all CSV data
+                    await WellboreDataLoader.loadAllData();
+
+                    // Get all wells
+                    const wells = await WellboreDataLoader.getAllWells();
+
+                    // Load complete data for each well
+                    for (const well of wells) {
+                        const completeWell = await WellboreDataLoader.getWellComplete(well.well_id);
+                        wellDataCache[well.well_id] = completeWell;
+                    }
+
+                    console.log('[WellboreViewer] Loaded data for', Object.keys(wellDataCache).length, 'wells');
+                    console.log('[WellboreViewer] Cache stats:', WellboreDataLoader.getCacheStats());
+                } catch (error) {
+                    console.error('[WellboreViewer] Failed to load well data:', error);
+                    console.error('[WellboreViewer] Error details:', error.message);
+                    // Data loader will handle fallback if needed
+                }
+            }
+
+            // Load and render specific well
+            function loadWell(wellId) {
+                console.log('[WellboreViewer] Loading well:', wellId);
+
+                const wellData = wellDataCache[wellId];
+                if (!wellData) {
+                    console.error('[WellboreViewer] Well not found:', wellId);
+                    return;
+                }
+
+                currentWell = wellData;
+                updateWellInfo();
+                renderSchematic();
+            }
+
+            // Update well information panel
+            function updateWellInfo() {
+                if (!currentWell) return;
+
+                // Well info (using CSV data structure)
+                document.getElementById('well-info').innerHTML = `
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-size: 1.1rem; font-weight: 700; color: #06b6d4; margin-bottom: 8px;">
+                            ${currentWell.wellName}
+                        </div>
+                        <div style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 4px;">
+                            Well ${currentWell.wellId}
+                        </div>
+                    </div>
+                    <div style="background: rgba(6, 182, 212, 0.1); padding: 8px 12px; border-radius: 6px; margin-bottom: 12px;">
+                        <div style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 4px;">Type</div>
+                        <span class="status-good">${currentWell.wellType}</span>
+                    </div>
+                    <div style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6;">
+                        <div><strong>Location:</strong> ${currentWell.locationType}</div>
+                        <div><strong>Datum:</strong> ${currentWell.datumElevation_m}m</div>
+                    </div>
+                `;
+
+                // Depth info (convert meters to feet for display)
+                const totalDepthMD_ft = Math.round(currentWell.totalDepthMD_m * 3.28084);
+                const totalDepthTVD_ft = Math.round(currentWell.totalDepthTVD_m * 3.28084);
+                const waterDepth_ft = Math.round(currentWell.waterDepth_m * 3.28084);
+
+                document.getElementById('total-depth-md').textContent = totalDepthMD_ft.toLocaleString() + ' ft';
+                document.getElementById('total-depth-tvd').textContent = totalDepthTVD_ft.toLocaleString() + ' ft';
+                document.getElementById('max-deviation').textContent = currentWell.maxDeviation_deg.toFixed(1) + '°';
+                document.getElementById('water-depth').textContent = waterDepth_ft + ' ft';
+
+                // Equipment list
+                updateEquipmentList();
+
+                // Casing summary
+                updateCasingSummary();
+            }
+
+            // Get status badge class
+            function getStatusClass(status) {
+                if (status.includes('Good') || status.includes('Producing')) return 'status-good';
+                if (status.includes('CRITICAL') || status.includes('Shut-in')) return 'status-critical';
+                return 'status-warning';
+            }
+
+            // Update equipment list
+            function updateEquipmentList() {
+                if (!currentWell) return;
+
+                const equipment = currentWell.equipment || [];
+                const list = document.getElementById('equipment-list');
+
+                if (equipment.length === 0) {
+                    list.innerHTML = '<li style="color: #94a3b8; padding: 12px;">No equipment data</li>';
+                    return;
+                }
+
+                list.innerHTML = equipment.map(item => {
+                    const statusClass = item.status === 'FAILED' || item.status === 'CRITICAL'
+                        ? 'critical'
+                        : item.status === 'Replaced'
+                        ? 'warning'
+                        : '';
+
+                    return `
+                        <li class="equipment-item ${statusClass}"
+                            onclick="WellboreViewer.highlightDepth(${item.depthMD_ft})"
+                            title="${item.details || ''}">
+                            <div class="equipment-name">${item.type}</div>
+                            <div class="equipment-depth">${Math.round(item.depthMD_ft).toLocaleString()} ft MD</div>
+                        </li>
+                    `;
+                }).join('');
+            }
+
+            // Update casing summary
+            function updateCasingSummary() {
+                if (!currentWell) return;
+
+                const casings = currentWell.casings || [];
+                const summary = document.getElementById('casing-summary');
+
+                summary.innerHTML = casings.map(casing => `
+                    <div style="background: rgba(30, 41, 59, 0.6); padding: 10px; margin-bottom: 8px; border-radius: 6px; border-left: 3px solid ${getCasingColor(casing.type)};">
+                        <div style="font-size: 0.9rem; font-weight: 600; color: #e2e8f0; margin-bottom: 4px;">
+                            ${casing.size_in}" ${casing.type}
+                        </div>
+                        <div style="font-size: 0.8rem; color: #94a3b8;">
+                            ${Math.round(casing.bottomMD_ft).toLocaleString()} ft
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Get casing color by type
+            function getCasingColor(type) {
+                const colors = {
+                    'Conductor': '#6b7280',
+                    'Surface Casing': '#7c3aed',
+                    'Intermediate Casing': '#0ea5e9',
+                    'Production Casing': '#10b981',
+                    'Production Tubing': '#f59e0b'
+                };
+                return colors[type] || '#475569';
+            }
+
+            // Render the wellbore schematic
+            function renderSchematic() {
+                if (!currentWell) {
+                    schematicGroup.innerHTML = '<text x="0" y="0" fill="#94a3b8" text-anchor="middle">Select a well to view schematic</text>';
+                    return;
+                }
+
+                console.log('[WellboreViewer] Rendering schematic for well', currentWell.wellId);
+
+                const maxDepth = currentWell.totalDepthMD_m * 3.28084; // Convert to feet
+
+                // Vertical scale: fit max depth in ~1000px canvas height
+                const scale = 1000 / maxDepth;
+
+                let svg = '';
+
+                // Depth grid
+                if (viewState.layers.grid) {
+                    svg += renderDepthGrid(maxDepth, scale);
+                }
+
+                // Casings
+                if (viewState.layers.casings) {
+                    svg += renderCasings(currentWell.casings, scale);
+                }
+
+                // Tubing
+                if (viewState.layers.tubing) {
+                    svg += renderTubing(currentWell.tubing, scale);
+                }
+
+                // Equipment
+                if (viewState.layers.equipment) {
+                    svg += renderEquipment(currentWell.equipment, scale);
+                }
+
+                schematicGroup.innerHTML = svg;
+            }
+
+            // Render depth grid
+            function renderDepthGrid(maxDepth, scale) {
+                let svg = '<g id="depth-grid">';
+
+                const interval = maxDepth > 10000 ? 2500 : 1000;
+
+                for (let depth = 0; depth <= maxDepth; depth += interval) {
+                    const y = depth * scale;
+                    svg += `
+                        <line x1="-300" y1="${y}" x2="300" y2="${y}" class="depth-line" />
+                        ${viewState.layers.labels ? `<text x="-320" y="${y + 4}" class="depth-marker" text-anchor="end">${(depth / 1000).toFixed(1)}k</text>` : ''}
+                    `;
+                }
+
+                svg += '</g>';
+                return svg;
+            }
+
+            // Render casing strings
+            function renderCasings(casings, scale) {
+                if (!casings) return '';
+
+                let svg = '<g id="casings">';
+
+                casings.forEach((casing, index) => {
+                    const width = casing.size_in * 2;
+                    const height = (casing.bottomMD_ft - casing.topMD_ft) * scale;
+                    const y = casing.topMD_ft * scale;
+                    const color = getCasingColor(casing.type);
+
+                    svg += `
+                        <rect
+                            x="${-width / 2}"
+                            y="${y}"
+                            width="${width}"
+                            height="${height}"
+                            fill="${color}40"
+                            stroke="${color}"
+                            stroke-width="2"
+                            class="casing-string"
+                            data-casing="${casing.type}"
+                        >
+                            <title>${casing.type}\n${casing.size_in}" OD\n${Math.round(casing.bottomMD_ft)} ft</title>
+                        </rect>
+                    `;
+
+                    // Label
+                    if (viewState.layers.labels) {
+                        svg += `
+                            <text x="${width / 2 + 10}" y="${y + 20}"
+                                  font-size="10" fill="${color}" font-weight="600">
+                                ${casing.size_in}" ${casing.type}
+                            </text>
+                        `;
+                    }
+                });
+
+                svg += '</g>';
+                return svg;
+            }
+
+            // Render tubing
+            function renderTubing(tubingStrings, scale) {
+                if (!tubingStrings || tubingStrings.length === 0) return '';
+
+                let svg = '<g id="tubing">';
+
+                tubingStrings.forEach(tubing => {
+                    const width = tubing.size_in * 2;
+                    const height = (tubing.bottomMD_ft - tubing.topMD_ft) * scale;
+                    const y = tubing.topMD_ft * scale;
+
+                    svg += `
+                        <rect
+                            x="${-width / 2}"
+                            y="${y}"
+                            width="${width}"
+                            height="${height}"
+                            fill="#f59e0b40"
+                            stroke="#f59e0b"
+                            stroke-width="2"
+                            class="casing-string"
+                        >
+                            <title>${tubing.type}\n${tubing.size_in}" OD\n${Math.round(tubing.bottomMD_ft)} ft</title>
+                        </rect>
+                    `;
+                });
+
+                svg += '</g>';
+                return svg;
+            }
+
+            // Render equipment
+            function renderEquipment(equipment, scale) {
+                if (!equipment || equipment.length === 0) return '';
+
+                let svg = '<g id="equipment">';
+
+                equipment.forEach(item => {
+                    if (!item.depthMD_ft) return; // Skip if no depth (e.g., perforations with intervals)
+
+                    const y = item.depthMD_ft * scale;
+                    const isCritical = item.isCritical || item.status === 'FAILED' || item.status === 'CRITICAL';
+                    const color = isCritical ? '#ef4444' : '#06b6d4';
+
+                    // Equipment marker
+                    svg += `
+                        <g class="equipment-marker" onclick="WellboreViewer.showEquipmentDetails('${item.type}')">
+                            <circle cx="0" cy="${y}" r="6" fill="${color}" stroke="#0f172a" stroke-width="1.5" />
+                            ${isCritical ? `<circle cx="0" cy="${y}" r="8" fill="none" stroke="${color}" stroke-width="1" opacity="0.5" />` : ''}
+                            <title>${item.type}\n${Math.round(item.depthMD_ft)} ft\nStatus: ${item.status}</title>
+                        </g>
+                    `;
+
+                    // Label
+                    if (viewState.layers.labels) {
+                        svg += `
+                            <text x="15" y="${y + 4}" font-size="9" fill="${color}" font-weight="500">
+                                ${item.type}
+                            </text>
+                        `;
+                    }
+                });
+
+                svg += '</g>';
+                return svg;
+            }
+
+            // Highlight specific depth
+            function highlightDepth(depth) {
+                console.log('[WellboreViewer] Highlighting depth:', depth);
+
+                if (!currentWell) return;
+
+                const maxDepth = currentWell.totalDepthMD_m * 3.28084; // Convert to feet
+                const scale = 1000 / maxDepth;
+                const y = depth * scale;
+
+                // Remove existing highlight
+                const existing = schematicGroup.querySelector('.highlight-depth');
+                if (existing) existing.remove();
+
+                // Add new highlight
+                const highlight = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                highlight.setAttribute('x1', '-300');
+                highlight.setAttribute('x2', '300');
+                highlight.setAttribute('y1', y);
+                highlight.setAttribute('y2', y);
+                highlight.setAttribute('class', 'highlight-depth');
+                schematicGroup.appendChild(highlight);
+
+                // Pan to view
+                viewState.panY = -(y * viewState.zoom - 400);
+                updateTransform();
+            }
+
+            // Show equipment details
+            function showEquipmentDetails(equipmentId) {
+                console.log('[WellboreViewer] Equipment clicked:', equipmentId);
+                // Can be extended for modal/popup
+            }
+
+            // Zoom controls
+            function zoomIn() {
+                viewState.zoom = Math.min(5, viewState.zoom * 1.2);
+                updateTransform();
+            }
+
+            function zoomOut() {
+                viewState.zoom = Math.max(0.1, viewState.zoom / 1.2);
+                updateTransform();
+            }
+
+            function resetZoom() {
+                viewState.zoom = 1;
+                viewState.panX = 0;
+                viewState.panY = 0;
+                updateTransform();
+            }
+
+            // Export functions
+            function exportAsPNG() {
+                console.log('[WellboreViewer] Exporting as PNG...');
+
+                const svgData = new XMLSerializer().serializeToString(svg);
+                const canvas = document.createElement('canvas');
+                canvas.width = 800;
+                canvas.height = 1200;
+
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+
+                img.onload = function() {
+                    ctx.drawImage(img, 0, 0);
+                    canvas.toBlob(function(blob) {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `well-${currentWell?.foundationalIdentity.wellId || 'schematic'}-${Date.now()}.png`;
+                        a.click();
+                    });
+                };
+
+                img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+            }
+
+            function exportAsSVG() {
+                console.log('[WellboreViewer] Exporting as SVG...');
+
+                const svgData = new XMLSerializer().serializeToString(svg);
+                const blob = new Blob([svgData], { type: 'image/svg+xml' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `well-${currentWell?.wellId || 'schematic'}-${Date.now()}.svg`;
+                a.click();
+            }
+
+            // Public API
+            return {
+                init,
+                loadWell,
+                highlightDepth,
+                showEquipmentDetails,
+                zoomIn,
+                zoomOut,
+                resetZoom,
+                exportAsPNG,
+                exportAsSVG,
+                // Integration methods for other modules
+                getCurrentWell: () => currentWell,
+                getViewState: () => viewState,
+                setViewState: (state) => { Object.assign(viewState, state); updateTransform(); }
+            };
+        })();
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', WellboreViewer.init);
+        } else {
+            WellboreViewer.init();
+        }
+
+        // Expose globally for integration
+        window.WellboreViewer = WellboreViewer;
+    </script>
+</body>
+</html>
