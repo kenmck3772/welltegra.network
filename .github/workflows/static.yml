@@ -32,6 +32,40 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Build site
+        run: |
+          set -euo pipefail
+          echo "Installing dependencies..."
+          npm ci
+
+          echo "Building CSS..."
+          npm run build:css
+
+          echo "Creating dist directory..."
+          rm -rf dist
+          mkdir -p dist
+
+          echo "Copying files to dist..."
+          # Copy HTML files
+          cp *.html dist/ 2>/dev/null || echo "No HTML files in root"
+
+          # Copy directories (excluding build artifacts and dev files)
+          for dir in assets styles data models documents equipment-specs; do
+            if [ -d "$dir" ]; then
+              echo "Copying $dir/"
+              cp -r "$dir" dist/
+            fi
+          done
+
+          echo "Build complete. Contents of dist/:"
+          ls -la dist/
+
       - name: Prepare deployment files
         run: |
           set -euo pipefail
@@ -47,7 +81,7 @@ jobs:
             --exclude='playwright-report' \
             --exclude='test-results' \
             --exclude='.gitignore' \
-            ./ _site/
+            ./dist/ _site/
           # Verify index.html exists:
           if [ ! -f _site/index.html ]; then
             echo "ERROR: index.html NOT FOUND in _site"
