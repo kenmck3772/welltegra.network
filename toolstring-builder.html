@@ -90,6 +90,13 @@
                 <div class="bg-white rounded-lg shadow-lg p-4 sticky top-6">
                     <h2 class="text-lg font-bold text-gray-900 mb-4">Component Library</h2>
 
+                    <!-- CSV Upload -->
+                    <div class="mb-4 p-3 bg-blue-50 border-2 border-blue-200 rounded-lg">
+                        <label class="block text-sm font-semibold text-blue-900 mb-2">📥 Upload Toolstring CSV</label>
+                        <input type="file" id="csv-upload" accept=".csv" class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700">
+                        <p class="text-xs text-gray-600 mt-2">CSV format: Tool,OD,Length</p>
+                    </div>
+
                     <!-- Service Line Filter -->
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Service Line</label>
@@ -193,16 +200,25 @@
                         </div>
                     </div>
 
-                    <!-- Clearance Check -->
+                    <!-- Wellbore Restriction Data -->
                     <div class="mb-6">
-                        <h3 class="text-sm font-semibold text-gray-700 mb-2">Clearance Check</h3>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-2">Wellbore Restrictions</h3>
                         <div class="bg-gray-50 rounded-lg p-3">
-                            <div class="flex items-center justify-between mb-2">
-                                <label class="text-xs text-gray-600">Min. Restriction ID</label>
-                                <input type="number" id="restriction-id" value="2.992" step="0.001" class="w-20 px-2 py-1 text-xs border border-gray-300 rounded">
+                            <button id="load-restrictions-btn" class="w-full px-3 py-2 bg-purple-600 text-white text-sm rounded-lg hover:bg-purple-700 transition-colors mb-2">
+                                Load Well 666 Data
+                            </button>
+                            <div id="restriction-summary" class="text-xs text-gray-600">
+                                <span>No restriction data loaded</span>
                             </div>
-                            <div id="clearance-status" class="text-xs">
-                                <span class="text-gray-500">No components added</span>
+                        </div>
+                    </div>
+
+                    <!-- Clash Detection -->
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-700 mb-2">Clash Detection</h3>
+                        <div id="clash-detection-result" class="rounded-lg p-4 border-2">
+                            <div class="text-center text-sm text-gray-500">
+                                Upload toolstring & load wellbore data
                             </div>
                         </div>
                     </div>
@@ -258,6 +274,17 @@
     </div>
 
     <script>
+        // ========================================================================
+        // ENHANCED TOOLSTRING BUILDER WITH CLASH DETECTION
+        // The Brahan Engine - Option 2 Quick Win Implementation
+        // Includes strategic propagation hooks for all stakeholders
+        // ========================================================================
+
+        // Global State
+        let wellboreRestrictions = [];
+        let uploadedToolstring = [];
+        let currentUser = { id: 'user_001', name: 'Engineering Team', authenticated: true }; // Mock auth
+
         // Component Database (Module 1)
         const componentDatabase = {
             // Drift Tools
@@ -453,10 +480,112 @@
             renderComponentLibrary();
         });
 
-        // Restriction ID Change
-        restrictionInput.addEventListener('input', (e) => {
-            restrictionID = parseFloat(e.target.value);
-            updateAnalysis();
+        // CSV Upload Handler
+        document.getElementById('csv-upload').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // SECURITY: Catriona Cameron - Audit Trail
+            logSecurityEvent('CSV_UPLOAD_INITIATED', {
+                userId: currentUser.id,
+                filename: file.name,
+                fileSize: file.size,
+                timestamp: new Date().toISOString()
+            });
+
+            // SECURITY: Validate file type
+            if (!file.name.endsWith('.csv')) {
+                alert('⚠️ Security: Only CSV files are allowed');
+                logSecurityEvent('CSV_UPLOAD_REJECTED', { reason: 'invalid_extension', filename: file.name });
+                return;
+            }
+
+            // SECURITY: Check file size (max 1MB)
+            if (file.size > 1024 * 1024) {
+                alert('⚠️ Security: File too large (max 1MB)');
+                logSecurityEvent('CSV_UPLOAD_REJECTED', { reason: 'file_too_large', size: file.size });
+                return;
+            }
+
+            try {
+                const text = await file.text();
+                const parsed = parseToolstringCSV(text);
+
+                if (parsed.length === 0) {
+                    alert('⚠️ No valid tools found in CSV');
+                    return;
+                }
+
+                uploadedToolstring = parsed;
+
+                // Clear current toolstring and load from CSV
+                currentToolstring = [...parsed];
+                renderToolstring();
+                updateAnalysis();
+                canvasEmptyState.classList.add('hidden');
+
+                // SECURITY: Log successful upload
+                logSecurityEvent('CSV_UPLOAD_SUCCESS', {
+                    userId: currentUser.id,
+                    filename: file.name,
+                    toolsCount: parsed.length,
+                    timestamp: new Date().toISOString()
+                });
+
+                // DATA ENGINEERING: Angus Campbell - Data Lake Ingestion
+                ingestToDataLake({
+                    eventType: 'TOOLSTRING_UPLOAD',
+                    wellId: '666',
+                    toolstring: parsed,
+                    uploadedBy: currentUser.id,
+                    timestamp: new Date().toISOString()
+                });
+
+                alert(`✅ Loaded ${parsed.length} tools from CSV`);
+
+                // Run clash detection if restrictions are loaded
+                if (wellboreRestrictions.length > 0) {
+                    runClashDetection();
+                }
+
+            } catch (error) {
+                console.error('[CSV Upload Error]', error);
+                alert('⚠️ Error parsing CSV: ' + error.message);
+                logSecurityEvent('CSV_UPLOAD_ERROR', { error: error.message, filename: file.name });
+            }
+        });
+
+        // Load Wellbore Restrictions
+        document.getElementById('load-restrictions-btn').addEventListener('click', async () => {
+            try {
+                const response = await fetch('data/well_666_restrictions.csv');
+                if (!response.ok) throw new Error('Failed to load restriction data');
+
+                const text = await response.text();
+                wellboreRestrictions = parseRestrictionsCSV(text);
+
+                updateRestrictionSummary();
+
+                // INTEGRITY: Dr. Isla Munro - Data Pipeline Hook
+                feedToIntegrityModels({
+                    wellId: '666',
+                    restrictionData: wellboreRestrictions,
+                    timestamp: new Date().toISOString(),
+                    source: 'Caliper Log',
+                    analysisType: 'Real-time Deformation Tracking'
+                });
+
+                alert(`✅ Loaded ${wellboreRestrictions.length} restriction data points for Well 666`);
+
+                // Run clash detection if toolstring is loaded
+                if (currentToolstring.length > 0) {
+                    runClashDetection();
+                }
+
+            } catch (error) {
+                console.error('[Restriction Load Error]', error);
+                alert('⚠️ Error loading restriction data: ' + error.message);
+            }
         });
 
         // Render Component Library
@@ -789,6 +918,418 @@
             setTimeout(() => alertDiv.remove(), 5000);
         }
 
+        // ========================================================================
+        // CSV PARSING FUNCTIONS
+        // ========================================================================
+
+        function parseToolstringCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            const tools = [];
+
+            // Skip header row
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+
+                const [tool, od, length] = line.split(',').map(s => s.trim());
+
+                if (tool && od && length) {
+                    tools.push({
+                        id: `csv_tool_${i}`,
+                        instanceId: Date.now() + i,
+                        name: tool,
+                        category: 'uploaded',
+                        serviceLine: [currentServiceLine],
+                        od: parseFloat(od),
+                        id_internal: parseFloat(od) * 0.7, // Estimate
+                        length: parseFloat(length),
+                        weight: parseFloat(od) * parseFloat(length) * 10, // Estimate
+                        topConnection: '2-3/8 PIN',
+                        bottomConnection: '2-3/8 BOX',
+                        manufacturer: 'Uploaded',
+                        status: 'uploaded'
+                    });
+                }
+            }
+
+            return tools;
+        }
+
+        function parseRestrictionsCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            const restrictions = [];
+
+            // Skip header row
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+
+                const parts = line.split(',');
+                if (parts.length >= 4) {
+                    restrictions.push({
+                        depth_m: parseFloat(parts[0]),
+                        depth_ft: parseFloat(parts[1]),
+                        id_mm: parseFloat(parts[2]),
+                        id_in: parseFloat(parts[3]),
+                        type: parts[4] || 'Unknown',
+                        severity: parts[5] || 'Unknown',
+                        notes: parts[6] || ''
+                    });
+                }
+            }
+
+            return restrictions;
+        }
+
+        function updateRestrictionSummary() {
+            const summary = document.getElementById('restriction-summary');
+
+            if (wellboreRestrictions.length === 0) {
+                summary.innerHTML = '<span class="text-gray-600">No restriction data loaded</span>';
+                return;
+            }
+
+            // Find critical restrictions
+            const critical = wellboreRestrictions.filter(r => r.severity === 'High');
+            const minID = Math.min(...wellboreRestrictions.map(r => r.id_in));
+
+            summary.innerHTML = `
+                <div class="text-xs">
+                    <div class="font-semibold text-green-700 mb-1">✅ Data Loaded</div>
+                    <div class="mb-1">${wellboreRestrictions.length} data points</div>
+                    <div class="mb-1">Min ID: <span class="font-mono font-bold">${minID.toFixed(3)}"</span></div>
+                    ${critical.length > 0 ? `<div class="text-red-600 font-semibold">⚠️ ${critical.length} Critical Restriction(s)</div>` : ''}
+                </div>
+            `;
+        }
+
+        // ========================================================================
+        // CLASH DETECTION LOGIC
+        // Core functionality for Option 2
+        // ========================================================================
+
+        function runClashDetection() {
+            if (currentToolstring.length === 0 || wellboreRestrictions.length === 0) {
+                return;
+            }
+
+            console.log('[Clash Detection] Starting analysis...');
+
+            // Find the minimum restriction ID
+            const minRestriction = Math.min(...wellboreRestrictions.map(r => r.id_in));
+            const criticalRestriction = wellboreRestrictions.find(r => r.id_in === minRestriction);
+
+            // Find the maximum tool OD
+            const maxToolOD = Math.max(...currentToolstring.map(t => t.od));
+            const problematicTool = currentToolstring.find(t => t.od === maxToolOD);
+
+            // Calculate clearance
+            const clearance = minRestriction - maxToolOD;
+            const hasClash = clearance <= 0;
+
+            console.log('[Clash Detection] Results:', {
+                minRestriction: minRestriction,
+                maxToolOD: maxToolOD,
+                clearance: clearance,
+                hasClash: hasClash
+            });
+
+            // Display high-contrast UI feedback
+            displayClashResult(hasClash, clearance, problematicTool, criticalRestriction);
+
+            // If clash detected, trigger strategic propagation hooks
+            if (hasClash) {
+                handleClashDetected(problematicTool, criticalRestriction, clearance);
+            } else {
+                // Even successful runs get logged for data lake
+                logSuccessfulClearanceCheck(maxToolOD, minRestriction, clearance);
+            }
+        }
+
+        function displayClashResult(hasClash, clearance, tool, restriction) {
+            const resultDiv = document.getElementById('clash-detection-result');
+
+            if (hasClash) {
+                // CRITICAL: CLASH DETECTED - High-contrast red UI for field tablets
+                resultDiv.className = 'rounded-lg p-4 border-4 border-red-600 bg-red-100';
+                resultDiv.innerHTML = `
+                    <div class="text-center">
+                        <div class="text-3xl font-black text-red-900 mb-3">
+                            ⛔ CLASH DETECTED
+                        </div>
+                        <div class="text-lg font-bold text-red-800 mb-3">
+                            Tool will NOT pass restriction
+                        </div>
+                        <div class="bg-white rounded-lg p-3 mb-3 border-2 border-red-600">
+                            <div class="text-sm font-semibold text-red-900 mb-1">Problem Tool:</div>
+                            <div class="text-base font-mono text-red-800">${tool.name}</div>
+                            <div class="text-sm font-mono text-red-700">OD: ${tool.od.toFixed(3)}"</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 mb-3 border-2 border-red-600">
+                            <div class="text-sm font-semibold text-red-900 mb-1">Restriction:</div>
+                            <div class="text-base font-mono text-red-800">@ ${restriction.depth_ft.toFixed(0)} ft MD</div>
+                            <div class="text-sm font-mono text-red-700">ID: ${restriction.id_in.toFixed(3)}"</div>
+                        </div>
+                        <div class="bg-red-200 rounded-lg p-3 mb-3">
+                            <div class="text-sm font-semibold text-red-900 mb-1">Interference:</div>
+                            <div class="text-2xl font-black text-red-900">${Math.abs(clearance).toFixed(3)}" OVERSIZE</div>
+                        </div>
+                        <button id="moc-trigger-btn" class="w-full px-4 py-3 bg-orange-600 text-white text-base font-bold rounded-lg hover:bg-orange-700 transition-colors">
+                            🚨 INITIATE MOC WORKFLOW
+                        </button>
+                    </div>
+                `;
+
+                // Add MOC button handler (Finlay MacLeod - Operations)
+                document.getElementById('moc-trigger-btn')?.addEventListener('click', () => {
+                    initiateMOCWorkflow(tool, restriction, clearance);
+                });
+
+            } else {
+                // SUCCESS: CLEARANCE PASS - High-contrast green UI
+                resultDiv.className = 'rounded-lg p-4 border-4 border-green-600 bg-green-100';
+                resultDiv.innerHTML = `
+                    <div class="text-center">
+                        <div class="text-3xl font-black text-green-900 mb-3">
+                            ✅ CLEARANCE PASS
+                        </div>
+                        <div class="text-lg font-bold text-green-800 mb-3">
+                            All tools will pass restriction
+                        </div>
+                        <div class="bg-white rounded-lg p-3 mb-2 border-2 border-green-600">
+                            <div class="text-sm font-semibold text-green-900 mb-1">Maximum Tool OD:</div>
+                            <div class="text-base font-mono text-green-800">${tool.name}</div>
+                            <div class="text-sm font-mono text-green-700">OD: ${tool.od.toFixed(3)}"</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 mb-2 border-2 border-green-600">
+                            <div class="text-sm font-semibold text-green-900 mb-1">Minimum Restriction:</div>
+                            <div class="text-base font-mono text-green-800">@ ${restriction.depth_ft.toFixed(0)} ft MD</div>
+                            <div class="text-sm font-mono text-green-700">ID: ${restriction.id_in.toFixed(3)}"</div>
+                        </div>
+                        <div class="bg-green-200 rounded-lg p-3">
+                            <div class="text-sm font-semibold text-green-900 mb-1">Clearance:</div>
+                            <div class="text-2xl font-black text-green-900">${clearance.toFixed(3)}"</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // ========================================================================
+        // STRATEGIC PROPAGATION HOOKS
+        // These are the critical integration points for stakeholders
+        // ========================================================================
+
+        /**
+         * OPERATIONS: Finlay MacLeod
+         * Trigger Management of Change (MOC) workflow when clash is detected
+         */
+        function initiateMOCWorkflow(tool, restriction, clearance) {
+            console.log('[OPERATIONS - Finlay MacLeod] Initiating MOC Workflow...');
+
+            const mocData = {
+                eventType: 'CLASH_DETECTED_MOC',
+                wellId: '666',
+                timestamp: new Date().toISOString(),
+                initiatedBy: currentUser.id,
+                tool: {
+                    name: tool.name,
+                    od: tool.od,
+                    manufacturer: tool.manufacturer
+                },
+                restriction: {
+                    depth_ft: restriction.depth_ft,
+                    id_in: restriction.id_in,
+                    severity: restriction.severity
+                },
+                interference: Math.abs(clearance),
+                requiredActions: [
+                    'Engineering review required',
+                    'Alternative toolstring design needed',
+                    'Update risk assessment',
+                    'Notify operations supervisor'
+                ],
+                priority: 'HIGH',
+                status: 'PENDING_REVIEW'
+            };
+
+            // In production: POST to MOC system API
+            console.log('[MOC Workflow] Data:', mocData);
+
+            // Simulate MOC workflow trigger
+            alert(`🚨 MOC WORKFLOW INITIATED\n\nA Management of Change request has been created.\n\nCase ID: MOC-${Date.now()}\nPriority: HIGH\nStatus: Pending Engineering Review\n\nFinlay MacLeod will be notified immediately.`);
+
+            // Log to console for demo purposes
+            console.table(mocData);
+        }
+
+        /**
+         * FINANCE: Marcus King
+         * Log every clash event for ROI and NPT cost tracking
+         */
+        function handleClashDetected(tool, restriction, clearance) {
+            console.log('[FINANCE - Marcus King] Logging clash event for ROI analysis...');
+
+            const financialRiskData = {
+                eventType: 'CLASH_EVENT',
+                wellId: '666',
+                toolName: tool.name,
+                clashDepth_ft: restriction.depth_ft,
+                interference_in: Math.abs(clearance),
+                timestamp: new Date().toISOString(),
+                estimatedNPT_hours: 24, // Conservative estimate: 1 day NPT
+                estimatedCost_USD: 150000, // Rig rate $6250/hr * 24hr
+                mitigationStatus: 'PREVENTED',
+                detectedBy: 'WellTegra Clash Detection'
+            };
+
+            // In production: POST to financial risk database
+            console.log('[Financial Risk DB] Logging event:', financialRiskData);
+
+            // Simulate database write
+            if (typeof localStorage !== 'undefined') {
+                const existingEvents = JSON.parse(localStorage.getItem('welltegra_clash_events') || '[]');
+                existingEvents.push(financialRiskData);
+                localStorage.setItem('welltegra_clash_events', JSON.stringify(existingEvents));
+            }
+
+            console.log('[FINANCE] ROI Impact: Prevented potential $150,000 NPT incident');
+        }
+
+        /**
+         * INTEGRITY: Dr. Isla Munro
+         * Feed restriction data back to integrity models for corrosion prediction
+         */
+        function feedToIntegrityModels(data) {
+            console.log('[INTEGRITY - Dr. Isla Munro] Feeding data to integrity models...');
+
+            const integrityData = {
+                eventType: 'WELLBORE_DEFORMATION_DATA',
+                wellId: data.wellId,
+                dataPoints: data.restrictionData.length,
+                criticalRestrictions: data.restrictionData.filter(r => r.severity === 'High'),
+                timestamp: data.timestamp,
+                source: data.source,
+                integrityPredictions: {
+                    corrosionRate: 'ACCELERATED',
+                    estimatedRemainingLife_years: 3.5,
+                    nextInspectionDue: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toISOString(), // 6 months
+                    recommendation: 'Schedule detailed casing inspection within 6 months'
+                }
+            };
+
+            // In production: POST to Dr. Munro's integrity modeling system
+            console.log('[Integrity Models] Processing:', integrityData);
+            console.log('[INTEGRITY] Data will improve long-term corrosion failure predictions');
+        }
+
+        /**
+         * SECURITY: Catriona Cameron
+         * Log all file uploads and operations to SIEM platform
+         */
+        function logSecurityEvent(eventType, details) {
+            console.log('[SECURITY - Catriona Cameron] Logging to SIEM...');
+
+            const securityEvent = {
+                eventType: eventType,
+                timestamp: new Date().toISOString(),
+                userId: currentUser.id,
+                userName: currentUser.name,
+                ipAddress: '192.168.1.100', // Mock IP
+                sessionId: 'sess_' + Date.now(),
+                details: details,
+                severity: eventType.includes('REJECT') || eventType.includes('ERROR') ? 'WARNING' : 'INFO'
+            };
+
+            // In production: POST to SIEM platform (Splunk, ELK, etc.)
+            console.log('[SIEM] Event:', securityEvent);
+
+            // Simulate audit trail storage
+            if (typeof localStorage !== 'undefined') {
+                const auditTrail = JSON.parse(localStorage.getItem('welltegra_audit_trail') || '[]');
+                auditTrail.push(securityEvent);
+                // Keep only last 100 events in browser storage
+                if (auditTrail.length > 100) auditTrail.shift();
+                localStorage.setItem('welltegra_audit_trail', JSON.stringify(auditTrail));
+            }
+        }
+
+        /**
+         * DATA ENGINEERING: Angus Campbell & DATA SCIENCE: Dr. Alistair Fraser
+         * Stream all toolstring configurations to data lake for ML training
+         */
+        function ingestToDataLake(data) {
+            console.log('[DATA ENG - Angus Campbell] Ingesting to data lake...');
+            console.log('[DATA SCI - Dr. Alistair Fraser] Building ML training dataset...');
+
+            const dataLakeRecord = {
+                eventType: data.eventType,
+                wellId: data.wellId,
+                timestamp: data.timestamp,
+                uploadedBy: data.uploadedBy,
+                toolstring: data.toolstring.map(t => ({
+                    name: t.name,
+                    od: t.od,
+                    length: t.length,
+                    category: t.category
+                })),
+                totalLength: data.toolstring.reduce((sum, t) => sum + t.length, 0),
+                maxOD: Math.max(...data.toolstring.map(t => t.od)),
+                toolCount: data.toolstring.length,
+                // Metadata for ML
+                mlFeatures: {
+                    avgOD: data.toolstring.reduce((sum, t) => sum + t.od, 0) / data.toolstring.length,
+                    odVariance: calculateVariance(data.toolstring.map(t => t.od)),
+                    toolSequence: data.toolstring.map(t => t.category).join('-')
+                }
+            };
+
+            // In production: POST to data lake (S3, Azure Data Lake, etc.)
+            console.log('[Data Lake] Record:', dataLakeRecord);
+
+            // Simulate data pipeline
+            if (typeof localStorage !== 'undefined') {
+                const dataLake = JSON.parse(localStorage.getItem('welltegra_data_lake') || '[]');
+                dataLake.push(dataLakeRecord);
+                localStorage.setItem('welltegra_data_lake', JSON.stringify(dataLake));
+            }
+
+            console.log('[DATA SCI] Training data enriched for future ML models');
+        }
+
+        /**
+         * Log successful clearance checks (still valuable data!)
+         */
+        function logSuccessfulClearanceCheck(maxOD, minID, clearance) {
+            console.log('[SUCCESS] Clearance check passed - logging for analytics...');
+
+            // DATA ENGINEERING: Still send successful runs to data lake
+            ingestToDataLake({
+                eventType: 'CLEARANCE_CHECK_SUCCESS',
+                wellId: '666',
+                toolstring: currentToolstring,
+                uploadedBy: currentUser.id,
+                timestamp: new Date().toISOString(),
+                clearanceResult: {
+                    maxOD: maxOD,
+                    minID: minID,
+                    clearance: clearance,
+                    status: 'PASS'
+                }
+            });
+        }
+
+        // Helper: Calculate variance for ML features
+        function calculateVariance(values) {
+            const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
+            const squaredDiffs = values.map(v => Math.pow(v - mean, 2));
+            return squaredDiffs.reduce((sum, v) => sum + v, 0) / values.length;
+        }
+
+        // ========================================================================
+        // EXPORT & UTILITY FUNCTIONS
+        // ========================================================================
+
         // Export Schematic
         exportSchematicBtn.addEventListener('click', () => {
             if (currentToolstring.length === 0) {
@@ -796,7 +1337,26 @@
                 return;
             }
 
-            alert('Export Schematic functionality will generate:\n\n• Professional PDF schematic\n• Bill of Materials (BOM)\n• Technical data sheet\n• Integration with WOP program\n\nThis would be implemented with jsPDF or similar library.');
+            // Enhanced export with clash detection results
+            const hasRestrictions = wellboreRestrictions.length > 0;
+            const exportData = {
+                toolstring: currentToolstring,
+                analysis: {
+                    totalLength: currentToolstring.reduce((sum, c) => sum + c.length, 0),
+                    maxOD: Math.max(...currentToolstring.map(c => c.od)),
+                    toolCount: currentToolstring.length
+                },
+                ...(hasRestrictions && {
+                    clashDetection: {
+                        minRestriction: Math.min(...wellboreRestrictions.map(r => r.id_in)),
+                        clearanceStatus: 'See detailed report'
+                    }
+                })
+            };
+
+            console.log('[Export] Data:', exportData);
+
+            alert('Export Schematic functionality will generate:\n\n• Professional PDF schematic\n• Bill of Materials (BOM)\n• Technical data sheet\n• Clash detection report\n• Integration with WOP program\n\nThis would be implemented with jsPDF or similar library.');
         });
     </script>
 </body>
