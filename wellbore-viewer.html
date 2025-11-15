@@ -576,7 +576,48 @@
                 setupEventListeners();
                 loadWellData();
 
+                // Check for URL parameters (for cross-module integration)
+                checkURLParameters();
+
                 console.log('[WellboreViewer] Initialized successfully');
+            }
+
+            // Check URL parameters for cross-module integration
+            function checkURLParameters() {
+                const params = new URLSearchParams(window.location.search);
+                const wellId = params.get('wellId');
+                const highlightDepthParam = params.get('highlightDepth');
+
+                if (wellId) {
+                    console.log('[WellboreViewer] URL parameter wellId:', wellId);
+
+                    // Wait for data to load, then load the well
+                    const checkDataInterval = setInterval(() => {
+                        if (Object.keys(wellDataCache).length > 0) {
+                            clearInterval(checkDataInterval);
+
+                            // Set the selector
+                            const selector = document.getElementById('well-selector');
+                            if (selector) {
+                                selector.value = wellId;
+                            }
+
+                            // Load the well
+                            loadWell(wellId);
+
+                            // Highlight depth if provided
+                            if (highlightDepthParam) {
+                                const depth = parseFloat(highlightDepthParam);
+                                setTimeout(() => {
+                                    highlightDepth(depth);
+                                }, 500); // Wait for schematic to render
+                            }
+                        }
+                    }, 100);
+
+                    // Timeout after 5 seconds
+                    setTimeout(() => clearInterval(checkDataInterval), 5000);
+                }
             }
 
             // Setup event listeners

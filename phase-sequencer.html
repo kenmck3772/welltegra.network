@@ -563,13 +563,21 @@
                     const statusBg = eq.isCritical ? 'bg-red-50' : 'bg-green-50';
 
                     return `
-                        <div class="flex items-center justify-between p-2 ${statusBg} rounded text-xs">
-                            <div>
+                        <div class="flex items-center justify-between p-2 ${statusBg} rounded text-xs group hover:bg-opacity-75 transition-all">
+                            <div class="flex-1">
                                 <span class="font-semibold">${eq.type}</span>
                                 <span class="text-gray-600 ml-2">${Math.round(eq.depthMD_ft).toLocaleString()} ft MD</span>
                             </div>
-                            <div class="${statusColor} font-medium">
-                                ${eq.status}
+                            <div class="flex items-center space-x-2">
+                                <div class="${statusColor} font-medium">
+                                    ${eq.status}
+                                </div>
+                                <button
+                                    onclick="viewInWellboreViewer(${eq.depthMD_ft})"
+                                    class="opacity-0 group-hover:opacity-100 transition-opacity px-2 py-1 bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200 text-xs font-medium"
+                                    title="View in Wellbore Viewer">
+                                    👁️ View
+                                </button>
                             </div>
                         </div>
                     `;
@@ -635,6 +643,24 @@
         document.getElementById('well-selector')?.addEventListener('change', (e) => {
             loadWell(e.target.value);
         });
+
+        // ========================================================================
+        // CROSS-MODULE INTEGRATION
+        // ========================================================================
+
+        // Open Wellbore Viewer with specific depth highlighted
+        window.viewInWellboreViewer = function(depth) {
+            if (!currentWell) {
+                alert('Please select a well first');
+                return;
+            }
+
+            const wellId = currentWell.wellId;
+            const url = `wellbore-viewer.html?wellId=${wellId}&highlightDepth=${depth}`;
+
+            // Open in new window
+            window.open(url, 'WellboreViewer', 'width=1400,height=900');
+        };
 
         // Initialize
         initDataLoader();
