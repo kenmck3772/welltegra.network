@@ -530,10 +530,14 @@
         </div>
     </div>
 
+    <!-- Data Loader Module -->
+    <script src="assets/js/wellbore-data-loader.js"></script>
+
     <script>
         // ========================================================================
         // WELLBORE VIEWER - FOUNDATION MODULE
         // The Brahan Engine - Core Visualization Component
+        // Now powered by CSV data loader
         // ========================================================================
 
         const WellboreViewer = (function() {
@@ -636,28 +640,30 @@
                 );
             }
 
-            // Load well data from comprehensive-well-data.json
+            // Load well data using CSV data loader
             async function loadWellData() {
                 try {
-                    const response = await fetch('comprehensive-well-data.json');
-                    const data = await response.json();
+                    console.log('[WellboreViewer] Loading data using CSV data loader...');
 
-                    data.wells.forEach(well => {
-                        wellDataCache[well.foundationalIdentity.wellId] = well;
-                    });
+                    // Load all CSV data
+                    await WellboreDataLoader.loadAllData();
+
+                    // Get all wells
+                    const wells = await WellboreDataLoader.getAllWells();
+
+                    // Load complete data for each well
+                    for (const well of wells) {
+                        const completeWell = await WellboreDataLoader.getWellComplete(well.well_id);
+                        wellDataCache[well.well_id] = completeWell;
+                    }
 
                     console.log('[WellboreViewer] Loaded data for', Object.keys(wellDataCache).length, 'wells');
+                    console.log('[WellboreViewer] Cache stats:', WellboreDataLoader.getCacheStats());
                 } catch (error) {
                     console.error('[WellboreViewer] Failed to load well data:', error);
-                    // Use mock data for development
-                    loadMockData();
+                    console.error('[WellboreViewer] Error details:', error.message);
+                    // Data loader will handle fallback if needed
                 }
-            }
-
-            // Load mock data for development
-            function loadMockData() {
-                wellDataCache['666'] = createMockWell666();
-                console.log('[WellboreViewer] Using mock data');
             }
 
             // Load and render specific well
@@ -679,38 +685,35 @@
             function updateWellInfo() {
                 if (!currentWell) return;
 
-                const identity = currentWell.foundationalIdentity;
-                const design = currentWell.designAndConstruction;
-
-                // Well info
+                // Well info (using CSV data structure)
                 document.getElementById('well-info').innerHTML = `
                     <div style="margin-bottom: 16px;">
                         <div style="font-size: 1.1rem; font-weight: 700; color: #06b6d4; margin-bottom: 8px;">
-                            ${identity.commonWellName}
+                            ${currentWell.wellName}
                         </div>
                         <div style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 4px;">
-                            Well ${identity.wellId} | ${identity.fieldName}
-                        </div>
-                        <div style="font-size: 0.85rem; color: #94a3b8;">
-                            API: ${identity.apiNumber}
+                            Well ${currentWell.wellId}
                         </div>
                     </div>
                     <div style="background: rgba(6, 182, 212, 0.1); padding: 8px 12px; border-radius: 6px; margin-bottom: 12px;">
-                        <div style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 4px;">Status</div>
-                        <span class="${getStatusClass(identity.currentStatus)}">${identity.currentStatus}</span>
+                        <div style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 4px;">Type</div>
+                        <span class="status-good">${currentWell.wellType}</span>
                     </div>
                     <div style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6;">
-                        <div><strong>Operator:</strong> ${identity.operator}</div>
-                        <div><strong>Type:</strong> ${identity.wellType}</div>
-                        <div><strong>Profile:</strong> ${identity.wellProfile}</div>
+                        <div><strong>Location:</strong> ${currentWell.locationType}</div>
+                        <div><strong>Datum:</strong> ${currentWell.datumElevation_m}m</div>
                     </div>
                 `;
 
-                // Depth info
-                document.getElementById('total-depth-md').textContent = identity.totalDepthMD_ft.toLocaleString() + ' ft';
-                document.getElementById('total-depth-tvd').textContent = identity.totalDepthTVD_ft.toLocaleString() + ' ft';
-                document.getElementById('max-deviation').textContent = identity.wellProfile.match(/\d+/)?.[0] + '°' || 'N/A';
-                document.getElementById('water-depth').textContent = identity.waterDepth_ft + ' ft';
+                // Depth info (convert meters to feet for display)
+                const totalDepthMD_ft = Math.round(currentWell.totalDepthMD_m * 3.28084);
+                const totalDepthTVD_ft = Math.round(currentWell.totalDepthTVD_m * 3.28084);
+                const waterDepth_ft = Math.round(currentWell.waterDepth_m * 3.28084);
+
+                document.getElementById('total-depth-md').textContent = totalDepthMD_ft.toLocaleString() + ' ft';
+                document.getElementById('total-depth-tvd').textContent = totalDepthTVD_ft.toLocaleString() + ' ft';
+                document.getElementById('max-deviation').textContent = currentWell.maxDeviation_deg.toFixed(1) + '°';
+                document.getElementById('water-depth').textContent = waterDepth_ft + ' ft';
 
                 // Equipment list
                 updateEquipmentList();
@@ -730,7 +733,7 @@
             function updateEquipmentList() {
                 if (!currentWell) return;
 
-                const equipment = currentWell.designAndConstruction.downholeEquipment || [];
+                const equipment = currentWell.equipment || [];
                 const list = document.getElementById('equipment-list');
 
                 if (equipment.length === 0) {
@@ -739,18 +742,18 @@
                 }
 
                 list.innerHTML = equipment.map(item => {
-                    const statusClass = item.integrityStatus.includes('FAILED') || item.integrityStatus.includes('CRITICAL')
+                    const statusClass = item.status === 'FAILED' || item.status === 'CRITICAL'
                         ? 'critical'
-                        : item.integrityStatus.includes('Warning')
+                        : item.status === 'Replaced'
                         ? 'warning'
                         : '';
 
                     return `
                         <li class="equipment-item ${statusClass}"
-                            onclick="WellboreViewer.highlightDepth(${item.settingDepthMD_ft})"
-                            title="${item.function || ''}">
-                            <div class="equipment-name">${item.itemType}</div>
-                            <div class="equipment-depth">${item.settingDepthMD_ft.toLocaleString()} ft MD</div>
+                            onclick="WellboreViewer.highlightDepth(${item.depthMD_ft})"
+                            title="${item.details || ''}">
+                            <div class="equipment-name">${item.type}</div>
+                            <div class="equipment-depth">${Math.round(item.depthMD_ft).toLocaleString()} ft MD</div>
                         </li>
                     `;
                 }).join('');
@@ -760,16 +763,16 @@
             function updateCasingSummary() {
                 if (!currentWell) return;
 
-                const casings = currentWell.designAndConstruction.casingStrings || [];
+                const casings = currentWell.casings || [];
                 const summary = document.getElementById('casing-summary');
 
                 summary.innerHTML = casings.map(casing => `
                     <div style="background: rgba(30, 41, 59, 0.6); padding: 10px; margin-bottom: 8px; border-radius: 6px; border-left: 3px solid ${getCasingColor(casing.type)};">
                         <div style="font-size: 0.9rem; font-weight: 600; color: #e2e8f0; margin-bottom: 4px;">
-                            ${casing.outerDiameter_in}" ${casing.type}
+                            ${casing.size_in}" ${casing.type}
                         </div>
                         <div style="font-size: 0.8rem; color: #94a3b8;">
-                            ${casing.bottomDepthMD_ft.toLocaleString()} ft | ${casing.grade}
+                            ${Math.round(casing.bottomMD_ft).toLocaleString()} ft
                         </div>
                     </div>
                 `).join('');
@@ -794,11 +797,9 @@
                     return;
                 }
 
-                console.log('[WellboreViewer] Rendering schematic for well', currentWell.foundationalIdentity.wellId);
+                console.log('[WellboreViewer] Rendering schematic for well', currentWell.wellId);
 
-                const identity = currentWell.foundationalIdentity;
-                const design = currentWell.designAndConstruction;
-                const maxDepth = identity.totalDepthMD_ft;
+                const maxDepth = currentWell.totalDepthMD_m * 3.28084; // Convert to feet
 
                 // Vertical scale: fit max depth in ~1000px canvas height
                 const scale = 1000 / maxDepth;
@@ -812,17 +813,17 @@
 
                 // Casings
                 if (viewState.layers.casings) {
-                    svg += renderCasings(design.casingStrings, scale);
+                    svg += renderCasings(currentWell.casings, scale);
                 }
 
                 // Tubing
                 if (viewState.layers.tubing) {
-                    svg += renderTubing(design.tubingStrings, scale);
+                    svg += renderTubing(currentWell.tubing, scale);
                 }
 
                 // Equipment
                 if (viewState.layers.equipment) {
-                    svg += renderEquipment(design.downholeEquipment, scale);
+                    svg += renderEquipment(currentWell.equipment, scale);
                 }
 
                 schematicGroup.innerHTML = svg;
@@ -853,9 +854,9 @@
                 let svg = '<g id="casings">';
 
                 casings.forEach((casing, index) => {
-                    const width = casing.outerDiameter_in * 2;
-                    const height = (casing.bottomDepthMD_ft - casing.topDepthMD_ft) * scale;
-                    const y = casing.topDepthMD_ft * scale;
+                    const width = casing.size_in * 2;
+                    const height = (casing.bottomMD_ft - casing.topMD_ft) * scale;
+                    const y = casing.topMD_ft * scale;
                     const color = getCasingColor(casing.type);
 
                     svg += `
@@ -870,7 +871,7 @@
                             class="casing-string"
                             data-casing="${casing.type}"
                         >
-                            <title>${casing.type}\n${casing.outerDiameter_in}" OD\n${casing.bottomDepthMD_ft} ft</title>
+                            <title>${casing.type}\n${casing.size_in}" OD\n${Math.round(casing.bottomMD_ft)} ft</title>
                         </rect>
                     `;
 
@@ -879,7 +880,7 @@
                         svg += `
                             <text x="${width / 2 + 10}" y="${y + 20}"
                                   font-size="10" fill="${color}" font-weight="600">
-                                ${casing.outerDiameter_in}" ${casing.type}
+                                ${casing.size_in}" ${casing.type}
                             </text>
                         `;
                     }
@@ -891,14 +892,14 @@
 
             // Render tubing
             function renderTubing(tubingStrings, scale) {
-                if (!tubingStrings) return '';
+                if (!tubingStrings || tubingStrings.length === 0) return '';
 
                 let svg = '<g id="tubing">';
 
                 tubingStrings.forEach(tubing => {
-                    const width = tubing.outerDiameter_in * 2;
-                    const height = (tubing.bottomDepthMD_ft - tubing.topDepthMD_ft) * scale;
-                    const y = tubing.topDepthMD_ft * scale;
+                    const width = tubing.size_in * 2;
+                    const height = (tubing.bottomMD_ft - tubing.topMD_ft) * scale;
+                    const y = tubing.topMD_ft * scale;
 
                     svg += `
                         <rect
@@ -911,7 +912,7 @@
                             stroke-width="2"
                             class="casing-string"
                         >
-                            <title>${tubing.type}\n${tubing.outerDiameter_in}" OD\n${tubing.bottomDepthMD_ft} ft</title>
+                            <title>${tubing.type}\n${tubing.size_in}" OD\n${Math.round(tubing.bottomMD_ft)} ft</title>
                         </rect>
                     `;
                 });
@@ -922,22 +923,23 @@
 
             // Render equipment
             function renderEquipment(equipment, scale) {
-                if (!equipment) return '';
+                if (!equipment || equipment.length === 0) return '';
 
                 let svg = '<g id="equipment">';
 
                 equipment.forEach(item => {
-                    const y = item.settingDepthMD_ft * scale;
-                    const isCritical = item.integrityStatus?.includes('FAILED') ||
-                                      item.integrityStatus?.includes('CRITICAL');
+                    if (!item.depthMD_ft) return; // Skip if no depth (e.g., perforations with intervals)
+
+                    const y = item.depthMD_ft * scale;
+                    const isCritical = item.isCritical || item.status === 'FAILED' || item.status === 'CRITICAL';
                     const color = isCritical ? '#ef4444' : '#06b6d4';
 
                     // Equipment marker
                     svg += `
-                        <g class="equipment-marker" onclick="WellboreViewer.showEquipmentDetails('${item.equipmentId}')">
+                        <g class="equipment-marker" onclick="WellboreViewer.showEquipmentDetails('${item.type}')">
                             <circle cx="0" cy="${y}" r="6" fill="${color}" stroke="#0f172a" stroke-width="1.5" />
                             ${isCritical ? `<circle cx="0" cy="${y}" r="8" fill="none" stroke="${color}" stroke-width="1" opacity="0.5" />` : ''}
-                            <title>${item.itemType}\n${item.settingDepthMD_ft} ft\nStatus: ${item.integrityStatus}</title>
+                            <title>${item.type}\n${Math.round(item.depthMD_ft)} ft\nStatus: ${item.status}</title>
                         </g>
                     `;
 
@@ -945,7 +947,7 @@
                     if (viewState.layers.labels) {
                         svg += `
                             <text x="15" y="${y + 4}" font-size="9" fill="${color}" font-weight="500">
-                                ${item.itemType}
+                                ${item.type}
                             </text>
                         `;
                     }
@@ -961,7 +963,7 @@
 
                 if (!currentWell) return;
 
-                const maxDepth = currentWell.foundationalIdentity.totalDepthMD_ft;
+                const maxDepth = currentWell.totalDepthMD_m * 3.28084; // Convert to feet
                 const scale = 1000 / maxDepth;
                 const y = depth * scale;
 
@@ -1041,43 +1043,8 @@
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `well-${currentWell?.foundationalIdentity.wellId || 'schematic'}-${Date.now()}.svg`;
+                a.download = `well-${currentWell?.wellId || 'schematic'}-${Date.now()}.svg`;
                 a.click();
-            }
-
-            // Create mock well data for testing
-            function createMockWell666() {
-                return {
-                    foundationalIdentity: {
-                        wellId: "666",
-                        commonWellName: "The Perfect Storm",
-                        apiNumber: "GB-SEER-666-BRAH-2019",
-                        fieldName: "Brahan Field",
-                        operator: "Hess Corporation",
-                        wellType: "HPHT Gas Condensate Producer",
-                        currentStatus: "Shut-in - Well Integrity Issues",
-                        waterDepth_ft: 295,
-                        totalDepthMD_ft: 18500,
-                        totalDepthTVD_ft: 18350,
-                        wellProfile: "Deviated (max 25°)"
-                    },
-                    designAndConstruction: {
-                        casingStrings: [
-                            { type: "Conductor", outerDiameter_in: 30, topDepthMD_ft: 0, bottomDepthMD_ft: 325, grade: "X52" },
-                            { type: "Surface Casing", outerDiameter_in: 20, topDepthMD_ft: 0, bottomDepthMD_ft: 3850, grade: "L80" },
-                            { type: "Intermediate Casing", outerDiameter_in: 13.375, topDepthMD_ft: 0, bottomDepthMD_ft: 14200, grade: "P110" },
-                            { type: "Production Casing", outerDiameter_in: 9.625, topDepthMD_ft: 0, bottomDepthMD_ft: 18500, grade: "P110" }
-                        ],
-                        tubingStrings: [
-                            { type: "Production Tubing", outerDiameter_in: 4.5, topDepthMD_ft: 0, bottomDepthMD_ft: 18300, grade: "L80-13Cr" }
-                        ],
-                        downholeEquipment: [
-                            { equipmentId: "DHSV-001", itemType: "TRSSV", settingDepthMD_ft: 2500, integrityStatus: "FAILED", function: "Safety barrier" },
-                            { equipmentId: "PKR-001", itemType: "Production Packer", settingDepthMD_ft: 18250, integrityStatus: "Good", function: "Isolation" },
-                            { equipmentId: "SCALE-001", itemType: "Scale Bridge", settingDepthMD_ft: 14200, integrityStatus: "CRITICAL BLOCKAGE", function: "N/A" }
-                        ]
-                    }
-                };
             }
 
             // Public API
