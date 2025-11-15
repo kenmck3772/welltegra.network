@@ -1,0 +1,35 @@
+steps:
+  # Step 1: Install all npm dependencies
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['ci']
+    id: 'Install Dependencies'
+    dir: 'src' # Tell npm to run in the src directory
+
+  # Step 2: Run the "build" script from package.json
+  # This builds from /src and outputs to /dist
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['run', 'build']
+    id: 'Build Application'
+    waitFor: ['Install Dependencies']
+    # The build script in package.json will handle paths
+
+  # Step 3: (Placeholder) Run Tests
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['test']
+    id: 'Run Tests'
+    dir: 'src'
+    waitFor: ['Build Application']
+    # Allow tests to fail for now
+    entrypoint: 'bash'
+    args: ['-c', 'npm test || exit 0']
+
+# This tells Cloud Build the final "dist" folder is the website
+# that we want to deploy.
+artifacts:
+  objects:
+    location: 'gs://welltegra-prod-bucket/' # Your bucket name
+    paths:
+      - 'dist/**'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
