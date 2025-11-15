@@ -1046,6 +1046,16 @@
             }
         }
 
+        // Escape HTML meta-characters to prevent XSS when inserting user content via innerHTML
+        function escapeHTML(str) {
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
         function displayClashResult(hasClash, clearance, tool, restriction) {
             const resultDiv = document.getElementById('clash-detection-result');
 
@@ -1062,7 +1072,7 @@
                         </div>
                         <div class="bg-white rounded-lg p-3 mb-3 border-2 border-red-600">
                             <div class="text-sm font-semibold text-red-900 mb-1">Problem Tool:</div>
-                            <div class="text-base font-mono text-red-800">${tool.name}</div>
+                            <div class="text-base font-mono text-red-800">${escapeHTML(tool.name)}</div>
                             <div class="text-sm font-mono text-red-700">OD: ${tool.od.toFixed(3)}"</div>
                         </div>
                         <div class="bg-white rounded-lg p-3 mb-3 border-2 border-red-600">
