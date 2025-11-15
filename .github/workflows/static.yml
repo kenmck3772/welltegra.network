@@ -55,8 +55,8 @@ jobs:
           # Copy HTML files
           cp *.html dist/ 2>/dev/null || echo "No HTML files in root"
 
-          # Copy directories (excluding build artifacts and dev files)
-          for dir in assets styles data models documents equipment-specs; do
+          # Copy all asset directories (including fonts, images, etc.)
+          for dir in assets styles data models documents equipment-specs fonts images videos; do
             if [ -d "$dir" ]; then
               echo "Copying $dir/"
               cp -r "$dir" dist/
@@ -65,6 +65,8 @@ jobs:
 
           echo "Build complete. Contents of dist/:"
           ls -la dist/
+          echo "Checking for fonts directory:"
+          ls -la dist/fonts/ 2>/dev/null || echo "No fonts directory found"
 
       - name: Prepare deployment files
         run: |

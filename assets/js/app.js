@@ -1377,7 +1377,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
 
         const step = appState.generatedPlan.procedure.find(s => s.id === appState.liveData.currentStep);
-        if (!step) return;
+        if (!step || !step.text || typeof step.text !== 'string') return;
 
         const stepText = step.text.toLowerCase();
         const targetDepth = 18500;
