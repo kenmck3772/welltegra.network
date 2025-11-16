@@ -1,12 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './**/*.html',
+    './**/*.html',        // This path covers all HTML files
     './module-loader.js',
-    '!./node_modules/**'
-    './*.html',
-    './**/*.html',
-    './module-loader.js'
+    '!./node_modules/**', // <-- COMMA WAS ADDED HERE
   ],
   theme: {
     extend: {
