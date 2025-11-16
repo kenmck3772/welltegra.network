@@ -3,7 +3,7 @@ module.exports = {
   content: [
     './**/*.html',        // This path covers all HTML files
     './module-loader.js',
-    '!./node_modules/**', // <-- COMMA WAS ADDED HERE
+    '!./node_modules/**', // <-- THE MISSING COMMA WAS ADDED HERE
   ],
   theme: {
     extend: {
