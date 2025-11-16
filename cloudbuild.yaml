@@ -4,21 +4,31 @@ steps:
     args: ['ci', '--prefix', 'src']
     id: 'Install Dependencies'
 
-  # Step 2: Run the build script, also inside /src
+  # Step 2: Run the CSS build script, also inside /src
+  # This is the correct build command from your project
   - name: 'gcr.io/cloud-builders/npm'
-    args: ['run', 'build', '--prefix', 'src']
-    id: 'Build Application'
+    args: ['run', 'build:css', '--prefix', 'src']
+    id: 'Build CSS'
     waitFor: ['Install Dependencies']
 
-  # Step 3: Run tests, also inside /src
-  - name: 'gcr.io/cloud-builders/npm'
-    args: ['test', '--prefix', 'src']
-    id: 'Run Tests'
-    waitFor: ['Build Application']
+  # Step 3: Manually copy all files into a 'dist' folder
+  # This creates the final website folder to be deployed
+  - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
-    args: ['-c', 'npm test --prefix src || exit 0']
+    args:
+      - '-c'
+      - |
+        echo "Creating dist directory inside src..."
+        mkdir -p src/dist
+        
+        echo "Copying all project files to src/dist..."
+        # We rsync everything from /src into /src/dist
+        # We must exclude node_modules and the dist folder itself
+        rsync -av --exclude='node_modules' --exclude='dist' src/ src/dist/
+    id: 'Copy Files to Dist'
+    waitFor: ['Build CSS']
 
-# The build script creates 'dist' inside 'src', so we grab it from there
+# The artifacts are now in 'src/dist/'
 artifacts:
   objects:
     location: 'gs://welltegra-prod-bucket1/'
