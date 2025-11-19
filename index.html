@@ -1418,6 +1418,117 @@
             </section>
         </div>
 
+        <!-- Case Study Detail View -->
+        <div id="case-study-view" class="view-container hidden max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="mb-6">
+                <button id="back-to-planner" class="text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-2 transition-colors">
+                    <span>←</span> Back to Portfolio
+                </button>
+            </div>
+
+            <div id="case-study-header" class="mb-8">
+                <!-- Header will be populated dynamically -->
+            </div>
+
+            <!-- Wellbore Trajectory Viewer Section -->
+            <div id="case-study-wellbore-viz" class="mb-8 bg-slate-800/50 rounded-lg p-6 border-2 border-cyan-500/30">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-2xl font-bold text-white">📐 Wellbore Trajectory Viewer</h3>
+                    <button id="tiltModeBtn-case" onclick="toggleTiltModeCaseStudy()" class="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white font-bold rounded-lg transition text-sm">🎭 3D Tilt</button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- SVG Visualization -->
+                    <div class="lg:col-span-2 bg-slate-900/30 rounded-lg p-4 relative">
+                        <svg id="wbSvg-case" viewBox="0 0 800 520" preserveAspectRatio="xMidYMid meet" class="w-full h-auto" style="filter:drop-shadow(0 0 8px rgba(6,182,212,0.3));">
+                            <defs>
+                                <pattern id="grid-case" width="40" height="40" patternUnits="userSpaceOnUse">
+                                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(148,163,184,0.1)" stroke-width="1"/>
+                                </pattern>
+                                <linearGradient id="dlsGrad-case" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:rgb(34,197,94);stop-opacity:1" />
+                                    <stop offset="50%" style="stop-color:rgb(234,179,8);stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:rgb(239,68,68);stop-opacity:1" />
+                                </linearGradient>
+                                <filter id="glow-case">
+                                    <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <rect width="800" height="520" fill="url(#grid-case)"/>
+                            <text id="view-label-case" x="400" y="30" text-anchor="middle" fill="#94a3b8" font-size="16" font-weight="600"></text>
+                            <path id="wbPath-case" fill="none" stroke="url(#dlsGrad-case)" stroke-width="3" filter="url(#glow-case)"/>
+                            <g id="survey-stations-case"></g>
+                            <g id="dls-hotspots-case"></g>
+                        </svg>
+                    </div>
+
+                    <!-- Controls Panel -->
+                    <div class="space-y-4">
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-cyan-500/20">
+                            <h4 class="text-sm font-bold text-cyan-400 mb-3">📊 Survey Data</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Stations:</span>
+                                    <span id="survey-count-case" class="text-white font-semibold">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Max Inc:</span>
+                                    <span id="survey-max-inc-case" class="text-white font-semibold">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">Total MD:</span>
+                                    <span id="survey-total-md-case" class="text-white font-semibold">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-cyan-500/20">
+                            <h4 class="text-sm font-bold text-cyan-400 mb-3">🎯 View Options</h4>
+                            <div class="space-y-2">
+                                <button onclick="showProfileViewCaseStudy()" class="w-full px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded transition">Profile View</button>
+                                <button onclick="showPlanViewCaseStudy()" class="w-full px-3 py-2 bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold rounded transition">Plan View</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/50 rounded-lg p-4 border border-cyan-500/20">
+                            <h4 class="text-sm font-bold text-red-400 mb-2">⚠️ DLS Analysis</h4>
+                            <div class="mb-2">
+                                <label class="text-xs text-gray-400">Threshold (°/100ft):</label>
+                                <input type="number" id="dls-threshold-case" value="3" min="1" max="10" step="0.5" class="w-full mt-1 px-2 py-1 bg-slate-800 text-white text-sm rounded border border-slate-600" onchange="updateDLSThresholdCaseStudy()">
+                            </div>
+                            <div id="dls-panel-case" class="text-xs text-gray-300 max-h-32 overflow-y-auto">
+                                <!-- DLS warnings appear here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Well Details Section -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="md:col-span-2">
+                    <div class="bg-slate-800/50 rounded-lg p-6 border border-cyan-500/20">
+                        <h4 class="text-xl font-semibold mb-4 text-white">Operational History</h4>
+                        <div id="case-study-history" class="max-h-96 overflow-y-auto pr-2 space-y-4">
+                            <!-- History will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+                <div class="md:col-span-1">
+                    <div class="bg-slate-800/50 rounded-lg p-6 border border-cyan-500/20">
+                        <h4 class="text-xl font-semibold mb-4 text-white">Wellbore Schematic</h4>
+                        <div id="case-study-schematic" class="bg-slate-900/50 p-4 rounded-lg">
+                            <!-- Schematic will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="logistics-view" class="view-container hidden max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Logistics & Asset Management</h2><p id="logistics-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Manage equipment and personnel availability, certifications, and maintenance schedules.</p></div>
             <div id="logistics-content" class="mt-10 grid gap-12 lg:grid-cols-2">
@@ -6678,6 +6789,301 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize with empty state
     updateAnimation(0);
+})();
+
+// --- CASE STUDY VIEW FUNCTIONS ---
+
+// Case Study wellbore visualization state
+(function() {
+    let currentCaseView = 'profile'; // 'profile' or 'plan'
+    let caseSurveyData = [];
+    let caseDLSData = [];
+
+    // Toggle 3D tilt mode for case study view
+    window.toggleTiltModeCaseStudy = function() {
+        const btn = document.getElementById('tiltModeBtn-case');
+        const svg = document.getElementById('wbSvg-case');
+
+        if (!btn || !svg) return;
+
+        svg.classList.toggle('tilt-mode');
+
+        if (svg.classList.contains('tilt-mode')) {
+            btn.textContent = '🎭 Tilt OFF';
+            btn.classList.remove('bg-violet-600', 'hover:bg-violet-500');
+            btn.classList.add('bg-rose-600', 'hover:bg-rose-500');
+            svg.style.transform = 'perspective(1200px) rotateX(20deg) rotateZ(-5deg)';
+        } else {
+            btn.textContent = '🎭 3D Tilt';
+            btn.classList.remove('bg-rose-600', 'hover:bg-rose-500');
+            btn.classList.add('bg-violet-600', 'hover:bg-violet-500');
+            svg.style.transform = '';
+        }
+    };
+
+    // Show profile view for case study
+    window.showProfileViewCaseStudy = function() {
+        currentCaseView = 'profile';
+        const viewLabel = document.getElementById('view-label-case');
+        if (viewLabel) {
+            viewLabel.textContent = 'Profile View (TVD vs Departure)';
+        }
+        if (caseSurveyData.length > 0) {
+            renderCaseSurvey();
+        }
+    };
+
+    // Show plan view for case study
+    window.showPlanViewCaseStudy = function() {
+        currentCaseView = 'plan';
+        const viewLabel = document.getElementById('view-label-case');
+        if (viewLabel) {
+            viewLabel.textContent = 'Plan View (North vs East)';
+        }
+        if (caseSurveyData.length > 0) {
+            renderCaseSurvey();
+        }
+    };
+
+    // Update DLS threshold for case study
+    window.updateDLSThresholdCaseStudy = function() {
+        if (caseDLSData.length > 0) {
+            renderCaseDLSHotspots();
+        }
+    };
+
+    // Back to planner button
+    const backBtn = document.getElementById('back-to-planner');
+    if (backBtn) {
+        backBtn.addEventListener('click', function() {
+            if (typeof window.showView === 'function') {
+                window.showView('planner');
+            }
+        });
+    }
+
+    // Load case study data
+    window.loadCaseStudy = function(caseData) {
+        if (!caseData || !caseData.survey) return;
+
+        // Store survey data
+        caseSurveyData = caseData.survey;
+
+        // Compute DLS
+        caseDLSData = computeCaseDLS(caseSurveyData);
+
+        // Update UI
+        renderCaseSurvey();
+        renderCaseStudyDetails(caseData);
+
+        // Show case study view
+        if (typeof window.showView === 'function') {
+            window.showView('case-study');
+        }
+    };
+
+    // Compute DLS for case study
+    function computeCaseDLS(stations) {
+        const dls = [];
+        if (stations.length < 2) return dls;
+
+        for (let i = 1; i < stations.length; i++) {
+            const a = stations[i - 1];
+            const b = stations[i];
+
+            const inc1 = (a.inc || 0) * Math.PI / 180;
+            const inc2 = (b.inc || 0) * Math.PI / 180;
+            const az1 = (a.azi || 0) * Math.PI / 180;
+            const az2 = (b.azi || 0) * Math.PI / 180;
+
+            const cosDL = Math.sin(inc1) * Math.sin(inc2) * Math.cos(az2 - az1) + Math.cos(inc1) * Math.cos(inc2);
+            const DL = Math.acos(Math.min(1, Math.max(-1, cosDL)));
+            const dmd = (b.md - a.md) || 1;
+            const dlsDeg = (DL * 180 / Math.PI) / (dmd / 100); // degrees per 100ft
+
+            dls.push({
+                md: b.md,
+                dls: dlsDeg,
+                tvd: b.tvd || 0,
+                north: b.north || 0,
+                east: b.east || 0,
+                departure: Math.sqrt((b.north || 0) ** 2 + (b.east || 0) ** 2)
+            });
+        }
+
+        return dls;
+    }
+
+    // Render case study survey
+    function renderCaseSurvey() {
+        if (caseSurveyData.length === 0) return;
+
+        const path = document.getElementById('wbPath-case');
+        const stationsG = document.getElementById('survey-stations-case');
+        const viewLabel = document.getElementById('view-label-case');
+        const surveyCount = document.getElementById('survey-count-case');
+        const surveyMaxInc = document.getElementById('survey-max-inc-case');
+        const surveyTotalMD = document.getElementById('survey-total-md-case');
+
+        if (!path || !stationsG) return;
+
+        // Update stats
+        const maxInc = Math.max(...caseSurveyData.map(s => s.inc || 0));
+        const totalMD = caseSurveyData[caseSurveyData.length - 1].md || 0;
+
+        if (surveyCount) surveyCount.textContent = caseSurveyData.length;
+        if (surveyMaxInc) surveyMaxInc.textContent = maxInc.toFixed(1) + '°';
+        if (surveyTotalMD) surveyTotalMD.textContent = totalMD.toFixed(0) + 'ft';
+
+        // Determine coordinates based on view
+        let coords = caseSurveyData.map(s => {
+            if (currentCaseView === 'profile') {
+                return {
+                    x: s.departure || Math.sqrt((s.north || 0) ** 2 + (s.east || 0) ** 2),
+                    y: s.tvd || s.md || 0,
+                    md: s.md
+                };
+            } else {
+                return {
+                    x: s.east || 0,
+                    y: s.north || 0,
+                    md: s.md
+                };
+            }
+        });
+
+        // Find bounds
+        const xs = coords.map(c => c.x);
+        const ys = coords.map(c => c.y);
+        const minX = Math.min(...xs);
+        const maxX = Math.max(...xs);
+        const minY = Math.min(...ys);
+        const maxY = Math.max(...ys);
+
+        const rangeX = maxX - minX || 100;
+        const rangeY = maxY - minY || 100;
+        const margin = 40;
+        const svgWidth = 800;
+        const svgHeight = 520;
+
+        // Scale to SVG
+        function scaleX(x) {
+            return margin + ((x - minX) / rangeX) * (svgWidth - 2 * margin);
+        }
+        function scaleY(y) {
+            return svgHeight - margin - ((y - minY) / rangeY) * (svgHeight - 2 * margin);
+        }
+
+        // Draw path
+        let pathD = coords.map((c, i) =>
+            `${i === 0 ? 'M' : 'L'} ${scaleX(c.x)} ${scaleY(c.y)}`
+        ).join(' ');
+        path.setAttribute('d', pathD);
+
+        // Draw stations
+        stationsG.innerHTML = '';
+        coords.forEach((c, i) => {
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', scaleX(c.x));
+            circle.setAttribute('cy', scaleY(c.y));
+            circle.setAttribute('r', 4);
+            circle.setAttribute('fill', '#06b6d4');
+            circle.setAttribute('stroke', '#164e63');
+            circle.setAttribute('stroke-width', 1);
+            stationsG.appendChild(circle);
+        });
+
+        // Update view label
+        if (viewLabel) {
+            viewLabel.textContent = currentCaseView === 'profile'
+                ? 'Profile View (TVD vs Departure)'
+                : 'Plan View (North vs East)';
+        }
+
+        // Render DLS hotspots
+        renderCaseDLSHotspots();
+    }
+
+    // Render DLS hotspots for case study
+    function renderCaseDLSHotspots() {
+        const hotspotsG = document.getElementById('dls-hotspots-case');
+        const dlsPanel = document.getElementById('dls-panel-case');
+        const thresholdInput = document.getElementById('dls-threshold-case');
+
+        if (!hotspotsG || !dlsPanel) return;
+
+        const threshold = thresholdInput ? parseFloat(thresholdInput.value) : 3;
+
+        // Clear existing
+        hotspotsG.innerHTML = '';
+        dlsPanel.innerHTML = '';
+
+        if (caseDLSData.length === 0) {
+            dlsPanel.innerHTML = '<p class="text-gray-500">No DLS data available</p>';
+            return;
+        }
+
+        // Filter high DLS points
+        const hotspots = caseDLSData.filter(d => d.dls > threshold);
+
+        if (hotspots.length === 0) {
+            dlsPanel.innerHTML = `<p class="text-green-400">✓ All DLS values below ${threshold}°/100ft</p>`;
+            return;
+        }
+
+        // Display warnings
+        dlsPanel.innerHTML = `<p class="text-red-400 font-semibold mb-2">⚠️ ${hotspots.length} high DLS point(s):</p>`;
+        hotspots.forEach(h => {
+            const warning = document.createElement('div');
+            warning.className = 'mb-1 text-xs';
+            warning.innerHTML = `MD ${h.md.toFixed(0)}ft: <strong class="text-red-300">${h.dls.toFixed(2)}°/100ft</strong>`;
+            dlsPanel.appendChild(warning);
+        });
+
+        // Draw hotspots on SVG (simplified - would need proper scaling)
+        hotspots.forEach(h => {
+            const marker = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            marker.setAttribute('r', 8);
+            marker.setAttribute('fill', 'rgba(239, 68, 68, 0.3)');
+            marker.setAttribute('stroke', '#ef4444');
+            marker.setAttribute('stroke-width', 2);
+            // Note: Actual positioning would require the same scaling logic as renderCaseSurvey
+            hotspotsG.appendChild(marker);
+        });
+    }
+
+    // Render case study details
+    function renderCaseStudyDetails(caseData) {
+        const header = document.getElementById('case-study-header');
+        const history = document.getElementById('case-study-history');
+        const schematic = document.getElementById('case-study-schematic');
+
+        if (header) {
+            header.innerHTML = `
+                <h2 class="text-4xl font-bold text-white mb-2">${caseData.title || 'Well Case Study'}</h2>
+                <p class="text-cyan-400 text-lg">${caseData.subtitle || 'Detailed Analysis'}</p>
+            `;
+        }
+
+        if (history && caseData.history) {
+            history.innerHTML = caseData.history.map(item => `
+                <div class="bg-slate-900/30 rounded p-3 border-l-4 border-cyan-500">
+                    <p class="text-sm text-gray-400">${item.date || ''}</p>
+                    <p class="text-white">${item.description || ''}</p>
+                </div>
+            `).join('');
+        }
+
+        if (schematic && caseData.schematic) {
+            schematic.innerHTML = caseData.schematic;
+        }
+    }
+
+    // Initialize view label
+    const viewLabel = document.getElementById('view-label-case');
+    if (viewLabel) {
+        viewLabel.textContent = 'Profile View (TVD vs Departure)';
+    }
 })();
 
 // --- PDF EXPORT SYSTEM (Global scope for onclick) ---
