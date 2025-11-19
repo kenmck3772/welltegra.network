@@ -229,7 +229,13 @@
         .modal-tab { border-bottom: 2px solid transparent; }
         
         /* --- Home Page Specific Styles --- */
-        .hero-section { position: relative; overflow: hidden; }
+        .hero-section {
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+        }
         #hero-video {
             position: absolute;
             top: 50%;
@@ -1077,7 +1083,7 @@
 
     <main id="main-content" class="flex-1" role="main">
         <div id="home-view" class="view-container">
-            <section class="hero-section py-8 px-4 relative">
+            <section class="hero-section px-4 relative">
                 <video autoplay loop muted playsinline id="hero-video" poster="assets/logo.jpg">
                     <source src="assets/hero.mp4" type="video/mp4">
                 </video>
