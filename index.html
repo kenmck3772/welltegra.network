@@ -3470,6 +3470,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- PLANNER LOGIC ---
 
     const renderWellCards = () => {
+        if (!wellSelectionGrid) return; // Skip if element doesn't exist
         wellSelectionGrid.innerHTML = wellData.map(well => {
             const isWellFromHell = well.id === 'W666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
@@ -6323,17 +6324,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- INITIALIZATION ---
 
     const init = () => {
-        renderWellCards();
-        renderObjectives();
-        renderProblems();
-        initSavingsChart();
-        updateNavLinks();
-        loadCostData(); // Load cost data from CSV files
-        initJobCostingTool(); // Initialize job costing tool
-        // Expose job costing state to window for global functions
+        // Expose functions to window FIRST before rendering (so onclick handlers work)
         window.jobCostingState = jobCostingState;
         window.appState = appState;
-        // Expose NPT functions
         window.addNPTEvent = addNPTEvent;
         window.removeNPTEvent = removeNPTEvent;
         window.calculateTotalNPTCost = calculateTotalNPTCost;
@@ -6342,10 +6335,18 @@ document.addEventListener('DOMContentLoaded', function() {
         window.renderNPTList = renderNPTList;
         window.showView = switchView;
         window.addNPTEventFromUI = addNPTEventFromUI;
-        // Expose planner functions
         window.wellData = wellData;
         window.openModal = openModal;
         window.selectWellW666 = selectWellW666;
+
+        // Now render UI (which uses the above functions in onclick handlers)
+        renderWellCards();
+        renderObjectives();
+        renderProblems();
+        initSavingsChart();
+        updateNavLinks();
+        loadCostData(); // Load cost data from CSV files
+        initJobCostingTool(); // Initialize job costing tool
 
         while (pendingShowViewCalls.length > 0) {
             const queuedView = pendingShowViewCalls.shift();
@@ -7713,7 +7714,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Open case study detail function
     window.openCaseStudyDetail = function(wellId) {
-        const well = wellData.find(w => w.id === wellId);
+        const well = window.wellData ? window.wellData.find(w => w.id === wellId) : null;
         if (!well) return;
 
         // Load the case study data
