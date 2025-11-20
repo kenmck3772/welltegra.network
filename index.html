@@ -936,6 +936,236 @@
             }
         }
 
+        /* --- Equipment Catalog & Tool String Builder Styles --- */
+        .equipment-tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid #334155;
+            margin-bottom: 1.5rem;
+        }
+
+        .equipment-tab {
+            padding: 12px 24px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #94a3b8;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .equipment-tab:hover {
+            color: #14b8a6;
+        }
+
+        .equipment-tab.active {
+            color: #14b8a6;
+            border-bottom-color: #14b8a6;
+        }
+
+        .equipment-category-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.8));
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .equipment-category-card:hover {
+            border-color: #14b8a6;
+            box-shadow: 0 4px 20px rgba(20, 184, 166, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .equipment-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .equipment-item:hover {
+            border-color: #14b8a6;
+            background: rgba(20, 184, 166, 0.1);
+        }
+
+        .equipment-item-name {
+            font-weight: 600;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+        }
+
+        .equipment-item-meta {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .tool-string-card {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(59, 130, 246, 0.05));
+            border: 2px solid #14b8a6;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .tool-string-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .tool-string-name {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #14b8a6;
+        }
+
+        .tool-string-components {
+            list-style: none;
+            padding-left: 1rem;
+            margin: 0;
+        }
+
+        .tool-string-component {
+            padding: 6px 0;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            border-left: 3px solid #475569;
+            padding-left: 12px;
+            margin-bottom: 6px;
+        }
+
+        .tool-string-component:hover {
+            border-left-color: #14b8a6;
+            color: #14b8a6;
+        }
+
+        .btn-add-equipment {
+            background: #14b8a6;
+            color: #0b1220;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-add-equipment:hover {
+            background: #0ea5e9;
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background: #475569;
+            color: #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #64748b;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #475569;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+        }
+
+        .manufacturer-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(234, 179, 8, 0.2);
+            border: 1px solid #eab308;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #fbbf24;
+            margin-left: 8px;
+        }
+
+        .application-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background: rgba(59, 130, 246, 0.2);
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: #93c5fd;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+
+        .service-line-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #14b8a6, #0ea5e9);
+            color: #0b1220;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-left: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #94a3b8;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state-text {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
     </style>
 
     <!-- Schema.org Structured Data -->
@@ -1386,7 +1616,120 @@
                     </div>
                 </div>
             </section>
-            
+
+            <!-- Equipment Catalog & Tool String Builder -->
+            <section id="equipment-tools-section" class="mt-12 max-w-7xl mx-auto px-4">
+                <div class="light-card rounded-lg p-6 shadow-xl border-2 border-cyan-500/30">
+                    <h3 class="text-2xl font-bold mb-6">🛠️ Equipment Catalog & Tool Strings</h3>
+
+                    <!-- Tabs -->
+                    <div class="equipment-tabs">
+                        <button class="equipment-tab active" data-tab="catalog" onclick="switchEquipmentTab('catalog')">
+                            Equipment Catalog
+                        </button>
+                        <button class="equipment-tab" data-tab="toolstrings" onclick="switchEquipmentTab('toolstrings')">
+                            My Tool Strings
+                        </button>
+                        <button class="equipment-tab" data-tab="builder" onclick="switchEquipmentTab('builder')">
+                            Build New String
+                        </button>
+                        <button class="equipment-tab" data-tab="templates" onclick="switchEquipmentTab('templates')">
+                            Service Templates
+                        </button>
+                    </div>
+
+                    <!-- Tab Content: Equipment Catalog -->
+                    <div id="tab-catalog" class="equipment-tab-content">
+                        <input type="text" id="equipment-search" class="search-box" placeholder="Search equipment by name, manufacturer, or application...">
+
+                        <div class="mb-4 flex gap-3 flex-wrap">
+                            <button class="btn-secondary" onclick="filterEquipmentCategory('all')">All</button>
+                            <button class="btn-secondary" onclick="filterEquipmentCategory('fishing')">Fishing</button>
+                            <button class="btn-secondary" onclick="filterEquipmentCategory('running')">Running Tools</button>
+                            <button class="btn-secondary" onclick="filterEquipmentCategory('wireline')">Wireline</button>
+                            <button class="btn-secondary" onclick="filterEquipmentCategory('completion')">Completion</button>
+                            <button class="btn-secondary" onclick="filterEquipmentCategory('gaslift')">Gas Lift</button>
+                        </div>
+
+                        <div id="equipment-catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Equipment items will be rendered here -->
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: My Tool Strings -->
+                    <div id="tab-toolstrings" class="equipment-tab-content hidden">
+                        <div id="saved-toolstrings-list">
+                            <!-- Saved tool strings will be rendered here -->
+                        </div>
+                        <div id="empty-toolstrings" class="empty-state">
+                            <div class="empty-state-icon">📦</div>
+                            <div class="empty-state-text">No tool strings saved yet</div>
+                            <p class="mt-2">Use the Builder tab to create your first reusable tool string assembly.</p>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Build New String -->
+                    <div id="tab-builder" class="equipment-tab-content hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Left: Builder Form -->
+                            <div>
+                                <h4 class="text-xl font-bold mb-4">Create New Tool String</h4>
+
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium mb-2">Assembly Name</label>
+                                    <input type="text" id="new-toolstring-name" class="search-box" placeholder="e.g., Standard Fishing Assembly">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium mb-2">Service Line</label>
+                                    <select id="new-toolstring-service" class="search-box">
+                                        <option value="CT">Coiled Tubing</option>
+                                        <option value="ELS">E-Line Services</option>
+                                        <option value="SLK">Slickline</option>
+                                        <option value="WHM">Wireline/Hydraulics</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium mb-2">Select Equipment</label>
+                                    <select id="equipment-selector" class="search-box">
+                                        <option value="">-- Choose equipment --</option>
+                                    </select>
+                                    <button class="btn-add-equipment mt-2" onclick="addEquipmentToBuilder()">Add to String</button>
+                                </div>
+
+                                <button class="btn-add-equipment mt-4 w-full py-3 text-lg" onclick="saveToolString()">
+                                    💾 Save Tool String
+                                </button>
+                            </div>
+
+                            <!-- Right: Preview -->
+                            <div>
+                                <h4 class="text-xl font-bold mb-4">Assembly Preview</h4>
+                                <div id="builder-preview" class="tool-string-card">
+                                    <div class="tool-string-header">
+                                        <span class="tool-string-name" id="preview-name">Untitled Assembly</span>
+                                    </div>
+                                    <ul id="builder-components-list" class="tool-string-components">
+                                        <li class="text-gray-500 italic">No components added yet</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Service Templates -->
+                    <div id="tab-templates" class="equipment-tab-content hidden">
+                        <h4 class="text-xl font-bold mb-4">Pre-Configured Service Line Templates</h4>
+                        <p class="text-gray-400 mb-6">Quick-start templates for common intervention scenarios</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="service-templates-grid">
+                            <!-- Templates will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section id="step-3" class="hidden">
                 <div class="text-center mb-8">
                     <h3 class="text-2xl font-bold tracking-tight">Step 3: Review the Generated Plan</h3>
@@ -1401,11 +1744,11 @@
                         <div class="flex justify-between items-center mb-6">
                             <h3 class="text-2xl font-bold">💰 Detailed Job Costing & Resource Planning</h3>
                             <button id="toggle-costing-tool" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-md transition">
-                                Expand Tool
+                                Collapse Tool
                             </button>
                         </div>
 
-                        <div id="costing-tool-content" class="hidden">
+                        <div id="costing-tool-content">
                             <div id="job-costing-tool-container" class="grid grid-cols-1 gap-6"></div>
                         </div>
                     </div>
@@ -7587,6 +7930,329 @@ function addNPTEventFromUI() {
         durationInput.value = '';
     }
 }
+
+// ========================= EQUIPMENT CATALOG & TOOL STRING BUILDER =========================
+let equipmentCatalog = {};
+let savedToolStrings = [];
+let builderComponents = [];
+let currentEquipmentFilter = 'all';
+
+// Load equipment catalog from JSON
+async function loadEquipmentCatalog() {
+    try {
+        const response = await fetch('equipment-catalog.json');
+        equipmentCatalog = await response.json();
+        console.log('Equipment catalog loaded:', Object.keys(equipmentCatalog).length, 'categories');
+        renderEquipmentCatalog();
+        populateEquipmentSelector();
+    } catch (error) {
+        console.error('Failed to load equipment catalog:', error);
+        const grid = document.getElementById('equipment-catalog-grid');
+        if (grid) {
+            grid.innerHTML = '<p class="text-yellow-500">Equipment catalog will be loaded when equipment-catalog.json is available.</p>';
+        }
+    }
+}
+
+// Load saved tool strings from localStorage
+function loadSavedToolStrings() {
+    const saved = localStorage.getItem('welltegra_toolstrings');
+    savedToolStrings = saved ? JSON.parse(saved) : [];
+    renderSavedToolStrings();
+}
+
+// Save tool strings to localStorage
+function saveToolStringsToStorage() {
+    localStorage.setItem('welltegra_toolstrings', JSON.stringify(savedToolStrings));
+}
+
+// Switch between tabs
+window.switchEquipmentTab = function(tabName) {
+    document.querySelectorAll('.equipment-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.tab === tabName);
+    });
+    document.querySelectorAll('.equipment-tab-content').forEach(content => {
+        content.classList.add('hidden');
+    });
+    const targetTab = document.getElementById(`tab-${tabName}`);
+    if (targetTab) targetTab.classList.remove('hidden');
+
+    if (tabName === 'toolstrings') renderSavedToolStrings();
+    else if (tabName === 'templates') renderServiceTemplates();
+};
+
+// Render equipment catalog
+function renderEquipmentCatalog() {
+    const grid = document.getElementById('equipment-catalog-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    Object.keys(equipmentCatalog).forEach(categoryKey => {
+        const category = equipmentCatalog[categoryKey];
+        if (currentEquipmentFilter !== 'all') {
+            const hasMatchingItems = category.items.some(item => item.category === currentEquipmentFilter);
+            if (!hasMatchingItems) return;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'equipment-category-card';
+
+        const itemsHTML = category.items
+            .filter(item => currentEquipmentFilter === 'all' || item.category === currentEquipmentFilter)
+            .map(item => `
+                <div class="equipment-item">
+                    <div>
+                        <div class="equipment-item-name">
+                            ${item.name}
+                            ${item.manufacturer ? `<span class="manufacturer-badge">${item.manufacturer}</span>` : ''}
+                        </div>
+                        <div class="equipment-item-meta">
+                            ${item.applications ? item.applications.slice(0, 2).map(app => `<span class="application-tag">${app}</span>`).join('') : ''}
+                        </div>
+                    </div>
+                    <button class="btn-add-equipment" onclick='addEquipmentToBuilderDirect(${JSON.stringify(item).replace(/'/g, "&apos;")})'>
+                        Add
+                    </button>
+                </div>
+            `).join('');
+
+        card.innerHTML = `
+            <h4 class="text-lg font-bold mb-4 text-cyan-400">${category.name}</h4>
+            <p class="text-sm text-gray-400 mb-4">${category.description}</p>
+            <div>${itemsHTML}</div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// Filter equipment by category
+window.filterEquipmentCategory = function(category) {
+    currentEquipmentFilter = category;
+    renderEquipmentCatalog();
+};
+
+// Populate equipment selector dropdown
+function populateEquipmentSelector() {
+    const selector = document.getElementById('equipment-selector');
+    if (!selector) return;
+    selector.innerHTML = '<option value="">-- Choose equipment --</option>';
+
+    Object.keys(equipmentCatalog).forEach(categoryKey => {
+        const category = equipmentCatalog[categoryKey];
+        const optgroup = document.createElement('optgroup');
+        optgroup.label = category.name;
+
+        category.items.forEach(item => {
+            const option = document.createElement('option');
+            option.value = JSON.stringify(item);
+            option.textContent = `${item.name}${item.manufacturer ? ' (' + item.manufacturer + ')' : ''}`;
+            optgroup.appendChild(option);
+        });
+
+        selector.appendChild(optgroup);
+    });
+}
+
+// Add equipment to builder from dropdown
+window.addEquipmentToBuilder = function() {
+    const selector = document.getElementById('equipment-selector');
+    if (!selector || !selector.value) {
+        alert('Please select equipment from the dropdown');
+        return;
+    }
+
+    const item = JSON.parse(selector.value);
+    builderComponents.push(item);
+    updateBuilderPreview();
+    selector.value = '';
+};
+
+// Add equipment to builder directly (from catalog)
+window.addEquipmentToBuilderDirect = function(item) {
+    switchEquipmentTab('builder');
+    builderComponents.push(item);
+    updateBuilderPreview();
+    showToast(`Added ${item.name} to builder`);
+};
+
+// Update builder preview
+function updateBuilderPreview() {
+    const nameInput = document.getElementById('new-toolstring-name');
+    const previewName = document.getElementById('preview-name');
+    const componentsList = document.getElementById('builder-components-list');
+    if (!componentsList) return;
+
+    if (previewName) previewName.textContent = (nameInput && nameInput.value) || 'Untitled Assembly';
+
+    if (builderComponents.length === 0) {
+        componentsList.innerHTML = '<li class="text-gray-500 italic">No components added yet</li>';
+    } else {
+        componentsList.innerHTML = builderComponents.map((item, index) => `
+            <li class="tool-string-component">
+                ${index + 1}. ${item.name}
+                <button class="btn-danger ml-2" onclick="removeBuilderComponent(${index})" style="padding: 2px 8px; font-size: 0.7rem;">✕</button>
+            </li>
+        `).join('');
+    }
+}
+
+// Remove component from builder
+window.removeBuilderComponent = function(index) {
+    builderComponents.splice(index, 1);
+    updateBuilderPreview();
+};
+
+// Save tool string
+window.saveToolString = function() {
+    const nameInput = document.getElementById('new-toolstring-name');
+    const serviceSelect = document.getElementById('new-toolstring-service');
+
+    if (!nameInput || !nameInput.value.trim()) {
+        alert('Please enter a name for the tool string');
+        return;
+    }
+
+    if (builderComponents.length === 0) {
+        alert('Please add at least one component to the tool string');
+        return;
+    }
+
+    const newToolString = {
+        id: Date.now().toString(),
+        name: nameInput.value.trim(),
+        serviceLine: serviceSelect ? serviceSelect.value : 'CT',
+        components: builderComponents.map(item => ({...item})),
+        createdAt: new Date().toISOString()
+    };
+
+    savedToolStrings.push(newToolString);
+    saveToolStringsToStorage();
+
+    nameInput.value = '';
+    builderComponents = [];
+    updateBuilderPreview();
+
+    switchEquipmentTab('toolstrings');
+    showToast(`Tool string "${newToolString.name}" saved successfully!`);
+};
+
+// Render saved tool strings
+function renderSavedToolStrings() {
+    const list = document.getElementById('saved-toolstrings-list');
+    const empty = document.getElementById('empty-toolstrings');
+    if (!list || !empty) return;
+
+    if (savedToolStrings.length === 0) {
+        list.classList.add('hidden');
+        empty.classList.remove('hidden');
+        return;
+    }
+
+    list.classList.remove('hidden');
+    empty.classList.add('hidden');
+
+    list.innerHTML = savedToolStrings.map((toolString, index) => `
+        <div class="tool-string-card">
+            <div class="tool-string-header">
+                <div>
+                    <span class="tool-string-name">${toolString.name}</span>
+                    <span class="service-line-badge">${toolString.serviceLine}</span>
+                </div>
+                <div>
+                    <button class="btn-add-equipment" onclick="useToolString(${index})">Use This String</button>
+                    <button class="btn-danger ml-2" onclick="deleteToolString(${index})">Delete</button>
+                </div>
+            </div>
+            <ul class="tool-string-components">
+                ${toolString.components.map((item, i) => `
+                    <li class="tool-string-component">${i + 1}. ${item.name}</li>
+                `).join('')}
+            </ul>
+            <div class="text-xs text-gray-500 mt-3">
+                Created: ${new Date(toolString.createdAt).toLocaleDateString()}
+            </div>
+        </div>
+    `).join('');
+}
+
+// Use a tool string (add to current plan)
+window.useToolString = function(index) {
+    const toolString = savedToolStrings[index];
+    showToast(`Tool string "${toolString.name}" added to your plan!`);
+};
+
+// Delete a tool string
+window.deleteToolString = function(index) {
+    const toolString = savedToolStrings[index];
+    if (confirm(`Are you sure you want to delete "${toolString.name}"?`)) {
+        savedToolStrings.splice(index, 1);
+        saveToolStringsToStorage();
+        renderSavedToolStrings();
+        showToast(`Tool string "${toolString.name}" deleted`);
+    }
+};
+
+// Render service templates
+function renderServiceTemplates() {
+    const templates = {
+        ct: {
+            name: 'Coiled Tubing Standard Package',
+            description: 'Standard CT package for wellbore cleanout and circulation',
+            serviceLine: 'CT',
+            components: ['CT Reel', 'Injector Head', 'BHA Assembly', 'Jetting Tools']
+        },
+        els_fishing: {
+            name: 'E-Line Fishing Assembly',
+            description: 'Complete fishing assembly for wireline operations',
+            serviceLine: 'ELS',
+            components: ['Rope Socket', 'Power Jar', 'Internal Spear', 'Pressure Gauge']
+        },
+        slk_gaslift: {
+            name: 'Slickline Gas Lift Service',
+            description: 'Standard slickline setup for gas lift valve operations',
+            serviceLine: 'SLK',
+            components: ['Running Tool', 'Gas Lift Valve', 'Lock Mandrel', 'Equalizing Prong']
+        },
+        whm_completion: {
+            name: 'WHM Completion Assembly',
+            description: 'Wireline completion tools package',
+            serviceLine: 'WHM',
+            components: ['Setting Tool', 'Plug Assembly', 'Bridge Plug', 'Tubing Cutter']
+        }
+    };
+
+    const grid = document.getElementById('service-templates-grid');
+    if (!grid) return;
+
+    grid.innerHTML = Object.keys(templates).map(key => {
+        const template = templates[key];
+        return `
+            <div class="tool-string-card cursor-pointer">
+                <div class="tool-string-header">
+                    <div>
+                        <div class="tool-string-name">${template.name}</div>
+                        <span class="service-line-badge">${template.serviceLine}</span>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-400 mb-3">${template.description}</p>
+                <ul class="tool-string-components">
+                    ${template.components.map((comp, i) => `
+                        <li class="tool-string-component">${i + 1}. ${comp}</li>
+                    `).join('')}
+                </ul>
+            </div>
+        `;
+    }).join('');
+}
+
+// Initialize equipment catalog
+document.addEventListener('DOMContentLoaded', () => {
+    loadEquipmentCatalog();
+    loadSavedToolStrings();
+
+    const nameInput = document.getElementById('new-toolstring-name');
+    if (nameInput) nameInput.addEventListener('input', updateBuilderPreview);
+});
 
 </script>
 
