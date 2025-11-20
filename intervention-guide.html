@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Well Intervention Planning Guide | Welltegra</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #10b981;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-light);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 2rem 1.5rem;
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 140px);
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--bg-white);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 140px;
+            height: fit-content;
+            max-height: calc(100vh - 160px);
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.625rem 0.75rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 0.375rem;
+            font-size: 0.9375rem;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--bg-light);
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            background: var(--bg-white);
+            margin: 2rem;
+            margin-left: 0;
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .phase-section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 160px;
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .phase-header:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .phase-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .phase-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            font-weight: 700;
+        }
+
+        .toggle-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .phase-header.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .phase-content {
+            padding: 0 1.5rem;
+            max-height: 10000px;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, opacity 0.3s;
+            opacity: 1;
+        }
+
+        .phase-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .subsection {
+            margin-bottom: 2rem;
+        }
+
+        .subsection h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .subsection h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .subsection p, .subsection li {
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .subsection ul, .subsection ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .data-box {
+            background: var(--bg-light);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 0.375rem;
+        }
+
+        .data-box h4 {
+            color: var(--secondary-color);
+            margin-top: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .data-item {
+            margin-bottom: 1rem;
+        }
+
+        .data-item strong {
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow-sm);
+            background: var(--bg-white);
+        }
+
+        .comparison-table thead {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .comparison-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table tbody tr:hover {
+            background-color: var(--bg-light);
+        }
+
+        .example-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 0.375rem;
+        }
+
+        .example-box strong {
+            color: #92400e;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .key-considerations {
+            background: #dbeafe;
+            border-left: 4px solid var(--primary-color);
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 0.375rem;
+        }
+
+        .key-considerations h4 {
+            color: var(--primary-dark);
+            margin-top: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 3rem;
+            height: 3rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-4px);
+        }
+
+        .footer {
+            background: var(--text-primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .footer p {
+            margin: 0.5rem 0;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin: 1rem;
+            }
+        }
+
+        @media print {
+            .sidebar, .header, .back-to-top, .footer {
+                display: none;
+            }
+
+            .main-content {
+                margin: 0;
+                box-shadow: none;
+            }
+
+            .phase-content {
+                max-height: none !important;
+                opacity: 1 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1>Well Intervention Planning Guide</h1>
+            <p>A Comprehensive Framework: From Scoping to Continuous Improvement</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h3>Navigation</h3>
+            <ul class="nav-list">
+                <li class="nav-item"><a href="#executive-summary" class="nav-link">Executive Summary</a></li>
+                <li class="nav-item"><a href="#phase1" class="nav-link">Phase 1: Scoping & Concept</a></li>
+                <li class="nav-item"><a href="#phase2" class="nav-link">Phase 2: Data Gathering</a></li>
+                <li class="nav-item"><a href="#phase3" class="nav-link">Phase 3: Engineering & Risk</a></li>
+                <li class="nav-item"><a href="#phase4" class="nav-link">Phase 4: Human Factors</a></li>
+                <li class="nav-item"><a href="#phase5" class="nav-link">Phase 5: Execution</a></li>
+                <li class="nav-item"><a href="#phase6" class="nav-link">Phase 6: Continuous Improvement</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <section id="executive-summary" class="phase-section">
+                <div class="phase-header">
+                    <div class="phase-title">
+                        Executive Summary
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="phase-content">
+                    <p>Well intervention planning is a systematic, risk-based process that transforms a defined objective into a safe, efficient, and executable field procedure. It is not merely a checklist but a cycle of data acquisition, engineering analysis, and iterative refinement.</p>
+
+                    <p>The primary goal is to develop a robust program that safely and efficiently achieves the intervention objective while minimizing risk to personnel, the environment, and the asset.</p>
+
+                    <div class="key-considerations">
+                        <h4>The Digital Twin Philosophy</h4>
+                        <p>The ultimate goal is to create a "digital twin" of the intervention operation through modeling, allowing the team to predict outcomes, identify failure modes, and prepare contingencies <em>before</em> committing costly equipment and personnel to the wellsite.</p>
+                    </div>
+
+                    <p>The choice of conveyance—<strong>Slickline</strong>, <strong>Coiled Tubing (CT)</strong>, or <strong>Electric Line (E-line)</strong>—is a pivotal decision that dictates the entire engineering scope, risk profile, and potential success of the operation.</p>
+                </div>
+            </section>
+
+            <section id="phase1" class="phase-section">
+                <div class="phase-header">
+                    <div class="phase-title">
+                        <span class="phase-number">1</span>
+                        Intervention Scoping, Justification & Concept Selection
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="phase-content">
+                    <p>This initial phase defines the "why" and establishes the high-level feasibility and business case for the operation.</p>
+
+                    <div class="subsection">
+                        <h3>Flow of Steps</h3>
+
+                        <h4>1. Problem Identification & Opportunity Analysis</h4>
+                        <ul>
+                            <li><strong>Trigger:</strong> Production decline, well integrity issue (e.g., SCSSV failure), reservoir management requirement (e.g., PLT), or new technology trial.</li>
+                            <li><strong>Action:</strong> Quantify the problem with specific metrics.</li>
+                        </ul>
+
+                        <div class="example-box">
+                            <strong>Example:</strong>
+                            Instead of "production dropped," use: "Oil production has declined from 1,500 bopd to 800 bopd over 60 days, with a corresponding increase in water cut from 10% to 40%."
+                        </div>
+
+                        <h4>2. Define Clear, Measurable Objectives</h4>
+                        <p>Use the <strong>SMART</strong> (Specific, Measurable, Achievable, Relevant, Time-bound) framework.</p>
+
+                        <div class="example-box">
+                            <strong>Poor Example:</strong> "Find out why the well is watering out."<br><br>
+                            <strong>SMART Example:</strong> "Acquire a production log (PLT) across zones X, Y, and Z (4,500-5,200 ft MD) to identify water entry points with a flow rate accuracy of +/- 10%, enabling a targeted water shut-off within the next quarter."
+                        </div>
+
+                        <h4>3. Conceptual Method Screening & High-Level Feasibility</h4>
+                        <p>A multi-disciplinary team (Production Engineer, Intervention Engineer, Reservoir Engineer) performs a high-level screening.</p>
+
+                        <div class="key-considerations">
+                            <h4>Key Considerations:</h4>
+                            <ul>
+                                <li><strong>Well Geometry:</strong> Is the well highly deviated or horizontal? (Favors CT/E-line)</li>
+                                <li><strong>Pressure Control:</strong> What are the expected surface pressures? (High pressure may favor slickline or require more robust CT/E-line pressure control equipment)</li>
+                                <li><strong>Objective Complexity:</strong> Is it a simple mechanical set (Slickline) or does it require real-time data or pumping (CT/E-line)?</li>
+                                <li><strong>Logistics & Cost:</strong> What is the available budget and platform/rig space?</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="data-box">
+                        <h4>Data Required to be Added/Inputted for the Program:</h4>
+                        <div class="data-item">
+                            <strong>Intervention Justification Document (IJD):</strong>
+                            A formal document containing the problem statement, SMART objectives, and preliminary cost-benefit analysis.
+                        </div>
+                        <div class="data-item">
+                            <strong>Conceptual Feasibility Memo:</strong>
+                            A brief technical report outlining the pros and cons of Slickline, CT, and E-line against the specific objective, recommending one or two methods for detailed engineering.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="phase2" class="phase-section">
+                <div class="phase-header">
+                    <div class="phase-title">
+                        <span class="phase-number">2</span>
+                        Comprehensive Data Gathering & Well History Analysis
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="phase-content">
+                    <p>This is the foundational data acquisition phase. <strong>The quality of the entire intervention program is entirely dependent on the quality of the data gathered here.</strong></p>
+
+                    <div class="subsection">
+                        <h3>Flow of Steps</h3>
+                        <ol>
+                            <li><strong>Establish a "Master Data File":</strong> Create a single, controlled repository for all well-related information.</li>
+                            <li><strong>Collect Static Well Data:</strong> The unchanging physical characteristics of the well.</li>
+                            <li><strong>Collect Dynamic Well Data:</strong> The current state and historical performance of the well.</li>
+                            <li><strong>Perform a "Digital Wellbore Review":</strong> Virtually run the planned tools through the wellbore schematic to identify potential restrictions or interference points.</li>
+                        </ol>
+                    </div>
+
+                    <div class="data-box">
+                        <h4>Data Required: The Master Data File</h4>
+
+                        <div class="subsection">
+                            <h4>1. Well Trajectory & Geometry</h4>
+                            <div class="data-item">
+                                <strong>Data:</strong>
+                                Directional survey data (MD, TVD, Inclination, Azimuth) for the open hole, cased hole, and tubing.
+                            </div>
+                            <div class="data-item">
+                                <strong>Usage:</strong>
+                                Critical for <strong>CT Force/Torque Modeling</strong> to predict reach, calculate lock-up depth, and simulate buckling. Essential for E-line/Slickline to predict tool drag and ensure tools can reach TD.
+                            </div>
+                        </div>
+
+                        <div class="subsection">
+                            <h4>2. Completion Hardware & Strings</h4>
+                            <div class="data-item">
+                                <strong>Tubing String:</strong> Make-up, size, weight, grade, thread type, ID, drift ID, special connections, upset lengths. A detailed tally of all joints.
+                            </div>
+                            <div class="data-item">
+                                <strong>Casing/Liner String:</strong> Same as tubing data.
+                            </div>
+                            <div class="data-item">
+                                <strong>Completion Schematic:</strong> The official, as-built drawing. Must be verified against the final well report.
+                            </div>
+                            <div class="data-item">
+                                <strong>Profile Nipples:</strong> Type (e.g., Select-F, F, R), size, top depth, and bottom depth for all profiles (X, Y, Z, etc.).
+                            </div>
+                            <div class="data-item">
+                                <strong>Packers:</strong> Type, setting depth, setting mechanism (wireline-set, hydraulically-set), bore ID.
+                            </div>
+                            <div class="data-item">
+                                <strong>Subsurface Safety Valves (SCSSV):</strong> Type (flapper vs. sleeve), setting depth, control line pressure (operating and test), fail-safe position (open/close).
+                            </div>
+                            <div class="data-item">
+                                <strong>Gas Lift Equipment:</strong> Mandrel types (concentric vs. side-pocket), valve depths and ratings.
+                            </div>
+                            <div class="data-item">
+                                <strong>Usage:</strong> Determines toolstring compatibility (clearance), depth correlation points (CCL on collars, profiles), and potential obstruction locations.
+                            </div>
+                        </div>
+
+                        <div class="subsection">
+                            <h4>3. Reservoir & Fluid Properties</h4>
+                            <div class="data-item">
+                                <strong>Pressures:</strong> Current reservoir pressure, static bottomhole pressure (SBHP), flowing bottomhole pressure (FBHP).
+                            </div>
+                            <div class="data-item">
+                                <strong>Temperatures:</strong> Static bottomhole temperature (SBHT) and expected flowing temperature (FBHT).
+                            </div>
+                            <div class="data-item">
+                                <strong>Fluid Properties:</strong> PVT analysis – oil, water, gas densities (SG), viscosities, GOR (Gas-Oil Ratio). Water chemistry (chlorides, scaling potential). H₂S and CO₂ concentrations (mol%).
+                            </div>
+                            <div class="data-item">
+                                <strong>Usage:</strong>
+                                <ul>
+                                    <li><strong>P/T:</strong> Essential for selecting tool and equipment ratings (O-rings, electronics). Affects fluid viscosity for hydraulic modeling.</li>
+                                    <li><strong>Fluid Densities:</strong> Used for hydrostatic pressure calculations, well control scenarios, and buoyancy calculations in CT modeling.</li>
+                                    <li><strong>H₂S/CO₂:</strong> Drives material selection (requiring sour service equipment like 75K/SSSS or Duplex steels) and dictates H₂S safety levels (requires personal H₂S monitors, breathing apparatus).</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="subsection">
+                            <h4>4. Well History & Performance</h4>
+                            <div class="data-item">
+                                <strong>Production/Injection History:</strong> Plots of rates (oil, gas, water), pressures (tubing head, casing head), and choke settings.
+                            </div>
+                            <div class="data-item">
+                                <strong>Previous Intervention Reports:</strong> Detailed reports for <em>all</em> past interventions. Pay close attention to tools run, successes/failures, "stuck pipe" or "lost in hole" incidents, and deviations from the original program.
+                            </div>
+                            <div class="data-item">
+                                <strong>Usage:</strong> Provides empirical evidence of what has worked or failed in this specific wellbore. Helps identify recurring problems (e.g., a known tight spot at 8,500 ft) that must be planned for.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="phase3" class="phase-section">
+                <div class="phase-header">
+                    <div class="phase-title">
+                        <span class="phase-number">3</span>
+                        Detailed Engineering, Program Development & Risk Mitigation
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="phase-content">
+                    <p>This is where the data is transformed into a predictive model and a robust, step-by-step operational procedure.</p>
+
+                    <div class="subsection">
+                        <h3>Flow of Steps</h3>
+                        <ol>
+                            <li>Finalize Conveyance Method & BHA Design</li>
+                            <li>Perform Predictive Simulations & Modeling</li>
+                            <li>Draft the Detailed Intervention Program</li>
+                            <li>Conduct a Formal Risk Assessment (HAZOP/HAZID)</li>
+                            <li>Develop Detailed Contingency & "Get-Out-of-Jail" Plans</li>
+                        </ol>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Conveyance Method Comparison</h3>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Slickline</th>
+                                    <th>Coiled Tubing (CT)</th>
+                                    <th>Electric Line (E-line)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Primary Function</strong></td>
+                                    <td>Simple mechanical manipulation (setting/retrieving plugs, valves, gauges)</td>
+                                    <td>Mechanical manipulation, pumping/circulation, logging, milling, cleanouts</td>
+                                    <td>High-resolution data acquisition, selective perforation, mechanical manipulation</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Conveyance</strong></td>
+                                    <td>Simple solid wire. No real-time surface readout</td>
+                                    <td>Continuous steel pipe. Can pump fluids. Can have real-time data (with e-coil)</td>
+                                    <td>Armored cable with electrical conductors. Provides real-time data</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Force</strong></td>
+                                    <td>Low axial force</td>
+                                    <td>High axial force. Can push through high doglegs and debris</td>
+                                    <td>Low axial force (similar to slickline)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Data</strong></td>
+                                    <td>None (unless memory tools are used)</td>
+                                    <td>Can have real-time data (CT-Head T/P, CCL) and downhole memory tools</td>
+                                    <td>Real-time, high-bandwidth data (CCL, GR, CBL, PLT, etc.)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="data-box">
+                        <h4>Predictive Simulations: The "Digital Twin"</h4>
+
+                        <div class="data-item">
+                            <strong>CT Force & Torque Analysis:</strong>
+                            Models mechanical forces on the CT string. Predicts the <strong>lock-up depth</strong> (where the CT can no longer be pushed), <strong>helical buckling</strong>, and the <strong>maximum pull force</strong> required to retrieve the string.
+                        </div>
+
+                        <div class="data-item">
+                            <strong>CT Hydraulics Simulation:</strong>
+                            Models fluid flow to predict <strong>surface pump pressure</strong>, <strong>annular velocity</strong> (for effective cleanouts), and <strong>ECD (Equivalent Circulating Density)</strong> to avoid fracturing the formation.
+                        </div>
+
+                        <div class="data-item">
+                            <strong>Perforating Ballistics & Shock Modeling:</strong>
+                            Predicts the pressure wave, dynamic shock loads, and wellbore temperature changes from detonation, ensuring downhole equipment can withstand the event.
+                        </div>
+
+                        <div class="data-item">
+                            <strong>Transient Multiphase Flow Simulation:</strong>
+                            For complex cleanouts in live wells, simulates gas, oil, water, and solids interactions to predict slugging and pressure fluctuations.
+                        </div>
+
+                        <div class="data-item">
+                            <strong>Wireline Stretch & Fatigue Modeling:</strong>
+                            Calculates wire elongation for accurate depth correction and tracks cumulative damage to determine when the wire should be retired.
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Risk Assessment (HAZOP)</h3>
+                        <p><strong>HAZOP (Hazard and Operability Study)</strong> is a structured brainstorming session where the team uses guidewords (e.g., No, More, Less, Reverse) to identify potential deviations from the design intent.</p>
+
+                        <div class="key-considerations">
+                            <h4>HAZOP Outputs:</h4>
+                            <ul>
+                                <li><strong>Risk Register:</strong> A table detailing each hazard, its cause, consequences, likelihood, and severity.</li>
+                                <li><strong>Mitigation Measures:</strong> Specific actions to reduce the risk to an As Low As Reasonably Practicable (ALARP) level.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Contingency Planning</h3>
+                        <p>Detailed, standalone plans for worst-case scenarios:</p>
+                        <ul>
+                            <li><strong>Stuck Pipe/CT Plan:</strong> What steps will be taken? What fishing tools are required?</li>
+                            <li><strong>Well Control Plan:</strong> What are the kill fluid densities and volumes? What is the kill method (circulation vs. bullheading)?</li>
+                            <li><strong>Equipment Failure Plan:</strong> What is the backup if a primary tool fails on location?</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="phase4" class="phase-section">
+                <div class="phase-header">
+                    <div class="phase-title">
+                        <span class="phase-number">4</span>
+                        Human Factors, Decision-Making & Crew Resource Management
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="phase-content">
+                    <p><strong>A technically perfect program is useless if it's not executed correctly by a competent, cohesive team.</strong> This phase focuses on the human element.</p>
+
+                    <div class="subsection">
+                        <h3>Flow of Steps</h3>
+                        <ol>
+                            <li>Establish a "One-Team" Culture: Break down silos between the operator company and the service company.</li>
+                            <li>Implement Crew Resource Management (CRM): Adopt principles from aviation to improve communication and decision-making.</li>
+                            <li>Define a Clear Decision-Making & Authority Matrix: Empower the team to stop the job if necessary.</li>
+                        </ol>
+                    </div>
+
+                    <div class="data-box">
+                        <h4>CRM Principles & Communication Protocols</h4>
+
+                        <div class="data-item">
+                            <strong>Pre-Job CRM Briefing:</strong>
+                            A structured briefing where every person is encouraged to speak up about concerns.
+                        </div>
+
+                        <div class="data-item">
+                            <strong>"Time-Out for Safety" Authority:</strong>
+                            A formal policy that gives <em>any</em> crew member the authority and obligation to call a "stop work" if they feel something is unsafe.
+                        </div>
+
+                        <div class="data-item">
+                            <strong>Closed-Loop Communication:</strong>
+                            A protocol for confirming critical instructions by repeating them back.
+                        </div>
+                    </div>
+
+                    <div class="key-considerations">
+                        <h4>Decision Gates & Go/No-Go Criteria</h4>
+                        <p>A set of predefined criteria that must be met before proceeding to the next major phase of the operation. This structured approach prevents "press-on-itis" and ensures operations only proceed when all conditions are safe.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="phase5" class="phase-section">
+                <div class="phase-header">
+                    <div class="phase-title">
+                        <span class="phase-number">5</span>
+                        Pre-Execution, Logistics & Field Execution
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="phase-content">
+                    <p>This phase is about mobilizing the right people and equipment to the location and executing the plan safely.</p>
+
+                    <div class="subsection">
+                        <h3>Flow of Steps</h3>
+                        <ol>
+                            <li><strong>Final Equipment Check & Certification:</strong> Verify all equipment matches the program list and has valid test certificates.</li>
+                            <li><strong>Personnel Verification:</strong> Confirm all crew members have valid, role-specific certifications (e.g., IWCF Well Control).</li>
+                            <li><strong>Pre-Job Safety & Planning Meeting (Toolbox Talk):</strong> The entire crew on location walks through the program, the HAZOP findings, and their individual roles.</li>
+                            <li><strong>Execution & Real-Time Monitoring:</strong> The supervisor executes the program while continuously comparing actual vs. predicted parameters (e.g., surface weight vs. CT model, pump pressure vs. hydraulic model).</li>
+                            <li><strong>Documentation:</strong> The Supervisor accurately logs all times, depths, weights, pressures, and any deviations from the plan.</li>
+                        </ol>
+                    </div>
+
+                    <div class="data-box">
+                        <h4>Required Documentation</h4>
+                        <ul>
+                            <li><strong>Equipment Certification Dossiers:</strong> Copies of all pressure test certificates, calibration certs, and inspection reports.</li>
+                            <li><strong>Crew Competency Matrix:</strong> A signed-off document verifying personnel qualifications.</li>
+                            <li><strong>Signed-Off JSA/TBM Records:</strong> Proof that the pre-job safety meeting was held and attended.</li>
+                            <li><strong>Daily Morning Reports:</strong> Documents containing the <em>actual</em> data from the job (weights, depths, pressures, times, issues encountered).</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="phase6" class="phase-section">
+                <div class="phase-header">
+                    <div class="phase-title">
+                        <span class="phase-number">6</span>
+                        Post-Job Analysis, Knowledge Management & Continuous Improvement
+                    </div>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="phase-content">
+                    <p><strong>This is the most important phase for long-term asset management.</strong> The goal is to ensure that lessons learned are captured, analyzed, and disseminated to prevent future failures and repeat successes.</p>
+
+                    <div class="subsection">
+                        <h3>Flow of Steps</h3>
+                        <ol>
+                            <li>Conduct a Formal Post-Job Review (PJR)</li>
+                            <li>Perform a "Root Cause Analysis" (RCA) for any Deviations</li>
+                            <li>Update the "Living" Well File and Knowledge Base</li>
+                        </ol>
+                    </div>
+
+                    <div class="data-box">
+                        <h4>Critical Outputs</h4>
+
+                        <div class="data-item">
+                            <strong>Post-Job Review (PJR) Report:</strong>
+                            A structured report that answers: What went well? What did not go according to plan? What can we do differently next time?
+                        </div>
+
+                        <div class="data-item">
+                            <strong>Root Cause Analysis (RCA):</strong>
+                            An investigation that goes beyond the immediate cause to find the systemic failures that led to the event.
+                        </div>
+
+                        <div class="data-item">
+                            <strong>Updated "Digital Twin" and Knowledge Base:</strong>
+                            <ul>
+                                <li><strong>Well File Update:</strong> The Final Job Report, PJR, and RCA are permanently attached to the well's digital file.</li>
+                                <li><strong>Calibration of Simulators:</strong> The actual job data is used to "calibrate" the engineering models, making the next simulation more accurate.</li>
+                                <li><strong>Lessons Learned Database:</strong> Actionable items from the PJR are entered into a searchable, company-wide database. This transforms individual experiences into institutional knowledge.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="key-considerations">
+                        <h4>The Continuous Improvement Cycle</h4>
+                        <p>By integrating these phases, the well intervention planning process evolves from a simple procedural task into a sophisticated, closed-loop system of continuous learning and improvement, ultimately leading to safer, more efficient, and more successful outcomes.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <button class="back-to-top" onclick="scrollToTop()">↑</button>
+
+    <footer class="footer">
+        <p><strong>Welltegra Network</strong></p>
+        <p>Well Intervention Planning Guide | Version 1.0 | 2025-11-20</p>
+        <p>This document is a living guide and should be updated regularly based on field experience.</p>
+    </footer>
+
+    <script>
+        // Toggle phase sections
+        document.querySelectorAll('.phase-header').forEach(header => {
+            header.addEventListener('click', function() {
+                this.classList.toggle('collapsed');
+                const content = this.nextElementSibling;
+                content.classList.toggle('collapsed');
+            });
+        });
+
+        // Active navigation highlighting
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.phase-section');
+
+        function updateActiveNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+
+        // Smooth scrolling for navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Back to top button
+        const backToTopButton = document.querySelector('.back-to-top');
+
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize
+        updateActiveNav();
+    </script>
+</body>
+</html>
