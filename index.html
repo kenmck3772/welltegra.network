@@ -5302,7 +5302,7 @@ document.addEventListener('DOMContentLoaded', function() {
         calculateROI();
     };
 
-    if (engineerCountSlider) {
+    if (engineerCountSlider && nptReductionSlider && timeSavingsSlider) {
         [engineerCountSlider, nptReductionSlider, timeSavingsSlider].forEach(slider => {
             slider.addEventListener('input', calculateROI);
         });
