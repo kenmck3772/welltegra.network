@@ -4517,10 +4517,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- MODAL LOGIC ---
 
     const openModal = (wellId) => {
-        const well = wellData.find(w => w.id === wellId); 
+        const well = wellData.find(w => w.id === wellId);
         if (!well) return;
-        
+
         modalTitle.textContent = `Well History & Schematic: ${well.name}`;
+
+        // Build 3D wellbore visualization section
+        const wellbore3DSection = `
+            <div class="mb-6">
+                <h3 class="text-xl font-bold mb-3">3D Wellbore Visualization</h3>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-lg border dark:border-slate-700">
+                    ${render3DWellbore(well)}
+                </div>
+            </div>
+        `;
+
         modalContent.innerHTML = `
             <div class="mb-4 border-b dark:border-gray-700">
                 <nav class="-mb-px flex space-x-8" aria-label="Tabs">
@@ -4535,6 +4546,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div id="history-content" class="max-h-96 overflow-y-auto pr-2"></div>
                     </div>
                     <div class="md:col-span-1">
+                        ${wellbore3DSection}
                         <h4 class="text-xl font-semibold mb-4">Wellbore Schematic</h4>
                         <div class="bg-white dark:bg-slate-800 p-2 rounded-lg shadow-inner border dark:border-slate-700">
                             ${renderWellSchematic(well)}
@@ -4547,7 +4559,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div id="reports-content" class="h-96 overflow-y-auto"></div>
             </div>
         `;
-        
+
         renderModalTabs(well);
         
         document.querySelectorAll('.modal-tab').forEach(tab => {
@@ -4707,7 +4719,252 @@ document.addEventListener('DOMContentLoaded', function() {
             svgContent += `<rect x="55" y="${topY}" width="70" height="${height}" fill="#a8a29e"/>`; 
         });
         
-        svgContent += `</svg>`; 
+        svgContent += `</svg>`;
+        return svgContent;
+    };
+
+    const render3DWellbore = (well) => {
+        const isDark = body.classList.contains('theme-dark');
+        const maxDepth = Math.max(...well.completion.casing.map(c => c.bottom), 18500);
+        const scale = 500 / maxDepth;
+        const width = 300;
+        const height = 600;
+
+        // Define gradients and 3D effects
+        let svgContent = `
+            <svg viewBox="0 0 ${width} ${height}" class="w-full h-auto">
+                <defs>
+                    <!-- Gradient for wellbore formation -->
+                    <linearGradient id="formation-grad-${well.id}" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:${isDark ? '#1a1410' : '#8b7355'};stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:${isDark ? '#3a2d21' : '#a0826d'};stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:${isDark ? '#1a1410' : '#8b7355'};stop-opacity:1" />
+                    </linearGradient>
+
+                    <!-- Gradient for casing (normal) -->
+                    <linearGradient id="casing-grad-${well.id}" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#6b7280;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#9ca3af;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#6b7280;stop-opacity:1" />
+                    </linearGradient>
+
+                    <!-- Gradient for casing (problem) -->
+                    <linearGradient id="casing-problem-grad-${well.id}" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#dc2626;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#ef4444;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+                    </linearGradient>
+
+                    <!-- Gradient for tubing -->
+                    <linearGradient id="tubing-grad-${well.id}" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#4b5563;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#6b7280;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#4b5563;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+
+                <!-- Background formation -->
+                <rect x="0" y="0" width="${width}" height="${height}" fill="url(#formation-grad-${well.id})"/>
+        `;
+
+        // Add depth markers on the left
+        svgContent += `<g class="depth-markers">`;
+        for (let d = 0; d <= maxDepth; d += 5000) {
+            const y = d * scale + 50;
+            svgContent += `
+                <text x="20" y="${y}"
+                      font-size="12"
+                      fill="${isDark ? '#94a3b8' : '#1e40af'}"
+                      text-anchor="end">${d/1000}k</text>
+                <line x1="25" y1="${y}" x2="35" y2="${y}"
+                      stroke="${isDark ? '#475569' : '#94a3b8'}"
+                      stroke-width="1"/>
+            `;
+        }
+        svgContent += `</g>`;
+
+        // Surface equipment (wellhead)
+        svgContent += `
+            <g class="wellhead">
+                <!-- Wellhead platform -->
+                <rect x="${width/2 - 50}" y="30" width="100" height="15"
+                      fill="${isDark ? '#1e293b' : '#cbd5e1'}"
+                      stroke="${isDark ? '#475569' : '#64748b'}"
+                      stroke-width="2"/>
+                <!-- Christmas tree -->
+                <rect x="${width/2 - 15}" y="10" width="30" height="25"
+                      fill="${isDark ? '#334155' : '#94a3b8'}"
+                      stroke="${isDark ? '#64748b' : '#475569'}"
+                      stroke-width="2"/>
+            </g>
+        `;
+
+        // Draw casing strings in 3D perspective
+        well.completion.casing?.forEach((c, idx) => {
+            const topY = c.top * scale + 50;
+            const bottomY = c.bottom * scale + 50;
+            const height = bottomY - topY;
+
+            // Perspective effect: wider at surface, narrower at depth
+            const topWidth = 80 - (idx * 8);
+            const bottomWidth = 70 - (idx * 8);
+            const leftX = width/2 - topWidth/2;
+            const rightX = width/2 + topWidth/2;
+
+            const fill = c.isProblem ? `url(#casing-problem-grad-${well.id})` : `url(#casing-grad-${well.id})`;
+            const stroke = c.isProblem ? '#dc2626' : '#4b5563';
+
+            // Left side of casing
+            svgContent += `
+                <path d="M ${leftX} ${topY}
+                         L ${width/2 - bottomWidth/2} ${bottomY}
+                         L ${width/2 - bottomWidth/2 + 5} ${bottomY}
+                         L ${leftX + 5} ${topY} Z"
+                      fill="${fill}"
+                      stroke="${stroke}"
+                      stroke-width="1"
+                      opacity="0.9"/>
+            `;
+
+            // Right side of casing
+            svgContent += `
+                <path d="M ${rightX} ${topY}
+                         L ${width/2 + bottomWidth/2} ${bottomY}
+                         L ${width/2 + bottomWidth/2 - 5} ${bottomY}
+                         L ${rightX - 5} ${topY} Z"
+                      fill="${fill}"
+                      stroke="${stroke}"
+                      stroke-width="1"
+                      opacity="0.9"/>
+            `;
+
+            // Casing label
+            if (idx === 0) {
+                svgContent += `
+                    <text x="${rightX + 10}" y="${topY + 30}"
+                          font-size="10"
+                          fill="${c.isProblem ? '#ef4444' : (isDark ? '#cbd5e1' : '#1e40af')}">${c.size}" ${c.type}</text>
+                `;
+            }
+        });
+
+        // Draw tubing string
+        well.completion.tubing?.forEach(t => {
+            const topY = t.top * scale + 50;
+            const bottomY = t.bottom * scale + 50;
+            const tubingWidth = 8;
+            const leftX = width/2 - tubingWidth/2;
+            const rightX = width/2 + tubingWidth/2;
+
+            svgContent += `
+                <rect x="${leftX}" y="${topY}"
+                      width="${tubingWidth}"
+                      height="${bottomY - topY}"
+                      fill="url(#tubing-grad-${well.id})"
+                      stroke="#374151"
+                      stroke-width="0.5"/>
+            `;
+        });
+
+        // Draw equipment with 3D effects
+        well.completion.equipment?.forEach(e => {
+            const y = e.top * scale + 50;
+            const isProblem = e.isProblem;
+
+            if (e.item.includes('Packer')) {
+                // 3D packer visualization
+                svgContent += `
+                    <g class="packer">
+                        <ellipse cx="${width/2}" cy="${y}" rx="45" ry="8"
+                                fill="${isDark ? '#475569' : '#94a3b8'}"
+                                opacity="0.7"/>
+                        <rect x="${width/2 - 40}" y="${y}" width="80" height="3"
+                              fill="${isDark ? '#1e293b' : '#64748b'}"/>
+                        <ellipse cx="${width/2}" cy="${y + 3}" rx="45" ry="8"
+                                fill="${isDark ? '#334155' : '#475569'}"/>
+                    </g>
+                `;
+            } else if (e.item.includes('SSSV')) {
+                // Safety valve with failure indicator
+                const color = isProblem ? '#dc2626' : '#0891b2';
+                svgContent += `
+                    <g class="sssv">
+                        <rect x="${width/2 - 20}" y="${y - 10}" width="40" height="20"
+                              fill="${color}"
+                              opacity="0.8"
+                              stroke="${isProblem ? '#991b1b' : '#155e75'}"
+                              stroke-width="2"/>
+                        ${isProblem ? `
+                            <path d="M ${width/2 - 15} ${y - 5} L ${width/2 + 15} ${y + 5}
+                                     M ${width/2 - 15} ${y + 5} L ${width/2 + 15} ${y - 5}"
+                                  stroke="#fee2e2" stroke-width="2"/>
+                        ` : ''}
+                        <text x="${width/2 + 25}" y="${y + 5}"
+                              font-size="9"
+                              fill="${color}">${e.item}</text>
+                    </g>
+                `;
+            } else if (e.item.includes('Scale')) {
+                // Scale blockage visualization
+                svgContent += `
+                    <g class="scale-blockage">
+                        <ellipse cx="${width/2}" cy="${y}" rx="35" ry="15"
+                                fill="#c2410c"
+                                opacity="0.6"/>
+                        <ellipse cx="${width/2}" cy="${y - 5}" rx="30" ry="12"
+                                fill="#ea580c"
+                                opacity="0.7"/>
+                        <text x="${width/2 + 40}" y="${y}"
+                              font-size="9"
+                              fill="#ea580c">Scale Blockage</text>
+                    </g>
+                `;
+            } else if (e.item.includes('Fish')) {
+                // Stuck fish visualization
+                svgContent += `
+                    <g class="fish">
+                        <rect x="${width/2 - 5}" y="${y - 20}" width="10" height="40"
+                              fill="#dc2626"
+                              opacity="0.8"
+                              stroke="#991b1b"
+                              stroke-width="1"/>
+                        <text x="${width/2 + 15}" y="${y}"
+                              font-size="9"
+                              fill="#dc2626">Fish</text>
+                    </g>
+                `;
+            }
+        });
+
+        // Draw perforations
+        well.completion.perforations?.forEach(p => {
+            const topY = p.top * scale + 50;
+            const bottomY = p.bottom * scale + 50;
+            const perfColor = p.isProblem ? '#ef4444' : '#3b82f6';
+
+            // Perforation zone indicator
+            svgContent += `
+                <line x1="${width/2 - 60}" y1="${topY}"
+                      x2="${width/2 - 40}" y2="${topY}"
+                      stroke="${perfColor}"
+                      stroke-width="2"/>
+                <line x1="${width/2 - 60}" y1="${bottomY}"
+                      x2="${width/2 - 40}" y2="${bottomY}"
+                      stroke="${perfColor}"
+                      stroke-width="2"/>
+                <line x1="${width/2 - 60}" y1="${topY}"
+                      x2="${width/2 - 60}" y2="${bottomY}"
+                      stroke="${perfColor}"
+                      stroke-width="1"
+                      stroke-dasharray="3,3"/>
+                <text x="${width/2 - 75}" y="${(topY + bottomY)/2}"
+                      font-size="8"
+                      fill="${perfColor}"
+                      text-anchor="end">Perfs</text>
+            `;
+        });
+
+        svgContent += `</svg>`;
         return svgContent;
     };
 
