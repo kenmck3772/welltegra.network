@@ -30,6 +30,18 @@ Well-Tegra is an interactive case study platform designed to demonstrate advance
 - Modal-based detailed views
 - Print-ready reports
 
+### 📚 Documentation & Knowledge Resources
+- **Comprehensive Intervention Planning Guide**: A complete 6-phase methodology covering the entire intervention lifecycle
+  - Phase 1: Intervention Scoping, Justification & Concept Selection
+  - Phase 2: Comprehensive Data Gathering & Well History Analysis
+  - Phase 3: Detailed Engineering, Program Development & Risk Mitigation
+  - Phase 4: Human Factors, Decision-Making & Crew Resource Management
+  - Phase 5: Pre-Execution, Logistics & Field Execution
+  - Phase 6: Post-Job Analysis, Knowledge Management & Continuous Improvement
+- **Interactive HTML Guide**: User-friendly web interface with collapsible sections and navigation
+- **Markdown Reference**: Version-controlled technical documentation for developers and engineers
+- **Integrated Help**: Contextual links throughout the W666 planner connecting to relevant guide sections
+
 ## Technology Stack
 
 - **Frontend**: HTML5, CSS3 (Tailwind CSS), JavaScript (Vanilla)
@@ -80,6 +92,27 @@ This project can be easily deployed using GitHub Pages:
 - Use the top navigation bar to switch between different sections
 - Toggle dark/light mode using the theme button
 - Access detailed views through the "View Details" buttons on each well card
+- **Access the Intervention Planning Guide** via the "Guide" link in the main navigation
+
+### Intervention Planning Guide
+The comprehensive planning guide is accessible in two formats:
+
+1. **Interactive HTML Version** (`intervention-guide.html`):
+   - Beautiful, user-friendly interface with collapsible sections
+   - Sticky navigation for easy jumping between phases
+   - Print-friendly styling for offline reference
+   - Accessible from the main navigation bar
+
+2. **Markdown Documentation** (`WELL_INTERVENTION_PLANNING_GUIDE.md`):
+   - Version-controlled source document
+   - Perfect for developers and technical review
+   - Single source of truth for the methodology
+
+The guide provides the theoretical foundation and best practices that inform the W666 planner and can be used as:
+- A training resource for intervention planning teams
+- A reference during actual planning activities
+- A template for developing well-specific programs
+- A knowledge base for continuous improvement initiatives
 
 ### Well Management
 1. Click on any well card to view comprehensive details
