@@ -3332,35 +3332,159 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'CASE STUDY: The Barrier Restoration',
             field: 'Brahan',
             region: 'UKCS',
-            type: 'Oil Producer',
-            depth: '12,795ft',
+            type: 'HPHT Gas Condensate Producer',
+            depth: '13,123ft',
             locationType: 'Platform',
+            platform: 'Brahan Alpha',
             datumElevation: '82ft',
             waterDepth: '0ft',
-            status: 'Active - Restored Production',
-            issue: 'SOLUTION: Failed TRSSV was locked open and replaced with slickline-retrievable insert valve.',
+            status: 'Active - Post-Intervention',
+            issue: 'CASE STUDY: "The Broken Barrier" - Failed TRSSV successfully replaced with slickline-retrievable insert valve.',
             wellboreImage: '/assets/wellbore-Well_44-3d.png',
-            history: [
-                { date: '2024-04-10', operation: 'Routine DHSV Test', problem: 'TRSSV failed to close during mandatory 6-month function test. Well shut-in by regulator.', lesson: 'Aging safety valve compromised well integrity, requiring immediate remediation.' },
-                { date: '2024-04-25', operation: 'Slickline Insert Valve Job', problem: 'Successfully locked open failed TRSSV and installed new wireline-retrievable insert valve.', lesson: 'Standard slickline operation restored primary safety barrier without rig intervention.' }
-            ],
-            dailyReports: [],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 12795}],
-                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 12795}],
-                equipment: [
-                    {item: 'SSSV', top: 1312, comments: 'Slickline-Retrievable Insert Valve (Replaced Failed TRSSV)'},
-                    {item: 'Packer', top: 12631, comments: 'Hydraulic Set Production Packer'}
-                ],
-                perforations: [{top: 12861, bottom: 12992}]
+
+            // PILLAR 1: Identity & Context
+            administrative: {
+                wellID: '44',
+                regulatoryID: '12-345-67893-BRA-44',
+                operator: 'Brahan Field Operating Company',
+                lease: 'Brahan Alpha Lease',
+                surfaceLocation: { lat: '58° 38\' 25.7" N', lon: '0° 20\' 25.1" E' },
+                spudDate: '2020-03-18',
+                completionDate: '2020-06-22',
+                originalAFE: 49000000,
+                actualCost: 49500000,
+                classification: 'Active Producer (Post-Intervention)',
+                reportDate: '2023-10-26'
             },
+            geological: {
+                targetFormation: 'Brahan Alpha Sandstone (Deep Reservoir Section)',
+                prognosisVsActual: 'Actual formation top encountered 5m deeper than prognosis',
+                reservoirProperties: {
+                    porosity: '17-21%',
+                    permeability: '140-220 mD',
+                    initialPressure: '8,500 psi @ 3,935 m TVD',
+                    temperature: '172 °C'
+                },
+                fluidCharacteristics: {
+                    fluidType: 'Rich Gas Condensate',
+                    CGR: '130 bbl/MMscf',
+                    gasGravity: 0.68,
+                    h2s: '20 ppm',
+                    co2: '4.5 mol%'
+                },
+                volumetrics: {
+                    OGIP: '145 Bcf',
+                    EUR: '55 Bcf'
+                }
+            },
+
+            // PILLAR 2: Physical Blueprint
             trajectory: [
                 {md: 0, inc: 0, azimuth: 0, tvd: 0},
                 {md: 3281, inc: 15.0, azimuth: 45.0, tvd: 3244},
                 {md: 6562, inc: 30.0, azimuth: 45.0, tvd: 6279},
                 {md: 9843, inc: 20.0, azimuth: 45.0, tvd: 9363},
                 {md: 13123, inc: 10.0, azimuth: 45.0, tvd: 12550}
-            ]
+            ],
+            wellboreConstruction: [
+                {component: 'Conductor', topMD: 0, bottomMD: 492, size: 30, weight: null, grade: null, connection: null, details: 'Driven Pile'},
+                {component: 'Surface', topMD: 0, bottomMD: 3609, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Surface (verified by returns)'},
+                {component: 'Intermediate', topMD: 0, bottomMD: 9186, size: 13.375, weight: 54.5, grade: 'L-80', connection: 'BTC', details: 'TOC @ 1,700m (CBL/VDL verified)'},
+                {component: 'Production', topMD: 0, bottomMD: 13123, size: 9.625, weight: 47.0, grade: 'C-90', connection: 'VAM TOP', details: 'TOC @ 2,400m (CBL/VDL verified)'}
+            ],
+
+            // PILLAR 3: Completion & Production Setup
+            completion: {
+                casing: [{type: 'Production', size: '9 5/8"', top: 0, bottom: 13123}],
+                tubing: [{type: 'Production', size: '5.5"', top: 0, bottom: 12795, weight: '17.0 lb/ft', grade: 'L-80 13Cr', connection: 'VAM TOP'}],
+                equipment: [
+                    {item: 'SSSV', top: 1312, details: '**Slickline-Retrievable Insert Valve (Installed May 25, 2022, to replace failed TRSSV). 1.750" bore.**', isRepair: true},
+                    {item: 'Original TRSSV Nipple', top: 1312, details: 'Original TRSSV nipple profile. TRSSV was locked open and is now non-functional.'},
+                    {item: 'Gas Lift Mandrels', top: 4593, details: 'Side Pocket Mandrels at 1,400m, 1,700m, 2,000m - 1.0" OD valve pockets'},
+                    {item: 'Packer', top: 12631, details: 'Model "A" Hydraulic Set Production Packer, 10k psi rating'},
+                    {item: 'Landing Nipple', top: 12730, details: 'No-Go Nipple, 2.313" ID, located below packer'}
+                ],
+                perforations: [{top: 12861, bottom: 12992, details: '6 SPF, 60° phasing, Big Hole charges, TCP'}]
+            },
+
+            // PILLAR 4: Lifecycle Performance & Evolution
+            productionHistory: {
+                initialRate: {date: 'Q3 2020', oil: 1400, gas: 75, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                duringSSVFailure: {date: 'Q1 2022', oil: 0, gas: 0, water: 0, unit: 'Well shut-in for safety reasons'},
+                currentRate: {date: 'Q3 2023', oil: 1350, gas: 72, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                cumulativeProduction: {gas: '26.5 Bcf', condensate: '3.2 MMbbl'},
+                performanceTrend: 'Excellent and stable post-intervention, with minimal decline.'
+            },
+            history: [
+                {
+                    date: '2020-06-22',
+                    operation: 'Initial Production',
+                    problem: 'Well brought online successfully at 9,500 boepd (75 MMscf/d gas, 1,400 bbl/d condensate).',
+                    lesson: 'Strong initial producer for Brahan field.',
+                    serviceProvider: 'Brahan Operating Co.',
+                    duration: 'N/A',
+                    npt: 0
+                },
+                {
+                    date: '2022-02-10',
+                    operation: 'Wireline (Diagnostic)',
+                    problem: 'Perform routine TRSSV function test',
+                    lesson: 'Confirmed a critical safety barrier failure. TRSSV found to be stuck in the closed position and would not open. Well immediately shut-in.',
+                    serviceProvider: 'SafetyFirst Wireline',
+                    duration: '6 hours',
+                    npt: 2,
+                    outcome: 'FAILED - TRSSV malfunction'
+                },
+                {
+                    date: '2022-05-20',
+                    operation: 'Slickline (Critical Intervention)',
+                    problem: 'Restore downhole safety barrier',
+                    lesson: 'Slickline-retrievable insert valves provide a highly efficient and cost-effective solution for TRSSV failure, avoiding a major workover. Failed TRSSV was mechanically locked open. New slickline-retrievable insert SSV was installed and successfully function tested. This became the "Broken Barrier" case study.',
+                    serviceProvider: 'QuickWire Services',
+                    duration: '18 hours',
+                    npt: 4,
+                    outcome: 'Successful - Safety barrier restored'
+                },
+                {
+                    date: '2022-05-21',
+                    operation: 'Wireline (Post-Job)',
+                    problem: 'Final function test of new Insert SSV',
+                    lesson: 'Confirmed integrity of the new safety barrier. Well cleared for re-start. Insert SSV cycled multiple times and held differential pressure.',
+                    serviceProvider: 'SafetyFirst Wireline',
+                    duration: '4 hours',
+                    npt: 1,
+                    outcome: 'Successful - Barrier verified'
+                },
+                {
+                    date: '2023-09-15',
+                    operation: 'Slickline (Surveillance)',
+                    problem: 'Routine function test of Insert SSV',
+                    lesson: 'Insert SSV continues to perform reliably. Valve functioned as designed.',
+                    serviceProvider: 'QuickWire Services',
+                    duration: '6 hours',
+                    npt: 1,
+                    outcome: 'Successful'
+                }
+            ],
+            dailyReports: [],
+
+            // PILLAR 5: Current State & Future Outlook
+            wellIntegrity: {
+                wbsVerified: true,
+                primaryBarriers: ['5.5" Production Tubing (intact)', 'Hydraulic Packer (set & tested)', '**Slickline-Retrievable Insert SSV (function tested OK)**', '9 5/8" Production Casing & Cement (CBL verified)'],
+                secondaryBarriers: ['13 3/8" Intermediate Casing & Cement', '20" Surface Casing & Cement', 'Wellhead & X-mas Tree valves'],
+                barrierVerification: {
+                    annulusAPressure: '60 psi (stable, within operational limits)',
+                    insertSSVTest: 'Passed (Quarterly test, Sep 2023)',
+                    wellheadValves: 'Function tested monthly, all OK',
+                    tubingIntegrity: 'No leaks or abnormal pressures detected'
+                }
+            },
+            futurePlans: {
+                immediate: ['Continue quarterly function testing of insert SSV, as it is now the primary downhole safety barrier', 'Routine monthly wellhead and annulus monitoring'],
+                mediumTerm: ['Monitor long-term reliability of insert SSV in this HPHT environment', 'Consider production logging run in 2025 to assess inflow performance and optimize gas lift'],
+                longTerm: ['Presence of locked-open TRSSV and insert SSV must be clearly documented in P&A program. Insert SSV will likely be pulled, and profile will need to be addressed (e.g., with a plug) during abandonment']
+            }
         },
         {
             id: 'Well_55',
