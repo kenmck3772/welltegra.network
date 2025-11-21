@@ -3685,32 +3685,57 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
             id: 'Well_777',
-            name: 'CASE STUDY: Multi-Barrier Success',
+            name: 'CASE STUDY: Field of Dreams',
             field: 'Brahan',
             region: 'UKCS',
-            type: 'Oil Producer',
-            depth: '16,732ft',
+            type: 'HPHT Gas Condensate Producer',
+            depth: '17,060ft',
             locationType: 'Subsea',
+            platform: 'Brahan Gamma Subsea Manifold',
             datumElevation: '82ft',
             waterDepth: '591ft',
-            status: 'Active - Peak Performance',
-            issue: 'SOLUTION: Multi-barrier failure resolution - Integrated intervention delivered exceptional results.',
+            status: 'Active - Peak Performance (Benchmark Well)',
+            issue: 'BENCHMARK DESIGN: Strategically designed premium well incorporating all lessons learned from Well_22, Well_33, Well_44, and Well_666. Template for future Brahan development.',
             wellboreImage: '/assets/wellbore-Well_777-3d.png',
-            history: [
-                { date: '2024-03-10', operation: 'Complex Multi-Stage Intervention', problem: 'Well experiencing compound failures: minor scale buildup, aging safety systems, completion integrity concerns.', lesson: 'Multiple smaller issues compounded into major operational challenges requiring comprehensive planning.' },
-                { date: '2024-03-25', operation: 'Integrated Solution Deployment', problem: 'Successfully executed staged intervention: chemical scale treatment, redundant safety valve installation, and completion integrity verification.', lesson: 'Integrated multi-discipline approach saved significant time versus sequential interventions.' },
-                { date: '2024-04-05', operation: 'Post-Intervention Performance', problem: 'Well exceeded pre-intervention production by 165%, with full barrier integrity restored.', lesson: 'Comprehensive planning and execution of multiple remediation strategies proved highly effective. Blueprint for tackling Well_666.' }
-            ],
-            dailyReports: [],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 16732}],
-                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 16732, comments: 'Post Multi-Barrier Remediation'}],
-                equipment: [
-                    {item: 'SSSV', top: 1362, comments: 'TRSSV, 1/4in control line, Redundant System'},
-                    {item: 'Packer', top: 16568, comments: 'Hydraulic Set Production Packer, Premium'}
-                ],
-                perforations: [{top: 16798, bottom: 16995, comments: 'Gravel Pack, 12 SPF, 60 deg'}]
+
+            // PILLAR 1: Identity & Context
+            administrative: {
+                wellID: '777',
+                regulatoryID: '12-345-67899-BRA-777',
+                operator: 'Brahan Field Operating Company',
+                lease: 'Brahan Gamma Subsea Development Area',
+                surfaceLocation: { lat: '58° 42\' 05.0" N', lon: '0° 25\' 15.0" E' },
+                spudDate: '2023-03-01',
+                completionDate: '2023-06-15',
+                originalAFE: 65000000,
+                actualCost: 64200000,
+                classification: 'Active Producer (Benchmark Design)',
+                reportDate: '2023-10-26'
             },
+            geological: {
+                targetFormation: 'Brahan Alpha Sandstone (HPHT "Core" Zone - Same as Well_666)',
+                prognosisVsActual: 'Geosteering used to place wellbore in optimal reservoir facies, avoiding fault zones identified in seismic re-processing prompted by Well_666 data',
+                reservoirProperties: {
+                    porosity: '20-24%',
+                    permeability: '200-300 mD',
+                    initialPressure: '8,800 psi @ 2,605 m TVD',
+                    temperature: '175 °C'
+                },
+                fluidCharacteristics: {
+                    fluidType: 'Rich Gas Condensate (High Scaling Potential)',
+                    CGR: '135 bbl/MMscf',
+                    gasGravity: 0.69,
+                    h2s: '22 ppm',
+                    co2: '5.0 mol%',
+                    scaleTendency: 'Very High Barium Sulphate (BaSO₄) precipitation risk (Lesson from Well_33)'
+                },
+                volumetrics: {
+                    OGIP: '195 Bcf',
+                    EUR: '85 Bcf (Enhanced by premium completion)'
+                }
+            },
+
+            // PILLAR 2: Physical Blueprint
             trajectory: [
                 {md: 0, inc: 0, azimuth: 0, tvd: 0},
                 {md: 3281, inc: 22.0, azimuth: 245.0, tvd: 3177},
@@ -3718,7 +3743,98 @@ document.addEventListener('DOMContentLoaded', function() {
                 {md: 9843, inc: 80.0, azimuth: 245.0, tvd: 7677},
                 {md: 13123, inc: 90.0, azimuth: 245.0, tvd: 8549},
                 {md: 17060, inc: 90.0, azimuth: 245.0, tvd: 8549}
-            ]
+            ],
+            wellboreConstruction: [
+                {component: 'Conductor', topMD: 673, bottomMD: 1148, size: 30, weight: null, grade: null, connection: null, details: 'Subsea Wellhead Housing'},
+                {component: 'Surface', topMD: 673, bottomMD: 4429, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Seabed (205m MD, verified by returns)'},
+                {component: 'Intermediate', topMD: 673, bottomMD: 10171, size: 13.375, weight: 68.0, grade: '**P-110**', connection: '**VAM TOP**', details: '**Enhanced grade and premium connection to withstand compaction (Lesson from Well_22). TOC @ 2,100m MD (CBL/VDL verified)**'},
+                {component: 'Production (Liner)', topMD: 9514, bottomMD: 17060, size: 9.625, weight: 53.5, grade: '**Q-125 13Cr**', connection: '**VAM TOP**', details: '**Corrosion-Resistant Alloy (CRA) liner to combat H₂S/CO₂ and scale (Lessons from Well_33, Well_55). TOC @ 2,800m MD (CBL/VDL verified)**'}
+            ],
+
+            // PILLAR 3: Completion & Production Setup
+            completion: {
+                casing: [{type: 'Production (CRA Liner)', size: '9 5/8"', top: 9514, bottom: 17060}],
+                tubing: [{type: 'Production', size: '5.5"', top: 0, bottom: 16732, weight: '22.0 lb/ft', grade: '**Incoloy 825 CRA tubing**', connection: 'VAM TOP', comments: '**Glass-Reinforced Epoxy internal coating. Premium materials to resist corrosion and scale adhesion (Lessons from Well_33, Well_55)**'}],
+                equipment: [
+                    {item: 'SSSV (Primary)', top: 1362, details: '**Primary TRSSV, 1/4" control line, 1.875" bore**'},
+                    {item: 'SSSV (Secondary)', top: 1394, details: '**Secondary, retrievable Insert SSV in dedicated nipple profile. Redundant safety barrier (Lesson from Well_44)**', isEnhancement: true},
+                    {item: 'Chemical Injection Mandrel', top: 4921, details: '**Dual-Port Side Pocket Mandrel for continuous scale and corrosion inhibitor injection (Proactive scale management, Lesson from Well_33)**', isEnhancement: true},
+                    {item: 'Gas Lift Mandrels', top: 7218, details: 'Side Pocket Mandrels at 2,200m, 2,500m, 2,800m - 1.0" OD, premium valve seats'},
+                    {item: 'Packer', top: 16568, details: '**Model "C" Hydraulic Set Premium Production Packer, 12,500 psi rating, Elastomer seals compatible with high CO₂/H₂S**'},
+                    {item: 'Landing Nipple', top: 16666, details: 'Premium No-Go Nipple, 2.313" ID, located below packer'},
+                    {item: 'Sand Screen', top: 16798, details: '**Premium, expandable sand screen assembly across 5,120-5,180m MD, installed with gravel pack (Robust sand control, Lesson from Well_666)**', isEnhancement: true}
+                ],
+                perforations: [{top: 16798, bottom: 16995, details: 'Premium gravel pack, 12 SPF, 60° phasing'}]
+            },
+
+            // PILLAR 4: Lifecycle Performance & Evolution
+            productionHistory: {
+                initialRate: {date: 'Q3 2023', oil: 1600, gas: 95, water: 0, unit: 'bbl/d oil, MMscf/d gas', note: '**Exceeded initial forecasts by 15%**'},
+                currentRate: {date: 'Q3 2023', oil: 1600, gas: 95, water: 0, unit: 'bbl/d oil, MMscf/d gas (Stable, on plateau)'},
+                cumulativeProduction: {gas: '3.2 Bcf', condensate: '0.4 MMbbl'},
+                performanceTrend: 'Operating at peak, stable performance. No decline observed to date.'
+            },
+            history: [
+                {
+                    date: '2023-06-20',
+                    operation: 'Start-Up',
+                    problem: 'Commission well and bring on production',
+                    lesson: 'Premium completion design and commissioning procedures validated. Well started up smoothly, achieving target rates within 24 hours with no HSE incidents. Achieved 12,500 boepd (95 MMscf/d gas, 1,600 bbl/d condensate).',
+                    serviceProvider: 'Brahan Operations Team',
+                    duration: '48 hours',
+                    npt: 0,
+                    outcome: 'Outstanding'
+                },
+                {
+                    date: '2023-07-15',
+                    operation: 'Wireline (Proactive)',
+                    problem: 'Function test primary and secondary SSVs',
+                    lesson: 'Redundant SSV design provides unparalleled safety and operational flexibility. Both primary and secondary SSVs functioned perfectly, validating the redundant barrier design.',
+                    serviceProvider: 'SafetyFirst Wireline',
+                    duration: '8 hours',
+                    npt: 2,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2023-08-30',
+                    operation: 'Wireline (Proactive)',
+                    problem: 'Initial production log and fluid sampling',
+                    lesson: 'Proactive surveillance confirms effectiveness of premium materials and chemical injection program. Confirmed clean wellbore, uniform inflow across sand screen interval, and no early signs of scale or corrosion.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '20 hours',
+                    npt: 4,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2023-09-25',
+                    operation: 'Subsea Control System',
+                    problem: 'Routine remote wellhead and annulus pressure monitoring',
+                    lesson: 'Continuous monitoring provides early warning for any potential deviations. All parameters within operational limits. No anomalies detected.',
+                    serviceProvider: 'Brahan Control Room',
+                    duration: 'Continuous',
+                    npt: 0,
+                    outcome: 'Nominal'
+                }
+            ],
+            dailyReports: [],
+
+            // PILLAR 5: Current State & Future Outlook
+            wellIntegrity: {
+                wbsVerified: true,
+                primaryBarriers: ['**Incoloy 825 CRA Tubing (intact)**', '**Premium Hydraulic Packer (set & tested)**', '**Dual SSV System (both tested OK)**', '**Q-125 13Cr CRA Liner & Cement (CBL verified)**', '**Premium Gravel Pack/Sand Screen**'],
+                secondaryBarriers: ['P-110 Intermediate Casing & Cement', '20" Surface Casing & Cement', 'Subsea Wellhead & X-mas Tree valves'],
+                barrierVerification: {
+                    annulusAPressure: '0 psi (monitored continuously, no communication detected)',
+                    sssvTest: 'Both primary and secondary valves passed (Quarterly test, Sep 2023)',
+                    wellheadValves: 'Function tested and lubricated quarterly via ROV, all OK',
+                    tubingCasingIntegrity: 'No leaks or abnormal pressures. Continuous monitoring confirms integrity of premium materials'
+                }
+            },
+            futurePlans: {
+                immediate: ['Continue proactive, routine surveillance (PLTs, SSV tests, fluid sampling) to validate the "Field of Dreams" design', 'Use data from this well to refine predictive maintenance models for other assets'],
+                mediumTerm: ['**Well_777 will serve as the template for all future Brahan field development wells**', 'Data will be used to build high-fidelity digital twin, which can be used to simulate interventions on problem wells like Well_666 before execution', 'Analyze long-term performance of CRA materials and chemical injection program to optimize costs for future wells'],
+                longTerm: ['Enhanced design of Well_777 will inform more efficient and reliable P&A procedures, ensuring its integrity can be safely and cost-effectively managed at end of life']
+            }
         },
     ];
     const objectivesData = [
