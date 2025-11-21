@@ -139,13 +139,13 @@
         .theme-dark .planner-card.selected { border-color: #60a5fa; transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); border-width: 2px; }
 
         /* Highlight the "Well From Hell" */
-        .planner-card[data-well-id="W666"] {
+        .planner-card[data-well-id="Well_666"] {
             border-color: #991b1b;
             background-image: linear-gradient(rgba(255,0,0,0.05), rgba(255,0,0,0));
             position: relative;
             overflow: hidden;
         }
-        .planner-card[data-well-id="W666"]::before {
+        .planner-card[data-well-id="Well_666"]::before {
             content: "⚠ WELL FROM HELL";
             position: absolute;
             top: 10px;
@@ -158,11 +158,11 @@
             transform: rotate(45deg);
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        .theme-dark .planner-card[data-well-id="W666"] {
+        .theme-dark .planner-card[data-well-id="Well_666"] {
             border-color: #ef4444;
             background-image: linear-gradient(rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0));
         }
-        .planner-card[data-well-id="W666"].selected {
+        .planner-card[data-well-id="Well_666"].selected {
              border-color: #ef4444 !important;
              box-shadow: 0 10px 15px -3px rgb(239 68 68 / 0.2), 0 4px 6px -4px rgb(239 68 68 / 0.2);
         }
@@ -1342,7 +1342,7 @@
                             View Case Studies
                         </button>
                         <button onclick="showView('planner')" class="px-8 py-4 bg-white hover:bg-slate-100 text-slate-900 text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
-                            W666 Planner
+                            Well_666 Planner
                         </button>
                     </div>
                 </div>
@@ -1575,14 +1575,14 @@
             
             <section id="step-1" class="mb-12">
                 <div class="text-center mb-8">
-                    <h3 class="text-2xl font-bold tracking-tight">Step 1: Problem Well - W666 "The Perfect Storm"</h3>
+                    <h3 class="text-2xl font-bold tracking-tight">Step 1: Problem Well - Well_666 "The Perfect Storm"</h3>
                     <p class="mt-4 max-w-3xl mx-auto text-lg text-white">
-                        This planner is specifically designed for <strong class="text-red-400">W666 - The Perfect Storm</strong>,
+                        This planner is specifically designed for <strong class="text-red-400">Well_666 - The Perfect Storm</strong>,
                         our most challenging shut-in well with multiple compounding failures.
                     </p>
                     <p class="mt-3 max-w-3xl mx-auto text-sm text-blue-100">
                         The intervention strategy leverages lessons learned from six successful case studies in the same field.
-                        Each historical well solved one of the failure modes now present in W666.
+                        Each historical well solved one of the failure modes now present in Well_666.
                         <a href="#" onclick="showView('case-studies'); return false;" class="text-cyan-400 hover:text-cyan-300 underline font-semibold">
                             View Case Studies →
                         </a>
@@ -1618,24 +1618,24 @@
                     </div>
                 </div>
 
-                <!-- W666 Well Card (Auto-selected) -->
+                <!-- Well_666 Well Card (Auto-selected) -->
                 <div class="max-w-2xl mx-auto">
                     <div id="w666-card" class="bg-slate-800/50 border-2 border-red-500 rounded-lg p-6 shadow-lg">
                         <div class="flex items-start justify-between mb-4">
                             <div>
                                 <h4 class="text-2xl font-bold text-white flex items-center gap-2">
                                     <span class="text-red-500">⚠️</span>
-                                    W666 - The Perfect Storm
+                                    Well_666 - The Perfect Storm
                                 </h4>
-                                <p class="text-sm text-slate-400 mt-1">Montrose Field | HPHT Gas Condensate | 18,500ft</p>
+                                <p class="text-sm text-slate-400 mt-1">Brahan Field | Oil Producer | Subsea | 16,076ft</p>
                             </div>
                             <span class="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded-full">SHUT-IN</span>
                         </div>
 
                         <div class="mb-4">
                             <p class="text-slate-300 text-sm">
-                                A nightmare well with multiple, compounding failures: severe casing deformation,
-                                a hard scale blockage, and a failed primary safety valve. Requires a complex,
+                                A nightmare subsea well with multiple, compounding failures: severe BaSO4 scale
+                                blockage in tubing and a failed primary safety valve. Requires a complex,
                                 multi-stage intervention plan informed by historical case studies.
                             </p>
                         </div>
@@ -1650,7 +1650,7 @@
                         </div>
 
                         <div class="flex gap-3">
-                            <button onclick="openModal('W666')" class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded transition">
+                            <button onclick="openModal('Well_666')" class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded transition">
                                 View 3D & Schematic
                             </button>
                             <button onclick="selectWellW666()" class="flex-1 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-semibold rounded transition">
@@ -1664,7 +1664,7 @@
             <section id="step-2" class="mb-12 hidden">
                 <div class="text-center mb-8">
                     <h3 class="text-2xl font-bold tracking-tight">Step 2: Define Intervention Plan</h3>
-                    <p class="mt-4 max-w-3xl mx-auto text-lg">You have selected <strong>W666</strong>. Now, define the objective. Use the <strong>AI Advisor</strong> to analyze the well's known problems. The AI will cross-reference the issues with our historical case studies (the other wells in the portfolio) to recommend the most effective intervention strategies, complete with confidence scores and projected outcomes based on proven solutions.</p>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg">You have selected <strong>Well_666</strong>. Now, define the objective. Use the <strong>AI Advisor</strong> to analyze the well's known problems. The AI will cross-reference the issues with our historical case studies (the other wells in the portfolio) to recommend the most effective intervention strategies, complete with confidence scores and projected outcomes based on proven solutions.</p>
                 </div>
                 <div class="mt-8 max-w-4xl mx-auto">
                     <div class="flex items-center justify-center mb-6">
@@ -1858,12 +1858,12 @@
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white">Well Intervention Case Studies</h2>
                 <p class="mt-4 max-w-4xl mx-auto text-lg text-blue-100">
                     Explore our portfolio of successful well interventions. Each case study represents a proven solution to a specific downhole challenge.
-                    These learnings directly inform our intervention strategy for <strong class="text-cyan-400">W666 - The Perfect Storm</strong>,
+                    These learnings directly inform our intervention strategy for <strong class="text-cyan-400">Well_666 - The Perfect Storm</strong>,
                     our most complex problem well combining multiple failure modes.
                 </p>
                 <div class="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
                     <button onclick="showView('planner')" class="px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
-                        Go to W666 Planner →
+                        Go to Well_666 Planner →
                     </button>
                 </div>
             </div>
@@ -1880,7 +1880,7 @@
                     <div class="flex items-start gap-3">
                         <span class="text-red-500 text-2xl">⚠️</span>
                         <div>
-                            <strong class="text-red-400">W666 - The Perfect Storm:</strong>
+                            <strong class="text-red-400">Well_666 - The Perfect Storm:</strong>
                             <span class="text-slate-300">Our challenge well - currently shut-in with multiple compounding failures requiring a complex intervention plan.</span>
                         </div>
                     </div>
@@ -1888,7 +1888,7 @@
                         <span class="text-green-500 text-2xl">✓</span>
                         <div>
                             <strong class="text-green-400">Successful Interventions:</strong>
-                            <span class="text-slate-300">The other six wells showcase proven solutions for casing deformation, scale blockage, valve failures, and more. Each lesson learned contributes to our strategy for W666.</span>
+                            <span class="text-slate-300">The other six wells showcase proven solutions for casing deformation, scale blockage, valve failures, and more. Each lesson learned contributes to our strategy for Well_666.</span>
                         </div>
                     </div>
                 </div>
@@ -2862,174 +2862,252 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- DATA STORE (REWRITTEN FOR NARRATIVE) ---
     const wellData = [
         {
-            id: 'W666',
-            name: 'The Perfect Storm',
-            field: 'Montrose',
-            region: 'UKCS',
-            type: 'HPHT Gas Condensate',
-            depth: '18,500ft',
-            status: 'Shut-in - Well Integrity Issues',
-            issue: 'A nightmare well with multiple, compounding failures: severe casing deformation, a hard scale blockage, and a failed primary safety valve. Requires a complex, multi-stage intervention plan.',
-            wellboreImage: '/assets/wellbore-W666-3d.png', 
-            history: [ 
-                { date: '2024-03-15', operation: 'Slickline Surveillance', problem: 'Unable to pass 8,500ft due to casing restriction.', lesson: 'This well combines multiple known failure modes from this field into a single asset.' },
-                { date: '2024-04-01', operation: 'Production Test', problem: 'Well died after brief flow period. Pressure analysis suggests deep blockage.', lesson: 'Suspect combination of scale and integrity issues.' },
-                { date: '2024-04-10', operation: 'DHSV Test', problem: 'TRSSV failed to close on command. Well shut-in on annulus valves.', lesson: 'Well integrity is critically compromised.' }
-            ], 
-            dailyReports: [], 
-            completion: { 
-                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 18500, isProblem: true}], 
-                tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 18300}], 
-                equipment: [
-                    {item: 'SSSV', top: 2500, comments: 'Failed test', isProblem: true}, 
-                    {item: 'Casing Deformation', top: 8500, comments: 'Severe Ovalization', isProblem: true},
-                    {item: 'BaSO4 Scale Bridge', top: 14200, comments: 'Solid blockage', isProblem: true},
-                    {item: 'Packer', top: 18250}
-                ], 
-                perforations: [{top: 18350, bottom: 18450}] 
-            } 
-        },
-        {
-            id: 'M-21',
-            name: 'CASE STUDY: The Montrose Squeeze',
-            field: 'Montrose',
-            region: 'UKCS',
-            type: 'HPHT Gas Condensate',
-            depth: '9,000ft',
-            status: 'Active - Restored Production',
-            issue: 'SOLUTION: Casing deformation was successfully remediated with an expandable patch.',
-            wellboreImage: '/assets/wellbore-M21-3d.png', 
-            history: [ 
-                { date: '2023-11-10', operation: 'Slickline Surveillance', problem: 'Standard 2.313" OD toolstring unable to pass 8,500ft, encountering a hard stop.', lesson: 'Significant reservoir depletion in this area is causing geomechanical stresses leading to casing deformation, a known regional risk. MFC log confirms this is ovalization, not collapse.' },
-                { date: '2023-12-05', operation: 'Expandable Casing Patch', problem: 'Successfully installed a 60ft expandable steel patch across the deformed section.', lesson: 'This operation proves that an expandable patch is a viable, rigless solution for restoring full-bore access in this field, restoring production and well access.' }
-            ], 
-            dailyReports: [], 
-            completion: { 
-                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 9000}], 
-                tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 8800}], 
-                equipment: [
-                    {item: 'SSSV', top: 1500}, 
-                    {item: 'Tubing Patch', top: 8500, comments: 'Restored ID'},
-                    {item: 'Packer', top: 8750}
-                ], 
-                perforations: [{top: 8850, bottom: 8950}] 
-            } 
-        },
-        {
-            id: 'S-15',
-            name: 'CASE STUDY: The Scale Trap',
-            field: 'Montrose',
-            region: 'UKCS',
-            type: 'HPHT Gas Condensate',
-            depth: '11,000ft',
-            status: 'Active - Restored Production',
-            issue: 'SOLUTION: Severe BaSO4 scale was successfully removed with a chemical/jetting treatment.',
-            wellboreImage: '/assets/wellbore-S15-3d.png', 
-            history: [ 
-                { date: '2024-01-05', operation: 'Production Logging', problem: 'PLT toolstring unable to pass 9,200ft due to a hard obstruction. Produced water analysis confirmed high Barium and Sulfate content.', lesson: 'Commingling of injected seawater and formation water is causing severe, insoluble scale deposition. A previous attempt to mill scale on a nearby well resulted in stuck pipe.'},
-                { date: '2024-02-12', operation: 'CT Chemical/Jetting', problem: 'A 48hr soak with DTPA dissolver followed by a run with a high-pressure rotating jetting tool successfully cleared the blockage.', lesson: 'This two-stage approach is a proven, lower-risk method for removing hard scale compared to aggressive milling.' }
-            ], 
-            dailyReports: [], 
-            completion: { 
-                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 11000}], 
-                tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 10800}], 
-                equipment: [{item: 'SSSV', top: 1800}, {item: 'Packer', top: 10750}], 
-                perforations: [{top: 10850, bottom: 10950}] 
-            } 
-        },
-        {
-            id: 'F-11',
-            name: 'CASE STUDY: The Broken Barrier',
-            field: 'Montrose',
-            region: 'UKCS',
-            type: 'HPHT Gas Condensate',
-            depth: '9,800ft',
-            status: 'Active - Restored Production',
-            issue: 'SOLUTION: Failed TRSSV was locked open and replaced with a slickline-retrievable insert valve.',
-            wellboreImage: '/assets/wellbore-F11-3d.png', 
-            history: [ 
-                { date: '2024-02-18', operation: 'Routine DHSV Test', problem: 'Valve failed to close reliably during routine 6-month test. Well was mandatorily shut-in by regulatory authority.', lesson: 'An attempted repair on a similar well with a hydraulic tool failed; a mechanical lock-open tool is more reliable.' },
-                { date: '2024-03-20', operation: 'Slickline Insert Valve Job', problem: 'Successfully locked open the failed valve with a mechanical tool and installed a new wireline-retrievable insert valve.', lesson: 'This standard slickline operation is a proven, cost-effective method for restoring the primary safety barrier without a rig.' }
-            ], 
-            dailyReports: [], 
-            completion: { 
-                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 9800}], 
-                tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 9600}], 
-                equipment: [{item: 'SSSV', top: 1500, comments: 'New Insert Valve'}, {item: 'Packer', top: 9550}], 
-                perforations: [{top: 9650, bottom: 9750}] 
-            } 
-        },
-        {
-            id: 'C-08',
-            name: 'CASE STUDY: The Sandstorm',
-            field: 'Montrose',
-            region: 'UKCS',
-            type: 'HPHT Gas Condensate',
-            depth: '10,000ft',
-            status: 'Active - Restored Production',
-            issue: 'SOLUTION: Failed sand screen was repaired with a through-tubing patch.',
-            wellboreImage: '/assets/wellbore-C08-3d.png', 
-            history: [ 
-                { date: '2023-08-15', operation: 'Surface Choke Replacement', problem: 'Replaced choke for the 3rd time in 6 months due to severe erosional wear from high sand content.', lesson: 'Choking back the well is a temporary fix; the root cause of sand control failure must be addressed. Downhole video confirmed screen erosion.' },
-                { date: '2023-09-10', operation: 'Through-Tubing Patch', problem: 'Successfully installed an expandable patch across the failed sand screen, restoring sand control.', lesson: 'This confirms that a through-tubing patch is a viable rigless repair for this failure mode in this field.'}
-            ], 
-            dailyReports: [], 
-            completion: { 
-                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 10000}], 
-                tubing: [{type: 'Production', size: '4 1/2', top: 0, bottom: 9800}], 
-                equipment: [{item: 'SSSV', top: 1600}, {item: 'Packer', top: 9750}, {item: 'Standalone Sand Screen', top: 9850, comments: 'Patched'}], 
-                perforations: [{top: 9850, bottom: 9950}] 
-            } 
-        },
-        {
-            id: 'P-12',
-            name: 'CASE STUDY: The Wax Plug',
-            field: 'Piper',
+            id: 'Well_11',
+            name: 'Brahan Producer 11',
+            field: 'Brahan',
             region: 'UKCS',
             type: 'Oil Producer',
-            depth: '7,500ft',
-            status: 'Active - Restored Production',
-            issue: 'SOLUTION: Severe paraffin wax blockage was cleared using CT with a chemical/mechanical approach.',
-            wellboreImage: '/assets/wellbore-P12-3d.png',
+            depth: '11,155ft',
+            locationType: 'Platform',
+            datumElevation: '82ft',
+            waterDepth: '0ft',
+            status: 'Active - Producing',
+            issue: 'Standard platform producer, operating normally with routine monitoring.',
+            wellboreImage: '/assets/wellbore-Well_11-3d.png',
             history: [
-                { date: '2024-01-15', operation: 'Slickline Gauge Ring Run', problem: 'Gauge ring tagged a soft, waxy obstruction at 6,000ft. Unable to pass.', lesson: 'A previous attempt on another well with only chemicals was slow and ineffective; a combined approach is needed.' },
-                { date: '2024-02-01', operation: 'CT Wax Cleanout', problem: 'Successfully removed wax blockage using a combination of heated chemical dissolvers and a mechanical scraper tool on Coiled Tubing.', lesson: 'The dual chemical/mechanical approach is highly effective for severe paraffin blockages.' }
+                { date: '2024-01-10', operation: 'Initial Production', problem: 'Well brought online successfully.', lesson: 'Baseline producer for Brahan field.' }
             ],
             dailyReports: [],
             completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 7500}],
-                tubing: [{type: 'Production', size: '3 1/2', top: 0, bottom: 7300}],
-                equipment: [{item: 'SSSV', top: 1200}, {item: 'Packer', top: 7250}],
-                perforations: [{top: 7350, bottom: 7450}]
-            }
+                casing: [{type: 'Production', size: '7', top: 0, bottom: 11155}],
+                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 11155}],
+                equipment: [
+                    {item: 'SSSV', top: 1148, comments: 'TRSSV, 1/4in control line'},
+                    {item: 'Packer', top: 10991, comments: 'Hydraulic Set Production Packer'}
+                ],
+                perforations: [{top: 11220, bottom: 11319}]
+            },
+            trajectory: [
+                {md: 0, inc: 0, azimuth: 0, tvd: 0},
+                {md: 3281, inc: 1.5, azimuth: 45.2, tvd: 3280},
+                {md: 6562, inc: 1.8, azimuth: 45.2, tvd: 6561},
+                {md: 9843, inc: 2.0, azimuth: 45.2, tvd: 9841},
+                {md: 11483, inc: 2.1, azimuth: 45.2, tvd: 11481}
+            ]
         },
         {
-            id: 'S-77',
-            name: 'CASE STUDY: Field of Dreams',
-            field: 'Schiehallion',
+            id: 'Well_22',
+            name: 'Brahan Producer 22',
+            field: 'Brahan',
             region: 'UKCS',
-            type: 'HPHT Oil Producer',
-            depth: '19,200ft',
-            status: 'Active - Peak Performance',
-            issue: 'SOLUTION: Multi-barrier failure resolution - Combined lessons from all interventions delivered exceptional results.',
-            wellboreImage: '/assets/wellbore-S77-3d.png',
+            type: 'Oil Producer',
+            depth: '11,483ft',
+            locationType: 'Platform',
+            datumElevation: '82ft',
+            waterDepth: '0ft',
+            status: 'Active - Producing',
+            issue: 'Standard platform producer, operating normally with routine monitoring.',
+            wellboreImage: '/assets/wellbore-Well_22-3d.png',
             history: [
-                { date: '2023-08-20', operation: 'Complex Multi-Stage Intervention', problem: 'Well experiencing compound failures: partial casing restriction, minor scale buildup, aging safety systems, and intermittent sand production.', lesson: 'This well demonstrated that multiple smaller issues, if left unaddressed, compound into major operational challenges requiring comprehensive intervention planning.' },
-                { date: '2023-09-15', operation: 'Integrated Solution Deployment', problem: 'Successfully executed a staged intervention combining expandable patch technology, chemical scale treatment, safety valve replacement, and sand control installation - all in a single campaign.', lesson: 'Integrated multi-discipline approach saved 45 days vs. sequential interventions. This became the blueprint for tackling W666.' },
-                { date: '2023-10-01', operation: 'Post-Intervention Performance', problem: 'Well exceeded pre-intervention production by 180%, with zero NPT and full barrier integrity restored.', lesson: 'Proves that comprehensive planning and execution of multiple remediation strategies simultaneously is not only feasible but highly effective. This success story directly informed the W666 intervention strategy.' }
+                { date: '2024-01-15', operation: 'Initial Production', problem: 'Well brought online successfully.', lesson: 'Baseline producer for Brahan field.' }
             ],
             dailyReports: [],
             completion: {
-                casing: [{type: 'Production', size: '9 5/8', top: 0, bottom: 19200}],
-                tubing: [{type: 'Production', size: '5 1/2', top: 0, bottom: 19000}],
+                casing: [{type: 'Production', size: '7', top: 0, bottom: 11483}],
+                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 11483}],
                 equipment: [
-                    {item: 'SSSV', top: 2800, comments: 'Replaced - Now Operational'},
-                    {item: 'Expandable Patch', top: 9200, comments: 'Successfully Installed'},
-                    {item: 'Sand Screen', top: 17500, comments: 'Through-Tubing Installation'},
-                    {item: 'Packer', top: 18950}
+                    {item: 'SSSV', top: 1165, comments: 'TRSSV, 1/4in control line'},
+                    {item: 'Packer', top: 11319, comments: 'Hydraulic Set Production Packer'}
                 ],
-                perforations: [{top: 19050, bottom: 19150}]
-            }
+                perforations: [{top: 11549, bottom: 11680}]
+            },
+            trajectory: [
+                {md: 0, inc: 0, azimuth: 0, tvd: 0},
+                {md: 3281, inc: 1.2, azimuth: 88.1, tvd: 3281},
+                {md: 6562, inc: 1.5, azimuth: 88.1, tvd: 6561},
+                {md: 9843, inc: 1.9, azimuth: 88.1, tvd: 9841},
+                {md: 11811, inc: 2.0, azimuth: 88.1, tvd: 11808}
+            ]
+        },
+        {
+            id: 'Well_33',
+            name: 'CASE STUDY: The Scale Victory',
+            field: 'Brahan',
+            region: 'UKCS',
+            type: 'Oil Producer',
+            depth: '11,319ft',
+            locationType: 'Platform',
+            datumElevation: '82ft',
+            waterDepth: '0ft',
+            status: 'Active - Restored Production',
+            issue: 'SOLUTION: Severe BaSO4 scale was successfully removed with chemical/jetting treatment.',
+            wellboreImage: '/assets/wellbore-Well_33-3d.png',
+            history: [
+                { date: '2024-02-05', operation: 'Production Decline', problem: 'Production declined 60% over 3 weeks. Slickline unable to pass restriction at 10,500ft.', lesson: 'BaSO4 scale buildup from seawater injection mixing with formation water.' },
+                { date: '2024-03-12', operation: 'CT Chemical/Jetting', problem: 'Successfully cleaned tubing using DTPA chemical soak followed by high-pressure jetting.', lesson: 'Two-stage chemical/mechanical approach proved highly effective for hard scale removal.' }
+            ],
+            dailyReports: [],
+            completion: {
+                casing: [{type: 'Production', size: '7', top: 0, bottom: 11319}],
+                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 11319, comments: 'Chemically/Jet Cleaned for BaSO4 Scale'}],
+                equipment: [
+                    {item: 'SSSV', top: 1115, comments: 'TRSSV, 1/4in control line'},
+                    {item: 'Packer', top: 11155, comments: 'Hydraulic Set Production Packer'}
+                ],
+                perforations: [{top: 11384, bottom: 11483}]
+            },
+            trajectory: [
+                {md: 0, inc: 0, azimuth: 0, tvd: 0},
+                {md: 3281, inc: 5.0, azimuth: 120.0, tvd: 3277},
+                {md: 6562, inc: 8.0, azimuth: 120.0, tvd: 6547},
+                {md: 9843, inc: 10.0, azimuth: 120.0, tvd: 9792},
+                {md: 11647, inc: 10.5, azimuth: 120.0, tvd: 11580}
+            ]
+        },
+        {
+            id: 'Well_44',
+            name: 'CASE STUDY: The Barrier Restoration',
+            field: 'Brahan',
+            region: 'UKCS',
+            type: 'Oil Producer',
+            depth: '12,795ft',
+            locationType: 'Platform',
+            datumElevation: '82ft',
+            waterDepth: '0ft',
+            status: 'Active - Restored Production',
+            issue: 'SOLUTION: Failed TRSSV was locked open and replaced with slickline-retrievable insert valve.',
+            wellboreImage: '/assets/wellbore-Well_44-3d.png',
+            history: [
+                { date: '2024-04-10', operation: 'Routine DHSV Test', problem: 'TRSSV failed to close during mandatory 6-month function test. Well shut-in by regulator.', lesson: 'Aging safety valve compromised well integrity, requiring immediate remediation.' },
+                { date: '2024-04-25', operation: 'Slickline Insert Valve Job', problem: 'Successfully locked open failed TRSSV and installed new wireline-retrievable insert valve.', lesson: 'Standard slickline operation restored primary safety barrier without rig intervention.' }
+            ],
+            dailyReports: [],
+            completion: {
+                casing: [{type: 'Production', size: '7', top: 0, bottom: 12795}],
+                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 12795}],
+                equipment: [
+                    {item: 'SSSV', top: 1312, comments: 'Slickline-Retrievable Insert Valve (Replaced Failed TRSSV)'},
+                    {item: 'Packer', top: 12631, comments: 'Hydraulic Set Production Packer'}
+                ],
+                perforations: [{top: 12861, bottom: 12992}]
+            },
+            trajectory: [
+                {md: 0, inc: 0, azimuth: 0, tvd: 0},
+                {md: 3281, inc: 15.0, azimuth: 45.0, tvd: 3244},
+                {md: 6562, inc: 30.0, azimuth: 45.0, tvd: 6279},
+                {md: 9843, inc: 20.0, azimuth: 45.0, tvd: 9363},
+                {md: 13123, inc: 10.0, azimuth: 45.0, tvd: 12550}
+            ]
+        },
+        {
+            id: 'Well_55',
+            name: 'Brahan Injector 55',
+            field: 'Brahan',
+            region: 'UKCS',
+            type: 'Water Injector',
+            depth: '14,436ft',
+            locationType: 'Satellite',
+            datumElevation: '82ft',
+            waterDepth: '492ft',
+            status: 'Active - Injecting',
+            issue: 'Seawater injection well supporting field pressure maintenance. Operating normally.',
+            wellboreImage: '/assets/wellbore-Well_55-3d.png',
+            history: [
+                { date: '2024-02-01', operation: 'Initial Injection', problem: 'Water injection commenced at target rate.', lesson: 'Key injection well for reservoir pressure support in Brahan field.' }
+            ],
+            dailyReports: [],
+            completion: {
+                casing: [{type: 'Production', size: '7', top: 0, bottom: 14436}],
+                tubing: [{type: 'Injection', size: '5.5', top: 0, bottom: 14436, comments: 'Coated'}],
+                equipment: [
+                    {item: 'SSSV', top: 1247, comments: 'TRSSV, 1/4in control line'},
+                    {item: 'Packer', top: 14272, comments: 'Hydraulic Set Injection Packer'}
+                ],
+                perforations: [{top: 14501, bottom: 14698}]
+            },
+            trajectory: [
+                {md: 0, inc: 0, azimuth: 0, tvd: 0},
+                {md: 3281, inc: 20.0, azimuth: 180.0, tvd: 3215},
+                {md: 6562, inc: 45.0, azimuth: 180.0, tvd: 5865},
+                {md: 9843, inc: 90.0, azimuth: 180.0, tvd: 8202},
+                {md: 13123, inc: 90.0, azimuth: 180.0, tvd: 8202},
+                {md: 14764, inc: 90.0, azimuth: 180.0, tvd: 8202}
+            ]
+        },
+        {
+            id: 'Well_666',
+            name: 'The Perfect Storm',
+            field: 'Brahan',
+            region: 'UKCS',
+            type: 'Oil Producer',
+            depth: '16,076ft',
+            locationType: 'Subsea',
+            datumElevation: '82ft',
+            waterDepth: '591ft',
+            status: 'Shut-in - Well Integrity Issues',
+            issue: 'A nightmare subsea well with multiple, compounding failures: severe BaSO4 scale blockage in tubing and a failed primary safety valve. Requires complex, multi-stage intervention plan.',
+            wellboreImage: '/assets/wellbore-Well_666-3d.png',
+            history: [
+                { date: '2024-05-15', operation: 'Slickline Surveillance', problem: 'Unable to pass scale blockage at 14,800ft. Tubing severely restricted.', lesson: 'This subsea well combines multiple known failure modes: scale deposition and safety valve degradation.' },
+                { date: '2024-06-01', operation: 'Production Test', problem: 'Well died after brief flow period. Pressure analysis confirms deep scale blockage.', lesson: 'Combination of BaSO4 scale and compromised completion integrity.' },
+                { date: '2024-06-10', operation: 'DHSV Test', problem: 'TRSSV failed to close on command. Well shut-in on subsea tree valves.', lesson: 'Well integrity is critically compromised. Multi-barrier failure requires comprehensive intervention.' }
+            ],
+            dailyReports: [],
+            completion: {
+                casing: [{type: 'Production', size: '7', top: 0, bottom: 16076}],
+                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 16076, comments: 'Scale blockage present', isProblem: true}],
+                equipment: [
+                    {item: 'SSSV', top: 1345, comments: 'TRSSV, 1/4in control line (FAILED)', isProblem: true},
+                    {item: 'BaSO4 Scale Bridge', top: 14800, comments: 'Solid blockage', isProblem: true},
+                    {item: 'Packer', top: 15912, comments: 'Hydraulic Set Production Packer'}
+                ],
+                perforations: [{top: 16109, bottom: 16404, comments: 'Gravel Pack, 12 SPF, 60 deg'}]
+            },
+            trajectory: [
+                {md: 0, inc: 0, azimuth: 0, tvd: 0},
+                {md: 3281, inc: 25.0, azimuth: 210.0, tvd: 3135},
+                {md: 6562, inc: 50.0, azimuth: 210.0, tvd: 5612},
+                {md: 9843, inc: 75.0, azimuth: 210.0, tvd: 7527},
+                {md: 13123, inc: 90.0, azimuth: 210.0, tvd: 8370},
+                {md: 16404, inc: 90.0, azimuth: 210.0, tvd: 8370}
+            ]
+        },
+        {
+            id: 'Well_777',
+            name: 'CASE STUDY: Multi-Barrier Success',
+            field: 'Brahan',
+            region: 'UKCS',
+            type: 'Oil Producer',
+            depth: '16,732ft',
+            locationType: 'Subsea',
+            datumElevation: '82ft',
+            waterDepth: '591ft',
+            status: 'Active - Peak Performance',
+            issue: 'SOLUTION: Multi-barrier failure resolution - Integrated intervention delivered exceptional results.',
+            wellboreImage: '/assets/wellbore-Well_777-3d.png',
+            history: [
+                { date: '2024-03-10', operation: 'Complex Multi-Stage Intervention', problem: 'Well experiencing compound failures: minor scale buildup, aging safety systems, completion integrity concerns.', lesson: 'Multiple smaller issues compounded into major operational challenges requiring comprehensive planning.' },
+                { date: '2024-03-25', operation: 'Integrated Solution Deployment', problem: 'Successfully executed staged intervention: chemical scale treatment, redundant safety valve installation, and completion integrity verification.', lesson: 'Integrated multi-discipline approach saved significant time versus sequential interventions.' },
+                { date: '2024-04-05', operation: 'Post-Intervention Performance', problem: 'Well exceeded pre-intervention production by 165%, with full barrier integrity restored.', lesson: 'Comprehensive planning and execution of multiple remediation strategies proved highly effective. Blueprint for tackling Well_666.' }
+            ],
+            dailyReports: [],
+            completion: {
+                casing: [{type: 'Production', size: '7', top: 0, bottom: 16732}],
+                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 16732, comments: 'Post Multi-Barrier Remediation'}],
+                equipment: [
+                    {item: 'SSSV', top: 1362, comments: 'TRSSV, 1/4in control line, Redundant System'},
+                    {item: 'Packer', top: 16568, comments: 'Hydraulic Set Production Packer, Premium'}
+                ],
+                perforations: [{top: 16798, bottom: 16995, comments: 'Gravel Pack, 12 SPF, 60 deg'}]
+            },
+            trajectory: [
+                {md: 0, inc: 0, azimuth: 0, tvd: 0},
+                {md: 3281, inc: 22.0, azimuth: 245.0, tvd: 3177},
+                {md: 6562, inc: 48.0, azimuth: 245.0, tvd: 5719},
+                {md: 9843, inc: 80.0, azimuth: 245.0, tvd: 7677},
+                {md: 13123, inc: 90.0, azimuth: 245.0, tvd: 8549},
+                {md: 17060, inc: 90.0, azimuth: 245.0, tvd: 8549}
+            ]
         },
     ];
     const objectivesData = [
@@ -3047,20 +3125,20 @@ document.addEventListener('DOMContentLoaded', function() {
         { id: 'prob5', name: 'Flow Assurance Blockage (Wax)', description: 'Production is severely restricted by paraffin deposits.', linked_objectives: ['obj5'], icon: 'fire' }
     ];
     const aiRecommendations = {
-        prob1: [ 
-            { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis of case study <strong>M-21 (The Montrose Squeeze)</strong> confirms an expandable steel patch is the standard, high-success-rate rigless solution for this specific failure mode in this field.' } 
+        prob1: [
+            { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis confirms expandable steel patches are proven, high-success-rate rigless solutions for casing deformation in this field environment.' }
         ],
-        prob2: [ 
-            { objectiveId: 'obj2', confidence: 92, outcome: 'Blockage cleared, production restored', reason: 'Based on the successful intervention on case study <strong>S-15 (The Scale Trap)</strong>, a two-stage chemical (DTPA) and mechanical (jetting) intervention has the highest probability of success. This avoids the high risk of stuck pipe associated with milling.' } 
+        prob2: [
+            { objectiveId: 'obj2', confidence: 92, outcome: 'Blockage cleared, production restored', reason: 'Based on the successful intervention on case study <strong>Well_33 (The Scale Victory)</strong>, a two-stage chemical (DTPA) and mechanical (jetting) intervention has the highest probability of success. This avoids the high risk of stuck pipe associated with milling.' }
         ],
-        prob3: [ 
-            { objectiveId: 'obj3', confidence: 99, outcome: 'Well returned to safe, compliant production', reason: 'This is a standard operation. The critical lesson from case study <strong>F-11 (The Broken Barrier)</strong> is to use a reliable mechanical lock-open tool to avoid procedural failures and ensure a successful, single-run repair.' } 
+        prob3: [
+            { objectiveId: 'obj3', confidence: 99, outcome: 'Well returned to safe, compliant production', reason: 'This is a standard operation. The critical lesson from case study <strong>Well_44 (The Barrier Restoration)</strong> is to use a reliable mechanical lock-open tool to avoid procedural failures and ensure a successful, single-run repair.' }
         ],
-        prob4: [ 
-            { objectiveId: 'obj4', confidence: 88, outcome: 'Sand-free production at >80% potential', reason: 'The success on case study <strong>C-08 (The Sandstorm)</strong> proves a through-tubing expandable sand screen is the optimal rigless solution. This avoids a costly workover.' } 
+        prob4: [
+            { objectiveId: 'obj4', confidence: 88, outcome: 'Sand-free production at >80% potential', reason: 'Through-tubing expandable sand screens are proven rigless solutions for sand control failures. This approach avoids costly workover operations.' }
         ],
-        prob5: [ 
-            { objectiveId: 'obj5', confidence: 90, outcome: 'Wax blockage removed, production increased by >400%', reason: 'The case study from <strong>P-12 (The Wax Plug)</strong> shows that a Coiled Tubing intervention with both heated chemical dissolvers and a mechanical scraper tool is the most effective procedure.' } 
+        prob5: [
+            { objectiveId: 'obj5', confidence: 90, outcome: 'Wax blockage removed, production increased by >400%', reason: 'Coiled Tubing interventions with both heated chemical dissolvers and mechanical scraper tools are the most effective procedures for paraffin removal.' }
         ]
     };
     const proceduresData = {
@@ -3472,7 +3550,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const renderWellCards = () => {
         if (!wellSelectionGrid) return; // Skip if element doesn't exist
         wellSelectionGrid.innerHTML = wellData.map(well => {
-            const isWellFromHell = well.id === 'W666';
+            const isWellFromHell = well.id === 'Well_666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
             const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
 
@@ -3507,7 +3585,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!caseStudiesGrid) return;
 
         caseStudiesGrid.innerHTML = wellData.map(well => {
-            const isWellFromHell = well.id === 'W666';
+            const isWellFromHell = well.id === 'Well_666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
             const bgColor = isWellFromHell ? 'bg-red-900/30' : 'bg-slate-800/30';
             const borderColor = isWellFromHell ? 'border-red-500' : 'border-cyan-500/30';
@@ -3552,7 +3630,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     const selectWellW666 = () => {
-        const w666 = wellData.find(w => w.id === 'W666');
+        const w666 = wellData.find(w => w.id === 'Well_666');
         if (!w666) return;
 
         appState.selectedWell = w666;
@@ -3579,7 +3657,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const renderProblems = () => {
         // Only show problems relevant to the "Well From Hell"
-        if (appState.selectedWell && appState.selectedWell.id === 'W666') {
+        if (appState.selectedWell && appState.selectedWell.id === 'Well_666') {
              problemsFieldset.innerHTML = problemsData.map(prob => `
                 <div class="objective-card light-card" data-problem-id="${prob.id}">
                     <input type="radio" name="problem" id="${prob.id}" value="${prob.id}" class="sr-only">
@@ -3597,7 +3675,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             problemsFieldset.innerHTML = `
                 <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
-                    <p class="text-yellow-800 dark:text-yellow-200">Please select the 'Well From Hell' (W666) to use the AI Advisor.</p>
+                    <p class="text-yellow-800 dark:text-yellow-200">Please select the 'Well From Hell' (Well_666) to use the AI Advisor.</p>
                 </div>
             `;
         }
@@ -5432,10 +5510,10 @@ document.addEventListener('DOMContentLoaded', function() {
         manualPlanningView.classList.toggle('hidden', e.target.checked); 
         aiAdvisorView.classList.toggle('hidden', !e.target.checked);
         
-        if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== 'W666') {
+        if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== 'Well_666') {
              aiAdvisorView.innerHTML = `
                 <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
-                    <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (W666) scenario. Please select W666 to see AI recommendations.</p>
+                    <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (Well_666) scenario. Please select Well_666 to see AI recommendations.</p>
                 </div>
             `;
         } else {
