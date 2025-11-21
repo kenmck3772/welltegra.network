@@ -3162,35 +3162,170 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'CASE STUDY: The Scale Victory',
             field: 'Brahan',
             region: 'UKCS',
-            type: 'Oil Producer',
-            depth: '11,319ft',
+            type: 'HPHT Gas Condensate Producer',
+            depth: '11,647ft',
             locationType: 'Platform',
+            platform: 'Brahan Alpha',
             datumElevation: '82ft',
             waterDepth: '0ft',
-            status: 'Active - Restored Production',
-            issue: 'SOLUTION: Severe BaSO4 scale was successfully removed with chemical/jetting treatment.',
+            status: 'Active - Post-Intervention',
+            issue: 'CASE STUDY: "The Scale Trap" - Severe BaSO4 scale successfully removed with chemical/jetting treatment.',
             wellboreImage: '/assets/wellbore-Well_33-3d.png',
-            history: [
-                { date: '2024-02-05', operation: 'Production Decline', problem: 'Production declined 60% over 3 weeks. Slickline unable to pass restriction at 10,500ft.', lesson: 'BaSO4 scale buildup from seawater injection mixing with formation water.' },
-                { date: '2024-03-12', operation: 'CT Chemical/Jetting', problem: 'Successfully cleaned tubing using DTPA chemical soak followed by high-pressure jetting.', lesson: 'Two-stage chemical/mechanical approach proved highly effective for hard scale removal.' }
-            ],
-            dailyReports: [],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 11319}],
-                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 11319, comments: 'Chemically/Jet Cleaned for BaSO4 Scale'}],
-                equipment: [
-                    {item: 'SSSV', top: 1115, comments: 'TRSSV, 1/4in control line'},
-                    {item: 'Packer', top: 11155, comments: 'Hydraulic Set Production Packer'}
-                ],
-                perforations: [{top: 11384, bottom: 11483}]
+
+            // PILLAR 1: Identity & Context
+            administrative: {
+                wellID: '33',
+                regulatoryID: '12-345-67892-BRA-33',
+                operator: 'Brahan Field Operating Company',
+                lease: 'Brahan Alpha Lease',
+                surfaceLocation: { lat: '58° 38\' 22.1" N', lon: '0° 20\' 18.5" E' },
+                spudDate: '2019-09-05',
+                completionDate: '2019-12-12',
+                originalAFE: 48500000,
+                actualCost: 51200000,
+                classification: 'Active Producer (Post-Intervention)',
+                reportDate: '2023-10-26'
             },
+            geological: {
+                targetFormation: 'Brahan Alpha Sandstone (HPHT Zone)',
+                prognosisVsActual: 'Actual formation top encountered 8m deeper than prognosis',
+                reservoirProperties: {
+                    porosity: '16-20%',
+                    permeability: '120-200 mD',
+                    initialPressure: '8,200 psi @ 3,535 m TVD',
+                    temperature: '168 °C'
+                },
+                fluidCharacteristics: {
+                    fluidType: 'Gas Condensate with high scaling tendency',
+                    CGR: '115 bbl/MMscf',
+                    gasGravity: 0.67,
+                    h2s: '18 ppm',
+                    co2: '4.1 mol%',
+                    scaleTendency: 'High Barium Sulphate (BaSO₄) precipitation risk identified during PVT analysis'
+                },
+                volumetrics: {
+                    OGIP: '155 Bcf',
+                    EUR: '58 Bcf'
+                }
+            },
+
+            // PILLAR 2: Physical Blueprint
             trajectory: [
                 {md: 0, inc: 0, azimuth: 0, tvd: 0},
                 {md: 3281, inc: 5.0, azimuth: 120.0, tvd: 3277},
                 {md: 6562, inc: 8.0, azimuth: 120.0, tvd: 6547},
                 {md: 9843, inc: 10.0, azimuth: 120.0, tvd: 9792},
                 {md: 11647, inc: 10.5, azimuth: 120.0, tvd: 11580}
-            ]
+            ],
+            wellboreConstruction: [
+                {component: 'Conductor', topMD: 0, bottomMD: 492, size: 30, weight: null, grade: null, connection: null, details: 'Driven Pile'},
+                {component: 'Surface', topMD: 0, bottomMD: 3281, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Surface (verified by returns)'},
+                {component: 'Intermediate', topMD: 0, bottomMD: 8366, size: 13.375, weight: 54.5, grade: 'L-80', connection: 'BTC', details: 'TOC @ 1,500m (CBL/VDL verified)'},
+                {component: 'Production', topMD: 0, bottomMD: 11647, size: 9.625, weight: 47.0, grade: 'C-90', connection: 'VAM TOP', details: 'TOC @ 2,050m (CBL/VDL verified)'}
+            ],
+
+            // PILLAR 3: Completion & Production Setup
+            completion: {
+                casing: [{type: 'Production', size: '9 5/8"', top: 0, bottom: 11647}],
+                tubing: [{type: 'Production', size: '5.5"', top: 0, bottom: 11319, weight: '17.0 lb/ft', grade: 'L-80 13Cr', connection: 'VAM TOP', comments: '**Chemically/Jet Cleaned for BaSO₄ Scale on Dec 10, 2021**'}],
+                equipment: [
+                    {item: 'SSSV', top: 1115, details: 'TRSSV, 1/4" control line, 1.875" bore, equalizing'},
+                    {item: 'Chemical Injection Mandrel', top: 3609, details: 'Side Pocket Mandrel for scale inhibitor injection'},
+                    {item: 'Gas Lift Mandrels', top: 4265, details: 'Side Pocket Mandrels at 1,300m, 1,600m, 1,900m - 1.0" OD valve pockets'},
+                    {item: 'Packer', top: 11155, details: 'Model "A" Hydraulic Set Production Packer, 10k psi rating'},
+                    {item: 'Landing Nipple', top: 11253, details: 'No-Go Nipple, 2.313" ID, located below packer'}
+                ],
+                perforations: [{top: 11384, bottom: 11483, details: '6 SPF, 60° phasing, Big Hole charges, TCP'}]
+            },
+
+            // PILLAR 4: Lifecycle Performance & Evolution
+            productionHistory: {
+                initialRate: {date: 'Q1 2020', oil: 1350, gas: 70, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                preInterventionRate: {date: 'Q3 2021', oil: 240, gas: 12, water: 0, unit: 'bbl/d oil, MMscf/d gas (declined due to severe scale blockage)'},
+                currentRate: {date: 'Q3 2023', oil: 1240, gas: 63, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                cumulativeProduction: {gas: '22.8 Bcf', condensate: '2.7 MMbbl'},
+                performanceTrend: 'Strong and stable post-intervention, benefiting from optimized scale inhibitor program.'
+            },
+            history: [
+                {
+                    date: '2019-12-12',
+                    operation: 'Initial Production',
+                    problem: 'Well brought online successfully at 9,000 boepd (70 MMscf/d gas, 1,350 bbl/d condensate).',
+                    lesson: 'High-performing producer but identified high scaling risk during initial PVT analysis.',
+                    serviceProvider: 'Brahan Operating Co.',
+                    duration: 'N/A',
+                    npt: 0
+                },
+                {
+                    date: '2021-08-15',
+                    operation: 'Wireline (Diagnostic)',
+                    problem: 'Investigate rapid production decline',
+                    lesson: 'Confirmed scale issue, not reservoir depletion. Memory gauge data indicated significant downhole restriction consistent with scale build-up.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '12 hours',
+                    npt: 4,
+                    outcome: 'Successful - Scale identified'
+                },
+                {
+                    date: '2021-12-05',
+                    operation: 'Coiled Tubing (Major Workover)',
+                    problem: 'Remove hard BaSO₄ scale blockage from tubing',
+                    lesson: 'Combined chemical and mechanical approach is highly effective for hard BaSO₄ scale. Hard BaSO₄ scale bridge completely removed from 3,200m to 3,450m MD. Full wellbore access restored. This became the "Scale Trap" case study.',
+                    serviceProvider: 'CT Intervention Specialists',
+                    duration: '84 hours',
+                    npt: 30,
+                    outcome: 'Successful - Scale removed'
+                },
+                {
+                    date: '2021-12-10',
+                    operation: 'Coiled Tubing (Post-Job)',
+                    problem: 'Clean out residual debris and perform final wellbore clean-up',
+                    lesson: 'Thorough post-job clean-out is vital to prevent future issues. Wellbore prepared for re-start.',
+                    serviceProvider: 'CT Intervention Specialists',
+                    duration: '24 hours',
+                    npt: 4,
+                    outcome: 'Successful - Clean-out complete'
+                },
+                {
+                    date: '2022-01-15',
+                    operation: 'Slickline',
+                    problem: 'Re-set Chemical Injection Valve',
+                    lesson: 'Ensured continuous chemical protection post-intervention. Scale inhibitor injection re-established.',
+                    serviceProvider: 'QuickWire Services',
+                    duration: '8 hours',
+                    npt: 1,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2023-07-20',
+                    operation: 'Wireline (Surveillance)',
+                    problem: 'Production logging and fluid sampling',
+                    lesson: 'Validated the success of the remediation and new chemical program. Confirmed clean tubing ID and effective scale inhibition across the interval.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '20 hours',
+                    npt: 3,
+                    outcome: 'Successful - Validation complete'
+                }
+            ],
+            dailyReports: [],
+
+            // PILLAR 5: Current State & Future Outlook
+            wellIntegrity: {
+                wbsVerified: true,
+                primaryBarriers: ['5.5" Production Tubing (intact, post-clean)', 'Hydraulic Packer (set & tested)', 'TRSSV (function tested OK)', '9 5/8" Production Casing & Cement (CBL verified)'],
+                secondaryBarriers: ['13 3/8" Intermediate Casing & Cement', '20" Surface Casing & Cement', 'Wellhead & X-mas Tree valves'],
+                barrierVerification: {
+                    annulusAPressure: '55 psi (stable, within operational limits)',
+                    sssvTest: 'Passed (Quarterly test, Sept 2023)',
+                    wellheadValves: 'Function tested monthly, all OK',
+                    tubingIntegrity: 'Monitored via regular PLTs. No signs of re-occurring scale build-up'
+                }
+            },
+            futurePlans: {
+                immediate: ['Routine quarterly surveillance (SSSV test, annulus pressure check)', 'Continue monthly monitoring of scale inhibitor injection rates and effectiveness'],
+                mediumTerm: ['Perform routine caliper log in 2025 to proactively monitor for any early signs of scale re-formation', 'Evaluate long-term performance of current scale inhibitor chemistry and consider alternative formulations if needed'],
+                longTerm: ['Well history of severe scaling will be key factor in designing P&A program, ensuring all scaled sections are properly isolated and cleaned']
+            }
         },
         {
             id: 'Well_44',
