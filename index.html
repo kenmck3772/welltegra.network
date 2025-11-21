@@ -2866,34 +2866,137 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'Brahan Producer 11',
             field: 'Brahan',
             region: 'UKCS',
-            type: 'Oil Producer',
+            type: 'HPHT Gas Condensate Producer',
             depth: '11,155ft',
             locationType: 'Platform',
+            platform: 'Brahan Alpha',
             datumElevation: '82ft',
             waterDepth: '0ft',
             status: 'Active - Producing',
             issue: 'Standard platform producer, operating normally with routine monitoring.',
             wellboreImage: '/assets/wellbore-Well_11-3d.png',
-            history: [
-                { date: '2024-01-10', operation: 'Initial Production', problem: 'Well brought online successfully.', lesson: 'Baseline producer for Brahan field.' }
-            ],
-            dailyReports: [],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 11155}],
-                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 11155}],
-                equipment: [
-                    {item: 'SSSV', top: 1148, comments: 'TRSSV, 1/4in control line'},
-                    {item: 'Packer', top: 10991, comments: 'Hydraulic Set Production Packer'}
-                ],
-                perforations: [{top: 11220, bottom: 11319}]
+
+            // PILLAR 1: Identity & Context
+            administrative: {
+                wellID: '11',
+                regulatoryID: '12-345-67890-BRA-11',
+                operator: 'Brahan Field Operating Company',
+                lease: 'Brahan Alpha Lease',
+                surfaceLocation: { lat: '58° 38\' 15.0" N', lon: '0° 20\' 05.0" E' },
+                spudDate: '2018-07-15',
+                completionDate: '2018-10-22',
+                originalAFE: 45000000,
+                actualCost: 43800000,
+                classification: 'Active Producer',
+                reportDate: '2023-10-26'
             },
+            geological: {
+                targetFormation: 'Brahan Alpha Sandstone (Upper Jurassic)',
+                prognosisVsActual: 'Actual formation top encountered within 5m of prognosis',
+                reservoirProperties: {
+                    porosity: '18-22%',
+                    permeability: '150-250 mD',
+                    initialPressure: '7,500 psi @ 3,435 m TVD',
+                    temperature: '160 °C'
+                },
+                fluidCharacteristics: {
+                    fluidType: 'Rich Gas Condensate',
+                    CGR: '120 bbl/MMscf',
+                    gasGravity: 0.65,
+                    h2s: '15 ppm',
+                    co2: '3.5 mol%'
+                },
+                volumetrics: {
+                    OGIP: '180 Bcf',
+                    EUR: '65 Bcf'
+                }
+            },
+
+            // PILLAR 2: Physical Blueprint
             trajectory: [
                 {md: 0, inc: 0, azimuth: 0, tvd: 0},
                 {md: 3281, inc: 1.5, azimuth: 45.2, tvd: 3280},
                 {md: 6562, inc: 1.8, azimuth: 45.2, tvd: 6561},
                 {md: 9843, inc: 2.0, azimuth: 45.2, tvd: 9841},
                 {md: 11483, inc: 2.1, azimuth: 45.2, tvd: 11481}
-            ]
+            ],
+            wellboreConstruction: [
+                {component: 'Conductor', topMD: 0, bottomMD: 492, size: 30, weight: null, grade: null, connection: null, details: 'Driven Pile'},
+                {component: 'Surface', topMD: 0, bottomMD: 3281, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Surface (verified by returns)'},
+                {component: 'Intermediate', topMD: 0, bottomMD: 8202, size: 13.375, weight: 54.5, grade: 'L-80', connection: 'BTC', details: 'TOC @ 1,500m (CBL/VDL verified)'},
+                {component: 'Production', topMD: 0, bottomMD: 11483, size: 9.625, weight: 47.0, grade: 'C-90', connection: 'VAM TOP', details: 'TOC @ 2,000m (CBL/VDL verified)'}
+            ],
+
+            // PILLAR 3: Completion & Production Setup
+            completion: {
+                casing: [{type: 'Production', size: '9 5/8"', top: 0, bottom: 11483}],
+                tubing: [{type: 'Production', size: '5.5"', top: 0, bottom: 11155, weight: '17.0 lb/ft', grade: 'L-80 13Cr', connection: 'VAM TOP'}],
+                equipment: [
+                    {item: 'SSSV', top: 1148, details: 'TRSSV, 1/4" control line, 1.875" bore, equalizing'},
+                    {item: 'Gas Lift Mandrels', top: 3937, details: 'Side Pocket Mandrels at 1,200m, 1,500m, 1,800m - 1.0" OD valve pockets'},
+                    {item: 'Packer', top: 10991, details: 'Model "A" Hydraulic Set Production Packer, 10k psi rating'},
+                    {item: 'Landing Nipple', top: 11090, details: 'No-Go Nipple, 2.313" ID, located below packer'}
+                ],
+                perforations: [{top: 11220, bottom: 11319, details: '6 SPF, 60° phasing, Big Hole charges, TCP'}]
+            },
+
+            // PILLAR 4: Lifecycle Performance & Evolution
+            productionHistory: {
+                initialRate: {date: 'Q4 2018', oil: 1200, gas: 60, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                currentRate: {date: 'Q3 2023', oil: 980, gas: 48, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                cumulativeProduction: {gas: '28.5 Bcf', condensate: '3.4 MMbbl'},
+                performanceTrend: 'Stable decline, consistent with reservoir simulation. No unexpected water or sand production.'
+            },
+            history: [
+                {
+                    date: '2018-10-22',
+                    operation: 'Initial Production',
+                    problem: 'Well brought online successfully at 8,000 boepd (60 MMscf/d gas, 1,200 bbl/d condensate).',
+                    lesson: 'Baseline producer for Brahan field.',
+                    serviceProvider: 'Brahan Operating Co.',
+                    duration: 'N/A',
+                    npt: 0
+                },
+                {
+                    date: '2021-04-15',
+                    operation: 'Wireline (PLT)',
+                    problem: 'Production profiling and pressure survey',
+                    lesson: 'Confirmed uniform inflow profile. No crossflow detected. Baseline profile established. Gas lift valves confirmed operating optimally.',
+                    serviceProvider: 'WellServices Inc.',
+                    duration: '24 hours',
+                    npt: 4,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2023-03-02',
+                    operation: 'Slickline',
+                    problem: 'Replace Gas Lift Valves (GLVs) in SPMs',
+                    lesson: 'Standard GLV replacement procedure validated. No issues with SPM integrity. Three GLVs replaced at depths 1,200m, 1,500m, 1,800m. Immediate lift improvement noted.',
+                    serviceProvider: 'QuickWire Services',
+                    duration: '12 hours',
+                    npt: 2,
+                    outcome: 'Successful'
+                }
+            ],
+            dailyReports: [],
+
+            // PILLAR 5: Current State & Future Outlook
+            wellIntegrity: {
+                wbsVerified: true,
+                primaryBarriers: ['5.5" Production Tubing (intact)', 'Hydraulic Packer (set & tested)', 'TRSSV (function tested OK)', '9 5/8" Production Casing & Cement (CBL verified)'],
+                secondaryBarriers: ['13 3/8" Intermediate Casing & Cement', '20" Surface Casing & Cement', 'Wellhead & X-mas Tree valves'],
+                barrierVerification: {
+                    annulusAPressure: '50 psi (stable, within operational limits)',
+                    sssvTest: 'Passed (Quarterly test, Sept 2023)',
+                    wellheadValves: 'Function tested monthly, all OK',
+                    tubingCasingIntegrity: 'No leaks or abnormal pressures detected'
+                }
+            },
+            futurePlans: {
+                immediate: ['Routine quarterly surveillance (SSSV test, annulus pressure check)', 'Annual production logging run scheduled for Q1 2024'],
+                mediumTerm: ['Consider downhole chemical squeeze for scale prevention if water cut increases', 'Evaluate potential for artificial lift optimization (e.g., gas lift redesign) as reservoir pressure declines'],
+                longTerm: ['Not currently applicable. Well is a core, reliable producer with significant remaining reserve base.']
+            }
         },
         {
             id: 'Well_22',
