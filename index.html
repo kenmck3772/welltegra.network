@@ -3003,34 +3003,159 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'Brahan Producer 22',
             field: 'Brahan',
             region: 'UKCS',
-            type: 'Oil Producer',
-            depth: '11,483ft',
+            type: 'HPHT Gas Condensate Producer',
+            depth: '11,811ft',
             locationType: 'Platform',
+            platform: 'Brahan Alpha',
             datumElevation: '82ft',
             waterDepth: '0ft',
-            status: 'Active - Producing',
-            issue: 'Standard platform producer, operating normally with routine monitoring.',
+            status: 'Active - Post-Intervention',
+            issue: 'CASE STUDY: "The Brahan Squeeze" - Casing deformation successfully remediated with expandable steel patch.',
             wellboreImage: '/assets/wellbore-Well_22-3d.png',
-            history: [
-                { date: '2024-01-15', operation: 'Initial Production', problem: 'Well brought online successfully.', lesson: 'Baseline producer for Brahan field.' }
-            ],
-            dailyReports: [],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 11483}],
-                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 11483}],
-                equipment: [
-                    {item: 'SSSV', top: 1165, comments: 'TRSSV, 1/4in control line'},
-                    {item: 'Packer', top: 11319, comments: 'Hydraulic Set Production Packer'}
-                ],
-                perforations: [{top: 11549, bottom: 11680}]
+
+            // PILLAR 1: Identity & Context
+            administrative: {
+                wellID: '22',
+                regulatoryID: '12-345-67891-BRA-22',
+                operator: 'Brahan Field Operating Company',
+                lease: 'Brahan Alpha Lease',
+                surfaceLocation: { lat: '58° 38\' 18.5" N', lon: '0° 20\' 12.0" E' },
+                spudDate: '2019-01-10',
+                completionDate: '2019-04-05',
+                originalAFE: 47000000,
+                actualCost: 52100000,
+                classification: 'Active Producer (Post-Intervention)',
+                reportDate: '2023-10-26'
             },
+            geological: {
+                targetFormation: 'Brahan Alpha Sandstone (Lower Zone - Compartment B)',
+                prognosisVsActual: 'Actual formation top encountered 12m shallower than prognosis',
+                reservoirProperties: {
+                    porosity: '19-23%',
+                    permeability: '170-280 mD',
+                    initialPressure: '7,650 psi @ 3,535 m TVD',
+                    temperature: '162 °C'
+                },
+                fluidCharacteristics: {
+                    fluidType: 'Rich Gas Condensate',
+                    CGR: '125 bbl/MMscf',
+                    gasGravity: 0.64,
+                    h2s: '12 ppm',
+                    co2: '3.2 mol%'
+                },
+                volumetrics: {
+                    OGIP: '165 Bcf',
+                    EUR: '62 Bcf'
+                }
+            },
+
+            // PILLAR 2: Physical Blueprint
             trajectory: [
                 {md: 0, inc: 0, azimuth: 0, tvd: 0},
                 {md: 3281, inc: 1.2, azimuth: 88.1, tvd: 3281},
                 {md: 6562, inc: 1.5, azimuth: 88.1, tvd: 6561},
                 {md: 9843, inc: 1.9, azimuth: 88.1, tvd: 9841},
                 {md: 11811, inc: 2.0, azimuth: 88.1, tvd: 11808}
-            ]
+            ],
+            wellboreConstruction: [
+                {component: 'Conductor', topMD: 0, bottomMD: 492, size: 30, weight: null, grade: null, connection: null, details: 'Driven Pile'},
+                {component: 'Surface', topMD: 0, bottomMD: 3445, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Surface (verified by returns)'},
+                {component: 'Intermediate', topMD: 0, bottomMD: 8530, size: 13.375, weight: 54.5, grade: 'L-80', connection: 'BTC', details: 'TOC @ 1,450m (CBL/VDL verified)'},
+                {component: 'Production', topMD: 0, bottomMD: 11811, size: 9.625, weight: 47.0, grade: 'C-90', connection: 'VAM TOP', details: 'TOC @ 2,100m (CBL verified). **7 5/8" Expandable Steel Patch installed across 2,180-2,220m MD on Oct 15, 2020**'}
+            ],
+
+            // PILLAR 3: Completion & Production Setup
+            completion: {
+                casing: [{type: 'Production', size: '9 5/8"', top: 0, bottom: 11811}],
+                tubing: [{type: 'Production', size: '5.5"', top: 0, bottom: 11483, weight: '17.0 lb/ft', grade: 'L-80 13Cr', connection: 'VAM TOP'}],
+                equipment: [
+                    {item: 'SSSV', top: 1165, details: 'TRSSV, 1/4" control line, 1.875" bore, equalizing'},
+                    {item: 'Gas Lift Mandrels', top: 4101, details: 'Side Pocket Mandrels at 1,250m, 1,550m, 1,850m - 1.0" OD valve pockets'},
+                    {item: 'Packer', top: 11319, details: 'Model "A" Hydraulic Set Production Packer, 10k psi rating'},
+                    {item: 'Landing Nipple', top: 11253, details: 'No-Go Nipple, 2.313" ID, located below packer'},
+                    {item: 'Expandable Patch', top: 7152, details: '7 5/8" Expandable Steel Patch across deformed interval (2,180-2,220m MD). Pressure tested to 5,000 psi', isProblem: false, isRepair: true}
+                ],
+                perforations: [{top: 11549, bottom: 11680, details: '6 SPF, 60° phasing, Big Hole charges, TCP'}]
+            },
+
+            // PILLAR 4: Lifecycle Performance & Evolution
+            productionHistory: {
+                initialRate: {date: 'Q2 2019', oil: 1300, gas: 65, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                preInterventionRate: {date: 'Q2 2020', oil: 512, gas: 32, water: 0, unit: 'bbl/d oil, MMscf/d gas (declined due to restriction)'},
+                currentRate: {date: 'Q3 2023', oil: 1250, gas: 60, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                cumulativeProduction: {gas: '25.1 Bcf', condensate: '3.1 MMbbl'},
+                performanceTrend: 'Stable and strong post-intervention, with minor decline consistent with field norms.'
+            },
+            history: [
+                {
+                    date: '2019-04-05',
+                    operation: 'Initial Production',
+                    problem: 'Well brought online successfully at 8,500 boepd (65 MMscf/d gas, 1,300 bbl/d condensate).',
+                    lesson: 'High-performing initial producer for Brahan field.',
+                    serviceProvider: 'Brahan Operating Co.',
+                    duration: 'N/A',
+                    npt: 0
+                },
+                {
+                    date: '2020-05-20',
+                    operation: 'Wireline (Diagnostic)',
+                    problem: 'Investigate production decline',
+                    lesson: 'Early diagnostics are crucial. Multi-Finger Caliper identified severe casing deformation (ovality >15%) at ~2,200m MD. Confirmed as cause of restriction.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '18 hours',
+                    npt: 6,
+                    outcome: 'Successful - Deformation identified'
+                },
+                {
+                    date: '2020-10-12',
+                    operation: 'Coiled Tubing (Major Workover)',
+                    problem: 'Remediate casing deformation and restore wellbore access',
+                    lesson: 'Expandable patch technology is highly effective for compaction-induced deformation. 7 5/8" expandable steel patch deployed across deformed interval (2,180-2,220m MD). Wellbore ID restored to >95% of nominal. This intervention became the "Brahan Squeeze" case study.',
+                    serviceProvider: 'CT Intervention Specialists',
+                    duration: '96 hours',
+                    npt: 24,
+                    outcome: 'Successful - Full access restored'
+                },
+                {
+                    date: '2020-10-20',
+                    operation: 'Wireline (Post-Job)',
+                    problem: 'Verify patch integrity and clean out wellbore',
+                    lesson: 'Patch provides a reliable, long-term barrier and structural support. Drift gauge confirmed patch integrity.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '12 hours',
+                    npt: 2,
+                    outcome: 'Successful - Patch verified'
+                },
+                {
+                    date: '2023-08-30',
+                    operation: 'Slickline',
+                    problem: 'Replace Gas Lift Valves (GLVs) in SPMs',
+                    lesson: 'Standard maintenance. No issues encountered within the patched section. Three GLVs replaced. Gas lift performance optimized.',
+                    serviceProvider: 'QuickWire Services',
+                    duration: '14 hours',
+                    npt: 3,
+                    outcome: 'Successful'
+                }
+            ],
+            dailyReports: [],
+
+            // PILLAR 5: Current State & Future Outlook
+            wellIntegrity: {
+                wbsVerified: true,
+                primaryBarriers: ['5.5" Production Tubing (intact)', 'Hydraulic Packer (set & tested)', 'TRSSV (function tested OK)', '7 5/8" Expandable Patch (pressure tested to 5,000 psi)', '9 5/8" Production Casing & Cement (CBL verified above and below patch)'],
+                secondaryBarriers: ['13 3/8" Intermediate Casing & Cement', '20" Surface Casing & Cement', 'Wellhead & X-mas Tree valves'],
+                barrierVerification: {
+                    annulusAPressure: '45 psi (stable, within operational limits)',
+                    sssvTest: 'Passed (Quarterly test, Sept 2023)',
+                    expandablePatchIntegrity: 'Monitored via differential pressure across patch. No leaks detected.',
+                    wellheadValves: 'Function tested monthly, all OK'
+                }
+            },
+            futurePlans: {
+                immediate: ['Routine quarterly surveillance (SSSV test, annulus pressure check)', 'Continue monitoring of expandable patch via pressure gauges'],
+                mediumTerm: ['Schedule multi-arm caliper run in 2025 to confirm long-term integrity and dimensional stability of expandable patch', 'Review gas lift performance to optimize for declining reservoir pressure'],
+                longTerm: ['Expandable patch is considered a permanent part of well architecture. P&A procedures will account for its presence and integrity.']
+            }
         },
         {
             id: 'Well_33',
