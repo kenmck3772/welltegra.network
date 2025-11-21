@@ -3492,26 +3492,52 @@ document.addEventListener('DOMContentLoaded', function() {
             field: 'Brahan',
             region: 'UKCS',
             type: 'Water Injector',
-            depth: '14,436ft',
+            depth: '14,764ft',
             locationType: 'Satellite',
+            platform: 'Brahan Bravo (Unmanned Satellite)',
             datumElevation: '82ft',
             waterDepth: '492ft',
             status: 'Active - Injecting',
-            issue: 'Seawater injection well supporting field pressure maintenance. Operating normally.',
+            issue: 'Critical water injector supporting reservoir pressure maintenance. Operating at excellent injectivity.',
             wellboreImage: '/assets/wellbore-Well_55-3d.png',
-            history: [
-                { date: '2024-02-01', operation: 'Initial Injection', problem: 'Water injection commenced at target rate.', lesson: 'Key injection well for reservoir pressure support in Brahan field.' }
-            ],
-            dailyReports: [],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 14436}],
-                tubing: [{type: 'Injection', size: '5.5', top: 0, bottom: 14436, comments: 'Coated'}],
-                equipment: [
-                    {item: 'SSSV', top: 1247, comments: 'TRSSV, 1/4in control line'},
-                    {item: 'Packer', top: 14272, comments: 'Hydraulic Set Injection Packer'}
-                ],
-                perforations: [{top: 14501, bottom: 14698}]
+
+            // PILLAR 1: Identity & Context
+            administrative: {
+                wellID: '55',
+                regulatoryID: '12-345-67895-BRA-55',
+                operator: 'Brahan Field Operating Company',
+                lease: 'Brahan Bravo Satellite Lease Area',
+                surfaceLocation: { lat: '58° 40\' 10.0" N', lon: '0° 22\' 30.0" E' },
+                spudDate: '2021-05-10',
+                completionDate: '2021-08-20',
+                originalAFE: 38000000,
+                actualCost: 37500000,
+                classification: 'Active Water Injector',
+                reportDate: '2023-10-26'
             },
+            geological: {
+                targetFormation: 'Brahan Alpha Sandstone (Northern Flank - Injection Target Zone)',
+                prognosisVsActual: 'Actual formation top encountered within 3m of prognosis',
+                reservoirProperties: {
+                    porosity: '17-21%',
+                    permeability: '180-260 mD (High permeability ideal for injectivity)',
+                    initialPressure: '7,500 psi @ 2,500 m TVD',
+                    temperature: '155 °C'
+                },
+                injectedFluid: {
+                    source: 'Treated Raw Seawater',
+                    filtration: '< 5 microns',
+                    deaeration: '< 10 ppb O₂',
+                    biocideTreatment: 'Continuous glutaraldehyde injection'
+                },
+                injectionTargets: {
+                    targetRate: '80,000 bbls/day',
+                    targetPressure: '5,500 psi (surface)',
+                    voidageReplacementRatio: 1.1
+                }
+            },
+
+            // PILLAR 2: Physical Blueprint
             trajectory: [
                 {md: 0, inc: 0, azimuth: 0, tvd: 0},
                 {md: 3281, inc: 20.0, azimuth: 180.0, tvd: 3215},
@@ -3519,7 +3545,105 @@ document.addEventListener('DOMContentLoaded', function() {
                 {md: 9843, inc: 90.0, azimuth: 180.0, tvd: 8202},
                 {md: 13123, inc: 90.0, azimuth: 180.0, tvd: 8202},
                 {md: 14764, inc: 90.0, azimuth: 180.0, tvd: 8202}
-            ]
+            ],
+            wellboreConstruction: [
+                {component: 'Conductor', topMD: 574, bottomMD: 984, size: 30, weight: null, grade: null, connection: null, details: 'Subsea Wellhead Housing'},
+                {component: 'Surface', topMD: 574, bottomMD: 3937, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Seabed (175m MD, verified by returns)'},
+                {component: 'Intermediate', topMD: 574, bottomMD: 9186, size: 13.375, weight: 54.5, grade: 'L-80', connection: 'BTC', details: 'TOC @ 1,800m MD (CBL/VDL verified)'},
+                {component: 'Production (Injection)', topMD: 574, bottomMD: 14764, size: 9.625, weight: 47.0, grade: 'L-80', connection: 'VAM TOP', details: 'TOC @ 2,500m MD (CBL/VDL verified)'}
+            ],
+
+            // PILLAR 3: Completion & Production Setup
+            completion: {
+                casing: [{type: 'Production (Injection)', size: '9 5/8"', top: 574, bottom: 14764}],
+                tubing: [{type: 'Injection', size: '5.5"', top: 0, bottom: 14436, weight: '17.0 lb/ft', grade: 'L-80', connection: 'VAM TOP', comments: '**Internally Coated with Glass-Reinforced Epoxy for corrosion resistance**'}],
+                equipment: [
+                    {item: 'SSSV', top: 1247, details: 'TRSSV, 1/4" control line, 1.875" bore, equalizing'},
+                    {item: 'Packer', top: 14272, details: 'Model "B" Hydraulic Set Injection Packer, 7,500 psi rating'},
+                    {item: 'Landing Nipple', top: 14337, details: 'No-Go Nipple, 2.313" ID, located below packer'}
+                ],
+                perforations: [{top: 14501, bottom: 14698, details: '6 SPF, 120° phasing, Big Hole charges, TCP (Optimized for injection)'}]
+            },
+
+            // PILLAR 4: Lifecycle Performance & Evolution
+            injectionHistory: {
+                targetRate: {date: 'Q4 2021', rate: 80000, unit: 'bbls/day'},
+                actualInitialRate: {date: 'Q4 2021', rate: 82000, unit: 'bbls/day'},
+                currentRate: {date: 'Q3 2023', rate: 78000, unit: 'bbls/day'},
+                cumulativeInjection: '52.1 MMbbls of water',
+                performanceTrend: 'Excellent and stable. Wellhead injection pressure has remained constant at ~5,200 psi, indicating sustained injectivity and no significant plugging or formation damage.'
+            },
+            history: [
+                {
+                    date: '2021-08-15',
+                    operation: 'Wireline (Completion)',
+                    problem: 'Run completion string, set packer, test SSSV',
+                    lesson: 'Standard subsea completion procedures executed effectively. Packer set and tested. SSSV functioned correctly.',
+                    serviceProvider: 'Subsea Well Services',
+                    duration: '36 hours',
+                    npt: 6,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2021-08-30',
+                    operation: 'Wireline (Perforating)',
+                    problem: 'Perforate injection interval',
+                    lesson: 'TCP operations on satellite platform went smoothly. Perforations made across 4,420-4,480m MD.',
+                    serviceProvider: 'Subsea Well Services',
+                    duration: '12 hours',
+                    npt: 2,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2021-09-05',
+                    operation: 'Start-Up',
+                    problem: 'Commence water injection',
+                    lesson: 'Excellent injectivity confirmed from day one. Well brought on injection smoothly and immediately achieved target rates.',
+                    serviceProvider: 'Brahan Operations Team',
+                    duration: '24 hours',
+                    npt: 0,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2022-10-20',
+                    operation: 'Wireline (Surveillance)',
+                    problem: 'Annual injection profile survey (PLT)',
+                    lesson: 'Confirms integrity of completion and effectiveness of perforation strategy. Survey confirmed excellent, uniform zonal coverage across entire perforated interval. No out-of-zone injection detected.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '18 hours',
+                    npt: 4,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2023-09-28',
+                    operation: 'Wireline (Surveillance)',
+                    problem: 'Annual injection profile survey (PLT)',
+                    lesson: 'Continued stable performance validates the CRA coating and water treatment quality. Results consistent with 2022 survey, confirming sustained injectivity and well integrity.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '18 hours',
+                    npt: 4,
+                    outcome: 'Successful'
+                }
+            ],
+            dailyReports: [],
+
+            // PILLAR 5: Current State & Future Outlook
+            wellIntegrity: {
+                wbsVerified: true,
+                primaryBarriers: ['5.5" Coated Injection Tubing (intact)', 'Hydraulic Injection Packer (set & tested)', 'TRSSV (function tested OK)', '9 5/8" Production Casing & Cement (CBL verified)'],
+                secondaryBarriers: ['13 3/8" Intermediate Casing & Cement', '20" Surface Casing & Cement', 'Subsea Wellhead & X-mas Tree valves'],
+                barrierVerification: {
+                    annulusAPressure: '0 psi (monitored continuously, no communication detected)',
+                    sssvTest: 'Passed (Quarterly test, Sep 2023)',
+                    wellheadValves: 'Function tested and lubricated quarterly, all OK',
+                    tubingIntegrity: 'Stable injection pressures indicate no leaks or significant corrosion/erosion. CRA coating integrity assumed intact'
+                }
+            },
+            futurePlans: {
+                immediate: ['Continue routine quarterly surveillance (SSSV test, annulus pressure monitoring)', 'Monitor water treatment plant performance to ensure injected water quality remains high'],
+                mediumTerm: ['Continue annual injection profile surveys to monitor for any long-term changes in injectivity profile or potential for fines migration or near-wellbore scaling', 'Evaluate need for stimulation (e.g., acid wash) if injectivity declines significantly'],
+                longTerm: ['Not applicable in near term. Well_55 is critical asset for reservoir pressure support and expected to operate for remaining life of Brahan field. P&A only considered as part of overall field abandonment plan']
+            }
         },
         {
             id: 'Well_666',
