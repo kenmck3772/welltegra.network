@@ -2866,138 +2866,625 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'Brahan Producer 11',
             field: 'Brahan',
             region: 'UKCS',
-            type: 'Oil Producer',
+            type: 'HPHT Gas Condensate Producer',
             depth: '11,155ft',
             locationType: 'Platform',
+            platform: 'Brahan Alpha',
             datumElevation: '82ft',
             waterDepth: '0ft',
             status: 'Active - Producing',
             issue: 'Standard platform producer, operating normally with routine monitoring.',
             wellboreImage: '/assets/wellbore-Well_11-3d.png',
-            history: [
-                { date: '2024-01-10', operation: 'Initial Production', problem: 'Well brought online successfully.', lesson: 'Baseline producer for Brahan field.' }
-            ],
-            dailyReports: [],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 11155}],
-                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 11155}],
-                equipment: [
-                    {item: 'SSSV', top: 1148, comments: 'TRSSV, 1/4in control line'},
-                    {item: 'Packer', top: 10991, comments: 'Hydraulic Set Production Packer'}
-                ],
-                perforations: [{top: 11220, bottom: 11319}]
+
+            // PILLAR 1: Identity & Context
+            administrative: {
+                wellID: '11',
+                regulatoryID: '12-345-67890-BRA-11',
+                operator: 'Brahan Field Operating Company',
+                lease: 'Brahan Alpha Lease',
+                surfaceLocation: { lat: '58° 38\' 15.0" N', lon: '0° 20\' 05.0" E' },
+                spudDate: '2018-07-15',
+                completionDate: '2018-10-22',
+                originalAFE: 45000000,
+                actualCost: 43800000,
+                classification: 'Active Producer',
+                reportDate: '2023-10-26'
             },
+            geological: {
+                targetFormation: 'Brahan Alpha Sandstone (Upper Jurassic)',
+                prognosisVsActual: 'Actual formation top encountered within 5m of prognosis',
+                reservoirProperties: {
+                    porosity: '18-22%',
+                    permeability: '150-250 mD',
+                    initialPressure: '7,500 psi @ 3,435 m TVD',
+                    temperature: '160 °C'
+                },
+                fluidCharacteristics: {
+                    fluidType: 'Rich Gas Condensate',
+                    CGR: '120 bbl/MMscf',
+                    gasGravity: 0.65,
+                    h2s: '15 ppm',
+                    co2: '3.5 mol%'
+                },
+                volumetrics: {
+                    OGIP: '180 Bcf',
+                    EUR: '65 Bcf'
+                }
+            },
+
+            // PILLAR 2: Physical Blueprint
             trajectory: [
                 {md: 0, inc: 0, azimuth: 0, tvd: 0},
                 {md: 3281, inc: 1.5, azimuth: 45.2, tvd: 3280},
                 {md: 6562, inc: 1.8, azimuth: 45.2, tvd: 6561},
                 {md: 9843, inc: 2.0, azimuth: 45.2, tvd: 9841},
                 {md: 11483, inc: 2.1, azimuth: 45.2, tvd: 11481}
-            ]
+            ],
+            wellboreConstruction: [
+                {component: 'Conductor', topMD: 0, bottomMD: 492, size: 30, weight: null, grade: null, connection: null, details: 'Driven Pile'},
+                {component: 'Surface', topMD: 0, bottomMD: 3281, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Surface (verified by returns)'},
+                {component: 'Intermediate', topMD: 0, bottomMD: 8202, size: 13.375, weight: 54.5, grade: 'L-80', connection: 'BTC', details: 'TOC @ 1,500m (CBL/VDL verified)'},
+                {component: 'Production', topMD: 0, bottomMD: 11483, size: 9.625, weight: 47.0, grade: 'C-90', connection: 'VAM TOP', details: 'TOC @ 2,000m (CBL/VDL verified)'}
+            ],
+
+            // PILLAR 3: Completion & Production Setup
+            completion: {
+                casing: [{type: 'Production', size: '9 5/8"', top: 0, bottom: 11483}],
+                tubing: [{type: 'Production', size: '5.5"', top: 0, bottom: 11155, weight: '17.0 lb/ft', grade: 'L-80 13Cr', connection: 'VAM TOP'}],
+                equipment: [
+                    {item: 'SSSV', top: 1148, details: 'TRSSV, 1/4" control line, 1.875" bore, equalizing'},
+                    {item: 'Gas Lift Mandrels', top: 3937, details: 'Side Pocket Mandrels at 1,200m, 1,500m, 1,800m - 1.0" OD valve pockets'},
+                    {item: 'Packer', top: 10991, details: 'Model "A" Hydraulic Set Production Packer, 10k psi rating'},
+                    {item: 'Landing Nipple', top: 11090, details: 'No-Go Nipple, 2.313" ID, located below packer'}
+                ],
+                perforations: [{top: 11220, bottom: 11319, details: '6 SPF, 60° phasing, Big Hole charges, TCP'}]
+            },
+
+            // PILLAR 4: Lifecycle Performance & Evolution
+            productionHistory: {
+                initialRate: {date: 'Q4 2018', oil: 1200, gas: 60, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                currentRate: {date: 'Q3 2023', oil: 980, gas: 48, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                cumulativeProduction: {gas: '28.5 Bcf', condensate: '3.4 MMbbl'},
+                performanceTrend: 'Stable decline, consistent with reservoir simulation. No unexpected water or sand production.'
+            },
+            history: [
+                {
+                    date: '2018-10-22',
+                    operation: 'Initial Production',
+                    problem: 'Well brought online successfully at 8,000 boepd (60 MMscf/d gas, 1,200 bbl/d condensate).',
+                    lesson: 'Baseline producer for Brahan field.',
+                    serviceProvider: 'Brahan Operating Co.',
+                    duration: 'N/A',
+                    npt: 0
+                },
+                {
+                    date: '2021-04-15',
+                    operation: 'Wireline (PLT)',
+                    problem: 'Production profiling and pressure survey',
+                    lesson: 'Confirmed uniform inflow profile. No crossflow detected. Baseline profile established. Gas lift valves confirmed operating optimally.',
+                    serviceProvider: 'WellServices Inc.',
+                    duration: '24 hours',
+                    npt: 4,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2023-03-02',
+                    operation: 'Slickline',
+                    problem: 'Replace Gas Lift Valves (GLVs) in SPMs',
+                    lesson: 'Standard GLV replacement procedure validated. No issues with SPM integrity. Three GLVs replaced at depths 1,200m, 1,500m, 1,800m. Immediate lift improvement noted.',
+                    serviceProvider: 'QuickWire Services',
+                    duration: '12 hours',
+                    npt: 2,
+                    outcome: 'Successful'
+                }
+            ],
+            dailyReports: [],
+
+            // PILLAR 5: Current State & Future Outlook
+            wellIntegrity: {
+                wbsVerified: true,
+                primaryBarriers: ['5.5" Production Tubing (intact)', 'Hydraulic Packer (set & tested)', 'TRSSV (function tested OK)', '9 5/8" Production Casing & Cement (CBL verified)'],
+                secondaryBarriers: ['13 3/8" Intermediate Casing & Cement', '20" Surface Casing & Cement', 'Wellhead & X-mas Tree valves'],
+                barrierVerification: {
+                    annulusAPressure: '50 psi (stable, within operational limits)',
+                    sssvTest: 'Passed (Quarterly test, Sept 2023)',
+                    wellheadValves: 'Function tested monthly, all OK',
+                    tubingCasingIntegrity: 'No leaks or abnormal pressures detected'
+                }
+            },
+            futurePlans: {
+                immediate: ['Routine quarterly surveillance (SSSV test, annulus pressure check)', 'Annual production logging run scheduled for Q1 2024'],
+                mediumTerm: ['Consider downhole chemical squeeze for scale prevention if water cut increases', 'Evaluate potential for artificial lift optimization (e.g., gas lift redesign) as reservoir pressure declines'],
+                longTerm: ['Not currently applicable. Well is a core, reliable producer with significant remaining reserve base.']
+            }
         },
         {
             id: 'Well_22',
             name: 'Brahan Producer 22',
             field: 'Brahan',
             region: 'UKCS',
-            type: 'Oil Producer',
-            depth: '11,483ft',
+            type: 'HPHT Gas Condensate Producer',
+            depth: '11,811ft',
             locationType: 'Platform',
+            platform: 'Brahan Alpha',
             datumElevation: '82ft',
             waterDepth: '0ft',
-            status: 'Active - Producing',
-            issue: 'Standard platform producer, operating normally with routine monitoring.',
+            status: 'Active - Post-Intervention',
+            issue: 'CASE STUDY: "The Brahan Squeeze" - Casing deformation successfully remediated with expandable steel patch.',
             wellboreImage: '/assets/wellbore-Well_22-3d.png',
-            history: [
-                { date: '2024-01-15', operation: 'Initial Production', problem: 'Well brought online successfully.', lesson: 'Baseline producer for Brahan field.' }
-            ],
-            dailyReports: [],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 11483}],
-                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 11483}],
-                equipment: [
-                    {item: 'SSSV', top: 1165, comments: 'TRSSV, 1/4in control line'},
-                    {item: 'Packer', top: 11319, comments: 'Hydraulic Set Production Packer'}
-                ],
-                perforations: [{top: 11549, bottom: 11680}]
+
+            // PILLAR 1: Identity & Context
+            administrative: {
+                wellID: '22',
+                regulatoryID: '12-345-67891-BRA-22',
+                operator: 'Brahan Field Operating Company',
+                lease: 'Brahan Alpha Lease',
+                surfaceLocation: { lat: '58° 38\' 18.5" N', lon: '0° 20\' 12.0" E' },
+                spudDate: '2019-01-10',
+                completionDate: '2019-04-05',
+                originalAFE: 47000000,
+                actualCost: 52100000,
+                classification: 'Active Producer (Post-Intervention)',
+                reportDate: '2023-10-26'
             },
+            geological: {
+                targetFormation: 'Brahan Alpha Sandstone (Lower Zone - Compartment B)',
+                prognosisVsActual: 'Actual formation top encountered 12m shallower than prognosis',
+                reservoirProperties: {
+                    porosity: '19-23%',
+                    permeability: '170-280 mD',
+                    initialPressure: '7,650 psi @ 3,535 m TVD',
+                    temperature: '162 °C'
+                },
+                fluidCharacteristics: {
+                    fluidType: 'Rich Gas Condensate',
+                    CGR: '125 bbl/MMscf',
+                    gasGravity: 0.64,
+                    h2s: '12 ppm',
+                    co2: '3.2 mol%'
+                },
+                volumetrics: {
+                    OGIP: '165 Bcf',
+                    EUR: '62 Bcf'
+                }
+            },
+
+            // PILLAR 2: Physical Blueprint
             trajectory: [
                 {md: 0, inc: 0, azimuth: 0, tvd: 0},
                 {md: 3281, inc: 1.2, azimuth: 88.1, tvd: 3281},
                 {md: 6562, inc: 1.5, azimuth: 88.1, tvd: 6561},
                 {md: 9843, inc: 1.9, azimuth: 88.1, tvd: 9841},
                 {md: 11811, inc: 2.0, azimuth: 88.1, tvd: 11808}
-            ]
+            ],
+            wellboreConstruction: [
+                {component: 'Conductor', topMD: 0, bottomMD: 492, size: 30, weight: null, grade: null, connection: null, details: 'Driven Pile'},
+                {component: 'Surface', topMD: 0, bottomMD: 3445, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Surface (verified by returns)'},
+                {component: 'Intermediate', topMD: 0, bottomMD: 8530, size: 13.375, weight: 54.5, grade: 'L-80', connection: 'BTC', details: 'TOC @ 1,450m (CBL/VDL verified)'},
+                {component: 'Production', topMD: 0, bottomMD: 11811, size: 9.625, weight: 47.0, grade: 'C-90', connection: 'VAM TOP', details: 'TOC @ 2,100m (CBL verified). **7 5/8" Expandable Steel Patch installed across 2,180-2,220m MD on Oct 15, 2020**'}
+            ],
+
+            // PILLAR 3: Completion & Production Setup
+            completion: {
+                casing: [{type: 'Production', size: '9 5/8"', top: 0, bottom: 11811}],
+                tubing: [{type: 'Production', size: '5.5"', top: 0, bottom: 11483, weight: '17.0 lb/ft', grade: 'L-80 13Cr', connection: 'VAM TOP'}],
+                equipment: [
+                    {item: 'SSSV', top: 1165, details: 'TRSSV, 1/4" control line, 1.875" bore, equalizing'},
+                    {item: 'Gas Lift Mandrels', top: 4101, details: 'Side Pocket Mandrels at 1,250m, 1,550m, 1,850m - 1.0" OD valve pockets'},
+                    {item: 'Packer', top: 11319, details: 'Model "A" Hydraulic Set Production Packer, 10k psi rating'},
+                    {item: 'Landing Nipple', top: 11253, details: 'No-Go Nipple, 2.313" ID, located below packer'},
+                    {item: 'Expandable Patch', top: 7152, details: '7 5/8" Expandable Steel Patch across deformed interval (2,180-2,220m MD). Pressure tested to 5,000 psi', isProblem: false, isRepair: true}
+                ],
+                perforations: [{top: 11549, bottom: 11680, details: '6 SPF, 60° phasing, Big Hole charges, TCP'}]
+            },
+
+            // PILLAR 4: Lifecycle Performance & Evolution
+            productionHistory: {
+                initialRate: {date: 'Q2 2019', oil: 1300, gas: 65, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                preInterventionRate: {date: 'Q2 2020', oil: 512, gas: 32, water: 0, unit: 'bbl/d oil, MMscf/d gas (declined due to restriction)'},
+                currentRate: {date: 'Q3 2023', oil: 1250, gas: 60, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                cumulativeProduction: {gas: '25.1 Bcf', condensate: '3.1 MMbbl'},
+                performanceTrend: 'Stable and strong post-intervention, with minor decline consistent with field norms.'
+            },
+            history: [
+                {
+                    date: '2019-04-05',
+                    operation: 'Initial Production',
+                    problem: 'Well brought online successfully at 8,500 boepd (65 MMscf/d gas, 1,300 bbl/d condensate).',
+                    lesson: 'High-performing initial producer for Brahan field.',
+                    serviceProvider: 'Brahan Operating Co.',
+                    duration: 'N/A',
+                    npt: 0
+                },
+                {
+                    date: '2020-05-20',
+                    operation: 'Wireline (Diagnostic)',
+                    problem: 'Investigate production decline',
+                    lesson: 'Early diagnostics are crucial. Multi-Finger Caliper identified severe casing deformation (ovality >15%) at ~2,200m MD. Confirmed as cause of restriction.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '18 hours',
+                    npt: 6,
+                    outcome: 'Successful - Deformation identified'
+                },
+                {
+                    date: '2020-10-12',
+                    operation: 'Coiled Tubing (Major Workover)',
+                    problem: 'Remediate casing deformation and restore wellbore access',
+                    lesson: 'Expandable patch technology is highly effective for compaction-induced deformation. 7 5/8" expandable steel patch deployed across deformed interval (2,180-2,220m MD). Wellbore ID restored to >95% of nominal. This intervention became the "Brahan Squeeze" case study.',
+                    serviceProvider: 'CT Intervention Specialists',
+                    duration: '96 hours',
+                    npt: 24,
+                    outcome: 'Successful - Full access restored'
+                },
+                {
+                    date: '2020-10-20',
+                    operation: 'Wireline (Post-Job)',
+                    problem: 'Verify patch integrity and clean out wellbore',
+                    lesson: 'Patch provides a reliable, long-term barrier and structural support. Drift gauge confirmed patch integrity.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '12 hours',
+                    npt: 2,
+                    outcome: 'Successful - Patch verified'
+                },
+                {
+                    date: '2023-08-30',
+                    operation: 'Slickline',
+                    problem: 'Replace Gas Lift Valves (GLVs) in SPMs',
+                    lesson: 'Standard maintenance. No issues encountered within the patched section. Three GLVs replaced. Gas lift performance optimized.',
+                    serviceProvider: 'QuickWire Services',
+                    duration: '14 hours',
+                    npt: 3,
+                    outcome: 'Successful'
+                }
+            ],
+            dailyReports: [],
+
+            // PILLAR 5: Current State & Future Outlook
+            wellIntegrity: {
+                wbsVerified: true,
+                primaryBarriers: ['5.5" Production Tubing (intact)', 'Hydraulic Packer (set & tested)', 'TRSSV (function tested OK)', '7 5/8" Expandable Patch (pressure tested to 5,000 psi)', '9 5/8" Production Casing & Cement (CBL verified above and below patch)'],
+                secondaryBarriers: ['13 3/8" Intermediate Casing & Cement', '20" Surface Casing & Cement', 'Wellhead & X-mas Tree valves'],
+                barrierVerification: {
+                    annulusAPressure: '45 psi (stable, within operational limits)',
+                    sssvTest: 'Passed (Quarterly test, Sept 2023)',
+                    expandablePatchIntegrity: 'Monitored via differential pressure across patch. No leaks detected.',
+                    wellheadValves: 'Function tested monthly, all OK'
+                }
+            },
+            futurePlans: {
+                immediate: ['Routine quarterly surveillance (SSSV test, annulus pressure check)', 'Continue monitoring of expandable patch via pressure gauges'],
+                mediumTerm: ['Schedule multi-arm caliper run in 2025 to confirm long-term integrity and dimensional stability of expandable patch', 'Review gas lift performance to optimize for declining reservoir pressure'],
+                longTerm: ['Expandable patch is considered a permanent part of well architecture. P&A procedures will account for its presence and integrity.']
+            }
         },
         {
             id: 'Well_33',
             name: 'CASE STUDY: The Scale Victory',
             field: 'Brahan',
             region: 'UKCS',
-            type: 'Oil Producer',
-            depth: '11,319ft',
+            type: 'HPHT Gas Condensate Producer',
+            depth: '11,647ft',
             locationType: 'Platform',
+            platform: 'Brahan Alpha',
             datumElevation: '82ft',
             waterDepth: '0ft',
-            status: 'Active - Restored Production',
-            issue: 'SOLUTION: Severe BaSO4 scale was successfully removed with chemical/jetting treatment.',
+            status: 'Active - Post-Intervention',
+            issue: 'CASE STUDY: "The Scale Trap" - Severe BaSO4 scale successfully removed with chemical/jetting treatment.',
             wellboreImage: '/assets/wellbore-Well_33-3d.png',
-            history: [
-                { date: '2024-02-05', operation: 'Production Decline', problem: 'Production declined 60% over 3 weeks. Slickline unable to pass restriction at 10,500ft.', lesson: 'BaSO4 scale buildup from seawater injection mixing with formation water.' },
-                { date: '2024-03-12', operation: 'CT Chemical/Jetting', problem: 'Successfully cleaned tubing using DTPA chemical soak followed by high-pressure jetting.', lesson: 'Two-stage chemical/mechanical approach proved highly effective for hard scale removal.' }
-            ],
-            dailyReports: [],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 11319}],
-                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 11319, comments: 'Chemically/Jet Cleaned for BaSO4 Scale'}],
-                equipment: [
-                    {item: 'SSSV', top: 1115, comments: 'TRSSV, 1/4in control line'},
-                    {item: 'Packer', top: 11155, comments: 'Hydraulic Set Production Packer'}
-                ],
-                perforations: [{top: 11384, bottom: 11483}]
+
+            // PILLAR 1: Identity & Context
+            administrative: {
+                wellID: '33',
+                regulatoryID: '12-345-67892-BRA-33',
+                operator: 'Brahan Field Operating Company',
+                lease: 'Brahan Alpha Lease',
+                surfaceLocation: { lat: '58° 38\' 22.1" N', lon: '0° 20\' 18.5" E' },
+                spudDate: '2019-09-05',
+                completionDate: '2019-12-12',
+                originalAFE: 48500000,
+                actualCost: 51200000,
+                classification: 'Active Producer (Post-Intervention)',
+                reportDate: '2023-10-26'
             },
+            geological: {
+                targetFormation: 'Brahan Alpha Sandstone (HPHT Zone)',
+                prognosisVsActual: 'Actual formation top encountered 8m deeper than prognosis',
+                reservoirProperties: {
+                    porosity: '16-20%',
+                    permeability: '120-200 mD',
+                    initialPressure: '8,200 psi @ 3,535 m TVD',
+                    temperature: '168 °C'
+                },
+                fluidCharacteristics: {
+                    fluidType: 'Gas Condensate with high scaling tendency',
+                    CGR: '115 bbl/MMscf',
+                    gasGravity: 0.67,
+                    h2s: '18 ppm',
+                    co2: '4.1 mol%',
+                    scaleTendency: 'High Barium Sulphate (BaSO₄) precipitation risk identified during PVT analysis'
+                },
+                volumetrics: {
+                    OGIP: '155 Bcf',
+                    EUR: '58 Bcf'
+                }
+            },
+
+            // PILLAR 2: Physical Blueprint
             trajectory: [
                 {md: 0, inc: 0, azimuth: 0, tvd: 0},
                 {md: 3281, inc: 5.0, azimuth: 120.0, tvd: 3277},
                 {md: 6562, inc: 8.0, azimuth: 120.0, tvd: 6547},
                 {md: 9843, inc: 10.0, azimuth: 120.0, tvd: 9792},
                 {md: 11647, inc: 10.5, azimuth: 120.0, tvd: 11580}
-            ]
+            ],
+            wellboreConstruction: [
+                {component: 'Conductor', topMD: 0, bottomMD: 492, size: 30, weight: null, grade: null, connection: null, details: 'Driven Pile'},
+                {component: 'Surface', topMD: 0, bottomMD: 3281, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Surface (verified by returns)'},
+                {component: 'Intermediate', topMD: 0, bottomMD: 8366, size: 13.375, weight: 54.5, grade: 'L-80', connection: 'BTC', details: 'TOC @ 1,500m (CBL/VDL verified)'},
+                {component: 'Production', topMD: 0, bottomMD: 11647, size: 9.625, weight: 47.0, grade: 'C-90', connection: 'VAM TOP', details: 'TOC @ 2,050m (CBL/VDL verified)'}
+            ],
+
+            // PILLAR 3: Completion & Production Setup
+            completion: {
+                casing: [{type: 'Production', size: '9 5/8"', top: 0, bottom: 11647}],
+                tubing: [{type: 'Production', size: '5.5"', top: 0, bottom: 11319, weight: '17.0 lb/ft', grade: 'L-80 13Cr', connection: 'VAM TOP', comments: '**Chemically/Jet Cleaned for BaSO₄ Scale on Dec 10, 2021**'}],
+                equipment: [
+                    {item: 'SSSV', top: 1115, details: 'TRSSV, 1/4" control line, 1.875" bore, equalizing'},
+                    {item: 'Chemical Injection Mandrel', top: 3609, details: 'Side Pocket Mandrel for scale inhibitor injection'},
+                    {item: 'Gas Lift Mandrels', top: 4265, details: 'Side Pocket Mandrels at 1,300m, 1,600m, 1,900m - 1.0" OD valve pockets'},
+                    {item: 'Packer', top: 11155, details: 'Model "A" Hydraulic Set Production Packer, 10k psi rating'},
+                    {item: 'Landing Nipple', top: 11253, details: 'No-Go Nipple, 2.313" ID, located below packer'}
+                ],
+                perforations: [{top: 11384, bottom: 11483, details: '6 SPF, 60° phasing, Big Hole charges, TCP'}]
+            },
+
+            // PILLAR 4: Lifecycle Performance & Evolution
+            productionHistory: {
+                initialRate: {date: 'Q1 2020', oil: 1350, gas: 70, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                preInterventionRate: {date: 'Q3 2021', oil: 240, gas: 12, water: 0, unit: 'bbl/d oil, MMscf/d gas (declined due to severe scale blockage)'},
+                currentRate: {date: 'Q3 2023', oil: 1240, gas: 63, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                cumulativeProduction: {gas: '22.8 Bcf', condensate: '2.7 MMbbl'},
+                performanceTrend: 'Strong and stable post-intervention, benefiting from optimized scale inhibitor program.'
+            },
+            history: [
+                {
+                    date: '2019-12-12',
+                    operation: 'Initial Production',
+                    problem: 'Well brought online successfully at 9,000 boepd (70 MMscf/d gas, 1,350 bbl/d condensate).',
+                    lesson: 'High-performing producer but identified high scaling risk during initial PVT analysis.',
+                    serviceProvider: 'Brahan Operating Co.',
+                    duration: 'N/A',
+                    npt: 0
+                },
+                {
+                    date: '2021-08-15',
+                    operation: 'Wireline (Diagnostic)',
+                    problem: 'Investigate rapid production decline',
+                    lesson: 'Confirmed scale issue, not reservoir depletion. Memory gauge data indicated significant downhole restriction consistent with scale build-up.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '12 hours',
+                    npt: 4,
+                    outcome: 'Successful - Scale identified'
+                },
+                {
+                    date: '2021-12-05',
+                    operation: 'Coiled Tubing (Major Workover)',
+                    problem: 'Remove hard BaSO₄ scale blockage from tubing',
+                    lesson: 'Combined chemical and mechanical approach is highly effective for hard BaSO₄ scale. Hard BaSO₄ scale bridge completely removed from 3,200m to 3,450m MD. Full wellbore access restored. This became the "Scale Trap" case study.',
+                    serviceProvider: 'CT Intervention Specialists',
+                    duration: '84 hours',
+                    npt: 30,
+                    outcome: 'Successful - Scale removed'
+                },
+                {
+                    date: '2021-12-10',
+                    operation: 'Coiled Tubing (Post-Job)',
+                    problem: 'Clean out residual debris and perform final wellbore clean-up',
+                    lesson: 'Thorough post-job clean-out is vital to prevent future issues. Wellbore prepared for re-start.',
+                    serviceProvider: 'CT Intervention Specialists',
+                    duration: '24 hours',
+                    npt: 4,
+                    outcome: 'Successful - Clean-out complete'
+                },
+                {
+                    date: '2022-01-15',
+                    operation: 'Slickline',
+                    problem: 'Re-set Chemical Injection Valve',
+                    lesson: 'Ensured continuous chemical protection post-intervention. Scale inhibitor injection re-established.',
+                    serviceProvider: 'QuickWire Services',
+                    duration: '8 hours',
+                    npt: 1,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2023-07-20',
+                    operation: 'Wireline (Surveillance)',
+                    problem: 'Production logging and fluid sampling',
+                    lesson: 'Validated the success of the remediation and new chemical program. Confirmed clean tubing ID and effective scale inhibition across the interval.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '20 hours',
+                    npt: 3,
+                    outcome: 'Successful - Validation complete'
+                }
+            ],
+            dailyReports: [],
+
+            // PILLAR 5: Current State & Future Outlook
+            wellIntegrity: {
+                wbsVerified: true,
+                primaryBarriers: ['5.5" Production Tubing (intact, post-clean)', 'Hydraulic Packer (set & tested)', 'TRSSV (function tested OK)', '9 5/8" Production Casing & Cement (CBL verified)'],
+                secondaryBarriers: ['13 3/8" Intermediate Casing & Cement', '20" Surface Casing & Cement', 'Wellhead & X-mas Tree valves'],
+                barrierVerification: {
+                    annulusAPressure: '55 psi (stable, within operational limits)',
+                    sssvTest: 'Passed (Quarterly test, Sept 2023)',
+                    wellheadValves: 'Function tested monthly, all OK',
+                    tubingIntegrity: 'Monitored via regular PLTs. No signs of re-occurring scale build-up'
+                }
+            },
+            futurePlans: {
+                immediate: ['Routine quarterly surveillance (SSSV test, annulus pressure check)', 'Continue monthly monitoring of scale inhibitor injection rates and effectiveness'],
+                mediumTerm: ['Perform routine caliper log in 2025 to proactively monitor for any early signs of scale re-formation', 'Evaluate long-term performance of current scale inhibitor chemistry and consider alternative formulations if needed'],
+                longTerm: ['Well history of severe scaling will be key factor in designing P&A program, ensuring all scaled sections are properly isolated and cleaned']
+            }
         },
         {
             id: 'Well_44',
             name: 'CASE STUDY: The Barrier Restoration',
             field: 'Brahan',
             region: 'UKCS',
-            type: 'Oil Producer',
-            depth: '12,795ft',
+            type: 'HPHT Gas Condensate Producer',
+            depth: '13,123ft',
             locationType: 'Platform',
+            platform: 'Brahan Alpha',
             datumElevation: '82ft',
             waterDepth: '0ft',
-            status: 'Active - Restored Production',
-            issue: 'SOLUTION: Failed TRSSV was locked open and replaced with slickline-retrievable insert valve.',
+            status: 'Active - Post-Intervention',
+            issue: 'CASE STUDY: "The Broken Barrier" - Failed TRSSV successfully replaced with slickline-retrievable insert valve.',
             wellboreImage: '/assets/wellbore-Well_44-3d.png',
-            history: [
-                { date: '2024-04-10', operation: 'Routine DHSV Test', problem: 'TRSSV failed to close during mandatory 6-month function test. Well shut-in by regulator.', lesson: 'Aging safety valve compromised well integrity, requiring immediate remediation.' },
-                { date: '2024-04-25', operation: 'Slickline Insert Valve Job', problem: 'Successfully locked open failed TRSSV and installed new wireline-retrievable insert valve.', lesson: 'Standard slickline operation restored primary safety barrier without rig intervention.' }
-            ],
-            dailyReports: [],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 12795}],
-                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 12795}],
-                equipment: [
-                    {item: 'SSSV', top: 1312, comments: 'Slickline-Retrievable Insert Valve (Replaced Failed TRSSV)'},
-                    {item: 'Packer', top: 12631, comments: 'Hydraulic Set Production Packer'}
-                ],
-                perforations: [{top: 12861, bottom: 12992}]
+
+            // PILLAR 1: Identity & Context
+            administrative: {
+                wellID: '44',
+                regulatoryID: '12-345-67893-BRA-44',
+                operator: 'Brahan Field Operating Company',
+                lease: 'Brahan Alpha Lease',
+                surfaceLocation: { lat: '58° 38\' 25.7" N', lon: '0° 20\' 25.1" E' },
+                spudDate: '2020-03-18',
+                completionDate: '2020-06-22',
+                originalAFE: 49000000,
+                actualCost: 49500000,
+                classification: 'Active Producer (Post-Intervention)',
+                reportDate: '2023-10-26'
             },
+            geological: {
+                targetFormation: 'Brahan Alpha Sandstone (Deep Reservoir Section)',
+                prognosisVsActual: 'Actual formation top encountered 5m deeper than prognosis',
+                reservoirProperties: {
+                    porosity: '17-21%',
+                    permeability: '140-220 mD',
+                    initialPressure: '8,500 psi @ 3,935 m TVD',
+                    temperature: '172 °C'
+                },
+                fluidCharacteristics: {
+                    fluidType: 'Rich Gas Condensate',
+                    CGR: '130 bbl/MMscf',
+                    gasGravity: 0.68,
+                    h2s: '20 ppm',
+                    co2: '4.5 mol%'
+                },
+                volumetrics: {
+                    OGIP: '145 Bcf',
+                    EUR: '55 Bcf'
+                }
+            },
+
+            // PILLAR 2: Physical Blueprint
             trajectory: [
                 {md: 0, inc: 0, azimuth: 0, tvd: 0},
                 {md: 3281, inc: 15.0, azimuth: 45.0, tvd: 3244},
                 {md: 6562, inc: 30.0, azimuth: 45.0, tvd: 6279},
                 {md: 9843, inc: 20.0, azimuth: 45.0, tvd: 9363},
                 {md: 13123, inc: 10.0, azimuth: 45.0, tvd: 12550}
-            ]
+            ],
+            wellboreConstruction: [
+                {component: 'Conductor', topMD: 0, bottomMD: 492, size: 30, weight: null, grade: null, connection: null, details: 'Driven Pile'},
+                {component: 'Surface', topMD: 0, bottomMD: 3609, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Surface (verified by returns)'},
+                {component: 'Intermediate', topMD: 0, bottomMD: 9186, size: 13.375, weight: 54.5, grade: 'L-80', connection: 'BTC', details: 'TOC @ 1,700m (CBL/VDL verified)'},
+                {component: 'Production', topMD: 0, bottomMD: 13123, size: 9.625, weight: 47.0, grade: 'C-90', connection: 'VAM TOP', details: 'TOC @ 2,400m (CBL/VDL verified)'}
+            ],
+
+            // PILLAR 3: Completion & Production Setup
+            completion: {
+                casing: [{type: 'Production', size: '9 5/8"', top: 0, bottom: 13123}],
+                tubing: [{type: 'Production', size: '5.5"', top: 0, bottom: 12795, weight: '17.0 lb/ft', grade: 'L-80 13Cr', connection: 'VAM TOP'}],
+                equipment: [
+                    {item: 'SSSV', top: 1312, details: '**Slickline-Retrievable Insert Valve (Installed May 25, 2022, to replace failed TRSSV). 1.750" bore.**', isRepair: true},
+                    {item: 'Original TRSSV Nipple', top: 1312, details: 'Original TRSSV nipple profile. TRSSV was locked open and is now non-functional.'},
+                    {item: 'Gas Lift Mandrels', top: 4593, details: 'Side Pocket Mandrels at 1,400m, 1,700m, 2,000m - 1.0" OD valve pockets'},
+                    {item: 'Packer', top: 12631, details: 'Model "A" Hydraulic Set Production Packer, 10k psi rating'},
+                    {item: 'Landing Nipple', top: 12730, details: 'No-Go Nipple, 2.313" ID, located below packer'}
+                ],
+                perforations: [{top: 12861, bottom: 12992, details: '6 SPF, 60° phasing, Big Hole charges, TCP'}]
+            },
+
+            // PILLAR 4: Lifecycle Performance & Evolution
+            productionHistory: {
+                initialRate: {date: 'Q3 2020', oil: 1400, gas: 75, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                duringSSVFailure: {date: 'Q1 2022', oil: 0, gas: 0, water: 0, unit: 'Well shut-in for safety reasons'},
+                currentRate: {date: 'Q3 2023', oil: 1350, gas: 72, water: 0, unit: 'bbl/d oil, MMscf/d gas'},
+                cumulativeProduction: {gas: '26.5 Bcf', condensate: '3.2 MMbbl'},
+                performanceTrend: 'Excellent and stable post-intervention, with minimal decline.'
+            },
+            history: [
+                {
+                    date: '2020-06-22',
+                    operation: 'Initial Production',
+                    problem: 'Well brought online successfully at 9,500 boepd (75 MMscf/d gas, 1,400 bbl/d condensate).',
+                    lesson: 'Strong initial producer for Brahan field.',
+                    serviceProvider: 'Brahan Operating Co.',
+                    duration: 'N/A',
+                    npt: 0
+                },
+                {
+                    date: '2022-02-10',
+                    operation: 'Wireline (Diagnostic)',
+                    problem: 'Perform routine TRSSV function test',
+                    lesson: 'Confirmed a critical safety barrier failure. TRSSV found to be stuck in the closed position and would not open. Well immediately shut-in.',
+                    serviceProvider: 'SafetyFirst Wireline',
+                    duration: '6 hours',
+                    npt: 2,
+                    outcome: 'FAILED - TRSSV malfunction'
+                },
+                {
+                    date: '2022-05-20',
+                    operation: 'Slickline (Critical Intervention)',
+                    problem: 'Restore downhole safety barrier',
+                    lesson: 'Slickline-retrievable insert valves provide a highly efficient and cost-effective solution for TRSSV failure, avoiding a major workover. Failed TRSSV was mechanically locked open. New slickline-retrievable insert SSV was installed and successfully function tested. This became the "Broken Barrier" case study.',
+                    serviceProvider: 'QuickWire Services',
+                    duration: '18 hours',
+                    npt: 4,
+                    outcome: 'Successful - Safety barrier restored'
+                },
+                {
+                    date: '2022-05-21',
+                    operation: 'Wireline (Post-Job)',
+                    problem: 'Final function test of new Insert SSV',
+                    lesson: 'Confirmed integrity of the new safety barrier. Well cleared for re-start. Insert SSV cycled multiple times and held differential pressure.',
+                    serviceProvider: 'SafetyFirst Wireline',
+                    duration: '4 hours',
+                    npt: 1,
+                    outcome: 'Successful - Barrier verified'
+                },
+                {
+                    date: '2023-09-15',
+                    operation: 'Slickline (Surveillance)',
+                    problem: 'Routine function test of Insert SSV',
+                    lesson: 'Insert SSV continues to perform reliably. Valve functioned as designed.',
+                    serviceProvider: 'QuickWire Services',
+                    duration: '6 hours',
+                    npt: 1,
+                    outcome: 'Successful'
+                }
+            ],
+            dailyReports: [],
+
+            // PILLAR 5: Current State & Future Outlook
+            wellIntegrity: {
+                wbsVerified: true,
+                primaryBarriers: ['5.5" Production Tubing (intact)', 'Hydraulic Packer (set & tested)', '**Slickline-Retrievable Insert SSV (function tested OK)**', '9 5/8" Production Casing & Cement (CBL verified)'],
+                secondaryBarriers: ['13 3/8" Intermediate Casing & Cement', '20" Surface Casing & Cement', 'Wellhead & X-mas Tree valves'],
+                barrierVerification: {
+                    annulusAPressure: '60 psi (stable, within operational limits)',
+                    insertSSVTest: 'Passed (Quarterly test, Sep 2023)',
+                    wellheadValves: 'Function tested monthly, all OK',
+                    tubingIntegrity: 'No leaks or abnormal pressures detected'
+                }
+            },
+            futurePlans: {
+                immediate: ['Continue quarterly function testing of insert SSV, as it is now the primary downhole safety barrier', 'Routine monthly wellhead and annulus monitoring'],
+                mediumTerm: ['Monitor long-term reliability of insert SSV in this HPHT environment', 'Consider production logging run in 2025 to assess inflow performance and optimize gas lift'],
+                longTerm: ['Presence of locked-open TRSSV and insert SSV must be clearly documented in P&A program. Insert SSV will likely be pulled, and profile will need to be addressed (e.g., with a plug) during abandonment']
+            }
         },
         {
             id: 'Well_55',
@@ -3005,26 +3492,52 @@ document.addEventListener('DOMContentLoaded', function() {
             field: 'Brahan',
             region: 'UKCS',
             type: 'Water Injector',
-            depth: '14,436ft',
+            depth: '14,764ft',
             locationType: 'Satellite',
+            platform: 'Brahan Bravo (Unmanned Satellite)',
             datumElevation: '82ft',
             waterDepth: '492ft',
             status: 'Active - Injecting',
-            issue: 'Seawater injection well supporting field pressure maintenance. Operating normally.',
+            issue: 'Critical water injector supporting reservoir pressure maintenance. Operating at excellent injectivity.',
             wellboreImage: '/assets/wellbore-Well_55-3d.png',
-            history: [
-                { date: '2024-02-01', operation: 'Initial Injection', problem: 'Water injection commenced at target rate.', lesson: 'Key injection well for reservoir pressure support in Brahan field.' }
-            ],
-            dailyReports: [],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 14436}],
-                tubing: [{type: 'Injection', size: '5.5', top: 0, bottom: 14436, comments: 'Coated'}],
-                equipment: [
-                    {item: 'SSSV', top: 1247, comments: 'TRSSV, 1/4in control line'},
-                    {item: 'Packer', top: 14272, comments: 'Hydraulic Set Injection Packer'}
-                ],
-                perforations: [{top: 14501, bottom: 14698}]
+
+            // PILLAR 1: Identity & Context
+            administrative: {
+                wellID: '55',
+                regulatoryID: '12-345-67895-BRA-55',
+                operator: 'Brahan Field Operating Company',
+                lease: 'Brahan Bravo Satellite Lease Area',
+                surfaceLocation: { lat: '58° 40\' 10.0" N', lon: '0° 22\' 30.0" E' },
+                spudDate: '2021-05-10',
+                completionDate: '2021-08-20',
+                originalAFE: 38000000,
+                actualCost: 37500000,
+                classification: 'Active Water Injector',
+                reportDate: '2023-10-26'
             },
+            geological: {
+                targetFormation: 'Brahan Alpha Sandstone (Northern Flank - Injection Target Zone)',
+                prognosisVsActual: 'Actual formation top encountered within 3m of prognosis',
+                reservoirProperties: {
+                    porosity: '17-21%',
+                    permeability: '180-260 mD (High permeability ideal for injectivity)',
+                    initialPressure: '7,500 psi @ 2,500 m TVD',
+                    temperature: '155 °C'
+                },
+                injectedFluid: {
+                    source: 'Treated Raw Seawater',
+                    filtration: '< 5 microns',
+                    deaeration: '< 10 ppb O₂',
+                    biocideTreatment: 'Continuous glutaraldehyde injection'
+                },
+                injectionTargets: {
+                    targetRate: '80,000 bbls/day',
+                    targetPressure: '5,500 psi (surface)',
+                    voidageReplacementRatio: 1.1
+                }
+            },
+
+            // PILLAR 2: Physical Blueprint
             trajectory: [
                 {md: 0, inc: 0, azimuth: 0, tvd: 0},
                 {md: 3281, inc: 20.0, azimuth: 180.0, tvd: 3215},
@@ -3032,74 +3545,358 @@ document.addEventListener('DOMContentLoaded', function() {
                 {md: 9843, inc: 90.0, azimuth: 180.0, tvd: 8202},
                 {md: 13123, inc: 90.0, azimuth: 180.0, tvd: 8202},
                 {md: 14764, inc: 90.0, azimuth: 180.0, tvd: 8202}
-            ]
+            ],
+            wellboreConstruction: [
+                {component: 'Conductor', topMD: 574, bottomMD: 984, size: 30, weight: null, grade: null, connection: null, details: 'Subsea Wellhead Housing'},
+                {component: 'Surface', topMD: 574, bottomMD: 3937, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Seabed (175m MD, verified by returns)'},
+                {component: 'Intermediate', topMD: 574, bottomMD: 9186, size: 13.375, weight: 54.5, grade: 'L-80', connection: 'BTC', details: 'TOC @ 1,800m MD (CBL/VDL verified)'},
+                {component: 'Production (Injection)', topMD: 574, bottomMD: 14764, size: 9.625, weight: 47.0, grade: 'L-80', connection: 'VAM TOP', details: 'TOC @ 2,500m MD (CBL/VDL verified)'}
+            ],
+
+            // PILLAR 3: Completion & Production Setup
+            completion: {
+                casing: [{type: 'Production (Injection)', size: '9 5/8"', top: 574, bottom: 14764}],
+                tubing: [{type: 'Injection', size: '5.5"', top: 0, bottom: 14436, weight: '17.0 lb/ft', grade: 'L-80', connection: 'VAM TOP', comments: '**Internally Coated with Glass-Reinforced Epoxy for corrosion resistance**'}],
+                equipment: [
+                    {item: 'SSSV', top: 1247, details: 'TRSSV, 1/4" control line, 1.875" bore, equalizing'},
+                    {item: 'Packer', top: 14272, details: 'Model "B" Hydraulic Set Injection Packer, 7,500 psi rating'},
+                    {item: 'Landing Nipple', top: 14337, details: 'No-Go Nipple, 2.313" ID, located below packer'}
+                ],
+                perforations: [{top: 14501, bottom: 14698, details: '6 SPF, 120° phasing, Big Hole charges, TCP (Optimized for injection)'}]
+            },
+
+            // PILLAR 4: Lifecycle Performance & Evolution
+            injectionHistory: {
+                targetRate: {date: 'Q4 2021', rate: 80000, unit: 'bbls/day'},
+                actualInitialRate: {date: 'Q4 2021', rate: 82000, unit: 'bbls/day'},
+                currentRate: {date: 'Q3 2023', rate: 78000, unit: 'bbls/day'},
+                cumulativeInjection: '52.1 MMbbls of water',
+                performanceTrend: 'Excellent and stable. Wellhead injection pressure has remained constant at ~5,200 psi, indicating sustained injectivity and no significant plugging or formation damage.'
+            },
+            history: [
+                {
+                    date: '2021-08-15',
+                    operation: 'Wireline (Completion)',
+                    problem: 'Run completion string, set packer, test SSSV',
+                    lesson: 'Standard subsea completion procedures executed effectively. Packer set and tested. SSSV functioned correctly.',
+                    serviceProvider: 'Subsea Well Services',
+                    duration: '36 hours',
+                    npt: 6,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2021-08-30',
+                    operation: 'Wireline (Perforating)',
+                    problem: 'Perforate injection interval',
+                    lesson: 'TCP operations on satellite platform went smoothly. Perforations made across 4,420-4,480m MD.',
+                    serviceProvider: 'Subsea Well Services',
+                    duration: '12 hours',
+                    npt: 2,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2021-09-05',
+                    operation: 'Start-Up',
+                    problem: 'Commence water injection',
+                    lesson: 'Excellent injectivity confirmed from day one. Well brought on injection smoothly and immediately achieved target rates.',
+                    serviceProvider: 'Brahan Operations Team',
+                    duration: '24 hours',
+                    npt: 0,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2022-10-20',
+                    operation: 'Wireline (Surveillance)',
+                    problem: 'Annual injection profile survey (PLT)',
+                    lesson: 'Confirms integrity of completion and effectiveness of perforation strategy. Survey confirmed excellent, uniform zonal coverage across entire perforated interval. No out-of-zone injection detected.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '18 hours',
+                    npt: 4,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2023-09-28',
+                    operation: 'Wireline (Surveillance)',
+                    problem: 'Annual injection profile survey (PLT)',
+                    lesson: 'Continued stable performance validates the CRA coating and water treatment quality. Results consistent with 2022 survey, confirming sustained injectivity and well integrity.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '18 hours',
+                    npt: 4,
+                    outcome: 'Successful'
+                }
+            ],
+            dailyReports: [],
+
+            // PILLAR 5: Current State & Future Outlook
+            wellIntegrity: {
+                wbsVerified: true,
+                primaryBarriers: ['5.5" Coated Injection Tubing (intact)', 'Hydraulic Injection Packer (set & tested)', 'TRSSV (function tested OK)', '9 5/8" Production Casing & Cement (CBL verified)'],
+                secondaryBarriers: ['13 3/8" Intermediate Casing & Cement', '20" Surface Casing & Cement', 'Subsea Wellhead & X-mas Tree valves'],
+                barrierVerification: {
+                    annulusAPressure: '0 psi (monitored continuously, no communication detected)',
+                    sssvTest: 'Passed (Quarterly test, Sep 2023)',
+                    wellheadValves: 'Function tested and lubricated quarterly, all OK',
+                    tubingIntegrity: 'Stable injection pressures indicate no leaks or significant corrosion/erosion. CRA coating integrity assumed intact'
+                }
+            },
+            futurePlans: {
+                immediate: ['Continue routine quarterly surveillance (SSSV test, annulus pressure monitoring)', 'Monitor water treatment plant performance to ensure injected water quality remains high'],
+                mediumTerm: ['Continue annual injection profile surveys to monitor for any long-term changes in injectivity profile or potential for fines migration or near-wellbore scaling', 'Evaluate need for stimulation (e.g., acid wash) if injectivity declines significantly'],
+                longTerm: ['Not applicable in near term. Well_55 is critical asset for reservoir pressure support and expected to operate for remaining life of Brahan field. P&A only considered as part of overall field abandonment plan']
+            }
         },
         {
             id: 'Well_666',
-            name: 'The Perfect Storm',
+            name: 'CASE STUDY: The Perfect Storm',
             field: 'Brahan',
             region: 'UKCS',
-            type: 'Oil Producer',
-            depth: '16,076ft',
+            type: 'HPHT Gas Condensate Producer',
+            depth: '16,404ft',
             locationType: 'Subsea',
+            platform: 'Brahan Gamma Subsea Manifold',
             datumElevation: '82ft',
             waterDepth: '591ft',
-            status: 'Shut-in - Well Integrity Issues',
-            issue: 'A nightmare subsea well with multiple, compounding failures: severe BaSO4 scale blockage in tubing and a failed primary safety valve. Requires complex, multi-stage intervention plan.',
+            status: 'SHUT-IN (Critical Intervention Candidate)',
+            issue: 'THE PERFECT STORM: A cascade of compounding failures. Severe BaSO₄ scale blockage, failed TRSSV stuck closed, and casing deformation at 14,764ft. Demonstrates why WellTegra is vital. Requires complex multi-phase intervention incorporating lessons from W22, W33, and W44.',
             wellboreImage: '/assets/wellbore-Well_666-3d.png',
-            history: [
-                { date: '2024-05-15', operation: 'Slickline Surveillance', problem: 'Unable to pass scale blockage at 14,800ft. Tubing severely restricted.', lesson: 'This subsea well combines multiple known failure modes: scale deposition and safety valve degradation.' },
-                { date: '2024-06-01', operation: 'Production Test', problem: 'Well died after brief flow period. Pressure analysis confirms deep scale blockage.', lesson: 'Combination of BaSO4 scale and compromised completion integrity.' },
-                { date: '2024-06-10', operation: 'DHSV Test', problem: 'TRSSV failed to close on command. Well shut-in on subsea tree valves.', lesson: 'Well integrity is critically compromised. Multi-barrier failure requires comprehensive intervention.' }
-            ],
-            dailyReports: [],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 16076}],
-                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 16076, comments: 'Scale blockage present', isProblem: true}],
-                equipment: [
-                    {item: 'SSSV', top: 1345, comments: 'TRSSV, 1/4in control line (FAILED)', isProblem: true},
-                    {item: 'BaSO4 Scale Bridge', top: 14800, comments: 'Solid blockage', isProblem: true},
-                    {item: 'Packer', top: 15912, comments: 'Hydraulic Set Production Packer'}
-                ],
-                perforations: [{top: 16109, bottom: 16404, comments: 'Gravel Pack, 12 SPF, 60 deg'}]
+
+            // PILLAR 1: Identity & Context
+            administrative: {
+                wellID: '666',
+                regulatoryID: '12-345-67898-BRA-666',
+                operator: 'Brahan Field Operating Company',
+                lease: 'Brahan Gamma Subsea Development Area',
+                surfaceLocation: { lat: '58° 41\' 55.0" N', lon: '0° 24\' 45.0" E' },
+                spudDate: '2022-01-20',
+                completionDate: '2022-04-10',
+                originalAFE: 62000000,
+                actualCost: 64500000,
+                classification: 'SHUT-IN (Multiple Integrity & Flow Assurance Failures)',
+                reportDate: '2023-10-26'
             },
+            geological: {
+                targetFormation: 'Brahan Alpha Sandstone (HPHT "Core" Zone - Same as W777)',
+                prognosisVsActual: 'Actual formation top encountered as prognosed. Initial reservoir quality appeared excellent.',
+                reservoirProperties: {
+                    porosity: '19-23%',
+                    permeability: '180-280 mD',
+                    initialPressure: '8,750 psi @ 2,550 m TVD',
+                    temperature: '178 °C (Slightly higher than prognosed, a potential contributing factor to issues)'
+                },
+                fluidCharacteristics: {
+                    fluidType: 'Rich Gas Condensate',
+                    CGR: '140 bbl/MMscf',
+                    gasGravity: 0.70,
+                    h2s: '25 ppm (Higher than W777, increasing corrosion risk)',
+                    co2: '5.5 mol% (Higher than W777, increasing corrosion/scale risk)',
+                    scaleTendency: 'Extreme Barium Sulphate (BaSO₄) precipitation risk, confirmed by fluid sampling'
+                },
+                volumetrics: {
+                    OGIP: '190 Bcf',
+                    EUR: 'CRITICALLY REDUCED. Original estimate was 80 Bcf. Current estimate is highly dependent on intervention success'
+                }
+            },
+
+            // PILLAR 2: Physical Blueprint
             trajectory: [
-                {md: 0, inc: 0, azimuth: 0, tvd: 0},
+                {md: 0, inc: 0.0, azimuth: 0.0, tvd: 0},
                 {md: 3281, inc: 25.0, azimuth: 210.0, tvd: 3135},
                 {md: 6562, inc: 50.0, azimuth: 210.0, tvd: 5612},
                 {md: 9843, inc: 75.0, azimuth: 210.0, tvd: 7527},
                 {md: 13123, inc: 90.0, azimuth: 210.0, tvd: 8370},
                 {md: 16404, inc: 90.0, azimuth: 210.0, tvd: 8370}
-            ]
+            ],
+            wellboreConstruction: [
+                {component: 'Conductor', topMD: 673, bottomMD: 1148, size: 30, weight: null, grade: null, connection: null, details: 'Subsea Wellhead Housing'},
+                {component: 'Surface', topMD: 673, bottomMD: 4265, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Seabed (673ft MD, verified by returns)'},
+                {component: 'Intermediate', topMD: 673, bottomMD: 9843, size: 13.375, weight: 54.5, grade: 'L-80', connection: 'BTC', details: 'TOC @ 6,562ft MD (CBL/VDL verified)'},
+                {component: 'Production', topMD: 673, bottomMD: 16404, size: 9.625, weight: 47.0, grade: 'C-90', connection: 'VAM TOP', details: '**TOC @ 8,858ft MD (CBL/VDL verified). SEVERE CASING DEFORMATION SUSPECTED AT ~14,764ft MD**', isProblem: true}
+            ],
+
+            // PILLAR 3: Completion & Production Setup
+            completion: {
+                casing: [
+                    {type: 'Conductor', size: '30"', top: 673, bottom: 1148},
+                    {type: 'Surface', size: '20"', top: 673, bottom: 4265},
+                    {type: 'Intermediate', size: '13 3/8"', top: 673, bottom: 9843},
+                    {type: 'Production', size: '9 5/8"', top: 673, bottom: 16404, comments: '**DEFORMED at ~14,764ft MD**', isProblem: true}
+                ],
+                tubing: [{
+                    type: 'Production',
+                    size: '5.5"',
+                    top: 0,
+                    bottom: 16076,
+                    weight: '17.0 lb/ft',
+                    grade: 'L-80 13Cr',
+                    connection: 'VAM TOP',
+                    comments: '**HARD BaSO₄ SCALE BLOCKAGE PRESENT, restricting flow**',
+                    isProblem: true
+                }],
+                equipment: [
+                    {item: 'SSSV', top: 1345, details: 'TRSSV, 1/4" control line, 1.875" bore. **FAILED.** Found stuck in CLOSED position during routine test', isProblem: true},
+                    {item: 'Gas Lift Mandrels', top: 6890, bottom: 8858, details: 'Side Pocket Mandrels at 6,890ft, 7,874ft, 8,858ft - 1.0" OD valve pockets. **Accessibility compromised**'},
+                    {item: 'Packer', top: 15912, details: 'Model "A" Hydraulic Set Production Packer, 10k psi rating. **Integrity uncertain due to downhole conditions**'},
+                    {item: 'Landing Nipple', top: 15977, details: 'No-Go Nipple, 2.313" ID, located below packer. **Accessibility compromised**'},
+                    {item: 'BaSO₄ Scale Bridge', top: 16076, details: '**SOLID BLOCKAGE in tubing**', isProblem: true}
+                ],
+                perforations: [{top: 16109, bottom: 16404, details: 'Gravel Pack assembly, 12 SPF, 60° phasing. **Inflow severely restricted by scale and potential formation damage**', isProblem: true}]
+            },
+
+            // PILLAR 4: Lifecycle Performance & Evolution
+            productionHistory: {
+                initialRate: {date: 'Q2 2022', oil: 1550, gas: 85, water: 0, unit: 'bbl/d condensate, MMscf/d gas', note: '11,000 boepd - Exceeded expectations'},
+                rapidDecline: {date: 'Q3 2022', oil: 800, gas: 45, water: 0, unit: 'bbl/d condensate, MMscf/d gas', note: 'Rapid decline noted within 8 weeks of start-up'},
+                finalRate: {date: 'Q4 2022', oil: 100, gas: 5, water: 0, unit: 'bbl/d condensate, MMscf/d gas', note: '< 1,000 boepd before shut-in for diagnostics'},
+                cumulativeProduction: {gas: '4.1 Bcf', condensate: '0.5 MMbbl'},
+                performanceTrend: '**CATASTROPHIC FAILURE.** Well is currently non-productive.'
+            },
+            history: [
+                {
+                    date: '2022-04-15',
+                    operation: 'Start-Up',
+                    problem: 'Commission well and bring on production',
+                    lesson: 'Initial Success. Well started up and achieved high initial rates of 11,000 boepd (85 MMscf/d gas, 1,550 bbl/d condensate). High initial productivity confirmed reservoir potential.',
+                    serviceProvider: 'Brahan Operations Team',
+                    duration: '72 hours',
+                    npt: 12,
+                    outcome: 'Initial Success'
+                },
+                {
+                    date: '2022-06-20',
+                    operation: 'Wireline (Diagnostic)',
+                    problem: 'Investigate rapid production decline',
+                    lesson: 'INCONCLUSIVE. Data indicated a restriction but could not identify cause or depth. Standard diagnostics were insufficient for this complex failure.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '24 hours',
+                    npt: 8,
+                    outcome: 'INCONCLUSIVE'
+                },
+                {
+                    date: '2022-08-30',
+                    operation: 'Wireline (Diagnostic)',
+                    problem: 'Attempt to run slickline to locate restriction',
+                    lesson: 'FAILED. Slickline could not pass below 16,076ft MD, indicating a severe, hard blockage in the tubing. Confirmed a hard scale blockage, not a mechanical issue like a closed sleeve.',
+                    serviceProvider: 'QuickWire Services',
+                    duration: '6 hours',
+                    npt: 6,
+                    outcome: 'FAILED - Hard blockage confirmed'
+                },
+                {
+                    date: '2022-09-15',
+                    operation: 'Wireline (Diagnostic)',
+                    problem: 'Routine TRSSV function test',
+                    lesson: 'FAILED. TRSSV found to be stuck in the CLOSED position. Well immediately shut-in for safety. A critical safety barrier failure compounded the production problem.',
+                    serviceProvider: 'SafetyFirst Wireline',
+                    duration: '6 hours',
+                    npt: 6,
+                    outcome: 'FAILED - TRSSV malfunction'
+                },
+                {
+                    date: '2022-10-10',
+                    operation: 'Wireline (Diagnostic)',
+                    problem: 'Multi-Finger Caliper run to assess tubing/casing integrity',
+                    lesson: 'CRITICAL FINDING. Caliper log revealed severe (>20% ovality) casing deformation in the 9 5/8" production casing at approximately 14,764ft MD. Identified the root cause of potential future problems and a major complication for any intervention. The "Perfect Storm" scenario was confirmed.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '36 hours',
+                    npt: 10,
+                    outcome: 'CRITICAL - Casing deformation identified'
+                },
+                {
+                    date: '2022-11-05',
+                    operation: 'Planning Session',
+                    problem: 'Develop complex intervention strategy',
+                    lesson: 'PLAN DEVELOPED. A multi-stage intervention plan was drafted, requiring: (1) Scale removal via CT (Lesson from W33), (2) SSV replacement with insert valve (Lesson from W44), and (3) Casing remediation with expandable patch (Lesson from W22). The complexity of the job exceeds standard intervention capabilities. Requires a highly integrated plan.',
+                    serviceProvider: 'Brahan Engineering Team',
+                    duration: 'N/A',
+                    npt: 0,
+                    outcome: 'Multi-phase intervention plan developed'
+                }
+            ],
+            dailyReports: [],
+
+            // PILLAR 5: Current State & Future Outlook
+            wellIntegrity: {
+                wbsVerified: false,
+                primaryBarriers: ['**5 1/2" Production Tubing (OBSTRUCTED)**', '**Hydraulic Packer (Integrity Unknown)**', '**TRSSV (FAILED)**', '**9 5/8" Production Casing (DEFORMED)**'],
+                secondaryBarriers: ['13 3/8" Intermediate Casing & Cement (assumed intact)', '20" Surface Casing & Cement (assumed intact)', 'Subsea Wellhead & X-mas Tree valves (tested OK)'],
+                barrierVerification: {
+                    annulusAPressure: '100 psi (stable but elevated, requiring monitoring)',
+                    trssvTest: '**FAILED (Sept 2022)**',
+                    wellheadValves: 'Function tested quarterly via ROV, all OK',
+                    tubingIntegrity: '**Known to be severely compromised**',
+                    casingIntegrity: '**Known to be severely compromised**'
+                }
+            },
+            futurePlans: {
+                immediate: [
+                    '**CRITICAL: Execute the multi-stage intervention plan.** This is the highest-priority well work in the Brahan field',
+                    '**Phase 1: Scale Removal** - Mobilize coiled tubing unit with high-pressure jetting and specialized chemical dissolvers to remove BaSO₄ blockage in tubing. This is a prerequisite for all subsequent work (Lessons from W33)',
+                    '**Phase 2: SSV Replacement** - Once tubing access is restored, use slickline to lock open the failed TRSSV and install a slickline-retrievable insert safety valve to restore the primary downhole safety barrier (Lessons from W44)',
+                    '**Phase 3: Casing Remediation** - Run multi-arm caliper to get detailed 3D map of deformed casing. Based on results, deploy expandable steel patch to restore casing structural integrity and nominal internal diameter (Lessons from W22)'
+                ],
+                mediumTerm: [
+                    'If multi-stage intervention is successful, the well has the potential to return to high-rate production, significantly boosting field output',
+                    'Well will require intensive, frequent monitoring to ensure long-term integrity of the repairs'
+                ],
+                longTerm: [
+                    'The success or failure of the upcoming intervention will dictate the long-term economic viability of this well. A failed intervention could lead to early abandonment, representing a significant loss of reserves',
+                    '**The lessons learned from tackling "The Perfect Storm" will be invaluable for the design and operation of all future high-risk, high-reward wells in the Brahan field and beyond**'
+                ]
+            }
         },
         {
             id: 'Well_777',
-            name: 'CASE STUDY: Multi-Barrier Success',
+            name: 'CASE STUDY: Field of Dreams',
             field: 'Brahan',
             region: 'UKCS',
-            type: 'Oil Producer',
-            depth: '16,732ft',
+            type: 'HPHT Gas Condensate Producer',
+            depth: '17,060ft',
             locationType: 'Subsea',
+            platform: 'Brahan Gamma Subsea Manifold',
             datumElevation: '82ft',
             waterDepth: '591ft',
-            status: 'Active - Peak Performance',
-            issue: 'SOLUTION: Multi-barrier failure resolution - Integrated intervention delivered exceptional results.',
+            status: 'Active - Peak Performance (Benchmark Well)',
+            issue: 'BENCHMARK DESIGN: Strategically designed premium well incorporating all lessons learned from Well_22, Well_33, Well_44, and Well_666. Template for future Brahan development.',
             wellboreImage: '/assets/wellbore-Well_777-3d.png',
-            history: [
-                { date: '2024-03-10', operation: 'Complex Multi-Stage Intervention', problem: 'Well experiencing compound failures: minor scale buildup, aging safety systems, completion integrity concerns.', lesson: 'Multiple smaller issues compounded into major operational challenges requiring comprehensive planning.' },
-                { date: '2024-03-25', operation: 'Integrated Solution Deployment', problem: 'Successfully executed staged intervention: chemical scale treatment, redundant safety valve installation, and completion integrity verification.', lesson: 'Integrated multi-discipline approach saved significant time versus sequential interventions.' },
-                { date: '2024-04-05', operation: 'Post-Intervention Performance', problem: 'Well exceeded pre-intervention production by 165%, with full barrier integrity restored.', lesson: 'Comprehensive planning and execution of multiple remediation strategies proved highly effective. Blueprint for tackling Well_666.' }
-            ],
-            dailyReports: [],
-            completion: {
-                casing: [{type: 'Production', size: '7', top: 0, bottom: 16732}],
-                tubing: [{type: 'Production', size: '5.5', top: 0, bottom: 16732, comments: 'Post Multi-Barrier Remediation'}],
-                equipment: [
-                    {item: 'SSSV', top: 1362, comments: 'TRSSV, 1/4in control line, Redundant System'},
-                    {item: 'Packer', top: 16568, comments: 'Hydraulic Set Production Packer, Premium'}
-                ],
-                perforations: [{top: 16798, bottom: 16995, comments: 'Gravel Pack, 12 SPF, 60 deg'}]
+
+            // PILLAR 1: Identity & Context
+            administrative: {
+                wellID: '777',
+                regulatoryID: '12-345-67899-BRA-777',
+                operator: 'Brahan Field Operating Company',
+                lease: 'Brahan Gamma Subsea Development Area',
+                surfaceLocation: { lat: '58° 42\' 05.0" N', lon: '0° 25\' 15.0" E' },
+                spudDate: '2023-03-01',
+                completionDate: '2023-06-15',
+                originalAFE: 65000000,
+                actualCost: 64200000,
+                classification: 'Active Producer (Benchmark Design)',
+                reportDate: '2023-10-26'
             },
+            geological: {
+                targetFormation: 'Brahan Alpha Sandstone (HPHT "Core" Zone - Same as Well_666)',
+                prognosisVsActual: 'Geosteering used to place wellbore in optimal reservoir facies, avoiding fault zones identified in seismic re-processing prompted by Well_666 data',
+                reservoirProperties: {
+                    porosity: '20-24%',
+                    permeability: '200-300 mD',
+                    initialPressure: '8,800 psi @ 2,605 m TVD',
+                    temperature: '175 °C'
+                },
+                fluidCharacteristics: {
+                    fluidType: 'Rich Gas Condensate (High Scaling Potential)',
+                    CGR: '135 bbl/MMscf',
+                    gasGravity: 0.69,
+                    h2s: '22 ppm',
+                    co2: '5.0 mol%',
+                    scaleTendency: 'Very High Barium Sulphate (BaSO₄) precipitation risk (Lesson from Well_33)'
+                },
+                volumetrics: {
+                    OGIP: '195 Bcf',
+                    EUR: '85 Bcf (Enhanced by premium completion)'
+                }
+            },
+
+            // PILLAR 2: Physical Blueprint
             trajectory: [
                 {md: 0, inc: 0, azimuth: 0, tvd: 0},
                 {md: 3281, inc: 22.0, azimuth: 245.0, tvd: 3177},
@@ -3107,7 +3904,98 @@ document.addEventListener('DOMContentLoaded', function() {
                 {md: 9843, inc: 80.0, azimuth: 245.0, tvd: 7677},
                 {md: 13123, inc: 90.0, azimuth: 245.0, tvd: 8549},
                 {md: 17060, inc: 90.0, azimuth: 245.0, tvd: 8549}
-            ]
+            ],
+            wellboreConstruction: [
+                {component: 'Conductor', topMD: 673, bottomMD: 1148, size: 30, weight: null, grade: null, connection: null, details: 'Subsea Wellhead Housing'},
+                {component: 'Surface', topMD: 673, bottomMD: 4429, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Seabed (205m MD, verified by returns)'},
+                {component: 'Intermediate', topMD: 673, bottomMD: 10171, size: 13.375, weight: 68.0, grade: '**P-110**', connection: '**VAM TOP**', details: '**Enhanced grade and premium connection to withstand compaction (Lesson from Well_22). TOC @ 2,100m MD (CBL/VDL verified)**'},
+                {component: 'Production (Liner)', topMD: 9514, bottomMD: 17060, size: 9.625, weight: 53.5, grade: '**Q-125 13Cr**', connection: '**VAM TOP**', details: '**Corrosion-Resistant Alloy (CRA) liner to combat H₂S/CO₂ and scale (Lessons from Well_33, Well_55). TOC @ 2,800m MD (CBL/VDL verified)**'}
+            ],
+
+            // PILLAR 3: Completion & Production Setup
+            completion: {
+                casing: [{type: 'Production (CRA Liner)', size: '9 5/8"', top: 9514, bottom: 17060}],
+                tubing: [{type: 'Production', size: '5.5"', top: 0, bottom: 16732, weight: '22.0 lb/ft', grade: '**Incoloy 825 CRA tubing**', connection: 'VAM TOP', comments: '**Glass-Reinforced Epoxy internal coating. Premium materials to resist corrosion and scale adhesion (Lessons from Well_33, Well_55)**'}],
+                equipment: [
+                    {item: 'SSSV (Primary)', top: 1362, details: '**Primary TRSSV, 1/4" control line, 1.875" bore**'},
+                    {item: 'SSSV (Secondary)', top: 1394, details: '**Secondary, retrievable Insert SSV in dedicated nipple profile. Redundant safety barrier (Lesson from Well_44)**', isEnhancement: true},
+                    {item: 'Chemical Injection Mandrel', top: 4921, details: '**Dual-Port Side Pocket Mandrel for continuous scale and corrosion inhibitor injection (Proactive scale management, Lesson from Well_33)**', isEnhancement: true},
+                    {item: 'Gas Lift Mandrels', top: 7218, details: 'Side Pocket Mandrels at 2,200m, 2,500m, 2,800m - 1.0" OD, premium valve seats'},
+                    {item: 'Packer', top: 16568, details: '**Model "C" Hydraulic Set Premium Production Packer, 12,500 psi rating, Elastomer seals compatible with high CO₂/H₂S**'},
+                    {item: 'Landing Nipple', top: 16666, details: 'Premium No-Go Nipple, 2.313" ID, located below packer'},
+                    {item: 'Sand Screen', top: 16798, details: '**Premium, expandable sand screen assembly across 5,120-5,180m MD, installed with gravel pack (Robust sand control, Lesson from Well_666)**', isEnhancement: true}
+                ],
+                perforations: [{top: 16798, bottom: 16995, details: 'Premium gravel pack, 12 SPF, 60° phasing'}]
+            },
+
+            // PILLAR 4: Lifecycle Performance & Evolution
+            productionHistory: {
+                initialRate: {date: 'Q3 2023', oil: 1600, gas: 95, water: 0, unit: 'bbl/d oil, MMscf/d gas', note: '**Exceeded initial forecasts by 15%**'},
+                currentRate: {date: 'Q3 2023', oil: 1600, gas: 95, water: 0, unit: 'bbl/d oil, MMscf/d gas (Stable, on plateau)'},
+                cumulativeProduction: {gas: '3.2 Bcf', condensate: '0.4 MMbbl'},
+                performanceTrend: 'Operating at peak, stable performance. No decline observed to date.'
+            },
+            history: [
+                {
+                    date: '2023-06-20',
+                    operation: 'Start-Up',
+                    problem: 'Commission well and bring on production',
+                    lesson: 'Premium completion design and commissioning procedures validated. Well started up smoothly, achieving target rates within 24 hours with no HSE incidents. Achieved 12,500 boepd (95 MMscf/d gas, 1,600 bbl/d condensate).',
+                    serviceProvider: 'Brahan Operations Team',
+                    duration: '48 hours',
+                    npt: 0,
+                    outcome: 'Outstanding'
+                },
+                {
+                    date: '2023-07-15',
+                    operation: 'Wireline (Proactive)',
+                    problem: 'Function test primary and secondary SSVs',
+                    lesson: 'Redundant SSV design provides unparalleled safety and operational flexibility. Both primary and secondary SSVs functioned perfectly, validating the redundant barrier design.',
+                    serviceProvider: 'SafetyFirst Wireline',
+                    duration: '8 hours',
+                    npt: 2,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2023-08-30',
+                    operation: 'Wireline (Proactive)',
+                    problem: 'Initial production log and fluid sampling',
+                    lesson: 'Proactive surveillance confirms effectiveness of premium materials and chemical injection program. Confirmed clean wellbore, uniform inflow across sand screen interval, and no early signs of scale or corrosion.',
+                    serviceProvider: 'DiagTech Solutions',
+                    duration: '20 hours',
+                    npt: 4,
+                    outcome: 'Successful'
+                },
+                {
+                    date: '2023-09-25',
+                    operation: 'Subsea Control System',
+                    problem: 'Routine remote wellhead and annulus pressure monitoring',
+                    lesson: 'Continuous monitoring provides early warning for any potential deviations. All parameters within operational limits. No anomalies detected.',
+                    serviceProvider: 'Brahan Control Room',
+                    duration: 'Continuous',
+                    npt: 0,
+                    outcome: 'Nominal'
+                }
+            ],
+            dailyReports: [],
+
+            // PILLAR 5: Current State & Future Outlook
+            wellIntegrity: {
+                wbsVerified: true,
+                primaryBarriers: ['**Incoloy 825 CRA Tubing (intact)**', '**Premium Hydraulic Packer (set & tested)**', '**Dual SSV System (both tested OK)**', '**Q-125 13Cr CRA Liner & Cement (CBL verified)**', '**Premium Gravel Pack/Sand Screen**'],
+                secondaryBarriers: ['P-110 Intermediate Casing & Cement', '20" Surface Casing & Cement', 'Subsea Wellhead & X-mas Tree valves'],
+                barrierVerification: {
+                    annulusAPressure: '0 psi (monitored continuously, no communication detected)',
+                    sssvTest: 'Both primary and secondary valves passed (Quarterly test, Sep 2023)',
+                    wellheadValves: 'Function tested and lubricated quarterly via ROV, all OK',
+                    tubingCasingIntegrity: 'No leaks or abnormal pressures. Continuous monitoring confirms integrity of premium materials'
+                }
+            },
+            futurePlans: {
+                immediate: ['Continue proactive, routine surveillance (PLTs, SSV tests, fluid sampling) to validate the "Field of Dreams" design', 'Use data from this well to refine predictive maintenance models for other assets'],
+                mediumTerm: ['**Well_777 will serve as the template for all future Brahan field development wells**', 'Data will be used to build high-fidelity digital twin, which can be used to simulate interventions on problem wells like Well_666 before execution', 'Analyze long-term performance of CRA materials and chemical injection program to optimize costs for future wells'],
+                longTerm: ['Enhanced design of Well_777 will inform more efficient and reliable P&A procedures, ensuring its integrity can be safely and cost-effectively managed at end of life']
+            }
         },
     ];
     const objectivesData = [
