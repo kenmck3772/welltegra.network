@@ -1184,6 +1184,61 @@
             font-weight: 600;
         }
 
+    
+        /* Mobile-friendly improvements */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.5rem 0 !important;
+            }
+            
+            #header-nav {
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+            
+            .nav-link {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.875rem;
+            }
+            
+            .nav-link span {
+                display: none;
+            }
+            
+            .nav-link svg {
+                margin: 0 !important;
+            }
+            
+            .hero-section {
+                min-height: 400px !important;
+                height: 60vh !important;
+            }
+            
+            .hero-section h1 {
+                font-size: 2rem !important;
+            }
+            
+            .hero-section p {
+                font-size: 1rem !important;
+            }
+            
+            .hero-section .flex-col,
+            .hero-section .sm\:flex-row {
+                flex-direction: column !important;
+            }
+            
+            .hero-section button,
+            .hero-section a {
+                width: 100% !important;
+                justify-content: center !important;
+            }
+        }
+        
+        /* Ensure home-view is always visible */
+        #home-view {
+            display: block !important;
+        }
+
     </style>
 
     <!-- Schema.org Structured Data -->
@@ -1375,7 +1430,7 @@
     </header>
 
     <main id="main-content" role="main">
-        <div id="home-view" class="view-container">
+        <div id="home-view" class="view-container" style="display: block !important; visibility: visible !important; opacity: 1 !important;">
 <section class="hero-section px-4 relative overflow-hidden">
     <!-- Background Video -->
     <video autoplay loop muted playsinline id="hero-video" 
