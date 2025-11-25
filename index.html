@@ -1427,6 +1427,167 @@
     </div>
 </section>
 
+            <!-- Trajectory Viewer Showcase - RIGHT AFTER HERO -->
+            <section class="py-16 px-4 bg-gradient-to-br from-slate-900 via-blue-900/20 to-slate-900 border-y-2 border-cyan-500/20">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center mb-10">
+                        <div class="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-4 py-1 mb-4">
+                            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                            <span class="text-cyan-400 font-bold text-sm">SEE IT IN ACTION</span>
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-4">
+                            Real-Time Wellbore Intelligence
+                        </h2>
+                        <p class="text-xl text-slate-300 max-w-3xl mx-auto">
+                            The Brahan Engine visualizes your well in 3D, detects dimensional conflicts, and validates safety barriers—all in real-time.
+                        </p>
+                    </div>
+
+                    <div class="grid lg:grid-cols-2 gap-8 items-start">
+                        <!-- Trajectory Viewer -->
+                        <div class="bg-slate-800/50 border-2 border-cyan-500/30 rounded-xl overflow-hidden shadow-2xl">
+                            <div class="bg-slate-900/80 px-6 py-4 border-b border-cyan-500/20">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                                        </svg>
+                                        <span>Wellbore Trajectory</span>
+                                    </h3>
+                                    <span class="text-xs text-slate-400 bg-slate-700/50 px-3 py-1 rounded-full">Live Demo</span>
+                                </div>
+                            </div>
+                            
+                            <!-- SVG Trajectory Viewer -->
+                            <div class="p-4 bg-gradient-to-br from-slate-900 to-blue-900/20">
+                                <svg id="hero-trajectory-svg" viewBox="0 0 800 520" preserveAspectRatio="xMidYMid meet" class="w-full h-auto" style="background:linear-gradient(180deg,rgba(15,23,42,.85),rgba(2,6,23,.75)); border-radius: 8px;">
+                                    <!-- Grid -->
+                                    <defs>
+                                        <pattern id="hero-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#334155" stroke-width="0.5" opacity="0.3"/>
+                                        </pattern>
+                                    </defs>
+                                    <rect width="800" height="520" fill="url(#hero-grid)"/>
+                                    
+                                    <!-- Trajectory Path - Sample Deviated Well -->
+                                    <path d="M 100 50 L 100 150 Q 100 250 200 300 L 350 400 L 500 480" 
+                                          stroke="#14b8a6" stroke-width="4" fill="none" opacity="0.8"
+                                          stroke-dasharray="8,4"/>
+                                    
+                                    <!-- Wellbore sections -->
+                                    <circle cx="100" cy="50" r="8" fill="#10b981" opacity="0.8"/>
+                                    <text x="115" y="55" fill="#10b981" font-size="12" font-weight="bold">Surface</text>
+                                    
+                                    <circle cx="100" cy="150" r="6" fill="#14b8a6" opacity="0.8"/>
+                                    <text x="115" y="155" fill="#14b8a6" font-size="11">Kickoff</text>
+                                    
+                                    <circle cx="350" cy="400" r="6" fill="#06b6d4" opacity="0.8"/>
+                                    <text x="365" y="405" fill="#06b6d4" font-size="11">Build Section</text>
+                                    
+                                    <circle cx="500" cy="480" r="8" fill="#f59e0b" opacity="0.8"/>
+                                    <text x="440" y="475" fill="#f59e0b" font-size="12" font-weight="bold">Target (TD)</text>
+                                    
+                                    <!-- Depth markers -->
+                                    <line x1="60" y1="50" x2="60" y2="480" stroke="#475569" stroke-width="1" stroke-dasharray="2,2" opacity="0.4"/>
+                                    <text x="40" y="50" fill="#94a3b8" font-size="10">0m</text>
+                                    <text x="30" y="200" fill="#94a3b8" font-size="10">500m</text>
+                                    <text x="25" y="350" fill="#94a3b8" font-size="10">1000m</text>
+                                    <text x="25" y="480" fill="#94a3b8" font-size="10">1500m</text>
+                                    
+                                    <!-- Animated pulse at target -->
+                                    <circle cx="500" cy="480" r="12" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.6">
+                                        <animate attributeName="r" from="8" to="20" dur="2s" repeatCount="indefinite"/>
+                                        <animate attributeName="opacity" from="0.8" to="0" dur="2s" repeatCount="indefinite"/>
+                                    </circle>
+                                </svg>
+                            </div>
+                            
+                            <div class="bg-slate-900/60 px-6 py-3 border-t border-cyan-500/20 flex items-center justify-between">
+                                <span class="text-sm text-slate-400">Interactive 3D visualization available in planner</span>
+                                <button onclick="showView('planner')" 
+                                        class="text-cyan-400 hover:text-cyan-300 text-sm font-semibold flex items-center gap-1">
+                                    <span>Open Planner</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Key Features -->
+                        <div class="space-y-6">
+                            <h3 class="text-2xl font-bold text-white">What You're Seeing:</h3>
+                            
+                            <!-- Feature 1 -->
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-cyan-500/20 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-white mb-1">Real-Time Clash Detection</h4>
+                                    <p class="text-slate-400">Instantly identifies when tool OD exceeds tubing ID—catching dimensional conflicts before deployment.</p>
+                                </div>
+                            </div>
+
+                            <!-- Feature 2 -->
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-amber-500/20 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-white mb-1">Safety Barrier Gateway</h4>
+                                    <p class="text-slate-400">Blocks access to operations when critical safety data (SCSSV depth, barrier status) is missing.</p>
+                                </div>
+                            </div>
+
+                            <!-- Feature 3 -->
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-white mb-1">Instant Deviation Analysis</h4>
+                                    <p class="text-slate-400">Upload CSV survey data, visualize trajectory, and identify high-DLS zones that impact tool running.</p>
+                                </div>
+                            </div>
+
+                            <!-- Feature 4 -->
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-violet-500/20 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold text-white mb-1">SVG Wellbore Schematics</h4>
+                                    <p class="text-slate-400">Interactive diagrams showing casing, tubing, packers, and safety valves with depth annotations.</p>
+                                </div>
+                            </div>
+
+                            <!-- CTA -->
+                            <div class="mt-8 pt-6 border-t border-slate-700">
+                                <button onclick="showView('planner')" 
+                                        class="w-full px-6 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                    </svg>
+                                    <span>Try the Interactive Planner</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Mini ROI Block + Outcome Bullets -->
             <section class="py-6 px-4 bg-gradient-to-r from-cyan-900/20 to-blue-900/20 border-y border-cyan-500/30">
                 <div class="max-w-6xl mx-auto">
