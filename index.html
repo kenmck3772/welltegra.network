@@ -232,12 +232,12 @@
         .hero-section {
             position: relative;
             overflow: hidden;
-            min-height: 500px;
-            height: 80vh;
-            max-height: 900px;
+            min-height: 400px;
+            height: 50vh;
+            max-height: 600px;
             display: flex;
             align-items: center;
-            padding: 2rem 0;
+            padding: 1rem 0;
         }
         #hero-video {
             position: absolute;
@@ -250,8 +250,8 @@
         }
         @media (max-width: 768px) {
             .hero-section {
-                min-height: 400px;
-                height: 70vh;
+                min-height: 300px;
+                height: 40vh;
             }
         }
         .hero-overlay {
@@ -1239,6 +1239,23 @@
             display: block !important;
         }
 
+    
+        /* EMERGENCY FIX: Override all hiding */
+        .view-container {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        /* Only show home-view by default, hide others until clicked */
+        .view-container:not(#home-view) {
+            display: none !important;
+        }
+        
+        #home-view {
+            display: block !important;
+        }
+
     </style>
 
     <!-- Schema.org Structured Data -->
@@ -1817,7 +1834,7 @@
             </section>
         </div>
         
-        <div id="planner-view" class="view-container hidden max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div id="planner-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="planner-header">
                 <h2 class="text-3xl font-bold tracking-tight text-white">Well Intervention Planner</h2>
                 <p class="mt-2 max-w-2xl mx-auto text-lg text-blue-100">The Single Source of Truth for Your Entire Well Portfolio.</p>
@@ -2202,7 +2219,7 @@
         </div>
 
         <!-- Case Studies Portfolio View -->
-        <div id="case-studies-view" class="view-container hidden max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div id="case-studies-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white">Well Intervention Case Studies</h2>
                 <p class="mt-4 max-w-4xl mx-auto text-lg text-blue-100">
@@ -2245,7 +2262,7 @@
         </div>
 
         <!-- Case Study Detail View -->
-        <div id="case-study-view" class="view-container hidden max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div id="case-study-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="mb-6">
                 <button id="back-to-case-studies" class="text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-2 transition-colors">
                     <span>←</span> Back to Case Studies
@@ -2355,7 +2372,7 @@
             </div>
         </div>
 
-        <div id="logistics-view" class="view-container hidden max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div id="logistics-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Logistics & Asset Management</h2><p id="logistics-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Manage equipment and personnel availability, certifications, and maintenance schedules.</p></div>
             <div id="logistics-content" class="mt-10 grid gap-12 lg:grid-cols-2">
                 <div class="light-card p-6 rounded-lg"><h3 class="text-xl font-semibold mb-4">Equipment Hub</h3><input type="text" id="equipment-search" placeholder="Search equipment..." class="w-full p-2 rounded-md mb-4"><div class="overflow-x-auto"><table class="w-full text-sm text-left"><thead class="table-header"><tr><th class="p-2">Asset ID</th><th>Type</th><th>Location</th><th>Test Status</th><th>Actions</th></tr></thead><tbody id="equipment-table-body"></tbody></table></div></div>
@@ -2363,22 +2380,22 @@
             </div>
         </div>
         
-        <div id="commercial-view" class="view-container hidden max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div id="commercial-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Commercial Dashboard</h2><p id="commercial-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Live financial tracking for the selected operation.</p></div>
             <div id="commercial-content" class="mt-10"></div>
         </div>
 
-        <div id="hse-view" class="view-container hidden max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div id="hse-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">HSE & Risk Dashboard</h2><p id="hse-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Centralized risk register and permit to work status.</p></div>
             <div id="hse-content" class="mt-10"></div>
         </div>
 
-        <div id="pob-view" class="view-container hidden max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div id="pob-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Personnel on Board & Emergency Response</h2><p id="pob-subtitle" class="mt-2 max-w-2xl mx-auto text-lg">Live POB manifest and emergency muster status.</p></div>
             <div id="pob-content" class="mt-10"></div>
         </div>
 
-        <div id="whitepaper-view" class="view-container hidden max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div id="whitepaper-view" class="view-container max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h2 class="text-3xl font-bold tracking-tight">Well-Tegra White Paper</h2>
                 <p class="mt-4 max-w-2xl mx-auto text-lg">Dive deeper into the technical architecture and strategic vision behind the Well-Tegra platform. Our white paper provides a comprehensive overview of the privacy-preserving AI, enterprise blockchain, and data unification strategies that power our solution.</p>
@@ -2388,13 +2405,13 @@
             </div>
         </div>
 
-        <div id="faq-view" class="view-container hidden max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div id="faq-view" class="view-container max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Frequently Asked Questions</h2><p class="mt-2 max-w-2xl mx-auto text-lg">Find answers to common questions about the Well-Tegra platform.</p></div>
             <div id="faq-accordion" class="mt-10 light-card rounded-lg shadow-md overflow-hidden">
                 </div>
         </div>
 
-        <div id="about-view" class="view-container hidden max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div id="about-view" class="view-container max-w-4xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">About Me & The Mission</h2></div>
             <div class="mt-10 light-card p-8 rounded-lg space-y-8">
                 <div>
@@ -2417,7 +2434,7 @@
             </div>
         </div>
 
-        <div id="performer-view" class="view-container hidden performer-view p-4 lg:p-6 h-full">
+        <div id="performer-view" class="view-container performer-view p-4 lg:p-6 h-full">
             <div class="h-full dashboard-grid">
                 <div id="procedure-panel" class="bg-slate-800/50 rounded-lg p-4 flex flex-col">
                     <h2 class="text-lg font-semibold mb-2 border-b border-slate-700 pb-2">Operational Procedure</h2>
@@ -2803,7 +2820,7 @@
             </div>
         </div>
 
-        <div id="analyzer-view" class="view-container hidden max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div id="analyzer-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="text-center"><h2 class="text-3xl font-bold tracking-tight">Post-Job Analysis</h2><p id="analyzer-subtitle" class="mt-2 max-w-2xl mx-auto text-lg"></p></div>
 
             <!-- PDF Export Button -->
@@ -2934,7 +2951,7 @@
         </div>
 
         <!-- Security View -->
-        <div id="security-view" class="view-container hidden max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div id="security-view" class="view-container max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h1 class="text-4xl font-bold tracking-tight">Security & Data Protection</h1>
                 <p class="mt-4 text-lg text-slate-400">We design for security from day one</p>
