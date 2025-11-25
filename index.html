@@ -261,6 +261,20 @@
             z-index: -50;
         }
         .hero-section h1 { text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); }
+
+        /* Remove empty space at top */
+        #main-content {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+        #home-view {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+        .hero-section {
+            margin-top: 0 !important;
+        }
+
         .hero-section p { text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); }
 
         .section-title { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.025em; }
@@ -1259,7 +1273,7 @@
     </a>
 
     <header id="app-header" class="header sticky top-0 z-30 transition-colors" role="banner">
-        <div class="max-w-full mx-auto py-3 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-full mx-auto py-2 px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <img src="assets/logo.jpg" alt="The Brahan Engine Logo" class="h-12 w-auto mr-3" loading="lazy">
@@ -1398,7 +1412,7 @@
 
         <!-- Hero CTAs -->
         <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href="/cdn-cgi/l/email-protection#7a1915140e1b190e3a0d1f16160e1f1d081b54141f0e0d15081145090f18101f190e473e1f17155f484a281f0b0f1f090e" class="group px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white text-lg font-bold rounded-xl shadow-2xl shadow-amber-500/30 transition-all transform hover:scale-105 hover:shadow-amber-500/50 flex items-center gap-2">
+            <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="group px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white text-lg font-bold rounded-xl shadow-2xl shadow-amber-500/30 transition-all transform hover:scale-105 hover:shadow-amber-500/50 flex items-center gap-2">
                 <span>See a Live Demo</span>
                 <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -1690,7 +1704,7 @@
                     <!-- Contact CTA -->
                     <div class="mt-12 text-center">
                         <p class="text-slate-300 mb-4">Currently in pilot phase with select operators.</p>
-                        <a href="/cdn-cgi/l/email-protection#d8bbb7b6acb9bbac98afbdb4b4acbdbfaab9f6b6bdacafb7aab3e7abadbab2bdbbace588b1b4b7acf888aab7bfaab9b5f891b6a9adb1aaa1" class="inline-flex items-center gap-2 px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition-all transform hover:scale-105">
+                        <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="inline-flex items-center gap-2 px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition-all transform hover:scale-105">
                             <span>Join the Pilot Program</span>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -2979,7 +2993,7 @@
                 <div class="light-card p-8 rounded-lg text-center">
                     <h2 class="text-2xl font-bold mb-4">Have Security Questions?</h2>
                     <p class="text-lg text-slate-400 mb-6">Our security team is here to help</p>
-                    <a href="/cdn-cgi/l/email-protection#0172646274736875784176646d6d75646673602f6f6475766e736a" class="inline-block px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
+                    <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="inline-block px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
                         Contact Security Team
                     </a>
                 </div>
@@ -3000,7 +3014,7 @@
 
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const pendingShowViewCalls = [];
 if (typeof window !== 'undefined') {
     window.showView = function(viewName) {
