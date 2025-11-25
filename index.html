@@ -1262,6 +1262,24 @@
 </head>
 
 <body class="theme-dark">
+    <script>
+    // CRITICAL FIX: Remove #main-content hash and scroll to top on page load
+    if (window.location.hash === '#main-content') {
+        history.replaceState(null, null, ' ');
+        window.scrollTo(0, 0);
+    }
+    // Also scroll to top when clicking Home
+    window.addEventListener('DOMContentLoaded', function() {
+        const homeLink = document.getElementById('home-nav-link');
+        if (homeLink) {
+            homeLink.addEventListener('click', function(e) {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+                history.replaceState(null, null, ' ');
+            });
+        }
+    });
+    </script>
+
 
 <!-- Login page removed - direct access to application -->
 
@@ -1393,7 +1411,7 @@
 
         <!-- Hero CTAs -->
         <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="group px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white text-lg font-bold rounded-xl shadow-2xl shadow-amber-500/30 transition-all transform hover:scale-105 hover:shadow-amber-500/50 flex items-center gap-2">
+            <a href="/cdn-cgi/l/email-protection#a7c4c8c9d3c6c4d3e7d0c2cbcbd3c2c0d5c689c9c2d3d0c8d5cc98d4d2c5cdc2c4d39ae3c2cac8829597f5c2d6d2c2d4d3" class="group px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white text-lg font-bold rounded-xl shadow-2xl shadow-amber-500/30 transition-all transform hover:scale-105 hover:shadow-amber-500/50 flex items-center gap-2">
                 <span>See a Live Demo</span>
                 <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -1685,7 +1703,7 @@
                     <!-- Contact CTA -->
                     <div class="mt-12 text-center">
                         <p class="text-slate-300 mb-4">Currently in pilot phase with select operators.</p>
-                        <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="inline-flex items-center gap-2 px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition-all transform hover:scale-105">
+                        <a href="/cdn-cgi/l/email-protection#52313d3c263331261225373e3e26373520337c3c3726253d20396d212730383731266f16373f3d77606200372327372126" class="inline-flex items-center gap-2 px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg transition-all transform hover:scale-105">
                             <span>Join the Pilot Program</span>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -2974,7 +2992,7 @@
                 <div class="light-card p-8 rounded-lg text-center">
                     <h2 class="text-2xl font-bold mb-4">Have Security Questions?</h2>
                     <p class="text-lg text-slate-400 mb-6">Our security team is here to help</p>
-                    <a href="mailto:contact@welltegra.network?subject=Demo%20Request" class="inline-block px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
+                    <a href="/cdn-cgi/l/email-protection#6a0905041e0b091e2a1d0f06061e0f0d180b44040f1e1d05180155191f08000f091e572e0f07054f585a380f1b1f0f191e" class="inline-block px-8 py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-lg transition">
                         Contact Security Team
                     </a>
                 </div>
@@ -2995,7 +3013,7 @@
 
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const pendingShowViewCalls = [];
 if (typeof window !== 'undefined') {
     window.showView = function(viewName) {
@@ -10023,13 +10041,4 @@ document.addEventListener('DOMContentLoaded', () => {
         if(typeof window.loadSampleSurvey === 'function'){
           setTimeout(function() {
             activatePerformer();
-            setTimeout(function() {
-              window.loadSampleSurvey();
-            }, 500);
-          }, 1000);
-        } else {
-          var btn = document.querySelector('button[onclick*="loadSampleSurvey"]');
-          if(btn) {
-            setTimeout(function() {
-              activatePerformer();
-              setTimeout(funct
+            setTim
