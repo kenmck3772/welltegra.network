@@ -1240,20 +1240,13 @@
         }
 
     
-        /* EMERGENCY FIX: Override all hiding */
+        /* View switching controlled by JavaScript */
         .view-container {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
+            display: none;
         }
         
-        /* Only show home-view by default, hide others until clicked */
-        .view-container:not(#home-view) {
-            display: none !important;
-        }
-        
-        #home-view {
-            display: block !important;
+        .view-container:not(.hidden) {
+            display: block;
         }
 
     
@@ -1474,7 +1467,7 @@
     </header>
 
     <main id="main-content" role="main">
-        <div id="home-view" class="view-container" style="display: block !important; visibility: visible !important; opacity: 1 !important;">
+        <div id="home-view" class="view-container">
 <section class="hero-section px-4 relative overflow-hidden">
     <!-- Background Video -->
     <video autoplay loop muted playsinline id="hero-video" 
