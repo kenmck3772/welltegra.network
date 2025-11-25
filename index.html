@@ -1263,21 +1263,38 @@
 
 <body class="theme-dark">
     <script>
-    // CRITICAL FIX: Remove #main-content hash and scroll to top on page load
-    if (window.location.hash === '#main-content') {
-        history.replaceState(null, null, ' ');
-        window.scrollTo(0, 0);
-    }
-    // Also scroll to top when clicking Home
-    window.addEventListener('DOMContentLoaded', function() {
-        const homeLink = document.getElementById('home-nav-link');
-        if (homeLink) {
-            homeLink.addEventListener('click', function(e) {
-                window.scrollTo({top: 0, behavior: 'smooth'});
-                history.replaceState(null, null, ' ');
-            });
+    // CRITICAL FIX: Ensure home view is visible on page load
+    (function() {
+        // Remove #main-content hash if present
+        if (window.location.hash === '#main-content') {
+            history.replaceState(null, null, ' ');
         }
-    });
+        
+        // Ensure home-view is visible on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            // Make sure home-view is shown
+            const homeView = document.getElementById('home-view');
+            if (homeView) {
+                homeView.classList.remove('hidden');
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Setup home link click handler
+            const homeLink = document.getElementById('home-nav-link');
+            if (homeLink) {
+                homeLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (typeof window.showView === 'function') {
+                        window.showView('home');
+                    }
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                    history.replaceState(null, null, ' ');
+                });
+            }
+        });
+    })();
     </script>
 
 
