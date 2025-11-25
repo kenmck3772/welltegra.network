@@ -1256,6 +1256,33 @@
             display: block !important;
         }
 
+    
+        /* AGGRESSIVE TOP SPACE REMOVAL */
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        #app-container {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+        
+        header {
+            margin-top: 0 !important;
+        }
+        
+        /* Make header less tall */
+        .header {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+        }
+        
+        .header .max-w-full {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+        }
+
     </style>
 
     <!-- Schema.org Structured Data -->
@@ -1380,10 +1407,10 @@
     </a>
 
     <header id="app-header" class="header sticky top-0 z-30 transition-colors" role="banner">
-        <div class="max-w-full mx-auto py-2 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-full mx-auto py-1 px-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <img src="assets/logo.jpg" alt="The Brahan Engine Logo" class="h-12 w-auto mr-3" loading="lazy">
+                    <img src="assets/logo.jpg" alt="The Brahan Engine Logo" class="h-10 w-auto mr-2" loading="lazy">
                     <div class="flex flex-col"><h1 id="header-title" class="text-xl font-bold">The Brahan Engine</h1><span class="text-xs text-slate-400 -mt-1">by WellTegra</span></div>
                 </div>
                 <nav id="header-nav" class="flex-1 flex items-center justify-center space-x-1 md:space-x-4" role="navigation" aria-label="Main navigation">
