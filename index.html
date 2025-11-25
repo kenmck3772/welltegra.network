@@ -4380,6 +4380,885 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
     ];
+
+    // DEVIATION SURVEY DATA
+    const deviationSurveyData = {
+    "Well_11": {
+        "name": "Brahan Alpha (Reliable Producer)",
+        "survey": [
+            {
+                "md": 0,
+                "inc": 0.0,
+                "az": 0.0,
+                "tvd": 0.0,
+                "dls": 0.0
+            },
+            {
+                "md": 250,
+                "inc": 0.75,
+                "az": 45.2,
+                "tvd": 249.99,
+                "dls": 0.09
+            },
+            {
+                "md": 500,
+                "inc": 1.5,
+                "az": 45.2,
+                "tvd": 499.98,
+                "dls": 0.09
+            },
+            {
+                "md": 750,
+                "inc": 1.65,
+                "az": 45.2,
+                "tvd": 749.97,
+                "dls": 0.05
+            },
+            {
+                "md": 1000,
+                "inc": 1.8,
+                "az": 45.2,
+                "tvd": 999.95,
+                "dls": 0.06
+            },
+            {
+                "md": 1500,
+                "inc": 1.9,
+                "az": 45.2,
+                "tvd": 1499.9,
+                "dls": 0.06
+            },
+            {
+                "md": 2000,
+                "inc": 1.95,
+                "az": 45.2,
+                "tvd": 1999.8,
+                "dls": 0.05
+            },
+            {
+                "md": 2500,
+                "inc": 2.0,
+                "az": 45.2,
+                "tvd": 2499.65,
+                "dls": 0.05
+            },
+            {
+                "md": 3000,
+                "inc": 2.05,
+                "az": 45.2,
+                "tvd": 2999.45,
+                "dls": 0.05
+            },
+            {
+                "md": 3500,
+                "inc": 2.1,
+                "az": 45.2,
+                "tvd": 3499.1,
+                "dls": 0.05
+            }
+        ],
+        "anomalies": []
+    },
+    "Well_22": {
+        "name": "Brahan Alpha (Casing Deformation)",
+        "survey": [
+            {
+                "md": 0,
+                "inc": 0.0,
+                "az": 88.1,
+                "tvd": 0.0,
+                "dls": 0.0
+            },
+            {
+                "md": 250,
+                "inc": 0.6,
+                "az": 88.1,
+                "tvd": 249.99,
+                "dls": 0.07
+            },
+            {
+                "md": 500,
+                "inc": 1.2,
+                "az": 88.1,
+                "tvd": 499.99,
+                "dls": 0.07
+            },
+            {
+                "md": 750,
+                "inc": 1.35,
+                "az": 88.1,
+                "tvd": 749.98,
+                "dls": 0.06
+            },
+            {
+                "md": 1000,
+                "inc": 1.5,
+                "az": 88.1,
+                "tvd": 999.97,
+                "dls": 0.06
+            },
+            {
+                "md": 1500,
+                "inc": 1.6,
+                "az": 88.1,
+                "tvd": 1499.92,
+                "dls": 0.06
+            },
+            {
+                "md": 2000,
+                "inc": 1.7,
+                "az": 88.1,
+                "tvd": 1999.85,
+                "dls": 0.06
+            },
+            {
+                "md": 2500,
+                "inc": 1.8,
+                "az": 88.1,
+                "tvd": 2499.7,
+                "dls": 0.06
+            },
+            {
+                "md": 3000,
+                "inc": 1.9,
+                "az": 88.1,
+                "tvd": 2999.5,
+                "dls": 0.06
+            },
+            {
+                "md": 3300,
+                "inc": 1.95,
+                "az": 88.1,
+                "tvd": 3299.4,
+                "dls": 0.05
+            },
+            {
+                "md": 3600,
+                "inc": 2.0,
+                "az": 88.1,
+                "tvd": 3599.25,
+                "dls": 0.05
+            }
+        ],
+        "anomalies": [
+            {
+                "date": "May 20, 2020",
+                "depth": "2180-2220",
+                "description": "Severe casing deformation (ovality >15%) reducing internal diameter by ~18%.",
+                "discovery": "Multi-Finger Caliper (MFC) log.",
+                "status": "RESOLVED. Expandable steel patch installed across deformed interval. Post-patch MFC confirmed >95% ID restoration."
+            }
+        ]
+    },
+    "Well_33": {
+        "name": "Brahan Alpha (Scale Blockage)",
+        "survey": [
+            {
+                "md": 0,
+                "inc": 0.0,
+                "az": 120.0,
+                "tvd": 0.0,
+                "dls": 0.0
+            },
+            {
+                "md": 250,
+                "inc": 2.5,
+                "az": 120.0,
+                "tvd": 249.95,
+                "dls": 0.3
+            },
+            {
+                "md": 500,
+                "inc": 5.0,
+                "az": 120.0,
+                "tvd": 499.8,
+                "dls": 0.3
+            },
+            {
+                "md": 750,
+                "inc": 7.5,
+                "az": 120.0,
+                "tvd": 749.55,
+                "dls": 0.3
+            },
+            {
+                "md": 1000,
+                "inc": 10.0,
+                "az": 120.0,
+                "tvd": 999.05,
+                "dls": 0.3
+            },
+            {
+                "md": 1500,
+                "inc": 10.0,
+                "az": 120.0,
+                "tvd": 1497.6,
+                "dls": 0.0
+            },
+            {
+                "md": 2000,
+                "inc": 10.0,
+                "az": 120.0,
+                "tvd": 1995.15,
+                "dls": 0.0
+            },
+            {
+                "md": 2500,
+                "inc": 10.0,
+                "az": 120.0,
+                "tvd": 2492.7,
+                "dls": 0.0
+            },
+            {
+                "md": 3000,
+                "inc": 10.0,
+                "az": 120.0,
+                "tvd": 2990.25,
+                "dls": 0.0
+            },
+            {
+                "md": 3300,
+                "inc": 10.25,
+                "az": 120.0,
+                "tvd": 3237.78,
+                "dls": 0.25
+            },
+            {
+                "md": 3550,
+                "inc": 10.5,
+                "az": 120.0,
+                "tvd": 3485.3,
+                "dls": 0.25
+            }
+        ],
+        "anomalies": [
+            {
+                "date": "Aug 15, 2021",
+                "depth": "3200-3450",
+                "description": "Hard BaSO\u2084 scale bridge completely occluding tubing ID.",
+                "discovery": "Coiled Tubing tag depth, confirmed by pressure build-up.",
+                "status": "RESOLVED. Scale removed via combined chemical/jetting CT intervention. Tubing ID restored to nominal."
+            }
+        ]
+    },
+    "Well_44": {
+        "name": "Brahan Alpha (SSV Failure)",
+        "survey": [
+            {
+                "md": 0,
+                "inc": 0.0,
+                "az": 45.0,
+                "tvd": 0.0,
+                "dls": 0.0
+            },
+            {
+                "md": 250,
+                "inc": 7.5,
+                "az": 45.0,
+                "tvd": 249.72,
+                "dls": 0.9
+            },
+            {
+                "md": 500,
+                "inc": 15.0,
+                "az": 45.0,
+                "tvd": 994.3,
+                "dls": 0.9
+            },
+            {
+                "md": 750,
+                "inc": 22.5,
+                "az": 45.0,
+                "tvd": 1482.38,
+                "dls": 0.9
+            },
+            {
+                "md": 1000,
+                "inc": 30.0,
+                "az": 45.0,
+                "tvd": 1913.4,
+                "dls": 0.9
+            },
+            {
+                "md": 1500,
+                "inc": 30.0,
+                "az": 45.0,
+                "tvd": 2854.3,
+                "dls": 0.0
+            },
+            {
+                "md": 2000,
+                "inc": 25.0,
+                "az": 45.0,
+                "tvd": 3785.2,
+                "dls": 1.0
+            },
+            {
+                "md": 2500,
+                "inc": 20.0,
+                "az": 45.0,
+                "tvd": 4666.1,
+                "dls": 1.0
+            },
+            {
+                "md": 3000,
+                "inc": 15.0,
+                "az": 45.0,
+                "tvd": 5467.0,
+                "dls": 1.0
+            },
+            {
+                "md": 3500,
+                "inc": 12.5,
+                "az": 45.0,
+                "tvd": 6247.9,
+                "dls": 0.75
+            },
+            {
+                "md": 4000,
+                "inc": 10.0,
+                "az": 45.0,
+                "tvd": 6988.8,
+                "dls": 0.75
+            }
+        ],
+        "anomalies": [
+            {
+                "date": "Feb 10, 2022",
+                "depth": "400",
+                "description": "TRSSV failed in closed position, would not open.",
+                "discovery": "Routine SSV function test.",
+                "status": "RESOLVED. Failed TRSSV locked open. Slickline-retrievable insert SSV installed in dedicated profile."
+            }
+        ]
+    },
+    "Well_55": {
+        "name": "Brahan Bravo (Water Injector)",
+        "survey": [
+            {
+                "md": 0,
+                "inc": 0.0,
+                "az": 180.0,
+                "tvd": 0.0,
+                "dls": 0.0
+            },
+            {
+                "md": 250,
+                "inc": 10.0,
+                "az": 180.0,
+                "tvd": 244.95,
+                "dls": 1.2
+            },
+            {
+                "md": 500,
+                "inc": 20.0,
+                "az": 180.0,
+                "tvd": 979.8,
+                "dls": 1.2
+            },
+            {
+                "md": 750,
+                "inc": 30.0,
+                "az": 180.0,
+                "tvd": 1719.55,
+                "dls": 1.2
+            },
+            {
+                "md": 1000,
+                "inc": 40.0,
+                "az": 180.0,
+                "tvd": 2429.3,
+                "dls": 1.2
+            },
+            {
+                "md": 1500,
+                "inc": 60.0,
+                "az": 180.0,
+                "tvd": 3348.8,
+                "dls": 2.0
+            },
+            {
+                "md": 2000,
+                "inc": 80.0,
+                "az": 180.0,
+                "tvd": 3938.3,
+                "dls": 2.0
+            },
+            {
+                "md": 2500,
+                "inc": 90.0,
+                "az": 180.0,
+                "tvd": 4207.8,
+                "dls": 2.0
+            },
+            {
+                "md": 3000,
+                "inc": 90.0,
+                "az": 180.0,
+                "tvd": 4207.8,
+                "dls": 0.0
+            },
+            {
+                "md": 3500,
+                "inc": 90.0,
+                "az": 180.0,
+                "tvd": 4207.8,
+                "dls": 0.0
+            },
+            {
+                "md": 4000,
+                "inc": 90.0,
+                "az": 180.0,
+                "tvd": 4207.8,
+                "dls": 0.0
+            },
+            {
+                "md": 4500,
+                "inc": 90.0,
+                "az": 180.0,
+                "tvd": 4207.8,
+                "dls": 0.0
+            }
+        ],
+        "anomalies": []
+    },
+    "Well_666": {
+            "name": "Brahan Gamma (The Perfect Storm)",
+            "survey": [
+                        {
+                                    "md": 0,
+                                    "inc": 0.0,
+                                    "az": 210.0,
+                                    "tvd": 0.0,
+                                    "dls": 0.0
+                        },
+                        {
+                                    "md": 250,
+                                    "inc": 12.5,
+                                    "az": 210.0,
+                                    "tvd": 244.55,
+                                    "dls": 1.5
+                        },
+                        {
+                                    "md": 500,
+                                    "inc": 25.0,
+                                    "az": 210.0,
+                                    "tvd": 955.5,
+                                    "dls": 1.5
+                        },
+                        {
+                                    "md": 750,
+                                    "inc": 37.5,
+                                    "az": 210.0,
+                                    "tvd": 1710.1,
+                                    "dls": 1.5
+                        },
+                        {
+                                    "md": 1000,
+                                    "inc": 50.0,
+                                    "az": 210.0,
+                                    "tvd": 2294.3,
+                                    "dls": 1.5
+                        },
+                        {
+                                    "md": 1500,
+                                    "inc": 75.0,
+                                    "az": 210.0,
+                                    "tvd": 2550.4,
+                                    "dls": 1.5
+                        },
+                        {
+                                    "md": 2000,
+                                    "inc": 90.0,
+                                    "az": 210.0,
+                                    "tvd": 2550.4,
+                                    "dls": 1.5
+                        },
+                        {
+                                    "md": 2500,
+                                    "inc": 90.0,
+                                    "az": 210.0,
+                                    "tvd": 2550.4,
+                                    "dls": 0.0
+                        },
+                        {
+                                    "md": 3000,
+                                    "inc": 90.0,
+                                    "az": 210.0,
+                                    "tvd": 2550.4,
+                                    "dls": 0.0
+                        },
+                        {
+                                    "md": 3500,
+                                    "inc": 90.0,
+                                    "az": 210.0,
+                                    "tvd": 2550.4,
+                                    "dls": 0.0
+                        },
+                        {
+                                    "md": 4000,
+                                    "inc": 90.0,
+                                    "az": 210.0,
+                                    "tvd": 2550.4,
+                                    "dls": 0.0
+                        },
+                        {
+                                    "md": 4500,
+                                    "inc": 90.0,
+                                    "az": 210.0,
+                                    "tvd": 2550.4,
+                                    "dls": 0.0
+                        },
+                        {
+                                    "md": 5000,
+                                    "inc": 90.0,
+                                    "az": 210.0,
+                                    "tvd": 2550.4,
+                                    "dls": 0.0
+                        }
+            ],
+            "anomalies": [
+                        {
+                                    "date": "Apr 15, 2022",
+                                    "depth": "Full String",
+                                    "description": "Initial start-up FAILED. Well would not sustain flow. Immediate pressure build-up indicated severe downhole restriction.",
+                                    "discovery": "First flow attempt",
+                                    "status": "CRITICAL. Triggered full diagnostic investigation."
+                        },
+                        {
+                                    "date": "Apr 25, 2022",
+                                    "depth": "410m",
+                                    "description": "TRSSV FAILED - Stuck in closed position. Critical safety barrier failure.",
+                                    "discovery": "Routine TRSSV function test",
+                                    "status": "CRITICAL. Must be replaced or bypassed before production."
+                        },
+                        {
+                                    "date": "May 02, 2022",
+                                    "depth": "4500m",
+                                    "description": "SEVERE casing deformation (>20% ovality) in 9 5/8\" production casing.",
+                                    "discovery": "Multi-Finger Caliper (MFC) log",
+                                    "status": "CRITICAL. Requires expandable steel patch installation."
+                        },
+                        {
+                                    "date": "May 25, 2022",
+                                    "depth": "Mid-tubing",
+                                    "description": "FOREIGN OBJECT DAMAGE (FOD): Tong die from rotary table drill slips found blocking tubing.",
+                                    "discovery": "Lead Impression Block (LIB)",
+                                    "status": "RESOLVED. Crocodile grab successfully retrieved tong die."
+                        },
+                        {
+                                    "date": "May 27, 2022",
+                                    "depth": "Near SSV",
+                                    "description": "Broken metallic prong recovered - likely from SSV assembly or gas lift mandrel, indicating secondary damage.",
+                                    "discovery": "Slickline pulling tool",
+                                    "status": "UNRESOLVED. Indicates potential widespread FOD damage to completion string."
+                        }
+            ]
+},
+
+            "Well_44": {
+                        "name": "Brahan Alpha (The Broken Barrier)",
+                        "survey": [
+                                    {
+                                                "md": 0,
+                                                "inc": 0.0,
+                                                "az": 0.0,
+                                                "tvd": 0.0,
+                                                "dls": 0.0
+                                    },
+                                    {
+                                                "md": 250,
+                                                "inc": 3.75,
+                                                "az": 45.0,
+                                                "tvd": 249.86,
+                                                "dls": 0.45
+                                    },
+                                    {
+                                                "md": 500,
+                                                "inc": 7.5,
+                                                "az": 45.0,
+                                                "tvd": 994.3,
+                                                "dls": 0.45
+                                    },
+                                    {
+                                                "md": 750,
+                                                "inc": 11.25,
+                                                "az": 45.0,
+                                                "tvd": 1482.38,
+                                                "dls": 0.45
+                                    },
+                                    {
+                                                "md": 1000,
+                                                "inc": 15.0,
+                                                "az": 45.0,
+                                                "tvd": 1913.4,
+                                                "dls": 0.45
+                                    },
+                                    {
+                                                "md": 1500,
+                                                "inc": 22.5,
+                                                "az": 45.0,
+                                                "tvd": 2785.2,
+                                                "dls": 0.75
+                                    },
+                                    {
+                                                "md": 2000,
+                                                "inc": 30.0,
+                                                "az": 45.0,
+                                                "tvd": 3547.0,
+                                                "dls": 0.75
+                                    },
+                                    {
+                                                "md": 2500,
+                                                "inc": 25.0,
+                                                "az": 45.0,
+                                                "tvd": 4316.9,
+                                                "dls": 0.75
+                                    },
+                                    {
+                                                "md": 3000,
+                                                "inc": 20.0,
+                                                "az": 45.0,
+                                                "tvd": 5067.0,
+                                                "dls": 0.75
+                                    },
+                                    {
+                                                "md": 3500,
+                                                "inc": 15.0,
+                                                "az": 45.0,
+                                                "tvd": 5807.1,
+                                                "dls": 0.75
+                                    },
+                                    {
+                                                "md": 4000,
+                                                "inc": 10.0,
+                                                "az": 45.0,
+                                                "tvd": 6528.4,
+                                                "dls": 0.75
+                                    }
+                        ],
+                        "anomalies": [
+                                    {
+                                                "date": "Feb 10, 2022",
+                                                "depth": "400m",
+                                                "description": "TRSSV FAILED - Stuck in closed position. Critical safety barrier failure.",
+                                                "discovery": "Routine TRSSV function test",
+                                                "status": "RESOLVED. TRSSV locked open, slickline-retrievable insert SSV installed and function tested."
+                                    }
+                        ]
+            },
+            "Well_55": {
+                        "name": "Brahan Bravo (Water Injector)",
+                        "survey": [
+                                    {
+                                                "md": 0,
+                                                "inc": 0.0,
+                                                "az": 180.0,
+                                                "tvd": 0.0,
+                                                "dls": 0.0
+                                    },
+                                    {
+                                                "md": 250,
+                                                "inc": 5.0,
+                                                "az": 180.0,
+                                                "tvd": 249.95,
+                                                "dls": 0.6
+                                    },
+                                    {
+                                                "md": 500,
+                                                "inc": 10.0,
+                                                "az": 180.0,
+                                                "tvd": 999.8,
+                                                "dls": 0.6
+                                    },
+                                    {
+                                                "md": 750,
+                                                "inc": 15.0,
+                                                "az": 180.0,
+                                                "tvd": 1749.55,
+                                                "dls": 0.6
+                                    },
+                                    {
+                                                "md": 1000,
+                                                "inc": 20.0,
+                                                "az": 180.0,
+                                                "tvd": 2479.8,
+                                                "dls": 0.6
+                                    },
+                                    {
+                                                "md": 1500,
+                                                "inc": 30.0,
+                                                "az": 180.0,
+                                                "tvd": 3348.8,
+                                                "dls": 1.2
+                                    },
+                                    {
+                                                "md": 2000,
+                                                "inc": 45.0,
+                                                "az": 180.0,
+                                                "tvd": 3938.3,
+                                                "dls": 1.8
+                                    },
+                                    {
+                                                "md": 2500,
+                                                "inc": 60.0,
+                                                "az": 180.0,
+                                                "tvd": 4207.8,
+                                                "dls": 1.8
+                                    },
+                                    {
+                                                "md": 3000,
+                                                "inc": 75.0,
+                                                "az": 180.0,
+                                                "tvd": 4207.8,
+                                                "dls": 1.8
+                                    },
+                                    {
+                                                "md": 3500,
+                                                "inc": 90.0,
+                                                "az": 180.0,
+                                                "tvd": 4207.8,
+                                                "dls": 1.8
+                                    },
+                                    {
+                                                "md": 4000,
+                                                "inc": 90.0,
+                                                "az": 180.0,
+                                                "tvd": 4207.8,
+                                                "dls": 0.0
+                                    },
+                                    {
+                                                "md": 4500,
+                                                "inc": 90.0,
+                                                "az": 180.0,
+                                                "tvd": 4207.8,
+                                                "dls": 0.0
+                                    }
+                        ],
+                        "anomalies": []
+            },
+            "Well_777": {
+                        "name": "Brahan Gamma (Field of Dreams)",
+                        "survey": [
+                                    {
+                                                "md": 0,
+                                                "inc": 0.0,
+                                                "az": 0.0,
+                                                "tvd": 0.0,
+                                                "dls": 0.0
+                                    },
+                                    {
+                                                "md": 1000,
+                                                "inc": 22.0,
+                                                "az": 245.0,
+                                                "tvd": 968.3,
+                                                "dls": 0.66
+                                    },
+                                    {
+                                                "md": 2000,
+                                                "inc": 48.0,
+                                                "az": 245.0,
+                                                "tvd": 1743.0,
+                                                "dls": 0.78
+                                    },
+                                    {
+                                                "md": 3000,
+                                                "inc": 80.0,
+                                                "az": 245.0,
+                                                "tvd": 2339.6,
+                                                "dls": 1.56
+                                    },
+                                    {
+                                                "md": 4000,
+                                                "inc": 90.0,
+                                                "az": 245.0,
+                                                "tvd": 2605.7,
+                                                "dls": 1.0
+                                    },
+                                    {
+                                                "md": 5200,
+                                                "inc": 90.0,
+                                                "az": 245.0,
+                                                "tvd": 2605.7,
+                                                "dls": 0.0
+                                    }
+                        ],
+                        "anomalies": []
+            }
+};
+
+    // Function to display deviation survey for a well
+    function showDeviationSurvey(wellId) {
+        const surveyData = deviationSurveyData[wellId];
+        if (!surveyData) return;
+        
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4';
+        modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+        
+        const anomaliesHtml = surveyData.anomalies.length > 0 ? `
+            <div class="mt-6 bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+                <h4 class="text-lg font-bold text-red-400 mb-3">⚠️ Anomalies & Restrictions</h4>
+                ${surveyData.anomalies.map(a => \`
+                    <div class="mb-3 pb-3 border-b border-red-500/20 last:border-0">
+                        <div class="flex justify-between mb-1">
+                            <span class="text-amber-400 font-semibold">\${a.date}</span>
+                            <span class="text-cyan-400">\${a.depth}m</span>
+                        </div>
+                        <p class="text-slate-300 text-sm mb-1">\${a.description}</p>
+                        <p class="text-slate-400 text-xs mb-1"><strong>Discovery:</strong> \${a.discovery}</p>
+                        <p class="text-green-400 text-xs"><strong>Status:</strong> \${a.status}</p>
+                    </div>
+                \`).join('')}
+            </div>
+        ` : '<div class="mt-6 bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-center text-green-400">✅ No restrictions or anomalies recorded</div>';
+        
+        modal.innerHTML = \`
+            <div class="bg-slate-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-auto">
+                <div class="bg-gradient-to-r from-cyan-600 to-blue-600 p-6 rounded-t-xl">
+                    <h3 class="text-2xl font-bold text-white">Deviation Survey: \${surveyData.name}</h3>
+                    <p class="text-cyan-100 text-sm mt-1">\${wellId}</p>
+                </div>
+                <div class="p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-slate-700/50">
+                                    <th class="px-4 py-2 text-left text-cyan-400">MD (m)</th>
+                                    <th class="px-4 py-2 text-left text-cyan-400">Inc (°)</th>
+                                    <th class="px-4 py-2 text-left text-cyan-400">Az (°)</th>
+                                    <th class="px-4 py-2 text-left text-cyan-400">TVD (m)</th>
+                                    <th class="px-4 py-2 text-left text-cyan-400">DLS (°/30m)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                \${surveyData.survey.map((point, i) => \`
+                                    <tr class="\${i % 2 === 0 ? 'bg-slate-700/20' : ''}">
+                                        <td class="px-4 py-2 text-white font-mono">\${point.md}</td>
+                                        <td class="px-4 py-2 text-slate-300 font-mono">\${point.inc.toFixed(2)}</td>
+                                        <td class="px-4 py-2 text-slate-300 font-mono">\${point.az.toFixed(1)}</td>
+                                        <td class="px-4 py-2 text-slate-300 font-mono">\${point.tvd.toFixed(2)}</td>
+                                        <td class="px-4 py-2 text-slate-300 font-mono \${point.dls > 1.0 ? 'text-amber-400 font-bold' : ''}">\${point.dls.toFixed(2)}</td>
+                                    </tr>
+                                \`).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    \${anomaliesHtml}
+                    <div class="mt-6 flex justify-end">
+                        <button onclick="this.closest('.fixed').remove()" 
+                                class="px-6 py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-lg transition">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        \`;
+        
+        document.body.appendChild(modal);
+    }
+
+
     const objectivesData = [
         { id: 'obj1', name: 'Remediate Casing Deformation', description: 'Install an expandable steel patch to restore wellbore access.', icon: 'wrench-screwdriver' },
         { id: 'obj2', name: 'Remove BaSO4 Scale', description: 'Use a chemical and mechanical method to clear tubing blockage.', icon: 'beaker' },
