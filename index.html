@@ -5216,6 +5216,18 @@ document.addEventListener('DOMContentLoaded', function() {
 };
 
     // Function to display deviation survey for a well
+<body class="theme-dark">
+    <script>
+// Navigation fix
+window.showView = function(viewId) {
+    document.querySelectorAll('.view-container').forEach(v => v.style.display = 'none');
+    const target = document.getElementById(viewId + '-view');
+    if (target) {
+        target.style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+};
+    </script>
     function showDeviationSurvey(wellId) {
         const surveyData = deviationSurveyData[wellId];
         if (!surveyData) return;
