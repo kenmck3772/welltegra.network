@@ -1351,6 +1351,17 @@
 
 <body class="theme-dark">
     <script>
+// Navigation fix
+window.showView = function(viewId) {
+    document.querySelectorAll('.view-container').forEach(v => v.style.display = 'none');
+    const target = document.getElementById(viewId + '-view');
+    if (target) {
+        target.style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+};
+    </script>
+</script>
     // Navigation function
     function showView(viewId) {
         // Hide all views
