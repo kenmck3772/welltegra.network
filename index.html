@@ -1351,6 +1351,23 @@
 
 <body class="theme-dark">
     <script>
+    // Navigation function
+    function showView(viewId) {
+        // Hide all views
+        document.querySelectorAll('.view-container').forEach(view => {
+            view.style.display = 'none';
+        });
+        
+        // Show requested view
+        const targetView = document.getElementById(viewId + '-view');
+        if (targetView) {
+            targetView.style.display = 'block';
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    }
+    
     // CRITICAL FIX: Ensure home view is visible on page load
     (function() {
         // Remove #main-content hash if present
@@ -5199,7 +5216,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const anomaliesHtml = surveyData.anomalies.length > 0 ? `
             <div class="mt-6 bg-red-500/10 border border-red-500/30 rounded-lg p-4">
                 <h4 class="text-lg font-bold text-red-400 mb-3">⚠️ Anomalies & Restrictions</h4>
-                ${surveyData.anomalies.map(a => \`
+                ${surveyData.anomalies.map(a => `
                     <div class="mb-3 pb-3 border-b border-red-500/20 last:border-0">
                         <div class="flex justify-between mb-1">
                             <span class="text-amber-400 font-semibold">\${a.date}</span>
