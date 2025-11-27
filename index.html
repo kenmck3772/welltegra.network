@@ -9987,8 +9987,8 @@ function showDeviationSurvey(wellId) {
         // Show the case study detail view
         if (typeof window.showView === 'function') {
             // Switch to case-study-view (detail view)
-            document.querySelectorAll('.view-container').forEach(v => v.classList.add('hidden'));
-            document.getElementById('case-study-view').classList.remove('hidden');
+// REMOVED - was hiding home-view on page load
+document.getElementById('case-study-view').classList.remove('hidden');
         }
     };
 
