@@ -16,7 +16,7 @@
     <meta property="og:url" content="https://welltegra.network/">
     <meta property="og:title" content="The Brahan Engine | See What Others Can't">
     <meta property="og:description" content="The Brahan Engine reveals hidden conflicts, predicts operational outcomes, and prevents disasters. AI-powered well engineering intelligence.">
-    <meta property="og:image" content="https://welltegra.network/assets/og-image.jpg">
+    <meta property="og:image" content="https://welltegra.network/assets/images/logo.jpg">
     <meta property="og:site_name" content="WellTegra">
 
     <!-- Twitter Card -->
@@ -24,40 +24,56 @@
     <meta name="twitter:url" content="https://welltegra.network/">
     <meta name="twitter:title" content="The Brahan Engine | See What Others Can't">
     <meta name="twitter:description" content="Real-time clash detection, safety barrier gateway, and predictive clarity for well operations.">
-    <meta name="twitter:image" content="https://welltegra.network/assets/og-image.jpg">
+    <meta name="twitter:image" content="https://welltegra.network/assets/images/logo.jpg">
 
     <!-- Additional Meta -->
     <meta name="robots" content="index, follow">
     <meta name="language" content="English">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
-    <!-- Favicon -->
-    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
-    <link rel="apple-touch-icon" href="assets/logo.jpg">
+    <!-- Favicon - CORRECT PATH -->
+    <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg">
+    <link rel="apple-touch-icon" href="assets/images/logo.jpg">
 
-    <!-- CRITICAL CSS - Inlined for fastest FCP -->
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        /* Critical CSS - Above-the-fold styles only */
+        /* Reset and Base */
         *,*::before,*::after{box-sizing:border-box}
         body{margin:0;font-family:'Inter',system-ui,-apple-system,sans-serif;font-weight:500;background:#0f172a;color:#e2e8f0;line-height:1.6}
-        h1,h2,h3{font-weight:800;margin:0 0 1rem}
+        h1,h2,h3,h4{font-weight:800;margin:0 0 1rem}
+        a{color:#60a5fa;text-decoration:none}
+        a:hover{color:#93c5fd}
+        
+        /* Layout */
+        .container{max-width:1280px;margin:0 auto;padding:0 1.5rem}
+        .section{padding:5rem 0}
+        .section-dark{background:#0f172a}
+        .section-darker{background:#020617}
         
         /* Header */
-        .header{position:fixed;top:0;left:0;right:0;z-index:50;background:#0f172a;border-bottom:1px solid #1e293b;padding:1rem 0}
-        .container{max-width:1280px;margin:0 auto;padding:0 1.5rem}
+        .header{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);border-bottom:1px solid #1e293b;padding:1rem 0}
         .header-inner{display:flex;justify-content:space-between;align-items:center}
         .logo{display:flex;align-items:center;gap:0.75rem;text-decoration:none;color:inherit}
-        .logo-img{width:40px;height:40px;border-radius:8px}
-        .logo-text{font-weight:800;font-size:1.25rem}
+        .logo-img{width:40px;height:40px;border-radius:8px;object-fit:cover}
+        .logo-text{font-weight:800;font-size:1.25rem;color:#f1f5f9}
         .logo-text span{color:#60a5fa}
         
         /* Navigation */
         .nav{display:none}
-        @media(min-width:768px){.nav{display:flex;gap:2rem}}
+        @media(min-width:768px){.nav{display:flex;gap:2rem;align-items:center}}
         .nav-link{color:#94a3b8;text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s}
         .nav-link:hover{color:#fff}
-        .nav-cta{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;padding:0.5rem 1.25rem;border-radius:8px;font-weight:600}
+        .nav-cta{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff!important;padding:0.5rem 1.25rem;border-radius:8px;font-weight:600}
         .nav-cta:hover{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+        
+        /* Mobile menu button */
+        .mobile-menu-btn{display:flex;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:8px}
+        .mobile-menu-btn span{display:block;width:24px;height:2px;background:#94a3b8;transition:all 0.3s}
+        @media(min-width:768px){.mobile-menu-btn{display:none}}
         
         /* Hero */
         .hero{min-height:100vh;display:flex;align-items:center;padding-top:80px;position:relative;overflow:hidden}
@@ -67,45 +83,81 @@
         .hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,23,42,0.95),rgba(15,23,42,0.8))}
         .hero-content{position:relative;z-index:1;text-align:center;max-width:900px;margin:0 auto;padding:2rem 1.5rem}
         .hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(37,99,235,0.15);border:1px solid rgba(96,165,250,0.3);color:#60a5fa;padding:0.5rem 1rem;border-radius:999px;font-size:0.875rem;font-weight:500;margin-bottom:1.5rem}
-        .hero-badge svg{width:16px;height:16px}
-        .hero-title{font-size:clamp(2.5rem,6vw,4.5rem);line-height:1.1;margin-bottom:1.5rem}
-        .hero-title .gradient{background:linear-gradient(135deg,#60a5fa,#5eead4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .hero-title{font-size:clamp(2.5rem,6vw,4.5rem);line-height:1.1;margin-bottom:1.5rem;color:#f1f5f9}
+        .gradient-text{background:linear-gradient(135deg,#60a5fa,#5eead4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
         .hero-subtitle{font-size:1.25rem;color:#94a3b8;max-width:700px;margin:0 auto 2rem}
         
-        /* CTA Buttons */
+        /* Buttons */
         .cta-group{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
-        .btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.875rem 1.75rem;border-radius:8px;font-weight:600;text-decoration:none;transition:all 0.2s}
+        .btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.875rem 1.75rem;border-radius:8px;font-weight:600;text-decoration:none;transition:all 0.2s;border:none;cursor:pointer;font-size:1rem}
         .btn-primary{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;box-shadow:0 4px 14px rgba(37,99,235,0.4)}
         .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,99,235,0.5)}
         .btn-secondary{background:transparent;color:#fff;border:1px solid #334155}
         .btn-secondary:hover{background:#1e293b;border-color:#475569}
         
-        /* Loading placeholder for video */
-        .video-placeholder{position:absolute;inset:0;background:linear-gradient(135deg,#0f172a,#1e293b);display:flex;align-items:center;justify-content:center}
-        .video-placeholder.loaded{opacity:0;pointer-events:none;transition:opacity 0.5s}
-        
-        /* Mobile menu */
-        .mobile-menu-btn{display:flex;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:8px}
-        .mobile-menu-btn span{display:block;width:24px;height:2px;background:#94a3b8;transition:all 0.3s}
-        @media(min-width:768px){.mobile-menu-btn{display:none}}
-        
-        /* Stats badges */
-        .hero-stats{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;margin-top:3rem}
+        /* Stats */
+        .hero-stats{display:flex;flex-wrap:wrap;gap:2rem;justify-content:center;margin-top:3rem}
         .stat{text-align:center}
-        .stat-value{font-size:1.5rem;font-weight:800;color:#5eead4}
-        .stat-label{font-size:0.75rem;color:#64748b;text-transform:uppercase;letter-spacing:0.05em}
+        .stat-value{font-size:1.75rem;font-weight:800;color:#5eead4}
+        .stat-label{font-size:0.75rem;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.25rem}
+        
+        /* Features Section */
+        .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
+        .feature-card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:1.5rem;transition:transform 0.2s,box-shadow 0.2s}
+        .feature-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.3)}
+        .feature-icon{width:48px;height:48px;background:rgba(37,99,235,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;color:#60a5fa}
+        .feature-title{font-size:1.125rem;font-weight:700;margin-bottom:0.5rem;color:#f1f5f9}
+        .feature-desc{font-size:0.875rem;color:#94a3b8;line-height:1.6}
+        
+        /* Section Headers */
+        .section-header{text-align:center;max-width:700px;margin:0 auto 3rem}
+        .section-title{font-size:clamp(1.75rem,4vw,2.5rem);margin-bottom:1rem;color:#f1f5f9}
+        .section-subtitle{color:#94a3b8;font-size:1.125rem}
+        
+        /* Demo Section */
+        .demo-container{background:#1e293b;border:1px solid #334155;border-radius:16px;overflow:hidden;box-shadow:0 0 60px rgba(37,99,235,0.15)}
+        .demo-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:#0f172a;border-bottom:1px solid #334155}
+        .demo-title{font-weight:600;color:#f1f5f9}
+        .demo-badge{background:rgba(34,197,94,0.15);color:#4ade80;padding:0.25rem 0.75rem;border-radius:999px;font-size:0.75rem;font-weight:500}
+        .demo-content{padding:2rem;min-height:400px;display:flex;align-items:center;justify-content:center}
+        .demo-placeholder{text-align:center;color:#64748b}
+        
+        /* Calculator Section */
+        .calculator-card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:2rem;max-width:500px;margin:0 auto}
+        .calc-input-group{margin-bottom:1.5rem}
+        .calc-label{display:block;font-size:0.875rem;color:#94a3b8;margin-bottom:0.5rem}
+        .calc-input{width:100%;padding:0.75rem 1rem;background:#0f172a;border:1px solid #334155;border-radius:8px;color:#f1f5f9;font-size:1rem}
+        .calc-input:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.2)}
+        .calc-result{text-align:center;padding:1.5rem;background:rgba(37,99,235,0.1);border:1px solid rgba(96,165,250,0.3);border-radius:12px;margin-top:1.5rem}
+        .calc-result-value{font-size:2.5rem;font-weight:800;color:#5eead4}
+        .calc-result-label{font-size:0.875rem;color:#94a3b8;margin-top:0.5rem}
+        
+        /* About Section */
+        .about-content{display:grid;grid-template-columns:1fr;gap:3rem;align-items:center}
+        @media(min-width:768px){.about-content{grid-template-columns:200px 1fr}}
+        .about-image{text-align:center}
+        .about-avatar{width:150px;height:150px;border-radius:50%;border:4px solid #334155;object-fit:cover}
+        .about-quote{font-size:1.25rem;font-style:italic;color:#60a5fa;border-left:4px solid #2563eb;padding-left:1.5rem;margin-bottom:1.5rem}
+        .about-text{color:#94a3b8;line-height:1.8}
+        
+        /* CTA Section */
+        .cta-section{background:linear-gradient(135deg,#1e3a8a 0%,#0f172a 100%);text-align:center;padding:5rem 1.5rem}
+        .cta-section .section-title{color:#fff}
+        .cta-section .section-subtitle{color:rgba(255,255,255,0.7);margin-bottom:2rem}
+        
+        /* Footer */
+        .footer{background:#020617;border-top:1px solid #1e293b;padding:3rem 0}
+        .footer-content{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1.5rem}
+        .footer-links{display:flex;gap:1.5rem}
+        .footer-link{color:#64748b;font-size:0.875rem}
+        .footer-link:hover{color:#94a3b8}
+        .footer-copyright{color:#475569;font-size:0.75rem}
+        
+        /* Utility */
+        .text-center{text-align:center}
+        .mt-2{margin-top:2rem}
+        .mt-4{margin-top:4rem}
     </style>
-
-    <!-- Preconnect to external resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Non-critical CSS loaded async -->
-    <link rel="preload" href="assets/css/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="assets/css/main.css"></noscript>
-    
-    <!-- Fonts - loaded with display:swap -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
@@ -113,19 +165,19 @@
         <div class="container">
             <div class="header-inner">
                 <a href="/" class="logo">
-                    <img src="assets/logo.jpg" alt="Brahan Engine Logo" class="logo-img" width="40" height="40">
+                    <img src="assets/images/logo.jpg" alt="Brahan Engine Logo" class="logo-img" width="40" height="40">
                     <span class="logo-text">The <span>Brahan</span> Engine</span>
                 </a>
                 
-                <nav class="nav" aria-label="Main navigation">
+                <nav class="nav">
                     <a href="#features" class="nav-link">Features</a>
                     <a href="#demo" class="nav-link">Live Demo</a>
-                    <a href="#value" class="nav-link">ROI Calculator</a>
+                    <a href="#calculator" class="nav-link">ROI Calculator</a>
                     <a href="#about" class="nav-link">About</a>
-                    <a href="#contact" class="nav-link nav-cta">Join Pilot</a>
+                    <a href="planner.html" class="nav-link nav-cta">Open Planner</a>
                 </nav>
                 
-                <button class="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
+                <button class="mobile-menu-btn" aria-label="Toggle menu">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -135,19 +187,11 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero" id="hero">
+    <section class="hero">
         <div class="hero-bg">
             <div class="hero-video-container">
-                <!-- Video placeholder while loading -->
-                <div class="video-placeholder" id="videoPlaceholder">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 6v6l4 2"/>
-                    </svg>
-                </div>
-                <!-- Video loads lazily -->
-                <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="none" poster="assets/hero-poster.jpg">
-                    <source data-src="hero33-optimized.mp4" type="video/mp4">
+                <video class="hero-video" autoplay muted loop playsinline>
+                    <source src="assets/video/hero5.mp4" type="video/mp4">
                 </video>
             </div>
             <div class="hero-overlay"></div>
@@ -155,14 +199,14 @@
         
         <div class="hero-content">
             <div class="hero-badge">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
                 </svg>
                 AI-Powered Well Engineering Intelligence
             </div>
             
             <h1 class="hero-title">
-                <span class="gradient">See What Others Can't</span>
+                <span class="gradient-text">See What Others Can't</span>
             </h1>
             
             <p class="hero-subtitle">
@@ -171,14 +215,14 @@
             </p>
             
             <div class="cta-group">
-                <a href="#demo" class="btn btn-primary">
+                <a href="planner.html" class="btn btn-primary">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polygon points="5 3 19 12 5 21 5 3"/>
                     </svg>
-                    See Live Demo
+                    Open Planner
                 </a>
-                <a href="#contact" class="btn btn-secondary">
-                    Request Pilot Access
+                <a href="#demo" class="btn btn-secondary">
+                    See Live Demo
                 </a>
             </div>
             
@@ -199,96 +243,201 @@
         </div>
     </section>
 
-    <!-- Rest of content loads progressively -->
-    <div id="main-content">
-        <!-- Content sections will be loaded here -->
-    </div>
-
-    <!-- Critical JS - Minimal, inline -->
-    <script>
-        // Lazy load hero video after page is interactive
-        document.addEventListener('DOMContentLoaded', function() {
-            const video = document.getElementById('heroVideo');
-            const placeholder = document.getElementById('videoPlaceholder');
+    <!-- Features Section -->
+    <section class="section section-darker" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Real-Time Wellbore Intelligence</h2>
+                <p class="section-subtitle">The Brahan Engine visualizes your well in 3D, detects dimensional conflicts, and validates safety barriers—all in real-time.</p>
+            </div>
             
-            // Only load video on desktop or good connections
-            if (window.innerWidth >= 768 || navigator.connection?.effectiveType === '4g') {
-                const observer = new IntersectionObserver(function(entries) {
-                    entries.forEach(function(entry) {
-                        if (entry.isIntersecting) {
-                            const source = video.querySelector('source[data-src]');
-                            if (source) {
-                                source.src = source.dataset.src;
-                                video.load();
-                                video.play().then(function() {
-                                    placeholder.classList.add('loaded');
-                                }).catch(function() {
-                                    placeholder.classList.add('loaded');
-                                });
-                            }
-                            observer.disconnect();
-                        }
-                    });
-                }, { threshold: 0.1 });
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 8v4l3 3"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Real-Time Clash Detection</h3>
+                    <p class="feature-desc">Instantly identifies when tool OD exceeds tubing ID—catching dimensional conflicts before deployment.</p>
+                </div>
                 
-                observer.observe(video);
-            } else {
-                // On slow connections, just show poster
-                placeholder.classList.add('loaded');
-            }
-        });
-        
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-btn')?.addEventListener('click', function() {
-            const nav = document.querySelector('.nav');
-            const expanded = this.getAttribute('aria-expanded') === 'true';
-            this.setAttribute('aria-expanded', !expanded);
-            nav.classList.toggle('mobile-open');
-        });
-    </script>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2"/>
+                            <path d="M7 11V7a5 5 0 0110 0v4"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Safety Barrier Gateway</h3>
+                    <p class="feature-desc">Blocks access to operations when critical safety data (SCSSV depth, barrier status) is missing.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Instant Deviation Analysis</h3>
+                    <p class="feature-desc">Upload CSV survey data, visualize trajectory, and identify high-DLS zones that impact tool running.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">SVG Wellbore Schematics</h3>
+                    <p class="feature-desc">Interactive diagrams showing casing, tubing, packers, and safety valves with depth annotations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- Non-critical JS loaded async/defer -->
-    <script defer src="assets/js/main.js"></script>
-    
-    <!-- Heavy libraries loaded only when needed -->
+    <!-- Demo Section -->
+    <section class="section section-dark" id="demo">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">See It In Action</h2>
+                <p class="section-subtitle">Experience the Brahan Engine's capabilities with our interactive demo.</p>
+            </div>
+            
+            <div class="demo-container">
+                <div class="demo-header">
+                    <span class="demo-title">Well Intervention Planner</span>
+                    <span class="demo-badge">● Live</span>
+                </div>
+                <div class="demo-content">
+                    <div class="demo-placeholder">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="margin-bottom:1rem;opacity:0.5">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <path d="M8 21h8M12 17v4"/>
+                        </svg>
+                        <p style="margin-bottom:1rem">Interactive demo loading...</p>
+                        <a href="planner.html" class="btn btn-primary">Launch Full Planner</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator Section -->
+    <section class="section section-darker" id="calculator">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Calculate Your Savings</h2>
+                <p class="section-subtitle">See how much the Brahan Engine could save your operations annually.</p>
+            </div>
+            
+            <div class="calculator-card">
+                <div class="calc-input-group">
+                    <label class="calc-label">Number of Engineers</label>
+                    <input type="number" class="calc-input" id="engineers" value="20" min="1" max="100">
+                </div>
+                <div class="calc-input-group">
+                    <label class="calc-label">Current NPT Rate (%)</label>
+                    <input type="number" class="calc-input" id="nptRate" value="25" min="5" max="50">
+                </div>
+                <div class="calc-input-group">
+                    <label class="calc-label">Expected NPT Reduction (%)</label>
+                    <input type="number" class="calc-input" id="reduction" value="20" min="10" max="40">
+                </div>
+                
+                <div class="calc-result">
+                    <div class="calc-result-value" id="savings">$2,168,000</div>
+                    <div class="calc-result-label">Estimated Annual Savings</div>
+                </div>
+                
+                <p class="text-center mt-2" style="color:#64748b;font-size:0.75rem">
+                    Based on industry average daily spread rates and operational costs
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section section-dark" id="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Built by an Operator, For Operators</h2>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="assets/images/logo.jpg" alt="Kenneth McKenzie" class="about-avatar">
+                </div>
+                <div>
+                    <blockquote class="about-quote">
+                        "I built Well-Tegra because I've lived the problems it's designed to solve."
+                    </blockquote>
+                    <p class="about-text">
+                        I'm not a software developer who decided to get into oil and gas. I'm a well services guy who learned to code. My career started at the sharp end with Tristar Oilfield Services and took me around the world, working with service leaders like Expro and Wellserv, and later supervising operations for major operators like BG Group, CNR, and Woodside.
+                    </p>
+                    <p class="about-text mt-2">
+                        I've been on both sides of the fence—I know the service company's challenges and the operator's objectives. That's the insight Well-Tegra is built on.
+                    </p>
+                    <p class="about-text mt-2" style="font-weight:600;color:#f1f5f9">
+                        — Kenneth McKenzie, Founder & CTO
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="section-title">Ready to See What Others Can't?</h2>
+            <p class="section-subtitle">Join our pilot program and transform your well operations.</p>
+            <div class="cta-group">
+                <a href="planner.html" class="btn btn-primary">Launch Planner</a>
+                <a href="mailto:ken@welltegra.network" class="btn btn-secondary">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="planner.html" class="footer-link">Planner</a>
+                    <a href="case-studies.html" class="footer-link">Case Studies</a>
+                    <a href="pricing.html" class="footer-link">Pricing</a>
+                    <a href="intervention-guide.html" class="footer-link">Guide</a>
+                </div>
+                <p class="footer-copyright">© 2025 WellTegra Network. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Calculator Script -->
     <script>
-        // Lazy load Chart.js only when calculator is visible
-        const calcObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    const script = document.createElement('script');
-                    script.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js';
-                    script.integrity = 'sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF';
-                    script.crossOrigin = 'anonymous';
-                    document.body.appendChild(script);
-                    calcObserver.disconnect();
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '200px' });
+        function calculateSavings() {
+            const engineers = parseInt(document.getElementById('engineers').value) || 20;
+            const nptRate = parseInt(document.getElementById('nptRate').value) || 25;
+            const reduction = parseInt(document.getElementById('reduction').value) || 20;
+            
+            // Industry averages: ~$150K/day spread rate, 365 days potential
+            const dailyRate = 150000;
+            const daysPerYear = 365;
+            const engineerFactor = engineers / 20; // Baseline 20 engineers
+            
+            const currentNPTCost = dailyRate * daysPerYear * (nptRate / 100);
+            const savings = currentNPTCost * (reduction / 100) * engineerFactor;
+            
+            document.getElementById('savings').textContent = '$' + Math.round(savings).toLocaleString();
+        }
         
-        // Observe calculator section
-        const calcSection = document.getElementById('calculator');
-        if (calcSection) calcObserver.observe(calcSection);
+        document.getElementById('engineers').addEventListener('input', calculateSavings);
+        document.getElementById('nptRate').addEventListener('input', calculateSavings);
+        document.getElementById('reduction').addEventListener('input', calculateSavings);
         
-        // PDF libraries only loaded on export button click
-        window.loadPDFLibraries = function() {
-            return Promise.all([
-                new Promise(function(resolve) {
-                    if (window.jspdf) return resolve();
-                    const script = document.createElement('script');
-                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-                    script.onload = resolve;
-                    document.body.appendChild(script);
-                }),
-                new Promise(function(resolve) {
-                    if (window.html2canvas) return resolve();
-                    const script = document.createElement('script');
-                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-                    script.onload = resolve;
-                    document.body.appendChild(script);
-                })
-            ]);
-        };
+        // Initial calculation
+        calculateSavings();
     </script>
 </body>
 </html>
