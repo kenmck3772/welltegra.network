@@ -4,48 +4,513 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planner | The Brahan Engine</title>
+    <meta name="description" content="Well intervention planning modules - Logistics, Commercial, HSE & Risk, POB & ER">
+    
     <link rel="stylesheet" href="assets/css/tailwind.css">
     <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; font-weight: 500; }
+        h1, h2, h3, h4, h5, h6 { font-weight: 800; }
+        .theme-light { background-color: #f8fafc; }
+        .theme-dark { background-color: #0f172a; color: #e2e8f0; }
+
+        .theme-light .light-card { background-color: white; }
+        .theme-dark .light-card { background-color: #1e293b; border: 1px solid #334155; }
+        .theme-light .header { background-color: white; box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); }
+        .theme-dark .header { background-color: #0f172a; border-bottom: 1px solid #1e293b; }
+        .theme-light .nav-link { color: #475569; }
+        .theme-dark .nav-link { color: #94a3b8; }
+        .theme-light .nav-link.active { color: #2563eb; border-bottom-color: #2563eb; }
+        .theme-dark .nav-link.active { color: #60a5fa; border-bottom-color: #60a5fa; }
+        .nav-link.disabled { color: #9ca3af !important; cursor: not-allowed; opacity: 0.5; }
+        
+        .theme-light h1, .theme-light h2, .theme-light h3, .theme-light h4 { color: #111827; } 
+        .theme-dark h1, .theme-dark h2, .theme-dark h3, .theme-dark h4 { color: #f8fafc; }
+        
+        .theme-light p, .theme-light span, .theme-light label { color: #1f2937; }
+        .theme-dark p, .theme-dark span, .theme-dark label { color: #e2e8f0; }
+
+        .theme-light #theme-icon-dark { display: none; }
+        .theme-light #theme-icon-light { display: block; }
+        .theme-dark #theme-icon-dark { display: block; }
+        .theme-dark #theme-icon-light { display: none; }
+
+        /* Tab Styles */
+        .tab-button {
+            padding: 1rem 2rem;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .theme-light .tab-button { color: #64748b; }
+        .theme-dark .tab-button { color: #94a3b8; }
+        
+        .theme-light .tab-button.active { 
+            color: #2563eb; 
+            border-bottom-color: #2563eb;
+        }
+        .theme-dark .tab-button.active { 
+            color: #60a5fa; 
+            border-bottom-color: #60a5fa;
+        }
+        
+        .theme-light .tab-button:hover:not(.active) { 
+            color: #475569;
+            background-color: #f8fafc;
+        }
+        .theme-dark .tab-button:hover:not(.active) { 
+            color: #cbd5e1;
+            background-color: #1e293b;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Module Card Styles */
+        .module-card {
+            transition: all 0.3s ease;
+        }
+        .theme-light .module-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+        }
+        .theme-dark .module-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+        }
+
+        /* Coming Soon Badge */
+        .coming-soon-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .tab-button {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
 </head>
-<body class="bg-slate-900 text-white font-['Inter']">
-    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-30">
-        <div class="max-w-full mx-auto py-3 px-4 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <img src="assets/logo.jpg" alt="Logo" class="h-10 w-auto">
-                <div><h1 class="text-xl font-bold">The Brahan Engine</h1><span class="text-xs text-slate-400">by WellTegra</span></div>
+
+<body class="theme-dark">
+    <!-- Header with Navigation -->
+    <header id="app-header" class="header sticky top-0 z-30 transition-colors">
+        <div class="max-w-full mx-auto py-1 px-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="assets/logo.jpg" alt="The Brahan Engine Logo" class="h-10 w-auto mr-2">
+                    <div class="flex flex-col">
+                        <h1 class="text-xl font-bold">The Brahan Engine</h1>
+                        <span class="text-xs text-slate-400 -mt-1">by WellTegra</span>
+                    </div>
+                </div>
+                <nav id="header-nav" class="flex-1 flex items-center justify-center gap-3">
+                    <a href="index.html" title="Return to the Home Page" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        <span>Home</span>
+                    </a>
+                    <a href="planner.html" class="nav-link active flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+                        <span>Planner</span>
+                    </a>
+                    <a href="case-studies.html" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        <span>Case Studies</span>
+                    </a>
+                    <a href="intervention-guide.html" target="_blank" class="nav-link flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        <span>Guide</span>
+                    </a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700">
+                        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                    </button>
+                </div>
             </div>
-            <nav class="flex gap-4">
-                <a href="index.html" class="text-slate-300 hover:text-white">Home</a>
-                <a href="planner.html" class="text-cyan-400 font-bold">Planner</a>
-                <a href="case-studies.html" class="text-slate-300 hover:text-white">Case Studies</a>
-            </nav>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-8">
-        <h2 class="text-3xl font-bold mb-6">Well Intervention Planner</h2>
-        
-        <div class="bg-slate-800 rounded-lg p-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <a href="planner.html#logistics" class="bg-slate-700 p-6 rounded-lg hover:bg-slate-600">
-                    <h3 class="text-xl font-bold mb-2">Logistics</h3>
-                    <p class="text-slate-300">Equipment, personnel, supply chain</p>
-                </a>
-                <a href="planner.html#commercial" class="bg-slate-700 p-6 rounded-lg hover:bg-slate-600">
-                    <h3 class="text-xl font-bold mb-2">Commercial</h3>
-                    <p class="text-slate-300">Cost tracking, ROI, financials</p>
-                </a>
-                <a href="planner.html#hse" class="bg-slate-700 p-6 rounded-lg hover:bg-slate-600">
-                    <h3 class="text-xl font-bold mb-2">HSE & Risk</h3>
-                    <p class="text-slate-300">Safety barriers, risk matrices</p>
-                </a>
-                <a href="planner.html#pob" class="bg-slate-700 p-6 rounded-lg hover:bg-slate-600">
-                    <h3 class="text-xl font-bold mb-2">POB & ER</h3>
-                    <p class="text-slate-300">Personnel tracking, emergency response</p>
-                </a>
+    <!-- Main Content -->
+    <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold mb-2">Well Intervention Planner</h2>
+            <p class="text-lg">Comprehensive planning modules for well operations</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="light-card rounded-lg shadow-lg overflow-hidden mb-6">
+            <div class="flex border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
+                <button class="tab-button active" data-tab="logistics">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="inline mr-2"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+                    Logistics
+                </button>
+                <button class="tab-button" data-tab="commercial">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="inline mr-2"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    Commercial
+                </button>
+                <button class="tab-button" data-tab="hse">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="inline mr-2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    HSE & Risk
+                </button>
+                <button class="tab-button" data-tab="pob">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="inline mr-2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    POB & ER
+                </button>
+            </div>
+
+            <!-- Logistics Tab Content -->
+            <div id="logistics-tab" class="tab-content active p-8">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold mb-2">Logistics Management</h3>
+                    <p class="mb-4">Equipment inventory, personnel scheduling, and supply chain coordination</p>
+                    <span class="coming-soon-badge">Sprint 1 - In Development</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Equipment Inventory Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-blue-500"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                            <h4 class="text-xl font-bold">Equipment Catalog</h4>
+                        </div>
+                        <p class="mb-4">Manage toolstrings, BHA components, and equipment specifications. Real-time dimensional clash detection.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Dimensional validation</li>
+                            <li>✓ Compatibility checking</li>
+                            <li>✓ Usage history tracking</li>
+                            <li>✓ Maintenance schedules</li>
+                        </ul>
+                    </div>
+
+                    <!-- Personnel Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-green-500"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <h4 class="text-xl font-bold">Personnel Planning</h4>
+                        </div>
+                        <p class="mb-4">Crew scheduling, competency tracking, and shift management for well operations.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Certification tracking</li>
+                            <li>✓ Shift rotation planning</li>
+                            <li>✓ Skills matrix</li>
+                            <li>✓ Availability dashboard</li>
+                        </ul>
+                    </div>
+
+                    <!-- Supply Chain Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-purple-500"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/></svg>
+                            <h4 class="text-xl font-bold">Supply Chain</h4>
+                        </div>
+                        <p class="mb-4">Material logistics, vendor management, and delivery coordination.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Vendor scorecards</li>
+                            <li>✓ Lead time tracking</li>
+                            <li>✓ Delivery scheduling</li>
+                            <li>✓ Critical path alerts</li>
+                        </ul>
+                    </div>
+
+                    <!-- Warehouse Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-orange-500"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+                            <h4 class="text-xl font-bold">Warehouse Management</h4>
+                        </div>
+                        <p class="mb-4">Inventory control, stock levels, and equipment location tracking.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Real-time inventory</li>
+                            <li>✓ Location tracking</li>
+                            <li>✓ Reorder automation</li>
+                            <li>✓ Usage analytics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Commercial Tab Content -->
+            <div id="commercial-tab" class="tab-content p-8">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold mb-2">Commercial & Financial</h3>
+                    <p class="mb-4">Cost tracking, budget management, and financial analytics for well operations</p>
+                    <span class="coming-soon-badge">Sprint 2 - Planned Q1 2025</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Cost Tracking Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-green-500"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <h4 class="text-xl font-bold">Cost Tracking</h4>
+                        </div>
+                        <p class="mb-4">Real-time operational cost monitoring and budget variance analysis.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Daily cost accumulation</li>
+                            <li>✓ Budget vs actual</li>
+                            <li>✓ NPT cost impact</li>
+                            <li>✓ AFE tracking</li>
+                        </ul>
+                    </div>
+
+                    <!-- ROI Calculator Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-blue-500"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                            <h4 class="text-xl font-bold">ROI Analytics</h4>
+                        </div>
+                        <p class="mb-4">Calculate return on investment for well interventions and efficiency improvements.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ NPT reduction value</li>
+                            <li>✓ Production uplift</li>
+                            <li>✓ Cost avoidance tracking</li>
+                            <li>✓ Payback period</li>
+                        </ul>
+                    </div>
+
+                    <!-- Vendor Contracts Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-purple-500"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                            <h4 class="text-xl font-bold">Vendor Management</h4>
+                        </div>
+                        <p class="mb-4">Contract tracking, rate cards, and vendor performance scorecards.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Rate card database</li>
+                            <li>✓ Contract expiry alerts</li>
+                            <li>✓ Performance metrics</li>
+                            <li>✓ Competitive analysis</li>
+                        </ul>
+                    </div>
+
+                    <!-- Financial Reporting Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-orange-500"><path d="M3 3v18h18"/><path d="m7 16 4-4 4 4 6-6"/></svg>
+                            <h4 class="text-xl font-bold">Financial Dashboards</h4>
+                        </div>
+                        <p class="mb-4">Executive summaries, cost trends, and financial KPI visualization.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Cost per barrel metrics</li>
+                            <li>✓ Trend analysis</li>
+                            <li>✓ Executive reporting</li>
+                            <li>✓ Export to Excel</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HSE & Risk Tab Content -->
+            <div id="hse-tab" class="tab-content p-8">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold mb-2">Health, Safety & Environment</h3>
+                    <p class="mb-4">Safety barrier management, risk assessment, and HSE compliance tracking</p>
+                    <span class="coming-soon-badge">Sprint 0 - Core Safety Barriers</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Safety Barriers Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-red-500"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <h4 class="text-xl font-bold">Safety Barrier Gateway</h4>
+                        </div>
+                        <p class="mb-4">Mandatory safety verification before operational planning can proceed.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ SCSSV depth verification</li>
+                            <li>✓ Pressure containment</li>
+                            <li>✓ Well integrity status</li>
+                            <li>✓ Barrier envelope check</li>
+                        </ul>
+                    </div>
+
+                    <!-- Risk Assessment Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-yellow-500"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+                            <h4 class="text-xl font-bold">Risk Matrices</h4>
+                        </div>
+                        <p class="mb-4">Operational risk identification, assessment, and mitigation planning.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Risk scoring (5x5 matrix)</li>
+                            <li>✓ Mitigation tracking</li>
+                            <li>✓ Bowtie diagrams</li>
+                            <li>✓ ALARP justification</li>
+                        </ul>
+                    </div>
+
+                    <!-- Incident Management Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-orange-500"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+                            <h4 class="text-xl font-bold">Incident Tracking</h4>
+                        </div>
+                        <p class="mb-4">Near-miss reporting, incident investigation, and lessons learned.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Stop work authority</li>
+                            <li>✓ Root cause analysis</li>
+                            <li>✓ Corrective actions</li>
+                            <li>✓ Trend analysis</li>
+                        </ul>
+                    </div>
+
+                    <!-- Environmental Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-green-500"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"/><path d="M7 3.34V5a3 3 0 0 0 3 3v0a2 2 0 0 1 2 2v0c0 1.1.9 2 2 2v0a2 2 0 0 0 2-2v0c0-1.1.9-2 2-2h3.17"/><path d="M11 21.95V18a2 2 0 0 0-2-2v0a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"/></svg>
+                            <h4 class="text-xl font-bold">Environmental</h4>
+                        </div>
+                        <p class="mb-4">Emissions tracking, waste management, and environmental compliance.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ CO2 footprint</li>
+                            <li>✓ Waste disposal logs</li>
+                            <li>✓ Spill prevention</li>
+                            <li>✓ Regulatory compliance</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- POB & ER Tab Content -->
+            <div id="pob-tab" class="tab-content p-8">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold mb-2">Personnel on Board & Emergency Response</h3>
+                    <p class="mb-4">Real-time personnel tracking and emergency response coordination</p>
+                    <span class="coming-soon-badge">Sprint 3 - Planned Q2 2025</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- POB Tracking Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-blue-500"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <h4 class="text-xl font-bold">POB Tracking</h4>
+                        </div>
+                        <p class="mb-4">Real-time personnel on board monitoring with check-in/check-out.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Live POB dashboard</li>
+                            <li>✓ Muster list generation</li>
+                            <li>✓ Visitor management</li>
+                            <li>✓ Competency verification</li>
+                        </ul>
+                    </div>
+
+                    <!-- Emergency Response Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-red-500"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M15.8 9.2a2.5 2.5 0 0 0-3.5 0l-.3.4-.3-.4a2.42 2.42 0 1 0-3.4 3.4l3.7 3.7 3.7-3.7c1-1 1-2.5.1-3.4Z"/></svg>
+                            <h4 class="text-xl font-bold">Emergency Response</h4>
+                        </div>
+                        <p class="mb-4">Emergency procedures, evacuation plans, and response coordination.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Emergency procedures</li>
+                            <li>✓ Muster station maps</li>
+                            <li>✓ Evacuation routes</li>
+                            <li>✓ Contact directories</li>
+                        </ul>
+                    </div>
+
+                    <!-- Medical Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-green-500"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08v0c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"/></svg>
+                            <h4 class="text-xl font-bold">Medical Support</h4>
+                        </div>
+                        <p class="mb-4">Medical facilities, first aid, and medevac coordination.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Medical equipment inventory</li>
+                            <li>✓ First aid certifications</li>
+                            <li>✓ Medevac procedures</li>
+                            <li>✓ Medical event logging</li>
+                        </ul>
+                    </div>
+
+                    <!-- Communication Card -->
+                    <div class="module-card rounded-lg p-6">
+                        <div class="flex items-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-purple-500"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            <h4 class="text-xl font-bold">Communications</h4>
+                        </div>
+                        <p class="mb-4">Contact management and emergency communication protocols.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li>✓ Emergency contacts</li>
+                            <li>✓ Radio frequencies</li>
+                            <li>✓ Satellite phone backup</li>
+                            <li>✓ Notification cascades</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 dark:border-gray-800 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-600 dark:text-gray-400">
+            <p>&copy; 2025 WellTegra. The Brahan Engine - See What Others Can't.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle-btn');
+        const html = document.documentElement;
+        const body = document.body;
+
+        // Check for saved theme preference or default to dark
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        body.classList.add(`theme-${currentTheme}`);
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = body.classList.contains('theme-dark');
+            body.classList.remove('theme-dark', 'theme-light');
+            body.classList.add(isDark ? 'theme-light' : 'theme-dark');
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        });
+
+        // Tab Switching
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                document.getElementById(`${targetTab}-tab`).classList.add('active');
+            });
+        });
+
+        // Handle hash navigation (for direct links like planner.html#commercial)
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                const targetButton = document.querySelector(`[data-tab="${hash}"]`);
+                if (targetButton) {
+                    targetButton.click();
+                }
+            }
+        });
+    </script>
 </body>
 </html>
