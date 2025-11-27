@@ -1539,20 +1539,20 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                 </svg>
             </a>
-            <button onclick="showView('case-studies')" 
+            <a href="case-studies.html" 
                     class="group px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white text-lg font-bold rounded-xl border-2 border-white/30 hover:border-white/50 transition-all transform hover:scale-105 flex items-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                 </svg>
                 <span>Case Studies</span>
-            </button>
-            <button onclick="showView('planner')" 
+            </a>
+            <a href="planner.html" 
                     class="group px-8 py-4 bg-cyan-600/20 hover:bg-cyan-600/30 backdrop-blur-sm text-cyan-400 text-lg font-bold rounded-xl border-2 border-cyan-500/50 hover:border-cyan-400 transition-all transform hover:scale-105 flex items-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
                 </svg>
                 <span>Open Planner</span>
-            </button>
+            </a>
         </div>
         
         <!-- Trust indicator -->
@@ -1645,13 +1645,13 @@
                             
                             <div class="bg-slate-900/60 px-6 py-3 border-t border-cyan-500/20 flex items-center justify-between">
                                 <span class="text-sm text-slate-400">Interactive 3D visualization available in planner</span>
-                                <button onclick="showView('planner')" 
+                                <a href="planner.html" 
                                         class="text-cyan-400 hover:text-cyan-300 text-sm font-semibold flex items-center gap-1">
                                     <span>Open Planner</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                                     </svg>
-                                </button>
+                                </a>
                             </div>
                         </div>
 
@@ -1713,13 +1713,13 @@
 
                             <!-- CTA -->
                             <div class="mt-8 pt-6 border-t border-slate-700">
-                                <button onclick="showView('planner')" 
+                                <a href="planner.html" 
                                         class="w-full px-6 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                                     </svg>
                                     <span>Try the Interactive Planner</span>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -1867,7 +1867,19 @@
             </section>
         </div>
         
-        <div id="planner-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <!-- ============================================================================
+             ARCHITECTURAL NOTE: PLANNER VIEW DEPRECATED
+             ============================================================================
+             This embedded planner view has been moved to separate page: planner.html
+             
+             Reason: Clean separation of concerns - index.html is now a pure landing page
+             All functional modules live in separate pages for better maintainability.
+             
+             The planner view is kept here (hidden with display:none) for reference only.
+             DO NOT UPDATE THIS CODE - update planner.html instead.
+             ============================================================================
+        -->
+        <div id="planner-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8" style="display: none !important;">
             <div class="planner-header">
                 <h2 class="text-3xl font-bold tracking-tight text-white">Well Intervention Planner</h2>
                 <p class="mt-2 max-w-2xl mx-auto text-lg text-blue-100">The Single Source of Truth for Your Entire Well Portfolio.</p>
@@ -2252,7 +2264,19 @@
         </div>
 
         <!-- Case Studies Portfolio View -->
-        <div id="case-studies-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <!-- ============================================================================
+             ARCHITECTURAL NOTE: CASE STUDIES VIEW DEPRECATED
+             ============================================================================
+             This embedded case studies view has been moved to separate page: case-studies.html
+             
+             Reason: Clean separation of concerns - case studies is a standalone portfolio showcase
+             The separate page allows better SEO, easier maintenance, and cleaner code.
+             
+             This view is kept here (hidden with display:none) for reference only.
+             DO NOT UPDATE THIS CODE - update case-studies.html instead.
+             ============================================================================
+        -->
+        <div id="case-studies-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8" style="display: none !important;">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white">Well Intervention Case Studies</h2>
                 <p class="mt-4 max-w-4xl mx-auto text-lg text-blue-100">
@@ -2294,8 +2318,8 @@
             </div>
         </div>
 
-        <!-- Case Study Detail View -->
-        <div id="case-study-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <!-- Case Study Detail View - DEPRECATED (see case-studies.html) -->
+        <div id="case-study-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8" style="display: none !important;">
             <div class="mb-6">
                 <button id="back-to-case-studies" class="text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-2 transition-colors">
                     <span>←</span> Back to Case Studies
