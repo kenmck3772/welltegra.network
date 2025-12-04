@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Case Studies | Brahan Field Wells | WellTegra</title>
-    <meta name="description" content="Real well intervention case studies from the Brahan Field. Complete data on seven wells including completion architecture, safety barriers, and intervention history.">
+    <meta name="description" content="Seven Brahan Field wells showcasing real-world intervention challenges.">
     <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,18 +24,13 @@
             --danger: #ef4444;
             --info: #3b82f6;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background: var(--bg);
             color: var(--fg);
             line-height: 1.6;
-            min-height: 100vh;
         }
-
-        /* Header */
         .header {
             position: sticky;
             top: 0;
@@ -45,7 +40,6 @@
             border-bottom: 1px solid var(--border);
             padding: 1rem 0;
         }
-
         .header-inner {
             max-width: 1400px;
             margin: 0 auto;
@@ -53,9 +47,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 1rem;
         }
-
         .logo {
             display: flex;
             align-items: center;
@@ -63,24 +55,9 @@
             text-decoration: none;
             color: var(--fg);
         }
-
-        .logo img {
-            height: 40px;
-            width: auto;
-            border-radius: 8px;
-        }
-
-        .logo-text {
-            font-weight: 900;
-            font-size: 1.25rem;
-            letter-spacing: -0.02em;
-        }
-
-        .nav {
-            display: flex;
-            gap: 0.5rem;
-        }
-
+        .logo img { height: 40px; border-radius: 8px; }
+        .logo-text { font-weight: 900; font-size: 1.25rem; }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
         .nav a {
             padding: 0.5rem 1rem;
             border-radius: 8px;
@@ -90,98 +67,32 @@
             font-size: 0.9rem;
             transition: all 0.2s;
         }
-
-        .nav a:hover, .nav a.active {
-            color: var(--fg);
-            background: var(--card);
-        }
-
-        /* Hero */
+        .nav a:hover, .nav a.active { color: var(--fg); background: var(--card); }
         .hero {
             background: linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
-            padding: 4rem 1.5rem 3rem;
-            text-align: center;
+            padding: 3rem 1.5rem 2rem;
             border-bottom: 1px solid var(--border);
         }
-
-        .hero h1 {
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 900;
-            margin-bottom: 1rem;
-            letter-spacing: -0.03em;
-        }
-
-        .hero p {
-            color: var(--muted);
-            font-size: 1.1rem;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .field-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--card);
-            border: 1px solid var(--border);
-            padding: 0.5rem 1rem;
-            border-radius: 999px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            margin-top: 1.5rem;
-        }
-
-        .field-badge span {
-            color: var(--accent);
-        }
-
-        /* Main content */
-        .main {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem 4rem;
-        }
-
-        /* Stats bar */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--accent);
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--muted);
-            margin-top: 0.25rem;
-        }
-
-        /* Filter bar */
+        .hero-inner { max-width: 1400px; margin: 0 auto; }
+        .hero h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; }
+        .hero p { color: var(--muted); max-width: 700px; margin-bottom: 1.5rem; }
+        .stats-bar { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .stat { text-align: center; }
+        .stat-value { font-size: 1.75rem; font-weight: 900; color: var(--accent); }
+        .stat-value.danger { color: var(--danger); }
+        .stat-value.warning { color: var(--warning); }
+        .stat-label { font-size: 0.8rem; color: var(--muted); }
+        .main { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
         .filter-bar {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem;
+            gap: 0.5rem;
             margin-bottom: 2rem;
             padding: 1rem;
             background: var(--panel);
             border: 1px solid var(--border);
             border-radius: 12px;
         }
-
         .filter-btn {
             padding: 0.5rem 1rem;
             border: 1px solid var(--border);
@@ -193,439 +104,81 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-
-        .filter-btn:hover {
-            border-color: var(--accent);
-            color: var(--fg);
-        }
-
-        .filter-btn.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #0b1220;
-        }
-
-        /* Well cards grid */
-        .wells-grid {
+        .filter-btn:hover { border-color: var(--accent); color: var(--fg); }
+        .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #0b1220; }
+        .well-grid {
             display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
             gap: 1.5rem;
         }
-
-        /* Well card */
+        @media (max-width: 500px) { .well-grid { grid-template-columns: 1fr; } }
         .well-card {
             background: var(--panel);
             border: 1px solid var(--border);
             border-radius: 16px;
             overflow: hidden;
-            transition: all 0.3s;
-        }
-
-        .well-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 0 30px rgba(20, 184, 166, 0.1);
-        }
-
-        .well-card.locked {
-            border-color: var(--danger);
-        }
-
-        .well-card.locked .well-header {
-            background: linear-gradient(90deg, rgba(239, 68, 68, 0.1) 0%, transparent 100%);
-        }
-
-        /* Well header */
-        .well-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.25rem 1.5rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .well-header:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .well-title-group {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .well-name {
-            font-size: 1.5rem;
-            font-weight: 900;
-            letter-spacing: -0.02em;
-        }
-
-        .well-badges {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .badge-active { background: rgba(34, 197, 94, 0.2); color: var(--success); }
-        .badge-suspended { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
-        .badge-p_and_a { background: rgba(148, 163, 184, 0.2); color: var(--muted); }
-        .badge-workover { background: rgba(59, 130, 246, 0.2); color: var(--info); }
-        .badge-locked { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
-
-        .well-meta {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            color: var(--muted);
-            font-size: 0.9rem;
-        }
-
-        .well-meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .expand-icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            background: var(--card);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s;
-        }
-
-        .well-card.expanded .expand-icon {
-            transform: rotate(180deg);
-        }
-
-        /* Well body (expandable) */
-        .well-body {
-            display: none;
-            border-top: 1px solid var(--border);
-        }
-
-        .well-card.expanded .well-body {
-            display: block;
-        }
-
-        /* Tabs */
-        .well-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--border);
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        .well-tab {
-            padding: 1rem 1.5rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--muted);
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
             transition: all 0.2s;
         }
-
-        .well-tab:hover {
-            color: var(--fg);
-        }
-
-        .well-tab.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-        }
-
-        /* Tab content */
-        .tab-content {
-            display: none;
-            padding: 1.5rem;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Data grid */
-        .data-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .data-section {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
-        }
-
-        .data-section h4 {
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--accent);
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .data-row:last-child {
-            border-bottom: none;
-        }
-
-        .data-label {
-            color: var(--muted);
-            font-size: 0.9rem;
-        }
-
-        .data-value {
-            font-weight: 600;
-            text-align: right;
-        }
-
-        .data-value.missing {
-            color: var(--danger);
-            font-style: italic;
-        }
-
-        /* Casing table */
-        .casing-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-
-        .casing-table th {
-            text-align: left;
-            padding: 0.5rem;
-            color: var(--muted);
-            font-weight: 600;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .casing-table td {
-            padding: 0.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        /* Barrier status */
-        .barrier-status {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .barrier-status.verified {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-        }
-
-        .barrier-status.pending {
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-        }
-
-        .barrier-status.critical {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .barrier-icon {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* Intervention timeline */
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 7px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--border);
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-bottom: 1.5rem;
-        }
-
-        .timeline-item:last-child {
-            padding-bottom: 0;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: -2rem;
-            top: 0.25rem;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--accent);
-            border: 3px solid var(--bg);
-        }
-
-        .timeline-dot.success { background: var(--success); }
-        .timeline-dot.warning { background: var(--warning); }
-        .timeline-dot.danger { background: var(--danger); }
-
-        .timeline-date {
-            font-size: 0.8rem;
-            color: var(--muted);
-            margin-bottom: 0.25rem;
-        }
-
-        .timeline-title {
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .timeline-desc {
-            font-size: 0.9rem;
-            color: var(--muted);
-        }
-
-        /* Empty state */
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: var(--muted);
-        }
-
-        .empty-state svg {
-            width: 48px;
-            height: 48px;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-
-        /* Safety lock banner */
+        .well-card:hover { border-color: var(--accent); }
+        .well-card.locked { border-color: var(--danger); }
+        .well-card.locked .well-card-header { background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, var(--panel) 100%); }
+        .well-card.flagship { border-color: var(--accent); box-shadow: 0 0 20px rgba(20, 184, 166, 0.2); }
+        .well-card.flagship .well-card-header { background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, var(--panel) 100%); }
+        .well-card-header { padding: 1.25rem; border-bottom: 1px solid var(--border); }
+        .well-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 0.5rem; }
+        .well-name-group { flex: 1; }
+        .well-name { font-size: 1.25rem; font-weight: 900; }
+        .well-nickname { color: var(--accent); font-weight: 700; font-size: 0.9rem; }
+        .well-card.locked .well-nickname { color: var(--danger); }
+        .well-status { padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; white-space: nowrap; }
+        .well-status.shut-in { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .well-status.total-loss { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .well-type { font-size: 0.85rem; color: var(--muted); margin-top: 0.25rem; }
         .safety-lock-banner {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem;
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid rgba(239, 68, 68, 0.3);
             border-radius: 8px;
-            padding: 1rem 1.25rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            margin-top: 0.75rem;
         }
-
-        .safety-lock-banner svg {
-            width: 24px;
-            height: 24px;
-            color: var(--danger);
-            flex-shrink: 0;
-        }
-
-        .safety-lock-banner p {
-            font-size: 0.9rem;
-            color: var(--danger);
-        }
-
-        /* Actions */
-        .well-actions {
-            display: flex;
-            gap: 0.75rem;
-            padding: 1rem 1.5rem;
-            background: rgba(0, 0, 0, 0.2);
-            border-top: 1px solid var(--border);
-        }
-
-        .action-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.625rem 1rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-        }
-
-        .action-btn-primary {
-            background: var(--accent);
-            color: #0b1220;
-        }
-
-        .action-btn-primary:hover {
-            background: var(--accent-hover);
-        }
-
-        .action-btn-secondary {
-            background: var(--card);
-            color: var(--fg);
-            border: 1px solid var(--border);
-        }
-
-        .action-btn-secondary:hover {
-            border-color: var(--accent);
-        }
-
-        .action-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Footer */
-        .footer {
-            border-top: 1px solid var(--border);
-            padding: 2rem 1.5rem;
-            text-align: center;
-            color: var(--muted);
-            font-size: 0.9rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .well-meta {
-                display: none;
-            }
-            
-            .well-tabs {
-                overflow-x: auto;
-            }
-            
-            .well-tab {
-                white-space: nowrap;
-            }
-            
-            .data-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        .safety-lock-banner svg { flex-shrink: 0; color: var(--danger); margin-top: 2px; }
+        .safety-lock-reasons { font-size: 0.8rem; color: var(--danger); }
+        .safety-lock-reasons strong { display: block; margin-bottom: 0.25rem; }
+        .safety-lock-reasons ul { margin: 0; padding-left: 1rem; }
+        .well-card-body { padding: 1.25rem; }
+        .well-meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+        .well-meta-item { text-align: center; padding: 0.5rem; background: var(--card); border-radius: 8px; }
+        .well-meta-value { font-weight: 800; font-size: 1rem; }
+        .well-meta-value.danger { color: var(--danger); }
+        .well-meta-value.warning { color: var(--warning); }
+        .well-meta-value.success { color: var(--success); }
+        .well-meta-label { font-size: 0.7rem; color: var(--muted); }
+        .integrity-gauge { width: 100%; height: 6px; background: var(--card); border-radius: 3px; overflow: hidden; margin-top: 0.5rem; }
+        .integrity-gauge-fill { height: 100%; border-radius: 3px; }
+        .integrity-gauge-fill.critical { background: var(--danger); }
+        .integrity-gauge-fill.low { background: var(--warning); }
+        .integrity-gauge-fill.medium { background: #eab308; }
+        .integrity-gauge-fill.good { background: var(--success); }
+        .well-tags { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: 1rem; }
+        .well-tag { padding: 0.25rem 0.5rem; background: var(--card); border-radius: 4px; font-size: 0.7rem; color: var(--muted); }
+        .well-tag.flagship { background: rgba(20, 184, 166, 0.2); color: var(--accent); }
+        .ai-summary { padding: 0.75rem; background: var(--card); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; font-size: 0.85rem; color: var(--muted); }
+        .ai-summary strong { color: var(--accent); }
+        .well-card-footer { padding: 1rem 1.25rem; background: rgba(0, 0, 0, 0.2); display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; }
+        .btn-primary { background: var(--accent); color: #0b1220; }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .btn-secondary { background: var(--card); color: var(--fg); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent); }
+        .btn-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+        .btn-danger:disabled { opacity: 0.5; cursor: not-allowed; }
+        .footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; text-align: center; color: var(--muted); font-size: 0.9rem; }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="header-inner">
             <a href="index.html" class="logo">
@@ -634,479 +187,193 @@
             </a>
             <nav class="nav">
                 <a href="index.html">Home</a>
+                <a href="demo.html">Demo</a>
                 <a href="case-studies.html" class="active">Case Studies</a>
-                <a href="planner.html">Planner</a>
+                <a href="equipment.html">Equipment</a>
+                <a href="sop-library.html">SOPs</a>
             </nav>
         </div>
     </header>
 
-    <!-- Hero -->
     <section class="hero">
-        <h1>Brahan Field Case Studies</h1>
-        <p>Complete well data including completion architecture, safety barriers, intervention history, and deviation surveys. Built from real operational experience.</p>
-        <div class="field-badge">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            <span>7 Wells</span> · Last Updated: <span id="lastUpdated">Loading...</span>
+        <div class="hero-inner">
+            <h1>Brahan Field Case Studies</h1>
+            <p>Seven wells. Seven unique challenges. From exotic scaling to seabed leaks, from frac hits to geomechanical failures. Each analyzed by the Brahan Engine with AI-driven recommendations.</p>
+            <div class="stats-bar">
+                <div class="stat"><div class="stat-value">7</div><div class="stat-label">Wells</div></div>
+                <div class="stat"><div class="stat-value danger">6</div><div class="stat-label">Safety Locked</div></div>
+                <div class="stat"><div class="stat-value warning">$513M</div><div class="stat-label">Total Spent</div></div>
+                <div class="stat"><div class="stat-value">196 MMboe</div><div class="stat-label">Cumulative Production</div></div>
+            </div>
         </div>
     </section>
 
-    <!-- Main -->
     <main class="main">
-        <!-- Stats -->
-        <div class="stats-bar" id="statsBar">
-            <div class="stat-card">
-                <div class="stat-value" id="statActive">-</div>
-                <div class="stat-label">Active Wells</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="statInterventions">-</div>
-                <div class="stat-label">Total Interventions</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="statBarriers">-</div>
-                <div class="stat-label">Barriers Verified</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="statLocked">-</div>
-                <div class="stat-label">Safety Locked</div>
-            </div>
-        </div>
-
-        <!-- Filters -->
         <div class="filter-bar">
             <button class="filter-btn active" data-filter="all">All Wells</button>
-            <button class="filter-btn" data-filter="active">Active</button>
-            <button class="filter-btn" data-filter="suspended">Suspended</button>
-            <button class="filter-btn" data-filter="workover">Workover</button>
-            <button class="filter-btn" data-filter="p_and_a">P&A</button>
             <button class="filter-btn" data-filter="locked">🔒 Safety Locked</button>
+            <button class="filter-btn" data-filter="shut-in">Shut-In</button>
+            <button class="filter-btn" data-filter="total-loss">Total Loss</button>
+            <button class="filter-btn" data-filter="legacy">Legacy</button>
+            <button class="filter-btn" data-filter="subsea">Subsea</button>
         </div>
-
-        <!-- Wells Grid -->
-        <div class="wells-grid" id="wellsGrid">
-            <!-- Wells rendered by JavaScript -->
-        </div>
+        <div class="well-grid" id="wellGrid"></div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <p>© 2025 WellTegra · The Brahan Engine · See What Others Can't</p>
     </footer>
 
     <script>
-        // Well data - loaded from JSON or embedded
-        let wellsData = null;
+        let wellData = null;
+        let activeFilter = 'all';
 
-        // Fetch wells data
-        async function loadWellsData() {
+        async function loadWellData() {
             try {
                 const response = await fetch('data/wells.json');
-                wellsData = await response.json();
-                renderPage();
+                wellData = await response.json();
+                renderWells();
+                setupFilters();
             } catch (error) {
-                console.error('Failed to load wells.json, using embedded data');
-                // Fallback to embedded minimal data for demo
-                wellsData = getEmbeddedData();
-                renderPage();
+                console.error('Failed to load well data:', error);
             }
         }
 
-        // Embedded fallback data
-        function getEmbeddedData() {
-            return {
-                field: "Brahan Field",
-                lastUpdated: "2025-11-27",
-                wells: [
-                    { id: "well_11", name: "Well_11", status: "active", identity: { operator: "To be populated", wellType: "Subsea Producer", waterDepth: { value: 0 }, td: { md: 0, tvd: 0 } }, completion: { scssv: { depth: 0 } }, barriers: { status: "verified" }, interventions: [], knownProblems: [], tags: [] },
-                    { id: "well_22", name: "Well_22", status: "active", identity: { operator: "To be populated", wellType: "Platform Producer", waterDepth: { value: 0 }, td: { md: 0, tvd: 0 } }, completion: { scssv: { depth: 0 } }, barriers: { status: "verified" }, interventions: [], knownProblems: [], tags: [] },
-                    { id: "well_33", name: "Well_33", status: "suspended", identity: { operator: "To be populated", wellType: "Injector", waterDepth: { value: 0 }, td: { md: 0, tvd: 0 } }, completion: { scssv: { depth: 0 } }, barriers: { status: "pending" }, interventions: [], knownProblems: [], tags: [] },
-                    { id: "well_44", name: "Well_44", status: "active", identity: { operator: "To be populated", wellType: "Subsea Producer", waterDepth: { value: 0 }, td: { md: 0, tvd: 0 } }, completion: { scssv: { depth: 0 } }, barriers: { status: "verified" }, interventions: [], knownProblems: [], tags: [] },
-                    { id: "well_55", name: "Well_55", status: "p_and_a", identity: { operator: "To be populated", wellType: "Platform Producer", waterDepth: { value: 0 }, td: { md: 0, tvd: 0 } }, completion: { scssv: { depth: 0 } }, barriers: { status: "critical", notes: "SCSSV data missing" }, interventions: [], knownProblems: ["Missing SCSSV depth"], tags: ["safety-locked"] },
-                    { id: "well_66", name: "Well_66", status: "active", identity: { operator: "To be populated", wellType: "Gas Producer", waterDepth: { value: 0 }, td: { md: 0, tvd: 0 } }, completion: { scssv: { depth: 0 } }, barriers: { status: "verified" }, interventions: [], knownProblems: [], tags: [] },
-                    { id: "well_777", name: "Well_777", status: "workover", identity: { operator: "To be populated", wellType: "Subsea Producer", waterDepth: { value: 0 }, td: { md: 0, tvd: 0 } }, completion: { scssv: { depth: 0 } }, barriers: { status: "verified" }, interventions: [], knownProblems: [], tags: ["active-workover"] }
-                ]
-            };
-        }
-
-        // Render the page
-        function renderPage() {
-            document.getElementById('lastUpdated').textContent = wellsData.lastUpdated;
-            renderStats();
-            renderWells();
-            setupFilters();
-        }
-
-        // Render stats
-        function renderStats() {
-            const wells = wellsData.wells;
-            document.getElementById('statActive').textContent = wells.filter(w => w.status === 'active').length;
-            document.getElementById('statInterventions').textContent = wells.reduce((sum, w) => sum + (w.interventions?.length || 0), 0);
-            document.getElementById('statBarriers').textContent = wells.filter(w => w.barriers?.status === 'verified').length;
-            document.getElementById('statLocked').textContent = wells.filter(w => w.tags?.includes('safety-locked')).length;
-        }
-
-        // Render wells
-        function renderWells(filter = 'all') {
-            const grid = document.getElementById('wellsGrid');
-            const wells = wellsData.wells.filter(w => {
-                if (filter === 'all') return true;
-                if (filter === 'locked') return w.tags?.includes('safety-locked');
-                return w.status === filter;
-            });
-
+        function renderWells() {
+            const grid = document.getElementById('wellGrid');
+            let wells = wellData.wells;
+            
+            if (activeFilter !== 'all') {
+                wells = wells.filter(w => {
+                    switch(activeFilter) {
+                        case 'locked': return w.safetyLocked;
+                        case 'shut-in': return w.status === 'shut-in';
+                        case 'total-loss': return w.status === 'total-loss';
+                        case 'legacy': return w.tags?.some(t => ['legacy', '1980s', '1970s'].includes(t));
+                        case 'subsea': return w.tags?.includes('subsea');
+                        default: return true;
+                    }
+                });
+            }
+            
             grid.innerHTML = wells.map(well => renderWellCard(well)).join('');
-            
-            // Add event listeners
-            document.querySelectorAll('.well-header').forEach(header => {
-                header.addEventListener('click', () => toggleWell(header.closest('.well-card')));
-            });
-
-            document.querySelectorAll('.well-tab').forEach(tab => {
-                tab.addEventListener('click', (e) => switchTab(e.target));
-            });
         }
 
-        // Render a single well card
         function renderWellCard(well) {
-            const isLocked = well.tags?.includes('safety-locked');
-            const identity = well.identity || {};
-            const barriers = well.barriers || {};
-            const completion = well.completion || {};
+            const isLocked = well.safetyLocked;
+            const isFlagship = well.tags?.includes('flagship');
+            const integrityClass = getIntegrityClass(well.integrityScore);
+            
+            let cardClass = 'well-card';
+            if (isLocked) cardClass += ' locked';
+            if (isFlagship) cardClass += ' flagship';
+            
+            const statusClass = well.status === 'total-loss' ? 'total-loss' : 'shut-in';
             
             return `
-                <div class="well-card ${isLocked ? 'locked' : ''}" data-well-id="${well.id}" data-status="${well.status}">
-                    <div class="well-header">
-                        <div class="well-title-group">
-                            <span class="well-name">${well.name}</span>
-                            <div class="well-badges">
-                                <span class="badge badge-${well.status}">${formatStatus(well.status)}</span>
-                                ${isLocked ? '<span class="badge badge-locked">🔒 Locked</span>' : ''}
+                <div class="${cardClass}">
+                    <div class="well-card-header">
+                        <div class="well-card-top">
+                            <div class="well-name-group">
+                                <div class="well-name">${well.name}</div>
+                                <div class="well-nickname">"${well.nickname}"</div>
+                                <div class="well-type">${well.identity?.wellType || 'Oil Producer'}</div>
+                            </div>
+                            <span class="well-status ${statusClass}">${formatStatus(well.status)}</span>
+                        </div>
+                        ${isLocked ? `
+                            <div class="safety-lock-banner">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <rect x="3" y="11" width="18" height="11" rx="2"/>
+                                    <path d="M7 11V7a5 5 0 0110 0v4"/>
+                                </svg>
+                                <div class="safety-lock-reasons">
+                                    <strong>🔒 SAFETY GATEWAY LOCKED</strong>
+                                    <ul>${well.safetyLockReasons?.slice(0,3).map(r => `<li>${r}</li>`).join('') || ''}</ul>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="well-card-body">
+                        <div class="well-meta-grid">
+                            <div class="well-meta-item">
+                                <div class="well-meta-value ${integrityClass}">${well.integrityScore || 0}%</div>
+                                <div class="well-meta-label">Integrity</div>
+                            </div>
+                            <div class="well-meta-item">
+                                <div class="well-meta-value">${formatDepth(well.construction?.totalDepth)}</div>
+                                <div class="well-meta-label">Total Depth</div>
+                            </div>
+                            <div class="well-meta-item">
+                                <div class="well-meta-value">${formatMoney(well.economics?.actualSpent)}</div>
+                                <div class="well-meta-label">Spent</div>
                             </div>
                         </div>
-                        <div class="well-meta">
-                            <span class="well-meta-item">${identity.wellType || 'Unknown Type'}</span>
-                            <span class="well-meta-item">TD: ${formatDepth(identity.td?.md)} MD</span>
-                            <span class="well-meta-item">SCSSV: ${formatDepth(completion.scssv?.depth)}</span>
+                        <div class="integrity-gauge">
+                            <div class="integrity-gauge-fill ${integrityClass}" style="width: ${well.integrityScore || 0}%"></div>
                         </div>
-                        <div class="expand-icon">
-                            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+                        <div class="well-tags">
+                            ${(well.tags || []).slice(0,5).map(tag => 
+                                `<span class="well-tag ${tag === 'flagship' ? 'flagship' : ''}">${tag}</span>`
+                            ).join('')}
+                        </div>
+                        <div class="ai-summary">
+                            <strong>AI:</strong> ${(well.aiRecommendation?.summary || 'Analysis pending...').substring(0, 120)}...
                         </div>
                     </div>
-                    <div class="well-body">
-                        ${isLocked ? renderSafetyLockBanner(well) : ''}
-                        <div class="well-tabs">
-                            <div class="well-tab active" data-tab="overview">Overview</div>
-                            <div class="well-tab" data-tab="completion">Completion</div>
-                            <div class="well-tab" data-tab="barriers">Barriers</div>
-                            <div class="well-tab" data-tab="interventions">Interventions</div>
-                            <div class="well-tab" data-tab="survey">Survey</div>
-                        </div>
-                        <div class="tab-content active" data-tab-content="overview">
-                            ${renderOverviewTab(well)}
-                        </div>
-                        <div class="tab-content" data-tab-content="completion">
-                            ${renderCompletionTab(well)}
-                        </div>
-                        <div class="tab-content" data-tab-content="barriers">
-                            ${renderBarriersTab(well)}
-                        </div>
-                        <div class="tab-content" data-tab-content="interventions">
-                            ${renderInterventionsTab(well)}
-                        </div>
-                        <div class="tab-content" data-tab-content="survey">
-                            ${renderSurveyTab(well)}
-                        </div>
-                        <div class="well-actions">
-                            <button class="action-btn action-btn-primary" ${isLocked ? 'disabled' : ''}>
-                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-                                Plan Intervention
-                            </button>
-                            <button class="action-btn action-btn-secondary">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 12V4m0 8l-4-4m4 4l4-4"/></svg>
-                                Export Data
-                            </button>
-                            <button class="action-btn action-btn-secondary">
-                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                View Schematic
-                            </button>
-                        </div>
+                    <div class="well-card-footer">
+                        ${well.detailPage ? 
+                            `<a href="${well.detailPage}" class="btn btn-primary">View Full Case Study</a>` :
+                            `<a href="well-detail.html?id=${well.id}" class="btn btn-secondary">View Details</a>`
+                        }
+                        <button class="btn btn-danger" ${isLocked ? 'disabled' : ''}>
+                            ${isLocked ? '🔒 Locked' : 'Plan Intervention'}
+                        </button>
                     </div>
                 </div>
             `;
         }
 
-        // Render safety lock banner
-        function renderSafetyLockBanner(well) {
-            const problems = well.knownProblems || [];
-            return `
-                <div class="safety-lock-banner">
-                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-                    <div>
-                        <strong>Safety Gateway: Access Locked</strong>
-                        <p>This well is missing critical safety data and cannot be accessed for intervention planning. Issues: ${problems.join(', ') || 'Unknown'}</p>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Render overview tab
-        function renderOverviewTab(well) {
-            const id = well.identity || {};
-            return `
-                <div class="data-grid">
-                    <div class="data-section">
-                        <h4>Well Identity</h4>
-                        <div class="data-row"><span class="data-label">Operator</span><span class="data-value ${!id.operator ? 'missing' : ''}">${id.operator || 'Not set'}</span></div>
-                        <div class="data-row"><span class="data-label">Field / Block</span><span class="data-value">${id.field || 'Brahan Field'} / ${id.block || '-'}</span></div>
-                        <div class="data-row"><span class="data-label">Well Type</span><span class="data-value">${id.wellType || '-'}</span></div>
-                        <div class="data-row"><span class="data-label">Water Depth</span><span class="data-value">${formatDepth(id.waterDepth?.value)} ${id.waterDepth?.unit || 'ft'}</span></div>
-                    </div>
-                    <div class="data-section">
-                        <h4>Key Depths</h4>
-                        <div class="data-row"><span class="data-label">TD (MD)</span><span class="data-value">${formatDepth(id.td?.md)} ft</span></div>
-                        <div class="data-row"><span class="data-label">TD (TVD)</span><span class="data-value">${formatDepth(id.td?.tvd)} ft</span></div>
-                        <div class="data-row"><span class="data-label">RTE</span><span class="data-value">${formatDepth(id.rte?.value)} ft</span></div>
-                        <div class="data-row"><span class="data-label">SCSSV Depth</span><span class="data-value ${!well.completion?.scssv?.depth ? 'missing' : ''}">${formatDepth(well.completion?.scssv?.depth)} ft</span></div>
-                    </div>
-                    <div class="data-section">
-                        <h4>Dates</h4>
-                        <div class="data-row"><span class="data-label">Spud Date</span><span class="data-value">${formatDate(id.spudDate)}</span></div>
-                        <div class="data-row"><span class="data-label">Completion Date</span><span class="data-value">${formatDate(id.completionDate)}</span></div>
-                        <div class="data-row"><span class="data-label">Total Interventions</span><span class="data-value">${well.interventions?.length || 0}</span></div>
-                    </div>
-                    <div class="data-section">
-                        <h4>Current Status</h4>
-                        <div class="barrier-status ${well.barriers?.status || 'pending'}">
-                            ${getBarrierIcon(well.barriers?.status)}
-                            <span>Barriers: ${formatStatus(well.barriers?.status || 'unknown')}</span>
-                        </div>
-                        ${well.knownProblems?.length ? `<p style="color: var(--warning); font-size: 0.9rem;">⚠️ Known issues: ${well.knownProblems.join(', ')}</p>` : ''}
-                    </div>
-                </div>
-            `;
-        }
-
-        // Render completion tab
-        function renderCompletionTab(well) {
-            const c = well.completion || {};
-            const casing = c.casingProgram || [];
-            
-            return `
-                <div class="data-grid">
-                    <div class="data-section" style="grid-column: span 2;">
-                        <h4>Casing Program</h4>
-                        ${casing.length ? `
-                            <table class="casing-table">
-                                <thead>
-                                    <tr><th>Size</th><th>Type</th><th>Shoe Depth</th><th>Grade</th><th>Weight</th></tr>
-                                </thead>
-                                <tbody>
-                                    ${casing.map(cs => `
-                                        <tr>
-                                            <td>${cs.size || '-'}</td>
-                                            <td>${cs.type || '-'}</td>
-                                            <td>${formatDepth(cs.shoe)} ft</td>
-                                            <td>${cs.grade || '-'}</td>
-                                            <td>${cs.weight || '-'}</td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        ` : '<p class="empty-state">No casing data available</p>'}
-                    </div>
-                    <div class="data-section">
-                        <h4>Tubing</h4>
-                        <div class="data-row"><span class="data-label">Size</span><span class="data-value">${c.tubing?.size || '-'}</span></div>
-                        <div class="data-row"><span class="data-label">Weight</span><span class="data-value">${c.tubing?.weight || '-'}</span></div>
-                        <div class="data-row"><span class="data-label">Grade</span><span class="data-value">${c.tubing?.grade || '-'}</span></div>
-                        <div class="data-row"><span class="data-label">Thread</span><span class="data-value">${c.tubing?.thread || '-'}</span></div>
-                    </div>
-                    <div class="data-section">
-                        <h4>SCSSV</h4>
-                        <div class="data-row"><span class="data-label">Type</span><span class="data-value">${c.scssv?.type || '-'}</span></div>
-                        <div class="data-row"><span class="data-label">Size</span><span class="data-value">${c.scssv?.size || '-'}</span></div>
-                        <div class="data-row"><span class="data-label">Depth</span><span class="data-value ${!c.scssv?.depth ? 'missing' : ''}">${formatDepth(c.scssv?.depth)} ft</span></div>
-                        <div class="data-row"><span class="data-label">Test Pressure</span><span class="data-value">${c.scssv?.testPressure || '-'} psi</span></div>
-                    </div>
-                    <div class="data-section">
-                        <h4>Packer</h4>
-                        <div class="data-row"><span class="data-label">Type</span><span class="data-value">${c.packer?.type || '-'}</span></div>
-                        <div class="data-row"><span class="data-label">Depth</span><span class="data-value">${formatDepth(c.packer?.depth)} ft</span></div>
-                        <div class="data-row"><span class="data-label">Size</span><span class="data-value">${c.packer?.size || '-'}</span></div>
-                    </div>
-                    <div class="data-section">
-                        <h4>Minimum Restriction</h4>
-                        <div class="data-row"><span class="data-label">ID</span><span class="data-value ${!c.minRestriction?.id ? 'missing' : ''}">${c.minRestriction?.id || '-'}"</span></div>
-                        <div class="data-row"><span class="data-label">Depth</span><span class="data-value">${formatDepth(c.minRestriction?.depth)} ft</span></div>
-                        <div class="data-row"><span class="data-label">Component</span><span class="data-value">${c.minRestriction?.component || '-'}</span></div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Render barriers tab
-        function renderBarriersTab(well) {
-            const b = well.barriers || {};
-            return `
-                <div class="barrier-status ${b.status || 'pending'}">
-                    ${getBarrierIcon(b.status)}
-                    <strong>Overall Status: ${formatStatus(b.status || 'unknown')}</strong>
-                </div>
-                <div class="data-grid">
-                    <div class="data-section">
-                        <h4>Primary Barrier</h4>
-                        <div class="data-row"><span class="data-label">Type</span><span class="data-value">${b.primary?.type || '-'}</span></div>
-                        <div class="data-row"><span class="data-label">Depth</span><span class="data-value">${formatDepth(b.primary?.depth)} ft</span></div>
-                        <div class="data-row"><span class="data-label">Test Pressure</span><span class="data-value">${b.primary?.testPressure || '-'} psi</span></div>
-                        <div class="data-row"><span class="data-label">Test Date</span><span class="data-value">${formatDate(b.primary?.testDate)}</span></div>
-                        <div class="data-row"><span class="data-label">Duration</span><span class="data-value">${b.primary?.testDuration || '-'}</span></div>
-                        <div class="data-row"><span class="data-label">Witness</span><span class="data-value">${b.primary?.witness || '-'}</span></div>
-                    </div>
-                    <div class="data-section">
-                        <h4>Secondary Barrier</h4>
-                        <div class="data-row"><span class="data-label">Type</span><span class="data-value">${b.secondary?.type || '-'}</span></div>
-                        <div class="data-row"><span class="data-label">Depth</span><span class="data-value">${formatDepth(b.secondary?.depth)} ft</span></div>
-                        <div class="data-row"><span class="data-label">Test Pressure</span><span class="data-value">${b.secondary?.testPressure || '-'} psi</span></div>
-                        <div class="data-row"><span class="data-label">Test Date</span><span class="data-value">${formatDate(b.secondary?.testDate)}</span></div>
-                    </div>
-                    <div class="data-section">
-                        <h4>Well Control</h4>
-                        <div class="data-row"><span class="data-label">Kill Weight</span><span class="data-value">${b.wellKillWeight?.value || '-'} ${b.wellKillWeight?.unit || 'ppg'}</span></div>
-                        <div class="data-row"><span class="data-label">Fluid Type</span><span class="data-value">${b.fluidType || '-'}</span></div>
-                        ${b.notes ? `<p style="margin-top: 1rem; color: var(--muted); font-size: 0.9rem;">${b.notes}</p>` : ''}
-                    </div>
-                </div>
-            `;
-        }
-
-        // Render interventions tab
-        function renderInterventionsTab(well) {
-            const interventions = well.interventions || [];
-            
-            if (!interventions.length) {
-                return `
-                    <div class="empty-state">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                        <p>No intervention history recorded</p>
-                        <p style="font-size: 0.85rem; margin-top: 0.5rem;">Add intervention data to the wells.json file</p>
-                    </div>
-                `;
-            }
-
-            return `
-                <div class="timeline">
-                    ${interventions.map(int => `
-                        <div class="timeline-item">
-                            <div class="timeline-dot ${int.outcome === 'success' ? 'success' : int.outcome === 'partial' ? 'warning' : 'danger'}"></div>
-                            <div class="timeline-date">${formatDate(int.date)} · ${int.type}</div>
-                            <div class="timeline-title">${int.objective}</div>
-                            <div class="timeline-desc">
-                                Duration: ${int.duration?.actual || '-'} hrs (planned: ${int.duration?.planned || '-'} hrs)
-                                ${int.nptEvents?.length ? ` · NPT Events: ${int.nptEvents.length}` : ''}
-                            </div>
-                            ${int.lessonsLearned ? `<div class="timeline-desc" style="margin-top: 0.5rem; font-style: italic;">"${int.lessonsLearned}"</div>` : ''}
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        // Render survey tab
-        function renderSurveyTab(well) {
-            const survey = well.deviationSurvey || {};
-            
-            if (!survey.available) {
-                return `
-                    <div class="empty-state">
-                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                        <p>No deviation survey available</p>
-                        <p style="font-size: 0.85rem; margin-top: 0.5rem;">Upload CSV to add survey data</p>
-                    </div>
-                `;
-            }
-
-            return `
-                <div class="data-grid">
-                    <div class="data-section">
-                        <h4>Survey Summary</h4>
-                        <div class="data-row"><span class="data-label">Max Inclination</span><span class="data-value">${survey.maxInclination || '-'}°</span></div>
-                        <div class="data-row"><span class="data-label">Max DLS</span><span class="data-value">${survey.maxDLS || '-'}°/100ft</span></div>
-                        <div class="data-row"><span class="data-label">DLS Depth</span><span class="data-value">${formatDepth(survey.dlsDepth)} ft</span></div>
-                        <div class="data-row"><span class="data-label">CSV File</span><span class="data-value">${survey.csvFile || '-'}</span></div>
-                    </div>
-                    <div class="data-section" style="grid-column: span 2;">
-                        <h4>Trajectory Viewer</h4>
-                        <p style="color: var(--muted); font-size: 0.9rem;">Survey visualization will be embedded here when data is available.</p>
-                        <button class="action-btn action-btn-secondary" style="margin-top: 1rem;">Open in Survey Tool</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Helper functions
-        function formatDepth(value) {
-            if (!value || value === 0) return '-';
-            return value.toLocaleString();
-        }
-
-        function formatDate(dateStr) {
-            if (!dateStr || dateStr === 'YYYY-MM-DD') return '-';
-            return dateStr;
+        function getIntegrityClass(score) {
+            if (score <= 15) return 'critical';
+            if (score <= 30) return 'low';
+            if (score <= 60) return 'medium';
+            return 'good';
         }
 
         function formatStatus(status) {
-            const map = {
-                'active': 'Active',
-                'suspended': 'Suspended',
-                'p_and_a': 'P&A',
-                'workover': 'Workover',
-                'verified': 'Verified',
-                'pending': 'Pending',
-                'critical': 'Critical',
-                'unknown': 'Unknown'
-            };
-            return map[status] || status;
+            return status?.replace('-', ' ').toUpperCase() || 'UNKNOWN';
         }
 
-        function getBarrierIcon(status) {
-            if (status === 'verified') {
-                return '<svg class="barrier-icon" fill="none" stroke="#22c55e" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
-            } else if (status === 'critical') {
-                return '<svg class="barrier-icon" fill="none" stroke="#ef4444" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>';
+        function formatDepth(depth) {
+            if (!depth) return 'N/A';
+            const match = depth.match(/[\d,]+/);
+            if (match) {
+                const num = parseInt(match[0].replace(',', ''));
+                return (num / 1000).toFixed(1) + 'km';
             }
-            return '<svg class="barrier-icon" fill="none" stroke="#f59e0b" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
+            return depth;
         }
 
-        // Toggle well expansion
-        function toggleWell(card) {
-            card.classList.toggle('expanded');
+        function formatMoney(amount) {
+            if (!amount) return 'N/A';
+            if (amount >= 1000000000) return '$' + (amount / 1000000000).toFixed(1) + 'B';
+            if (amount >= 1000000) return '$' + (amount / 1000000).toFixed(0) + 'M';
+            return '$' + amount.toLocaleString();
         }
 
-        // Switch tabs
-        function switchTab(tab) {
-            const card = tab.closest('.well-card');
-            const tabName = tab.dataset.tab;
-            
-            card.querySelectorAll('.well-tab').forEach(t => t.classList.remove('active'));
-            card.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            tab.classList.add('active');
-            card.querySelector(`[data-tab-content="${tabName}"]`).classList.add('active');
-        }
-
-        // Setup filters
         function setupFilters() {
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    renderWells(btn.dataset.filter);
+                    activeFilter = btn.dataset.filter;
+                    renderWells();
                 });
             });
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', loadWellsData);
+        document.addEventListener('DOMContentLoaded', loadWellData);
     </script>
 </body>
 </html>
