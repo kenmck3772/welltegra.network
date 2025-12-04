@@ -1,315 +1,1385 @@
 {
-  "field": "Brahan Field",
-  "lastUpdated": "2025-11-27",
+  "field": {
+    "name": "Brahan Field",
+    "operator": "Brahan Field Operating Company",
+    "region": "North Sea",
+    "analysisEngine": "Brahan Engine v3.1",
+    "lastUpdated": "2023-10-26"
+  },
   "wells": [
     {
-      "id": "well_11",
-      "name": "Well_11",
-      "status": "active",
+      "id": "w-11",
+      "name": "W-11",
+      "nickname": "The Choker",
+      "status": "shut-in",
+      "safetyLocked": true,
+      "safetyLockReasons": [
+        "SCSSV inaccessible",
+        "Tubing severely restricted with hard scale",
+        "92% probability of intervention failure"
+      ],
+      "integrityScore": 8,
+      "tags": ["scale", "ESP", "sand-control", "sidetrack-candidate"],
       "identity": {
-        "operator": "Operator Name",
-        "field": "Brahan Field",
-        "block": "Block ID",
-        "wellType": "Subsea Producer",
-        "waterDepth": { "value": 0, "unit": "ft" },
-        "td": { "md": 0, "tvd": 0, "unit": "ft" },
-        "rte": { "value": 0, "unit": "ft" },
-        "spudDate": "YYYY-MM-DD",
-        "completionDate": "YYYY-MM-DD"
+        "regulatoryId": "12-345-67898-BRA-011",
+        "operator": "Brahan Field Operating Company",
+        "platform": "Brahan Delta Platform",
+        "lease": "Brahan Delta Main Development Area",
+        "surfaceLocation": "58° 39' 10.0\" N, 0° 21' 30.0\" E",
+        "datumElevation": "+30 m RKB",
+        "waterDepth": "115 m",
+        "spudDate": "2009-03-02",
+        "completionDate": "2009-07-21",
+        "wellType": "HPHT Oil Producer",
+        "currentStatus": "SHUT-IN (Severe Downhole Obstruction)",
+        "classification": "Complex Intervention / Sidetrack Candidate"
+      },
+      "economics": {
+        "originalAFE": 38000000,
+        "actualSpent": 95400000,
+        "cumulativeProduction": "58 MMstb",
+        "productionValue": "Estimated $2.3B lifetime revenue",
+        "interventionRecommendation": "Sidetrack",
+        "sidetrackAFE": 45000000,
+        "probabilityOfSuccess": 85
+      },
+      "reservoir": {
+        "formation": "Brahan Beta Sandstone (HPHT Oil-Rich Zone)",
+        "porosity": "21-25%",
+        "permeability": "350-500 mD",
+        "initialPressure": "7,500 psi @ 3,200m TVD",
+        "temperature": "165°C",
+        "fluidType": "Light, Sweet Crude Oil",
+        "oilGravity": "42° API",
+        "solutionGOR": "1,200 scf/bbl",
+        "h2s": "< 1 ppm",
+        "co2": "1.5 mol%",
+        "scaleRisk": "EXTREME - Mixed BaSO4/SrSO4, supersaturation above 150°C"
+      },
+      "construction": {
+        "totalDepth": "4,500 m MD",
+        "maxInclination": "15°",
+        "maxDLS": "0.17°/30m",
+        "casingProgram": [
+          { "name": "Conductor", "size": "30\"", "top": 150, "bottom": 300, "grade": "N/A" },
+          { "name": "Surface", "size": "20\"", "top": 150, "bottom": 1100, "grade": "K-55", "weight": "94.0 lb/ft" },
+          { "name": "Intermediate", "size": "13-3/8\"", "top": 150, "bottom": 2500, "grade": "L-80", "weight": "68.0 lb/ft" },
+          { "name": "Production", "size": "9-5/8\"", "top": 150, "bottom": 4500, "grade": "P-110", "weight": "53.5 lb/ft", "integrity": "Assumed intact" }
+        ]
       },
       "completion": {
-        "casingProgram": [
-          { "size": "30\"", "type": "Conductor", "shoe": 0, "grade": "", "weight": "" },
-          { "size": "20\"", "type": "Surface", "shoe": 0, "grade": "", "weight": "" },
-          { "size": "13-3/8\"", "type": "Intermediate", "shoe": 0, "grade": "", "weight": "" },
-          { "size": "9-5/8\"", "type": "Production", "shoe": 0, "grade": "", "weight": "" }
-        ],
         "tubing": {
-          "size": "4-1/2\"",
-          "weight": "12.6#",
-          "grade": "13Cr80",
-          "thread": "JFE Bear",
-          "topDepth": 0
+          "size": "4-1/2\" OD",
+          "weight": "12.6 lb/ft",
+          "grade": "13Cr-85",
+          "connection": "VAM TOP",
+          "depth": "0-4,450m",
+          "status": "SEVERELY RESTRICTED - Hard scale"
         },
         "scssv": {
-          "type": "",
-          "size": "",
-          "depth": 0,
-          "testPressure": 0,
-          "testDate": "YYYY-MM-DD"
+          "type": "TRSSV",
+          "bore": "1.875\"",
+          "depth": "250m",
+          "status": "INACCESSIBLE"
         },
         "packer": {
-          "type": "",
-          "depth": 0,
-          "size": ""
+          "type": "Model B Hydraulic Set",
+          "depth": "4,400m",
+          "rating": "10k psi",
+          "status": "INACCESSIBLE"
         },
-        "minRestriction": {
-          "id": 0,
-          "depth": 0,
-          "component": ""
+        "esp": {
+          "type": "540 Series",
+          "rating": "500 HP",
+          "depth": "3,800m",
+          "status": "FAILED - Part of downhole obstruction"
         },
-        "gasLiftValves": []
+        "sandControl": {
+          "type": "Internal Gravel Pack (IGP) with 12-gauge premium screens",
+          "interval": "4,410-4,500m",
+          "status": "FAILED - THE FLAW: Screen gauge too large, fines migration"
+        },
+        "perforations": "4,410-4,500m, 6 SPF, 60° phasing",
+        "minRestriction": "Unknown - tubing filled with scale"
       },
       "barriers": {
-        "status": "verified",
-        "primary": {
-          "type": "",
-          "depth": 0,
-          "testPressure": 0,
-          "testDate": "YYYY-MM-DD",
-          "testDuration": "",
-          "witness": ""
-        },
-        "secondary": {
-          "type": "",
-          "depth": 0,
-          "testPressure": 0,
-          "testDate": "YYYY-MM-DD"
-        },
-        "wellKillWeight": { "value": 0, "unit": "ppg" },
-        "fluidType": "",
-        "notes": ""
+        "status": "SEVERELY COMPROMISED",
+        "integrityConfidence": "8%",
+        "primary": [
+          { "element": "4-1/2\" Production Tubing", "status": "FAILED", "notes": "Severely restricted" },
+          { "element": "Hydraulic Packer", "status": "UNKNOWN", "notes": "Inaccessible" },
+          { "element": "TRSSV", "status": "UNKNOWN", "notes": "Inaccessible" },
+          { "element": "ESP", "status": "FAILED", "notes": "Part of obstruction" },
+          { "element": "Sand Screens", "status": "FAILED", "notes": "Fines migration" }
+        ],
+        "secondary": [
+          { "element": "9-5/8\" Production Casing", "status": "ASSUMED INTACT" },
+          { "element": "13-3/8\" Intermediate Casing", "status": "ASSUMED INTACT" },
+          { "element": "Wellhead & X-mas Tree", "status": "TESTED OK" }
+        ],
+        "annulusA": "50 psi (stable)"
       },
       "interventions": [
         {
-          "id": "int_001",
-          "date": "YYYY-MM-DD",
-          "type": "Slickline",
-          "objective": "Primary objective description",
-          "secondaryObjectives": [],
-          "outcome": "success",
-          "duration": { "planned": 0, "actual": 0, "unit": "hours" },
-          "nptEvents": [],
-          "toolstring": [],
-          "lessonsLearned": "",
-          "personnel": { "operator": 0, "serviceCompany": 0 }
+          "date": "2009-07-21",
+          "type": "Completion",
+          "objective": "Run IGP, set packer, run ESP",
+          "provider": "Completion Solutions Inc.",
+          "duration": "10 days",
+          "outcome": "SUCCESS",
+          "npt": "2 days (weather)",
+          "aiAnalysis": "Retrospective: Completion design flagged for fines migration risk"
+        },
+        {
+          "date": "2009-2013",
+          "type": "Production",
+          "objective": "Routine production & monitoring",
+          "outcome": "SUCCESS - Well exceeds expectations at 19,500 bopd",
+          "notes": "The golden years"
+        },
+        {
+          "date": "2014",
+          "type": "ESP Workover",
+          "objective": "Replace failing ESP (premature failure)",
+          "provider": "PumpTech Services",
+          "duration": "5 days",
+          "outcome": "SUCCESS - Pump replaced, found coated in fine scale",
+          "npt": "2 days",
+          "aiAnalysis": "First data point for scale model. Predicts accelerating deposition."
+        },
+        {
+          "date": "2015-10",
+          "type": "Management Decision",
+          "objective": "Review chemical program",
+          "outcome": "DECISION: Declined specialized inhibitor due to cost",
+          "aiAnalysis": "CRITICAL INFLECTION POINT - Cost-saving measure with projected future cost >$50M"
+        },
+        {
+          "date": "2018-03",
+          "type": "CT Milling",
+          "objective": "Mill out scale in tubing to restore flow",
+          "provider": "CoilTech International",
+          "duration": "21 days",
+          "outcome": "FAILED - Milling 1-2 m/hr, CT stuck at 2,500m",
+          "npt": "21 days (full job)",
+          "aiAnalysis": "Predicted 75% probability of stuck pipe based on scale hardness and CT fatigue model"
+        },
+        {
+          "date": "2020-10",
+          "type": "Fishing",
+          "objective": "Retrieve stuck CT string",
+          "provider": "CoilTech International",
+          "duration": "28 days",
+          "outcome": "SUCCESS - CT retrieved after multiple high-risk jarring runs",
+          "npt": "28 days (full job)",
+          "aiAnalysis": "Jarring forces now correlated with casing integrity uncertainty"
         }
       ],
-      "deviationSurvey": {
-        "available": false,
-        "csvFile": "",
-        "maxInclination": 0,
-        "maxDLS": 0,
-        "dlsDepth": 0
+      "productionHistory": {
+        "targetRate": "18,000 bopd",
+        "actualPeak": "19,500 bopd (2009-2013)",
+        "decline2014_2017": "8,000 bopd",
+        "decline2018_2021": "3,000 bopd (erratic)",
+        "cumulative": "58 MMstb",
+        "currentStatus": "Non-productive since 2021"
       },
-      "knownProblems": [],
-      "tags": []
+      "aiRecommendation": {
+        "summary": "92% probability of failure for any further clean-out attempt. Economic model strongly favors sidetrack.",
+        "recommendation": "Proceed with Jack-Up Rig Sidetrack",
+        "rationale": "Static environment critical for long-duration milling. Incorporate lessons learned into new completion design.",
+        "vesselType": "Jack-Up Rig",
+        "probabilityOfSuccess": 85
+      },
+      "lessonsLearned": [
+        {
+          "id": "LL-011-001",
+          "category": "Flow Assurance",
+          "severity": "CRITICAL",
+          "title": "Screen gauge sizing in high-fines reservoirs",
+          "description": "Screen gauge was slightly too large, allowing formation fines to migrate slowly over years"
+        },
+        {
+          "id": "LL-011-002",
+          "category": "Chemical Program",
+          "severity": "HIGH",
+          "title": "Cost-saving on scale inhibition has catastrophic long-term consequences",
+          "description": "2015 decision to decline specialized inhibitor led to >$50M in remediation costs"
+        }
+      ]
     },
     {
-      "id": "well_22",
-      "name": "Well_22",
-      "status": "active",
+      "id": "w-22",
+      "name": "W-22",
+      "nickname": "The Ghost",
+      "status": "shut-in",
+      "safetyLocked": true,
+      "safetyLockReasons": [
+        "15% integrity confidence (Critical)",
+        "Legacy 1987 suspension failing",
+        "Shallow gas risk at 600m TVD",
+        "Mystery obstruction at 3,430m"
+      ],
+      "integrityScore": 15,
+      "tags": ["legacy", "exploration", "shallow-gas", "sidetrack-candidate", "1980s"],
       "identity": {
-        "operator": "Operator Name",
-        "field": "Brahan Field",
-        "block": "Block ID",
-        "wellType": "Platform Producer",
-        "waterDepth": { "value": 0, "unit": "ft" },
-        "td": { "md": 0, "tvd": 0, "unit": "ft" },
-        "rte": { "value": 0, "unit": "ft" },
-        "spudDate": "YYYY-MM-DD",
-        "completionDate": "YYYY-MM-DD"
+        "regulatoryId": "12-345-67898-BRA-022",
+        "operator": "Brahan Field Operating Company (Inherited from North Sea Explorers Ltd. - defunct)",
+        "platform": "Brahan Alpha Platform",
+        "lease": "Brahan Alpha Main Development Area",
+        "surfaceLocation": "58° 36' 00.0\" N, 0° 18' 00.0\" E",
+        "datumElevation": "+30 m RKB",
+        "waterDepth": "110 m",
+        "spudDate": "1987-08-12",
+        "completionDate": "N/A (Exploration Well)",
+        "wellType": "Exploration Well (Temporarily Abandoned)",
+        "currentStatus": "SHUT-IN (Legacy suspension failing)",
+        "classification": "Critical Re-entry & Abandonment Remediation Candidate"
+      },
+      "economics": {
+        "originalAFE": 12000000,
+        "originalAFENote": "1987 dollars",
+        "actualSpent": 65000000,
+        "actualSpentNote": "2023 equivalent including diagnostics",
+        "newTargetValue": "150 MMstb oil (Brahan Delta fault block)",
+        "geologicalConfidence": "75%",
+        "phase1AFE": 25000000,
+        "phase2AFE": 55000000
+      },
+      "reservoir": {
+        "originalTarget": "Brahan Charlie Sandstone (1987 exploration target)",
+        "originalResult": "Tight, non-commercial - plugged and suspended",
+        "newTarget": "Brahan Delta fault block (2023 discovery)",
+        "newTargetVolume": "150 MMstb oil",
+        "porosity": "22-26%",
+        "permeability": "400-600 mD",
+        "estimatedPressure": "6,800 psi @ 3,100m TVD",
+        "h2s": "5 ppm",
+        "shallowGasRisk": "HIGH - Gas pocket identified at ~600m TVD above 13-3/8\" shoe"
+      },
+      "construction": {
+        "totalDepth": "3,500 m MD",
+        "trajectory": "Vertical (simple exploration well)",
+        "maxInclination": "2°",
+        "casingProgram": [
+          { "name": "Conductor", "size": "30\"", "top": 120, "bottom": 250, "grade": "N/A", "notes": "Driven, condition unknown" },
+          { "name": "Surface", "size": "20\"", "top": 120, "bottom": 1000, "grade": "K-55", "weight": "94.0 lb/ft", "notes": "OUTDATED GRADE - High risk for modern load cycles" },
+          { "name": "Intermediate", "size": "13-3/8\"", "top": 120, "bottom": 2200, "grade": "K-55", "weight": "68.0 lb/ft", "notes": "OUTDATED GRADE - Shoe in shallow gas window" },
+          { "name": "Production", "size": "9-5/8\"", "top": 120, "bottom": 3500, "grade": "N-80", "weight": "47.0 lb/ft", "notes": "TOC unknown" }
+        ]
       },
       "completion": {
-        "casingProgram": [],
-        "tubing": { "size": "", "weight": "", "grade": "", "thread": "", "topDepth": 0 },
-        "scssv": { "type": "", "size": "", "depth": 0, "testPressure": 0, "testDate": "" },
-        "packer": { "type": "", "depth": 0, "size": "" },
-        "minRestriction": { "id": 0, "depth": 0, "component": "" },
-        "gasLiftValves": []
+        "type": "Legacy Suspension (No production completion)",
+        "bridgePlug": {
+          "type": "Legacy Cement Retainer / Bridge Plug (Non-standard)",
+          "depth": "3,480m",
+          "status": "HIGHLY SUSPECT - 60% probability of failure"
+        },
+        "mysteryObstruction": {
+          "depth": "3,430-3,440m",
+          "description": "Unknown mass discovered during 2023 drift run",
+          "aiAnalysis": "70% probability: degraded polymer/cement slurry"
+        },
+        "wellhead": {
+          "type": "1980s vintage",
+          "status": "Valves replaced 2023, annulus valves welded shut due to leaks"
+        }
       },
       "barriers": {
-        "status": "verified",
-        "primary": { "type": "", "depth": 0, "testPressure": 0, "testDate": "", "testDuration": "", "witness": "" },
-        "secondary": { "type": "", "depth": 0, "testPressure": 0, "testDate": "" },
-        "wellKillWeight": { "value": 0, "unit": "ppg" },
-        "fluidType": "",
-        "notes": ""
+        "status": "CRITICAL FAILURE",
+        "integrityConfidence": "15%",
+        "primary": [
+          { "element": "Legacy Bridge Plug", "status": "SUSPECT", "notes": "60% probability of failure" },
+          { "element": "Mystery Obstruction", "status": "UNKNOWN", "notes": "Function unknown" }
+        ],
+        "secondary": [
+          { "element": "9-5/8\" Production Casing", "status": "UNKNOWN" },
+          { "element": "13-3/8\" Intermediate Casing", "status": "UNKNOWN", "notes": "Within shallow gas zone" },
+          { "element": "20\" Surface Casing", "status": "UNKNOWN" },
+          { "element": "Wellhead", "status": "PARTIALLY FUNCTIONAL", "notes": "Annulus valves welded" }
+        ]
       },
-      "interventions": [],
-      "deviationSurvey": { "available": false, "csvFile": "", "maxInclination": 0, "maxDLS": 0, "dlsDepth": 0 },
-      "knownProblems": [],
-      "tags": []
+      "interventions": [
+        {
+          "date": "1987-10-15",
+          "type": "Suspension",
+          "objective": "Temporary suspension of exploration well",
+          "provider": "North Sea Explorers",
+          "duration": "5 days",
+          "outcome": "COMPLETED (POORLY) - Bridge plug set, cement dump, vague records",
+          "npt": "1 day (weather)",
+          "aiAnalysis": "CATASTROPHICALLY NON-COMPLIANT with modern standards. >80% probability of long-term barrier failure."
+        },
+        {
+          "date": "2022-01",
+          "type": "Seismic Re-interpretation",
+          "objective": "Identify new drilling targets",
+          "provider": "GeoVision Inc.",
+          "duration": "3 months",
+          "outcome": "MAJOR DISCOVERY - Brahan Delta prospect identified, ideal for sidetrack from W-22"
+        },
+        {
+          "date": "2023-06",
+          "type": "Wellhead Integrity",
+          "objective": "Assess and refurbish vintage wellhead",
+          "provider": "Platform Services",
+          "duration": "3 weeks",
+          "outcome": "PARTIAL SUCCESS - Replaced master/wing valves, annulus valves welded shut",
+          "npt": "1 week (parts)",
+          "notes": "Wellhead area now flagged as Red Zone for personnel"
+        },
+        {
+          "date": "2023-07",
+          "type": "Wireline (Diagnostic)",
+          "objective": "Drift run to check for obstructions",
+          "provider": "DiagTech Solutions",
+          "duration": "12 hours",
+          "outcome": "NEW PROBLEM - Drift held up at 3,430m. Mystery Obstruction discovered.",
+          "npt": "12 hours (full job)",
+          "aiAnalysis": "95% probability of stuck pipe on next run. Recommended LIB."
+        },
+        {
+          "date": "2023-07",
+          "type": "Wireline (Diagnostic)",
+          "objective": "LIB to identify obstruction",
+          "provider": "DiagTech Solutions",
+          "duration": "18 hours",
+          "outcome": "INCONCLUSIVE - Smeared, unclear impression",
+          "npt": "18 hours (full job)",
+          "aiAnalysis": "Classified as non-metallic, semi-solid mass. Cross-referenced with 1987 logbook 'sludgy cement' note. 70% probability degraded cement."
+        }
+      ],
+      "productionHistory": {
+        "targetRate": "N/A (Exploration Well)",
+        "cumulative": "0 bbl",
+        "currentStatus": "Never produced commercially"
+      },
+      "aiRecommendation": {
+        "summary": "95% probability of well control incident if entered without stable platform. Two-phase approach required.",
+        "phase1": "Mobilize Jack-Up Rig for full well control operation, kill well, verify and set modern barriers, P&A original wellbore below sidetrack point",
+        "phase2": "Use same Jack-Up to drill sidetrack to Brahan Delta target",
+        "vesselType": "Jack-Up Rig (MANDATORY)",
+        "rationale": "Static environment non-negotiable for safely managing unknowns and shallow gas risk"
+      },
+      "lessonsLearned": [
+        {
+          "id": "LL-022-001",
+          "category": "Legacy Wells",
+          "severity": "CRITICAL",
+          "title": "1980s suspension practices create long-term liability",
+          "description": "Vague records, non-standard plugs, outdated casing grades compound risk over decades"
+        },
+        {
+          "id": "LL-022-002",
+          "category": "Data Quality",
+          "severity": "HIGH",
+          "title": "Inherited wells require comprehensive diagnostic before any intervention",
+          "description": "Never trust legacy records without verification"
+        }
+      ]
     },
     {
-      "id": "well_33",
-      "name": "Well_33",
-      "status": "suspended",
+      "id": "w-33",
+      "name": "W-33",
+      "nickname": "The Phantom",
+      "status": "shut-in",
+      "safetyLocked": false,
+      "integrityScore": 45,
+      "statusNote": "Problem diagnosed, solution approved, awaiting intervention",
+      "tags": ["subsea", "HPHT", "gas-condensate", "TAPB", "LWIV-candidate"],
       "identity": {
-        "operator": "Operator Name",
-        "field": "Brahan Field",
-        "block": "Block ID",
-        "wellType": "Injector",
-        "waterDepth": { "value": 0, "unit": "ft" },
-        "td": { "md": 0, "tvd": 0, "unit": "ft" },
-        "rte": { "value": 0, "unit": "ft" },
-        "spudDate": "YYYY-MM-DD",
-        "completionDate": "YYYY-MM-DD"
+        "regulatoryId": "12-345-67898-BRA-033",
+        "operator": "Brahan Field Operating Company",
+        "platform": "Brahan Zeta Subsea Manifold (22km tieback to Brahan Alpha)",
+        "lease": "Brahan Zeta Subsea Development Area",
+        "surfaceLocation": "58° 45' 00.0\" N, 0° 30' 00.0\" E",
+        "datumElevation": "N/A (Subsea)",
+        "waterDepth": "1,100 m",
+        "spudDate": "2018-05-10",
+        "completionDate": "2018-09-01",
+        "wellType": "Subsea HPHT Gas Condensate Producer",
+        "currentStatus": "SHUT-IN (Awaiting complex intervention)",
+        "classification": "Complex Integrity & Production Assurance Issue"
+      },
+      "economics": {
+        "originalAFE": 85000000,
+        "actualSpent": 112000000,
+        "spentNote": "Includes incorrect subsea interventions and diagnostics",
+        "cumulativeProduction": "18.5 MMboe",
+        "interventionAFE": 8000000,
+        "interventionType": "LWIV Perforation",
+        "npvIfSuccessful": 450000000,
+        "probabilityOfSuccess": 95
+      },
+      "reservoir": {
+        "formation": "Brahan Epsilon Sandstone (HPHT Sweet Spot)",
+        "porosity": "18-22%",
+        "permeability": "250-350 mD",
+        "initialPressure": "9,200 psi @ 3,800m TVD",
+        "temperature": "185°C",
+        "fluidType": "Rich Gas Condensate",
+        "cgr": "165 bbl/MMscf",
+        "gasGravity": "0.68",
+        "h2s": "15 ppm",
+        "co2": "4.0 mol%",
+        "scaleRisk": "Moderate BaSO4, managed by continuous injection"
+      },
+      "construction": {
+        "totalDepth": "5,000 m MD",
+        "trajectory": "Extended Reach",
+        "maxInclination": "85°",
+        "maxDLS": "1.50°/30m",
+        "casingProgram": [
+          { "name": "Conductor", "size": "36\"", "top": 1150, "bottom": 1300, "notes": "Suction Anchor" },
+          { "name": "Surface", "size": "20\"", "top": 1150, "bottom": 2500, "grade": "X-80", "weight": "133.0 lb/ft" },
+          { "name": "Intermediate", "size": "13-3/8\"", "top": 1150, "bottom": 4200, "grade": "P-110", "weight": "72.0 lb/ft", "notes": "THE FLAW: Annulus B inadvertently sealed" },
+          { "name": "Production", "size": "9-5/8\"", "top": 1150, "bottom": 5000, "grade": "Q-125 13Cr", "weight": "53.5 lb/ft", "status": "DEFORMED", "notes": "Deformed by external TAPB pressure" }
+        ]
       },
       "completion": {
-        "casingProgram": [],
-        "tubing": { "size": "", "weight": "", "grade": "", "thread": "", "topDepth": 0 },
-        "scssv": { "type": "", "size": "", "depth": 0, "testPressure": 0, "testDate": "" },
-        "packer": { "type": "", "depth": 0, "size": "" },
-        "minRestriction": { "id": 0, "depth": 0, "component": "" },
-        "gasLiftValves": []
+        "tubing": {
+          "size": "5-1/2\" OD",
+          "weight": "20.0 lb/ft",
+          "grade": "13Cr-110",
+          "connection": "VAM TOP HT",
+          "depth": "0-4,950m",
+          "status": "COMPROMISED - Being cyclically crushed by TAPB"
+        },
+        "scssv": {
+          "type": "Subsea Controlled SCSSV",
+          "bore": "2.875\"",
+          "depth": "300m",
+          "status": "ASSUMED FUNCTIONAL - Inaccessible for testing"
+        },
+        "packer": {
+          "type": "Model C Hydraulic Set",
+          "depth": "4,900m",
+          "rating": "15k psi",
+          "status": "FUNCTIONING - But is the cause of trapped annulus"
+        },
+        "perforations": "4,910-5,000m, 12 SPF, 60° phasing, big-hole charges"
       },
       "barriers": {
-        "status": "pending",
-        "primary": { "type": "", "depth": 0, "testPressure": 0, "testDate": "", "testDuration": "", "witness": "" },
-        "secondary": { "type": "", "depth": 0, "testPressure": 0, "testDate": "" },
-        "wellKillWeight": { "value": 0, "unit": "ppg" },
-        "fluidType": "",
-        "notes": ""
+        "status": "COMPROMISED",
+        "integrityConfidence": "45%",
+        "primary": [
+          { "element": "5-1/2\" Production Tubing", "status": "DEGRADING", "notes": "Cyclically crushed by TAPB" },
+          { "element": "Hydraulic Packer", "status": "FUNCTIONAL", "notes": "Source of trapped annulus problem" },
+          { "element": "SCSSV", "status": "ASSUMED OK", "notes": "Inaccessible" }
+        ],
+        "secondary": [
+          { "element": "9-5/8\" Production Casing", "status": "PERMANENTLY DEFORMED" },
+          { "element": "13-3/8\" Intermediate Casing", "status": "INTACT" },
+          { "element": "Subsea Tree & Flowlines", "status": "INTACT" }
+        ]
       },
-      "interventions": [],
-      "deviationSurvey": { "available": false, "csvFile": "", "maxInclination": 0, "maxDLS": 0, "dlsDepth": 0 },
-      "knownProblems": [],
-      "tags": []
+      "interventions": [
+        {
+          "date": "2018-09-01",
+          "type": "Completion",
+          "objective": "Run & set completion, install subsea tree",
+          "provider": "SubseaTech Solutions",
+          "duration": "30 days",
+          "outcome": "COMPLETED - All activities appeared successful",
+          "npt": "5 days (weather)",
+          "aiAnalysis": "Packer setting logs show 2-minute deviation where vent port not confirmed open. Probability of trapped annulus: 15%."
+        },
+        {
+          "date": "2018-2020",
+          "type": "Production",
+          "objective": "Routine production",
+          "outcome": "SUCCESS - 26,500 boepd average",
+          "notes": "The golden years"
+        },
+        {
+          "date": "2021-01",
+          "type": "Production Analysis",
+          "objective": "Investigate flow anomalies",
+          "duration": "30 days",
+          "outcome": "INCONCLUSIVE - Attributed to slugging in flowline",
+          "aiAnalysis": "Data signature does not match typical slugging. Flagged as unknown transient phenomenon."
+        },
+        {
+          "date": "2021-06",
+          "type": "Subsea Intervention",
+          "objective": "Pig 22km flowline to clear suspected blockage",
+          "provider": "Flowline Services Inc.",
+          "duration": "10 days",
+          "outcome": "FAILED - Pig ran clean, no blockage found",
+          "npt": "10 days (full job)",
+          "cost": 3000000,
+          "notes": "First major expense based on flawed theory"
+        },
+        {
+          "date": "2021-11",
+          "type": "Subsea Intervention",
+          "objective": "ROV inspection of subsea choke and tree",
+          "provider": "SubseaTech Solutions",
+          "duration": "7 days",
+          "outcome": "FAILED - Choke and tree fully operational and clean",
+          "npt": "7 days (full job)",
+          "notes": "The ghost is not in the subsea hardware"
+        },
+        {
+          "date": "2022-04",
+          "type": "Management",
+          "objective": "Review mounting costs",
+          "outcome": "DECISION - Senior well integrity engineer brought in to challenge existing theories",
+          "notes": "The turning point"
+        },
+        {
+          "date": "2022-05",
+          "type": "E-Line Diagnostics",
+          "objective": "Deploy high-temp memory gauge",
+          "provider": "DeepDiagnostics Ltd.",
+          "duration": "14 days",
+          "outcome": "BREAKTHROUGH - Direct correlation found: production heat → Annulus B pressure climb 4,500 psi → casing deformation → tubing choke",
+          "npt": "14 days (full job)",
+          "notes": "THE PHANTOM FOUND: Thermal-Induced Annular Pressure Build-up (TAPB)"
+        },
+        {
+          "date": "2022-06",
+          "type": "Engineering Study",
+          "objective": "Develop TAPB solution",
+          "outcome": "PLAN APPROVED - Perforate 9-5/8\" casing above packer to equalize pressure",
+          "notes": "High-risk, high-reward intervention on producing well"
+        }
+      ],
+      "productionHistory": {
+        "targetRate": "25,000 boepd",
+        "actualPeak": "26,500 boepd (2018-2020)",
+        "decline2021_2022": "12,000 boepd (erratic with unexplained shutdowns)",
+        "cumulative": "18.5 MMboe",
+        "currentStatus": "Non-productive since late 2022"
+      },
+      "aiRecommendation": {
+        "summary": "LWIV intervention is textbook example of right tool for the job. High-precision, lower-cost solution.",
+        "recommendation": "Use Light Well Intervention Vessel (LWIV) for through-tubing perforation",
+        "tool": "2-1/8\" high-temperature hollow carrier gun",
+        "optimalDepth": "4,850m MD (50m above packer)",
+        "chargeSize": "Calculated to penetrate 13Cr-110 casing and cement without damaging 13-3/8\" casing",
+        "monitoring": "Real-time acoustic monitoring to confirm perforation and pressure equalization",
+        "vesselType": "LWIV",
+        "probabilityOfSuccess": 95,
+        "npv5Year": 450000000
+      },
+      "lessonsLearned": [
+        {
+          "id": "LL-033-001",
+          "category": "Completion",
+          "severity": "CRITICAL",
+          "title": "Annulus vent port confirmation is mandatory",
+          "description": "2-minute deviation in packer setting procedure where vent port was not confirmed led to $27M in wasted interventions"
+        },
+        {
+          "id": "LL-033-002",
+          "category": "Diagnostics",
+          "severity": "HIGH",
+          "title": "Challenge assumptions before expensive interventions",
+          "description": "Fresh eyes from senior engineer identified the real problem after $13M spent on wrong solutions"
+        }
+      ]
     },
     {
-      "id": "well_44",
-      "name": "Well_44",
-      "status": "active",
+      "id": "w-44",
+      "name": "W-44",
+      "nickname": "The Shifter",
+      "status": "total-loss",
+      "safetyLocked": true,
+      "safetyLockReasons": [
+        "0% integrity confidence",
+        "Casing sheared at multiple points",
+        "Mw 2.1 seismic event - fault reactivation",
+        "Total loss - no intervention possible"
+      ],
+      "integrityScore": 0,
+      "tags": ["geomechanical", "fault", "total-loss", "relief-well", "P&A"],
       "identity": {
-        "operator": "Operator Name",
-        "field": "Brahan Field",
-        "block": "Block ID",
-        "wellType": "Subsea Producer",
-        "waterDepth": { "value": 0, "unit": "ft" },
-        "td": { "md": 0, "tvd": 0, "unit": "ft" },
-        "rte": { "value": 0, "unit": "ft" },
-        "spudDate": "YYYY-MM-DD",
-        "completionDate": "YYYY-MM-DD"
+        "regulatoryId": "12-345-67898-BRA-044",
+        "operator": "Brahan Field Operating Company",
+        "platform": "Brahan Epsilon Platform",
+        "lease": "Brahan Epsilon Main Development Area",
+        "surfaceLocation": "58° 50' 00.0\" N, 0° 15' 00.0\" E",
+        "datumElevation": "+30 m RKB",
+        "waterDepth": "95 m",
+        "spudDate": "2016-06-01",
+        "completionDate": "2016-10-20",
+        "wellType": "HPHT Oil Producer (High-Stress Fault Block)",
+        "currentStatus": "SHUT-IN (Total Loss, Abandonment in Progress)",
+        "classification": "Catastrophic Geomechanical Failure"
+      },
+      "economics": {
+        "originalAFE": 55000000,
+        "actualSpent": 78000000,
+        "spentNote": "Includes completion, emergency response, ongoing abandonment",
+        "cumulativeProduction": "28 MMstb",
+        "estimatedLostReserves": "40 MMstb",
+        "reliefWellAFE": 85000000
+      },
+      "reservoir": {
+        "formation": "Brahan Zeta Sandstone (HPHT Fault-Block Zone)",
+        "porosity": "17-20%",
+        "permeability": "150-250 mD",
+        "initialPressure": "9,500 psi @ 3,600m TVD",
+        "temperature": "175°C",
+        "fluidType": "Light, Sweet Crude Oil",
+        "oilGravity": "40° API",
+        "solutionGOR": "1,500 scf/bbl",
+        "geomechanicalContext": "CRITICAL - High horizontal stress near critically stressed fault line. Depletion altered stress field, causing fault reactivation."
+      },
+      "construction": {
+        "totalDepth": "4,500 m MD",
+        "trajectory": "Deviated",
+        "maxInclination": "60°",
+        "maxDLS": "1.50°/30m",
+        "currentState": "CATASTROPHICALLY DAMAGED - Casing sheared at multiple points",
+        "casingProgram": [
+          { "name": "Conductor", "size": "30\"", "top": 100, "bottom": 250 },
+          { "name": "Surface", "size": "20\"", "top": 100, "bottom": 1200, "grade": "K-55", "weight": "94.0 lb/ft" },
+          { "name": "Intermediate", "size": "13-3/8\"", "top": 100, "bottom": 2800, "grade": "L-80", "weight": "68.0 lb/ft" },
+          { "name": "Production", "size": "9-5/8\"", "top": 100, "bottom": 4500, "grade": "Q-125 13Cr", "weight": "53.5 lb/ft", "status": "SHEARED & CRUSHED at multiple points" }
+        ]
       },
       "completion": {
-        "casingProgram": [],
-        "tubing": { "size": "", "weight": "", "grade": "", "thread": "", "topDepth": 0 },
-        "scssv": { "type": "", "size": "", "depth": 0, "testPressure": 0, "testDate": "" },
-        "packer": { "type": "", "depth": 0, "size": "" },
-        "minRestriction": { "id": 0, "depth": 0, "component": "" },
-        "gasLiftValves": []
+        "status": "TOTAL LOSS - Presumed buried and crushed",
+        "tubing": {
+          "size": "5-1/2\" OD",
+          "weight": "23.0 lb/ft",
+          "grade": "13Cr-110",
+          "status": "SHEARED AND/OR PARTED"
+        },
+        "scssv": {
+          "bore": "2.875\"",
+          "depth": "300m",
+          "status": "DAMAGED OR SHEARED"
+        },
+        "packer": {
+          "type": "Model C Hydraulic Set",
+          "depth": "4,400m",
+          "rating": "15k psi",
+          "status": "DESTROYED"
+        },
+        "esp": {
+          "type": "562 Series",
+          "rating": "800 HP",
+          "depth": "3,600m",
+          "status": "DESTROYED"
+        },
+        "perforations": "4,410-4,500m, 12 SPF - COMMUNICATING WITH COLLAPSED FORMATION"
       },
       "barriers": {
-        "status": "verified",
-        "primary": { "type": "", "depth": 0, "testPressure": 0, "testDate": "", "testDuration": "", "witness": "" },
-        "secondary": { "type": "", "depth": 0, "testPressure": 0, "testDate": "" },
-        "wellKillWeight": { "value": 0, "unit": "ppg" },
-        "fluidType": "",
-        "notes": ""
+        "status": "NON-EXISTENT",
+        "integrityConfidence": "0%",
+        "primary": [
+          { "element": "Tubing", "status": "DESTROYED" },
+          { "element": "Packer", "status": "DESTROYED" },
+          { "element": "SCSSV", "status": "DESTROYED" },
+          { "element": "Casing", "status": "DESTROYED" }
+        ],
+        "secondary": [
+          { "element": "13-3/8\" Intermediate Casing", "status": "UNKNOWN - After shear event" },
+          { "element": "20\" Surface Casing", "status": "UNKNOWN - After shear event" }
+        ]
       },
-      "interventions": [],
-      "deviationSurvey": { "available": false, "csvFile": "", "maxInclination": 0, "maxDLS": 0, "dlsDepth": 0 },
-      "knownProblems": [],
-      "tags": []
+      "interventions": [
+        {
+          "date": "2016-10-20",
+          "type": "Completion",
+          "objective": "Run completion, set packer, install ESP",
+          "provider": "Completion Solutions Inc.",
+          "duration": "15 days",
+          "outcome": "SUCCESS",
+          "npt": "3 days (weather)"
+        },
+        {
+          "date": "2016-2020",
+          "type": "Production",
+          "objective": "Routine production",
+          "outcome": "SUCCESS - 24,000 bopd average, best well in field",
+          "notes": "The golden years"
+        },
+        {
+          "date": "2020-03-12T03:15:00",
+          "type": "CATASTROPHIC EVENT",
+          "objective": "N/A",
+          "outcome": "TOTAL PRODUCTION LOSS - Wellhead pressure dropped to zero in seconds. High-frequency vibrations recorded on platform deck.",
+          "aiAnalysis": "Platform seismic sensors recorded Mw 2.1 microseismic event directly beneath well. Flagged as critical geomechanical event."
+        },
+        {
+          "date": "2020-03-12",
+          "type": "Emergency Response",
+          "objective": "Verify well integrity, check for leaks",
+          "provider": "Brahan Emergency Team",
+          "duration": "48 hours",
+          "outcome": "NO SURFACE LEAKS - Wellhead and tree intact. Annulus pressures stable but zero.",
+          "npt": "48 hours (full alert)",
+          "notes": "Problem is deep downhole. Well is not leaking, it's broken."
+        },
+        {
+          "date": "2020-03-15",
+          "type": "Wireline (Diagnostic)",
+          "objective": "Drift run to locate obstruction",
+          "provider": "DiagTech Solutions",
+          "duration": "6 hours",
+          "outcome": "FAILED - Drift held up at 2,100m",
+          "npt": "6 hours (full job)",
+          "notes": "Major downhole problem far above reservoir"
+        },
+        {
+          "date": "2020-03-16",
+          "type": "Wireline (Diagnostic)",
+          "objective": "Multi-Finger Caliper to assess damage",
+          "provider": "DiagTech Solutions",
+          "duration": "12 hours",
+          "outcome": "CATASTROPHIC FINDING - Tool stuck at 2,050m. Data showed >70% ovality in 9-5/8\" casing.",
+          "npt": "12 hours (full job)",
+          "notes": "Casing is crushed, not just deformed. Well is total loss."
+        },
+        {
+          "date": "2020-03-20",
+          "type": "Management Decision",
+          "objective": "Declare well status",
+          "outcome": "DECISION - W-44 declared constructive total loss. Intervention efforts cease. Focus on safe abandonment and root cause.",
+          "notes": "The Shifter is dead. Investigation begins."
+        },
+        {
+          "date": "2020-2023",
+          "type": "Field-Wide Study",
+          "objective": "Model geomechanical risk across field",
+          "provider": "GeoStress Inc.",
+          "duration": "2 years",
+          "outcome": "MAJOR FINDING - Depletion reactivated pre-existing fault, causing ~1.5m shear at W-44 wellbore. Similar risks identified at two other wells.",
+          "notes": "Failure of W-44 has saved the rest of the field. Production rates at nearby wells proactively reduced."
+        }
+      ],
+      "productionHistory": {
+        "targetRate": "22,000 bopd",
+        "actualPeak": "24,000 bopd (best well in field)",
+        "cumulative": "28 MMstb",
+        "currentStatus": "Non-productive since event (March 2020)"
+      },
+      "aiRecommendation": {
+        "summary": "All options to restore production rejected with 100% confidence. Only safe option is relief well for P&A.",
+        "recommendation": "Drill Jack-Up Relief Well to intercept at 4,000m TVD (500m below shallowest confirmed shear)",
+        "rationale": "Industry-standard safest method for dealing with sheared well. Provides absolute control over kill operation.",
+        "vesselType": "Jack-Up Rig",
+        "secondaryAction": "Continue production management at nearby wells based on geomechanical model"
+      },
+      "lessonsLearned": [
+        {
+          "id": "LL-044-001",
+          "category": "Geomechanics",
+          "severity": "CRITICAL",
+          "title": "Reservoir depletion can reactivate pre-existing faults",
+          "description": "Stress field changes from production caused Mw 2.1 event and 1.5m shear"
+        },
+        {
+          "id": "LL-044-002",
+          "category": "Field Management",
+          "severity": "HIGH",
+          "title": "Single well failure provided data to protect entire field",
+          "description": "W-44 sacrifice enabled proactive rate reductions at at-risk wells"
+        }
+      ]
     },
     {
-      "id": "well_55",
-      "name": "Well_55",
-      "status": "p_and_a",
+      "id": "w-55",
+      "name": "W-55",
+      "nickname": "The Sibling",
+      "status": "shut-in",
+      "safetyLocked": true,
+      "safetyLockReasons": [
+        "20% integrity confidence",
+        "Frac hit from W-56",
+        "Tubing plugged with frac sand and gel",
+        "SCSSV plugged",
+        "P&A candidate"
+      ],
+      "integrityScore": 20,
+      "tags": ["frac-hit", "inter-well", "communication", "P&A", "reservoir-management"],
       "identity": {
-        "operator": "Operator Name",
-        "field": "Brahan Field",
-        "block": "Block ID",
-        "wellType": "Platform Producer",
-        "waterDepth": { "value": 0, "unit": "ft" },
-        "td": { "md": 0, "tvd": 0, "unit": "ft" },
-        "rte": { "value": 0, "unit": "ft" },
-        "spudDate": "YYYY-MM-DD",
-        "completionDate": "YYYY-MM-DD"
+        "regulatoryId": "12-345-67898-BRA-055",
+        "operator": "Brahan Field Operating Company",
+        "platform": "Brahan Alpha Platform",
+        "lease": "Brahan Alpha Main Development Area",
+        "surfaceLocation": "58° 37' 30.0\" N, 0° 19' 45.0\" E",
+        "datumElevation": "+30 m RKB",
+        "waterDepth": "105 m",
+        "spudDate": "2005-11-20",
+        "completionDate": "2006-03-10",
+        "wellType": "Oil Producer (Mature Field Well)",
+        "currentStatus": "SHUT-IN (Damaged by communication from W-56)",
+        "classification": "Catastrophic Inter-Well Communication"
+      },
+      "economics": {
+        "originalAFE": 25000000,
+        "actualSpent": 42000000,
+        "cumulativeProduction": "26.5 MMstb",
+        "estimatedValue": "Lost due to frac hit",
+        "p&aAFE": 10000000,
+        "npv": -10000000
+      },
+      "reservoir": {
+        "formation": "Brahan Alpha Sandstone (Upper Mature Zone)",
+        "porosity": "18-21%",
+        "permeability": "80-150 mD",
+        "initialPressure2006": "4,500 psi @ 2,800m TVD",
+        "currentPressure": "2,100 psi @ 2,800m TVD (pre-shutdown)",
+        "temperature": "145°C",
+        "fluidType": "Medium Crude Oil",
+        "oilGravity": "33° API",
+        "solutionGOR": "800 scf/bbl",
+        "subsurfaceContext": "CRITICAL - 450m from W-56. High-perm streak connecting wellbores not accounted for in W-56 frac model."
+      },
+      "construction": {
+        "totalDepth": "3,000 m MD",
+        "trajectory": "Deviated",
+        "maxInclination": "45°",
+        "maxDLS": "0.50°/30m",
+        "casingProgram": [
+          { "name": "Conductor", "size": "30\"", "top": 120, "bottom": 250 },
+          { "name": "Surface", "size": "20\"", "top": 120, "bottom": 1100, "grade": "K-55", "weight": "94.0 lb/ft" },
+          { "name": "Intermediate", "size": "13-3/8\"", "top": 120, "bottom": 2200, "grade": "L-80", "weight": "68.0 lb/ft" },
+          { "name": "Production", "size": "9-5/8\"", "top": 120, "bottom": 3000, "grade": "C-95", "weight": "47.0 lb/ft", "status": "ASSUMED INTACT" }
+        ]
       },
       "completion": {
-        "casingProgram": [],
-        "tubing": { "size": "", "weight": "", "grade": "", "thread": "", "topDepth": 0 },
-        "scssv": { "type": "", "size": "", "depth": 0, "testPressure": 0, "testDate": "" },
-        "packer": { "type": "", "depth": 0, "size": "" },
-        "minRestriction": { "id": 0, "depth": 0, "component": "" },
-        "gasLiftValves": []
+        "tubing": {
+          "size": "4-1/2\" OD",
+          "weight": "12.6 lb/ft",
+          "grade": "L-80",
+          "connection": "BTC",
+          "depth": "0-2,950m",
+          "status": "SEVERELY PLUGGED with frac sand and gel"
+        },
+        "scssv": {
+          "type": "TRSSV",
+          "bore": "1.875\"",
+          "depth": "280m",
+          "status": "PLUGGED"
+        },
+        "packer": {
+          "type": "Model A Hydraulic Set",
+          "depth": "2,900m",
+          "rating": "10k psi",
+          "status": "ASSUMED INTACT"
+        },
+        "perforations": "2,910-3,000m, 4 SPF, 60° phasing - NOW OPEN TO HIGH-PRESSURE CHANNEL"
       },
       "barriers": {
-        "status": "critical",
-        "primary": { "type": "", "depth": 0, "testPressure": 0, "testDate": "", "testDuration": "", "witness": "" },
-        "secondary": { "type": "", "depth": 0, "testPressure": 0, "testDate": "" },
-        "wellKillWeight": { "value": 0, "unit": "ppg" },
-        "fluidType": "",
-        "notes": "SCSSV data missing - Safety Gateway LOCKED"
+        "status": "COMPROMISED",
+        "integrityConfidence": "20%",
+        "primary": [
+          { "element": "4-1/2\" Production Tubing", "status": "PLUGGED" },
+          { "element": "TRSSV", "status": "PLUGGED" }
+        ],
+        "secondary": [
+          { "element": "9-5/8\" Production Casing", "status": "ASSUMED INTACT" },
+          { "element": "13-3/8\" Intermediate Casing", "status": "ASSUMED INTACT" },
+          { "element": "Wellhead & X-mas Tree", "status": "TESTED OK" }
+        ]
       },
-      "interventions": [],
-      "deviationSurvey": { "available": false, "csvFile": "", "maxInclination": 0, "maxDLS": 0, "dlsDepth": 0 },
-      "knownProblems": ["Missing SCSSV depth data"],
-      "tags": ["safety-locked"]
+      "interventions": [
+        {
+          "date": "2006-03-10",
+          "type": "Completion",
+          "objective": "Run completion, perforate, bring online",
+          "provider": "Completion Solutions Inc.",
+          "duration": "10 days",
+          "outcome": "SUCCESS",
+          "npt": "2 days (weather)"
+        },
+        {
+          "date": "2006-2022",
+          "type": "Production",
+          "objective": "Routine production",
+          "outcome": "SUCCESS - 5,500 bopd average, steady and reliable",
+          "notes": "The steady years"
+        },
+        {
+          "date": "2022-10-10",
+          "type": "Stimulation (W-56)",
+          "objective": "Massive multi-stage hydraulic frac on new well W-56",
+          "provider": "FracTech International",
+          "duration": "3 days",
+          "outcome": "COMPLETED - W-56 brought online at 25,000 bopd",
+          "aiAnalysis": "Fracture model did not include high-perm streak. 70% probability of inter-well communication."
+        },
+        {
+          "date": "2022-10-12",
+          "type": "CATASTROPHIC EVENT",
+          "objective": "N/A",
+          "outcome": "W-55 PRODUCTION DIES - Well starts producing 100% water with frac sand and polymer gel. THP spikes erratically.",
+          "aiAnalysis": "Fluid fingerprint from W-55 is 99.8% match to W-56 frac fluid. Diagnosis: FRACTURE HIT."
+        },
+        {
+          "date": "2022-10-13",
+          "type": "Emergency Response",
+          "objective": "Shut-in W-55 to prevent damage",
+          "provider": "Brahan Operations",
+          "duration": "1 hour",
+          "outcome": "SUCCESS - Well shut in",
+          "notes": "The damage is done. The well is dead."
+        },
+        {
+          "date": "2022-10-15",
+          "type": "Engineering Review",
+          "objective": "Review W-55 and W-56 data",
+          "duration": "2 weeks",
+          "outcome": "CONCLUSION - W-55 killed by W-56 frac. Reservoir pressure around W-55 drawn down by high-production channel to W-56.",
+          "notes": "Major financial and operational failure. Value of W-55 destroyed."
+        },
+        {
+          "date": "2022-11",
+          "type": "Management Decision",
+          "objective": "Determine future of W-55",
+          "outcome": "DECISION - Constructive total loss. Cost of repair prohibitive. Will be P&A'd to prevent thief zone.",
+          "notes": "Must seal off fracture channel to protect W-56 production"
+        }
+      ],
+      "productionHistory": {
+        "targetRate": "6,000 bopd",
+        "actualPeak": "5,500 bopd (2006-2022 average)",
+        "cumulative": "26.5 MMstb",
+        "currentStatus": "Non-productive since October 2022"
+      },
+      "aiRecommendation": {
+        "summary": "All options to restore production rejected with 100% confidence. Reservoir energy permanently diverted.",
+        "recommendation": "Use platform workover rig for full P&A",
+        "criticalRequirement": "Abandonment must place permanent cement plug ABOVE top perforations to seal high-conductivity fracture channel",
+        "rationale": "Prevent W-55 from siphoning pressure and fluids from W-56",
+        "vesselType": "Platform Workover Rig"
+      },
+      "lessonsLearned": [
+        {
+          "id": "LL-055-001",
+          "category": "Reservoir Management",
+          "severity": "CRITICAL",
+          "title": "Fracture modeling must include high-perm streaks between wells",
+          "description": "450m spacing with unaccounted high-perm streak led to catastrophic frac hit"
+        },
+        {
+          "id": "LL-055-002",
+          "category": "Well Spacing",
+          "severity": "HIGH",
+          "title": "Legacy wells at risk from aggressive stimulation of new wells",
+          "description": "W-55's 16-year production history destroyed in 2 days by W-56 frac"
+        }
+      ]
     },
     {
-      "id": "well_66",
-      "name": "Well_66",
-      "status": "active",
+      "id": "w-666",
+      "name": "W-666",
+      "nickname": "The Perfect Storm",
+      "status": "shut-in",
+      "safetyLocked": true,
+      "safetyLockReasons": [
+        "SCSSV Failed (stuck closed since 2021)",
+        "Casing deformation >20% at 4,500m",
+        "Barrier status unverified",
+        "Multiple cascading failures from 2016 intervention"
+      ],
+      "integrityScore": 10,
+      "tags": ["human-factors", "FOD", "fatigue", "barrier-damage", "lessons-learned", "flagship"],
       "identity": {
-        "operator": "Operator Name",
-        "field": "Brahan Field",
-        "block": "Block ID",
-        "wellType": "Gas Producer",
-        "waterDepth": { "value": 0, "unit": "ft" },
-        "td": { "md": 0, "tvd": 0, "unit": "ft" },
-        "rte": { "value": 0, "unit": "ft" },
-        "spudDate": "YYYY-MM-DD",
-        "completionDate": "YYYY-MM-DD"
+        "regulatoryId": "12-345-67898-BRA-666",
+        "operator": "Brahan Field Operating Company",
+        "platform": "Brahan Alpha Platform",
+        "lease": "Brahan Alpha Main Development Area",
+        "surfaceLocation": "58° 41' 55.0\" N, 0° 24' 45.0\" E",
+        "datumElevation": "+30 m RKB",
+        "waterDepth": "180 m",
+        "spudDate": "2011-09-15",
+        "completionDate": "2012-02-28",
+        "wellType": "HPHT Gas Condensate Producer",
+        "currentStatus": "SHUT-IN (Complex multi-barrier failure)",
+        "classification": "Flagship Disaster Prevention Case Study"
+      },
+      "economics": {
+        "originalAFE": 48500000,
+        "drillingCompletionActual": 49100000,
+        "revenuePre2016": 220000000,
+        "intervention2016AFE": 1500000,
+        "intervention2016Actual": 7200000,
+        "lostProduction2016_2017": 45000000,
+        "workover2017AFE": 15000000,
+        "workover2017Actual": 18500000,
+        "deferredProduction2017_2021": 95000000,
+        "totalSpentToDate": 74800000,
+        "proposedInterventionAFE": 25000000,
+        "probabilityOfSuccess": { "p10": 30, "p50": 55, "p90": 80 },
+        "npvIfSuccessful": 120000000,
+        "npvIfFailed": -40000000,
+        "expectedValue": 48000000
+      },
+      "reservoir": {
+        "formation": "Brahan Alpha Sandstone",
+        "porosity": "19-23%",
+        "permeability": "200-400 mD",
+        "initialPressure": "8,750 psi @ 2,550m TVD",
+        "temperature": "178°C",
+        "fluidType": "Rich Gas Condensate",
+        "ogip": "190 Bcf",
+        "eurDegraded": "<35 Bcf (from original 80 Bcf)",
+        "h2s": "25 ppm",
+        "co2": "5.5 mol%",
+        "scaleRisk": "EXTREME BaSO4"
+      },
+      "construction": {
+        "totalDepth": "5,000 m MD / 2,550.4 m TVD",
+        "trajectory": "Extended Reach",
+        "maxInclination": "90°",
+        "maxDLS": "1.5°/30m",
+        "casingProgram": [
+          { "name": "Conductor", "size": "30\"", "top": 0, "bottom": 200 },
+          { "name": "Surface", "size": "20\"", "top": 0, "bottom": 800, "grade": "K-55" },
+          { "name": "Intermediate", "size": "13-3/8\"", "top": 0, "bottom": 3200, "grade": "P-110", "status": "ASSUMED INTACT" },
+          { "name": "Production", "size": "9-5/8\"", "top": 0, "bottom": 5000, "grade": "Q-125 13Cr", "status": "DEFORMED", "notes": ">20% ovality at 4,500m from 2016 jarring" }
+        ]
       },
       "completion": {
-        "casingProgram": [],
-        "tubing": { "size": "", "weight": "", "grade": "", "thread": "", "topDepth": 0 },
-        "scssv": { "type": "", "size": "", "depth": 0, "testPressure": 0, "testDate": "" },
-        "packer": { "type": "", "depth": 0, "size": "" },
-        "minRestriction": { "id": 0, "depth": 0, "component": "" },
-        "gasLiftValves": []
+        "tubing": {
+          "size": "5-1/2\" OD",
+          "weight": "17.0 lb/ft",
+          "grade": "L-80 13Cr",
+          "depth": "0-4,900m",
+          "status": "SUSPECT"
+        },
+        "scssv": {
+          "type": "TRSSV",
+          "bore": "1.875\"",
+          "depth": "410m",
+          "status": "FAILED - Stuck closed since April 2021"
+        },
+        "packer": {
+          "type": "Model A Hydraulic Set",
+          "depth": "4,850m",
+          "rating": "10k psi",
+          "status": "UNCERTAIN"
+        },
+        "gasLiftMandrels": [
+          { "depth": "2,100m", "status": "Accessibility compromised" },
+          { "depth": "2,400m", "status": "Accessibility compromised" },
+          { "depth": "2,700m", "status": "Accessibility compromised" }
+        ],
+        "landingNipple": {
+          "type": "No-Go",
+          "id": "2.313\"",
+          "depth": "4,870m",
+          "status": "Accessibility compromised"
+        },
+        "perforations": "4,910-5,000m, 12 SPF, 60° phasing",
+        "minRestriction": "1.875\" ID @ 410m (SCSSV bore)"
       },
       "barriers": {
-        "status": "verified",
-        "primary": { "type": "", "depth": 0, "testPressure": 0, "testDate": "", "testDuration": "", "witness": "" },
-        "secondary": { "type": "", "depth": 0, "testPressure": 0, "testDate": "" },
-        "wellKillWeight": { "value": 0, "unit": "ppg" },
-        "fluidType": "",
-        "notes": ""
+        "status": "SEVERELY COMPROMISED",
+        "integrityConfidence": "10%",
+        "primary": [
+          { "element": "Tubing", "status": "SUSPECT" },
+          { "element": "Packer", "status": "UNKNOWN" },
+          { "element": "SCSSV", "status": "FAILED", "notes": "Stuck closed" },
+          { "element": "9-5/8\" Casing", "status": "DEFORMED", "notes": ">20% ovality" }
+        ],
+        "secondary": [
+          { "element": "13-3/8\" Intermediate Casing", "status": "ASSUMED INTACT" },
+          { "element": "20\" Surface Casing", "status": "ASSUMED INTACT" },
+          { "element": "Wellhead & Tree", "status": "TESTED OK", "notes": "Quarterly" }
+        ],
+        "annulusA": "150 psi (stable but elevated)",
+        "annulusB": "15 psi (normal)",
+        "wellKillWeight": "10.2 ppg CaCl2 brine"
       },
-      "interventions": [],
-      "deviationSurvey": { "available": false, "csvFile": "", "maxInclination": 0, "maxDLS": 0, "dlsDepth": 0 },
-      "knownProblems": [],
-      "tags": []
+      "interventions": [
+        {
+          "date": "2012-02",
+          "type": "Completion",
+          "outcome": "SUCCESS"
+        },
+        {
+          "date": "2012-03",
+          "type": "Start-up",
+          "outcome": "SUCCESS - Flowed above prognosis"
+        },
+        {
+          "date": "2014-06",
+          "type": "GLV Replacement",
+          "outcome": "SUCCESS (routine)"
+        },
+        {
+          "date": "2016-10",
+          "type": "Bridge Plug Retrieval",
+          "outcome": "CATASTROPHIC FAILURE",
+          "afeVsActual": "$1.5M → $7.2M",
+          "npt": "840 hours",
+          "rootCause": "FOD (tong die), crew on 14th consecutive night shift",
+          "damage": "TRSSV profile damaged, debris in wellbore, casing deformed from excessive jarring"
+        },
+        {
+          "date": "2017-03",
+          "type": "Major Workover",
+          "outcome": "PARTIAL SUCCESS",
+          "afeVsActual": "$15M → $18.5M",
+          "notes": "Replaced upper completion, discovered >20% casing ovality at 4,500m. Well returned at 4,500 boepd (from 10,500)"
+        },
+        {
+          "date": "2021-04",
+          "type": "SCSSV Function Test",
+          "outcome": "FAILED - Stuck closed",
+          "notes": "Well shut-in since"
+        }
+      ],
+      "productionHistory": {
+        "targetRate": "12,000 boepd",
+        "actualPeak": "10,500 boepd (2012-2016)",
+        "postWorkover": "4,500 boepd (2017-2021)",
+        "cumulative": "22.5 MMboe",
+        "currentStatus": "Shut-in since April 2021"
+      },
+      "aiRecommendation": {
+        "summary": "Despite high risk, expected value is strongly positive. Complex intervention justified.",
+        "phases": [
+          { "phase": 0, "name": "Advanced Diagnostics", "scope": "Multi-finger caliper, ultrasonic imaging" },
+          { "phase": 1, "name": "SSV Replacement/Bypass", "scope": "Lock TRSSV open, install IRSV above" },
+          { "phase": 2, "name": "Casing Remediation", "scope": "Expandable liner/patch across deformed section" },
+          { "phase": 3, "name": "Production Optimization", "scope": "Clean-out, potential stimulation" }
+        ],
+        "vesselType": "Jack-Up Rig or Platform Workover"
+      },
+      "lessonsLearned": [
+        {
+          "id": "LL-666-001",
+          "category": "FOD",
+          "severity": "CRITICAL",
+          "title": "Tong dies must be tethered, mandatory tool count verification"
+        },
+        {
+          "id": "LL-666-002",
+          "category": "Fatigue",
+          "severity": "HIGH",
+          "title": "14+ night shifts correlated with incident, flag crew rotation >10 days"
+        },
+        {
+          "id": "LL-666-003",
+          "category": "Diagnostics",
+          "severity": "CRITICAL",
+          "title": "LIB impression dismissed - mandatory offsite expert review for unexplained failures"
+        },
+        {
+          "id": "LL-666-004",
+          "category": "Schedule Pressure",
+          "severity": "HIGH",
+          "title": "Fiscal deadline pressure contributed to aggressive jarring"
+        },
+        {
+          "id": "LL-666-005",
+          "category": "Barrier Awareness",
+          "severity": "CRITICAL",
+          "title": "Team didn't recognize POOH through TRSSV with expanded element was high-risk"
+        }
+      ],
+      "detailPage": "well-666.html"
     },
     {
-      "id": "well_777",
-      "name": "Well_777",
-      "status": "workover",
+      "id": "w-77",
+      "name": "W-77",
+      "nickname": "The Politician",
+      "status": "shut-in",
+      "safetyLocked": true,
+      "safetyLockReasons": [
+        "5% integrity confidence (Total Failure)",
+        "Active seabed leak (5-10 liters/day)",
+        "All barriers failed or unknown",
+        "Environmental & regulatory liability"
+      ],
+      "integrityScore": 5,
+      "tags": ["legacy", "1970s", "environmental", "seabed-leak", "cut-cap", "regulatory"],
       "identity": {
-        "operator": "Operator Name",
-        "field": "Brahan Field",
-        "block": "Block ID",
-        "wellType": "Subsea Producer",
-        "waterDepth": { "value": 0, "unit": "ft" },
-        "td": { "md": 0, "tvd": 0, "unit": "ft" },
-        "rte": { "value": 0, "unit": "ft" },
-        "spudDate": "YYYY-MM-DD",
-        "completionDate": "YYYY-MM-DD"
+        "regulatoryId": "12-345-67898-BRA-077",
+        "operator": "Brahan Field Operating Company (Inherited from Britannia Oil Co. - defunct since 1998)",
+        "platform": "Brahan Alpha Platform",
+        "lease": "Brahan Alpha Main Development Area",
+        "surfaceLocation": "58° 35' 45.0\" N, 0° 16' 30.0\" E",
+        "datumElevation": "+30 m RKB",
+        "waterDepth": "85 m",
+        "spudDate": "1978-03-05",
+        "completionDate": "1978-07-21",
+        "wellType": "Legacy Oil Producer",
+        "currentStatus": "SHUT-IN (Chronic seabed leak detected)",
+        "classification": "Chronic Environmental Leak & Regulatory Liability"
+      },
+      "economics": {
+        "originalAFE": 5000000,
+        "originalAFENote": "1978 dollars",
+        "actualSpent": 45000000,
+        "spentNote": "Includes completion, production, failed remediation",
+        "cumulativeProduction": "18.5 MMstb",
+        "costOfInaction10Year": 250000000,
+        "cutCapAFE": 35000000,
+        "cutCapProbability": 90,
+        "reliefWellAFE": 150000000,
+        "reliefWellProbability": 99,
+        "ongoingFinesPerMonth": 1000000
+      },
+      "reservoir": {
+        "formation": "Brahan Alpha Sandstone (Shallow Topset Zone)",
+        "porosity": "15-18%",
+        "permeability": "50-80 mD",
+        "initialPressure1978": "2,800 psi @ 1,800m TVD",
+        "currentPressure": "900 psi @ 1,800m TVD",
+        "temperature": "95°C",
+        "fluidType": "Medium, Waxy Crude Oil",
+        "oilGravity": "28° API",
+        "solutionGOR": "400 scf/bbl",
+        "subsurfaceContext": "CRITICAL - Shallow gas and poorly consolidated sands near seabed. Original conductor likely driven, not drilled and cemented."
+      },
+      "construction": {
+        "totalDepth": "2,000 m MD",
+        "trajectory": "Near-vertical",
+        "maxInclination": "8°",
+        "dataQuality": "Estimated from 1978 standards - faded records",
+        "casingProgram": [
+          { "name": "Conductor", "size": "30\"", "top": 80, "bottom": 180, "notes": "DRIVEN - Primary suspect for leak" },
+          { "name": "Surface", "size": "13-3/8\"", "top": 80, "bottom": 1000, "grade": "K-55", "weight": "54.5 lb/ft", "notes": "OUTDATED GRADE - Cement bond unknown" },
+          { "name": "Production", "size": "9-5/8\"", "top": 80, "bottom": 2000, "grade": "J-55", "weight": "40.0 lb/ft", "notes": "OUTDATED GRADE" }
+        ]
       },
       "completion": {
-        "casingProgram": [],
-        "tubing": { "size": "", "weight": "", "grade": "", "thread": "", "topDepth": 0 },
-        "scssv": { "type": "", "size": "", "depth": 0, "testPressure": 0, "testDate": "" },
-        "packer": { "type": "", "depth": 0, "size": "" },
-        "minRestriction": { "id": 0, "depth": 0, "component": "" },
-        "gasLiftValves": []
+        "tubing": {
+          "size": "3-1/2\" OD",
+          "weight": "9.3 lb/ft",
+          "grade": "J-55",
+          "connection": "BTC",
+          "depth": "0-1,950m",
+          "status": "ASSUMED COLLAPSED OR SEVERELY CORRODED"
+        },
+        "packer": {
+          "type": "Mechanical Set (Retrievable)",
+          "depth": "1,900m",
+          "status": "UNKNOWN"
+        },
+        "perforations": "1,910-2,000m, 4 SPF, 60° phasing - ASSUMED COMMUNICATING WITH LEAK SOURCE"
       },
       "barriers": {
-        "status": "verified",
-        "primary": { "type": "", "depth": 0, "testPressure": 0, "testDate": "", "testDuration": "", "witness": "" },
-        "secondary": { "type": "", "depth": 0, "testPressure": 0, "testDate": "" },
-        "wellKillWeight": { "value": 0, "unit": "ppg" },
-        "fluidType": "",
-        "notes": ""
+        "status": "NON-EXISTENT",
+        "integrityConfidence": "5%",
+        "primary": [
+          { "element": "ALL", "status": "FAILED OR UNKNOWN" }
+        ],
+        "secondary": [
+          { "element": "ALL", "status": "FAILED OR UNKNOWN" }
+        ],
+        "activeSeabedLeak": "5-10 liters/day, 10m from wellhead"
       },
-      "interventions": [],
-      "deviationSurvey": { "available": false, "csvFile": "", "maxInclination": 0, "maxDLS": 0, "dlsDepth": 0 },
-      "knownProblems": [],
-      "tags": ["active-workover"]
+      "interventions": [
+        {
+          "date": "1978-07-21",
+          "type": "Completion",
+          "objective": "Run completion, bring online",
+          "provider": "Britannia Oil Co.",
+          "duration": "15 days",
+          "outcome": "SUCCESS for the era",
+          "npt": "3 days (weather)"
+        },
+        {
+          "date": "1978-2010",
+          "type": "Production",
+          "objective": "Routine production",
+          "outcome": "SUCCESS - 2,200 bopd average",
+          "notes": "The long, steady years"
+        },
+        {
+          "date": "2015",
+          "type": "Workover",
+          "objective": "Replace failing tubing pump",
+          "provider": "WellFix Inc.",
+          "duration": "10 days",
+          "outcome": "PARTIAL SUCCESS - Production increased slightly but continued to decline",
+          "npt": "4 days",
+          "notes": "The well is old and tired"
+        },
+        {
+          "date": "2018-10",
+          "type": "Production Decline",
+          "objective": "Investigate low production",
+          "outcome": "DECISION - Well no longer economic. Shut in for standard P&A."
+        },
+        {
+          "date": "2018-11",
+          "type": "ROV Survey",
+          "objective": "Pre-P&A inspection of wellhead area",
+          "provider": "SubseaSurvey Ltd.",
+          "duration": "5 days",
+          "outcome": "DISASTER - Light intermittent oil sheen detected emanating from seabed ~10m from wellhead",
+          "npt": "5 days (full job)",
+          "notes": "The Politician is born. Well is now major liability."
+        },
+        {
+          "date": "2019",
+          "type": "Remediation Attempt",
+          "objective": "Install clamp-on repair patch over suspected leak point",
+          "provider": "LegacyFix Inc.",
+          "duration": "21 days",
+          "outcome": "FAILED - Leak rate unchanged. Source is deeper than the clamp.",
+          "npt": "21 days (full job)",
+          "cost": 5000000,
+          "notes": "A $5M patch that didn't work. Regulatory fines increase."
+        },
+        {
+          "date": "2020",
+          "type": "Cement Squeeze",
+          "objective": "Squeeze cement into well's annulus to seal leak",
+          "provider": "SqueezeTech International",
+          "duration": "30 days",
+          "outcome": "FAILED - May have created new micro-fractures, worsening situation",
+          "npt": "30 days (full job)",
+          "cost": 10000000,
+          "notes": "A $10M failure. Company now under intense regulatory scrutiny."
+        },
+        {
+          "date": "2021-2023",
+          "type": "Monitoring",
+          "objective": "Continuous monitoring and daily reporting",
+          "provider": "Brahan HSE",
+          "status": "ONGOING",
+          "outcome": "Leak persists at 5-10 liters/day. Fines and legal fees exceed $1M/month.",
+          "notes": "The well is a financial black hole"
+        }
+      ],
+      "productionHistory": {
+        "targetRate": "2,500 bopd",
+        "actualPeak": "2,200 bopd (1978-2010 average)",
+        "decline2011_2018": "<200 bopd",
+        "cumulative": "18.5 MMstb",
+        "currentStatus": "Non-productive since 2018"
+      },
+      "aiRecommendation": {
+        "summary": "Cut & Cap operation has positive NPV of >$200M even accounting for 10% failure risk.",
+        "recommendation": "Use Jack-Up Rig for Cut & Cap operation",
+        "method": "Diamond wire saw to cut casing below seabed, place weighted cap over stump",
+        "vesselType": "Jack-Up Rig",
+        "probabilityOfSuccess": 90,
+        "backupPlan": "Relief Well if Cut & Cap fails",
+        "npvAnalysis": {
+          "costOfInaction10Year": 250000000,
+          "cutCapCost": 35000000,
+          "reliefWellCost": 150000000
+        }
+      },
+      "lessonsLearned": [
+        {
+          "id": "LL-077-001",
+          "category": "Legacy Wells",
+          "severity": "CRITICAL",
+          "title": "1970s construction practices create multi-decade environmental liability",
+          "description": "Driven conductors, outdated casing grades, and vague cement records"
+        },
+        {
+          "id": "LL-077-002",
+          "category": "Decommissioning",
+          "severity": "HIGH",
+          "title": "P&A aging wells before they become leaking liabilities",
+          "description": "Delaying P&A increased costs from ~$10M (2018) to potentially $250M+ (10-year projection)"
+        }
+      ]
     }
   ]
 }
