@@ -1414,19 +1414,19 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8"/><path d="M8 11h8"/></svg>
                         <span>Case Studies</span>
                     </a>
-                    <a href="equipment.html" title="View Equipment Catalog with Clash Detection" class="nav-link flex items-center space-x-2">
+                    <a id="equipment-nav-link" onclick="showView('equipment')" title="View Equipment Catalog with Clash Detection" class="nav-link flex items-center space-x-2 cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                         <span>Equipment</span>
                     </a>
-                    <a href="sop-library.html" title="View SOP Library" class="nav-link flex items-center space-x-2">
+                    <a id="sop-nav-link" onclick="showView('sop')" title="View SOP Library" class="nav-link flex items-center space-x-2 cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                         <span>SOPs</span>
                     </a>
-                    <a href="survey-tool.html" title="Interactive Survey Visualization Tool" class="nav-link flex items-center space-x-2">
+                    <a id="survey-nav-link" onclick="showView('survey')" title="Interactive Survey Visualization Tool" class="nav-link flex items-center space-x-2 cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
                         <span>Survey</span>
                     </a>
-                    <a href="intervention-guide.html" title="View Comprehensive Intervention Planning Guide" class="nav-link flex items-center space-x-2">
+                    <a id="guide-nav-link" onclick="showView('guide')" title="View Comprehensive Intervention Planning Guide" class="nav-link flex items-center space-x-2 cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                         <span>Guide</span>
                     </a>
@@ -2909,9 +2909,181 @@
         </div>
     </div>
 
+    <!-- Equipment View -->
+    <div id="equipment-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold tracking-tight">Equipment Catalog</h1>
+            <p class="mt-4 text-lg text-slate-400">Browse tools, build toolstrings, and manage equipment</p>
+        </div>
+        
+        <!-- Equipment Tabs -->
+        <div class="flex border-b border-slate-700 mb-6">
+            <button id="tab-catalog" onclick="switchEquipmentTab('catalog')" class="px-6 py-3 text-sm font-semibold border-b-2 border-cyan-500 text-cyan-400">Catalog</button>
+            <button id="tab-toolstrings" onclick="switchEquipmentTab('toolstrings')" class="px-6 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-white">Saved Toolstrings</button>
+            <button id="tab-builder" onclick="switchEquipmentTab('builder')" class="px-6 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-white">Builder</button>
+            <button id="tab-templates" onclick="switchEquipmentTab('templates')" class="px-6 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-white">Templates</button>
+        </div>
+        
+        <!-- Catalog Tab Content -->
+        <div id="tab-content-catalog" class="tab-content">
+            <div id="equipment-catalog-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Equipment cards will be rendered here -->
+            </div>
+        </div>
+        
+        <!-- Toolstrings Tab Content -->
+        <div id="tab-content-toolstrings" class="tab-content hidden">
+            <div id="empty-toolstrings" class="text-center py-12 text-slate-400">
+                <p>No saved toolstrings yet. Use the Builder tab to create one.</p>
+            </div>
+            <div id="saved-toolstrings-list" class="space-y-4">
+                <!-- Saved toolstrings will be rendered here -->
+            </div>
+        </div>
+        
+        <!-- Builder Tab Content -->
+        <div id="tab-content-builder" class="tab-content hidden">
+            <div class="grid lg:grid-cols-2 gap-6">
+                <div class="light-card p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4">Build New Toolstring</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Toolstring Name</label>
+                            <input type="text" id="new-toolstring-name" class="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg focus:border-cyan-500 focus:outline-none" placeholder="Enter toolstring name...">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Service Line</label>
+                            <select id="new-toolstring-service" class="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg focus:border-cyan-500 focus:outline-none">
+                                <option value="Wireline">Wireline</option>
+                                <option value="Slickline">Slickline</option>
+                                <option value="Coiled Tubing">Coiled Tubing</option>
+                                <option value="Completion">Completion</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Add Equipment</label>
+                            <select id="equipment-selector" class="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg focus:border-cyan-500 focus:outline-none">
+                                <option value="">Select equipment to add...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="text-sm font-medium mb-2">Components</h4>
+                        <div id="builder-components-list" class="space-y-2 min-h-[100px] bg-slate-800/50 rounded-lg p-3">
+                            <p class="text-slate-500 text-sm">No components added yet</p>
+                        </div>
+                    </div>
+                    <button onclick="saveCurrentToolString()" class="mt-4 w-full px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-lg transition">
+                        Save Toolstring
+                    </button>
+                </div>
+                <div class="light-card p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4">Preview</h3>
+                    <div class="bg-slate-800/50 rounded-lg p-4">
+                        <p id="preview-name" class="text-lg font-semibold text-cyan-400">New Toolstring</p>
+                        <div id="preview-components" class="mt-4 space-y-2">
+                            <p class="text-slate-500 text-sm">Add components to see preview</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Templates Tab Content -->
+        <div id="tab-content-templates" class="tab-content hidden">
+            <div id="service-templates-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Templates will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- SOP View -->
+    <div id="sop-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold tracking-tight">SOP Library</h1>
+            <p class="mt-4 text-lg text-slate-400">Standard Operating Procedures for Well Interventions</p>
+        </div>
+        <div class="light-card p-8 rounded-lg text-center">
+            <svg class="w-16 h-16 mx-auto text-cyan-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <h3 class="text-xl font-bold mb-2">SOP Library Coming Soon</h3>
+            <p class="text-slate-400">Access comprehensive Standard Operating Procedures for all intervention types.</p>
+            <a href="sop-library.html" class="inline-block mt-4 px-6 py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-lg transition">
+                Open Full SOP Library →
+            </a>
+        </div>
+    </div>
+
+    <!-- Survey View -->
+    <div id="survey-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold tracking-tight">Survey Visualization Tool</h1>
+            <p class="mt-4 text-lg text-slate-400">Interactive wellbore trajectory analysis</p>
+        </div>
+        <div class="light-card p-8 rounded-lg text-center">
+            <svg class="w-16 h-16 mx-auto text-cyan-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+            <h3 class="text-xl font-bold mb-2">Survey Visualization</h3>
+            <p class="text-slate-400">Upload CSV survey data to visualize wellbore trajectory with DLS hotspot detection.</p>
+            <a href="survey-tool.html" class="inline-block mt-4 px-6 py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-lg transition">
+                Open Survey Tool →
+            </a>
+        </div>
+    </div>
+
+    <!-- Guide View -->
+    <div id="guide-view" class="view-container max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold tracking-tight">Intervention Planning Guide</h1>
+            <p class="mt-4 text-lg text-slate-400">Comprehensive guide to well intervention planning</p>
+        </div>
+        <div class="light-card p-8 rounded-lg text-center">
+            <svg class="w-16 h-16 mx-auto text-cyan-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <h3 class="text-xl font-bold mb-2">Planning Guide</h3>
+            <p class="text-slate-400">Step-by-step guidance for planning safe and effective well interventions.</p>
+            <a href="intervention-guide.html" class="inline-block mt-4 px-6 py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-lg transition">
+                Open Planning Guide →
+            </a>
+        </div>
+    </div>
+
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
+// === UTILITY FUNCTIONS ===
+
+// Toast notification function
+function showToast(message, type = 'success') {
+    // Remove any existing toast
+    const existingToast = document.getElementById('toast-notification');
+    if (existingToast) existingToast.remove();
+    
+    const toast = document.createElement('div');
+    toast.id = 'toast-notification';
+    toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transition-all transform translate-y-0 opacity-100 ${
+        type === 'success' ? 'bg-emerald-600 text-white' : 
+        type === 'error' ? 'bg-red-600 text-white' : 
+        'bg-cyan-600 text-white'
+    }`;
+    toast.innerHTML = `
+        <div class="flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                ${type === 'success' ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>' :
+                  type === 'error' ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>' :
+                  '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'}
+            </svg>
+            <span>${message}</span>
+        </div>
+    `;
+    document.body.appendChild(toast);
+    
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+window.showToast = showToast;
+
 const pendingShowViewCalls = [];
 if (typeof window !== 'undefined') {
     window.showView = function(viewName) {
@@ -5582,6 +5754,7 @@ function showDeviationSurvey(wellId) {
     };
 
     const renderObjectives = () => { 
+        if (!objectivesFieldset) return; // Guard against null element
         objectivesFieldset.innerHTML = objectivesData.map(obj => `
             <div class="objective-card light-card" data-objective-id="${obj.id}">
                 <input type="radio" name="objective" id="${obj.id}" value="${obj.id}" class="sr-only">
@@ -5599,6 +5772,7 @@ function showDeviationSurvey(wellId) {
     };
 
     const renderProblems = () => {
+        if (!problemsFieldset) return; // Guard against null element
         // Only show problems relevant to the "Well From Hell"
         if (appState.selectedWell && appState.selectedWell.id === 'Well_666') {
              problemsFieldset.innerHTML = problemsData.map(prob => `
@@ -7816,30 +7990,41 @@ function showDeviationSurvey(wellId) {
     }
 
     // Load cost data from CSV files
+    // Hardcoded mock cost data (replaces external CSV fetches)
+    const MOCK_COST_DATA = {
+        equipment: [
+            { Item: "Wireline Unit", Daily_Rate: 2500, Mob_Demob: 5000 },
+            { Item: "Slickline Unit", Daily_Rate: 1800, Mob_Demob: 3500 },
+            { Item: "Coiled Tubing Unit", Daily_Rate: 8500, Mob_Demob: 15000 },
+            { Item: "Perforating Guns", Daily_Rate: 1200, Mob_Demob: 2000 },
+            { Item: "Logging Tools", Daily_Rate: 3500, Mob_Demob: 5000 }
+        ],
+        personnel: [
+            { Role: "Senior Well Engineer", Daily_Rate: 1500 },
+            { Role: "Well Engineer", Daily_Rate: 1100 },
+            { Role: "Wireline Operator", Daily_Rate: 850 },
+            { Role: "Slickline Operator", Daily_Rate: 750 },
+            { Role: "CT Supervisor", Daily_Rate: 1200 },
+            { Role: "Toolpusher", Daily_Rate: 950 }
+        ],
+        activities: [
+            { Activity_Name: "Wireline Logging", Base_Cost: 25000, Duration_Days: 2 },
+            { Activity_Name: "Slickline Gauge Run", Base_Cost: 8000, Duration_Days: 1 },
+            { Activity_Name: "Perforation", Base_Cost: 45000, Duration_Days: 3 },
+            { Activity_Name: "Bridge Plug Set", Base_Cost: 15000, Duration_Days: 1 },
+            { Activity_Name: "Scale Treatment", Base_Cost: 35000, Duration_Days: 2 },
+            { Activity_Name: "SCSSV Replacement", Base_Cost: 85000, Duration_Days: 4 }
+        ]
+    };
+
     async function loadCostData() {
         try {
-            const [equipResp, persResp, actResp] = await Promise.all([
-                fetch('data-equipment-tools.csv'),
-                fetch('data-personnel-rates.csv'),
-                fetch('data-activity-cost-rates.csv')
-            ]);
+            // Use hardcoded mock data instead of fetching CSVs
+            costData.equipment = MOCK_COST_DATA.equipment;
+            costData.personnel = MOCK_COST_DATA.personnel;
+            costData.activities = MOCK_COST_DATA.activities;
 
-            if (equipResp.ok) {
-                const equipText = await equipResp.text();
-                costData.equipment = parseCSV(equipText);
-            }
-
-            if (persResp.ok) {
-                const persText = await persResp.text();
-                costData.personnel = parseCSV(persText);
-            }
-
-            if (actResp.ok) {
-                const actText = await actResp.text();
-                costData.activities = parseCSV(actText);
-            }
-
-            console.log('Cost data loaded:', {
+            console.log('Cost data loaded (mock):', {
                 equipment: costData.equipment.length,
                 personnel: costData.personnel.length,
                 activities: costData.activities.length
@@ -7850,7 +8035,7 @@ function showDeviationSurvey(wellId) {
                 updateCostSummary();
             }
         } catch (error) {
-            console.warn('Could not load cost data files:', error);
+            console.warn('Could not load cost data:', error);
             // Graceful degradation - app works without cost data
         }
     }
@@ -10477,12 +10662,93 @@ let builderComponents = [];
 let currentEquipmentFilter = 'all';
 
 // Load equipment catalog from JSON
+// Hardcoded equipment catalog data (replaces external fetch)
+const EQUIPMENT_CATALOG_DATA = {
+    categories: [
+        {
+            name: "Wireline Tools",
+            icon: "🔧",
+            tools: [
+                { id: "wl-001", name: "Cablehead Assembly", od: 1.5, length: 24, weight: 15, rating: "15K PSI / 350°F" },
+                { id: "wl-002", name: "CCL (Casing Collar Locator)", od: 1.5, length: 36, weight: 8, rating: "15K PSI / 350°F" },
+                { id: "wl-003", name: "Gamma Ray Tool", od: 1.6875, length: 72, weight: 25, rating: "15K PSI / 350°F" },
+                { id: "wl-004", name: "Pressure Gauge Carrier", od: 1.5, length: 48, weight: 18, rating: "20K PSI / 400°F" }
+            ]
+        },
+        {
+            name: "Slickline Tools",
+            icon: "📏",
+            tools: [
+                { id: "sl-001", name: "Slickline Rope Socket", od: 1.25, length: 12, weight: 5, rating: "10K PSI / 300°F" },
+                { id: "sl-002", name: "Knuckle Joint", od: 1.25, length: 6, weight: 3, rating: "10K PSI / 300°F" },
+                { id: "sl-003", name: "Mechanical Jar", od: 1.5, length: 36, weight: 20, rating: "15K PSI / 350°F" },
+                { id: "sl-004", name: "Gauge Cutter", od: 1.75, length: 24, weight: 12, rating: "10K PSI / 300°F" }
+            ]
+        },
+        {
+            name: "Completion Tools",
+            icon: "🔩",
+            tools: [
+                { id: "ct-001", name: "Packer", od: 4.5, length: 48, weight: 150, rating: "10K PSI / 350°F" },
+                { id: "ct-002", name: "Safety Valve (SCSSV)", od: 3.5, length: 36, weight: 80, rating: "10K PSI / 350°F" },
+                { id: "ct-003", name: "Gas Lift Mandrel", od: 2.875, length: 60, weight: 45, rating: "5K PSI / 300°F" },
+                { id: "ct-004", name: "Sliding Sleeve", od: 4.0, length: 24, weight: 55, rating: "10K PSI / 350°F" }
+            ]
+        },
+        {
+            name: "Fishing Tools",
+            icon: "🎣",
+            tools: [
+                { id: "ft-001", name: "Overshot", od: 3.75, length: 36, weight: 65, rating: "15K PSI / 350°F" },
+                { id: "ft-002", name: "Spear", od: 2.5, length: 24, weight: 35, rating: "15K PSI / 350°F" },
+                { id: "ft-003", name: "Junk Basket", od: 4.0, length: 48, weight: 85, rating: "10K PSI / 300°F" },
+                { id: "ft-004", name: "Impression Block", od: 3.5, length: 18, weight: 25, rating: "5K PSI / 200°F" }
+            ]
+        },
+        {
+            name: "Perforating Guns",
+            icon: "💥",
+            tools: [
+                { id: "pg-001", name: "3-3/8\" Hollow Carrier Gun", od: 3.375, length: 120, weight: 95, rating: "15K PSI / 400°F" },
+                { id: "pg-002", name: "2-1/8\" Strip Gun", od: 2.125, length: 60, weight: 35, rating: "10K PSI / 350°F" },
+                { id: "pg-003", name: "4-1/2\" Scallop Gun", od: 4.5, length: 120, weight: 145, rating: "15K PSI / 400°F" }
+            ]
+        },
+        {
+            name: "Logging Tools",
+            icon: "📊",
+            tools: [
+                { id: "lt-001", name: "Production Logging Tool (PLT)", od: 1.6875, length: 144, weight: 65, rating: "15K PSI / 350°F" },
+                { id: "lt-002", name: "Cement Bond Log (CBL)", od: 3.625, length: 180, weight: 120, rating: "20K PSI / 400°F" },
+                { id: "lt-003", name: "Multi-Finger Caliper", od: 2.75, length: 96, weight: 55, rating: "15K PSI / 350°F" }
+            ]
+        },
+        {
+            name: "Coiled Tubing Tools",
+            icon: "🌀",
+            tools: [
+                { id: "ctt-001", name: "CT Connector", od: 2.0, length: 18, weight: 12, rating: "10K PSI / 350°F" },
+                { id: "ctt-002", name: "Check Valve", od: 1.75, length: 12, weight: 8, rating: "10K PSI / 350°F" },
+                { id: "ctt-003", name: "Motor Head Assembly", od: 2.875, length: 36, weight: 45, rating: "15K PSI / 400°F" },
+                { id: "ctt-004", name: "Hydraulic Disconnect", od: 2.5, length: 24, weight: 28, rating: "15K PSI / 350°F" }
+            ]
+        },
+        {
+            name: "Intervention Tools",
+            icon: "⚙️",
+            tools: [
+                { id: "it-001", name: "Bridge Plug", od: 4.5, length: 36, weight: 85, rating: "10K PSI / 350°F" },
+                { id: "it-002", name: "Cement Retainer", od: 4.5, length: 48, weight: 95, rating: "10K PSI / 350°F" },
+                { id: "it-003", name: "Inflatable Packer", od: 4.0, length: 72, weight: 110, rating: "5K PSI / 300°F" }
+            ]
+        }
+    ]
+};
+
 async function loadEquipmentCatalog() {
     try {
-        const response = await fetch('data/equipment.json');
-        const data = await response.json();
-        // The JSON has { catalog: {...}, categories: [...] } structure
-        equipmentCatalog = data.categories || [];
+        // Use hardcoded data instead of fetch
+        equipmentCatalog = EQUIPMENT_CATALOG_DATA.categories || [];
         console.log('Equipment catalog loaded:', equipmentCatalog.length, 'categories');
         renderEquipmentCatalog();
         populateEquipmentSelector();
@@ -10490,7 +10756,7 @@ async function loadEquipmentCatalog() {
         console.error('Failed to load equipment catalog:', error);
         const grid = document.getElementById('equipment-catalog-grid');
         if (grid) {
-            grid.innerHTML = '<p class="text-yellow-500">Equipment catalog unavailable. Please check data/equipment.json.</p>';
+            grid.innerHTML = '<p class="text-yellow-500">Equipment catalog unavailable.</p>';
         }
     }
 }
@@ -10509,14 +10775,27 @@ function saveToolStringsToStorage() {
 
 // Switch between tabs
 window.switchEquipmentTab = function(tabName) {
-    document.querySelectorAll('.equipment-tab').forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.tab === tabName);
+    // Update tab button styles
+    ['catalog', 'toolstrings', 'builder', 'templates'].forEach(tab => {
+        const tabBtn = document.getElementById(`tab-${tab}`);
+        if (tabBtn) {
+            if (tab === tabName) {
+                tabBtn.classList.add('border-cyan-500', 'text-cyan-400');
+                tabBtn.classList.remove('border-transparent', 'text-slate-400');
+            } else {
+                tabBtn.classList.remove('border-cyan-500', 'text-cyan-400');
+                tabBtn.classList.add('border-transparent', 'text-slate-400');
+            }
+        }
     });
-    document.querySelectorAll('.equipment-tab-content').forEach(content => {
-        content.classList.add('hidden');
+    
+    // Show/hide tab content
+    ['catalog', 'toolstrings', 'builder', 'templates'].forEach(tab => {
+        const content = document.getElementById(`tab-content-${tab}`);
+        if (content) {
+            content.classList.toggle('hidden', tab !== tabName);
+        }
     });
-    const targetTab = document.getElementById(`tab-${tabName}`);
-    if (targetTab) targetTab.classList.remove('hidden');
 
     if (tabName === 'toolstrings') renderSavedToolStrings();
     else if (tabName === 'templates') renderServiceTemplates();
@@ -10789,7 +11068,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const nameInput = document.getElementById('new-toolstring-name');
     if (nameInput) {
-        nameInput.addEventListener('input', updateToolstringPreview);
+        nameInput.addEventListener('input', updateBuilderPreview);
     }
 });
 </script>
