@@ -10715,7 +10715,7 @@ let currentEquipmentFilter = 'all';
 // Load equipment catalog from JSON
 async function loadEquipmentCatalog() {
     try {
-        const response = await fetch('equipment-catalog.json');
+        const response = await fetch('data/equipment.json');
         equipmentCatalog = await response.json();
         console.log('Equipment catalog loaded:', Object.keys(equipmentCatalog).length, 'categories');
         renderEquipmentCatalog();
