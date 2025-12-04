@@ -1,516 +1,1314 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planner | The Brahan Engine</title>
-    <meta name="description" content="Well intervention planning modules - Logistics, Commercial, HSE & Risk, POB & ER">
-    
-    <link rel="stylesheet" href="assets/css/tailwind.css">
-    <link rel="icon" href="assets/logo.jpg" type="image/jpeg">
+    <title>Well Operations Planner | WellTegra</title>
+    <meta name="description" content="Plan well interventions with AI-powered recommendations, toolstring builder, and real-time clash detection.">
+    <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; font-weight: 500; }
-        h1, h2, h3, h4, h5, h6 { font-weight: 800; }
-        .theme-light { background-color: #f8fafc; }
-        .theme-dark { background-color: #0f172a; color: #e2e8f0; }
-
-        .theme-light .light-card { background-color: white; }
-        .theme-dark .light-card { background-color: #1e293b; border: 1px solid #334155; }
-        .theme-light .header { background-color: white; box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); }
-        .theme-dark .header { background-color: #0f172a; border-bottom: 1px solid #1e293b; }
-        .theme-light .nav-link { color: #475569; }
-        .theme-dark .nav-link { color: #94a3b8; }
-        .theme-light .nav-link.active { color: #2563eb; border-bottom-color: #2563eb; }
-        .theme-dark .nav-link.active { color: #60a5fa; border-bottom-color: #60a5fa; }
-        .nav-link.disabled { color: #9ca3af !important; cursor: not-allowed; opacity: 0.5; }
+        :root {
+            --bg: #0b1220;
+            --panel: #0f172a;
+            --card: #1e293b;
+            --border: #334155;
+            --fg: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #14b8a6;
+            --accent-hover: #2dd4bf;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
         
-        .theme-light h1, .theme-light h2, .theme-light h3, .theme-light h4 { color: #111827; } 
-        .theme-dark h1, .theme-dark h2, .theme-dark h3, .theme-dark h4 { color: #f8fafc; }
-        
-        .theme-light p, .theme-light span, .theme-light label { color: #1f2937; }
-        .theme-dark p, .theme-dark span, .theme-dark label { color: #e2e8f0; }
-
-        .theme-light #theme-icon-dark { display: none; }
-        .theme-light #theme-icon-light { display: block; }
-        .theme-dark #theme-icon-dark { display: block; }
-        .theme-dark #theme-icon-light { display: none; }
-
-        /* Tab Styles */
-        .tab-button {
-            padding: 1rem 2rem;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s ease;
-            cursor: pointer;
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 18, 32, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+        }
+        .header-inner {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--fg);
+        }
+        .logo img { height: 40px; border-radius: 8px; }
+        .logo-text { font-weight: 900; font-size: 1.25rem; }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .nav a {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--muted);
             font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
         }
-        .theme-light .tab-button { color: #64748b; }
-        .theme-dark .tab-button { color: #94a3b8; }
+        .nav a:hover, .nav a.active { color: var(--fg); background: var(--card); }
         
-        .theme-light .tab-button.active { 
-            color: #2563eb; 
-            border-bottom-color: #2563eb;
+        /* Well Selector */
+        .well-selector-bar {
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
         }
-        .theme-dark .tab-button.active { 
-            color: #60a5fa; 
-            border-bottom-color: #60a5fa;
+        .well-selector-inner {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
         }
-        
-        .theme-light .tab-button:hover:not(.active) { 
-            color: #475569;
-            background-color: #f8fafc;
+        .well-selector-label { font-weight: 700; color: var(--muted); font-size: 0.9rem; }
+        .well-dropdown {
+            padding: 0.5rem 1rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--fg);
+            font-size: 0.9rem;
+            font-weight: 600;
+            min-width: 250px;
         }
-        .theme-dark .tab-button:hover:not(.active) { 
-            color: #cbd5e1;
-            background-color: #1e293b;
-        }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        /* Module Card Styles */
-        .module-card {
-            transition: all 0.3s ease;
-        }
-        .theme-light .module-card {
-            background: white;
-            border: 1px solid #e2e8f0;
-        }
-        .theme-dark .module-card {
-            background: #1e293b;
-            border: 1px solid #334155;
-        }
-
-        /* Coming Soon Badge */
-        .coming-soon-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
+        .well-dropdown:focus { outline: none; border-color: var(--accent); }
+        .well-status-badge {
+            padding: 0.375rem 0.75rem;
+            border-radius: 999px;
             font-size: 0.75rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white;
         }
-
-        @media (max-width: 768px) {
-            .tab-button {
-                padding: 0.75rem 1rem;
-                font-size: 0.875rem;
-            }
+        .well-status-badge.locked { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .well-status-badge.unlocked { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+        
+        /* Safety Lock Banner */
+        .safety-lock-banner {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(239, 68, 68, 0.05));
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .safety-lock-banner.hidden { display: none; }
+        .safety-lock-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .safety-lock-icon svg { width: 24px; height: 24px; color: var(--danger); }
+        .safety-lock-content h3 { color: var(--danger); font-weight: 800; margin-bottom: 0.5rem; }
+        .safety-lock-content p { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
+        .safety-lock-reasons { list-style: none; }
+        .safety-lock-reasons li { padding: 0.25rem 0; color: var(--danger); font-size: 0.85rem; }
+        .safety-lock-reasons li::before { content: "⚠️ "; }
+        
+        /* Main Layout */
+        .main {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 320px 1fr 380px;
+            gap: 1.5rem;
+            min-height: calc(100vh - 140px);
+        }
+        @media (max-width: 1200px) {
+            .main { grid-template-columns: 1fr; }
+        }
+        
+        /* Panels */
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .panel-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .panel-header h2 { font-size: 1rem; font-weight: 800; }
+        .panel-header p { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+        .panel-body { padding: 1rem 1.25rem; flex: 1; overflow-y: auto; }
+        
+        /* Wellbore Schematic */
+        .schematic-container {
+            position: relative;
+            height: 400px;
+            background: linear-gradient(180deg, var(--card) 0%, var(--bg) 100%);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #wellbore-canvas { width: 100%; height: 100%; }
+        
+        /* Procedure Steps */
+        .procedure-step {
+            padding: 0.75rem;
+            background: var(--card);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid var(--border);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .procedure-step:hover { border-left-color: var(--accent); }
+        .procedure-step.active { border-left-color: var(--accent); background: rgba(20, 184, 166, 0.1); }
+        .procedure-step.completed { border-left-color: var(--success); opacity: 0.7; }
+        .procedure-step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: var(--border);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+        .procedure-step.active .procedure-step-number { background: var(--accent); color: var(--bg); }
+        .procedure-step-title { font-weight: 600; font-size: 0.9rem; }
+        .procedure-step-duration { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+        
+        /* Job Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .metric-card {
+            background: var(--card);
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: center;
+        }
+        .metric-value { font-size: 1.25rem; font-weight: 800; color: var(--accent); }
+        .metric-value.warning { color: var(--warning); }
+        .metric-value.danger { color: var(--danger); }
+        .metric-label { font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem; }
+        .metric-card.total {
+            grid-column: span 2;
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(59, 130, 246, 0.05));
+            border: 1px solid var(--accent);
+        }
+        .metric-card.total .metric-value { font-size: 1.5rem; color: var(--success); }
+        
+        /* Toolstring Assembly */
+        .toolstring-section { margin-bottom: 1.5rem; }
+        .toolstring-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .toolstring-header h3 { font-size: 0.9rem; font-weight: 700; }
+        .toolstring-list {
+            background: var(--card);
+            border-radius: 8px;
+            padding: 0.75rem;
+            min-height: 100px;
+        }
+        .toolstring-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem;
+            background: var(--panel);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+        .toolstring-item:last-child { margin-bottom: 0; }
+        .toolstring-item-name { font-weight: 600; }
+        .toolstring-item-specs { font-size: 0.75rem; color: var(--muted); }
+        .toolstring-item-remove {
+            background: transparent;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+        .toolstring-empty { color: var(--muted); font-size: 0.85rem; text-align: center; padding: 1rem; }
+        
+        /* Quick Add Buttons */
+        .quick-add { margin-bottom: 1rem; }
+        .quick-add-title { font-size: 0.8rem; font-weight: 700; color: var(--muted); margin-bottom: 0.5rem; }
+        .quick-add-buttons { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+        .quick-add-btn {
+            padding: 0.375rem 0.75rem;
+            border-radius: 999px;
+            border: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quick-add-btn.tool { background: var(--info); color: white; }
+        .quick-add-btn.tool:hover { background: #2563eb; }
+        .quick-add-btn.personnel { background: var(--success); color: white; }
+        .quick-add-btn.personnel:hover { background: #16a34a; }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-primary { background: var(--accent); color: var(--bg); }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-secondary { background: var(--card); color: var(--fg); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--accent); }
+        .btn-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .btn-sm { padding: 0.375rem 0.75rem; font-size: 0.8rem; }
+        
+        /* Mobile Communicator Button */
+        .communicator-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--accent);
+            border-radius: 999px;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .communicator-btn:hover { background: rgba(20, 184, 166, 0.1); }
+        .communicator-badge {
+            background: var(--warning);
+            color: var(--bg);
+            padding: 0.125rem 0.5rem;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+        
+        /* Clash Detection Alert */
+        .clash-alert {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .clash-alert.hidden { display: none; }
+        .clash-alert-title { color: var(--danger); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem; }
+        .clash-alert-text { color: var(--muted); font-size: 0.8rem; }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: var(--success);
+            color: var(--bg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.error { background: var(--danger); }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            place-items: center;
+            z-index: 200;
+            padding: 1rem;
+        }
+        .modal-overlay.show { display: grid; }
+        .modal {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .modal-header h2 { font-size: 1.25rem; font-weight: 800; }
+        .modal-header p { color: var(--muted); font-size: 0.9rem; margin-top: 0.25rem; }
+        .modal-close {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+        .modal-close:hover { border-color: var(--fg); color: var(--fg); }
+        .modal-body { padding: 1.25rem; overflow-y: auto; flex: 1; }
+        
+        /* Equipment Tabs */
+        .equipment-tabs {
+            display: flex;
+            gap: 0.25rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        .equipment-tab {
+            padding: 0.75rem 1.25rem;
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .equipment-tab:hover { color: var(--fg); }
+        .equipment-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+        .equipment-tab-content { display: none; }
+        .equipment-tab-content.active { display: block; }
+        
+        /* Equipment Grid */
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        .equipment-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            transition: all 0.2s;
+        }
+        .equipment-card:hover { border-color: var(--accent); }
+        .equipment-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        .equipment-card-name { font-weight: 700; font-size: 0.95rem; }
+        .equipment-card-mfr {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            background: rgba(234, 179, 8, 0.2);
+            color: var(--warning);
+            border-radius: 4px;
+        }
+        .equipment-card-specs { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.75rem; }
+        .equipment-card-add {
+            width: 100%;
+            padding: 0.5rem;
+            background: var(--accent);
+            border: none;
+            border-radius: 6px;
+            color: var(--bg);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .equipment-card-add:hover { background: var(--accent-hover); }
+        
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.85rem;
         }
     </style>
 </head>
-
-<body class="theme-dark">
-    <!-- Header with Navigation -->
-    <header id="app-header" class="header sticky top-0 z-30 transition-colors">
-        <div class="max-w-full mx-auto py-1 px-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <img src="assets/logo.jpg" alt="The Brahan Engine Logo" class="h-10 w-auto mr-2">
-                    <div class="flex flex-col">
-                        <h1 class="text-xl font-bold">The Brahan Engine</h1>
-                        <span class="text-xs text-slate-400 -mt-1">by WellTegra</span>
-                    </div>
-                </div>
-                <nav id="header-nav" class="flex-1 flex items-center justify-center gap-3">
-                    <a href="index.html" title="Return to the Home Page" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                        <span>Home</span>
-                    </a>
-                    <a href="planner.html" class="nav-link active flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
-                        <span>Planner</span>
-                    </a>
-                    <a href="case-studies.html" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                        <span>Case Studies</span>
-                    </a>
-                    <a href="intervention-guide.html" target="_blank" class="nav-link flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                        <span>Guide</span>
-                    </a>
-                </nav>
-                <div class="flex items-center space-x-4">
-                    <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700">
-                        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
-                    </button>
-                </div>
-            </div>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.jpg" alt="WellTegra">
+                <span class="logo-text">WellTegra</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="demo.html">Demo</a>
+                <a href="case-studies.html">Case Studies</a>
+                <a href="equipment.html">Equipment</a>
+                <a href="sop-library.html">SOPs</a>
+                <a href="planner.html" class="active">Planner</a>
+            </nav>
+            <button class="communicator-btn" onclick="openCommunicator()">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M4.5 6.75a2.25 2.25 0 0 1 2.25-2.25h10.5A2.25 2.25 0 0 1 19.5 6.75v5.25a2.25 2.25 0 0 1-2.25 2.25H9.75L6 18v-3.75H6a2.25 2.25 0 0 1-2.25-2.25V6.75Z"/>
+                </svg>
+                Mobile Communicator
+                <span class="communicator-badge" id="pendingCount">2</span>
+            </button>
         </div>
     </header>
-
-    <!-- Main Content -->
-    <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
-        <!-- Page Header -->
-        <div class="mb-8">
-            <h2 class="text-3xl font-bold mb-2">Well Intervention Planner</h2>
-            <p class="text-lg">Comprehensive planning modules for well operations</p>
+    
+    <!-- Well Selector -->
+    <div class="well-selector-bar">
+        <div class="well-selector-inner">
+            <span class="well-selector-label">SELECT WELL:</span>
+            <select class="well-dropdown" id="wellSelector" onchange="selectWell(this.value)">
+                <option value="">-- Choose a well --</option>
+            </select>
+            <span class="well-status-badge locked" id="wellStatusBadge" style="display: none;">
+                🔒 SAFETY LOCKED
+            </span>
+            <span id="wellIntegrity" style="display: none; font-size: 0.85rem; color: var(--muted);">
+                Integrity: <strong id="integrityValue">--</strong>
+            </span>
         </div>
-
-        <!-- Tab Navigation -->
-        <div class="light-card rounded-lg shadow-lg overflow-hidden mb-6">
-            <div class="flex border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
-                <button class="tab-button active" data-tab="logistics">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="inline mr-2"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
-                    Logistics
-                </button>
-                <button class="tab-button" data-tab="commercial">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="inline mr-2"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                    Commercial
-                </button>
-                <button class="tab-button" data-tab="hse">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="inline mr-2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    HSE & Risk
-                </button>
-                <button class="tab-button" data-tab="pob">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="inline mr-2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    POB & ER
-                </button>
+    </div>
+    
+    <!-- Safety Lock Banner -->
+    <div class="safety-lock-banner hidden" id="safetyLockBanner">
+        <div class="safety-lock-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="3" y="11" width="18" height="11" rx="2"/>
+                <path d="M7 11V7a5 5 0 0110 0v4"/>
+            </svg>
+        </div>
+        <div class="safety-lock-content">
+            <h3>⚠️ SAFETY GATEWAY LOCKED</h3>
+            <p>This well cannot proceed to intervention planning until critical safety barriers are verified.</p>
+            <ul class="safety-lock-reasons" id="lockReasons"></ul>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="main" id="mainContent">
+        <!-- Left Panel: Wellbore Schematic -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Wellbore Schematic</h2>
+                <p id="schematicWellName">Select a well to view</p>
             </div>
-
-            <!-- Logistics Tab Content -->
-            <div id="logistics-tab" class="tab-content active p-8">
-                <div class="mb-6">
-                    <h3 class="text-2xl font-bold mb-2">Logistics Management</h3>
-                    <p class="mb-4">Equipment inventory, personnel scheduling, and supply chain coordination</p>
-                    <span class="coming-soon-badge">Sprint 1 - In Development</span>
+            <div class="panel-body">
+                <div class="schematic-container">
+                    <canvas id="wellbore-canvas"></canvas>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Equipment Inventory Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-blue-500"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                            <h4 class="text-xl font-bold">Equipment Catalog</h4>
+                <div style="margin-top: 1rem;">
+                    <div class="metric-card" style="text-align: left;">
+                        <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem;">Well Details</div>
+                        <div id="wellDetails" style="font-size: 0.85rem;">
+                            <p>Total Depth: <strong id="detailTD">--</strong></p>
+                            <p>Tubing Size: <strong id="detailTubing">--</strong></p>
+                            <p>Water Depth: <strong id="detailWater">--</strong></p>
                         </div>
-                        <p class="mb-4">Manage toolstrings, BHA components, and equipment specifications. Real-time dimensional clash detection.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Dimensional validation</li>
-                            <li>✓ Compatibility checking</li>
-                            <li>✓ Usage history tracking</li>
-                            <li>✓ Maintenance schedules</li>
-                        </ul>
-                    </div>
-
-                    <!-- Personnel Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-green-500"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                            <h4 class="text-xl font-bold">Personnel Planning</h4>
-                        </div>
-                        <p class="mb-4">Crew scheduling, competency tracking, and shift management for well operations.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Certification tracking</li>
-                            <li>✓ Shift rotation planning</li>
-                            <li>✓ Skills matrix</li>
-                            <li>✓ Availability dashboard</li>
-                        </ul>
-                    </div>
-
-                    <!-- Supply Chain Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-purple-500"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4h-8v-4h-4V9Z"/></svg>
-                            <h4 class="text-xl font-bold">Supply Chain</h4>
-                        </div>
-                        <p class="mb-4">Material logistics, vendor management, and delivery coordination.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Vendor scorecards</li>
-                            <li>✓ Lead time tracking</li>
-                            <li>✓ Delivery scheduling</li>
-                            <li>✓ Critical path alerts</li>
-                        </ul>
-                    </div>
-
-                    <!-- Warehouse Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-orange-500"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
-                            <h4 class="text-xl font-bold">Warehouse Management</h4>
-                        </div>
-                        <p class="mb-4">Inventory control, stock levels, and equipment location tracking.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Real-time inventory</li>
-                            <li>✓ Location tracking</li>
-                            <li>✓ Reorder automation</li>
-                            <li>✓ Usage analytics</li>
-                        </ul>
                     </div>
                 </div>
             </div>
-
-            <!-- Commercial Tab Content -->
-            <div id="commercial-tab" class="tab-content p-8">
-                <div class="mb-6">
-                    <h3 class="text-2xl font-bold mb-2">Commercial & Financial</h3>
-                    <p class="mb-4">Cost tracking, budget management, and financial analytics for well operations</p>
-                    <span class="coming-soon-badge">Sprint 2 - Planned Q1 2025</span>
+        </div>
+        
+        <!-- Center Panel: Operational Procedure -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Operational Procedure</h2>
+                <p id="procedureTitle">Select a well to load recommended procedure</p>
+            </div>
+            <div class="panel-body">
+                <div id="procedureSteps">
+                    <div class="toolstring-empty">Select a well from the dropdown above to load the AI-recommended intervention procedure.</div>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Cost Tracking Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-green-500"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                            <h4 class="text-xl font-bold">Cost Tracking</h4>
+                
+                <div style="margin-top: 1.5rem;">
+                    <h3 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">AI Recommendation</h3>
+                    <div class="metric-card" style="text-align: left; background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), transparent); border: 1px solid var(--accent);">
+                        <div id="aiRecommendation" style="font-size: 0.85rem; color: var(--fg);">
+                            Select a well to view AI-powered intervention recommendation.
                         </div>
-                        <p class="mb-4">Real-time operational cost monitoring and budget variance analysis.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Daily cost accumulation</li>
-                            <li>✓ Budget vs actual</li>
-                            <li>✓ NPT cost impact</li>
-                            <li>✓ AFE tracking</li>
-                        </ul>
-                    </div>
-
-                    <!-- ROI Calculator Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-blue-500"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-                            <h4 class="text-xl font-bold">ROI Analytics</h4>
-                        </div>
-                        <p class="mb-4">Calculate return on investment for well interventions and efficiency improvements.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ NPT reduction value</li>
-                            <li>✓ Production uplift</li>
-                            <li>✓ Cost avoidance tracking</li>
-                            <li>✓ Payback period</li>
-                        </ul>
-                    </div>
-
-                    <!-- Vendor Contracts Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-purple-500"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
-                            <h4 class="text-xl font-bold">Vendor Management</h4>
-                        </div>
-                        <p class="mb-4">Contract tracking, rate cards, and vendor performance scorecards.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Rate card database</li>
-                            <li>✓ Contract expiry alerts</li>
-                            <li>✓ Performance metrics</li>
-                            <li>✓ Competitive analysis</li>
-                        </ul>
-                    </div>
-
-                    <!-- Financial Reporting Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-orange-500"><path d="M3 3v18h18"/><path d="m7 16 4-4 4 4 6-6"/></svg>
-                            <h4 class="text-xl font-bold">Financial Dashboards</h4>
-                        </div>
-                        <p class="mb-4">Executive summaries, cost trends, and financial KPI visualization.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Cost per barrel metrics</li>
-                            <li>✓ Trend analysis</li>
-                            <li>✓ Executive reporting</li>
-                            <li>✓ Export to Excel</li>
-                        </ul>
                     </div>
                 </div>
             </div>
-
-            <!-- HSE & Risk Tab Content -->
-            <div id="hse-tab" class="tab-content p-8">
-                <div class="mb-6">
-                    <h3 class="text-2xl font-bold mb-2">Health, Safety & Environment</h3>
-                    <p class="mb-4">Safety barrier management, risk assessment, and HSE compliance tracking</p>
-                    <span class="coming-soon-badge">Sprint 0 - Core Safety Barriers</span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Safety Barriers Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-red-500"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                            <h4 class="text-xl font-bold">Safety Barrier Gateway</h4>
-                        </div>
-                        <p class="mb-4">Mandatory safety verification before operational planning can proceed.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ SCSSV depth verification</li>
-                            <li>✓ Pressure containment</li>
-                            <li>✓ Well integrity status</li>
-                            <li>✓ Barrier envelope check</li>
-                        </ul>
-                    </div>
-
-                    <!-- Risk Assessment Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-yellow-500"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-                            <h4 class="text-xl font-bold">Risk Matrices</h4>
-                        </div>
-                        <p class="mb-4">Operational risk identification, assessment, and mitigation planning.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Risk scoring (5x5 matrix)</li>
-                            <li>✓ Mitigation tracking</li>
-                            <li>✓ Bowtie diagrams</li>
-                            <li>✓ ALARP justification</li>
-                        </ul>
-                    </div>
-
-                    <!-- Incident Management Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-orange-500"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
-                            <h4 class="text-xl font-bold">Incident Tracking</h4>
-                        </div>
-                        <p class="mb-4">Near-miss reporting, incident investigation, and lessons learned.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Stop work authority</li>
-                            <li>✓ Root cause analysis</li>
-                            <li>✓ Corrective actions</li>
-                            <li>✓ Trend analysis</li>
-                        </ul>
-                    </div>
-
-                    <!-- Environmental Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-green-500"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"/><path d="M7 3.34V5a3 3 0 0 0 3 3v0a2 2 0 0 1 2 2v0c0 1.1.9 2 2 2v0a2 2 0 0 0 2-2v0c0-1.1.9-2 2-2h3.17"/><path d="M11 21.95V18a2 2 0 0 0-2-2v0a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"/></svg>
-                            <h4 class="text-xl font-bold">Environmental</h4>
-                        </div>
-                        <p class="mb-4">Emissions tracking, waste management, and environmental compliance.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ CO2 footprint</li>
-                            <li>✓ Waste disposal logs</li>
-                            <li>✓ Spill prevention</li>
-                            <li>✓ Regulatory compliance</li>
-                        </ul>
-                    </div>
-                </div>
+        </div>
+        
+        <!-- Right Panel: Job Planner -->
+        <div class="panel">
+            <div class="panel-header">
+                <h2>Job Planner</h2>
+                <p>Build toolstring and estimate costs</p>
             </div>
-
-            <!-- POB & ER Tab Content -->
-            <div id="pob-tab" class="tab-content p-8">
-                <div class="mb-6">
-                    <h3 class="text-2xl font-bold mb-2">Personnel on Board & Emergency Response</h3>
-                    <p class="mb-4">Real-time personnel tracking and emergency response coordination</p>
-                    <span class="coming-soon-badge">Sprint 3 - Planned Q2 2025</span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- POB Tracking Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-blue-500"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                            <h4 class="text-xl font-bold">POB Tracking</h4>
-                        </div>
-                        <p class="mb-4">Real-time personnel on board monitoring with check-in/check-out.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Live POB dashboard</li>
-                            <li>✓ Muster list generation</li>
-                            <li>✓ Visitor management</li>
-                            <li>✓ Competency verification</li>
-                        </ul>
+            <div class="panel-body">
+                <!-- Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="metricLength">0.00 ft</div>
+                        <div class="metric-label">Total Length</div>
                     </div>
-
-                    <!-- Emergency Response Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-red-500"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M15.8 9.2a2.5 2.5 0 0 0-3.5 0l-.3.4-.3-.4a2.42 2.42 0 1 0-3.4 3.4l3.7 3.7 3.7-3.7c1-1 1-2.5.1-3.4Z"/></svg>
-                            <h4 class="text-xl font-bold">Emergency Response</h4>
-                        </div>
-                        <p class="mb-4">Emergency procedures, evacuation plans, and response coordination.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Emergency procedures</li>
-                            <li>✓ Muster station maps</li>
-                            <li>✓ Evacuation routes</li>
-                            <li>✓ Contact directories</li>
-                        </ul>
+                    <div class="metric-card">
+                        <div class="metric-value" id="metricOD">0.00 in</div>
+                        <div class="metric-label">Max OD</div>
                     </div>
-
-                    <!-- Medical Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-green-500"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08v0c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"/></svg>
-                            <h4 class="text-xl font-bold">Medical Support</h4>
-                        </div>
-                        <p class="mb-4">Medical facilities, first aid, and medevac coordination.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Medical equipment inventory</li>
-                            <li>✓ First aid certifications</li>
-                            <li>✓ Medevac procedures</li>
-                            <li>✓ Medical event logging</li>
-                        </ul>
+                    <div class="metric-card">
+                        <div class="metric-value" id="metricEquipCost">$0</div>
+                        <div class="metric-label">Equipment Daily</div>
                     </div>
-
-                    <!-- Communication Card -->
-                    <div class="module-card rounded-lg p-6">
-                        <div class="flex items-center mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mr-3 text-purple-500"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                            <h4 class="text-xl font-bold">Communications</h4>
-                        </div>
-                        <p class="mb-4">Contact management and emergency communication protocols.</p>
-                        <ul class="space-y-2 text-sm">
-                            <li>✓ Emergency contacts</li>
-                            <li>✓ Radio frequencies</li>
-                            <li>✓ Satellite phone backup</li>
-                            <li>✓ Notification cascades</li>
-                        </ul>
+                    <div class="metric-card">
+                        <div class="metric-value" id="metricPersCost">$0</div>
+                        <div class="metric-label">Personnel Daily</div>
+                    </div>
+                    <div class="metric-card total">
+                        <div class="metric-value" id="metricTotalCost">$0</div>
+                        <div class="metric-label">Total Daily Rate</div>
                     </div>
                 </div>
+                
+                <!-- Clash Alert -->
+                <div class="clash-alert hidden" id="clashAlert">
+                    <div class="clash-alert-title">⚠️ OD Clash Detected</div>
+                    <div class="clash-alert-text" id="clashText">Tool exceeds restriction at 4,500m MD</div>
+                </div>
+                
+                <!-- Toolstring Assembly -->
+                <div class="toolstring-section">
+                    <div class="toolstring-header">
+                        <h3>Toolstring Assembly</h3>
+                        <button class="btn btn-sm btn-secondary" onclick="clearToolstring()">Clear</button>
+                    </div>
+                    <div class="toolstring-list" id="toolstringList">
+                        <div class="toolstring-empty">No tools added. Use Quick Add or open Equipment Catalog.</div>
+                    </div>
+                </div>
+                
+                <!-- Quick Add -->
+                <div class="quick-add">
+                    <div class="quick-add-title">QUICK ADD</div>
+                    <div class="quick-add-buttons">
+                        <button class="quick-add-btn tool" onclick="addTool('rope-socket')">Rope Socket</button>
+                        <button class="quick-add-btn tool" onclick="addTool('stem')">Stem</button>
+                        <button class="quick-add-btn tool" onclick="addTool('jar')">Spang Jar</button>
+                        <button class="quick-add-btn tool" onclick="addTool('grab')">2-Prong Grab</button>
+                        <button class="quick-add-btn personnel" onclick="addPersonnel('engineer')">Engineer</button>
+                        <button class="quick-add-btn personnel" onclick="addPersonnel('operator')">Operator</button>
+                    </div>
+                </div>
+                
+                <!-- Actions -->
+                <button class="btn btn-secondary" onclick="openEquipmentModal()" style="margin-bottom: 0.75rem;">
+                    🛠️ Open Equipment Catalog
+                </button>
+                <button class="btn btn-primary" id="savePlanBtn" onclick="savePlan()" disabled>
+                    💾 Save Plan
+                </button>
             </div>
         </div>
     </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-gray-200 dark:border-gray-800 mt-12 py-6">
-        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-600 dark:text-gray-400">
-            <p>&copy; 2025 WellTegra. The Brahan Engine - See What Others Can't.</p>
+    
+    <!-- Equipment Modal -->
+    <div class="modal-overlay" id="equipmentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div>
+                    <h2>🛠️ Equipment Catalog</h2>
+                    <p>Select tools to add to your toolstring assembly</p>
+                </div>
+                <button class="modal-close" onclick="closeEquipmentModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="equipment-tabs">
+                    <button class="equipment-tab active" onclick="switchEquipmentTab('fishing')">Fishing Tools</button>
+                    <button class="equipment-tab" onclick="switchEquipmentTab('running')">Running Tools</button>
+                    <button class="equipment-tab" onclick="switchEquipmentTab('wireline')">Wireline</button>
+                    <button class="equipment-tab" onclick="switchEquipmentTab('completion')">Completion</button>
+                    <button class="equipment-tab" onclick="switchEquipmentTab('gaslift')">Gas Lift</button>
+                </div>
+                <div id="equipmentContent" class="equipment-grid"></div>
+            </div>
         </div>
+    </div>
+    
+    <!-- Communicator Modal -->
+    <div class="modal-overlay" id="communicatorModal">
+        <div class="modal" style="max-width: 1000px;">
+            <div class="modal-header">
+                <div>
+                    <p style="font-size: 0.75rem; color: var(--accent); font-weight: 700; letter-spacing: 0.1em;">REMOTE SIGN-OFF</p>
+                    <h2>Mobile Communicator</h2>
+                    <p>Approve Management of Change requests without leaving the deck</p>
+                </div>
+                <button class="modal-close" onclick="closeCommunicator()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 250px 1fr; gap: 1.5rem;">
+                    <!-- Request List -->
+                    <div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+                            <div class="metric-card">
+                                <div class="metric-value" style="font-size: 1.25rem;">3</div>
+                                <div class="metric-label">Total</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value warning" style="font-size: 1.25rem;">2</div>
+                                <div class="metric-label">Pending</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" style="font-size: 1.25rem; color: var(--success);">1</div>
+                                <div class="metric-label">Approved</div>
+                            </div>
+                        </div>
+                        <div style="background: var(--card); border-radius: 12px; overflow: hidden;">
+                            <div style="padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); font-weight: 700; font-size: 0.85rem;">Requests</div>
+                            <div id="requestList" style="padding: 0.5rem;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Request Detail -->
+                    <div style="background: var(--card); border-radius: 12px; padding: 1.25rem;">
+                        <div id="requestDetail">
+                            <p style="color: var(--muted); text-align: center; padding: 2rem;">Select a request from the list to review</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast -->
+    <div class="toast" id="toast">Plan saved successfully!</div>
+    
+    <footer class="footer">
+        <p>© 2025 WellTegra · The Brahan Engine · See What Others Can't</p>
     </footer>
 
     <script>
-        // Theme Toggle
-        const themeToggle = document.getElementById('theme-toggle-btn');
-        const html = document.documentElement;
-        const body = document.body;
-
-        // Check for saved theme preference or default to dark
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        body.classList.add(`theme-${currentTheme}`);
-
-        themeToggle.addEventListener('click', () => {
-            const isDark = body.classList.contains('theme-dark');
-            body.classList.remove('theme-dark', 'theme-light');
-            body.classList.add(isDark ? 'theme-light' : 'theme-dark');
-            localStorage.setItem('theme', isDark ? 'light' : 'dark');
-        });
-
-        // Tab Switching
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const tabContents = document.querySelectorAll('.tab-content');
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const targetTab = button.getAttribute('data-tab');
-                
-                // Remove active class from all buttons and contents
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
-                
-                // Add active class to clicked button and corresponding content
-                button.classList.add('active');
-                document.getElementById(`${targetTab}-tab`).classList.add('active');
-            });
-        });
-
-        // Handle hash navigation (for direct links like planner.html#commercial)
-        window.addEventListener('DOMContentLoaded', () => {
-            const hash = window.location.hash.substring(1);
-            if (hash) {
-                const targetButton = document.querySelector(`[data-tab="${hash}"]`);
-                if (targetButton) {
-                    targetButton.click();
-                }
+        // ===== DATA =====
+        let wellData = null;
+        let selectedWell = null;
+        let toolstring = [];
+        let personnel = [];
+        
+        const quickTools = {
+            'rope-socket': { name: 'Rope Socket', od: 1.5, length: 2.5, dailyRate: 150 },
+            'stem': { name: '3ft Stem', od: 1.25, length: 3, dailyRate: 100 },
+            'jar': { name: 'Spang Jar', od: 1.75, length: 4, dailyRate: 350 },
+            'grab': { name: '2-Prong Grab', od: 2.0, length: 1.5, dailyRate: 200 }
+        };
+        
+        const quickPersonnel = {
+            'engineer': { name: 'Wellsite Engineer', dailyRate: 1200 },
+            'operator': { name: 'Wireline Operator', dailyRate: 800 }
+        };
+        
+        const mocRequests = [
+            {
+                id: 'MOC-001',
+                title: 'Toolstring Modification',
+                status: 'pending',
+                category: 'Equipment',
+                summary: 'Request to substitute 2-prong grab for 3-prong overshot due to fish geometry.',
+                impact: { cost: '+$2,500', time: '+2 hrs', risk: 'Low' },
+                requestedBy: 'J. Smith',
+                timestamp: '2025-12-04 08:45'
+            },
+            {
+                id: 'MOC-002',
+                title: 'Depth Limit Extension',
+                status: 'pending',
+                category: 'Procedure',
+                summary: 'Request to extend maximum RIH depth from 4,200m to 4,500m based on updated well data.',
+                impact: { cost: '+$5,000', time: '+4 hrs', risk: 'Medium' },
+                requestedBy: 'A. MacLeod',
+                timestamp: '2025-12-04 09:15'
+            },
+            {
+                id: 'MOC-003',
+                title: 'Crew Rotation',
+                status: 'approved',
+                category: 'Personnel',
+                summary: 'Approved rotation of night shift crew due to fatigue management protocol.',
+                impact: { cost: '$0', time: '0 hrs', risk: 'Low' },
+                requestedBy: 'K. McKenzie',
+                timestamp: '2025-12-03 22:00'
             }
+        ];
+        
+        // ===== INITIALIZATION =====
+        async function init() {
+            await loadWellData();
+            populateWellSelector();
+            renderMocRequests();
+            
+            // Check URL params for pre-selected well
+            const params = new URLSearchParams(window.location.search);
+            const wellId = params.get('well');
+            if (wellId) {
+                document.getElementById('wellSelector').value = wellId;
+                selectWell(wellId);
+            }
+        }
+        
+        async function loadWellData() {
+            try {
+                const response = await fetch('data/wells.json');
+                wellData = await response.json();
+            } catch (e) {
+                console.error('Failed to load well data:', e);
+            }
+        }
+        
+        function populateWellSelector() {
+            const selector = document.getElementById('wellSelector');
+            if (!wellData) return;
+            
+            wellData.wells.forEach(well => {
+                const option = document.createElement('option');
+                option.value = well.id;
+                option.textContent = `${well.name} "${well.nickname}" - ${well.status.toUpperCase()}`;
+                if (well.safetyLocked) option.textContent += ' 🔒';
+                selector.appendChild(option);
+            });
+        }
+        
+        // ===== WELL SELECTION =====
+        function selectWell(wellId) {
+            if (!wellId || !wellData) {
+                selectedWell = null;
+                updateUI();
+                return;
+            }
+            
+            selectedWell = wellData.wells.find(w => w.id === wellId);
+            updateUI();
+            drawWellbore();
+        }
+        
+        function updateUI() {
+            const statusBadge = document.getElementById('wellStatusBadge');
+            const integrityEl = document.getElementById('wellIntegrity');
+            const lockBanner = document.getElementById('safetyLockBanner');
+            const savePlanBtn = document.getElementById('savePlanBtn');
+            
+            if (!selectedWell) {
+                statusBadge.style.display = 'none';
+                integrityEl.style.display = 'none';
+                lockBanner.classList.add('hidden');
+                savePlanBtn.disabled = true;
+                document.getElementById('schematicWellName').textContent = 'Select a well to view';
+                document.getElementById('procedureTitle').textContent = 'Select a well to load recommended procedure';
+                document.getElementById('aiRecommendation').textContent = 'Select a well to view AI-powered intervention recommendation.';
+                document.getElementById('procedureSteps').innerHTML = '<div class="toolstring-empty">Select a well from the dropdown above to load the AI-recommended intervention procedure.</div>';
+                return;
+            }
+            
+            // Status badge
+            statusBadge.style.display = 'inline-block';
+            statusBadge.className = 'well-status-badge ' + (selectedWell.safetyLocked ? 'locked' : 'unlocked');
+            statusBadge.textContent = selectedWell.safetyLocked ? '🔒 SAFETY LOCKED' : '✓ UNLOCKED';
+            
+            // Integrity
+            integrityEl.style.display = 'inline-block';
+            const intVal = document.getElementById('integrityValue');
+            intVal.textContent = selectedWell.integrityScore + '%';
+            intVal.style.color = selectedWell.integrityScore < 20 ? 'var(--danger)' : 
+                                 selectedWell.integrityScore < 50 ? 'var(--warning)' : 'var(--success)';
+            
+            // Safety lock banner
+            if (selectedWell.safetyLocked) {
+                lockBanner.classList.remove('hidden');
+                const reasons = document.getElementById('lockReasons');
+                reasons.innerHTML = selectedWell.safetyLockReasons?.map(r => `<li>${r}</li>`).join('') || '<li>Critical barriers unverified</li>';
+                savePlanBtn.disabled = true;
+            } else {
+                lockBanner.classList.add('hidden');
+                savePlanBtn.disabled = toolstring.length === 0;
+            }
+            
+            // Schematic title
+            document.getElementById('schematicWellName').textContent = `${selectedWell.name} "${selectedWell.nickname}"`;
+            
+            // Well details
+            document.getElementById('detailTD').textContent = selectedWell.construction?.totalDepth || '--';
+            document.getElementById('detailTubing').textContent = selectedWell.construction?.tubingSize || '--';
+            document.getElementById('detailWater').textContent = selectedWell.construction?.waterDepth || '--';
+            
+            // Procedure
+            document.getElementById('procedureTitle').textContent = selectedWell.aiRecommendation?.method || 'Recommended Intervention';
+            renderProcedureSteps();
+            
+            // AI Recommendation
+            document.getElementById('aiRecommendation').innerHTML = `
+                <strong style="color: var(--accent);">${selectedWell.aiRecommendation?.method || 'Analysis Required'}</strong><br>
+                ${selectedWell.aiRecommendation?.summary || 'Complete safety verification to unlock AI recommendations.'}
+                <br><br>
+                <span style="color: var(--muted);">Success Probability: </span>
+                <strong style="color: ${selectedWell.aiRecommendation?.successProbability > 80 ? 'var(--success)' : 'var(--warning)'};">
+                    ${selectedWell.aiRecommendation?.successProbability || '--'}%
+                </strong>
+            `;
+        }
+        
+        function renderProcedureSteps() {
+            const container = document.getElementById('procedureSteps');
+            if (!selectedWell?.aiRecommendation?.procedureSteps) {
+                container.innerHTML = '<div class="toolstring-empty">No procedure loaded for this well.</div>';
+                return;
+            }
+            
+            container.innerHTML = selectedWell.aiRecommendation.procedureSteps.map((step, i) => `
+                <div class="procedure-step ${i === 0 ? 'active' : ''}" onclick="selectStep(${i})">
+                    <span class="procedure-step-number">${i + 1}</span>
+                    <span class="procedure-step-title">${step.name || step}</span>
+                    <div class="procedure-step-duration">${step.duration || 'Est. 2-4 hrs'}</div>
+                </div>
+            `).join('');
+        }
+        
+        function selectStep(index) {
+            document.querySelectorAll('.procedure-step').forEach((el, i) => {
+                el.classList.toggle('active', i === index);
+            });
+        }
+        
+        // ===== WELLBORE DRAWING =====
+        function drawWellbore() {
+            const canvas = document.getElementById('wellbore-canvas');
+            const ctx = canvas.getContext('2d');
+            const container = canvas.parentElement;
+            
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            
+            const w = canvas.width;
+            const h = canvas.height;
+            
+            // Clear
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, w, h);
+            
+            if (!selectedWell) {
+                ctx.fillStyle = '#64748b';
+                ctx.font = '14px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText('Select a well to view schematic', w/2, h/2);
+                return;
+            }
+            
+            // Draw simplified wellbore
+            const centerX = w / 2;
+            const topY = 40;
+            const bottomY = h - 40;
+            
+            // Casing strings
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 2;
+            
+            // Surface casing
+            ctx.beginPath();
+            ctx.moveTo(centerX - 40, topY);
+            ctx.lineTo(centerX - 40, topY + 80);
+            ctx.moveTo(centerX + 40, topY);
+            ctx.lineTo(centerX + 40, topY + 80);
+            ctx.stroke();
+            
+            // Production casing
+            ctx.strokeStyle = '#64748b';
+            ctx.beginPath();
+            ctx.moveTo(centerX - 25, topY + 60);
+            ctx.lineTo(centerX - 25, bottomY - 60);
+            ctx.moveTo(centerX + 25, topY + 60);
+            ctx.lineTo(centerX + 25, bottomY - 60);
+            ctx.stroke();
+            
+            // Tubing
+            ctx.strokeStyle = '#14b8a6';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(centerX - 8, topY + 80);
+            ctx.lineTo(centerX - 8, bottomY - 100);
+            ctx.moveTo(centerX + 8, topY + 80);
+            ctx.lineTo(centerX + 8, bottomY - 100);
+            ctx.stroke();
+            
+            // SCSSV marker
+            ctx.fillStyle = selectedWell.barriers?.scssv?.status === 'functional' ? '#22c55e' : '#ef4444';
+            ctx.fillRect(centerX - 15, topY + 120, 30, 10);
+            
+            // Packer
+            ctx.fillStyle = '#f59e0b';
+            ctx.fillRect(centerX - 20, bottomY - 120, 40, 15);
+            
+            // Labels
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '11px Inter';
+            ctx.textAlign = 'left';
+            ctx.fillText('SCSSV', centerX + 20, topY + 128);
+            ctx.fillText('Packer', centerX + 25, bottomY - 110);
+            ctx.fillText('TD: ' + (selectedWell.construction?.totalDepth || 'N/A'), centerX + 25, bottomY - 50);
+            
+            // Well name
+            ctx.fillStyle = '#e2e8f0';
+            ctx.font = 'bold 12px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText(selectedWell.name, centerX, topY - 10);
+            
+            // Integrity indicator
+            const intColor = selectedWell.integrityScore < 20 ? '#ef4444' : 
+                            selectedWell.integrityScore < 50 ? '#f59e0b' : '#22c55e';
+            ctx.fillStyle = intColor;
+            ctx.beginPath();
+            ctx.arc(centerX, bottomY - 20, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold 8px Inter';
+            ctx.fillText(selectedWell.integrityScore + '%', centerX, bottomY - 17);
+        }
+        
+        // ===== TOOLSTRING MANAGEMENT =====
+        function addTool(toolKey) {
+            if (selectedWell?.safetyLocked) {
+                showToast('Cannot modify toolstring - well is safety locked', true);
+                return;
+            }
+            
+            const tool = quickTools[toolKey];
+            if (tool) {
+                toolstring.push({...tool, id: Date.now()});
+                updateToolstringUI();
+                checkClash();
+            }
+        }
+        
+        function addPersonnel(key) {
+            if (selectedWell?.safetyLocked) {
+                showToast('Cannot modify plan - well is safety locked', true);
+                return;
+            }
+            
+            const person = quickPersonnel[key];
+            if (person) {
+                personnel.push({...person, id: Date.now()});
+                updateToolstringUI();
+            }
+        }
+        
+        function removeTool(id) {
+            toolstring = toolstring.filter(t => t.id !== id);
+            updateToolstringUI();
+            checkClash();
+        }
+        
+        function clearToolstring() {
+            toolstring = [];
+            personnel = [];
+            updateToolstringUI();
+            document.getElementById('clashAlert').classList.add('hidden');
+        }
+        
+        function updateToolstringUI() {
+            const list = document.getElementById('toolstringList');
+            
+            if (toolstring.length === 0 && personnel.length === 0) {
+                list.innerHTML = '<div class="toolstring-empty">No tools added. Use Quick Add or open Equipment Catalog.</div>';
+            } else {
+                const toolsHtml = toolstring.map(t => `
+                    <div class="toolstring-item">
+                        <div>
+                            <div class="toolstring-item-name">${t.name}</div>
+                            <div class="toolstring-item-specs">OD: ${t.od}" | Length: ${t.length}ft | $${t.dailyRate}/day</div>
+                        </div>
+                        <button class="toolstring-item-remove" onclick="removeTool(${t.id})">✕</button>
+                    </div>
+                `).join('');
+                
+                const persHtml = personnel.map(p => `
+                    <div class="toolstring-item" style="border-left: 3px solid var(--success);">
+                        <div>
+                            <div class="toolstring-item-name">${p.name}</div>
+                            <div class="toolstring-item-specs">$${p.dailyRate}/day</div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                list.innerHTML = toolsHtml + persHtml;
+            }
+            
+            updateMetrics();
+            
+            // Enable/disable save button
+            const savePlanBtn = document.getElementById('savePlanBtn');
+            savePlanBtn.disabled = selectedWell?.safetyLocked || toolstring.length === 0;
+        }
+        
+        function updateMetrics() {
+            const totalLength = toolstring.reduce((sum, t) => sum + t.length, 0);
+            const maxOD = toolstring.length > 0 ? Math.max(...toolstring.map(t => t.od)) : 0;
+            const equipCost = toolstring.reduce((sum, t) => sum + t.dailyRate, 0);
+            const persCost = personnel.reduce((sum, p) => sum + p.dailyRate, 0);
+            
+            document.getElementById('metricLength').textContent = totalLength.toFixed(2) + ' ft';
+            document.getElementById('metricOD').textContent = maxOD.toFixed(2) + ' in';
+            document.getElementById('metricEquipCost').textContent = '$' + equipCost.toLocaleString();
+            document.getElementById('metricPersCost').textContent = '$' + persCost.toLocaleString();
+            document.getElementById('metricTotalCost').textContent = '$' + (equipCost + persCost).toLocaleString();
+        }
+        
+        function checkClash() {
+            const maxOD = toolstring.length > 0 ? Math.max(...toolstring.map(t => t.od)) : 0;
+            const clashAlert = document.getElementById('clashAlert');
+            
+            // Simple clash detection based on tubing restriction
+            const tubingID = 2.75; // Assumed restriction
+            if (maxOD > tubingID) {
+                clashAlert.classList.remove('hidden');
+                document.getElementById('clashText').textContent = 
+                    `Max tool OD (${maxOD}") exceeds tubing ID (${tubingID}") - will not pass restriction`;
+                document.getElementById('metricOD').classList.add('danger');
+            } else {
+                clashAlert.classList.add('hidden');
+                document.getElementById('metricOD').classList.remove('danger');
+            }
+        }
+        
+        // ===== EQUIPMENT MODAL =====
+        function openEquipmentModal() {
+            document.getElementById('equipmentModal').classList.add('show');
+            loadEquipmentCategory('fishing');
+        }
+        
+        function closeEquipmentModal() {
+            document.getElementById('equipmentModal').classList.remove('show');
+        }
+        
+        function switchEquipmentTab(category) {
+            document.querySelectorAll('.equipment-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.textContent.toLowerCase().includes(category));
+            });
+            loadEquipmentCategory(category);
+        }
+        
+        async function loadEquipmentCategory(category) {
+            const container = document.getElementById('equipmentContent');
+            
+            try {
+                const response = await fetch('data/equipment.json');
+                const data = await response.json();
+                
+                const categoryData = data.categories?.find(c => 
+                    c.name.toLowerCase().includes(category) || c.id === category
+                );
+                
+                if (categoryData?.items) {
+                    container.innerHTML = categoryData.items.map(item => `
+                        <div class="equipment-card">
+                            <div class="equipment-card-header">
+                                <div class="equipment-card-name">${item.name}</div>
+                                ${item.manufacturer ? `<span class="equipment-card-mfr">${item.manufacturer}</span>` : ''}
+                            </div>
+                            <div class="equipment-card-specs">
+                                OD: ${item.od || 'N/A'} | Length: ${item.length || 'N/A'}
+                            </div>
+                            <button class="equipment-card-add" onclick="addEquipmentFromCatalog('${item.name}', ${item.od || 1.5}, ${item.length || 2}, ${item.dailyRate || 200})">
+                                Add to Toolstring
+                            </button>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p style="color: var(--muted); text-align: center;">No equipment found in this category.</p>';
+                }
+            } catch (e) {
+                container.innerHTML = '<p style="color: var(--danger);">Failed to load equipment catalog.</p>';
+            }
+        }
+        
+        function addEquipmentFromCatalog(name, od, length, dailyRate) {
+            if (selectedWell?.safetyLocked) {
+                showToast('Cannot modify toolstring - well is safety locked', true);
+                return;
+            }
+            
+            toolstring.push({ name, od, length, dailyRate, id: Date.now() });
+            updateToolstringUI();
+            checkClash();
+            showToast(`Added ${name} to toolstring`);
+        }
+        
+        // ===== MOBILE COMMUNICATOR =====
+        function openCommunicator() {
+            document.getElementById('communicatorModal').classList.add('show');
+        }
+        
+        function closeCommunicator() {
+            document.getElementById('communicatorModal').classList.remove('show');
+        }
+        
+        function renderMocRequests() {
+            const list = document.getElementById('requestList');
+            list.innerHTML = mocRequests.map(req => `
+                <div style="padding: 0.75rem; background: var(--panel); border-radius: 8px; margin-bottom: 0.5rem; cursor: pointer; border: 1px solid ${req.status === 'pending' ? 'var(--warning)' : 'var(--success)'};" onclick="showRequestDetail('${req.id}')">
+                    <div style="font-weight: 700; font-size: 0.85rem; margin-bottom: 0.25rem;">${req.title}</div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted);">
+                        <span>${req.id}</span>
+                        <span style="color: ${req.status === 'pending' ? 'var(--warning)' : 'var(--success)'};">${req.status.toUpperCase()}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function showRequestDetail(id) {
+            const req = mocRequests.find(r => r.id === id);
+            if (!req) return;
+            
+            const detail = document.getElementById('requestDetail');
+            detail.innerHTML = `
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                    <span style="padding: 0.25rem 0.75rem; background: ${req.status === 'pending' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(34, 197, 94, 0.2)'}; color: ${req.status === 'pending' ? 'var(--warning)' : 'var(--success)'}; border-radius: 999px; font-size: 0.75rem; font-weight: 700;">${req.status.toUpperCase()}</span>
+                    <span style="padding: 0.25rem 0.75rem; background: rgba(20, 184, 166, 0.2); color: var(--accent); border-radius: 999px; font-size: 0.75rem; font-weight: 700;">${req.category}</span>
+                </div>
+                <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem;">${req.title}</h3>
+                <p style="color: var(--muted); margin-bottom: 1rem;">${req.summary}</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem;">
+                    <div class="metric-card">
+                        <div class="metric-value" style="font-size: 1rem; ${req.impact.cost.includes('+') ? 'color: var(--warning);' : ''}">${req.impact.cost}</div>
+                        <div class="metric-label">Cost Impact</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" style="font-size: 1rem;">${req.impact.time}</div>
+                        <div class="metric-label">Time Impact</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" style="font-size: 1rem; color: ${req.impact.risk === 'Low' ? 'var(--success)' : 'var(--warning)'};">${req.impact.risk}</div>
+                        <div class="metric-label">Risk Level</div>
+                    </div>
+                </div>
+                
+                <div style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem;">
+                    Requested by <strong>${req.requestedBy}</strong> at ${req.timestamp}
+                </div>
+                
+                ${req.status === 'pending' ? `
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button class="btn btn-danger" style="flex: 1;" onclick="handleMocDecision('${req.id}', 'reject')">Reject</button>
+                        <button class="btn btn-primary" style="flex: 1;" onclick="handleMocDecision('${req.id}', 'approve')">Approve</button>
+                    </div>
+                ` : `
+                    <div style="padding: 0.75rem; background: rgba(34, 197, 94, 0.1); border: 1px solid var(--success); border-radius: 8px; text-align: center; color: var(--success); font-weight: 700;">
+                        ✓ Already Approved
+                    </div>
+                `}
+            `;
+        }
+        
+        function handleMocDecision(id, decision) {
+            const req = mocRequests.find(r => r.id === id);
+            if (req) {
+                req.status = decision === 'approve' ? 'approved' : 'rejected';
+                renderMocRequests();
+                showRequestDetail(id);
+                
+                const pendingCount = mocRequests.filter(r => r.status === 'pending').length;
+                document.getElementById('pendingCount').textContent = pendingCount;
+                
+                showToast(`Request ${decision === 'approve' ? 'approved' : 'rejected'} successfully`);
+            }
+        }
+        
+        // ===== SAVE PLAN =====
+        function savePlan() {
+            if (!selectedWell || selectedWell.safetyLocked || toolstring.length === 0) {
+                showToast('Cannot save plan - verify well selection and toolstring', true);
+                return;
+            }
+            
+            const plan = {
+                well: selectedWell.name,
+                wellId: selectedWell.id,
+                toolstring: [...toolstring],
+                personnel: [...personnel],
+                totalDailyRate: toolstring.reduce((s, t) => s + t.dailyRate, 0) + personnel.reduce((s, p) => s + p.dailyRate, 0),
+                savedAt: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('welltegra_currentPlan', JSON.stringify(plan));
+            showToast('Plan saved successfully!');
+        }
+        
+        // ===== TOAST =====
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast' + (isError ? ' error' : '');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+        
+        // ===== WINDOW RESIZE =====
+        window.addEventListener('resize', () => {
+            if (selectedWell) drawWellbore();
         });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
