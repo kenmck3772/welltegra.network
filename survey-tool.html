@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Visualization Tool | The Brahan Engine</title>
+    <meta name="description" content="Interactive wellbore survey visualization tool. Upload CSV data to animate deviation, calculate DLS, and export visualizations.">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0b1220;
+            --panel: #0f172a;
+            --br: #334155;
+            --fg: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #14b8a6;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+        }
+        
+        /* Unified Navigation Styles */
+        .unified-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(2,6,23,.95), rgba(15,23,42,.9));
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--br);
+        }
+        .header-wrap {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand img {
+            height: 40px;
+            width: auto;
+            border-radius: 8px;
+        }
+        .brand-text h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.025em;
+        }
+        .brand-text span {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .nav-link.active {
+            color: var(--accent);
+            background: rgba(20, 184, 166, 0.15);
+        }
+        .nav-link svg {
+            width: 18px;
+            height: 18px;
+        }
+        @media (max-width: 900px) {
+            .nav-link span { display: none; }
+            .nav-link { padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- UNIFIED NAVIGATION -->
+<header class="unified-header">
+    <div class="header-wrap">
+        <div class="brand">
+            <img src="assets/logo.jpg" alt="The Brahan Engine" onerror="this.style.display='none'">
+            <div class="brand-text">
+                <h1>The Brahan Engine</h1>
+                <span>by WellTegra</span>
+            </div>
+        </div>
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="index.html" class="nav-link" title="Home">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <span>Home</span>
+            </a>
+            <a href="planner.html" class="nav-link" title="Operations Planner">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8 2v4M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+                <span>Planner</span>
+            </a>
+            <a href="case-studies.html" class="nav-link" title="Case Studies">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                <span>Case Studies</span>
+            </a>
+            <a href="equipment.html" class="nav-link" title="Equipment Catalog">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                <span>Equipment</span>
+            </a>
+            <a href="sop-library.html" class="nav-link" title="SOP Library">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>SOPs</span>
+            </a>
+            <a href="survey-tool.html" class="nav-link active" title="Survey Visualization">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+                <span>Survey</span>
+            </a>
+            <a href="intervention-guide.html" class="nav-link" title="Intervention Guide">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                <span>Guide</span>
+            </a>
+        </nav>
+    </div>
+</header>
+
+<!-- ================= TAB: SURVEY ================= -->
+<section id="tab-survey" class="wt-tab is-active">
+
+<!-- =========================
+     WELLTEGRA · SURVEY DROP‑IN TOOL (CSV → Animated Deviation)
+     Presentation Deck & Screen Recorder (WebM)
+     Single-file, no libraries. Paste inside <body> of your page.
+     Accepts CSV with headers like: MD, INC, AZ (degrees) — optional: TVD, NORTH, EAST.
+     Data stays in browser.
+     ========================= -->
+<section id="survey-dropin" style="padding:44px 0;border-top:1px solid var(--border,#334155);border-bottom:1px solid var(--border,#334155);background:linear-gradient(180deg,rgba(15,23,42,.35),rgba(2,6,23,.2))">
+  <style>
+    @media print {
+      #leftPanel, #toolbar { display: none !important; }
+      #survey-dropin { background: #fff !important; }
+      #survey-dropin * { color: #111 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      #legend, #deltaBar, #dlsPanel { border-color: #999 !important; }
+      svg#svSvg { background: #fff !important; }
+    }
+    @media (max-width: 980px) { #gridWrap { grid-template-columns: 1fr !important; } }
+  </style>
+
+  <div style="max-width:1200px;margin:0 auto;padding:0 16px;color:var(--fg,#e2e8f0);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
+      <h2 style="margin:0;font-size:clamp(1.2rem,2.2vw,1.8rem);font-weight:800">Load a real survey → see it animate</h2>
+      <small style="color:var(--muted,#94a3b8)">MD in metres · INC/AZ in degrees · nothing leaves your browser</small>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr;gap:16px;align-items:stretch">
+      <div id="gridWrap" style="display:grid;grid-template-columns:380px 1fr;gap:16px;align-items:stretch">
+        <!-- LEFT: controls -->
+        <div id="leftPanel" style="background:rgba(2,6,23,.55);border:1px solid var(--border,#334155);border-radius:16px;overflow:hidden">
+          <div style="padding:12px 14px;border-bottom:1px solid var(--border,#334155);display:flex;justify-content:space-between;align-items:center">
+            <strong>Survey loader</strong>
+            <div style="display:flex;gap:8px;align-items:center">
+              <label style="display:flex;gap:6px;align-items:center;font-size:.9rem;color:var(--muted,#94a3b8)">View
+                <select id="svView" style="background:transparent;color:var(--fg,#e2e8f0);border:1px solid var(--border,#334155);border-radius:10px;padding:6px 8px">
+                  <option value="profile">Profile (Departure vs TVD)</option>
+                  <option value="plan">Plan (E vs N)</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div id="dropZone" style="margin:14px;border:2px dashed var(--border,#334155);border-radius:12px;padding:16px;text-align:center;background:rgba(15,23,42,.5);cursor:pointer">
+            <div style="font-weight:800">Drag & drop CSV here</div>
+            <div style="font-size:.9rem;color:var(--muted,#94a3b8)">…or click to choose a file</div>
+            <input id="fileInput" type="file" accept=".csv,.txt" style="display:none"/>
+          </div>
+
+          <div style="padding:0 14px 12px">
+            <label for="pasteArea" style="font-size:.9rem;color:var(--muted,#94a3b8)">Or paste CSV below</label>
+            <textarea id="pasteArea" rows="6" spellcheck="false" style="width:100%;margin-top:6px;background:rgba(15,23,42,.6);color:var(--fg,#e2e8f0);border:1px solid var(--border,#334155);border-radius:10px;padding:10px;font-family:ui-monospace, SFMono-Regular, Menlo, monospace"></textarea>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+              <button id="btnParse" style="all:unset;cursor:pointer;background:var(--accent,#14b8a6);color:#05221c;padding:8px 12px;border-radius:10px;font-weight:800">Parse pasted CSV</button>
+              <button id="btnSample" style="all:unset;cursor:pointer;background:#0ea5e9;color:#06201c;padding:8px 12px;border-radius:10px;font-weight:800">Load sample</button>
+              <button id="btnClear" style="all:unset;cursor:pointer;background:#475569;color:#0b1220;padding:8px 12px;border-radius:10px;font-weight:800">Clear</button>
+              <button id="btnRunTests" style="all:unset;cursor:pointer;background:#22c55e;color:#05221c;padding:8px 12px;border-radius:10px;font-weight:800">Run built‑in tests</button>
+            </div>
+            <div id="testStatus" style="margin-top:8px;font-size:.85rem;color:#a7f3d0;display:none"></div>
+
+            <div id="mapNotice" style="margin-top:12px;display:none;color:#fbbf24;font-size:.9rem">Couldn’t auto-detect columns. Map them below.</div>
+
+            <div id="mapper" style="display:none;margin-top:10px;padding:10px;border:1px dashed var(--border,#334155);border-radius:10px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <label>MD column<select id="colMD" style="width:100%;background:transparent;color:var(--fg,#e2e8f0);border:1px solid var(--border,#334155);border-radius:8px;padding:6px"></select></label>
+                <label>INC column<select id="colINC" style="width:100%;background:transparent;color:var(--fg,#e2e8f0);border:1px solid var(--border,#334155);border-radius:8px;padding:6px"></select></label>
+                <label>AZ column<select id="colAZI" style="width:100%;background:transparent;color:var(--fg,#e2e8f0);border:1px solid var(--border,#334155);border-radius:8px;padding:6px"></select></label>
+                <label optional>Optional TVD<select id="colTVD" style="width:100%;background:transparent;color:var(--fg,#e2e8f0);border:1px solid var(--border,#334155);border-radius:8px;padding:6px"><option value="">(none)</option></select></label>
+                <label optional>Optional North<select id="colN" style="width:100%;background:transparent;color:var(--fg,#e2e8f0);border:1px solid var(--border,#334155);border-radius:8px;padding:6px"><option value="">(none)</option></select></label>
+                <label optional>Optional East<select id="colE" style="width:100%;background:transparent;color:var(--fg,#e2e8f0);border:1px solid var(--border,#334155);border-radius:8px;padding:6px"><option value="">(none)</option></select></label>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+                <button id="btnApplyMap" style="all:unset;cursor:pointer;background:#22d3ee;color:#04141a;padding:8px 12px;border-radius:10px;font-weight:800">Use these columns</button>
+                <button id="btnAutoMap" style="all:unset;cursor:pointer;background:#f59e0b;color:#0b1220;padding:8px 12px;border-radius:10px;font-weight:800">Auto‑map headers</button>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;font-size:.9rem;color:var(--muted,#94a3b8)">
+              Expected headers (case-insensitive): <code>MD, INC, AZ</code>. Optional: <code>TVD, NORTH, EAST</code>.
+            </div>
+
+            <!-- URL loader -->
+            <div style="margin-top:14px;padding:10px;border:1px solid var(--border,#334155);border-radius:12px;background:rgba(15,23,42,.6)">
+              <div style="font-weight:800;margin-bottom:6px">Load from URL</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <input id="urlInput" placeholder="https://example.com/survey.csv" style="flex:1;min-width:220px;background:transparent;color:var(--fg,#e2e8f0);border:1px solid var(--border,#334155);border-radius:10px;padding:8px"/>
+                <button id="btnFetchUrl" style="all:unset;cursor:pointer;background:#22d3ee;color:#04141a;padding:8px 12px;border-radius:10px;font-weight:800">Fetch & load</button>
+                <button id="btnLoadPlan" style="all:unset;cursor:pointer;background:#64748b;color:#0b1220;padding:8px 12px;border-radius:10px;font-weight:800">Load Plan CSV</button>
+              </div>
+              <small style="display:block;margin-top:6px;color:#94a3b8">Works with direct CSV links. If the site blocks cross‑origin requests, download the file and drag it into the drop zone above.</small>
+            </div>
+
+            <!-- Open Data sidebar (curated links) -->
+            <div style="margin-top:14px;padding:10px;border:1px solid var(--border,#334155);border-radius:12px;background:rgba(15,23,42,.6)">
+              <div style="font-weight:800;margin-bottom:6px">Open data you can try</div>
+              <ul style="margin:0;padding-left:18px;display:grid;gap:6px;font-size:.92rem">
+                <li>
+                  <a href="https://catalog.data.gov/dataset/utah-forge-borehole-sensors-and-well-trajectories-april-2022-8e80d" target="_blank" rel="noopener">Utah FORGE well trajectories</a>
+                  <span style="opacity:.7">· CC BY 4.0</span>
+                </li>
+                <li>
+                  <a href="https://www.data.boem.gov/Main/DirectionalSurvey.aspx" target="_blank" rel="noopener">BOEM directional survey downloads (US OCS)</a>
+                  <span style="opacity:.7">· US Gov public domain</span>
+                </li>
+                <li>
+                  <a href="https://factpages.sodir.no/en/wellbore" target="_blank" rel="noopener">Norwegian Offshore Directorate – FactPages (Wellbores)</a>
+                  <span style="opacity:.7">· NLOD 2.0</span>
+                </li>
+                <li>
+                  <a href="https://www.nlog.nl/en/boreholes" target="_blank" rel="noopener">Netherlands NLOG – Boreholes / deviation surveys</a>
+                  <span style="opacity:.7">· Govt open data</span>
+                </li>
+                <li>
+                  <a href="https://www.nstauthority.co.uk/data-and-insights/data/themes/wells/" target="_blank" rel="noopener">UK NSTA Open Data – Wells</a>
+                  <span style="opacity:.7">· OGL v3.0</span>
+                </li>
+                <li>
+                  <a href="https://www.equinor.com/energy/volve-data-sharing" target="_blank" rel="noopener">Equinor Volve dataset (various wells)</a>
+                  <span style="opacity:.7">· Equinor Open Data Licence</span>
+                </li>
+              </ul>
+              <small style="display:block;margin-top:6px;color:#94a3b8">If a dataset is XLSX/ZIP, open it locally and export the survey to CSV with columns MD, INC, AZ.</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: canvas + controls -->
+        <div style="background:rgba(2,6,23,.55);border:1px solid var(--border,#334155);border-radius:16px;overflow:hidden;position:relative">
+          <div id="toolbar" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border,#334155);gap:12px;flex-wrap:wrap">
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+              <button id="svPlay" style="all:unset;cursor:pointer;background:var(--accent,#14b8a6);color:#06201c;padding:8px 12px;border-radius:10px;font-weight:800">Play</button>
+              <button id="svPause" style="all:unset;cursor:pointer;background:#0ea5e9;color:#06201c;padding:8px 12px;border-radius:10px;font-weight:800">Pause</button>
+              <button id="svSave" style="all:unset;cursor:pointer;background:#f59e0b;color:#0b1220;padding:8px 12px;border-radius:10px;font-weight:800">Save PNG</button>
+              <button id="svPrint" style="all:unset;cursor:pointer;background:#eab308;color:#0b1220;padding:8px 12px;border-radius:10px;font-weight:800">Print</button>
+              <label style="display:flex;gap:6px;align-items:center">Speed
+                <input id="svSpeed" type="range" min="0.25" max="4" step="0.25" value="1" style="width:120px">
+              </label>
+              <label style="display:flex;gap:6px;align-items:center">Depth
+                <input id="svScrub" type="range" min="0" max="1000" step="1" value="0" style="width:220px">
+              </label>
+              <label style="display:flex;gap:6px;align-items:center">DLS (°/30m)
+                <input id="svDls" type="range" min="3" max="12" step="0.5" value="6" style="width:120px">
+              </label>
+              <label style="display:flex;gap:6px;align-items:center"><input id="tglPlan" type="checkbox" checked> Show plan</label>
+              <label style="display:flex;gap:6px;align-items:center"><input id="tglHotspots" type="checkbox" checked> Hotspots</label>
+              <label style="display:flex;gap:6px;align-items:center"><input id="tglClean" type="checkbox"> Clean mode</label>
+              <label style="display:flex;gap:6px;align-items:center"><input id="tglTilt" type="checkbox"> Tilt 3D</label>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <button id="btnExportCsv" title="Export computed NE/TVD (+Δ if plan)" style="all:unset;cursor:pointer;background:#10b981;color:#06201c;padding:8px 12px;border-radius:10px;font-weight:800">Export CSV</button>
+              <button id="btnCopyLink" title="Copy shareable link" style="all:unset;cursor:pointer;background:#8b5cf6;color:#0b1220;padding:8px 12px;border-radius:10px;font-weight:800">Copy share link</button>
+              <small id="copyNote" style="display:none;color:#a7f3d0;margin-left:4px">Link copied ✓</small>
+            </div>
+            <!-- Presentation controls -->
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <button id="deckPlay" style="all:unset;cursor:pointer;background:#22c55e;color:#05221c;padding:8px 12px;border-radius:10px;font-weight:800">Play Deck</button>
+              <button id="deckStop" style="all:unset;cursor:pointer;background:#ef4444;color:#0b1220;padding:8px 12px;border-radius:10px;font-weight:800">Stop</button>
+              <button id="deckRec" style="all:unset;cursor:pointer;background:#f97316;color:#0b1220;padding:8px 12px;border-radius:10px;font-weight:800">Record Video</button>
+            </div>
+            <div id="svMeta" style="font-size:.9rem;color:var(--muted,#94a3b8)">No survey loaded</div>
+          </div>
+
+          <!-- Legend overlay -->
+          <div id="legend" style="position:absolute;top:10px;right:12px;display:flex;gap:10px;align-items:center;background:rgba(2,6,23,.6);border:1px solid rgba(51,65,85,.6);border-radius:12px;padding:6px 10px;backdrop-filter:blur(4px)">
+            <div style="display:flex;gap:6px;align-items:center"><span style="display:inline-block;width:20px;height:4px;background:linear-gradient(90deg,#22d3ee,#14b8a6,#f59e0b);border-radius:4px"></span><small>Actual</small></div>
+            <div style="display:flex;gap:6px;align-items:center"><span style="display:inline-block;width:20px;height:0;border-top:4px dashed #94a3b8"></span><small>Plan</small></div>
+            <div style="display:flex;gap:6px;align-items:center"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef4444;border:2px solid #0b1220"></span><small>DLS≥thr</small></div>
+          </div>
+
+          <!-- Caption overlay for deck -->
+          <div id="deckCaption" style="position:absolute;left:14px;bottom:14px;max-width:70%;padding:8px 12px;background:rgba(2,6,23,.6);border:1px solid rgba(51,65,85,.6);border-radius:12px;backdrop-filter:blur(4px);font-weight:800;opacity:0;transform:translateY(8px);transition:opacity .25s ease, transform .25s ease;pointer-events:none"></div>
+
+          <!-- SVG canvas -->
+          <svg id="svSvg" viewBox="0 0 900 540" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block;background:linear-gradient(180deg,rgba(15,23,42,.45),rgba(2,6,23,.35));transform-style:preserve-3d;transition:transform .12s ease">
+            <defs>
+              <pattern id="svGrid" width="90" height="90" patternUnits="userSpaceOnUse">
+                <path d="M90 0H0V90" fill="none" stroke="#334155" stroke-opacity=".4" stroke-width="1"/>
+              </pattern>
+              <linearGradient id="svTraj" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#22d3ee"/>
+                <stop offset="50%" stop-color="#14b8a6"/>
+                <stop offset="100%" stop-color="#f59e0b"/>
+              </linearGradient>
+              <filter id="svGlow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <rect x="0" y="0" width="900" height="540" fill="url(#svGrid)"/>
+            <g id="svTicks" fill="none" stroke="#475569" stroke-width="1"></g>
+            <g id="svPathWrap"></g>
+            <circle id="svDot" r="8" fill="var(--accent,#14b8a6)" stroke="#0b1220" stroke-width="2" visibility="hidden"/>
+            <text id="svBadge" x="0" y="0" font-size="12" fill="#e2e8f0" stroke="#0b1220" stroke-width="0.6" paint-order="stroke" style="font-weight:700" visibility="hidden">MD 0000 m</text>
+          </svg>
+
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px 14px;border-top:1px solid var(--border,#334155)">
+            <div style="background:rgba(15,23,42,.6);border:1px solid var(--border,#334155);border-radius:12px;padding:10px">
+              <div style="font-size:.8rem;color:var(--muted,#94a3b8)">Depth (MD)</div>
+              <div id="kMD" style="font-size:1.6rem;font-weight:800">—</div>
+            </div>
+            <div style="background:rgba(15,23,42,.6);border:1px solid var(--border,#334155);border-radius:12px;padding:10px">
+              <div style="font-size:.8rem;color:var(--muted,#94a3b8)">TVD</div>
+              <div id="kTVD" style="font-size:1.6rem;font-weight:800">—</div>
+            </div>
+            <div style="background:rgba(15,23,42,.6);border:1px solid var(--border,#334155);border-radius:12px;padding:10px">
+              <div style="font-size:.8rem;color:var(--muted,#94a3b8)">Inclination</div>
+              <div id="kINC" style="font-size:1.6rem;font-weight:800">—°</div>
+            </div>
+            <div style="background:rgba(15,23,42,.6);border:1px solid var(--border,#334155);border-radius:12px;padding:10px">
+              <div style="font-size:.8rem;color:var(--muted,#94a3b8)">Azimuth</div>
+              <div id="kAZI" style="font-size:1.6rem;font-weight:800">—°</div>
+            </div>
+          </div>
+
+          <!-- Delta ribbon (with sparkline) -->
+          <div id="deltaBar" style="display:none;gap:8px;flex-wrap:wrap;align-items:center;padding:8px 14px;border-top:1px solid var(--border,#334155);background:linear-gradient(90deg,rgba(20,184,166,.08),rgba(59,130,246,.06));">
+            <span style="display:inline-flex;align-items:center;gap:8px;background:rgba(20,184,166,.12);border:1px solid rgba(20,184,166,.35);padding:6px 10px;border-radius:999px;font-weight:800">
+              Max lateral Δ <span id="dMax" style="font-variant-numeric:tabular-nums">—</span>
+            </span>
+            <span style="display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.35);padding:6px 10px;border-radius:999px;font-weight:800">
+              Avg Δ <span id="dAvg" style="font-variant-numeric:tabular-nums">—</span>
+            </span>
+            <span style="display:inline-flex;align-items:center;gap:8px;background:rgba(236,72,153,.12);border:1px solid rgba(236,72,153,.35);padding:6px 10px;border-radius:999px;font-weight:800">
+              End Δ <span id="dEnd" style="font-variant-numeric:tabular-nums">—</span>
+            </span>
+            <span style="display:inline-flex;align-items:center;gap:8px;background:rgba(234,179,8,.12);border:1px solid rgba(234,179,8,.35);padding:6px 10px;border-radius:999px;font-weight:800">
+              Kickoff ΔMD <span id="dKo" style="font-variant-numeric:tabular-nums">—</span>
+            </span>
+            <svg id="deltaSpark" width="240" height="44" viewBox="0 0 240 44" style="display:none;margin-left:auto">
+              <defs><linearGradient id="sparkGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#22d3ee"/><stop offset="50%" stop-color="#14b8a6"/><stop offset="100%" stop-color="#f59e0b"/></linearGradient></defs>
+              <rect x="0" y="0" width="240" height="44" fill="rgba(2,6,23,.35)" stroke="#334155" stroke-width="1"/>
+              <path id="deltaSparkPath" d="" fill="none" stroke="url(#sparkGrad)" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <!-- DLS Top spikes (click to jump) -->
+          <div id="dlsPanel" style="display:none;padding:8px 14px;border-top:1px solid var(--border,#334155);background:rgba(15,23,42,.5)">
+            <div style="font-weight:800;margin-bottom:6px">Top DLS spikes</div>
+            <div id="dlsTable" style="display:grid;grid-template-columns:120px 1fr;gap:6px;align-items:center"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p style="margin:8px auto 0;max-width:1200px;padding:0 16px;color:#94a3b8;font-size:.8rem">
+    Demo data sources: BOEM (public domain), NSTA (OGL v3.0), NOD (NLOD 2.0), Utah FORGE (CC BY 4.0), Equinor Volve (Open Data Licence).
+  </p>
+
+  <script>
+  (function(){
+    // ======= helpers =======
+    const $ = sel => document.querySelector(sel);
+    const svg = $('#svSvg');
+    const svPathWrap = $('#svPathWrap');
+    const svTicks = $('#svTicks');
+    const dot = $('#svDot');
+    const badge = $('#svBadge');
+    const playBtn = $('#svPlay');
+    const pauseBtn = $('#svPause');
+    const speedEl = $('#svSpeed');
+    const scrubEl = $('#svScrub');
+    const metaEl = $('#svMeta');
+    const viewSel = $('#svView');
+    const leftPanel = $('#leftPanel');
+    const toolbar = $('#toolbar');
+
+    const tglPlan = $('#tglPlan');
+    const tglHotspots = $('#tglHotspots');
+    const tglClean = $('#tglClean');
+    const tglTilt  = $('#tglTilt');
+
+    const kMD=$('#kMD'), kTVD=$('#kTVD'), kINC=$('#kINC'), kAZI=$('#kAZI');
+
+    // Delta UI
+    const deltaBar = $('#deltaBar');
+    const dMax = $('#dMax');
+    const dAvg = $('#dAvg');
+    const dEnd = $('#dEnd');
+    const dKo  = $('#dKo');
+    const deltaSpark = $('#deltaSpark');
+    const deltaSparkPath = $('#deltaSparkPath');
+
+    // Export/share/print
+    const btnExportCsv = $('#btnExportCsv');
+    const btnCopyLink = $('#btnCopyLink');
+    const copyNote = $('#copyNote');
+    const btnPrint = $('#svPrint');
+
+    // Presentation controls
+    const deckPlay = $('#deckPlay');
+    const deckStop = $('#deckStop');
+    const deckRec  = $('#deckRec');
+    const deckCaption = $('#deckCaption');
+
+    // ===== Calendar Pack (.ics) =====
+    // Inject button in the toolbar
+    const calBtn = document.createElement('button');
+    calBtn.id='calPackBtn';
+    calBtn.textContent='Calendar Pack (.ics)';
+    calBtn.style.all='unset';
+    calBtn.style.cursor='pointer';
+    calBtn.style.background='#06b6d4';
+    calBtn.style.color='#04141a';
+    calBtn.style.padding='8px 12px';
+    calBtn.style.borderRadius='10px';
+    calBtn.style.fontWeight='800';
+    toolbar.appendChild(calBtn);
+    calBtn.addEventListener('click', openCalModal);
+    // ===== ICS self-tests hook =====
+    (function(){
+      const tBtn = document.getElementById('btnRunTests');
+      if(!tBtn) return;
+      tBtn.addEventListener('click', ()=>{
+        const results=[];
+        const vtz = buildVTZ();
+        results.push(/TZID:Europe\/London/.test(vtz)&&/RRULE:FREQ=YEARLY/.test(vtz)?'VTZ ok':'VTZ FAIL');
+        const s=new Date('2025-01-01T08:00:00');
+        const e=new Date('2025-01-01T09:00:00');
+        const ev=buildEvent({summary:'X',desc:'Y',loc:'Z',start:s,end:e,attendees:['a@b.com']});
+        results.push(/BEGIN:VEVENT/.test(ev)&&/DTSTART;TZID=Europe\/London:20250101T080000/.test(ev)?'Event ok':'Event FAIL');
+        const long = foldLine('SUMMARY:'+('A'.repeat(150)));
+        results.push(long.split('\n ').every(seg=>seg.replace(/^SUMMARY:/,'').length<=70)?'Fold ok':'Fold FAIL');
+        const el=document.getElementById('testStatus');
+        if(el){ el.style.display='block'; el.textContent='ICS tests: '+results.join(' | '); }
+      });
+    })();
+
+    function pad(n){ return (n<10? '0':'')+n; }
+    function fmtICSLocal(dt){ // local time, no Z
+      return dt.getFullYear()+pad(dt.getMonth()+1)+pad(dt.getDate())+'T'+pad(dt.getHours())+pad(dt.getMinutes())+pad(dt.getSeconds());
+    }
+    function fmtUTC(dt){ const z=new Date(dt.getTime()); return z.getUTCFullYear()+pad(z.getUTCMonth()+1)+pad(z.getUTCDate())+'T'+pad(z.getUTCHours())+pad(z.getUTCMinutes())+pad(z.getUTCSeconds())+'Z'; }
+
+    function makeUID(){ return 'wt-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)+'@welltegra.network'; }
+
+    /* BEGIN: disable bad ICS helpers */
+/*
+function buildVTZ(){
+
+  return [
+    'BEGIN:VTIMEZONE',
+    'TZID:Europe/London',
+    'X-LIC-LOCATION:Europe/London',
+    'BEGIN:DAYLIGHT',
+    'TZOFFSETFROM:+0000',
+    'TZOFFSETTO:+0100',
+    'TZNAME:BST',
+    'DTSTART:19700329T010000',
+    'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU',
+    'END:DAYLIGHT',
+    'BEGIN:STANDARD',
+    'TZOFFSETFROM:+0100',
+    'TZOFFSETTO:+0000',
+    'TZNAME:GMT',
+    'DTSTART:19701025T020000',
+    'RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU',
+    'END:STANDARD',
+    'END:VTIMEZONE'
+  ].join('
+');
+}
+
+    function foldLine(s){ // RFC5545 line-folding
+  const out=[]; let i=0;
+  while(i<s.length){ out.push(s.slice(i,i+70)); i+=70; }
+  return out.join('
+ ');
+}
+      return out.join('
+ ');
+    }
+
+    function buildEvent({summary, desc, loc, start, end, attendees}){
+  const lines=[
+    'BEGIN:VEVENT',
+    'UID:'+makeUID(),
+    'DTSTAMP:'+fmtUTC(new Date()),
+    'DTSTART;TZID=Europe/London:'+fmtICSLocal(start),
+    'DTEND;TZID=Europe/London:'+fmtICSLocal(end),
+    foldLine('SUMMARY:'+summary)
+  ];
+  if(desc) lines.push(foldLine('DESCRIPTION:'+String(desc).replace(/
+?
+/g,'\n')));
+  if(loc)  lines.push(foldLine('LOCATION:'+loc));
+  (attendees||[]).forEach(a=>{ const em=a.trim(); if(em) lines.push('ATTENDEE;CN='+em+':MAILTO:'+em); });
+  lines.push('END:VEVENT');
+  return lines.join('
+');
+});
+      lines.push('END:VEVENT');
+      return lines.join('
+');
+    }
+
+    function buildDaily({summary, desc, loc, start, minutes, count, attendees}){
+  const end=new Date(start.getTime()+minutes*60000);
+  const lines=[
+    'BEGIN:VEVENT',
+    'UID:'+makeUID(),
+    'DTSTAMP:'+fmtUTC(new Date()),
+    'DTSTART;TZID=Europe/London:'+fmtICSLocal(start),
+    'DTEND;TZID=Europe/London:'+fmtICSLocal(end),
+    'RRULE:FREQ=DAILY;COUNT='+(count||5),
+    foldLine('SUMMARY:'+summary)
+  ];
+  if(desc) lines.push(foldLine('DESCRIPTION:'+String(desc).replace(/
+?
+/g,'\n')));
+  if(loc)  lines.push(foldLine('LOCATION:'+loc));
+  (attendees||[]).forEach(em=>{ em=em.trim(); if(em) lines.push('ATTENDEE;CN='+em+':MAILTO:'+em); });
+  lines.push('END:VEVENT');
+  return lines.join('
+');
+}
+
+    function composeDesc(meta, extra){
+  const bits=[];
+  if(extra) bits.push(extra);
+  if(meta.assetIds) bits.push('Assets: '+String(meta.assetIds).replace(/
+?
+/g,', '));
+  if(meta.pob) bits.push('POB (planned): '+meta.pob);
+  if(meta.er) bits.push('Emergency contacts: '+meta.er);
+  if(meta.hse && meta.hse.length){ bits.push('HSE: '+meta.hse.join(', ')); }
+  return bits.join(' \n ');
+}
+      return bits.join(' \n ');
+    }
+
+    */
+// CLEAN ICS HELPERS (override)
+function buildVTZ(){
+  return [
+    'BEGIN:VTIMEZONE',
+    'TZID:Europe/London',
+    'X-LIC-LOCATION:Europe/London',
+    'BEGIN:DAYLIGHT',
+    'TZOFFSETFROM:+0000',
+    'TZOFFSETTO:+0100',
+    'TZNAME:BST',
+    'DTSTART:19700329T010000',
+    'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU',
+    'END:DAYLIGHT',
+    'BEGIN:STANDARD',
+    'TZOFFSETFROM:+0100',
+    'TZOFFSETTO:+0000',
+    'TZNAME:GMT',
+    'DTSTART:19701025T020000',
+    'RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU',
+    'END:STANDARD',
+    'END:VTIMEZONE'
+  ].join('\n');
+}
+function foldLine(s){
+  const out=[]; let i=0;
+  while(i<s.length){ out.push(s.slice(i,i+70)); i+=70; }
+  return out.join('\n ');
+}
+function buildEvent({summary, desc, loc, start, end, attendees}){
+  const lines=[
+    'BEGIN:VEVENT',
+    'UID:'+makeUID(),
+    'DTSTAMP:'+fmtUTC(new Date()),
+    'DTSTART;TZID=Europe/London:'+fmtICSLocal(start),
+    'DTEND;TZID=Europe/London:'+fmtICSLocal(end),
+    foldLine('SUMMARY:'+summary)
+  ];
+  if(desc) lines.push(foldLine('DESCRIPTION:'+String(desc).replace(/\r?\n/g,'\\n')));
+  if(loc)  lines.push(foldLine('LOCATION:'+loc));
+  (attendees||[]).forEach(a=>{ const em=a.trim(); if(em) lines.push('ATTENDEE;CN='+em+':MAILTO:'+em); });
+  lines.push('END:VEVENT');
+  return lines.join('\n');
+}
+function buildDaily({summary, desc, loc, start, minutes, count, attendees}){
+  const end=new Date(start.getTime()+minutes*60000);
+  const lines=[
+    'BEGIN:VEVENT',
+    'UID:'+makeUID(),
+    'DTSTAMP:'+fmtUTC(new Date()),
+    'DTSTART;TZID=Europe/London:'+fmtICSLocal(start),
+    'DTEND;TZID=Europe/London:'+fmtICSLocal(end),
+    'RRULE:FREQ=DAILY;COUNT='+(count||5),
+    foldLine('SUMMARY:'+summary)
+  ];
+  if(desc) lines.push(foldLine('DESCRIPTION:'+String(desc).replace(/\r?\n/g,'\\n')));
+  if(loc)  lines.push(foldLine('LOCATION:'+loc));
+  (attendees||[]).forEach(em=>{ em=em.trim(); if(em) lines.push('ATTENDEE;CN='+em+':MAILTO:'+em); });
+  lines.push('END:VEVENT');
+  return lines.join('\n');
+}
+function composeDesc(meta, extra){
+  const bits=[];
+  if(extra) bits.push(extra);
+  if(meta.assetIds) bits.push('Assets: '+String(meta.assetIds).replace(/\r?\n/g,', '));
+  if(meta.pob) bits.push('POB (planned): '+meta.pob);
+  if(meta.er) bits.push('Emergency contacts: '+meta.er);
+  if(meta.hse && meta.hse.length){ bits.push('HSE: '+meta.hse.join(', ')); }
+  return bits.join(' \\n ');
+}
+
+function buildCalendarPack(meta){arPack(meta){
+      const well = meta.well || ((window.stations&&stations.length)? 'Imported Survey':'WT-666 Demonstrator');
+      const loc = meta.loc||'';
+      const attendees = (meta.att||'').split(',').map(s=>s.trim()).filter(Boolean);
+      const start = meta.start; // Date
+      const opsHours = meta.opsHours||12;
+      const briefMins = meta.briefMins||30;
+      const callTime = meta.callTime||'07:30';
+      const callDur = meta.callDur||30;
+      const callCount = meta.callCount||5;
+      const debriefMins = meta.debriefMins||60;
+      const rigUpH = meta.rigUpH||3;
+      const rigDownH = meta.rigDownH||2;
+
+      const opsStart = new Date(start);
+      const opsEnd   = new Date(start.getTime()+opsHours*3600*1000);
+      const briefStart = new Date(start.getTime()-briefMins*60000);
+      const briefEnd   = new Date(start.getTime());
+      const debStart = new Date(opsEnd.getTime()+ (60*60000));
+      const debEnd   = new Date(debStart.getTime()+debriefMins*60000);
+
+      const ruStart = new Date(start.getTime()-rigUpH*3600*1000);
+      const ruEnd   = new Date(start.getTime());
+      const rdStart = new Date(opsEnd.getTime());
+      const rdEnd   = new Date(opsEnd.getTime()+rigDownH*3600*1000);
+
+      // Daily call starting same day at callTime
+      const [hh,mm] = (callTime||'07:30').split(':').map(x=>parseInt(x,10)||0);
+      const callStart = new Date(start.getFullYear(), start.getMonth(), start.getDate(), hh, mm, 0);
+
+      const body=[
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//WellTegra//CalendarPack//EN',
+        'CALSCALE:GREGORIAN',
+        buildVTZ(),
+      ];
+
+      // Optional Rig-Up
+      if(meta.includeRigUp){
+        body.push(
+          buildEvent({ summary:`Rig-Up Window – ${well}`, desc:composeDesc(meta,'Rig-up & functional checks.'), loc, start:ruStart, end:ruEnd, attendees })
+        );
+      }
+
+      // HSE Toolbox Talk (optional)
+      if(meta.includeHSE){
+        const hseStart = new Date(Math.min(briefStart.getTime(), ruEnd.getTime()));
+        const hseEnd = new Date(hseStart.getTime()+30*60000);
+        body.push(
+          buildEvent({ summary:`HSE Toolbox Talk – ${well}`, desc:composeDesc(meta,'JSA/TRA, PTW, barriers, SIMOPS, spill kit.'), loc, start:hseStart, end:hseEnd, attendees })
+        );
+      }
+
+      // Pre-brief
+      body.push(
+        buildEvent({ summary:`Pre-Job Brief – ${well}`, desc:composeDesc(meta,'Briefing before ops.'), loc, start:briefStart, end:briefEnd, attendees })
+      );
+
+      // Ops window (core)
+      body.push(
+        buildEvent({ summary:`Ops Window – ${well}`, desc:composeDesc(meta,'Execution window.'), loc, start:opsStart, end:opsEnd, attendees })
+      );
+
+      // Daily Ops Call
+      body.push(
+        buildDaily({ summary:`Daily Ops Call – ${well}`, desc:composeDesc(meta,'Standup sync.'), loc, start:callStart, minutes:callDur, count:callCount, attendees })
+      );
+
+      // Vendor Check-in (optional daily)
+      if(meta.includeVendor){
+        const [vh,vm] = (meta.vendorTime||'12:00').split(':').map(x=>parseInt(x,10)||0);
+        const vStart = new Date(start.getFullYear(), start.getMonth(), start.getDate(), vh, vm, 0);
+        body.push(
+          buildDaily({ summary:`Vendor Check-in – ${well}`, desc:composeDesc(meta,'Service partner coordination.'), loc, start:vStart, minutes:(meta.vendorDur||20), count:(meta.vendorCount||callCount), attendees })
+        );
+      }
+
+      // Debrief
+      body.push(
+        buildEvent({ summary:`Post-Job Debrief – ${well}`, desc:composeDesc(meta,'Lessons learned & close-out.'), loc, start:debStart, end:debEnd, attendees })
+      );
+
+      // Optional Rig-Down
+      if(meta.includeRigDown){
+        body.push(
+          buildEvent({ summary:`Rig-Down Window – ${well}`, desc:composeDesc(meta,'Rig-down & demob.'), loc, start:rdStart, end:rdEnd, attendees })
+        );
+      }
+
+      body.push('END:VCALENDAR');
+      return body.join('\n');
+    }
+
+    function downloadICS(txt, name){
+  const blob=new Blob([txt],{type:'text/calendar;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=name||'welltegra-pack.ics';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+    function googleOpsLink({summary, desc, start, end, loc, attendees}){
+      const base='https://calendar.google.com/calendar/render?action=TEMPLATE';
+      function enc(s){ return encodeURIComponent(s||''); }
+      const dates = fmtUTC(start).replace(/[-:]/g,'')+'/'+fmtUTC(end).replace(/[-:]/g,'');
+      const add = (attendees||[]).map(a=>'&add='+enc(a.trim())).join('');
+      return `${base}&text=${enc(summary)}&details=${enc(desc)}&location=${enc(loc)}&dates=${dates}${add}`;
+    }
+
+    function openCalModal(){
+      if(document.getElementById('calModal')){ document.getElementById('calModal').style.display='block'; return; }
+      const overlay=document.createElement('div'); overlay.id='calModal';
+      Object.assign(overlay.style,{position:'fixed',inset:'0',background:'rgba(2,6,23,.6)',backdropFilter:'blur(4px)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center'});
+      const card=document.createElement('div');
+      Object.assign(card.style,{width:'min(920px,96vw)',background:'#0f172a',border:'1px solid #334155',borderRadius:'14px',padding:'14px',color:'#e2e8f0',boxShadow:'0 20px 60px rgba(0,0,0,.4)'});
+      card.innerHTML=`
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px">
+          <strong style="font-size:1.1rem">Calendar Pack</strong>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button id="calSaveDefaults" style="all:unset;cursor:pointer;background:#22c55e;color:#05221c;padding:6px 10px;border-radius:10px;font-weight:800">Save defaults</button>
+            <button id="calClose" style="all:unset;cursor:pointer;background:#ef4444;color:#0b1220;padding:6px 10px;border-radius:10px;font-weight:800">Close</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <label>Well / Job<input id="calWell" style="width:100%;margin-top:4px;background:transparent;color:#e2e8f0;border:1px solid #334155;border-radius:8px;padding:8px"/></label>
+          <label>Location<input id="calLoc" placeholder="Rig/Platform, Block" style="width:100%;margin-top:4px;background:transparent;color:#e2e8f0;border:1px solid #334155;border-radius:8px;padding:8px"/></label>
+          <label>Ops start (local)<input id="calStart" type="datetime-local" style="width:100%;margin-top:4px;background:transparent;color:#e2e8f0;border:1px solid #334155;border-radius:8px;padding:8px"/></label>
+          <label>Ops duration (hours)<input id="calHours" type="number" min="1" max="72" value="12" style="width:100%;margin-top:4px;background:transparent;color:#e2e8f0;border:1px solid #334155;border-radius:8px;padding:8px"/></label>
+
+          <label>Pre-brief minutes<input id="calBrief" type="number" min="0" max="240" value="30" style="width:100%;margin-top:4px;background:transparent;color:#e2e8f0;border:1px solid #334155;border-radius:8px;padding:8px"/></label>
+          <label>Debrief minutes<input id="calDebrief" type="number" min="15" max="240" value="60" style="width:100%;margin-top:4px;background:transparent;color:#e2e8f0;border:1px solid #334155;border-radius:8px;padding:8px"/></label>
+
+          <label>Daily ops call (HH:MM)<input id="calCallTime" value="07:30" style="width:100%;margin-top:4px;background:transparent;color:#e2e8f0;border:1px solid #334155;border-radius:8px;padding:8px"/></label>
+          <label>Daily call duration (min)<input id="calCallDur" type="number" min="10" max="180" value="30" style="width:100%;margin-top:4px;background:transparent;color:#e2e8f0;border:1px solid #334155;border-radius:8px;padding:8px"/></label>
+          <label>Daily call count<input id="calCallCount" type="number" min="1" max="60" value="5" style="width:100%;margin-top:4px;background:transparent</body></html>
