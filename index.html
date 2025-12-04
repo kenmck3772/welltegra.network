@@ -10787,4 +10787,11 @@ document.addEventListener('DOMContentLoaded', () => {
     loadEquipmentCatalog();
     loadSavedToolStrings();
 
-    const nameInput = document.getE
+    const nameInput = document.getElementById('new-toolstring-name');
+    if (nameInput) {
+        nameInput.addEventListener('input', updateToolstringPreview);
+    }
+});
+</script>
+</body>
+</html>
