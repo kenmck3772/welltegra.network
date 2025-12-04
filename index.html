@@ -58,30 +58,12 @@
             position: relative;
             z-index: 1;
         }
+        /* Watermark disabled - asset not deployed */
         .theme-light #main-content::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('assets/watermark.jpg');
-            background-repeat: repeat;
-            background-position: center;
-            background-size: 350px;
-            opacity: 0.02;
-            z-index: -1;
-            pointer-events: none;
+            display: none;
         }
         .theme-dark #main-content::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('assets/watermark.jpg');
-            background-repeat: repeat;
-            background-position: center;
-            background-size: 350px;
-            opacity: 0.04;
-            filter: invert(1);
-            z-index: -1;
-            pointer-events: none;
+            display: none;
         }
 
         .gradient-text {
@@ -1912,8 +1894,7 @@
                                     <p class="text-4xl font-extrabold accent-text">$2.17M</p>
                                     <p class="text-sm text-slate-500">Annual Savings Potential</p>
                                 </div>
-                                <a href="mailto:contact@welltegra.network?subject=ROI%20Assessment%20Request" 
-                                   class="block w-full text-center px-6 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-lg transition-all transform hover:scale-105">
+                                <a href="/cdn-cgi/l/email-protection#75161a1b01141601350210191901101207145b1b1001021a071e4a0600171f10160148273a3c50474534060610060618101b0150474527100400100601" class="block w-full text-center px-6 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-lg transition-all transform hover:scale-105">
                                     Calculate Your Savings →
                                 </a>
                             </div>
@@ -3284,7 +3265,7 @@
 
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const pendingShowViewCalls = [];
 if (typeof window !== 'undefined') {
     window.showView = function(viewName) {
@@ -10853,15 +10834,17 @@ let currentEquipmentFilter = 'all';
 async function loadEquipmentCatalog() {
     try {
         const response = await fetch('data/equipment.json');
-        equipmentCatalog = await response.json();
-        console.log('Equipment catalog loaded:', Object.keys(equipmentCatalog).length, 'categories');
+        const data = await response.json();
+        // The JSON has { catalog: {...}, categories: [...] } structure
+        equipmentCatalog = data.categories || [];
+        console.log('Equipment catalog loaded:', equipmentCatalog.length, 'categories');
         renderEquipmentCatalog();
         populateEquipmentSelector();
     } catch (error) {
         console.error('Failed to load equipment catalog:', error);
         const grid = document.getElementById('equipment-catalog-grid');
         if (grid) {
-            grid.innerHTML = '<p class="text-yellow-500">Equipment catalog will be loaded when equipment-catalog.json is available.</p>';
+            grid.innerHTML = '<p class="text-yellow-500">Equipment catalog unavailable. Please check data/equipment.json.</p>';
         }
     }
 }
@@ -10896,21 +10879,16 @@ window.switchEquipmentTab = function(tabName) {
 // Render equipment catalog
 function renderEquipmentCatalog() {
     const grid = document.getElementById('equipment-catalog-grid');
-    if (!grid) return;
+    if (!grid || !Array.isArray(equipmentCatalog)) return;
     grid.innerHTML = '';
 
-    Object.keys(equipmentCatalog).forEach(categoryKey => {
-        const category = equipmentCatalog[categoryKey];
-        if (currentEquipmentFilter !== 'all') {
-            const hasMatchingItems = category.items.some(item => item.category === currentEquipmentFilter);
-            if (!hasMatchingItems) return;
-        }
-
+    equipmentCatalog.forEach(category => {
+        if (!category || !category.items) return;
+        
         const card = document.createElement('div');
         card.className = 'equipment-category-card';
 
         const itemsHTML = category.items
-            .filter(item => currentEquipmentFilter === 'all' || item.category === currentEquipmentFilter)
             .map(item => `
                 <div class="equipment-item">
                     <div>
@@ -10919,7 +10897,7 @@ function renderEquipmentCatalog() {
                             ${item.manufacturer ? `<span class="manufacturer-badge">${item.manufacturer}</span>` : ''}
                         </div>
                         <div class="equipment-item-meta">
-                            ${item.applications ? item.applications.slice(0, 2).map(app => `<span class="application-tag">${app}</span>`).join('') : ''}
+                            OD: ${item.od}" | Length: ${item.length}" | $${item.dailyRate}/day
                         </div>
                     </div>
                     <button class="btn-add-equipment" onclick='addEquipmentToBuilderDirect(${JSON.stringify(item).replace(/'/g, "&apos;")})'>
@@ -10930,7 +10908,7 @@ function renderEquipmentCatalog() {
 
         card.innerHTML = `
             <h4 class="text-lg font-bold mb-4 text-cyan-400">${category.name}</h4>
-            <p class="text-sm text-gray-400 mb-4">${category.description}</p>
+            <p class="text-sm text-gray-400 mb-4">${category.description || ''}</p>
             <div>${itemsHTML}</div>
         `;
         grid.appendChild(card);
@@ -10946,11 +10924,12 @@ window.filterEquipmentCategory = function(category) {
 // Populate equipment selector dropdown
 function populateEquipmentSelector() {
     const selector = document.getElementById('equipment-selector');
-    if (!selector) return;
+    if (!selector || !Array.isArray(equipmentCatalog)) return;
     selector.innerHTML = '<option value="">-- Choose equipment --</option>';
 
-    Object.keys(equipmentCatalog).forEach(categoryKey => {
-        const category = equipmentCatalog[categoryKey];
+    equipmentCatalog.forEach(category => {
+        if (!category || !category.items) return;
+        
         const optgroup = document.createElement('optgroup');
         optgroup.label = category.name;
 
@@ -11162,12 +11141,4 @@ document.addEventListener('DOMContentLoaded', () => {
     loadEquipmentCatalog();
     loadSavedToolStrings();
 
-    const nameInput = document.getElementById('new-toolstring-name');
-    if (nameInput) nameInput.addEventListener('input', updateBuilderPreview);
-});
-
-</script>
-</script>
-
-</body>
-</html>
+    const nameInput = document.getE
