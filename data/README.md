@@ -1,21 +1,18 @@
-# WellTegra Seed Pack — 7 Wells
+# Firestore Seed — WellTegra (7 wells)
 
-Wells: w-11, w-22, w-33, w-44, w-55, w-666, w-77
+This bundle seeds documents under the path:
+`artifacts/welltegra/wells/<wellId>` with an `events` subcollection.
 
-This pack contains CSV and JSON templates aligned to the Well-Tegra blueprint:
-- **wells_master**: definitive well identity + metadata (verification status & completeness notes)
-- **well_events**: chronological, event-based history
-- **casing/tubing/perforation/downhole_equipment**: components for dynamic schematics
-- **anomalies**: lifecycle integrity ledger
-- **sop + jsa**: Bridge Plug Retrieval example with linked hazards/controls
-- **barrier_matrix_template**: declare and verify barriers per phase
-- **equipment_register / chemical_register / mobilization_lift_plan**: operational planning
-- **personnel_assessment_template**: competency and performance capture
-- **toolstring_example**: OD/ID-sensitive components with lengths/weights
-
-All timestamps: 2025-12-04T20:01:34Z (UTC).
+## Quick start
+1. Create a Firebase project and a service account JSON with Firestore Admin role.
+2. Download the key and set the env var:
+   `export GOOGLE_APPLICATION_CREDENTIALS=/path/to/serviceAccount.json`
+3. Install deps:
+   `cd firestore && npm i`
+4. Import:
+   `node import_jsonl.js --project <your-project-id> --file firestore/seed.jsonl`
 
 ## Notes
-- Replace placeholder fields with values from handover packs, notifications, and historical summaries.
-- Keep `Data_Verification_Status` updated: `Verified`, `Unverified`, or `Missing`.
-- Use `Well_Unique_Identifier` as the join key across tables.
+- Placeholder docs named `_placeholder` are included so subcollections exist; delete them once real docs are added.
+- The default app namespace is `welltegra`; change it by editing `seed.jsonl`.
+- All seven wells: w-11, w-22, w-33, w-44, w-55, w-666, w-77
