@@ -121,13 +121,13 @@
         .theme-dark .planner-card.selected { border-color: #60a5fa; transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); border-width: 2px; }
 
         /* Highlight the "Well From Hell" */
-        .planner-card[data-well-id="Well_666"] {
+        .planner-card[data-well-id="w-666"] {
             border-color: #991b1b;
             background-image: linear-gradient(rgba(255,0,0,0.05), rgba(255,0,0,0));
             position: relative;
             overflow: hidden;
         }
-        .planner-card[data-well-id="Well_666"]::before {
+        .planner-card[data-well-id="w-666"]::before {
             content: "⚠ WELL FROM HELL";
             position: absolute;
             top: 10px;
@@ -140,11 +140,11 @@
             transform: rotate(45deg);
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        .theme-dark .planner-card[data-well-id="Well_666"] {
+        .theme-dark .planner-card[data-well-id="w-666"] {
             border-color: #ef4444;
             background-image: linear-gradient(rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0));
         }
-        .planner-card[data-well-id="Well_666"].selected {
+        .planner-card[data-well-id="w-666"].selected {
              border-color: #ef4444 !important;
              box-shadow: 0 10px 15px -3px rgb(239 68 68 / 0.2), 0 4px 6px -4px rgb(239 68 68 / 0.2);
         }
@@ -1939,12 +1939,12 @@
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white">Well Intervention Case Studies</h2>
                 <p class="mt-4 max-w-4xl mx-auto text-lg text-blue-100">
                     Explore our portfolio of successful well interventions. Each case study represents a proven solution to a specific downhole challenge.
-                    These learnings directly inform our intervention strategy for <strong class="text-cyan-400">Well_666 - The Perfect Storm</strong>,
+                    These learnings directly inform our intervention strategy for <strong class="text-cyan-400">w-666 - The Perfect Storm</strong>,
                     our most complex problem well combining multiple failure modes.
                 </p>
                 <div class="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
                     <button onclick="showView('planner')" class="px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white text-lg font-bold rounded-lg shadow-lg transition transform hover:scale-105">
-                        Go to Well_666 Planner →
+                        Go to w-666 Planner →
                     </button>
                 </div>
             </div>
@@ -1961,7 +1961,7 @@
                     <div class="flex items-start gap-3">
                         <span class="text-red-500 text-2xl">⚠️</span>
                         <div>
-                            <strong class="text-red-400">Well_666 - The Perfect Storm:</strong>
+                            <strong class="text-red-400">w-666 - The Perfect Storm:</strong>
                             <span class="text-slate-300">Our challenge well - currently shut-in with multiple compounding failures requiring a complex intervention plan.</span>
                         </div>
                     </div>
@@ -1969,7 +1969,7 @@
                         <span class="text-green-500 text-2xl">✓</span>
                         <div>
                             <strong class="text-green-400">Successful Interventions:</strong>
-                            <span class="text-slate-300">The other six wells showcase proven solutions for casing deformation, scale blockage, valve failures, and more. Each lesson learned contributes to our strategy for Well_666.</span>
+                            <span class="text-slate-300">The other six wells showcase proven solutions for casing deformation, scale blockage, valve failures, and more. Each lesson learned contributes to our strategy for w-666.</span>
                         </div>
                     </div>
                 </div>
@@ -2973,7 +2973,7 @@
                             <p class="text-slate-500 text-sm">No components added yet</p>
                         </div>
                     </div>
-                    <button onclick="saveCurrentToolString()" class="mt-4 w-full px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-lg transition">
+                    <button onclick="saveToolString()" class="mt-4 w-full px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded-lg transition">
                         Save Toolstring
                     </button>
                 </div>
@@ -3209,7 +3209,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- DATA STORE (REWRITTEN FOR NARRATIVE) ---
     const wellData = [
         {
-            id: 'Well_11',
+            id: 'w-11',
             name: 'Brahan Producer 11',
             field: 'Brahan',
             region: 'UKCS',
@@ -3221,7 +3221,7 @@ document.addEventListener('DOMContentLoaded', function() {
             waterDepth: '0ft',
             status: 'Active - Producing',
             issue: 'Standard platform producer, operating normally with routine monitoring.',
-            wellboreImage: '/assets/wellbore-Well_11-3d.png',
+            wellboreImage: '/assets/wellbore-w-11-3d.png',
 
             // PILLAR 1: Identity & Context
             administrative: {
@@ -3346,7 +3346,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         {
-            id: 'Well_22',
+            id: 'w-22',
             name: 'Brahan Producer 22',
             field: 'Brahan',
             region: 'UKCS',
@@ -3358,7 +3358,7 @@ document.addEventListener('DOMContentLoaded', function() {
             waterDepth: '0ft',
             status: 'Active - Post-Intervention',
             issue: 'CASE STUDY: "The Brahan Squeeze" - Casing deformation successfully remediated with expandable steel patch.',
-            wellboreImage: '/assets/wellbore-Well_22-3d.png',
+            wellboreImage: '/assets/wellbore-w-22-3d.png',
 
             // PILLAR 1: Identity & Context
             administrative: {
@@ -3505,7 +3505,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         {
-            id: 'Well_33',
+            id: 'w-33',
             name: 'CASE STUDY: The Scale Victory',
             field: 'Brahan',
             region: 'UKCS',
@@ -3517,7 +3517,7 @@ document.addEventListener('DOMContentLoaded', function() {
             waterDepth: '0ft',
             status: 'Active - Post-Intervention',
             issue: 'CASE STUDY: "The Scale Trap" - Severe BaSO4 scale successfully removed with chemical/jetting treatment.',
-            wellboreImage: '/assets/wellbore-Well_33-3d.png',
+            wellboreImage: '/assets/wellbore-w-33-3d.png',
 
             // PILLAR 1: Identity & Context
             administrative: {
@@ -3675,7 +3675,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         {
-            id: 'Well_44',
+            id: 'w-44',
             name: 'CASE STUDY: The Barrier Restoration',
             field: 'Brahan',
             region: 'UKCS',
@@ -3687,7 +3687,7 @@ document.addEventListener('DOMContentLoaded', function() {
             waterDepth: '0ft',
             status: 'Active - Post-Intervention',
             issue: 'CASE STUDY: "The Broken Barrier" - Failed TRSSV successfully replaced with slickline-retrievable insert valve.',
-            wellboreImage: '/assets/wellbore-Well_44-3d.png',
+            wellboreImage: '/assets/wellbore-w-44-3d.png',
 
             // PILLAR 1: Identity & Context
             administrative: {
@@ -3834,7 +3834,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         {
-            id: 'Well_55',
+            id: 'w-55',
             name: 'Brahan Injector 55',
             field: 'Brahan',
             region: 'UKCS',
@@ -3846,7 +3846,7 @@ document.addEventListener('DOMContentLoaded', function() {
             waterDepth: '492ft',
             status: 'Active - Injecting',
             issue: 'Critical water injector supporting reservoir pressure maintenance. Operating at excellent injectivity.',
-            wellboreImage: '/assets/wellbore-Well_55-3d.png',
+            wellboreImage: '/assets/wellbore-w-55-3d.png',
 
             // PILLAR 1: Identity & Context
             administrative: {
@@ -3989,11 +3989,11 @@ document.addEventListener('DOMContentLoaded', function() {
             futurePlans: {
                 immediate: ['Continue routine quarterly surveillance (SSSV test, annulus pressure monitoring)', 'Monitor water treatment plant performance to ensure injected water quality remains high'],
                 mediumTerm: ['Continue annual injection profile surveys to monitor for any long-term changes in injectivity profile or potential for fines migration or near-wellbore scaling', 'Evaluate need for stimulation (e.g., acid wash) if injectivity declines significantly'],
-                longTerm: ['Not applicable in near term. Well_55 is critical asset for reservoir pressure support and expected to operate for remaining life of Brahan field. P&A only considered as part of overall field abandonment plan']
+                longTerm: ['Not applicable in near term. w-55 is critical asset for reservoir pressure support and expected to operate for remaining life of Brahan field. P&A only considered as part of overall field abandonment plan']
             }
         },
         {
-            id: 'Well_666',
+            id: 'w-666',
             name: 'CASE STUDY: The Perfect Storm',
             field: 'Brahan',
             region: 'UKCS',
@@ -4005,7 +4005,7 @@ document.addEventListener('DOMContentLoaded', function() {
             waterDepth: '591ft',
             status: 'SHUT-IN (Critical Intervention Candidate)',
             issue: 'THE PERFECT STORM: A cascade of compounding failures. Severe BaSO₄ scale blockage, failed TRSSV stuck closed, and casing deformation at 14,764ft. Demonstrates why WellTegra is vital. Requires complex multi-phase intervention incorporating lessons from W22, W33, and W44.',
-            wellboreImage: '/assets/wellbore-Well_666-3d.png',
+            wellboreImage: '/assets/wellbore-w-666-3d.png',
 
             // PILLAR 1: Identity & Context
             administrative: {
@@ -4192,7 +4192,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         {
-            id: 'Well_777',
+            id: 'w-77',
             name: 'CASE STUDY: Field of Dreams',
             field: 'Brahan',
             region: 'UKCS',
@@ -4203,8 +4203,8 @@ document.addEventListener('DOMContentLoaded', function() {
             datumElevation: '82ft',
             waterDepth: '591ft',
             status: 'Active - Peak Performance (Benchmark Well)',
-            issue: 'BENCHMARK DESIGN: Strategically designed premium well incorporating all lessons learned from Well_22, Well_33, Well_44, and Well_666. Template for future Brahan development.',
-            wellboreImage: '/assets/wellbore-Well_777-3d.png',
+            issue: 'BENCHMARK DESIGN: Strategically designed premium well incorporating all lessons learned from w-22, w-33, w-44, and w-666. Template for future Brahan development.',
+            wellboreImage: '/assets/wellbore-w-77-3d.png',
 
             // PILLAR 1: Identity & Context
             administrative: {
@@ -4221,8 +4221,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 reportDate: '2023-10-26'
             },
             geological: {
-                targetFormation: 'Brahan Alpha Sandstone (HPHT "Core" Zone - Same as Well_666)',
-                prognosisVsActual: 'Geosteering used to place wellbore in optimal reservoir facies, avoiding fault zones identified in seismic re-processing prompted by Well_666 data',
+                targetFormation: 'Brahan Alpha Sandstone (HPHT "Core" Zone - Same as w-666)',
+                prognosisVsActual: 'Geosteering used to place wellbore in optimal reservoir facies, avoiding fault zones identified in seismic re-processing prompted by w-666 data',
                 reservoirProperties: {
                     porosity: '20-24%',
                     permeability: '200-300 mD',
@@ -4235,7 +4235,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     gasGravity: 0.69,
                     h2s: '22 ppm',
                     co2: '5.0 mol%',
-                    scaleTendency: 'Very High Barium Sulphate (BaSO₄) precipitation risk (Lesson from Well_33)'
+                    scaleTendency: 'Very High Barium Sulphate (BaSO₄) precipitation risk (Lesson from w-33)'
                 },
                 volumetrics: {
                     OGIP: '195 Bcf',
@@ -4255,22 +4255,22 @@ document.addEventListener('DOMContentLoaded', function() {
             wellboreConstruction: [
                 {component: 'Conductor', topMD: 673, bottomMD: 1148, size: 30, weight: null, grade: null, connection: null, details: 'Subsea Wellhead Housing'},
                 {component: 'Surface', topMD: 673, bottomMD: 4429, size: 20, weight: 94.0, grade: 'K-55', connection: 'BTC', details: 'TOC @ Seabed (205m MD, verified by returns)'},
-                {component: 'Intermediate', topMD: 673, bottomMD: 10171, size: 13.375, weight: 68.0, grade: '**P-110**', connection: '**VAM TOP**', details: '**Enhanced grade and premium connection to withstand compaction (Lesson from Well_22). TOC @ 2,100m MD (CBL/VDL verified)**'},
-                {component: 'Production (Liner)', topMD: 9514, bottomMD: 17060, size: 9.625, weight: 53.5, grade: '**Q-125 13Cr**', connection: '**VAM TOP**', details: '**Corrosion-Resistant Alloy (CRA) liner to combat H₂S/CO₂ and scale (Lessons from Well_33, Well_55). TOC @ 2,800m MD (CBL/VDL verified)**'}
+                {component: 'Intermediate', topMD: 673, bottomMD: 10171, size: 13.375, weight: 68.0, grade: '**P-110**', connection: '**VAM TOP**', details: '**Enhanced grade and premium connection to withstand compaction (Lesson from w-22). TOC @ 2,100m MD (CBL/VDL verified)**'},
+                {component: 'Production (Liner)', topMD: 9514, bottomMD: 17060, size: 9.625, weight: 53.5, grade: '**Q-125 13Cr**', connection: '**VAM TOP**', details: '**Corrosion-Resistant Alloy (CRA) liner to combat H₂S/CO₂ and scale (Lessons from w-33, w-55). TOC @ 2,800m MD (CBL/VDL verified)**'}
             ],
 
             // PILLAR 3: Completion & Production Setup
             completion: {
                 casing: [{type: 'Production (CRA Liner)', size: '9 5/8"', top: 9514, bottom: 17060}],
-                tubing: [{type: 'Production', size: '5.5"', top: 0, bottom: 16732, weight: '22.0 lb/ft', grade: '**Incoloy 825 CRA tubing**', connection: 'VAM TOP', comments: '**Glass-Reinforced Epoxy internal coating. Premium materials to resist corrosion and scale adhesion (Lessons from Well_33, Well_55)**'}],
+                tubing: [{type: 'Production', size: '5.5"', top: 0, bottom: 16732, weight: '22.0 lb/ft', grade: '**Incoloy 825 CRA tubing**', connection: 'VAM TOP', comments: '**Glass-Reinforced Epoxy internal coating. Premium materials to resist corrosion and scale adhesion (Lessons from w-33, w-55)**'}],
                 equipment: [
                     {item: 'SSSV (Primary)', top: 1362, details: '**Primary TRSSV, 1/4" control line, 1.875" bore**'},
-                    {item: 'SSSV (Secondary)', top: 1394, details: '**Secondary, retrievable Insert SSV in dedicated nipple profile. Redundant safety barrier (Lesson from Well_44)**', isEnhancement: true},
-                    {item: 'Chemical Injection Mandrel', top: 4921, details: '**Dual-Port Side Pocket Mandrel for continuous scale and corrosion inhibitor injection (Proactive scale management, Lesson from Well_33)**', isEnhancement: true},
+                    {item: 'SSSV (Secondary)', top: 1394, details: '**Secondary, retrievable Insert SSV in dedicated nipple profile. Redundant safety barrier (Lesson from w-44)**', isEnhancement: true},
+                    {item: 'Chemical Injection Mandrel', top: 4921, details: '**Dual-Port Side Pocket Mandrel for continuous scale and corrosion inhibitor injection (Proactive scale management, Lesson from w-33)**', isEnhancement: true},
                     {item: 'Gas Lift Mandrels', top: 7218, details: 'Side Pocket Mandrels at 2,200m, 2,500m, 2,800m - 1.0" OD, premium valve seats'},
                     {item: 'Packer', top: 16568, details: '**Model "C" Hydraulic Set Premium Production Packer, 12,500 psi rating, Elastomer seals compatible with high CO₂/H₂S**'},
                     {item: 'Landing Nipple', top: 16666, details: 'Premium No-Go Nipple, 2.313" ID, located below packer'},
-                    {item: 'Sand Screen', top: 16798, details: '**Premium, expandable sand screen assembly across 5,120-5,180m MD, installed with gravel pack (Robust sand control, Lesson from Well_666)**', isEnhancement: true}
+                    {item: 'Sand Screen', top: 16798, details: '**Premium, expandable sand screen assembly across 5,120-5,180m MD, installed with gravel pack (Robust sand control, Lesson from w-666)**', isEnhancement: true}
                 ],
                 perforations: [{top: 16798, bottom: 16995, details: 'Premium gravel pack, 12 SPF, 60° phasing'}]
             },
@@ -4340,15 +4340,15 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             futurePlans: {
                 immediate: ['Continue proactive, routine surveillance (PLTs, SSV tests, fluid sampling) to validate the "Field of Dreams" design', 'Use data from this well to refine predictive maintenance models for other assets'],
-                mediumTerm: ['**Well_777 will serve as the template for all future Brahan field development wells**', 'Data will be used to build high-fidelity digital twin, which can be used to simulate interventions on problem wells like Well_666 before execution', 'Analyze long-term performance of CRA materials and chemical injection program to optimize costs for future wells'],
-                longTerm: ['Enhanced design of Well_777 will inform more efficient and reliable P&A procedures, ensuring its integrity can be safely and cost-effectively managed at end of life']
+                mediumTerm: ['**w-77 will serve as the template for all future Brahan field development wells**', 'Data will be used to build high-fidelity digital twin, which can be used to simulate interventions on problem wells like w-666 before execution', 'Analyze long-term performance of CRA materials and chemical injection program to optimize costs for future wells'],
+                longTerm: ['Enhanced design of w-77 will inform more efficient and reliable P&A procedures, ensuring its integrity can be safely and cost-effectively managed at end of life']
             }
         },
     ];
 
     // DEVIATION SURVEY DATA
     const deviationSurveyData = {
-    "Well_11": {
+    "w-11": {
         "name": "Brahan Alpha (Reliable Producer)",
         "survey": [
             {
@@ -4424,7 +4424,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ],
         "anomalies": []
     },
-    "Well_22": {
+    "w-22": {
         "name": "Brahan Alpha (Casing Deformation)",
         "survey": [
             {
@@ -4515,7 +4515,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         ]
     },
-    "Well_33": {
+    "w-33": {
         "name": "Brahan Alpha (Scale Blockage)",
         "survey": [
             {
@@ -4606,7 +4606,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         ]
     },
-    "Well_44": {
+    "w-44": {
         "name": "Brahan Alpha (SSV Failure)",
         "survey": [
             {
@@ -4697,7 +4697,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         ]
     },
-    "Well_55": {
+    "w-55": {
         "name": "Brahan Bravo (Water Injector)",
         "survey": [
             {
@@ -4787,7 +4787,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ],
         "anomalies": []
     },
-    "Well_666": {
+    "w-666": {
             "name": "Brahan Gamma (The Perfect Storm)",
             "survey": [
                         {
@@ -4921,7 +4921,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ]
 },
 
-            "Well_44": {
+            "w-44": {
                         "name": "Brahan Alpha (The Broken Barrier)",
                         "survey": [
                                     {
@@ -5012,7 +5012,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     }
                         ]
             },
-            "Well_55": {
+            "w-55": {
                         "name": "Brahan Bravo (Water Injector)",
                         "survey": [
                                     {
@@ -5102,7 +5102,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         ],
                         "anomalies": []
             },
-            "Well_777": {
+            "w-77": {
                         "name": "Brahan Gamma (Field of Dreams)",
                         "survey": [
                                     {
@@ -5244,10 +5244,10 @@ function showDeviationSurvey(wellId) {
             { objectiveId: 'obj1', confidence: 95, outcome: 'Full-bore access restored', reason: 'Historical analysis confirms expandable steel patches are proven, high-success-rate rigless solutions for casing deformation in this field environment.' }
         ],
         prob2: [
-            { objectiveId: 'obj2', confidence: 92, outcome: 'Blockage cleared, production restored', reason: 'Based on the successful intervention on case study <strong>Well_33 (The Scale Victory)</strong>, a two-stage chemical (DTPA) and mechanical (jetting) intervention has the highest probability of success. This avoids the high risk of stuck pipe associated with milling.' }
+            { objectiveId: 'obj2', confidence: 92, outcome: 'Blockage cleared, production restored', reason: 'Based on the successful intervention on case study <strong>w-33 (The Scale Victory)</strong>, a two-stage chemical (DTPA) and mechanical (jetting) intervention has the highest probability of success. This avoids the high risk of stuck pipe associated with milling.' }
         ],
         prob3: [
-            { objectiveId: 'obj3', confidence: 99, outcome: 'Well returned to safe, compliant production', reason: 'This is a standard operation. The critical lesson from case study <strong>Well_44 (The Barrier Restoration)</strong> is to use a reliable mechanical lock-open tool to avoid procedural failures and ensure a successful, single-run repair.' }
+            { objectiveId: 'obj3', confidence: 99, outcome: 'Well returned to safe, compliant production', reason: 'This is a standard operation. The critical lesson from case study <strong>w-44 (The Barrier Restoration)</strong> is to use a reliable mechanical lock-open tool to avoid procedural failures and ensure a successful, single-run repair.' }
         ],
         prob4: [
             { objectiveId: 'obj4', confidence: 88, outcome: 'Sand-free production at >80% potential', reason: 'Through-tubing expandable sand screens are proven rigless solutions for sand control failures. This approach avoids costly workover operations.' }
@@ -5665,7 +5665,7 @@ function showDeviationSurvey(wellId) {
     const renderWellCards = () => {
         if (!wellSelectionGrid) return; // Skip if element doesn't exist
         wellSelectionGrid.innerHTML = wellData.map(well => {
-            const isWellFromHell = well.id === 'Well_666';
+            const isWellFromHell = well.id === 'w-666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
             const statusColor = isWellFromHell ? 'text-red-600 dark:text-red-400' : 'text-teal-600 dark:text-teal-400';
 
@@ -5700,7 +5700,7 @@ function showDeviationSurvey(wellId) {
         if (!caseStudiesGrid) return;
 
         caseStudiesGrid.innerHTML = wellData.map(well => {
-            const isWellFromHell = well.id === 'Well_666';
+            const isWellFromHell = well.id === 'w-666';
             const statusClass = well.status.toLowerCase().replace(/[\s-]/g, '');
             const bgColor = isWellFromHell ? 'bg-red-900/30' : 'bg-slate-800/30';
             const borderColor = isWellFromHell ? 'border-red-500' : 'border-cyan-500/30';
@@ -5745,7 +5745,7 @@ function showDeviationSurvey(wellId) {
     };
 
     const selectWellW666 = () => {
-        const w666 = wellData.find(w => w.id === 'Well_666');
+        const w666 = wellData.find(w => w.id === 'w-666');
         if (!w666) return;
 
         appState.selectedWell = w666;
@@ -5774,7 +5774,7 @@ function showDeviationSurvey(wellId) {
     const renderProblems = () => {
         if (!problemsFieldset) return; // Guard against null element
         // Only show problems relevant to the "Well From Hell"
-        if (appState.selectedWell && appState.selectedWell.id === 'Well_666') {
+        if (appState.selectedWell && appState.selectedWell.id === 'w-666') {
              problemsFieldset.innerHTML = problemsData.map(prob => `
                 <div class="objective-card light-card" data-problem-id="${prob.id}">
                     <input type="radio" name="problem" id="${prob.id}" value="${prob.id}" class="sr-only">
@@ -5792,7 +5792,7 @@ function showDeviationSurvey(wellId) {
         } else {
             problemsFieldset.innerHTML = `
                 <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
-                    <p class="text-yellow-800 dark:text-yellow-200">Please select the 'Well From Hell' (Well_666) to use the AI Advisor.</p>
+                    <p class="text-yellow-800 dark:text-yellow-200">Please select the 'Well From Hell' (w-666) to use the AI Advisor.</p>
                 </div>
             `;
         }
@@ -7627,10 +7627,10 @@ function showDeviationSurvey(wellId) {
         manualPlanningView.classList.toggle('hidden', e.target.checked); 
         aiAdvisorView.classList.toggle('hidden', !e.target.checked);
         
-        if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== 'Well_666') {
+        if(e.target.checked && appState.selectedWell && appState.selectedWell.id !== 'w-666') {
              aiAdvisorView.innerHTML = `
                 <div class="bg-yellow-50 dark:bg-yellow-900/50 p-6 rounded-lg text-center">
-                    <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (Well_666) scenario. Please select Well_666 to see AI recommendations.</p>
+                    <p class="text-yellow-800 dark:text-yellow-200">The AI Advisor is configured for the 'Well From Hell' (w-666) scenario. Please select w-666 to see AI recommendations.</p>
                 </div>
             `;
         } else {
@@ -10663,86 +10663,1614 @@ let currentEquipmentFilter = 'all';
 
 // Load equipment catalog from JSON
 // Hardcoded equipment catalog data (replaces external fetch)
+// Equipment catalog - 70 tools in 11 categories (from equipment-catalog.json)
 const EQUIPMENT_CATALOG_DATA = {
     categories: [
-        {
-            name: "Wireline Tools",
-            icon: "🔧",
-            tools: [
-                { id: "wl-001", name: "Cablehead Assembly", od: 1.5, length: 24, weight: 15, rating: "15K PSI / 350°F" },
-                { id: "wl-002", name: "CCL (Casing Collar Locator)", od: 1.5, length: 36, weight: 8, rating: "15K PSI / 350°F" },
-                { id: "wl-003", name: "Gamma Ray Tool", od: 1.6875, length: 72, weight: 25, rating: "15K PSI / 350°F" },
-                { id: "wl-004", name: "Pressure Gauge Carrier", od: 1.5, length: 48, weight: 18, rating: "20K PSI / 400°F" }
-            ]
-        },
-        {
-            name: "Slickline Tools",
-            icon: "📏",
-            tools: [
-                { id: "sl-001", name: "Slickline Rope Socket", od: 1.25, length: 12, weight: 5, rating: "10K PSI / 300°F" },
-                { id: "sl-002", name: "Knuckle Joint", od: 1.25, length: 6, weight: 3, rating: "10K PSI / 300°F" },
-                { id: "sl-003", name: "Mechanical Jar", od: 1.5, length: 36, weight: 20, rating: "15K PSI / 350°F" },
-                { id: "sl-004", name: "Gauge Cutter", od: 1.75, length: 24, weight: 12, rating: "10K PSI / 300°F" }
-            ]
-        },
-        {
-            name: "Completion Tools",
-            icon: "🔩",
-            tools: [
-                { id: "ct-001", name: "Packer", od: 4.5, length: 48, weight: 150, rating: "10K PSI / 350°F" },
-                { id: "ct-002", name: "Safety Valve (SCSSV)", od: 3.5, length: 36, weight: 80, rating: "10K PSI / 350°F" },
-                { id: "ct-003", name: "Gas Lift Mandrel", od: 2.875, length: 60, weight: 45, rating: "5K PSI / 300°F" },
-                { id: "ct-004", name: "Sliding Sleeve", od: 4.0, length: 24, weight: 55, rating: "10K PSI / 350°F" }
-            ]
-        },
-        {
-            name: "Fishing Tools",
-            icon: "🎣",
-            tools: [
-                { id: "ft-001", name: "Overshot", od: 3.75, length: 36, weight: 65, rating: "15K PSI / 350°F" },
-                { id: "ft-002", name: "Spear", od: 2.5, length: 24, weight: 35, rating: "15K PSI / 350°F" },
-                { id: "ft-003", name: "Junk Basket", od: 4.0, length: 48, weight: 85, rating: "10K PSI / 300°F" },
-                { id: "ft-004", name: "Impression Block", od: 3.5, length: 18, weight: 25, rating: "5K PSI / 200°F" }
-            ]
-        },
-        {
-            name: "Perforating Guns",
-            icon: "💥",
-            tools: [
-                { id: "pg-001", name: "3-3/8\" Hollow Carrier Gun", od: 3.375, length: 120, weight: 95, rating: "15K PSI / 400°F" },
-                { id: "pg-002", name: "2-1/8\" Strip Gun", od: 2.125, length: 60, weight: 35, rating: "10K PSI / 350°F" },
-                { id: "pg-003", name: "4-1/2\" Scallop Gun", od: 4.5, length: 120, weight: 145, rating: "15K PSI / 400°F" }
-            ]
-        },
-        {
-            name: "Logging Tools",
-            icon: "📊",
-            tools: [
-                { id: "lt-001", name: "Production Logging Tool (PLT)", od: 1.6875, length: 144, weight: 65, rating: "15K PSI / 350°F" },
-                { id: "lt-002", name: "Cement Bond Log (CBL)", od: 3.625, length: 180, weight: 120, rating: "20K PSI / 400°F" },
-                { id: "lt-003", name: "Multi-Finger Caliper", od: 2.75, length: 96, weight: 55, rating: "15K PSI / 350°F" }
-            ]
-        },
-        {
-            name: "Coiled Tubing Tools",
-            icon: "🌀",
-            tools: [
-                { id: "ctt-001", name: "CT Connector", od: 2.0, length: 18, weight: 12, rating: "10K PSI / 350°F" },
-                { id: "ctt-002", name: "Check Valve", od: 1.75, length: 12, weight: 8, rating: "10K PSI / 350°F" },
-                { id: "ctt-003", name: "Motor Head Assembly", od: 2.875, length: 36, weight: 45, rating: "15K PSI / 400°F" },
-                { id: "ctt-004", name: "Hydraulic Disconnect", od: 2.5, length: 24, weight: 28, rating: "15K PSI / 350°F" }
-            ]
-        },
-        {
-            name: "Intervention Tools",
-            icon: "⚙️",
-            tools: [
-                { id: "it-001", name: "Bridge Plug", od: 4.5, length: 36, weight: 85, rating: "10K PSI / 350°F" },
-                { id: "it-002", name: "Cement Retainer", od: 4.5, length: 48, weight: 95, rating: "10K PSI / 350°F" },
-                { id: "it-003", name: "Inflatable Packer", od: 4.0, length: 72, weight: 110, rating: "5K PSI / 300°F" }
-            ]
-        }
+            {
+                    "name": "Fishing Tools",
+                    "icon": "\ud83c\udfa3",
+                    "tools": [
+                            {
+                                    "id": "fish_001",
+                                    "name": "2 Prong Grab",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Fishing operations",
+                                            "Tool retrieval"
+                                    ]
+                            },
+                            {
+                                    "id": "fish_002",
+                                    "name": "3/4 Prong Grab",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Fishing operations",
+                                            "Tool retrieval"
+                                    ]
+                            },
+                            {
+                                    "id": "fish_003",
+                                    "name": "Internal Spear",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Internal fishing",
+                                            "Tubing recovery"
+                                    ]
+                            },
+                            {
+                                    "id": "fish_004",
+                                    "name": "Finder Spear",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Locating fish",
+                                            "Initial engagement"
+                                    ]
+                            },
+                            {
+                                    "id": "fish_005",
+                                    "name": "Wire Spear",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Wireline fishing",
+                                            "Cable recovery"
+                                    ]
+                            },
+                            {
+                                    "id": "fish_006",
+                                    "name": "Heavy Duty Pulling Tool",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Heavy pulling operations",
+                                            "Stuck pipe"
+                                    ]
+                            },
+                            {
+                                    "id": "fish_007",
+                                    "name": "Heavy Duty Releasable Overshot",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Overshot fishing",
+                                            "Pipe recovery"
+                                    ]
+                            },
+                            {
+                                    "id": "fish_008",
+                                    "name": "Alligator Grab",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Emergency fishing",
+                                            "Quick grab"
+                                    ]
+                            },
+                            {
+                                    "id": "fish_009",
+                                    "name": "Bowen Finder Retriever",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Finder operations",
+                                            "Tool location"
+                                    ]
+                            },
+                            {
+                                    "id": "fish_010",
+                                    "name": "Magnet",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Metallic debris recovery",
+                                            "Small parts retrieval"
+                                    ]
+                            },
+                            {
+                                    "id": "fish_011",
+                                    "name": "Tar Baby",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Junk basket",
+                                            "Small debris"
+                                    ]
+                            }
+                    ]
+            },
+            {
+                    "name": "Running Tools",
+                    "icon": "\ud83d\udd29",
+                    "tools": [
+                            {
+                                    "id": "run_001",
+                                    "name": "Power Jar",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Jarring operations",
+                                            "Stuck pipe"
+                                    ]
+                            },
+                            {
+                                    "id": "run_002",
+                                    "name": "Spang Jar",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Light jarring",
+                                            "Fishing"
+                                    ]
+                            },
+                            {
+                                    "id": "run_003",
+                                    "name": "Tubular / Linear Jar",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Linear impact",
+                                            "Drilling jars"
+                                    ]
+                            },
+                            {
+                                    "id": "run_004",
+                                    "name": "Knuckle Jar",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Flexible jarring",
+                                            "Deviated wells"
+                                    ]
+                            },
+                            {
+                                    "id": "run_005",
+                                    "name": "Accelerator",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Jar acceleration",
+                                            "Impact enhancement"
+                                    ]
+                            },
+                            {
+                                    "id": "run_006",
+                                    "name": "Roller Stem",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Reduced friction",
+                                            "Rotation"
+                                    ]
+                            },
+                            {
+                                    "id": "run_007",
+                                    "name": "Roller Bogie",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Heavy duty rollers",
+                                            "Casing running"
+                                    ]
+                            },
+                            {
+                                    "id": "run_008",
+                                    "name": "Heavy Weight Stem",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Weight application",
+                                            "Jarring mass"
+                                    ]
+                            },
+                            {
+                                    "id": "run_009",
+                                    "name": "Shock Absorber",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Impact damping",
+                                            "Tool protection"
+                                    ]
+                            }
+                    ]
+            },
+            {
+                    "name": "Wireline Tools",
+                    "icon": "\ud83d\udd0c",
+                    "tools": [
+                            {
+                                    "id": "wire_001",
+                                    "name": "Rope Socket",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Wireline connection",
+                                            "Cable termination"
+                                    ]
+                            },
+                            {
+                                    "id": "wire_002",
+                                    "name": "Swivel",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Rotation prevention",
+                                            "Torque release"
+                                    ]
+                            },
+                            {
+                                    "id": "wire_003",
+                                    "name": "Knuckle Joint",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Flexible connection",
+                                            "Deviated wells"
+                                    ]
+                            },
+                            {
+                                    "id": "wire_004",
+                                    "name": "CAT Tool / HIIT Tool",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Plug setting",
+                                            "Impact operations"
+                                    ]
+                            },
+                            {
+                                    "id": "wire_005",
+                                    "name": "Serrated Gauge Cutter",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Gauge cutting",
+                                            "Tubing cutting"
+                                    ]
+                            },
+                            {
+                                    "id": "wire_006",
+                                    "name": "Wire Scratcher",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Scale removal",
+                                            "Cleaning"
+                                    ]
+                            },
+                            {
+                                    "id": "wire_007",
+                                    "name": "Tubing Scratcher",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Tubing cleaning",
+                                            "Scale removal"
+                                    ]
+                            },
+                            {
+                                    "id": "wire_008",
+                                    "name": "Sidewall Cutter",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Sidewall sampling",
+                                            "Core cutting"
+                                    ]
+                            },
+                            {
+                                    "id": "wire_009",
+                                    "name": "Cutter Bar",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Tubing cutting",
+                                            "Wireline cutting"
+                                    ]
+                            }
+                    ]
+            },
+            {
+                    "name": "Centralizers",
+                    "icon": "\u2699\ufe0f",
+                    "tools": [
+                            {
+                                    "id": "cent_001",
+                                    "name": "Spring Roller Centraliser",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Tubing centralization",
+                                            "Casing running"
+                                    ]
+                            },
+                            {
+                                    "id": "cent_002",
+                                    "name": "Bow Spring Centraliser",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Flexible centralization",
+                                            "Deviated wells"
+                                    ]
+                            },
+                            {
+                                    "id": "cent_003",
+                                    "name": "Fluted Centraliser",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Stiff centralization",
+                                            "Vertical wells"
+                                    ]
+                            }
+                    ]
+            },
+            {
+                    "name": "Completion Tools",
+                    "icon": "\ud83d\udd27",
+                    "tools": [
+                            {
+                                    "id": "comp_001",
+                                    "name": "Solid Wire Finder",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Wireline location",
+                                            "Fish detection"
+                                    ]
+                            },
+                            {
+                                    "id": "comp_002",
+                                    "name": "Tubing End Locator",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Tubing depth verification",
+                                            "Landing confirmation"
+                                    ]
+                            },
+                            {
+                                    "id": "comp_003",
+                                    "name": "Tubing Swage",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Tubing expansion",
+                                            "Restriction clearing"
+                                    ]
+                            },
+                            {
+                                    "id": "comp_004",
+                                    "name": "Tubing Broach",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Internal cleaning",
+                                            "Debris removal"
+                                    ]
+                            },
+                            {
+                                    "id": "comp_005",
+                                    "name": "Blind Box",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Pressure isolation",
+                                            "Testing"
+                                    ]
+                            },
+                            {
+                                    "id": "comp_006",
+                                    "name": "L.I.B",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Left in hole tools",
+                                            "Permanent installation"
+                                    ]
+                            }
+                    ]
+            },
+            {
+                    "name": "Bail Tools",
+                    "icon": "\ud83e\udea3",
+                    "tools": [
+                            {
+                                    "id": "bail_001",
+                                    "name": "Drive Down Bailer",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Fluid sampling",
+                                            "Debris recovery"
+                                    ]
+                            },
+                            {
+                                    "id": "bail_002",
+                                    "name": "Pump Bailer",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Fluid removal",
+                                            "Well cleaning"
+                                    ]
+                            },
+                            {
+                                    "id": "bail_003",
+                                    "name": "Hydrostatic Bailer",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Fluid sampling",
+                                            "Pressure measurement"
+                                    ]
+                            }
+                    ]
+            },
+            {
+                    "name": "Gas Lift Tools",
+                    "icon": "\ud83d\udca8",
+                    "tools": [
+                            {
+                                    "id": "gas_001",
+                                    "name": "Gas Lift Valve",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Artificial lift",
+                                            "Gas injection"
+                                    ]
+                            },
+                            {
+                                    "id": "gas_002",
+                                    "name": "JK/RK Running Tool",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Valve installation",
+                                            "Valve retrieval"
+                                    ]
+                            },
+                            {
+                                    "id": "gas_003",
+                                    "name": "JDS + Spacer Bar",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Valve spacing",
+                                            "Installation"
+                                    ]
+                            },
+                            {
+                                    "id": "gas_004",
+                                    "name": "Gas Lift Valve Catcher",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Valve retrieval",
+                                            "Emergency recovery"
+                                    ]
+                            }
+                    ]
+            },
+            {
+                    "name": "Otis Equipment",
+                    "icon": "\ud83c\udfed",
+                    "tools": [
+                            {
+                                    "id": "otis_001",
+                                    "name": "Otis R/X Line Running Tool",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Valve running",
+                                            "Tool installation"
+                                    ]
+                            },
+                            {
+                                    "id": "otis_002",
+                                    "name": "Otis Plug",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Well isolation",
+                                            "Pressure testing"
+                                    ]
+                            },
+                            {
+                                    "id": "otis_003",
+                                    "name": "Otis Equalising Prong",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Pressure equalization",
+                                            "Safe retrieval"
+                                    ]
+                            },
+                            {
+                                    "id": "otis_004",
+                                    "name": "Otis Lock Mandrel",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Tool anchoring",
+                                            "Lock installation"
+                                    ]
+                            }
+                    ]
+            },
+            {
+                    "name": "Baker Equipment",
+                    "icon": "\ud83c\udfed",
+                    "tools": [
+                            {
+                                    "id": "baker_001",
+                                    "name": "B Shifting Tool",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Sliding sleeve operation",
+                                            "Valve shifting"
+                                    ]
+                            },
+                            {
+                                    "id": "baker_002",
+                                    "name": "D2 Shifting Tool",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Sliding sleeve",
+                                            "Port opening"
+                                    ]
+                            },
+                            {
+                                    "id": "baker_003",
+                                    "name": "JD SERIES",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Gas lift valves",
+                                            "Series J/D"
+                                    ]
+                            },
+                            {
+                                    "id": "baker_004",
+                                    "name": "JU SERIES",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Gas lift valves",
+                                            "Series J/U"
+                                    ]
+                            },
+                            {
+                                    "id": "baker_005",
+                                    "name": "S SERIES",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Gas lift valves",
+                                            "Series S"
+                                    ]
+                            },
+                            {
+                                    "id": "baker_006",
+                                    "name": "R SERIES",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Gas lift valves",
+                                            "Series R"
+                                    ]
+                            },
+                            {
+                                    "id": "baker_007",
+                                    "name": "GS SERIES",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Gas lift valves",
+                                            "Series GS"
+                                    ]
+                            },
+                            {
+                                    "id": "baker_008",
+                                    "name": "GU SERIES",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Gas lift valves",
+                                            "Series GU"
+                                    ]
+                            }
+                    ]
+            },
+            {
+                    "name": "Camco Equipment",
+                    "icon": "\ud83c\udfed",
+                    "tools": [
+                            {
+                                    "id": "camco_001",
+                                    "name": "Merla KOT",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Kick over tool",
+                                            "Directional landing"
+                                    ]
+                            },
+                            {
+                                    "id": "camco_002",
+                                    "name": "Camco OM/ OK Series",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Gas lift valves",
+                                            "OM/OK series"
+                                    ]
+                            },
+                            {
+                                    "id": "camco_003",
+                                    "name": "Sure-Set Lock",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Tool locking",
+                                            "Anchoring"
+                                    ]
+                            },
+                            {
+                                    "id": "camco_004",
+                                    "name": "Sure Set Standing Valve",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Standing valve",
+                                            "Flow control"
+                                    ]
+                            },
+                            {
+                                    "id": "camco_005",
+                                    "name": "WRSSV",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Surface controlled valve",
+                                            "Safety system"
+                                    ]
+                            }
+                    ]
+            },
+            {
+                    "name": "Miscellaneous",
+                    "icon": "\ud83d\udce6",
+                    "tools": [
+                            {
+                                    "id": "misc_001",
+                                    "name": "Pressure Temp Gauge",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Pressure monitoring",
+                                            "Temperature recording"
+                                    ]
+                            },
+                            {
+                                    "id": "misc_002",
+                                    "name": "Tool Carrier",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Tool conveyance",
+                                            "Multiple tool running"
+                                    ]
+                            },
+                            {
+                                    "id": "misc_003",
+                                    "name": "Bell Guide",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Tool guidance",
+                                            "Nipple location"
+                                    ]
+                            },
+                            {
+                                    "id": "misc_004",
+                                    "name": "Go-Devil",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Port plug",
+                                            "Pressure activation"
+                                    ]
+                            },
+                            {
+                                    "id": "misc_005",
+                                    "name": "PRS",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Pressure relief",
+                                            "Safety operations"
+                                    ]
+                            },
+                            {
+                                    "id": "misc_006",
+                                    "name": "PRS Pulling Tool",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "PRS retrieval",
+                                            "Tool removal"
+                                    ]
+                            },
+                            {
+                                    "id": "misc_007",
+                                    "name": "BBD",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Blanking device",
+                                            "Isolation"
+                                    ]
+                            },
+                            {
+                                    "id": "misc_008",
+                                    "name": "Dummy Pack-off",
+                                    "od": 1.5,
+                                    "length": 12,
+                                    "weight": 5,
+                                    "rating": "10,000 PSI / 300\u00b0F",
+                                    "applications": [
+                                            "Test plug",
+                                            "Pressure testing"
+                                    ]
+                            }
+                    ]
+            }
     ]
+};
+
+// Wellbore configuration - Real deviation surveys and casing data for 7 Brahan Field wells
+const WELLBORE_CONFIG = {
+    "w-11": {
+        "type": "Platform",
+        "waterDepth": 0,
+        "datumElevation": 25,
+        "deviationSurvey": [
+            {
+                "md": 0,
+                "inc": 0,
+                "azm": 0
+            },
+            {
+                "md": 250,
+                "inc": 0.75,
+                "azm": 45.2
+            },
+            {
+                "md": 500,
+                "inc": 1.5,
+                "azm": 45.2
+            },
+            {
+                "md": 750,
+                "inc": 1.65,
+                "azm": 45.2
+            },
+            {
+                "md": 1000,
+                "inc": 1.8,
+                "azm": 45.2
+            },
+            {
+                "md": 1500,
+                "inc": 1.9,
+                "azm": 45.2
+            },
+            {
+                "md": 2000,
+                "inc": 1.95,
+                "azm": 45.2
+            },
+            {
+                "md": 2500,
+                "inc": 2,
+                "azm": 45.2
+            },
+            {
+                "md": 3000,
+                "inc": 2.05,
+                "azm": 45.2
+            },
+            {
+                "md": 3500,
+                "inc": 2.1,
+                "azm": 45.2
+            }
+        ],
+        "components": [
+            {
+                "id": "casing-5xqclgkkn",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 150,
+                "size": 30,
+                "weight": 0,
+                "notes": "Conductor - Driven"
+            },
+            {
+                "id": "casing-5kj61wusb",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 1000,
+                "size": 20,
+                "weight": 0,
+                "notes": "Surface - TOC: Surface (Verified)"
+            },
+            {
+                "id": "casing-8llxlowis",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 2500,
+                "size": 13.375,
+                "weight": 0,
+                "notes": "Intermediate - TOC: 1500m (CBL)"
+            },
+            {
+                "id": "casing-mxk6w2hil",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 3500,
+                "size": 9.625,
+                "weight": 0,
+                "notes": "Production - TOC: 2000m (CBL). Wellbore clear."
+            }
+        ]
+    },
+    "w-22": {
+        "type": "Platform",
+        "waterDepth": 0,
+        "datumElevation": 25,
+        "deviationSurvey": [
+            {
+                "md": 0,
+                "inc": 0,
+                "azm": 88.1
+            },
+            {
+                "md": 250,
+                "inc": 0.6,
+                "azm": 88.1
+            },
+            {
+                "md": 500,
+                "inc": 1.2,
+                "azm": 88.1
+            },
+            {
+                "md": 750,
+                "inc": 1.35,
+                "azm": 88.1
+            },
+            {
+                "md": 1000,
+                "inc": 1.5,
+                "azm": 88.1
+            },
+            {
+                "md": 1500,
+                "inc": 1.6,
+                "azm": 88.1
+            },
+            {
+                "md": 2000,
+                "inc": 1.7,
+                "azm": 88.1
+            },
+            {
+                "md": 2500,
+                "inc": 1.8,
+                "azm": 88.1
+            },
+            {
+                "md": 3000,
+                "inc": 1.9,
+                "azm": 88.1
+            },
+            {
+                "md": 3300,
+                "inc": 1.95,
+                "azm": 88.1
+            },
+            {
+                "md": 3600,
+                "inc": 2,
+                "azm": 88.1
+            }
+        ],
+        "components": [
+            {
+                "id": "casing-zdklw9sfv",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 150,
+                "size": 30,
+                "weight": 0,
+                "notes": "Conductor - Driven"
+            },
+            {
+                "id": "casing-jevl4sz2y",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 1050,
+                "size": 20,
+                "weight": 0,
+                "notes": "Surface - TOC: Surface (Verified)"
+            },
+            {
+                "id": "casing-iqoel4ykn",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 2600,
+                "size": 13.375,
+                "weight": 0,
+                "notes": "Intermediate - TOC: 1450m (CBL)"
+            },
+            {
+                "id": "casing-g4pgc1e7r",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 3600,
+                "size": 9.625,
+                "weight": 0,
+                "notes": "Production - TOC: 2100m (CBL). RESOLVED: Expandable Steel Patch at 2200m MD (covering deformation 2180-2220m)."
+            }
+        ]
+    },
+    "w-33": {
+        "type": "Platform",
+        "waterDepth": 0,
+        "datumElevation": 25,
+        "deviationSurvey": [
+            {
+                "md": 0,
+                "inc": 0,
+                "azm": 120
+            },
+            {
+                "md": 250,
+                "inc": 2.5,
+                "azm": 120
+            },
+            {
+                "md": 500,
+                "inc": 5,
+                "azm": 120
+            },
+            {
+                "md": 750,
+                "inc": 7.5,
+                "azm": 120
+            },
+            {
+                "md": 1000,
+                "inc": 10,
+                "azm": 120
+            },
+            {
+                "md": 1500,
+                "inc": 10,
+                "azm": 120
+            },
+            {
+                "md": 2000,
+                "inc": 10,
+                "azm": 120
+            },
+            {
+                "md": 2500,
+                "inc": 10,
+                "azm": 120
+            },
+            {
+                "md": 3000,
+                "inc": 10,
+                "azm": 120
+            },
+            {
+                "md": 3300,
+                "inc": 10.25,
+                "azm": 120
+            },
+            {
+                "md": 3550,
+                "inc": 10.5,
+                "azm": 120
+            }
+        ],
+        "components": [
+            {
+                "id": "casing-u3xefn6dp",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 150,
+                "size": 30,
+                "weight": 0,
+                "notes": "Conductor - Driven"
+            },
+            {
+                "id": "casing-2pzjz3mu5",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 1000,
+                "size": 20,
+                "weight": 0,
+                "notes": "Surface - TOC: Surface (Verified)"
+            },
+            {
+                "id": "casing-w0kmz9fvw",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 2550,
+                "size": 13.375,
+                "weight": 0,
+                "notes": "Intermediate - TOC: 1500m (CBL)"
+            },
+            {
+                "id": "casing-9fzmwvrkv",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 3550,
+                "size": 9.625,
+                "weight": 0,
+                "notes": "Production - TOC: 2050m (CBL). History of BaSO4 scale 3200-3450m (Resolved)."
+            }
+        ]
+    },
+    "w-44": {
+        "type": "Platform",
+        "waterDepth": 0,
+        "datumElevation": 25,
+        "deviationSurvey": [
+            {
+                "md": 0,
+                "inc": 0,
+                "azm": 45
+            },
+            {
+                "md": 250,
+                "inc": 7.5,
+                "azm": 45
+            },
+            {
+                "md": 500,
+                "inc": 15,
+                "azm": 45
+            },
+            {
+                "md": 750,
+                "inc": 22.5,
+                "azm": 45
+            },
+            {
+                "md": 1000,
+                "inc": 30,
+                "azm": 45
+            },
+            {
+                "md": 1500,
+                "inc": 30,
+                "azm": 45
+            },
+            {
+                "md": 2000,
+                "inc": 25,
+                "azm": 45
+            },
+            {
+                "md": 2500,
+                "inc": 20,
+                "azm": 45
+            },
+            {
+                "md": 3000,
+                "inc": 15,
+                "azm": 45
+            },
+            {
+                "md": 3500,
+                "inc": 12.5,
+                "azm": 45
+            },
+            {
+                "md": 4000,
+                "inc": 10,
+                "azm": 45
+            }
+        ],
+        "components": [
+            {
+                "id": "casing-mpormzkoc",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 150,
+                "size": 30,
+                "weight": 0,
+                "notes": "Conductor - Driven"
+            },
+            {
+                "id": "casing-eqtltqxya",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 1100,
+                "size": 20,
+                "weight": 0,
+                "notes": "Surface - TOC: Surface (Verified)"
+            },
+            {
+                "id": "casing-f31wq0l4a",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 2800,
+                "size": 13.375,
+                "weight": 0,
+                "notes": "Intermediate - TOC: 1700m (CBL)"
+            },
+            {
+                "id": "casing-cn0ue38wq",
+                "type": "Casing",
+                "topDepth": 0,
+                "bottomDepth": 4000,
+                "size": 9.625,
+                "weight": 0,
+                "notes": "Production - TOC: 2400m (CBL)."
+            },
+            {
+                "id": "comp-ssv-fix",
+                "type": "Tubing",
+                "topDepth": 0,
+                "bottomDepth": 3900,
+                "size": 4.5,
+                "weight": 12.6,
+                "notes": "TRSSV failed @ 400m. Locked open. Insert SSV installed."
+            }
+        ]
+    },
+    "w-55": {
+        "type": "Subsea",
+        "waterDepth": 150,
+        "datumElevation": 25,
+        "deviationSurvey": [
+            {
+                "md": 0,
+                "inc": 0,
+                "azm": 180
+            },
+            {
+                "md": 250,
+                "inc": 10,
+                "azm": 180
+            },
+            {
+                "md": 500,
+                "inc": 20,
+                "azm": 180
+            },
+            {
+                "md": 750,
+                "inc": 30,
+                "azm": 180
+            },
+            {
+                "md": 1000,
+                "inc": 40,
+                "azm": 180
+            },
+            {
+                "md": 1500,
+                "inc": 60,
+                "azm": 180
+            },
+            {
+                "md": 2000,
+                "inc": 80,
+                "azm": 180
+            },
+            {
+                "md": 2500,
+                "inc": 90,
+                "azm": 180
+            },
+            {
+                "md": 3000,
+                "inc": 90,
+                "azm": 180
+            },
+            {
+                "md": 3500,
+                "inc": 90,
+                "azm": 180
+            },
+            {
+                "md": 4000,
+                "inc": 90,
+                "azm": 180
+            },
+            {
+                "md": 4500,
+                "inc": 90,
+                "azm": 180
+            }
+        ],
+        "components": [
+            {
+                "id": "casing-c71bmpe22",
+                "type": "Casing",
+                "topDepth": 175,
+                "bottomDepth": 300,
+                "size": 30,
+                "weight": 0,
+                "notes": "Subsea Wellhead @ 175m"
+            },
+            {
+                "id": "casing-955nzzxlf",
+                "type": "Casing",
+                "topDepth": 175,
+                "bottomDepth": 1200,
+                "size": 20,
+                "weight": 0,
+                "notes": "Surface - TOC: Seabed (Verified)"
+            },
+            {
+                "id": "casing-s0tssmxib",
+                "type": "Casing",
+                "topDepth": 175,
+                "bottomDepth": 2800,
+                "size": 13.375,
+                "weight": 0,
+                "notes": "Intermediate - TOC: 1800m (CBL)"
+            },
+            {
+                "id": "casing-9m5xr1070",
+                "type": "Casing",
+                "topDepth": 175,
+                "bottomDepth": 4500,
+                "size": 9.625,
+                "weight": 0,
+                "notes": "Production - TOC: 2500m (CBL). Wellbore clear."
+            }
+        ]
+    },
+    "w-666": {
+        "type": "Subsea",
+        "waterDepth": 180,
+        "datumElevation": 25,
+        "deviationSurvey": [
+            {
+                "md": 0,
+                "inc": 0,
+                "azm": 210
+            },
+            {
+                "md": 250,
+                "inc": 12.5,
+                "azm": 210
+            },
+            {
+                "md": 500,
+                "inc": 25,
+                "azm": 210
+            },
+            {
+                "md": 750,
+                "inc": 37.5,
+                "azm": 210
+            },
+            {
+                "md": 1000,
+                "inc": 50,
+                "azm": 210
+            },
+            {
+                "md": 1500,
+                "inc": 75,
+                "azm": 210
+            },
+            {
+                "md": 2000,
+                "inc": 90,
+                "azm": 210
+            },
+            {
+                "md": 2500,
+                "inc": 90,
+                "azm": 210
+            },
+            {
+                "md": 3000,
+                "inc": 90,
+                "azm": 210
+            },
+            {
+                "md": 3500,
+                "inc": 90,
+                "azm": 210
+            },
+            {
+                "md": 4000,
+                "inc": 90,
+                "azm": 210
+            },
+            {
+                "md": 4500,
+                "inc": 90,
+                "azm": 210
+            },
+            {
+                "md": 5000,
+                "inc": 90,
+                "azm": 210
+            }
+        ],
+        "components": [
+            {
+                "id": "casing-822m5ider",
+                "type": "Casing",
+                "topDepth": 205,
+                "bottomDepth": 350,
+                "size": 30,
+                "weight": 0,
+                "notes": "Subsea Wellhead @ 205m"
+            },
+            {
+                "id": "casing-6sri8lvyp",
+                "type": "Casing",
+                "topDepth": 205,
+                "bottomDepth": 1300,
+                "size": 20,
+                "weight": 0,
+                "notes": "Surface - TOC: Seabed (Verified)"
+            },
+            {
+                "id": "casing-ythmnruby",
+                "type": "Casing",
+                "topDepth": 205,
+                "bottomDepth": 3000,
+                "size": 13.375,
+                "weight": 0,
+                "notes": "Intermediate - TOC: 2000m (CBL)"
+            },
+            {
+                "id": "casing-n3xrqtx6f",
+                "type": "Casing",
+                "topDepth": 205,
+                "bottomDepth": 5000,
+                "size": 9.625,
+                "weight": 0,
+                "notes": "Production - TOC: 2700m. SEVERE DEFORMATION @ 4500m (>20% Ovality). FOD Recovered @ 4900m."
+            }
+        ]
+    },
+    "w-77": {
+        "type": "Subsea",
+        "waterDepth": 180,
+        "datumElevation": 25,
+        "deviationSurvey": [
+            {
+                "md": 0,
+                "inc": 0,
+                "azm": 0
+            },
+            {
+                "md": 1000,
+                "inc": 22,
+                "azm": 245
+            },
+            {
+                "md": 2000,
+                "inc": 48,
+                "azm": 245
+            },
+            {
+                "md": 3000,
+                "inc": 80,
+                "azm": 245
+            },
+            {
+                "md": 4000,
+                "inc": 90,
+                "azm": 245
+            },
+            {
+                "md": 5200,
+                "inc": 90,
+                "azm": 245
+            }
+        ],
+        "components": [
+            {
+                "id": "casing-12pg1m2va",
+                "type": "Casing",
+                "topDepth": 205,
+                "bottomDepth": 350,
+                "size": 30,
+                "weight": 0,
+                "notes": "Subsea Wellhead @ 205m"
+            },
+            {
+                "id": "casing-l2icdkwss",
+                "type": "Casing",
+                "topDepth": 205,
+                "bottomDepth": 1350,
+                "size": 20,
+                "weight": 0,
+                "notes": "Surface - TOC: Seabed (Verified)"
+            },
+            {
+                "id": "casing-9m19krgtr",
+                "type": "Casing",
+                "topDepth": 205,
+                "bottomDepth": 3100,
+                "size": 13.375,
+                "weight": 0,
+                "notes": "Intermediate - TOC: 2100m (CBL)"
+            },
+            {
+                "id": "casing-13z1ebbiu",
+                "type": "Casing",
+                "topDepth": 205,
+                "bottomDepth": 5200,
+                "size": 9.625,
+                "weight": 0,
+                "notes": "Production - TOC: 2800m (CBL)"
+            }
+        ]
+    }
 };
 
 async function loadEquipmentCatalog() {
