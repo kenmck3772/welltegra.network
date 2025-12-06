@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Well_666 - The Perfect Storm | WellTegra Case Study</title>
+    <meta name="description" content="Complete case study of Well_666 'The Perfect Storm' - a catastrophic intervention failure that became the ultimate cautionary tale for well operations.">
+    <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b1220;
+            --panel: #0f172a;
+            --card: #1e293b;
+            --border: #334155;
+            --fg: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #14b8a6;
+            --accent-hover: #2dd4bf;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 18, 32, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .logo img { height: 40px; border-radius: 8px; }
+        .logo-text { font-weight: 900; font-size: 1.25rem; }
+
+        .nav { display: flex; gap: 0.5rem; }
+        .nav a {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav a:hover { color: var(--fg); background: var(--card); }
+
+        /* Hero - Critical Alert Style */
+        .hero {
+            background: linear-gradient(180deg, rgba(239, 68, 68, 0.1) 0%, var(--bg) 100%);
+            border-bottom: 1px solid var(--danger);
+            padding: 3rem 1.5rem;
+        }
+
+        .hero-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-title-group h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-nickname {
+            color: var(--danger);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .lock-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .hero-stat {
+            text-align: center;
+            padding: 1rem 1.5rem;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .hero-stat-value {
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: var(--danger);
+        }
+
+        .hero-stat-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Safety Lock Banner */
+        .safety-banner {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-top: 2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .safety-banner svg {
+            width: 32px;
+            height: 32px;
+            color: var(--danger);
+            flex-shrink: 0;
+        }
+
+        .safety-banner h3 {
+            color: var(--danger);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .safety-banner ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .safety-banner li {
+            background: rgba(239, 68, 68, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--danger);
+        }
+
+        /* Main content */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* Pillar navigation */
+        .pillar-nav {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pillar-tab {
+            padding: 0.75rem 1.25rem;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .pillar-tab:hover {
+            border-color: var(--accent);
+            color: var(--fg);
+        }
+
+        .pillar-tab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #0b1220;
+        }
+
+        /* Pillar content */
+        .pillar-content {
+            display: none;
+        }
+
+        .pillar-content.active {
+            display: block;
+        }
+
+        .pillar-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .pillar-subtitle {
+            color: var(--muted);
+            margin-bottom: 2rem;
+        }
+
+        /* Data sections */
+        .section {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--border);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+        }
+
+        .section-body {
+            padding: 1.5rem;
+        }
+
+        /* Data grid */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .data-item {
+            padding: 1rem;
+            background: var(--card);
+            border-radius: 8px;
+        }
+
+        .data-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .data-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .data-value.critical {
+            color: var(--danger);
+        }
+
+        .data-value.warning {
+            color: var(--warning);
+        }
+
+        .data-value.success {
+            color: var(--success);
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            background: var(--card);
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .data-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Status badges */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.625rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-failed { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .status-suspect { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .status-unknown { background: rgba(148, 163, 184, 0.2); color: var(--muted); }
+        .status-ok { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+        .status-critical { background: var(--danger); color: white; }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -2rem;
+            top: 0.25rem;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 3px solid var(--bg);
+        }
+
+        .timeline-dot.success { background: var(--success); }
+        .timeline-dot.failure { background: var(--danger); }
+        .timeline-dot.warning { background: var(--warning); }
+        .timeline-dot.critical { background: var(--danger); box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.3); }
+
+        .timeline-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-date {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .timeline-title {
+            font-weight: 700;
+        }
+
+        .timeline-body {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .timeline-details {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--card);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .timeline-details.critical-miss {
+            border-left-color: var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        /* Correspondence */
+        .correspondence-item {
+            background: var(--card);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--border);
+        }
+
+        .correspondence-item.critical {
+            border-left-color: var(--danger);
+        }
+
+        .correspondence-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .correspondence-excerpt {
+            font-style: italic;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            margin: 0.75rem 0;
+        }
+
+        .correspondence-significance {
+            font-size: 0.85rem;
+            color: var(--warning);
+        }
+
+        /* Risk matrix */
+        .risk-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .risk-column h4 {
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .risk-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--card);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+
+        .risk-score {
+            font-weight: 800;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+        }
+
+        .risk-low { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+        .risk-medium { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .risk-high { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .risk-critical { background: var(--danger); color: white; }
+
+        /* Lessons learned */
+        .lesson-card {
+            background: var(--card);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .lesson-card.critical {
+            border-left-color: var(--danger);
+        }
+
+        .lesson-card.high {
+            border-left-color: var(--warning);
+        }
+
+        .lesson-id {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .lesson-details dt {
+            color: var(--muted);
+        }
+
+        .lesson-details dd {
+            margin: 0;
+        }
+
+        /* What-if scenarios */
+        .whatif-card {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, var(--card) 100%);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .whatif-scenario {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .whatif-outcome {
+            color: var(--success);
+            margin-bottom: 0.75rem;
+        }
+
+        .whatif-savings {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .whatif-savings span {
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        /* Economics */
+        .economics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .econ-card {
+            background: var(--card);
+            border-radius: 8px;
+            padding: 1.25rem;
+            text-align: center;
+        }
+
+        .econ-value {
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        .econ-value.positive { color: var(--success); }
+        .econ-value.negative { color: var(--danger); }
+        .econ-value.neutral { color: var(--accent); }
+
+        .econ-label {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Toolstring diagram */
+        .toolstring {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            max-width: 300px;
+            margin: 1rem auto;
+        }
+
+        .tool-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+
+        .tool-item:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .tool-item:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        .tool-od {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-top { flex-direction: column; }
+            .hero-stats { flex-wrap: wrap; }
+            .risk-comparison { grid-template-columns: 1fr; }
+            .pillar-nav { gap: 0.25rem; }
+            .pillar-tab { padding: 0.5rem 0.75rem; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.jpg" alt="WellTegra">
+                <span class="logo-text">WellTegra</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="case-studies.html">Case Studies</a>
+                <a href="equipment.html">Equipment</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-top">
+                <div class="hero-title-group">
+                    <h1>
+                        Well_666
+                        <span class="lock-badge">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                            SAFETY LOCKED
+                        </span>
+                    </h1>
+                    <div class="hero-nickname">"The Perfect Storm"</div>
+                    <div class="hero-meta">
+                        <span>Brahan Field</span>
+                        <span>HPHT Gas Condensate</span>
+                        <span>TD: 5,000m MD</span>
+                        <span>Status: SHUT-IN</span>
+                    </div>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">$74.8M</div>
+                        <div class="hero-stat-label">Total Spent</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">840 hrs</div>
+                        <div class="hero-stat-label">NPT (2016)</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">22.5</div>
+                        <div class="hero-stat-label">MMboe Produced</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="safety-banner">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <div>
+                    <h3>Safety Gateway: Access Locked</h3>
+                    <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem;">This well cannot be accessed for intervention planning until the following issues are resolved:</p>
+                    <ul id="lockReasons"></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main -->
+    <main class="main">
+        <!-- Pillar Navigation -->
+        <nav class="pillar-nav">
+            <button class="pillar-tab active" data-pillar="identity">1. Identity</button>
+            <button class="pillar-tab" data-pillar="construction">2. Construction</button>
+            <button class="pillar-tab" data-pillar="completion">3. Completion</button>
+            <button class="pillar-tab" data-pillar="barriers">4. Barriers</button>
+            <button class="pillar-tab" data-pillar="interventions">5. Interventions</button>
+            <button class="pillar-tab" data-pillar="realtime">6. Real-Time Data</button>
+            <button class="pillar-tab" data-pillar="personnel">7. Personnel</button>
+            <button class="pillar-tab" data-pillar="correspondence">8. Correspondence</button>
+            <button class="pillar-tab" data-pillar="risk">9. Risk Assessment</button>
+            <button class="pillar-tab" data-pillar="economics">10. Economics</button>
+        </nav>
+
+        <!-- Pillar 1: Identity -->
+        <div class="pillar-content active" id="pillar-identity">
+            <h2 class="pillar-title">Identity & Context</h2>
+            <p class="pillar-subtitle">The "What" and "Why" - defining Well_666's identity as a once-high-performing asset</p>
+
+            <div class="section">
+                <div class="section-header">Administrative & Regulatory</div>
+                <div class="section-body">
+                    <div class="data-grid" id="identityGrid"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Reservoir Properties</div>
+                <div class="section-body">
+                    <div class="data-grid" id="reservoirGrid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pillar 2: Construction -->
+        <div class="pillar-content" id="pillar-construction">
+            <h2 class="pillar-title">Physical Blueprint & Geometry</h2>
+            <p class="pillar-subtitle">The "How it was Built" - wellbore integrity now severely compromised</p>
+
+            <div class="section">
+                <div class="section-header">Casing Program</div>
+                <div class="section-body">
+                    <table class="data-table" id="casingTable">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Size</th>
+                                <th>Top MD</th>
+                                <th>Shoe MD</th>
+                                <th>Weight</th>
+                                <th>Grade</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Deviation Survey</div>
+                <div class="section-body">
+                    <table class="data-table" id="surveyTable">
+                        <thead>
+                            <tr>
+                                <th>MD (m)</th>
+                                <th>Inc (°)</th>
+                                <th>Az (°)</th>
+                                <th>TVD (m)</th>
+                                <th>DLS (°/30m)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pillar 3: Completion -->
+        <div class="pillar-content" id="pillar-completion">
+            <h2 class="pillar-title">Completion & Production Setup</h2>
+            <p class="pillar-subtitle">The "How it's Equipped to Flow" - much now failed, obstructed, or damaged</p>
+
+            <div class="section">
+                <div class="section-header">Completion Hardware</div>
+                <div class="section-body">
+                    <div class="data-grid" id="completionGrid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pillar 4: Barriers -->
+        <div class="pillar-content" id="pillar-barriers">
+            <h2 class="pillar-title">Well Barrier Status</h2>
+            <p class="pillar-subtitle">Current barrier envelope - SEVERELY COMPROMISED</p>
+
+            <div class="section">
+                <div class="section-header">Primary Barriers</div>
+                <div class="section-body">
+                    <table class="data-table" id="primaryBarriersTable">
+                        <thead>
+                            <tr><th>Element</th><th>Status</th><th>Notes</th></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Secondary Barriers</div>
+                <div class="section-body">
+                    <table class="data-table" id="secondaryBarriersTable">
+                        <thead>
+                            <tr><th>Element</th><th>Status</th></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Annulus Pressures</div>
+                <div class="section-body">
+                    <div class="data-grid" id="annulusGrid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pillar 5: Interventions -->
+        <div class="pillar-content" id="pillar-interventions">
+            <h2 class="pillar-title">Lifecycle Performance & Evolution</h2>
+            <p class="pillar-subtitle">The "What it Did & What was Done to It" - from success to catastrophe</p>
+
+            <div class="section">
+                <div class="section-header">Intervention Timeline</div>
+                <div class="section-body">
+                    <div class="timeline" id="interventionTimeline"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pillar 6: Real-Time Data -->
+        <div class="pillar-content" id="pillar-realtime">
+            <h2 class="pillar-title">Real-Time & Historical Data</h2>
+            <p class="pillar-subtitle">The "Vital Signs" - quantitative heartbeat of the well</p>
+
+            <div class="section">
+                <div class="section-header">12-Hour Snapshot: October 18, 2016 (The Day of the Disaster)</div>
+                <div class="section-body">
+                    <table class="data-table" id="realtimeTable">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Casing P</th>
+                                <th>THP</th>
+                                <th>Ann A</th>
+                                <th>Gas Rate</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Anomaly Log: November 20, 2016</div>
+                <div class="section-body" id="anomalyLog"></div>
+            </div>
+        </div>
+
+        <!-- Pillar 7: Personnel -->
+        <div class="pillar-content" id="pillar-personnel">
+            <h2 class="pillar-title">Personnel & Contractor Records</h2>
+            <p class="pillar-subtitle">The "Human Factor" - experience, performance, and fatigue</p>
+
+            <div class="section">
+                <div class="section-header">Key Personnel</div>
+                <div class="section-body">
+                    <table class="data-table" id="personnelTable">
+                        <thead>
+                            <tr>
+                                <th>Phase</th>
+                                <th>Role</th>
+                                <th>Name/Company</th>
+                                <th>Experience</th>
+                                <th>Performance Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pillar 8: Correspondence -->
+        <div class="pillar-content" id="pillar-correspondence">
+            <h2 class="pillar-title">Non-Technical Reports & Correspondence</h2>
+            <p class="pillar-subtitle">The "Paper Trail" - doubts, disagreements, and decisions</p>
+
+            <div id="correspondenceList"></div>
+        </div>
+
+        <!-- Pillar 9: Risk Assessment -->
+        <div class="pillar-content" id="pillar-risk">
+            <h2 class="pillar-title">Risk Assessment & Lessons Learned</h2>
+            <p class="pillar-subtitle">The "What We Feared vs What Happened"</p>
+
+            <div class="section">
+                <div class="section-header">Risk Assessment: Pre-Job vs Actual (2016 Bridge Plug Retrieval)</div>
+                <div class="section-body">
+                    <div id="riskComparison"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Lessons Learned Register</div>
+                <div class="section-body" id="lessonsLearned"></div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">What-If Scenarios</div>
+                <div class="section-body" id="whatIfScenarios"></div>
+            </div>
+        </div>
+
+        <!-- Pillar 10: Economics -->
+        <div class="pillar-content" id="pillar-economics">
+            <h2 class="pillar-title">Economic & Commercial Context</h2>
+            <p class="pillar-subtitle">The "Why it Matters" - financial story and future stakes</p>
+
+            <div class="section">
+                <div class="section-header">Financial Summary</div>
+                <div class="section-body">
+                    <div class="economics-grid" id="economicsGrid"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">Proposed Intervention Economics</div>
+                <div class="section-body">
+                    <div class="data-grid" id="interventionEconomics"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 WellTegra · The Brahan Engine · See What Others Can't</p>
+    </footer>
+
+    <script>
+        let wellData = null;
+
+        async function loadWellData() {
+            try {
+                const response = await fetch('data/well_666.json');
+                const data = await response.json();
+                wellData = data.wells[0];
+                renderAll();
+            } catch (error) {
+                console.error('Failed to load well data:', error);
+            }
+        }
+
+        function renderAll() {
+            renderLockReasons();
+            renderIdentity();
+            renderConstruction();
+            renderCompletion();
+            renderBarriers();
+            renderInterventions();
+            renderRealtime();
+            renderPersonnel();
+            renderCorrespondence();
+            renderRisk();
+            renderEconomics();
+            setupPillarNav();
+        }
+
+        function renderLockReasons() {
+            const list = document.getElementById('lockReasons');
+            list.innerHTML = wellData.lockReasons.map(r => `<li>${r}</li>`).join('');
+        }
+
+        function renderIdentity() {
+            const id = wellData.identity;
+            const res = wellData.reservoir;
+            
+            document.getElementById('identityGrid').innerHTML = `
+                <div class="data-item"><div class="data-label">Operator</div><div class="data-value">${id.operator}</div></div>
+                <div class="data-item"><div class="data-label">Field / Block</div><div class="data-value">${id.field} / ${id.block}</div></div>
+                <div class="data-item"><div class="data-label">Well Type</div><div class="data-value">${id.wellType}</div></div>
+                <div class="data-item"><div class="data-label">Water Depth</div><div class="data-value">${id.waterDepth.value} ${id.waterDepth.unit}</div></div>
+                <div class="data-item"><div class="data-label">TD (MD / TVD)</div><div class="data-value">${id.td.md}m / ${id.td.tvd}m</div></div>
+                <div class="data-item"><div class="data-label">Spud Date</div><div class="data-value">${id.spudDate}</div></div>
+                <div class="data-item"><div class="data-label">Completion Date</div><div class="data-value">${id.completionDate}</div></div>
+                <div class="data-item"><div class="data-label">Classification</div><div class="data-value critical">${id.classification}</div></div>
+            `;
+
+            document.getElementById('reservoirGrid').innerHTML = `
+                <div class="data-item"><div class="data-label">Target Formation</div><div class="data-value">${res.targetFormation}</div></div>
+                <div class="data-item"><div class="data-label">Initial Pressure</div><div class="data-value">${res.initialPressure.value} ${res.initialPressure.unit}</div></div>
+                <div class="data-item"><div class="data-label">Temperature</div><div class="data-value">${res.temperature.value}°${res.temperature.unit}</div></div>
+                <div class="data-item"><div class="data-label">Fluid Type</div><div class="data-value">${res.fluidType}</div></div>
+                <div class="data-item"><div class="data-label">H2S / CO2</div><div class="data-value">${res.h2s.value} ppm / ${res.co2.value} mol%</div></div>
+                <div class="data-item"><div class="data-label">OGIP</div><div class="data-value">${res.ogip.value} ${res.ogip.unit}</div></div>
+                <div class="data-item"><div class="data-label">EUR (Original)</div><div class="data-value">${res.eurOriginal.value} ${res.eurOriginal.unit}</div></div>
+                <div class="data-item"><div class="data-label">EUR (Current)</div><div class="data-value critical">&lt;${res.eurCurrent.value} ${res.eurCurrent.unit}</div></div>
+            `;
+        }
+
+        function renderConstruction() {
+            const casing = wellData.construction.casingProgram;
+            const tbody = document.querySelector('#casingTable tbody');
+            tbody.innerHTML = casing.map(c => `
+                <tr>
+                    <td>${c.type}</td>
+                    <td>${c.size}</td>
+                    <td>${c.topMd}m</td>
+                    <td>${c.shoeMd}m</td>
+                    <td>${c.weight || '-'}</td>
+                    <td>${c.grade || '-'}</td>
+                    <td>${c.integrity ? `<span class="status status-failed">${c.integrity}</span>` : '<span class="status status-ok">OK</span>'}</td>
+                </tr>
+            `).join('');
+
+            const surveys = wellData.trajectory.surveys;
+            const surveyBody = document.querySelector('#surveyTable tbody');
+            surveyBody.innerHTML = surveys.map(s => `
+                <tr>
+                    <td>${s.md}</td>
+                    <td>${s.inc}</td>
+                    <td>${s.az}</td>
+                    <td>${s.tvd}</td>
+                    <td>${s.dls}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderCompletion() {
+            const c = wellData.completion;
+            document.getElementById('completionGrid').innerHTML = `
+                <div class="data-item">
+                    <div class="data-label">Tubing</div>
+                    <div class="data-value">${c.tubing.size} ${c.tubing.weight} ${c.tubing.grade}</div>
+                    <div class="status status-suspect" style="margin-top: 0.5rem;">${c.tubing.integrityStatus}</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">SCSSV</div>
+                    <div class="data-value">${c.scssv.type} @ ${c.scssv.depth}m</div>
+                    <div class="status status-critical" style="margin-top: 0.5rem;">${c.scssv.status}</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Packer</div>
+                    <div class="data-value">${c.packer.type} @ ${c.packer.depth}m</div>
+                    <div class="status status-unknown" style="margin-top: 0.5rem;">${c.packer.integrityStatus}</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Min Restriction</div>
+                    <div class="data-value">${c.minRestriction.id}" @ ${c.minRestriction.depth}m (${c.minRestriction.component})</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Perforations</div>
+                    <div class="data-value">${c.perforations[0].topMd}-${c.perforations[0].bottomMd}m, ${c.perforations[0].spf} SPF</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Gas Lift Mandrels</div>
+                    <div class="data-value">${c.gasLiftMandrels.map(g => g.depth + 'm').join(', ')}</div>
+                </div>
+            `;
+        }
+
+        function renderBarriers() {
+            const b = wellData.barriers;
+            
+            const primaryBody = document.querySelector('#primaryBarriersTable tbody');
+            primaryBody.innerHTML = b.primary.elements.map(e => `
+                <tr>
+                    <td>${e.name}</td>
+                    <td><span class="status status-${e.status === 'FAILED' ? 'failed' : e.status === 'SUSPECT' || e.status === 'DEFORMED' ? 'suspect' : 'unknown'}">${e.status}</span></td>
+                    <td>${e.notes || '-'}</td>
+                </tr>
+            `).join('');
+
+            const secondaryBody = document.querySelector('#secondaryBarriersTable tbody');
+            secondaryBody.innerHTML = b.secondary.elements.map(e => `
+                <tr>
+                    <td>${e.name}</td>
+                    <td><span class="status status-ok">${e.status}</span></td>
+                </tr>
+            `).join('');
+
+            document.getElementById('annulusGrid').innerHTML = `
+                <div class="data-item">
+                    <div class="data-label">Annulus A</div>
+                    <div class="data-value warning">${b.annulusPressures.annulusA.value} ${b.annulusPressures.annulusA.unit}</div>
+                    <div style="font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem;">${b.annulusPressures.annulusA.status}</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Annulus B</div>
+                    <div class="data-value success">${b.annulusPressures.annulusB.value} ${b.annulusPressures.annulusB.unit}</div>
+                    <div style="font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem;">${b.annulusPressures.annulusB.status}</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Well Kill Weight</div>
+                    <div class="data-value">${b.wellKillWeight.value} ${b.wellKillWeight.unit}</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Fluid Type</div>
+                    <div class="data-value">${b.fluidType}</div>
+                </div>
+            `;
+        }
+
+        function renderInterventions() {
+            const timeline = document.getElementById('interventionTimeline');
+            const interventions = wellData.interventions;
+
+            timeline.innerHTML = interventions.map(int => {
+                const dotClass = int.outcome === 'success' ? 'success' : 
+                                 int.outcome === 'catastrophic_failure' ? 'critical' :
+                                 int.outcome === 'failure' ? 'failure' : 'warning';
+                
+                let details = '';
+                if (int.subOperations) {
+                    details = `
+                        <div class="timeline-details ${int.outcome === 'catastrophic_failure' ? 'critical-miss' : ''}">
+                            <strong>Sub-Operations:</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.25rem;">
+                                ${int.subOperations.map(sub => `
+                                    <li style="margin-bottom: 0.5rem;">
+                                        <strong>${sub.date}:</strong> ${sub.description}
+                                        ${sub.outcome ? ` - <span style="color: ${sub.outcome.includes('success') ? 'var(--success)' : 'var(--danger)'}">${sub.outcome.toUpperCase()}</span>` : ''}
+                                        ${sub.notes ? `<br><span style="color: var(--muted); font-size: 0.85rem;">${sub.notes}</span>` : ''}
+                                        ${sub.criticalMiss ? '<br><span style="color: var(--danger); font-weight: 700;">⚠️ CRITICAL MISSED OPPORTUNITY</span>' : ''}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                if (int.toolstring && int.toolstring.length > 0) {
+                    details += `
+                        <div class="timeline-details" style="margin-top: 1rem;">
+                            <strong>Toolstring Configuration:</strong>
+                            <div class="toolstring" style="margin-top: 0.75rem;">
+                                ${int.toolstring.map(t => `
+                                    <div class="tool-item">
+                                        <span>${t.tool}</span>
+                                        <span class="tool-od">${t.od}" OD × ${t.length}"</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="timeline-item">
+                        <div class="timeline-dot ${dotClass}"></div>
+                        <div class="timeline-header">
+                            <span class="timeline-date">${int.date}${int.endDate ? ' → ' + int.endDate : ''}</span>
+                            <span class="status status-${dotClass === 'success' ? 'ok' : dotClass === 'critical' ? 'critical' : 'failed'}">${int.outcome?.replace('_', ' ').toUpperCase() || 'N/A'}</span>
+                        </div>
+                        <div class="timeline-title">${int.type}: ${int.objective}</div>
+                        <div class="timeline-body">
+                            ${int.serviceProvider ? `Provider: ${int.serviceProvider}` : ''}
+                            ${int.duration ? ` · Duration: ${int.duration.actual} ${int.duration.unit}` : ''}
+                            ${int.nptHours ? ` · NPT: ${int.nptHours} hrs` : ''}
+                            ${int.cost ? `<br>Cost: AFE $${(int.cost.afe/1000000).toFixed(1)}M → Actual $${(int.cost.actual/1000000).toFixed(1)}M` : ''}
+                        </div>
+                        ${int.lessonsLearned ? `<div style="margin-top: 0.75rem; font-style: italic; color: var(--warning);">"${int.lessonsLearned}"</div>` : ''}
+                        ${details}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderRealtime() {
+            const snapshot = wellData.realTimeData.snapshots[0];
+            const tbody = document.querySelector('#realtimeTable tbody');
+            tbody.innerHTML = snapshot.readings.map(r => `
+                <tr>
+                    <td>${r.time}</td>
+                    <td>${r.casingPressure} psi</td>
+                    <td>${r.thp} psi</td>
+                    <td>${r.annulusA} psi</td>
+                    <td>${r.gasRate || '-'} MMscfd</td>
+                    <td>${r.notes || '-'}</td>
+                </tr>
+            `).join('');
+
+            const anomalySnapshot = wellData.realTimeData.snapshots[1];
+            if (anomalySnapshot && anomalySnapshot.anomalies) {
+                document.getElementById('anomalyLog').innerHTML = anomalySnapshot.anomalies.map(a => `
+                    <div class="correspondence-item critical">
+                        <div class="correspondence-meta">
+                            <span>Time: ${a.time}</span>
+                            <span>Sensor: ${a.sensor}</span>
+                            <span>Type: ${a.type}</span>
+                        </div>
+                        <p><strong>Value:</strong> ${a.value} psi (Baseline: ${a.baseline} psi, Delta: +${a.delta} psi)</p>
+                        <p class="correspondence-significance">${a.significance}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function renderPersonnel() {
+            const tbody = document.querySelector('#personnelTable tbody');
+            tbody.innerHTML = wellData.personnel.map(p => `
+                <tr ${p.fatigueFlag ? 'style="background: rgba(239, 68, 68, 0.1);"' : ''}>
+                    <td>${p.phase}</td>
+                    <td>${p.role}</td>
+                    <td>${p.name || p.company || '-'}</td>
+                    <td>${p.experience || '-'}</td>
+                    <td>
+                        ${p.performance}
+                        ${p.fatigueFlag ? '<br><span class="status status-critical">FATIGUE FLAG: ' + p.consecutiveShifts + ' consecutive shifts</span>' : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderCorrespondence() {
+            const list = document.getElementById('correspondenceList');
+            list.innerHTML = wellData.correspondence.map(c => `
+                <div class="correspondence-item ${c.significance?.includes('overridden') || c.significance?.includes('pressure') ? 'critical' : ''}">
+                    <div class="correspondence-meta">
+                        <span>${c.date} ${c.time || ''}</span>
+                        <span>${c.type.replace('_', ' ').toUpperCase()}</span>
+                        ${c.from ? `<span>From: ${c.from}</span>` : ''}
+                    </div>
+                    ${c.subject ? `<strong>${c.subject}</strong>` : ''}
+                    ${c.title ? `<strong>${c.title}</strong>` : ''}
+                    <div class="correspondence-excerpt">"${c.excerpt}"</div>
+                    <p class="correspondence-significance">Significance: ${c.significance}</p>
+                    ${c.whatIfScenario ? `<p style="color: var(--accent); margin-top: 0.5rem;">💡 What-If: ${c.whatIfScenario}</p>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function renderRisk() {
+            const risks = wellData.riskAssessments.preJob2016;
+            
+            document.getElementById('riskComparison').innerHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Hazard</th>
+                            <th>Pre-Job Risk</th>
+                            <th>Actual Risk</th>
+                            <th>Lesson Learned</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${risks.map(r => `
+                            <tr>
+                                <td><strong>${r.hazard}</strong><br><span style="color: var(--muted); font-size: 0.85rem;">${r.consequence}</span></td>
+                                <td><span class="risk-score risk-${r.riskLevel.toLowerCase()}">${r.riskScoreInitial} (${r.riskLevel})</span></td>
+                                <td><span class="risk-score risk-critical">${r.riskScoreActual} (CRITICAL)</span></td>
+                                <td style="font-size: 0.85rem;">${r.lessonLearned}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('lessonsLearned').innerHTML = wellData.lessonsLearned.map(l => `
+                <div class="lesson-card ${l.severity.toLowerCase()}">
+                    <div class="lesson-id">${l.id}</div>
+                    <div class="lesson-title">${l.lesson}</div>
+                    <div class="lesson-details">
+                        <div>
+                            <dt>Category</dt>
+                            <dd>${l.category}</dd>
+                        </div>
+                        <div>
+                            <dt>Severity</dt>
+                            <dd><span class="status status-${l.severity === 'CRITICAL' ? 'critical' : 'suspect'}">${l.severity}</span></dd>
+                        </div>
+                        <div>
+                            <dt>Trigger Condition</dt>
+                            <dd>${l.triggerCondition}</dd>
+                        </div>
+                        <div>
+                            <dt>Recommended Action</dt>
+                            <dd>${l.recommendedAction}</dd>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('whatIfScenarios').innerHTML = wellData.whatIfScenarios.map(w => `
+                <div class="whatif-card">
+                    <div class="whatif-scenario">IF: ${w.scenario}</div>
+                    <div class="whatif-outcome">THEN: ${w.outcome}</div>
+                    <div class="whatif-savings">
+                        ${w.savings.cost ? `<div>Savings: <span>$${(w.savings.cost/1000000).toFixed(1)}M</span></div>` : ''}
+                        ${w.savings.time ? `<div>Time: <span>${w.savings.time}</span></div>` : ''}
+                        ${w.savings.production ? `<div>Production: <span>${w.savings.production}</span></div>` : ''}
+                        <div>Probability: <span>${w.probability}</span></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderEconomics() {
+            const e = wellData.economics;
+            
+            document.getElementById('economicsGrid').innerHTML = `
+                <div class="econ-card">
+                    <div class="econ-value neutral">$${(e.originalAFE/1000000).toFixed(1)}M</div>
+                    <div class="econ-label">Original AFE</div>
+                </div>
+                <div class="econ-card">
+                    <div class="econ-value negative">$${(e.totalSpentToDate/1000000).toFixed(1)}M</div>
+                    <div class="econ-label">Total Spent to Date</div>
+                </div>
+                <div class="econ-card">
+                    <div class="econ-value positive">$${(e.revenuePreDisaster/1000000).toFixed(0)}M</div>
+                    <div class="econ-label">Revenue Pre-Disaster</div>
+                </div>
+                <div class="econ-card">
+                    <div class="econ-value negative">$${(e.lostProduction2016_17/1000000).toFixed(0)}M</div>
+                    <div class="econ-label">Lost Production (2016-17)</div>
+                </div>
+                <div class="econ-card">
+                    <div class="econ-value negative">$${(e.deferredProduction2017_21/1000000).toFixed(0)}M</div>
+                    <div class="econ-label">Deferred Production (2017-21)</div>
+                </div>
+                <div class="econ-card">
+                    <div class="econ-value negative">$${(e.intervention2016Actual/1000000).toFixed(1)}M</div>
+                    <div class="econ-label">2016 Intervention Cost</div>
+                </div>
+            `;
+
+            document.getElementById('interventionEconomics').innerHTML = `
+                <div class="data-item">
+                    <div class="data-label">Proposed AFE</div>
+                    <div class="data-value">$${(e.proposedInterventionAFE/1000000).toFixed(0)}M</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Probability of Success</div>
+                    <div class="data-value">P10: ${e.probabilityOfSuccess.p10}% / P50: ${e.probabilityOfSuccess.p50}% / P90: ${e.probabilityOfSuccess.p90}%</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">NPV if Successful</div>
+                    <div class="data-value success">+$${(e.npvIfSuccessful/1000000).toFixed(0)}M</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">NPV if Failed</div>
+                    <div class="data-value critical">$${(e.npvIfFailed/1000000).toFixed(0)}M</div>
+                </div>
+                <div class="data-item">
+                    <div class="data-label">Expected Value</div>
+                    <div class="data-value success">+$${(e.expectedValue/1000000).toFixed(0)}M</div>
+                </div>
+                <div class="data-item" style="grid-column: 1 / -1;">
+                    <div class="data-label">Economic Conclusion</div>
+                    <div class="data-value" style="font-size: 1rem;">${e.economicConclusion}</div>
+                </div>
+            `;
+        }
+
+        function setupPillarNav() {
+            document.querySelectorAll('.pillar-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.pillar-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.pillar-content').forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById('pillar-' + tab.dataset.pillar).classList.add('active');
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadWellData);
+    </script>
+</body>
+</html>

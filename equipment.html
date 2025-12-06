@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Catalog | WellTegra</title>
+    <meta name="description" content="Master equipment library for toolstring design and clash detection. Complete OD/ID/length specifications for slickline, fishing, gas lift, and vendor-specific tools.">
+    <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b1220;
+            --panel: #0f172a;
+            --card: #1e293b;
+            --border: #334155;
+            --fg: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #14b8a6;
+            --accent-hover: #2dd4bf;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 18, 32, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            font-weight: 900;
+            font-size: 1.25rem;
+        }
+
+        .nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav a {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .nav a:hover, .nav a.active {
+            color: var(--fg);
+            background: var(--card);
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
+            padding: 3rem 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 1rem;
+            max-width: 600px;
+        }
+
+        /* Main layout */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .sidebar-section {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--muted);
+            margin-bottom: 0.75rem;
+        }
+
+        /* Search */
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--fg);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+        }
+
+        .search-input::placeholder {
+            color: var(--muted);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Category list */
+        .category-list {
+            list-style: none;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.625rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--muted);
+            transition: all 0.2s;
+        }
+
+        .category-item:hover {
+            background: var(--card);
+            color: var(--fg);
+        }
+
+        .category-item.active {
+            background: var(--accent);
+            color: #0b1220;
+        }
+
+        .category-count {
+            font-size: 0.75rem;
+            padding: 0.125rem 0.5rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 999px;
+        }
+
+        .category-item.active .category-count {
+            background: rgba(0,0,0,0.2);
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .stat-mini {
+            text-align: center;
+            padding: 0.75rem;
+            background: var(--card);
+            border-radius: 8px;
+        }
+
+        .stat-mini-value {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .stat-mini-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+
+        /* Content area */
+        .content {
+            min-width: 0;
+        }
+
+        .content-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .content-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #0b1220;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--card);
+            color: var(--fg);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+        }
+
+        /* Equipment grid */
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Equipment card */
+        .equipment-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .equipment-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .equipment-card.selected {
+            border-color: var(--accent);
+            background: rgba(20, 184, 166, 0.05);
+        }
+
+        .equipment-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .equipment-name {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .equipment-category {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 0.25rem;
+        }
+
+        .equipment-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .equipment-card.selected .equipment-checkbox {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .equipment-specs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+
+        .spec {
+            text-align: center;
+            padding: 0.5rem;
+            background: var(--card);
+            border-radius: 6px;
+        }
+
+        .spec-value {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .spec-value.missing {
+            color: var(--danger);
+            font-size: 0.9rem;
+        }
+
+        .spec-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .equipment-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .equipment-manufacturer {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .equipment-part {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--muted);
+            background: var(--card);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* Toolstring builder panel */
+        .toolstring-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--panel);
+            border-top: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+            z-index: 90;
+        }
+
+        .toolstring-panel.visible {
+            transform: translateY(0);
+        }
+
+        .toolstring-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .toolstring-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .toolstring-count {
+            font-weight: 700;
+        }
+
+        .toolstring-stat {
+            text-align: center;
+        }
+
+        .toolstring-stat-value {
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .toolstring-stat-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .toolstring-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* Clash warning */
+        .clash-warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--danger);
+            font-size: 0.9rem;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--muted);
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            color: var(--fg);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 1rem;
+        }
+
+        .modal-overlay.visible {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--card);
+            border: none;
+            color: var(--fg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .detail-item {
+            padding: 0.75rem;
+            background: var(--card);
+            border-radius: 8px;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-weight: 600;
+        }
+
+        .detail-value.missing {
+            color: var(--danger);
+            font-style: italic;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.jpg" alt="WellTegra">
+                <span class="logo-text">WellTegra</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="case-studies.html">Case Studies</a>
+                <a href="equipment.html" class="active">Equipment</a>
+                <a href="planner.html">Planner</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <h1>Equipment Catalog</h1>
+            <p>Master library for toolstring design. Select equipment to build strings and validate against well restrictions.</p>
+        </div>
+    </section>
+
+    <!-- Main -->
+    <main class="main">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Search</div>
+                <div class="search-box">
+                    <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search equipment...">
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Categories</div>
+                <ul class="category-list" id="categoryList">
+                    <!-- Rendered by JS -->
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">Catalog Stats</div>
+                <div class="stats-grid">
+                    <div class="stat-mini">
+                        <div class="stat-mini-value" id="statCategories">-</div>
+                        <div class="stat-mini-label">Categories</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="stat-mini-value" id="statItems">-</div>
+                        <div class="stat-mini-label">Items</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="stat-mini-value" id="statComplete">-</div>
+                        <div class="stat-mini-label">Complete</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="stat-mini-value" id="statMissing">-</div>
+                        <div class="stat-mini-label">Missing Data</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content -->
+        <section class="content">
+            <div class="content-header">
+                <h2 class="content-title" id="contentTitle">All Equipment</h2>
+                <div class="content-actions">
+                    <button class="btn btn-secondary" id="btnClearSelection">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+                        Clear Selection
+                    </button>
+                    <button class="btn btn-primary" id="btnValidate">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Validate Toolstring
+                    </button>
+                </div>
+            </div>
+
+            <div class="equipment-grid" id="equipmentGrid">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Toolstring Builder Panel -->
+    <div class="toolstring-panel" id="toolstringPanel">
+        <div class="toolstring-inner">
+            <div class="toolstring-info">
+                <span class="toolstring-count"><span id="selectedCount">0</span> tools selected</span>
+                <div class="toolstring-stat">
+                    <div class="toolstring-stat-value" id="maxOD">-</div>
+                    <div class="toolstring-stat-label">Max OD</div>
+                </div>
+                <div class="toolstring-stat">
+                    <div class="toolstring-stat-value" id="totalLength">-</div>
+                    <div class="toolstring-stat-label">Total Length</div>
+                </div>
+                <div class="toolstring-stat">
+                    <div class="toolstring-stat-value" id="totalWeight">-</div>
+                    <div class="toolstring-stat-label">Total Weight</div>
+                </div>
+            </div>
+            <div class="toolstring-actions">
+                <button class="btn btn-secondary" id="btnExportString">Export String</button>
+                <button class="btn btn-primary" id="btnCheckClash">Check Clash</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Equipment Detail Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Equipment Details</h3>
+                <button class="modal-close" id="modalClose">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 WellTegra · The Brahan Engine · See What Others Can't</p>
+    </footer>
+
+    <script>
+        // Equipment data
+        let catalogData = null;
+        let selectedItems = new Set();
+        let activeCategory = 'all';
+
+        // Load catalog data
+        async function loadCatalogData() {
+            try {
+                const response = await fetch('data/equipment.json');
+                catalogData = await response.json();
+                renderPage();
+            } catch (error) {
+                console.error('Failed to load equipment.json');
+                catalogData = getEmbeddedData();
+                renderPage();
+            }
+        }
+
+        // Embedded fallback
+        function getEmbeddedData() {
+            return {
+                catalog: { name: "Equipment Catalog", version: "1.0", lastUpdated: "2025-11-27" },
+                categories: [
+                    { id: "slickline_tools", name: "Slickline Tools", equipment: [
+                        { id: "sl_001", name: "Stem", od: 0, id: 0, length: 0, weight: 0 },
+                        { id: "sl_002", name: "Knuckle Joint", od: 0, id: 0, length: 0, weight: 0 }
+                    ]},
+                    { id: "fishing_tools", name: "Fishing Tools", equipment: [
+                        { id: "ft_001", name: "2-Prong Grab", od: 0, id: 0, length: 0, weight: 0 }
+                    ]}
+                ]
+            };
+        }
+
+        // Render page
+        function renderPage() {
+            renderStats();
+            renderCategories();
+            renderEquipment();
+            setupEventListeners();
+        }
+
+        // Render stats
+        function renderStats() {
+            const categories = catalogData.categories;
+            const allItems = categories.flatMap(c => c.equipment);
+            const complete = allItems.filter(e => e.od > 0 && e.length > 0);
+            
+            document.getElementById('statCategories').textContent = categories.length;
+            document.getElementById('statItems').textContent = allItems.length;
+            document.getElementById('statComplete').textContent = complete.length;
+            document.getElementById('statMissing').textContent = allItems.length - complete.length;
+        }
+
+        // Render categories
+        function renderCategories() {
+            const list = document.getElementById('categoryList');
+            const allCount = catalogData.categories.reduce((sum, c) => sum + c.equipment.length, 0);
+            
+            let html = `
+                <li class="category-item ${activeCategory === 'all' ? 'active' : ''}" data-category="all">
+                    <span>All Equipment</span>
+                    <span class="category-count">${allCount}</span>
+                </li>
+            `;
+            
+            catalogData.categories.forEach(cat => {
+                html += `
+                    <li class="category-item ${activeCategory === cat.id ? 'active' : ''}" data-category="${cat.id}">
+                        <span>${cat.name}</span>
+                        <span class="category-count">${cat.equipment.length}</span>
+                    </li>
+                `;
+            });
+            
+            list.innerHTML = html;
+        }
+
+        // Render equipment
+        function renderEquipment(searchTerm = '') {
+            const grid = document.getElementById('equipmentGrid');
+            const search = searchTerm.toLowerCase();
+            
+            let items = [];
+            
+            if (activeCategory === 'all') {
+                catalogData.categories.forEach(cat => {
+                    cat.equipment.forEach(eq => {
+                        items.push({ ...eq, categoryName: cat.name, categoryId: cat.id });
+                    });
+                });
+            } else {
+                const cat = catalogData.categories.find(c => c.id === activeCategory);
+                if (cat) {
+                    items = cat.equipment.map(eq => ({ ...eq, categoryName: cat.name, categoryId: cat.id }));
+                }
+            }
+            
+            // Filter by search
+            if (search) {
+                items = items.filter(eq => 
+                    eq.name.toLowerCase().includes(search) ||
+                    (eq.partNumber && eq.partNumber.toLowerCase().includes(search)) ||
+                    (eq.manufacturer && eq.manufacturer.toLowerCase().includes(search))
+                );
+            }
+            
+            // Update title
+            if (activeCategory === 'all') {
+                document.getElementById('contentTitle').textContent = `All Equipment (${items.length})`;
+            } else {
+                const cat = catalogData.categories.find(c => c.id === activeCategory);
+                document.getElementById('contentTitle').textContent = `${cat?.name || 'Equipment'} (${items.length})`;
+            }
+            
+            if (items.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <h3>No equipment found</h3>
+                        <p>Try adjusting your search or category filter</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = items.map(eq => renderEquipmentCard(eq)).join('');
+        }
+
+        // Render equipment card
+        function renderEquipmentCard(eq) {
+            const isSelected = selectedItems.has(eq.id);
+            const hasData = eq.od > 0 || eq.length > 0;
+            
+            return `
+                <div class="equipment-card ${isSelected ? 'selected' : ''}" data-id="${eq.id}" data-category="${eq.categoryId}">
+                    <div class="equipment-header">
+                        <div>
+                            <div class="equipment-name">${eq.name}</div>
+                            <div class="equipment-category">${eq.categoryName}</div>
+                        </div>
+                        <div class="equipment-checkbox">
+                            ${isSelected ? '<svg width="14" height="14" fill="none" stroke="#0b1220" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>' : ''}
+                        </div>
+                    </div>
+                    <div class="equipment-specs">
+                        <div class="spec">
+                            <div class="spec-value ${!eq.od ? 'missing' : ''}">${eq.od || '-'}"</div>
+                            <div class="spec-label">OD</div>
+                        </div>
+                        <div class="spec">
+                            <div class="spec-value ${!eq.length ? 'missing' : ''}">${eq.length || '-'}"</div>
+                            <div class="spec-label">Length</div>
+                        </div>
+                        <div class="spec">
+                            <div class="spec-value ${!eq.weight ? 'missing' : ''}">${eq.weight || '-'}</div>
+                            <div class="spec-label">lbs</div>
+                        </div>
+                    </div>
+                    <div class="equipment-footer">
+                        <span class="equipment-manufacturer">${eq.manufacturer || 'Unknown'}</span>
+                        ${eq.partNumber ? `<span class="equipment-part">${eq.partNumber}</span>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update toolstring panel
+        function updateToolstringPanel() {
+            const panel = document.getElementById('toolstringPanel');
+            const count = selectedItems.size;
+            
+            if (count > 0) {
+                panel.classList.add('visible');
+            } else {
+                panel.classList.remove('visible');
+            }
+            
+            document.getElementById('selectedCount').textContent = count;
+            
+            // Calculate totals
+            let maxOD = 0;
+            let totalLength = 0;
+            let totalWeight = 0;
+            
+            selectedItems.forEach(id => {
+                const eq = findEquipmentById(id);
+                if (eq) {
+                    if (eq.od > maxOD) maxOD = eq.od;
+                    totalLength += eq.length || 0;
+                    totalWeight += eq.weight || 0;
+                }
+            });
+            
+            document.getElementById('maxOD').textContent = maxOD > 0 ? maxOD + '"' : '-';
+            document.getElementById('totalLength').textContent = totalLength > 0 ? totalLength + '"' : '-';
+            document.getElementById('totalWeight').textContent = totalWeight > 0 ? totalWeight + ' lbs' : '-';
+        }
+
+        // Find equipment by ID
+        function findEquipmentById(id) {
+            for (const cat of catalogData.categories) {
+                const eq = cat.equipment.find(e => e.id === id);
+                if (eq) return eq;
+            }
+            return null;
+        }
+
+        // Show equipment detail modal
+        function showEquipmentDetail(id) {
+            const eq = findEquipmentById(id);
+            if (!eq) return;
+            
+            const cat = catalogData.categories.find(c => c.equipment.some(e => e.id === id));
+            
+            document.getElementById('modalTitle').textContent = eq.name;
+            document.getElementById('modalBody').innerHTML = `
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">Category</div>
+                        <div class="detail-value">${cat?.name || '-'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Part Number</div>
+                        <div class="detail-value ${!eq.partNumber ? 'missing' : ''}">${eq.partNumber || 'Not set'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">OD</div>
+                        <div class="detail-value ${!eq.od ? 'missing' : ''}">${eq.od ? eq.od + '"' : 'Not set'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">ID</div>
+                        <div class="detail-value ${!eq.id ? 'missing' : ''}">${eq.id ? eq.id + '"' : 'Not set'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Length</div>
+                        <div class="detail-value ${!eq.length ? 'missing' : ''}">${eq.length ? eq.length + '"' : 'Not set'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Weight</div>
+                        <div class="detail-value ${!eq.weight ? 'missing' : ''}">${eq.weight ? eq.weight + ' lbs' : 'Not set'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Material</div>
+                        <div class="detail-value ${!eq.material ? 'missing' : ''}">${eq.material || 'Not set'}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Manufacturer</div>
+                        <div class="detail-value ${!eq.manufacturer ? 'missing' : ''}">${eq.manufacturer || 'Not set'}</div>
+                    </div>
+                    ${eq.pressureRating ? `
+                        <div class="detail-item">
+                            <div class="detail-label">Pressure Rating</div>
+                            <div class="detail-value">${eq.pressureRating} psi</div>
+                        </div>
+                    ` : ''}
+                    ${eq.tempRating ? `
+                        <div class="detail-item">
+                            <div class="detail-label">Temp Rating</div>
+                            <div class="detail-value">${eq.tempRating}°F</div>
+                        </div>
+                    ` : ''}
+                </div>
+                ${eq.notes ? `<p style="margin-top: 1rem; color: var(--muted); font-size: 0.9rem;">${eq.notes}</p>` : ''}
+            `;
+            
+            document.getElementById('modalOverlay').classList.add('visible');
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Category clicks
+            document.getElementById('categoryList').addEventListener('click', (e) => {
+                const item = e.target.closest('.category-item');
+                if (item) {
+                    activeCategory = item.dataset.category;
+                    renderCategories();
+                    renderEquipment(document.getElementById('searchInput').value);
+                }
+            });
+            
+            // Search
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                renderEquipment(e.target.value);
+            });
+            
+            // Equipment card clicks
+            document.getElementById('equipmentGrid').addEventListener('click', (e) => {
+                const card = e.target.closest('.equipment-card');
+                if (card) {
+                    const id = card.dataset.id;
+                    if (e.shiftKey || e.ctrlKey || e.metaKey) {
+                        // Show detail on modifier click
+                        showEquipmentDetail(id);
+                    } else {
+                        // Toggle selection
+                        if (selectedItems.has(id)) {
+                            selectedItems.delete(id);
+                        } else {
+                            selectedItems.add(id);
+                        }
+                        renderEquipment(document.getElementById('searchInput').value);
+                        updateToolstringPanel();
+                    }
+                }
+            });
+            
+            // Clear selection
+            document.getElementById('btnClearSelection').addEventListener('click', () => {
+                selectedItems.clear();
+                renderEquipment(document.getElementById('searchInput').value);
+                updateToolstringPanel();
+            });
+            
+            // Modal close
+            document.getElementById('modalClose').addEventListener('click', () => {
+                document.getElementById('modalOverlay').classList.remove('visible');
+            });
+            
+            document.getElementById('modalOverlay').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) {
+                    document.getElementById('modalOverlay').classList.remove('visible');
+                }
+            });
+            
+            // Validate button
+            document.getElementById('btnValidate').addEventListener('click', () => {
+                alert('Clash detection: Enter minimum restriction ID to validate toolstring');
+            });
+            
+            document.getElementById('btnCheckClash').addEventListener('click', () => {
+                const maxOD = parseFloat(document.getElementById('maxOD').textContent) || 0;
+                if (maxOD > 0) {
+                    const minID = prompt('Enter minimum tubing ID (inches):');
+                    if (minID) {
+                        const restriction = parseFloat(minID);
+                        if (maxOD > restriction) {
+                            alert(`⚠️ CLASH DETECTED!\n\nMax tool OD (${maxOD}") exceeds tubing ID (${restriction}")\n\nToolstring will not pass through restriction.`);
+                        } else {
+                            alert(`✅ PASS\n\nMax tool OD (${maxOD}") clears tubing ID (${restriction}")\n\nClearance: ${(restriction - maxOD).toFixed(3)}"`);
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadCatalogData);
+    </script>
+</body>
+</html>
