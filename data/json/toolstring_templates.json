@@ -1,0 +1,138 @@
+{
+  "toolstringTemplates": [
+    {
+      "id": "ts-gauge-run",
+      "name": "Standard Gauge Run",
+      "description": "Basic drift/gauge run to verify tubing ID and locate obstructions",
+      "serviceType": "Slickline",
+      "tools": [
+        {"toolId": "sl-swivel", "position": 1, "notes": "Top connection to wireline"},
+        {"toolId": "sl-stem-2ft", "position": 2, "notes": "Running weight"},
+        {"toolId": "sl-knuckle", "position": 3, "notes": "For dogleg navigation"},
+        {"toolId": "sl-jar-mech", "position": 4, "notes": "Backup if stuck"},
+        {"toolId": "sl-stem-4ft", "position": 5, "notes": "Additional weight"},
+        {"toolId": "sl-gauge-od", "position": 6, "notes": "Drift verification - select appropriate size"}
+      ],
+      "totalLength": 126,
+      "totalWeight": 73,
+      "maxOD": 2.875,
+      "application": "Pre-job verification, obstruction location"
+    },
+    {
+      "id": "ts-plug-set",
+      "name": "Bridge Plug Setting (Mechanical)",
+      "description": "Toolstring for setting mechanical bridge plug in nipple profile",
+      "serviceType": "Slickline",
+      "tools": [
+        {"toolId": "sl-swivel", "position": 1, "notes": "Top connection"},
+        {"toolId": "sl-stem-2ft", "position": 2, "notes": "Running weight"},
+        {"toolId": "sl-jar-mech", "position": 3, "notes": "For jarring to set"},
+        {"toolId": "sl-stem-4ft", "position": 4, "notes": "Impact weight"},
+        {"toolId": "sl-setting-mech", "position": 5, "notes": "Mechanical setting tool"},
+        {"toolId": "bp-mech", "position": 6, "notes": "Bridge plug - operator supplied"}
+      ],
+      "totalLength": 144,
+      "totalWeight": 95,
+      "maxOD": 2.0,
+      "application": "Zone isolation, P&A operations"
+    },
+    {
+      "id": "ts-plug-pull",
+      "name": "Bridge Plug Retrieval",
+      "description": "Toolstring for pulling nipple-set bridge plug",
+      "serviceType": "Slickline",
+      "tools": [
+        {"toolId": "sl-swivel", "position": 1, "notes": "Top connection"},
+        {"toolId": "sl-stem-2ft", "position": 2, "notes": "Running weight"},
+        {"toolId": "sl-knuckle", "position": 3, "notes": "Articulation"},
+        {"toolId": "sl-jar-hyd", "position": 4, "notes": "For freeing stuck plug"},
+        {"toolId": "sl-stem-4ft", "position": 5, "notes": "Additional pulling weight"},
+        {"toolId": "sl-pulling-tool", "position": 6, "notes": "Matched to plug profile"}
+      ],
+      "totalLength": 132,
+      "totalWeight": 95,
+      "maxOD": 1.75,
+      "application": "Plug retrieval, zone re-entry"
+    },
+    {
+      "id": "ts-glv-kick",
+      "name": "Gas Lift Valve Kickover",
+      "description": "Toolstring for retrieving/installing gas lift valves in SPM",
+      "serviceType": "Slickline",
+      "tools": [
+        {"toolId": "sl-swivel", "position": 1, "notes": "Top connection"},
+        {"toolId": "sl-stem-2ft", "position": 2, "notes": "Running weight"},
+        {"toolId": "sl-jar-mech", "position": 3, "notes": "Freeing if stuck"},
+        {"toolId": "sl-kickover", "position": 4, "notes": "SPM access tool"},
+        {"toolId": "sl-pulling-tool", "position": 5, "notes": "For GLV latch"}
+      ],
+      "totalLength": 84,
+      "totalWeight": 53,
+      "maxOD": 1.625,
+      "application": "Gas lift optimization, valve change-out"
+    },
+    {
+      "id": "ts-fishing-basic",
+      "name": "Basic Fishing Run",
+      "description": "Standard fishing toolstring for parted wireline or small debris",
+      "serviceType": "Slickline",
+      "tools": [
+        {"toolId": "sl-swivel", "position": 1, "notes": "Top connection"},
+        {"toolId": "sl-stem-2ft", "position": 2, "notes": "Running weight"},
+        {"toolId": "sl-jar-hyd", "position": 3, "notes": "High-force jar for extraction"},
+        {"toolId": "sl-sinker-50lb", "position": 4, "notes": "Heavy weight for engagement"},
+        {"toolId": "fish-overshot-2", "position": 5, "notes": "Primary catch tool"}
+      ],
+      "totalLength": 138,
+      "totalWeight": 127,
+      "maxOD": 3.25,
+      "application": "Fish recovery, debris retrieval"
+    },
+    {
+      "id": "ts-impression",
+      "name": "Impression Block Run",
+      "description": "Diagnostic run to identify fish top configuration",
+      "serviceType": "Slickline",
+      "tools": [
+        {"toolId": "sl-swivel", "position": 1, "notes": "Top connection"},
+        {"toolId": "sl-stem-2ft", "position": 2, "notes": "Running weight"},
+        {"toolId": "sl-sinker-25lb", "position": 3, "notes": "Impact weight"},
+        {"toolId": "fish-impression", "position": 4, "notes": "Lead impression block"}
+      ],
+      "totalLength": 74,
+      "totalWeight": 45,
+      "maxOD": 2.5,
+      "application": "Fish identification, planning fishing operation"
+    },
+    {
+      "id": "ts-eline-perf",
+      "name": "E-Line Perforating",
+      "description": "Electric line perforating string with correlation",
+      "serviceType": "Electric Line",
+      "tools": [
+        {"toolId": "el-cch", "position": 1, "notes": "Depth correlation"},
+        {"toolId": "el-grl", "position": 2, "notes": "Formation verification"},
+        {"toolId": "el-perf-gun", "position": 3, "notes": "Perforating gun - length per job"}
+      ],
+      "totalLength": 228,
+      "totalWeight": 100,
+      "maxOD": 2.125,
+      "application": "Perforation, recompletion"
+    },
+    {
+      "id": "ts-eline-log",
+      "name": "E-Line Production Log",
+      "description": "Basic production logging string",
+      "serviceType": "Electric Line",
+      "tools": [
+        {"toolId": "el-cch", "position": 1, "notes": "Depth correlation"},
+        {"toolId": "el-grl", "position": 2, "notes": "Gamma ray"},
+        {"toolId": "el-pct", "position": 3, "notes": "Pressure/Temperature"}
+      ],
+      "totalLength": 144,
+      "totalWeight": 73,
+      "maxOD": 1.6875,
+      "application": "Well diagnostics, production monitoring"
+    }
+  ]
+}
