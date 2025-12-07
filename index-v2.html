@@ -1,0 +1,2254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Brahan Engine | Stop Paying the NPT Tax</title>
+    <meta name="description" content="AI-powered well intervention planning that cuts NPT by 15-30%. Built by a well engineer with 30+ years of global experience.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================
+           CSS VARIABLES & FOUNDATION
+           ============================================ */
+        :root {
+            /* Primary Palette - Industrial/Technical */
+            --ink: #0a1628;
+            --ink-light: #1a2d4a;
+            --slate: #334155;
+            --steel: #64748b;
+            --silver: #94a3b8;
+            --mist: #e2e8f0;
+            --cloud: #f1f5f9;
+            --white: #ffffff;
+            
+            /* Accent - Safety Orange (NPT/Warning) */
+            --accent: #f97316;
+            --accent-dark: #ea580c;
+            --accent-glow: rgba(249, 115, 22, 0.15);
+            
+            /* Success - Teal/Green */
+            --success: #0d9488;
+            --success-light: #14b8a6;
+            --success-glow: rgba(13, 148, 136, 0.12);
+            
+            /* Typography */
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --space-2xl: 6rem;
+            
+            /* Layout */
+            --max-width: 1200px;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(10, 22, 40, 0.08);
+            --shadow-md: 0 4px 12px rgba(10, 22, 40, 0.1);
+            --shadow-lg: 0 12px 40px rgba(10, 22, 40, 0.15);
+            --shadow-glow: 0 0 60px rgba(249, 115, 22, 0.2);
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--ink);
+            background: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ============================================
+           TYPOGRAPHY
+           ============================================ */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 600;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        h1 { font-size: clamp(2.5rem, 5vw, 3.75rem); }
+        h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); }
+        h3 { font-size: clamp(1.25rem, 2vw, 1.5rem); }
+        h4 { font-size: 1.125rem; }
+
+        .label {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        /* ============================================
+           LAYOUT UTILITIES
+           ============================================ */
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        .section {
+            padding: var(--space-2xl) 0;
+        }
+
+        .section--dark {
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        .section--mist {
+            background: var(--cloud);
+        }
+
+        .grid {
+            display: grid;
+            gap: var(--space-md);
+        }
+
+        .grid--2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .grid--3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+        .grid--4 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.75rem;
+            font-family: var(--font-display);
+            font-size: 0.9375rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn--primary {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .btn--primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn--secondary {
+            background: transparent;
+            color: var(--ink);
+            border: 2px solid var(--mist);
+        }
+
+        .btn--secondary:hover {
+            border-color: var(--ink);
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        .btn--ghost {
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn--ghost:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* ============================================
+           HEADER / NAV
+           ============================================ */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: var(--space-sm) 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--mist);
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            padding: 0.5rem 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header__inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo__icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+        }
+
+        .logo__text {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .logo__text span {
+            color: var(--accent);
+        }
+
+        .nav {
+            display: none;
+        }
+
+        .nav__list {
+            display: flex;
+            gap: var(--space-md);
+            list-style: none;
+        }
+
+        .nav__link {
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--slate);
+            transition: color 0.2s;
+        }
+
+        .nav__link:hover {
+            color: var(--ink);
+        }
+
+        .header__cta {
+            display: none;
+        }
+
+        .menu-toggle {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--ink);
+            transition: all 0.3s;
+        }
+
+        @media (min-width: 900px) {
+            .nav { display: block; }
+            .header__cta { display: block; }
+            .menu-toggle { display: none; }
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 100px;
+            background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(249, 115, 22, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(13, 148, 136, 0.06) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        /* Grid pattern overlay */
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .hero__inner {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-xl);
+            align-items: center;
+        }
+
+        .hero__content {
+            color: var(--white);
+        }
+
+        .hero__label {
+            display: inline-block;
+            margin-bottom: var(--space-sm);
+            padding: 0.5rem 1rem;
+            background: rgba(249, 115, 22, 0.15);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 100px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
+
+        .hero__title {
+            margin-bottom: var(--space-md);
+            font-size: clamp(2.25rem, 5vw, 3.5rem);
+            line-height: 1.1;
+        }
+
+        .hero__title em {
+            font-style: normal;
+            color: var(--accent);
+        }
+
+        .hero__subtitle {
+            margin-bottom: var(--space-lg);
+            font-size: 1.125rem;
+            color: var(--silver);
+            max-width: 540px;
+        }
+
+        .hero__stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+
+        .hero__stat {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .hero__stat-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(13, 148, 136, 0.15);
+            border-radius: var(--radius-sm);
+            font-size: 1.25rem;
+        }
+
+        .hero__stat-text {
+            font-size: 0.9375rem;
+        }
+
+        .hero__stat-value {
+            display: block;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--success-light);
+        }
+
+        .hero__ctas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+        }
+
+        .hero__visual {
+            position: relative;
+        }
+
+        .hero__mockup {
+            position: relative;
+            background: var(--ink-light);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+        }
+
+        .hero__mockup-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .hero__mockup-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--steel);
+        }
+
+        .hero__mockup-dot:nth-child(1) { background: #ef4444; }
+        .hero__mockup-dot:nth-child(2) { background: #eab308; }
+        .hero__mockup-dot:nth-child(3) { background: #22c55e; }
+
+        .hero__mockup-content {
+            padding: var(--space-md);
+            min-height: 300px;
+        }
+
+        .hero__mockup-title {
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--silver);
+            margin-bottom: var(--space-sm);
+        }
+
+        /* Floating KPI cards */
+        .hero__kpi {
+            position: absolute;
+            padding: 0.75rem 1rem;
+            background: var(--white);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            font-size: 0.8125rem;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero__kpi-value {
+            display: block;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--success);
+        }
+
+        .hero__kpi--1 {
+            top: 20%;
+            right: -20px;
+            animation-delay: 0s;
+        }
+
+        .hero__kpi--2 {
+            bottom: 30%;
+            left: -30px;
+            animation-delay: 2s;
+        }
+
+        .hero__kpi--3 {
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (min-width: 900px) {
+            .hero__inner {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* ============================================
+           NPT TAX SECTION
+           ============================================ */
+        .npt-tax {
+            position: relative;
+        }
+
+        .npt-tax__header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto var(--space-xl);
+        }
+
+        .npt-tax__title {
+            margin-bottom: var(--space-sm);
+        }
+
+        .npt-tax__subtitle {
+            color: var(--steel);
+            font-size: 1.125rem;
+        }
+
+        .tax-card {
+            position: relative;
+            padding: var(--space-lg);
+            background: var(--white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--mist);
+            transition: all 0.3s ease;
+        }
+
+        .tax-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .tax-card__icon {
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-md);
+            background: var(--accent-glow);
+            border-radius: var(--radius-sm);
+            font-size: 1.5rem;
+        }
+
+        .tax-card__title {
+            margin-bottom: var(--space-xs);
+            color: var(--ink);
+        }
+
+        .tax-card__text {
+            color: var(--steel);
+            font-size: 0.9375rem;
+        }
+
+        /* ============================================
+           METRICS STRIP
+           ============================================ */
+        .metrics {
+            background: var(--ink);
+            color: var(--white);
+            padding: var(--space-xl) 0;
+        }
+
+        .metrics__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            text-align: center;
+        }
+
+        .metric {
+            padding: var(--space-md);
+        }
+
+        .metric__value {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: var(--success-light);
+            line-height: 1;
+            margin-bottom: var(--space-xs);
+        }
+
+        .metric__label {
+            font-size: 0.9375rem;
+            color: var(--silver);
+        }
+
+        .metric__bar {
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin-top: var(--space-sm);
+            overflow: hidden;
+        }
+
+        .metric__bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--success-light));
+            border-radius: 2px;
+            animation: grow 2s ease-out forwards;
+        }
+
+        @keyframes grow {
+            from { width: 0; }
+        }
+
+        /* ============================================
+           WORKFLOW SECTION
+           ============================================ */
+        .workflow__header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto var(--space-xl);
+        }
+
+        .workflow__title {
+            margin-bottom: var(--space-sm);
+        }
+
+        .workflow__steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-sm);
+            position: relative;
+        }
+
+        .workflow__step {
+            position: relative;
+            padding: var(--space-lg);
+            background: var(--white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--mist);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .workflow__step:hover {
+            border-color: var(--success);
+            box-shadow: var(--shadow-md);
+        }
+
+        .workflow__step-number {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--success);
+            color: var(--white);
+            border-radius: 50%;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .workflow__step-icon {
+            font-size: 2rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .workflow__step-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+
+        .workflow__step-text {
+            font-size: 0.875rem;
+            color: var(--steel);
+        }
+
+        /* ============================================
+           11 PILLARS - COMPACT GRID
+           ============================================ */
+        .pillars {
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        .pillars__header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto var(--space-xl);
+        }
+
+        .pillars__subtitle {
+            color: var(--silver);
+            font-size: 1.125rem;
+        }
+
+        .pillars__tabs {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-lg);
+            flex-wrap: wrap;
+        }
+
+        .pillar-tab {
+            padding: 0.625rem 1.25rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 100px;
+            color: var(--silver);
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pillar-tab:hover,
+        .pillar-tab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--white);
+        }
+
+        .pillars__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--space-sm);
+        }
+
+        .pillar-card {
+            position: relative;
+            padding: var(--space-md);
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .pillar-card:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        .pillar-card__number {
+            position: absolute;
+            top: var(--space-sm);
+            right: var(--space-sm);
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+            opacity: 0.6;
+        }
+
+        .pillar-card__icon {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .pillar-card__title {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+
+        .pillar-card__text {
+            font-size: 0.8125rem;
+            color: var(--silver);
+            line-height: 1.5;
+        }
+
+        .pillar-card__expand {
+            display: none;
+            margin-top: var(--space-sm);
+            padding-top: var(--space-sm);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8125rem;
+            color: var(--silver);
+        }
+
+        .pillar-card.expanded .pillar-card__expand {
+            display: block;
+        }
+
+        /* ============================================
+           CASE STUDY TEASER (w-666)
+           ============================================ */
+        .case-study {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .case-study__inner {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-xl);
+            align-items: center;
+        }
+
+        .case-study__content {
+            max-width: 540px;
+        }
+
+        .case-study__badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 100px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: #ef4444;
+            margin-bottom: var(--space-md);
+        }
+
+        .case-study__title {
+            margin-bottom: var(--space-sm);
+        }
+
+        .case-study__text {
+            color: var(--steel);
+            font-size: 1.0625rem;
+            margin-bottom: var(--space-lg);
+        }
+
+        .case-study__stats {
+            display: flex;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .case-study__stat {
+            text-align: center;
+        }
+
+        .case-study__stat-value {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #ef4444;
+        }
+
+        .case-study__stat-label {
+            font-size: 0.8125rem;
+            color: var(--steel);
+        }
+
+        .case-study__visual {
+            position: relative;
+            padding: var(--space-lg);
+            background: var(--cloud);
+            border-radius: var(--radius-lg);
+        }
+
+        .case-study__comparison {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: var(--space-md);
+            align-items: center;
+        }
+
+        .comparison-block {
+            padding: var(--space-md);
+            background: var(--white);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .comparison-block--bad {
+            border: 2px solid #ef4444;
+        }
+
+        .comparison-block--good {
+            border: 2px solid var(--success);
+        }
+
+        .comparison-block__label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-xs);
+        }
+
+        .comparison-block--bad .comparison-block__label { color: #ef4444; }
+        .comparison-block--good .comparison-block__label { color: var(--success); }
+
+        .comparison-block__value {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .comparison-arrow {
+            font-size: 1.5rem;
+            color: var(--steel);
+        }
+
+        @media (min-width: 900px) {
+            .case-study__inner {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* ============================================
+           CALCULATOR SECTION
+           ============================================ */
+        .calculator {
+            background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+            color: var(--white);
+        }
+
+        .calculator__inner {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-xl);
+            align-items: center;
+        }
+
+        .calculator__content {
+            max-width: 480px;
+        }
+
+        .calculator__title {
+            margin-bottom: var(--space-sm);
+        }
+
+        .calculator__text {
+            color: var(--silver);
+            font-size: 1.0625rem;
+        }
+
+        .calculator__widget {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+        }
+
+        .calc-field {
+            margin-bottom: var(--space-md);
+        }
+
+        .calc-field__label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: var(--space-xs);
+            color: var(--silver);
+        }
+
+        .calc-field__input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius-sm);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .calc-field__input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .calc-field__input::placeholder {
+            color: var(--steel);
+        }
+
+        .calc-result {
+            margin-top: var(--space-lg);
+            padding: var(--space-lg);
+            background: var(--success-glow);
+            border: 1px solid rgba(13, 148, 136, 0.3);
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .calc-result__label {
+            font-size: 0.875rem;
+            color: var(--silver);
+            margin-bottom: var(--space-xs);
+        }
+
+        .calc-result__value {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--success-light);
+        }
+
+        .calc-result__note {
+            font-size: 0.8125rem;
+            color: var(--silver);
+            margin-top: var(--space-xs);
+        }
+
+        @media (min-width: 900px) {
+            .calculator__inner {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* ============================================
+           TRUST / FOUNDER SECTION
+           ============================================ */
+        .trust {
+            position: relative;
+        }
+
+        .trust__inner {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-xl);
+            align-items: center;
+        }
+
+        .trust__quote {
+            position: relative;
+            padding: var(--space-lg);
+            background: var(--cloud);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--accent);
+        }
+
+        .trust__quote-text {
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--ink);
+            margin-bottom: var(--space-md);
+            line-height: 1.6;
+        }
+
+        .trust__quote-author {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .trust__quote-role {
+            font-size: 0.875rem;
+            color: var(--steel);
+        }
+
+        .trust__points {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-sm);
+        }
+
+        .trust-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .trust-point__icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--success-glow);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .trust-point__text {
+            font-size: 0.9375rem;
+            color: var(--slate);
+        }
+
+        .security-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            margin-top: var(--space-lg);
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--white);
+            border: 1px solid var(--mist);
+            border-radius: 100px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--slate);
+        }
+
+        @media (min-width: 900px) {
+            .trust__inner {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* ============================================
+           FUTURE CAPABILITIES
+           ============================================ */
+        .future-cap {
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+            color: var(--white);
+        }
+
+        .future-cap__inner {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-xl);
+            align-items: center;
+        }
+
+        .future-cap__features {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .future-cap__feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: var(--space-sm);
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .future-cap__feature-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .future-cap__feature strong {
+            display: block;
+            font-size: 0.9375rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .future-cap__feature span {
+            font-size: 0.8125rem;
+            color: var(--silver);
+        }
+
+        .future-cap__visual {
+            position: relative;
+        }
+
+        .future-cap__mockup {
+            background: #0a0f1a;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .future-cap__mockup-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 14px;
+            background: rgba(0,0,0,0.5);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .future-cap__mockup-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .future-cap__mockup-content {
+            padding: var(--space-sm);
+            min-height: 200px;
+        }
+
+        .future-cap__badge {
+            position: absolute;
+            bottom: -15px;
+            right: 20px;
+            background: linear-gradient(135deg, #4285F4 0%, #34A853 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
+        }
+
+        @media (min-width: 900px) {
+            .future-cap__inner {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* ============================================
+           FINAL CTA
+           ============================================ */
+        .final-cta {
+            background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+            color: var(--white);
+            text-align: center;
+            padding: var(--space-2xl) 0;
+        }
+
+        .final-cta__title {
+            margin-bottom: var(--space-sm);
+        }
+
+        .final-cta__text {
+            color: var(--silver);
+            font-size: 1.125rem;
+            max-width: 540px;
+            margin: 0 auto var(--space-lg);
+        }
+
+        .final-cta__buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            background: var(--ink);
+            color: var(--silver);
+            padding: var(--space-xl) 0 var(--space-lg);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer__inner {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .footer__brand {
+            max-width: 280px;
+        }
+
+        .footer__logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .footer__logo-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+        }
+
+        .footer__logo-text {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .footer__tagline {
+            font-size: 0.875rem;
+        }
+
+        .footer__heading {
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: var(--space-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .footer__links {
+            list-style: none;
+        }
+
+        .footer__link {
+            display: block;
+            padding: 0.25rem 0;
+            font-size: 0.9375rem;
+            color: var(--silver);
+            transition: color 0.2s;
+        }
+
+        .footer__link:hover {
+            color: var(--white);
+        }
+
+        .footer__bottom {
+            padding-top: var(--space-lg);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: var(--space-sm);
+            font-size: 0.8125rem;
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           MOBILE MENU
+           ============================================ */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 320px;
+            height: 100vh;
+            background: var(--white);
+            box-shadow: var(--shadow-lg);
+            z-index: 1001;
+            padding: var(--space-xl) var(--space-md);
+            transition: right 0.3s ease;
+        }
+
+        .mobile-nav.open {
+            right: 0;
+        }
+
+        .mobile-nav__close {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--ink);
+        }
+
+        .mobile-nav__list {
+            list-style: none;
+            margin-top: var(--space-xl);
+        }
+
+        .mobile-nav__link {
+            display: block;
+            padding: var(--space-sm) 0;
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--ink);
+            border-bottom: 1px solid var(--mist);
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .mobile-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         HEADER
+         ============================================ -->
+    <header class="header" id="header">
+        <div class="container header__inner">
+            <a href="/" class="logo">
+                <img src="assets/logo.jpg" alt="Brahan Engine" class="logo__icon">
+                <span class="logo__text">The Brahan <span>Engine</span></span>
+            </a>
+
+            <nav class="nav">
+                <ul class="nav__list">
+                    <li><a href="planner.html" class="nav__link">Planner</a></li>
+                    <li><a href="case-studies.html" class="nav__link">Case Studies</a></li>
+                    <li><a href="equipment.html" class="nav__link">Equipment</a></li>
+                    <li><a href="#pillars" class="nav__link">11 Pillars</a></li>
+                    <li><a href="#calculator" class="nav__link">ROI</a></li>
+                </ul>
+            </nav>
+
+            <a href="#contact" class="btn btn--primary header__cta">Request Demo</a>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    <nav class="mobile-nav" id="mobileNav">
+        <button class="mobile-nav__close" id="mobileClose" aria-label="Close menu">×</button>
+        <ul class="mobile-nav__list">
+            <li><a href="planner.html" class="mobile-nav__link">Planner</a></li>
+            <li><a href="case-studies.html" class="mobile-nav__link">Case Studies</a></li>
+            <li><a href="equipment.html" class="mobile-nav__link">Equipment</a></li>
+            <li><a href="#pillars" class="mobile-nav__link">11 Pillars</a></li>
+            <li><a href="#calculator" class="mobile-nav__link">ROI Calculator</a></li>
+            <li><a href="#contact" class="mobile-nav__link">Request Demo</a></li>
+        </ul>
+    </nav>
+
+    <!-- ============================================
+         HERO
+         ============================================ -->
+    <section class="hero">
+        <div class="container hero__inner">
+            <div class="hero__content">
+                <span class="hero__label">AI-Powered Well Intervention Planning</span>
+                <h1 class="hero__title">Stop Paying the <em>NPT Tax</em></h1>
+                <p class="hero__subtitle">
+                    The Brahan Engine reveals hidden conflicts and validates safety barriers 
+                    before your toolstring ever enters the hole. Built by a well engineer 
+                    with 30+ years of global experience.
+                </p>
+
+                <div class="hero__stats">
+                    <div class="hero__stat">
+                        <div class="hero__stat-icon">📉</div>
+                        <div class="hero__stat-text">
+                            <span class="hero__stat-value">15-30%</span>
+                            NPT Reduction
+                        </div>
+                    </div>
+                    <div class="hero__stat">
+                        <div class="hero__stat-icon">⏱️</div>
+                        <div class="hero__stat-text">
+                            <span class="hero__stat-value">2-3 hrs</span>
+                            Daily Time Saved
+                        </div>
+                    </div>
+                    <div class="hero__stat">
+                        <div class="hero__stat-icon">🚀</div>
+                        <div class="hero__stat-text">
+                            <span class="hero__stat-value">Days → Hours</span>
+                            Planning Cycles
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero__ctas">
+                    <a href="#contact" class="btn btn--primary">Request Demo</a>
+                    <a href="planner.html" class="btn btn--ghost">Explore the Planner</a>
+                </div>
+            </div>
+
+            <div class="hero__visual">
+                <div class="hero__mockup">
+                    <div class="hero__mockup-header">
+                        <span class="hero__mockup-dot"></span>
+                        <span class="hero__mockup-dot"></span>
+                        <span class="hero__mockup-dot"></span>
+                    </div>
+                    <div class="hero__mockup-content">
+                        <div class="hero__mockup-title">INTERVENTION PLANNER — Well w-666</div>
+                        <!-- Placeholder for mockup content -->
+                        <svg viewBox="0 0 400 200" style="width:100%;height:200px;">
+                            <!-- Wellbore schematic simplified -->
+                            <rect x="180" y="10" width="40" height="180" fill="rgba(255,255,255,0.1)" rx="4"/>
+                            <rect x="185" y="20" width="30" height="40" fill="#14b8a6" rx="2"/>
+                            <rect x="185" y="70" width="30" height="30" fill="#f97316" rx="2"/>
+                            <rect x="185" y="110" width="30" height="50" fill="rgba(255,255,255,0.2)" rx="2"/>
+                            <!-- Clash indicator -->
+                            <circle cx="200" cy="85" r="20" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="4 2">
+                                <animate attributeName="r" values="18;22;18" dur="2s" repeatCount="indefinite"/>
+                            </circle>
+                            <!-- Labels -->
+                            <text x="240" y="45" fill="#94a3b8" font-size="10">SCSSV ✓</text>
+                            <text x="240" y="90" fill="#ef4444" font-size="10">⚠ CLASH DETECTED</text>
+                            <text x="240" y="140" fill="#94a3b8" font-size="10">Target Zone</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Floating KPI cards -->
+                <div class="hero__kpi hero__kpi--1">
+                    <span class="hero__kpi-value">✓ Safe</span>
+                    Barrier Verified
+                </div>
+                <div class="hero__kpi hero__kpi--2">
+                    <span class="hero__kpi-value">3.2" OD</span>
+                    Tool Clearance OK
+                </div>
+                <div class="hero__kpi hero__kpi--3">
+                    <span class="hero__kpi-value">$1.2M</span>
+                    Risk Avoided
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         NPT TAX SECTION
+         ============================================ -->
+    <section class="section section--mist npt-tax">
+        <div class="container">
+            <div class="npt-tax__header fade-in">
+                <span class="label">Hidden Costs</span>
+                <h2 class="npt-tax__title">Are You Paying the Hidden Taxes?</h2>
+                <p class="npt-tax__subtitle">
+                    Your operations are being taxed by disconnected workflows you can't see on a balance sheet.
+                </p>
+            </div>
+
+            <div class="grid grid--4">
+                <div class="tax-card fade-in">
+                    <div class="tax-card__icon">📊</div>
+                    <h3 class="tax-card__title">The Data Wrangling Tax</h3>
+                    <p class="tax-card__text">
+                        Engineers forced to act as data clerks—hunting emails, correcting spreadsheets, re-entering PDF data.
+                    </p>
+                </div>
+
+                <div class="tax-card fade-in">
+                    <div class="tax-card__icon">⏰</div>
+                    <h3 class="tax-card__title">The NPT Tax</h3>
+                    <p class="tax-card__text">
+                        Plans based on poor data lead to equipment failures, procedural errors, and costly downtime.
+                    </p>
+                </div>
+
+                <div class="tax-card fade-in">
+                    <div class="tax-card__icon">🔗</div>
+                    <h3 class="tax-card__title">The Collaboration Tax</h3>
+                    <p class="tax-card__text">
+                        Static PDF handoffs create slow, error-prone workflows between your team and service partners.
+                    </p>
+                </div>
+
+                <div class="tax-card fade-in">
+                    <div class="tax-card__icon">✈️</div>
+                    <h3 class="tax-card__title">The POB Tax</h3>
+                    <p class="tax-card__text">
+                        Travel, accommodation, and offshore bed space costs for witnessing that could be done remotely.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         METRICS STRIP
+         ============================================ -->
+    <section class="metrics">
+        <div class="container">
+            <div class="metrics__grid">
+                <div class="metric fade-in">
+                    <div class="metric__value">15-30%</div>
+                    <div class="metric__label">NPT Reduction on Pilot Wells</div>
+                    <div class="metric__bar">
+                        <div class="metric__bar-fill" style="width: 75%"></div>
+                    </div>
+                </div>
+
+                <div class="metric fade-in">
+                    <div class="metric__value">2-3 hrs</div>
+                    <div class="metric__label">Daily Engineer Time Saved</div>
+                    <div class="metric__bar">
+                        <div class="metric__bar-fill" style="width: 60%"></div>
+                    </div>
+                </div>
+
+                <div class="metric fade-in">
+                    <div class="metric__value">40%</div>
+                    <div class="metric__label">Faster Planning Cycles</div>
+                    <div class="metric__bar">
+                        <div class="metric__bar-fill" style="width: 80%"></div>
+                    </div>
+                </div>
+
+                <div class="metric fade-in">
+                    <div class="metric__value">24/7</div>
+                    <div class="metric__label">AI Availability</div>
+                    <div class="metric__bar">
+                        <div class="metric__bar-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         WORKFLOW
+         ============================================ -->
+    <section class="section workflow">
+        <div class="container">
+            <div class="workflow__header fade-in">
+                <span class="label">How It Works</span>
+                <h2 class="workflow__title">From Data Chaos to Decision Clarity</h2>
+            </div>
+
+            <div class="workflow__steps">
+                <div class="workflow__step fade-in">
+                    <span class="workflow__step-number">1</span>
+                    <div class="workflow__step-icon">📥</div>
+                    <h4 class="workflow__step-title">Ingest</h4>
+                    <p class="workflow__step-text">Connect your well data—completion reports, surveys, daily logs.</p>
+                </div>
+
+                <div class="workflow__step fade-in">
+                    <span class="workflow__step-number">2</span>
+                    <div class="workflow__step-icon">🧠</div>
+                    <h4 class="workflow__step-title">Model</h4>
+                    <p class="workflow__step-text">AI builds a unified well model from the 11 Pillars of Insight.</p>
+                </div>
+
+                <div class="workflow__step fade-in">
+                    <span class="workflow__step-number">3</span>
+                    <div class="workflow__step-icon">⚠️</div>
+                    <h4 class="workflow__step-title">Validate</h4>
+                    <p class="workflow__step-text">Clash detection and safety gateway checks block risky operations.</p>
+                </div>
+
+                <div class="workflow__step fade-in">
+                    <span class="workflow__step-number">4</span>
+                    <div class="workflow__step-icon">📋</div>
+                    <h4 class="workflow__step-title">Plan</h4>
+                    <p class="workflow__step-text">Generate optimized intervention programs with full cost analysis.</p>
+                </div>
+
+                <div class="workflow__step fade-in">
+                    <span class="workflow__step-number">5</span>
+                    <div class="workflow__step-icon">📈</div>
+                    <h4 class="workflow__step-title">Learn</h4>
+                    <p class="workflow__step-text">Post-job analysis feeds lessons learned back into the system.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         11 PILLARS
+         ============================================ -->
+    <section class="section pillars" id="pillars">
+        <div class="container">
+            <div class="pillars__header fade-in">
+                <span class="label">The Framework</span>
+                <h2>11 Pillars of Insight</h2>
+                <p class="pillars__subtitle">
+                    A comprehensive framework that transforms raw operational data into strategic decisions.
+                </p>
+            </div>
+
+            <div class="pillars__tabs fade-in">
+                <button class="pillar-tab active" data-filter="all">All Pillars</button>
+                <button class="pillar-tab" data-filter="architecture">Architecture</button>
+                <button class="pillar-tab" data-filter="operations">Operations</button>
+                <button class="pillar-tab" data-filter="decision">Decision Support</button>
+            </div>
+
+            <div class="pillars__grid">
+                <!-- Architecture Pillars -->
+                <div class="pillar-card fade-in" data-category="architecture">
+                    <span class="pillar-card__number">I</span>
+                    <div class="pillar-card__icon">🏗️</div>
+                    <h4 class="pillar-card__title">Well Design Architecture</h4>
+                    <p class="pillar-card__text">Original design intent, casing programs, as-built vs as-designed.</p>
+                    <div class="pillar-card__expand">Comprehensive analysis of wellbore geometry, casing specifications, and deviation from original plans.</div>
+                </div>
+
+                <div class="pillar-card fade-in" data-category="architecture">
+                    <span class="pillar-card__number">II</span>
+                    <div class="pillar-card__icon">🔧</div>
+                    <h4 class="pillar-card__title">Completion State</h4>
+                    <p class="pillar-card__text">Current downhole configuration, equipment inventory, modifications.</p>
+                    <div class="pillar-card__expand">Real-time tracking of all installed equipment, their specifications, and historical modifications.</div>
+                </div>
+
+                <div class="pillar-card fade-in" data-category="architecture">
+                    <span class="pillar-card__number">III</span>
+                    <div class="pillar-card__icon">🛡️</div>
+                    <h4 class="pillar-card__title">Barrier Diagnostics</h4>
+                    <p class="pillar-card__text">Primary and secondary barrier status, SCSSV depth, integrity verification.</p>
+                    <div class="pillar-card__expand">Safety gateway that blocks operations until critical barrier data is verified and validated.</div>
+                </div>
+
+                <div class="pillar-card fade-in" data-category="architecture">
+                    <span class="pillar-card__number">IV</span>
+                    <div class="pillar-card__icon">📊</div>
+                    <h4 class="pillar-card__title">Production History</h4>
+                    <p class="pillar-card__text">Historical flow rates, pressure trends, decline analysis.</p>
+                    <div class="pillar-card__expand">Pattern recognition across production data to identify anomalies and predict future behavior.</div>
+                </div>
+
+                <!-- Operations Pillars -->
+                <div class="pillar-card fade-in" data-category="operations">
+                    <span class="pillar-card__number">V</span>
+                    <div class="pillar-card__icon">📋</div>
+                    <h4 class="pillar-card__title">Intervention Records</h4>
+                    <p class="pillar-card__text">Previous workover history, fishing operations, lessons learned.</p>
+                    <div class="pillar-card__expand">Searchable database of all previous interventions with outcomes and recommendations.</div>
+                </div>
+
+                <div class="pillar-card fade-in" data-category="operations">
+                    <span class="pillar-card__number">VI</span>
+                    <div class="pillar-card__icon">📡</div>
+                    <h4 class="pillar-card__title">Real-time Vital Signs</h4>
+                    <p class="pillar-card__text">Live monitoring of pressures, temperatures, flow parameters.</p>
+                    <div class="pillar-card__expand">AI-powered anomaly detection that flags deviations from expected behavior in real-time.</div>
+                </div>
+
+                <div class="pillar-card fade-in" data-category="operations">
+                    <span class="pillar-card__number">VII</span>
+                    <div class="pillar-card__icon">👥</div>
+                    <h4 class="pillar-card__title">Human Factors</h4>
+                    <p class="pillar-card__text">Personnel competency, fatigue management, crew rotation impact.</p>
+                    <div class="pillar-card__expand">Tracking crew certifications, time on rotation, and fatigue risk factors.</div>
+                </div>
+
+                <div class="pillar-card fade-in" data-category="operations">
+                    <span class="pillar-card__number">VIII</span>
+                    <div class="pillar-card__icon">📄</div>
+                    <h4 class="pillar-card__title">Unstructured Data</h4>
+                    <p class="pillar-card__text">NLP analysis of daily reports, emails, handover notes.</p>
+                    <div class="pillar-card__expand">AI extracts insights from free-text documents that traditional systems miss.</div>
+                </div>
+
+                <!-- Decision Support Pillars -->
+                <div class="pillar-card fade-in" data-category="decision">
+                    <span class="pillar-card__number">IX</span>
+                    <div class="pillar-card__icon">⚠️</div>
+                    <h4 class="pillar-card__title">Risk Mitigation</h4>
+                    <p class="pillar-card__text">HFE constraints, safety protocol validation, barrier verification.</p>
+                    <div class="pillar-card__expand">Systematic risk assessment against 30+ years of operational failure modes.</div>
+                </div>
+
+                <div class="pillar-card fade-in" data-category="decision">
+                    <span class="pillar-card__number">X</span>
+                    <div class="pillar-card__icon">💰</div>
+                    <h4 class="pillar-card__title">Commercial Context</h4>
+                    <p class="pillar-card__text">NPT cost analysis, AFE tracking, ROI optimization.</p>
+                    <div class="pillar-card__expand">Real-time financial tracking with variance analysis and cost forecasting.</div>
+                </div>
+
+                <div class="pillar-card fade-in" data-category="decision">
+                    <span class="pillar-card__number">XI</span>
+                    <div class="pillar-card__icon">✅</div>
+                    <h4 class="pillar-card__title">Feasibility Matrix</h4>
+                    <p class="pillar-card__text">Go/No-Go decision support synthesizing all pillars.</p>
+                    <div class="pillar-card__expand">Final checkpoint that combines all pillars into actionable recommendations.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CASE STUDY TEASER (w-666)
+         ============================================ -->
+    <section class="section case-study">
+        <div class="container">
+            <div class="case-study__inner">
+                <div class="case-study__content fade-in">
+                    <span class="case-study__badge">⚠️ Case Study</span>
+                    <h2 class="case-study__title">The Well From Hell</h2>
+                    <p class="case-study__text">
+                        A routine $1.5M bridge plug retrieval became a $75M catastrophe. 
+                        Multiple failure modes combined into the perfect storm—stuck tools, 
+                        barrier failures, and escalating fishing operations.
+                    </p>
+                    <p class="case-study__text">
+                        <strong>The Brahan Engine would have caught it.</strong> 
+                        Before the toolstring ever entered the hole.
+                    </p>
+
+                    <div class="case-study__stats">
+                        <div class="case-study__stat">
+                            <div class="case-study__stat-value">$75M</div>
+                            <div class="case-study__stat-label">Total Loss</div>
+                        </div>
+                        <div class="case-study__stat">
+                            <div class="case-study__stat-value">127</div>
+                            <div class="case-study__stat-label">Days NPT</div>
+                        </div>
+                        <div class="case-study__stat">
+                            <div class="case-study__stat-value">6</div>
+                            <div class="case-study__stat-label">Failure Modes</div>
+                        </div>
+                    </div>
+
+                    <a href="well-666.html" class="btn btn--primary">Explore the Case Study →</a>
+                </div>
+
+                <div class="case-study__visual fade-in">
+                    <h4 style="margin-bottom: var(--space-md); text-align: center;">Before vs After: Planning Time</h4>
+                    <div class="case-study__comparison">
+                        <div class="comparison-block comparison-block--bad">
+                            <div class="comparison-block__label">Legacy Planning</div>
+                            <div class="comparison-block__value">14 Days</div>
+                        </div>
+                        <div class="comparison-arrow">→</div>
+                        <div class="comparison-block comparison-block--good">
+                            <div class="comparison-block__label">With Brahan</div>
+                            <div class="comparison-block__value">4 Hours</div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; margin-top: var(--space-md); font-size: 0.875rem; color: var(--steel);">
+                        Clash detection identified 3 critical conflicts in the original toolstring design.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CALCULATOR
+         ============================================ -->
+    <section class="section calculator" id="calculator">
+        <div class="container">
+            <div class="calculator__inner">
+                <div class="calculator__content fade-in">
+                    <span class="label">ROI Calculator</span>
+                    <h2 class="calculator__title">Calculate Your Savings</h2>
+                    <p class="calculator__text">
+                        See how much you could save by reducing NPT and reclaiming engineer time. 
+                        Adjust the inputs to match your operation.
+                    </p>
+                </div>
+
+                <div class="calculator__widget fade-in">
+                    <div class="calc-field">
+                        <label class="calc-field__label" for="wells">Wells per Year</label>
+                        <input type="number" id="wells" class="calc-field__input" value="20" min="1" max="500">
+                    </div>
+
+                    <div class="calc-field">
+                        <label class="calc-field__label" for="cost">Average Intervention Cost ($)</label>
+                        <input type="number" id="cost" class="calc-field__input" value="500000" min="10000" step="10000">
+                    </div>
+
+                    <div class="calc-field">
+                        <label class="calc-field__label" for="npt">Current NPT Estimate</label>
+                        <select id="npt" class="calc-field__input">
+                            <option value="0.10">10% (Industry best)</option>
+                            <option value="0.15">15% (Good performance)</option>
+                            <option value="0.20" selected>20% (Industry average)</option>
+                            <option value="0.25">25% (Below average)</option>
+                            <option value="0.30">30%+ (Significant issues)</option>
+                        </select>
+                    </div>
+
+                    <div class="calc-result">
+                        <div class="calc-result__label">Estimated Annual Savings</div>
+                        <div class="calc-result__value" id="savings">$400,000</div>
+                        <div class="calc-result__note">Based on 20% NPT reduction with Brahan Engine</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         TRUST / FOUNDER
+         ============================================ -->
+    <section class="section trust">
+        <div class="container">
+            <div class="trust__inner">
+                <div class="trust__quote fade-in">
+                    <p class="trust__quote-text">
+                        "I didn't digitize a spreadsheet. I digitized 30 years of standing on rig floors 
+                        watching things go wrong—and learning how to stop them before they start."
+                    </p>
+                    <div class="trust__quote-author">Ken McKenzie</div>
+                    <div class="trust__quote-role">Founder & CTO, Well-Tegra</div>
+                </div>
+
+                <div class="fade-in">
+                    <span class="label">Built From Experience</span>
+                    <h2 style="margin-bottom: var(--space-md);">Not Theory. Real Operations.</h2>
+                    
+                    <div class="trust__points">
+                        <div class="trust-point">
+                            <div class="trust-point__icon">🌍</div>
+                            <div class="trust-point__text">North Sea, West Africa, Gulf of Mexico, Middle East</div>
+                        </div>
+                        <div class="trust-point">
+                            <div class="trust-point__icon">🛠️</div>
+                            <div class="trust-point__text">Wireline, Coiled Tubing, Workover operations</div>
+                        </div>
+                        <div class="trust-point">
+                            <div class="trust-point__icon">📋</div>
+                            <div class="trust-point__text">80+ intervention programs reviewed and analyzed</div>
+                        </div>
+                        <div class="trust-point">
+                            <div class="trust-point__icon">⚠️</div>
+                            <div class="trust-point__text">Every feature solves a real problem I've witnessed</div>
+                        </div>
+                    </div>
+
+                    <div class="security-badges">
+                        <span class="security-badge">🔒 TLS 1.3 Encrypted</span>
+                        <span class="security-badge">🛡️ GDPR Ready</span>
+                        <span class="security-badge">☁️ AWS/GCP Hosted</span>
+                        <span class="security-badge">👤 Role-Based Access</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FUTURE CAPABILITIES
+         ============================================ -->
+    <section class="section future-cap">
+        <div class="container">
+            <div class="future-cap__inner">
+                <div class="future-cap__content fade-in">
+                    <span class="label" style="color: #8b5cf6;">Coming Soon</span>
+                    <h2 style="margin-bottom: var(--space-sm);">Brahan Vertex Vision</h2>
+                    <p style="color: var(--steel); font-size: 1.0625rem; margin-bottom: var(--space-md);">
+                        The next evolution: AI-powered forensic witnessing using Google Vertex Vision. 
+                        Zero-footprint verification of rig floor operations, subsea integrity, and equipment logistics.
+                    </p>
+                    
+                    <div class="future-cap__features">
+                        <div class="future-cap__feature">
+                            <span class="future-cap__feature-icon">🎥</span>
+                            <div>
+                                <strong>Rig Floor Witnessing</strong>
+                                <span>AI reads torque gauges and validates pressure tests in real-time</span>
+                            </div>
+                        </div>
+                        <div class="future-cap__feature">
+                            <span class="future-cap__feature-icon">🤿</span>
+                            <div>
+                                <strong>Subsea Integrity</strong>
+                                <span>ROV feed analysis for valve positions and corrosion grading</span>
+                            </div>
+                        </div>
+                        <div class="future-cap__feature">
+                            <span class="future-cap__feature-icon">📦</span>
+                            <div>
+                                <strong>Visual Inventory</strong>
+                                <span>OCR manifest verification catches missing or extra equipment</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="brahan-vertex.html" class="btn btn--secondary" style="margin-top: var(--space-md);">
+                        Explore the Demo →
+                    </a>
+                </div>
+                
+                <div class="future-cap__visual fade-in">
+                    <div class="future-cap__mockup">
+                        <div class="future-cap__mockup-header">
+                            <span class="future-cap__mockup-dot" style="background: #ef4444;"></span>
+                            <span class="future-cap__mockup-dot" style="background: #eab308;"></span>
+                            <span class="future-cap__mockup-dot" style="background: #22c55e;"></span>
+                            <span style="margin-left: auto; font-size: 0.75rem; color: #64748b;">BRAHAN VERTEX</span>
+                        </div>
+                        <div class="future-cap__mockup-content">
+                            <svg viewBox="0 0 300 180" style="width: 100%; height: 100%;">
+                                <!-- Background grid -->
+                                <defs>
+                                    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="300" height="180" fill="url(#grid)"/>
+                                
+                                <!-- Camera feed placeholder -->
+                                <rect x="20" y="20" width="120" height="80" rx="4" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)"/>
+                                <text x="80" y="55" text-anchor="middle" fill="#64748b" font-size="8">CAM-02</text>
+                                <text x="80" y="70" text-anchor="middle" fill="#4285F4" font-size="6">LIVE FEED</text>
+                                
+                                <!-- Detection box -->
+                                <rect x="40" y="35" width="60" height="45" rx="2" fill="none" stroke="#34A853" stroke-width="1.5"/>
+                                <text x="70" y="90" text-anchor="middle" fill="#34A853" font-size="5">DETECTED: 99%</text>
+                                
+                                <!-- Metrics panel -->
+                                <rect x="160" y="20" width="120" height="80" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)"/>
+                                <text x="170" y="38" fill="#94a3b8" font-size="6">TORQUE READING</text>
+                                <text x="170" y="55" fill="#ffffff" font-size="12" font-weight="bold">32,450</text>
+                                <text x="230" y="55" fill="#64748b" font-size="7">ft-lbs</text>
+                                <rect x="170" y="62" width="100" height="4" rx="2" fill="rgba(255,255,255,0.1)"/>
+                                <rect x="170" y="62" width="85" height="4" rx="2" fill="#34A853"/>
+                                <text x="170" y="78" fill="#34A853" font-size="5">✓ WITHIN SPEC</text>
+                                
+                                <!-- Status indicators -->
+                                <rect x="20" y="115" width="260" height="50" rx="4" fill="rgba(66,133,244,0.1)" stroke="rgba(66,133,244,0.3)"/>
+                                <circle cx="40" cy="140" r="8" fill="#34A853"/>
+                                <text x="55" y="137" fill="#ffffff" font-size="7">Shoulder Check</text>
+                                <text x="55" y="147" fill="#34A853" font-size="6">VERIFIED</text>
+                                
+                                <circle cx="140" cy="140" r="8" fill="#FBBC05"/>
+                                <text x="155" y="137" fill="#ffffff" font-size="7">Dope Application</text>
+                                <text x="155" y="147" fill="#FBBC05" font-size="6">VISUAL OK</text>
+                                
+                                <circle cx="240" cy="140" r="8" fill="#4285F4"/>
+                                <text x="255" y="137" fill="#ffffff" font-size="7">AI Status</text>
+                                <text x="255" y="147" fill="#4285F4" font-size="6">ACTIVE</text>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="future-cap__badge">
+                        <span>🚀</span> Powered by Google Vertex AI
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FINAL CTA
+         ============================================ -->
+    <section class="final-cta" id="contact">
+        <div class="container">
+            <h2 class="final-cta__title fade-in">See the Brahan Engine on Your Wells</h2>
+            <p class="final-cta__text fade-in">
+                Join the pilot program and discover what you've been missing in your well data.
+            </p>
+            <div class="final-cta__buttons fade-in">
+                <a href="mailto:ken@welltegra.network?subject=Demo Request" class="btn btn--primary">Request Demo</a>
+                <a href="#calculator" class="btn btn--ghost">Calculate Your Savings</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__inner">
+                <div class="footer__brand">
+                    <div class="footer__logo">
+                        <img src="assets/logo.jpg" alt="Brahan Engine" class="footer__logo-icon">
+                        <span class="footer__logo-text">The Brahan Engine</span>
+                    </div>
+                    <p class="footer__tagline">From Prophecy to Precision. AI-powered well intervention planning.</p>
+                </div>
+
+                <div>
+                    <h4 class="footer__heading">Platform</h4>
+                    <ul class="footer__links">
+                        <li><a href="planner.html" class="footer__link">Intervention Planner</a></li>
+                        <li><a href="equipment.html" class="footer__link">Equipment Catalog</a></li>
+                        <li><a href="sop-library.html" class="footer__link">SOP Library</a></li>
+                        <li><a href="survey-tool.html" class="footer__link">Survey Tool</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer__heading">Resources</h4>
+                    <ul class="footer__links">
+                        <li><a href="case-studies.html" class="footer__link">Case Studies</a></li>
+                        <li><a href="intervention-guide.html" class="footer__link">Planning Guide</a></li>
+                        <li><a href="#pillars" class="footer__link">11 Pillars</a></li>
+                        <li><a href="#calculator" class="footer__link">ROI Calculator</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer__heading">Company</h4>
+                    <ul class="footer__links">
+                        <li><a href="#" class="footer__link">About</a></li>
+                        <li><a href="#" class="footer__link">Security</a></li>
+                        <li><a href="mailto:ken@welltegra.network" class="footer__link">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <p>© 2025 Well-Tegra. All rights reserved.</p>
+                <p>Built in Scotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         SCRIPTS
+         ============================================ -->
+    <script>
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileNav = document.getElementById('mobileNav');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const mobileClose = document.getElementById('mobileClose');
+
+        function openMenu() {
+            mobileNav.classList.add('open');
+            mobileOverlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            mobileNav.classList.remove('open');
+            mobileOverlay.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        menuToggle.addEventListener('click', openMenu);
+        mobileClose.addEventListener('click', closeMenu);
+        mobileOverlay.addEventListener('click', closeMenu);
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.mobile-nav__link').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Fade-in on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        fadeElements.forEach(el => observer.observe(el));
+
+        // Pillar filtering
+        const pillarTabs = document.querySelectorAll('.pillar-tab');
+        const pillarCards = document.querySelectorAll('.pillar-card');
+
+        pillarTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active tab
+                pillarTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                const filter = tab.dataset.filter;
+                
+                pillarCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Pillar card expansion
+        pillarCards.forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('expanded');
+            });
+        });
+
+        // Calculator
+        const wellsInput = document.getElementById('wells');
+        const costInput = document.getElementById('cost');
+        const nptSelect = document.getElementById('npt');
+        const savingsDisplay = document.getElementById('savings');
+
+        function calculateSavings() {
+            const wells = parseInt(wellsInput.value) || 20;
+            const cost = parseInt(costInput.value) || 500000;
+            const npt = parseFloat(nptSelect.value) || 0.20;
+            
+            // Calculate: wells × cost × current NPT × 20% reduction achieved
+            const currentNPTCost = wells * cost * npt;
+            const reduction = 0.20; // Brahan achieves 20% reduction of NPT
+            const savings = currentNPTCost * reduction;
+            
+            savingsDisplay.textContent = '$' + savings.toLocaleString('en-US', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            });
+        }
+
+        wellsInput.addEventListener('input', calculateSavings);
+        costInput.addEventListener('input', calculateSavings);
+        nptSelect.addEventListener('change', calculateSavings);
+
+        // Initial calculation
+        calculateSavings();
+    </script>
+</body>
+</html>

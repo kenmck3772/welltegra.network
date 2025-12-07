@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brahan Vertex Vision | AI-Powered Forensic Witnessing</title>
+    <meta name="description" content="Universal Forensic Witnessing powered by Google Vertex AI. Rig floor verification, subsea integrity, and inventory logistics.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#0a0f1a',
+                        'card-bg': '#111827',
+                        'border-color': '#1f2937',
+                        'google-blue': '#4285F4',
+                        'google-green': '#34A853',
+                        'google-yellow': '#FBBC05',
+                        'google-red': '#EA4335',
+                        'brahan-orange': '#f97316',
+                    },
+                    fontFamily: {
+                        'display': ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+                        'mono': ['"JetBrains Mono"', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background: #0a0f1a;
+            font-family: 'Space Grotesk', system-ui, sans-serif;
+        }
+        
+        .animate-scan {
+            animation: scan 2s ease-in-out infinite;
+        }
+        
+        @keyframes scan {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(180px); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .download-btn-glow {
+            box-shadow: 0 0 20px rgba(66, 133, 244, 0.4);
+        }
+        
+        /* Roadmap badge */
+        .roadmap-badge {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Back to site link */
+        .back-link {
+            position: fixed;
+            top: 80px;
+            left: 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+        
+        .back-link:hover {
+            background: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-gray-100">
+
+    <!-- Back to main site -->
+    <a href="index.html" class="back-link">
+        <span class="material-symbols-outlined text-sm">arrow_back</span>
+        Back to Brahan Engine
+    </a>
+    
+    <!-- Roadmap Badge -->
+    <div class="roadmap-badge">
+        <span class="material-symbols-outlined text-sm">rocket_launch</span>
+        FUTURE CAPABILITY
+    </div>
+
+    <!-- Top Navigation -->
+    <header class="h-16 bg-card-bg border-b border-border-color flex items-center justify-between px-6 z-50 shadow-lg shrink-0">
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-google-blue text-3xl">visibility</span>
+                <div>
+                    <h1 class="font-display text-xl tracking-wider text-white">BRAHAN <span class="text-google-blue">VERTEX</span></h1>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-[0.2em]">Universal Forensic Witnessing</p>
+                </div>
+            </div>
+            <div class="h-6 w-px bg-gray-700 mx-2"></div>
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-google-green bg-green-900/20 px-2 py-0.5 rounded border border-green-900/50">DEMO MODE</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="hidden md:block text-right mr-4">
+                <div class="text-[10px] text-gray-500 uppercase">Powered By</div>
+                <div class="text-sm font-medium text-white">Google Vertex AI</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- Sidebar -->
+        <nav class="w-64 bg-card-bg border-r border-border-color flex flex-col shrink-0 overflow-y-auto">
+            <div class="p-4">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Witness Modules</h3>
+                <div class="space-y-1">
+                    <button class="w-full text-left px-4 py-3 rounded flex items-center gap-3 border-l-2 transition-all bg-google-blue/10 border-google-blue text-white" id="tab-rigfloor" onclick="switchTab('rigfloor')">
+                        <span class="material-symbols-outlined">precision_manufacturing</span>
+                        <div>
+                            <div class="text-sm font-medium">Rig Floor & Yard</div>
+                            <div class="text-[10px] text-gray-400">Torque & Pressure Testing</div>
+                        </div>
+                    </button>
+                    <button class="w-full text-left px-4 py-3 rounded flex items-center gap-3 border-l-2 transition-all border-transparent text-gray-400 hover:bg-white/5 hover:text-white" id="tab-subsea" onclick="switchTab('subsea')">
+                        <span class="material-symbols-outlined">scuba_diving</span>
+                        <div>
+                            <div class="text-sm font-medium">Subsea & Marine</div>
+                            <div class="text-[10px] text-gray-400">ROV Feed Analysis</div>
+                        </div>
+                    </button>
+                    <button class="w-full text-left px-4 py-3 rounded flex items-center gap-3 border-l-2 transition-all border-transparent text-gray-400 hover:bg-white/5 hover:text-white" id="tab-inventory" onclick="switchTab('inventory')">
+                        <span class="material-symbols-outlined">inventory_2</span>
+                        <div>
+                            <div class="text-sm font-medium">Inventory & Logistics</div>
+                            <div class="text-[10px] text-gray-400">Visual Manifest Check</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- AI Status Panel -->
+            <div class="mt-auto p-4 border-t border-border-color bg-dark-bg/50">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 rounded-full bg-google-blue flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white text-sm">smart_toy</span>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold text-white">Vertex Vision AI</div>
+                        <div class="text-[10px] text-gray-400">Simulated Demo Feed</div>
+                    </div>
+                </div>
+                <div class="flex justify-between text-[10px] text-gray-500 mb-1">
+                    <span>Model Latency</span>
+                    <span class="text-google-green">~24ms</span>
+                </div>
+                <div class="w-full bg-gray-800 h-1 rounded-full">
+                    <div class="bg-google-green h-1 rounded-full w-3/4"></div>
+                </div>
+            </div>
+            
+            <!-- Value Prop -->
+            <div class="p-4 border-t border-border-color">
+                <h4 class="text-xs font-bold text-gray-500 uppercase mb-3">Why Vision AI?</h4>
+                <ul class="space-y-2 text-xs text-gray-400">
+                    <li class="flex items-start gap-2">
+                        <span class="text-google-green">✓</span>
+                        <span>Zero-footprint witnessing (no POB)</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-google-green">✓</span>
+                        <span>Immutable digital audit trail</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-google-green">✓</span>
+                        <span>Real-time anomaly detection</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-google-green">✓</span>
+                        <span>24/7 automated monitoring</span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Content Area -->
+        <main class="flex-1 overflow-y-auto bg-dark-bg relative" id="main-view">
+            <!-- Content loaded by JS -->
+        </main>
+
+    </div>
+
+    <!-- CONTENT TEMPLATES -->
+
+    <!-- 1. Rig Floor Template -->
+    <template id="tpl-rigfloor">
+        <div class="p-8 max-w-7xl mx-auto animate-fade-in">
+            <div class="mb-8">
+                <h2 class="text-3xl font-display text-white mb-2">Rig Floor Verification</h2>
+                <p class="text-gray-400 max-w-2xl">
+                    Utilizing <span class="text-google-blue font-bold">Vertex Vision AI</span> to create an immutable digital record. The AI acts as an independent third-party witness for torque application and pressure testing.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Video Analysis Card -->
+                <div class="bg-card-bg border border-border-color rounded-xl overflow-hidden shadow-2xl relative group">
+                    <div class="p-4 border-b border-border-color flex justify-between items-center bg-dark-bg/50">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                            <span class="text-xs font-mono text-white">CAM-02: IRON ROUGHNECK</span>
+                        </div>
+                        <span class="text-xs bg-google-blue/20 text-google-blue px-2 py-1 rounded">TORQUE MONITORING</span>
+                    </div>
+                    
+                    <div class="relative h-64 bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden flex items-center justify-center">
+                        <!-- Placeholder for video feed -->
+                        <div class="text-center">
+                            <span class="material-symbols-outlined text-6xl text-gray-600 mb-2">videocam</span>
+                            <p class="text-gray-500 text-sm">Live Feed Simulation</p>
+                        </div>
+                        
+                        <!-- AI Overlays -->
+                        <div class="absolute top-[20%] left-[25%] w-[50%] h-[60%] border-2 border-google-green opacity-80 rounded">
+                            <div class="absolute -top-6 left-0 bg-google-green text-black text-[10px] font-bold px-2 py-0.5 rounded">DRILL PIPE DETECTED (99%)</div>
+                        </div>
+                        
+                        <div class="absolute bottom-4 right-4 bg-black/90 border border-google-blue p-3 rounded">
+                            <div class="text-[10px] text-gray-400 mb-1">READING TORQUE GAUGE</div>
+                            <div class="text-2xl font-mono text-white font-bold flex items-baseline gap-2">
+                                32,450 <span class="text-xs text-gray-400">ft-lbs</span>
+                            </div>
+                            <div class="w-full bg-gray-700 h-1 mt-2 rounded-full">
+                                <div class="bg-green-500 h-1 rounded-full w-[92%]"></div>
+                            </div>
+                            <div class="text-[10px] text-green-500 mt-1">✓ WITHIN SPEC (30,000 - 35,000)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="bg-dark-bg p-3 rounded border border-border-color text-center">
+                                <div class="text-xs text-gray-500 mb-1">Make-up Turns</div>
+                                <div class="text-google-green font-bold text-lg">4.5</div>
+                            </div>
+                            <div class="bg-dark-bg p-3 rounded border border-border-color text-center">
+                                <div class="text-xs text-gray-500 mb-1">Shoulder Check</div>
+                                <div class="text-google-green font-bold">VERIFIED</div>
+                            </div>
+                            <div class="bg-dark-bg p-3 rounded border border-border-color text-center">
+                                <div class="text-xs text-gray-500 mb-1">Dope Application</div>
+                                <div class="text-google-yellow font-bold">VISUAL OK</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pressure Test Card -->
+                <div class="bg-card-bg border border-border-color rounded-xl p-6 flex flex-col">
+                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-google-red">speed</span> Pressure Test Validation
+                    </h3>
+                    <p class="text-sm text-gray-400 mb-6">
+                        Brahan ingests the digital pressure stream AND watches the analog gauge simultaneously via computer vision to detect drift, leaks, or sensor tampering.
+                    </p>
+                    
+                    <div class="relative h-48 bg-dark-bg rounded border border-border-color mb-4 p-4 overflow-hidden flex-1">
+                        <!-- Simulated Graph Lines -->
+                        <div class="absolute inset-0 grid grid-rows-4 w-full h-full">
+                            <div class="border-t border-gray-800 w-full"></div>
+                            <div class="border-t border-gray-800 w-full"></div>
+                            <div class="border-t border-gray-800 w-full"></div>
+                            <div class="border-t border-gray-800 w-full"></div>
+                        </div>
+                        <!-- SVG Line -->
+                        <svg class="absolute inset-0 h-full w-full z-10" preserveAspectRatio="none" viewBox="0 0 100 50">
+                            <path d="M0,50 L10,50 L15,10 L30,10 L35,12 L80,12 L90,12 L100,50" fill="rgba(66, 133, 244, 0.1)" stroke="#4285F4" stroke-width="0.5" vector-effect="non-scaling-stroke"/>
+                            <circle class="animate-pulse" cx="35" cy="12" fill="#EA4335" r="1.5"/>
+                        </svg>
+                        
+                        <div class="absolute top-[20%] left-[32%] bg-gray-900/95 border border-google-red text-white text-[10px] p-2 rounded z-20 shadow-lg">
+                            <strong class="text-google-red">⚠ ANOMALY DETECTED</strong><br>
+                            Micro-leak signature<br>
+                            Rate: -0.5 psi/min
+                        </div>
+                    </div>
+                    
+                    <div class="bg-red-900/20 border border-red-500/30 rounded p-3 text-xs text-red-200 flex gap-2 items-start">
+                        <span class="material-symbols-outlined text-sm mt-0.5">warning</span>
+                        <div>
+                            <strong>Action Required:</strong> AI detected pressure decay during hold period. 
+                            Digital and analog readings diverged by 0.3%. Recommend re-test with new seals.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Benefits Banner -->
+            <div class="bg-gradient-to-r from-google-blue/10 to-google-green/10 border border-google-blue/30 rounded-xl p-6">
+                <h3 class="text-lg font-bold text-white mb-4">What This Enables</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="flex gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-google-blue/20 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-google-blue">flight</span>
+                        </div>
+                        <div>
+                            <div class="font-bold text-white text-sm">Zero POB Witnessing</div>
+                            <div class="text-xs text-gray-400">No travel, no bed space, no exposure</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-google-green/20 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-google-green">verified</span>
+                        </div>
+                        <div>
+                            <div class="font-bold text-white text-sm">Immutable Records</div>
+                            <div class="text-xs text-gray-400">Timestamped, tamper-proof audit trail</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-google-yellow/20 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-google-yellow">bolt</span>
+                        </div>
+                        <div>
+                            <div class="font-bold text-white text-sm">Real-time Alerts</div>
+                            <div class="text-xs text-gray-400">AI flags anomalies humans miss</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- 2. Subsea Template -->
+    <template id="tpl-subsea">
+        <div class="p-8 max-w-7xl mx-auto animate-fade-in">
+            <div class="mb-8">
+                <h2 class="text-3xl font-display text-white mb-2">Subsea Integrity</h2>
+                <p class="text-gray-400 max-w-2xl">
+                    Deploying Vertex Vision models on ROV feeds to grade corrosion, verify valve positions, and identify marine growth in real-time.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Valve State Detection -->
+                <div class="bg-card-bg border border-border-color rounded-xl overflow-hidden">
+                    <div class="p-4 bg-dark-bg/50 border-b border-border-color flex justify-between">
+                        <span class="text-white font-bold text-sm">Automated Valve Verification</span>
+                        <span class="text-google-green text-xs bg-green-900/20 px-2 py-1 rounded">CONFIDENCE: 98%</span>
+                    </div>
+                    <div class="relative h-64 bg-gradient-to-br from-blue-900/50 to-gray-900 flex items-center justify-center">
+                        <!-- Placeholder -->
+                        <div class="text-center">
+                            <span class="material-symbols-outlined text-6xl text-blue-400/50 mb-2">scuba_diving</span>
+                            <p class="text-gray-500 text-sm">ROV Feed Simulation</p>
+                        </div>
+                        
+                        <!-- AI Overlays -->
+                        <div class="absolute top-[35%] left-[40%] w-[20%] h-[30%] border-2 border-google-green shadow-[0_0_10px_rgba(52,168,83,0.5)] rounded">
+                            <div class="absolute -bottom-6 left-0 bg-google-green text-black text-[10px] font-bold px-2 py-0.5 rounded whitespace-nowrap">VALVE 2B: OPEN ✓</div>
+                        </div>
+                        <div class="absolute top-[25%] left-[15%] w-[20%] h-[30%] border-2 border-google-red shadow-[0_0_10px_rgba(234,67,53,0.5)] rounded">
+                            <div class="absolute -bottom-6 left-0 bg-google-red text-white text-[10px] font-bold px-2 py-0.5 rounded whitespace-nowrap">VALVE 2A: CLOSED</div>
+                        </div>
+                    </div>
+                    <div class="p-4 text-sm text-gray-400">
+                        <strong class="text-white">How it works:</strong> Vertex distinguishes handle positions (0° vs 90°) even in turbid water, cross-referencing P&ID data instantly.
+                    </div>
+                </div>
+
+                <!-- Corrosion Grading -->
+                <div class="bg-card-bg border border-border-color rounded-xl overflow-hidden">
+                    <div class="p-4 bg-dark-bg/50 border-b border-border-color flex justify-between">
+                        <span class="text-white font-bold text-sm">Corrosion Grading (ISO 4628)</span>
+                        <span class="text-google-yellow text-xs bg-yellow-900/20 px-2 py-1 rounded">⚠ GRADE 3 DETECTED</span>
+                    </div>
+                    <div class="relative h-64 bg-gradient-to-br from-orange-900/30 to-gray-900 flex items-center justify-center">
+                        <!-- Placeholder -->
+                        <div class="text-center">
+                            <span class="material-symbols-outlined text-6xl text-orange-400/50 mb-2">find_in_page</span>
+                            <p class="text-gray-500 text-sm">Corrosion Analysis</p>
+                        </div>
+                        
+                        <!-- Anomaly marker -->
+                        <div class="absolute top-[30%] right-[35%] w-6 h-6 rounded-full border-2 border-white flex items-center justify-center animate-ping"></div>
+                        <div class="absolute top-[30%] right-[35%] w-2 h-2 bg-white rounded-full"></div>
+                        
+                        <div class="absolute bottom-4 left-4 bg-black/90 p-3 rounded border border-google-yellow">
+                            <div class="text-[10px] text-gray-400 mb-1">CORROSION ASSESSMENT</div>
+                            <div class="text-lg font-bold text-google-yellow">Grade 3 - Moderate</div>
+                            <div class="text-[10px] text-gray-400 mt-1">Coverage: 15-25% surface area</div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <div class="bg-yellow-900/20 border border-yellow-500/30 rounded p-3 text-xs text-yellow-200 flex gap-2 items-start">
+                            <span class="material-symbols-outlined text-sm mt-0.5">lightbulb</span>
+                            <div>
+                                <strong>AI Recommendation:</strong> Schedule detailed UT inspection within 6 months. 
+                                Monitor for progression during next ROV survey.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Marine Growth Detection -->
+            <div class="bg-card-bg border border-border-color rounded-xl p-6">
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-google-blue">eco</span>
+                    Marine Growth Quantification
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-dark-bg p-4 rounded border border-border-color text-center">
+                        <div class="text-3xl font-bold text-google-blue mb-1">47mm</div>
+                        <div class="text-xs text-gray-400">Average Thickness</div>
+                    </div>
+                    <div class="bg-dark-bg p-4 rounded border border-border-color text-center">
+                        <div class="text-3xl font-bold text-google-green mb-1">82%</div>
+                        <div class="text-xs text-gray-400">Coverage Estimate</div>
+                    </div>
+                    <div class="bg-dark-bg p-4 rounded border border-border-color text-center">
+                        <div class="text-3xl font-bold text-google-yellow mb-1">+12%</div>
+                        <div class="text-xs text-gray-400">Drag Increase</div>
+                    </div>
+                    <div class="bg-dark-bg p-4 rounded border border-border-color text-center">
+                        <div class="text-3xl font-bold text-white mb-1">Q2 2026</div>
+                        <div class="text-xs text-gray-400">Recommended Clean</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- 3. Inventory Template -->
+    <template id="tpl-inventory">
+        <div class="p-8 max-w-7xl mx-auto animate-fade-in">
+            <div class="mb-8">
+                <h2 class="text-3xl font-display text-white mb-2">Inventory & Logistics</h2>
+                <p class="text-gray-400 max-w-2xl">
+                    Visual search identifies tools, validates shipping manifests, and ensures the correct equipment is staged for deployment.
+                </p>
+            </div>
+            
+            <div class="bg-card-bg border border-border-color rounded-xl p-6 mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="font-bold text-white text-lg">Visual Manifest Verification</h3>
+                    <div class="flex gap-2">
+                        <span class="text-xs bg-dark-bg border border-border-color text-gray-400 px-2 py-1 rounded flex items-center gap-1">
+                            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Live Cam
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col md:flex-row gap-6">
+                    <!-- Scanner View -->
+                    <div class="w-full md:w-1/3 aspect-square bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg relative overflow-hidden border border-gray-700 flex items-center justify-center">
+                        <div class="text-center">
+                            <span class="material-symbols-outlined text-6xl text-gray-600 mb-2">qr_code_scanner</span>
+                            <p class="text-gray-500 text-sm">Visual Scanner</p>
+                        </div>
+                        
+                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <div class="w-48 h-48 border-2 border-google-blue rounded-lg relative">
+                                <div class="absolute top-0 left-0 w-full h-0.5 bg-google-blue animate-scan shadow-[0_0_15px_#4285F4]"></div>
+                                <div class="absolute bottom-2 left-0 w-full text-center text-google-blue font-mono text-xs bg-black/50 py-1">SCANNING...</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- List View -->
+                    <div class="w-full md:w-2/3">
+                        <div class="bg-dark-bg border border-border-color rounded-lg overflow-hidden">
+                            <table class="w-full text-sm text-left">
+                                <thead class="bg-gray-800 text-gray-400 text-xs uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3">Item Detected</th>
+                                        <th class="px-4 py-3">Serial No (OCR)</th>
+                                        <th class="px-4 py-3">Manifest Status</th>
+                                        <th class="px-4 py-3">Conf.</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-300 divide-y divide-gray-800">
+                                    <tr class="bg-green-900/10">
+                                        <td class="px-4 py-3 font-medium">9-5/8" Casing Hanger</td>
+                                        <td class="px-4 py-3 font-mono text-xs">CH-992-AX</td>
+                                        <td class="px-4 py-3"><span class="text-green-500 flex items-center gap-1"><span class="material-symbols-outlined text-sm">check_circle</span> MATCH</span></td>
+                                        <td class="px-4 py-3">99.4%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 font-medium">PDC Drill Bit (12.25")</td>
+                                        <td class="px-4 py-3 font-mono text-xs">DB-441-B2</td>
+                                        <td class="px-4 py-3"><span class="text-gray-500 flex items-center gap-1"><span class="material-symbols-outlined text-sm">hourglass_empty</span> PENDING</span></td>
+                                        <td class="px-4 py-3">--</td>
+                                    </tr>
+                                    <tr class="bg-green-900/10">
+                                        <td class="px-4 py-3 font-medium">3-1/2" EUE Tubing Joint</td>
+                                        <td class="px-4 py-3 font-mono text-xs">TJ-8827-C</td>
+                                        <td class="px-4 py-3"><span class="text-green-500 flex items-center gap-1"><span class="material-symbols-outlined text-sm">check_circle</span> MATCH</span></td>
+                                        <td class="px-4 py-3">97.8%</td>
+                                    </tr>
+                                    <tr class="bg-red-900/10">
+                                        <td class="px-4 py-3 font-medium text-red-300">Unknown Valve Assy</td>
+                                        <td class="px-4 py-3 font-mono text-xs text-red-300">UNK-001</td>
+                                        <td class="px-4 py-3"><span class="text-red-500 flex items-center gap-1"><span class="material-symbols-outlined text-sm">warning</span> NOT ON MANIFEST</span></td>
+                                        <td class="px-4 py-3">92.1%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded text-xs text-blue-200 flex gap-2 items-center">
+                            <span class="material-symbols-outlined text-sm">info</span>
+                            System flagged 1 item not on the current manifest. Alert sent to Logistics Coordinator.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Equipment Recognition -->
+            <div class="bg-card-bg border border-border-color rounded-xl p-6">
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-google-blue">search</span>
+                    Visual Equipment Search
+                </h3>
+                <p class="text-sm text-gray-400 mb-4">
+                    Point a camera at any piece of equipment. Vertex identifies it, pulls up specs, and checks certification status.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-dark-bg p-4 rounded border border-border-color">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-google-blue/20 rounded-lg flex items-center justify-center">
+                                <span class="material-symbols-outlined text-google-blue">qr_code_2</span>
+                            </div>
+                            <div>
+                                <div class="font-bold text-white text-sm">OCR Recognition</div>
+                                <div class="text-xs text-gray-400">Serial numbers, labels, markings</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-dark-bg p-4 rounded border border-border-color">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-google-green/20 rounded-lg flex items-center justify-center">
+                                <span class="material-symbols-outlined text-google-green">category</span>
+                            </div>
+                            <div>
+                                <div class="font-bold text-white text-sm">Shape Classification</div>
+                                <div class="text-xs text-gray-400">Bits, hangers, valves, BHAs</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-dark-bg p-4 rounded border border-border-color">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-google-yellow/20 rounded-lg flex items-center justify-center">
+                                <span class="material-symbols-outlined text-google-yellow">verified</span>
+                            </div>
+                            <div>
+                                <div class="font-bold text-white text-sm">Cert Lookup</div>
+                                <div class="text-xs text-gray-400">Auto-check calibration status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- LOGIC -->
+    <script>
+        function switchTab(tabId) {
+            const mainView = document.getElementById('main-view');
+            const tpl = document.getElementById('tpl-' + tabId);
+            
+            if (tpl) {
+                mainView.innerHTML = tpl.innerHTML;
+            }
+            
+            // Update active sidebar state
+            const buttons = document.querySelectorAll('nav button');
+            buttons.forEach(btn => {
+                if(btn.id === 'tab-' + tabId) {
+                    btn.classList.remove('border-transparent', 'text-gray-400', 'hover:bg-white/5', 'hover:text-white');
+                    btn.classList.add('bg-google-blue/10', 'border-google-blue', 'text-white');
+                } else {
+                    btn.classList.add('border-transparent', 'text-gray-400', 'hover:bg-white/5', 'hover:text-white');
+                    btn.classList.remove('bg-google-blue/10', 'border-google-blue', 'text-white');
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            switchTab('rigfloor');
+        });
+    </script>
+
+</body>
+</html>
