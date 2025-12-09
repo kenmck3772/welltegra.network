@@ -1,42 +1,1147 @@
 {
   "wellId": "w-666",
-  "wellUniqueIdentifier": "7a516df0-6957-5d3e-a65a-8167d57d0ef9",
-  "master": {
-    "commonName": "w-666",
-    "apiNumber": null,
-    "fieldName": null,
-    "block": null,
-    "licenseNumber": null,
-    "slotIdentifier": null,
-    "wellType": "Unspecified",
-    "wellStatus": "Unspecified",
-    "wellProfile": "Unspecified",
-    "waterDepth_m": null,
-    "totalDepthMD_m": null,
-    "totalDepthTVD_m": null,
-    "coordinates": {
-      "lat": null,
-      "lon": null
+  "id": "w-666",
+  "name": "W-666",
+  "nickname": "The Perfect Storm",
+  "status": "shut_in",
+  "safetyLocked": true,
+  "lockReasons": [
+    "SCSSV Failed",
+    "Casing Deformation >20%",
+    "Barrier Status Unverified"
+  ],
+  "identity": {
+    "operator": "Brahan Field Operating Company",
+    "field": "Brahan Field",
+    "block": "Brahan Gamma Subsea Development Area",
+    "platform": "Brahan Gamma Subsea Manifold",
+    "wellType": "HPHT Gas Condensate Producer",
+    "regulatoryId": "12-345-67898-BRA-666",
+    "lease": "Brahan Gamma Subsea Development Area",
+    "surfaceLocation": {
+      "latitude": "58\u00b0 41' 55.0\" N",
+      "longitude": "0\u00b0 24' 45.0\" E"
     },
-    "surfaceDatum": null,
-    "verificationStatus": "Unverified",
-    "completenessNotes": "Seed record created; populate from handover packs / filings.",
-    "dataEntryTimestamp": "2025-12-04T20:02:32Z"
+    "waterDepth": {
+      "value": 180,
+      "unit": "m"
+    },
+    "rte": {
+      "value": 25,
+      "unit": "m"
+    },
+    "td": {
+      "md": 5000,
+      "tvd": 2550.4,
+      "unit": "m"
+    },
+    "spudDate": "2011-11-15",
+    "completionDate": "2012-02-28",
+    "classification": "Critical Intervention Candidate"
   },
-  "history": [
+  "reservoir": {
+    "targetFormation": "Brahan Alpha Sandstone (HPHT Core Zone)",
+    "porosity": {
+      "min": 19,
+      "max": 23,
+      "unit": "%"
+    },
+    "permeability": {
+      "min": 180,
+      "max": 280,
+      "unit": "mD"
+    },
+    "initialPressure": {
+      "value": 8750,
+      "unit": "psi",
+      "depth": 2550,
+      "depthUnit": "m TVD"
+    },
+    "temperature": {
+      "value": 178,
+      "unit": "C"
+    },
+    "fluidType": "Rich Gas Condensate",
+    "cgr": {
+      "value": 140,
+      "unit": "bbl/MMscf"
+    },
+    "gasGravity": 0.7,
+    "h2s": {
+      "value": 25,
+      "unit": "ppm"
+    },
+    "co2": {
+      "value": 5.5,
+      "unit": "mol%"
+    },
+    "scaleTendency": "Extreme Barium Sulphate (BaSO4) precipitation risk",
+    "ogip": {
+      "value": 190,
+      "unit": "Bcf"
+    },
+    "eurOriginal": {
+      "value": 80,
+      "unit": "Bcf"
+    },
+    "eurCurrent": {
+      "value": 35,
+      "unit": "Bcf",
+      "note": "Critically reduced, dependent on intervention success"
+    }
+  },
+  "trajectory": {
+    "type": "Extended Reach",
+    "maxInclination": 90,
+    "maxDLS": 1.5,
+    "dlsDepth": 750,
+    "dlsUnit": "deg/30m",
+    "surveys": [
+      {
+        "md": 0,
+        "inc": 0,
+        "az": 210,
+        "tvd": 0,
+        "dls": 0
+      },
+      {
+        "md": 250,
+        "inc": 12.5,
+        "az": 210,
+        "tvd": 244.55,
+        "dls": 1.5
+      },
+      {
+        "md": 500,
+        "inc": 25,
+        "az": 210,
+        "tvd": 955.5,
+        "dls": 1.5
+      },
+      {
+        "md": 750,
+        "inc": 37.5,
+        "az": 210,
+        "tvd": 1710.1,
+        "dls": 1.5
+      },
+      {
+        "md": 1000,
+        "inc": 50,
+        "az": 210,
+        "tvd": 2294.3,
+        "dls": 1.5
+      },
+      {
+        "md": 1500,
+        "inc": 75,
+        "az": 210,
+        "tvd": 2550.4,
+        "dls": 1.5
+      },
+      {
+        "md": 2000,
+        "inc": 90,
+        "az": 210,
+        "tvd": 2550.4,
+        "dls": 1.5
+      },
+      {
+        "md": 2500,
+        "inc": 90,
+        "az": 210,
+        "tvd": 2550.4,
+        "dls": 0
+      },
+      {
+        "md": 3000,
+        "inc": 90,
+        "az": 210,
+        "tvd": 2550.4,
+        "dls": 0
+      },
+      {
+        "md": 3500,
+        "inc": 90,
+        "az": 210,
+        "tvd": 2550.4,
+        "dls": 0
+      },
+      {
+        "md": 4000,
+        "inc": 90,
+        "az": 210,
+        "tvd": 2550.4,
+        "dls": 0
+      },
+      {
+        "md": 4500,
+        "inc": 90,
+        "az": 210,
+        "tvd": 2550.4,
+        "dls": 0
+      },
+      {
+        "md": 5000,
+        "inc": 90,
+        "az": 210,
+        "tvd": 2550.4,
+        "dls": 0
+      }
+    ]
+  },
+  "construction": {
+    "casingProgram": [
+      {
+        "type": "Conductor",
+        "size": "30\"",
+        "topMd": 205,
+        "shoeMd": 350,
+        "weight": null,
+        "grade": null,
+        "connection": null,
+        "details": "Subsea Wellhead Housing"
+      },
+      {
+        "type": "Surface",
+        "size": "20\"",
+        "topMd": 205,
+        "shoeMd": 1300,
+        "weight": "94.0 lb/ft",
+        "grade": "K-55",
+        "connection": "BTC",
+        "details": "TOC @ Seabed (205m MD, verified by returns)"
+      },
+      {
+        "type": "Intermediate",
+        "size": "13-3/8\"",
+        "topMd": 205,
+        "shoeMd": 3000,
+        "weight": "54.5 lb/ft",
+        "grade": "L-80",
+        "connection": "BTC",
+        "details": "TOC @ 2,000m MD (CBL/VDL verified)"
+      },
+      {
+        "type": "Production",
+        "size": "9-5/8\"",
+        "topMd": 205,
+        "shoeMd": 5000,
+        "weight": "47.0 lb/ft",
+        "grade": "C-90",
+        "connection": "VAM TOP",
+        "details": "TOC @ 2,700m MD. SEVERE CASING DEFORMATION CONFIRMED AT ~4,500m MD (post-2016 intervention)",
+        "integrity": "COMPROMISED",
+        "deformationDepth": 4500,
+        "deformationSeverity": ">20% ovality"
+      }
+    ]
+  },
+  "completion": {
+    "tubing": {
+      "size": "5-1/2\"",
+      "weight": "17.0 lb/ft",
+      "grade": "L-80 13Cr",
+      "thread": "VAM TOP",
+      "topDepth": 0,
+      "bottomDepth": 4900,
+      "integrityStatus": "SUSPECT",
+      "integrityNotes": "Potential FOD damage and jarring forces from 2016 event"
+    },
+    "scssv": {
+      "type": "TRSSV",
+      "size": "1.875\" bore",
+      "depth": 410,
+      "controlLine": "1/4\"",
+      "status": "FAILED",
+      "failureDate": "2021",
+      "failureMode": "Stuck in closed position",
+      "testPressure": null,
+      "testDate": null,
+      "notes": "Likely damaged during 2016 event or blocked by debris"
+    },
+    "packer": {
+      "type": "Model 'A' Hydraulic Set Production Packer",
+      "depth": 4850,
+      "size": null,
+      "pressureRating": 10000,
+      "setDate": "2012-02-28",
+      "integrityStatus": "UNCERTAIN",
+      "notes": "Original 2012 packer. Integrity uncertain due to downhole forces during 2016 event"
+    },
+    "gasLiftMandrels": [
+      {
+        "depth": 2100,
+        "type": "Side Pocket Mandrel",
+        "pocketSize": "1.0\" OD",
+        "status": "Accessibility compromised by potential debris"
+      },
+      {
+        "depth": 2400,
+        "type": "Side Pocket Mandrel",
+        "pocketSize": "1.0\" OD",
+        "status": "Accessibility compromised by potential debris"
+      },
+      {
+        "depth": 2700,
+        "type": "Side Pocket Mandrel",
+        "pocketSize": "1.0\" OD",
+        "status": "Accessibility compromised by potential debris"
+      }
+    ],
+    "landingNipple": {
+      "type": "No-Go Nipple",
+      "id": 2.313,
+      "depth": 4870,
+      "status": "Accessibility compromised"
+    },
+    "perforations": [
+      {
+        "topMd": 4910,
+        "bottomMd": 5000,
+        "spf": 12,
+        "phasing": 60,
+        "status": "Inflow potentially restricted by formation damage from uncontrolled pressure cycles"
+      }
+    ],
+    "minRestriction": {
+      "id": 1.875,
+      "depth": 410,
+      "component": "TRSSV bore",
+      "notes": "Critical restriction for toolstring design"
+    }
+  },
+  "barriers": {
+    "status": "critical",
+    "lastVerified": null,
+    "wbsStatus": "SEVERELY COMPROMISED",
+    "primary": {
+      "elements": [
+        {
+          "name": "5-1/2\" Production Tubing",
+          "status": "SUSPECT",
+          "notes": "Integrity suspect from 2016 workover"
+        },
+        {
+          "name": "Hydraulic Packer",
+          "status": "UNKNOWN",
+          "notes": "Integrity uncertain"
+        },
+        {
+          "name": "TRSSV",
+          "status": "FAILED",
+          "testDate": "2021",
+          "notes": "Stuck in closed position"
+        },
+        {
+          "name": "9-5/8\" Production Casing",
+          "status": "DEFORMED",
+          "notes": ">20% ovality at 4,500m MD"
+        }
+      ]
+    },
+    "secondary": {
+      "elements": [
+        {
+          "name": "13-3/8\" Intermediate Casing & Cement",
+          "status": "ASSUMED INTACT"
+        },
+        {
+          "name": "20\" Surface Casing & Cement",
+          "status": "ASSUMED INTACT"
+        },
+        {
+          "name": "Subsea Wellhead & X-mas Tree Valves",
+          "status": "TESTED OK",
+          "testFrequency": "Quarterly via ROV"
+        }
+      ]
+    },
+    "annulusPressures": {
+      "annulusA": {
+        "value": 150,
+        "unit": "psi",
+        "status": "Stable but elevated, requiring monitoring"
+      },
+      "annulusB": {
+        "value": 15,
+        "unit": "psi",
+        "status": "Normal"
+      }
+    },
+    "wellKillWeight": {
+      "value": 10.2,
+      "unit": "ppg"
+    },
+    "fluidType": "CaCl2 Brine"
+  },
+  "production": {
+    "targetInitialRate": {
+      "value": 11000,
+      "unit": "boepd"
+    },
+    "actualInitialRate": {
+      "value": 10500,
+      "unit": "boepd"
+    },
+    "currentRate": {
+      "value": 0,
+      "unit": "boepd",
+      "since": "2021"
+    },
+    "cumulativeProduction": {
+      "value": 22.5,
+      "unit": "MMboe"
+    },
+    "performancePeriods": [
+      {
+        "period": "2012-2016",
+        "avgRate": 10500,
+        "unit": "boepd",
+        "notes": "Performing at expectations"
+      },
+      {
+        "period": "2017-2020",
+        "avgRate": 4500,
+        "unit": "boepd",
+        "notes": "Declining trend, increasing water cut post-2016 workover"
+      },
+      {
+        "period": "2021-present",
+        "avgRate": 0,
+        "unit": "boepd",
+        "notes": "Non-productive, shut-in"
+      }
+    ]
+  },
+  "interventions": [
     {
-      "eventId": "3bf47334-f107-469b-9f50-a6882fb80458",
-      "eventDate": "2025-12-04T20:02:32Z",
-      "eventType": "Record Init",
-      "description": "Initial master record seeded for this well.",
-      "verificationStatus": "Verified"
+      "id": "int_001",
+      "date": "2012-02-28",
+      "endDate": "2012-02-28",
+      "type": "Completion",
+      "objective": "Run completion string, set packer, test SSSV",
+      "serviceProvider": "Subsea Well Services",
+      "duration": {
+        "planned": 72,
+        "actual": 84,
+        "unit": "hours"
+      },
+      "outcome": "success",
+      "nptHours": 12,
+      "nptCause": "Handling delays",
+      "lessonsLearned": "Standard, successful completion",
+      "toolstring": []
+    },
+    {
+      "id": "int_002",
+      "date": "2012-03-05",
+      "type": "Start-Up",
+      "objective": "Initial well un-plugging and first flow",
+      "serviceProvider": "Brahan Operations",
+      "duration": {
+        "planned": 24,
+        "actual": 24,
+        "unit": "hours"
+      },
+      "outcome": "success",
+      "nptHours": 0,
+      "lessonsLearned": "A promising new producer. Well flowed above prognosis.",
+      "toolstring": []
+    },
+    {
+      "id": "int_003",
+      "date": "2014-06-15",
+      "type": "Wireline",
+      "objective": "Replace faulty Gas Lift Valve #2",
+      "serviceProvider": "WellFix Inc.",
+      "duration": {
+        "planned": 12,
+        "actual": 18,
+        "unit": "hours"
+      },
+      "outcome": "success",
+      "nptHours": 4,
+      "nptCause": "Initial valve latching difficulty",
+      "lessonsLearned": "Routine maintenance",
+      "toolstring": [
+        {
+          "position": 1,
+          "tool": "Rope Socket",
+          "od": 1.5,
+          "length": 6,
+          "weight": 2
+        },
+        {
+          "position": 2,
+          "tool": "Stem",
+          "od": 1.5,
+          "length": 36,
+          "weight": 15
+        },
+        {
+          "position": 3,
+          "tool": "Kickover Tool",
+          "od": 2.25,
+          "length": 48,
+          "weight": 25
+        },
+        {
+          "position": 4,
+          "tool": "GLV Running Tool",
+          "od": 1.5,
+          "length": 24,
+          "weight": 8
+        },
+        {
+          "position": 5,
+          "tool": "Gas Lift Valve",
+          "od": 1.5,
+          "length": 12,
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "id": "int_004",
+      "date": "2016-10-15",
+      "endDate": "2016-11-21",
+      "type": "Plug & Abandon (Zone Isolation)",
+      "objective": "Isolate lower zone due to water cut. Set a retrievable bridge plug @ 4,800m.",
+      "serviceProvider": "PlugDown Solutions",
+      "duration": {
+        "planned": 168,
+        "actual": 1008,
+        "unit": "hours"
+      },
+      "outcome": "catastrophic_failure",
+      "nptHours": 840,
+      "cost": {
+        "afe": 1500000,
+        "actual": 7200000,
+        "currency": "USD"
+      },
+      "lessonsLearned": "A complete procedural and technical failure. The 'Perfect Storm' begins. Root cause: FOD (tong die) led to cascading failures.",
+      "subOperations": [
+        {
+          "id": "int_004a",
+          "date": "2016-10-16",
+          "description": "Pull 4.562\" QXT lock with BPV equalizing prong (Run 1)",
+          "duration": 12,
+          "outcome": "success",
+          "nptHours": 2,
+          "toolstring": [
+            {
+              "position": 1,
+              "tool": "Rope Socket",
+              "od": 1.5,
+              "length": 6,
+              "weight": 2
+            },
+            {
+              "position": 2,
+              "tool": "Stem",
+              "od": 1.5,
+              "length": 36,
+              "weight": 15
+            },
+            {
+              "position": 3,
+              "tool": "Knuckle Joint",
+              "od": 1.75,
+              "length": 12,
+              "weight": 8
+            },
+            {
+              "position": 4,
+              "tool": "Mechanical Jar",
+              "od": 2.0,
+              "length": 48,
+              "weight": 35
+            },
+            {
+              "position": 5,
+              "tool": "JDC Pulling Tool",
+              "od": 2.25,
+              "length": 18,
+              "weight": 12
+            }
+          ]
+        },
+        {
+          "id": "int_004b",
+          "date": "2016-10-17",
+          "description": "Pull 4.562\" QXT lock with BPV equalizing prong (Run 2)",
+          "duration": 12,
+          "outcome": "success",
+          "nptHours": 2
+        },
+        {
+          "id": "int_004c",
+          "date": "2016-10-18",
+          "description": "Pull retrievable bridge plug @ 4,800m",
+          "duration": 4,
+          "outcome": "partial_failure",
+          "nptHours": 4,
+          "notes": "Plug element was stuck. After 4 hours of working pipe, the element came free.",
+          "toolstring": [
+            {
+              "position": 1,
+              "tool": "Rope Socket",
+              "od": 1.5,
+              "length": 6,
+              "weight": 2
+            },
+            {
+              "position": 2,
+              "tool": "Stem",
+              "od": 1.75,
+              "length": 36,
+              "weight": 18
+            },
+            {
+              "position": 3,
+              "tool": "Knuckle Joint",
+              "od": 1.75,
+              "length": 12,
+              "weight": 8
+            },
+            {
+              "position": 4,
+              "tool": "Mechanical Jar (Up)",
+              "od": 2.25,
+              "length": 48,
+              "weight": 42
+            },
+            {
+              "position": 5,
+              "tool": "Stem",
+              "od": 1.75,
+              "length": 24,
+              "weight": 12
+            },
+            {
+              "position": 6,
+              "tool": "Overshot",
+              "od": 2.875,
+              "length": 24,
+              "weight": 28
+            }
+          ],
+          "maxOD": 2.875,
+          "totalLength": 150,
+          "totalWeight": 110
+        },
+        {
+          "id": "int_004d",
+          "date": "2016-10-18",
+          "time": "15:00",
+          "description": "POOH with retrieved plug assembly - CRITICAL FAILURE",
+          "duration": 1,
+          "outcome": "failure",
+          "nptHours": 1,
+          "notes": "Expanded element got stuck on the TRSSV protection sleeve. The sleeve was pulled with the element. Pieces of the element are now missing downhole.",
+          "consequences": [
+            "SSV profile compromised",
+            "FOD introduced to wellbore",
+            "Primary barrier damaged"
+          ]
+        },
+        {
+          "id": "int_004e",
+          "date": "2016-10-19",
+          "endDate": "2016-11-02",
+          "description": "Fish missing pieces of the plug element",
+          "duration": 336,
+          "outcome": "partial_success",
+          "nptHours": 336,
+          "notes": "Most effective tool was a Junk Basket (JD) with no internal dogs or moving parts. Standard fishing tools were ineffective."
+        },
+        {
+          "id": "int_004f",
+          "date": "2016-11-03",
+          "description": "Fish remaining debris",
+          "duration": 8,
+          "outcome": "success",
+          "notes": "A Camco equalising prong (from the original QXT assembly) was retrieved. Confirmed multiple FOD sources."
+        },
+        {
+          "id": "int_004g",
+          "date": "2016-11-04",
+          "endDate": "2016-11-18",
+          "description": "Latch and retrieve the main bridge plug body",
+          "duration": 336,
+          "outcome": "failure",
+          "nptHours": 336,
+          "notes": "Inability to latch the external fishing neck. Tools used: overshots, LIBs, blind boxes, bailers, grabs."
+        },
+        {
+          "id": "int_004h",
+          "date": "2016-11-15",
+          "description": "Diagnostics: Run Lead Impression Block (LIB)",
+          "duration": 12,
+          "outcome": "inconclusive",
+          "nptHours": 12,
+          "notes": "LIB retrieved a clear impression of a tong die, but this was not recognized by the on-site team.",
+          "criticalMiss": true,
+          "lessonsLearned": "CRITICAL MISSED OPPORTUNITY. The root cause was present but not identified. LIB should have been sent to shore for expert review."
+        },
+        {
+          "id": "int_004i",
+          "date": "2016-11-19",
+          "description": "Final attempt to latch plug body",
+          "duration": 24,
+          "outcome": "success_with_issues",
+          "nptHours": 24,
+          "notes": "Latched using JD on dummy rope socket with dogs engaged, but had no shear facility. Standard pins sheared repeatedly. Switched to case-hardened steel pins.",
+          "riskLevel": "HIGH"
+        },
+        {
+          "id": "int_004j",
+          "date": "2016-11-20",
+          "description": "Retrieve plug body after successful latching - THE REVEAL",
+          "duration": 8,
+          "outcome": "success",
+          "notes": "Fish was retrieved. A tong die was wedged in the expander mandrel's internals, preventing the latching tool from fully engaging and causing premature shearing.",
+          "rootCause": "Foreign Object Debris (FOD) - 3/4\" tong die from surface operations"
+        }
+      ]
+    },
+    {
+      "id": "int_005",
+      "date": "2017-03-01",
+      "endDate": "2017-08-15",
+      "type": "Major Workover",
+      "objective": "Replace damaged upper completion, assess well integrity",
+      "serviceProvider": "Schlumberger",
+      "duration": {
+        "planned": 3,
+        "actual": 5,
+        "unit": "months"
+      },
+      "outcome": "partial_success",
+      "nptHours": 504,
+      "cost": {
+        "afe": 15000000,
+        "actual": 18500000,
+        "currency": "USD"
+      },
+      "lessonsLearned": "Damaged upper completion was replaced. Multi-finger caliper log revealed severe (>20% ovality) deformation in the 9-5/8\" production casing at ~4,500m MD, likely from jarring forces. The well was saved, but it was permanently damaged - now a 'limper'.",
+      "diagnostics": [
+        {
+          "tool": "Multi-finger Caliper",
+          "depth": 4500,
+          "finding": ">20% ovality in 9-5/8\" casing",
+          "severity": "SEVERE"
+        },
+        {
+          "tool": "Ultrasonic Imaging",
+          "depth": "Full bore",
+          "finding": "Tubing wall loss <5%, acceptable",
+          "severity": "MINOR"
+        }
+      ]
+    },
+    {
+      "id": "int_006",
+      "date": "2021-04-15",
+      "type": "Wireline",
+      "objective": "Routine TRSSV function test",
+      "serviceProvider": "SafetyFirst Wireline",
+      "duration": {
+        "planned": 6,
+        "actual": 6,
+        "unit": "hours"
+      },
+      "outcome": "failure",
+      "nptHours": 6,
+      "lessonsLearned": "The TRSSV was found to be stuck in the closed position, likely due to damage from the 2016 event or debris. The final critical barrier failed. The well's productive life was over.",
+      "consequence": "Well shut-in, Safety Gateway LOCKED"
     }
   ],
-  "schematics": {
-    "casingStrings": [],
-    "tubingStrings": [],
-    "perforationIntervals": [],
-    "downholeEquipment": []
+  "realTimeData": {
+    "description": "12-hour snapshots showing key events",
+    "snapshots": [
+      {
+        "date": "2016-10-18",
+        "context": "Pre-intervention and during bridge plug pull",
+        "readings": [
+          {
+            "time": "06:00",
+            "casingPressure": 3450,
+            "thp": 3420,
+            "annulusA": 85,
+            "annulusB": 15,
+            "flowlineTemp": 85,
+            "gasRate": 95,
+            "condensateRate": 13300,
+            "notes": "Stable production"
+          },
+          {
+            "time": "10:30",
+            "casingPressure": 3500,
+            "thp": 3475,
+            "annulusA": 88,
+            "annulusB": 15,
+            "flowlineTemp": 84,
+            "gasRate": 92,
+            "condensateRate": 12900,
+            "notes": "Slight pressure build, rate drop - jarring initiated"
+          },
+          {
+            "time": "12:00",
+            "casingPressure": 3550,
+            "thp": 3530,
+            "annulusA": 90,
+            "annulusB": 16,
+            "flowlineTemp": 83,
+            "gasRate": 88,
+            "condensateRate": 12400,
+            "notes": "Trend continuing"
+          },
+          {
+            "time": "15:00",
+            "casingPressure": 3610,
+            "thp": 3600,
+            "annulusA": 95,
+            "annulusB": 16,
+            "flowlineTemp": 82,
+            "gasRate": 84,
+            "condensateRate": 11900,
+            "notes": "Stabilized at lower rate"
+          },
+          {
+            "time": "18:00",
+            "casingPressure": 0,
+            "thp": 0,
+            "annulusA": 85,
+            "annulusB": 15,
+            "flowlineTemp": null,
+            "gasRate": 0,
+            "condensateRate": 0,
+            "notes": "Well shut-in for wireline rig-up"
+          }
+        ]
+      },
+      {
+        "date": "2016-11-20",
+        "context": "Final jarring operation",
+        "readings": [
+          {
+            "time": "14:22",
+            "md": 4800,
+            "event": "Jarring initiated",
+            "thp": 3450
+          },
+          {
+            "time": "14:47",
+            "md": 4800,
+            "event": "Shear pin failure #1",
+            "thp": 3580,
+            "notes": "THP spike observed"
+          },
+          {
+            "time": "15:03",
+            "md": 4800,
+            "event": "Case-hardened pins installed",
+            "thp": 3500
+          },
+          {
+            "time": "15:31",
+            "md": 4795,
+            "event": "Fish moving",
+            "annulusA": 145,
+            "notes": "Ann A spike 95\u2192145 psi - significant downhole shock"
+          }
+        ],
+        "anomalies": [
+          {
+            "time": "15:31",
+            "type": "Pressure Spike",
+            "sensor": "Annulus A",
+            "value": 145,
+            "baseline": 95,
+            "delta": 50,
+            "significance": "Indicates significant downhole shock event, likely contributing to casing deformation"
+          }
+        ]
+      }
+    ]
   },
-  "anomalies": []
+  "personnel": [
+    {
+      "phase": "Drilling (2011-12)",
+      "role": "Drilling Supervisor",
+      "name": "J. Anderson",
+      "experience": "20+ years",
+      "performance": "Highly experienced, no major incidents on record"
+    },
+    {
+      "phase": "Completion (2012)",
+      "role": "Completion Engineer",
+      "name": "M. Chen",
+      "experience": "5 years",
+      "performance": "First time as lead engineer on a subsea HPHT completion. Relied heavily on contractor procedures."
+    },
+    {
+      "phase": "Production (2012-16)",
+      "role": "Production Tech",
+      "name": "R. Jones",
+      "experience": "15 years",
+      "performance": "Meticulous in his daily logs, first to notice subtle production anomalies before the 2016 intervention."
+    },
+    {
+      "phase": "Intervention (2016)",
+      "role": "Wireline Supervisor",
+      "company": "PlugDown Solutions",
+      "experience": null,
+      "performance": "CRITICAL: Crew was on their 14th consecutive night shift. Performance review noted 'fatigue and communication breakdown'. Two junior hands were on the floor during the tong die incident.",
+      "fatigueFlag": true,
+      "consecutiveShifts": 14
+    },
+    {
+      "phase": "Workover (2017)",
+      "role": "Workover Superintendent",
+      "company": "Schlumberger",
+      "experience": "25+ years",
+      "performance": "Brought in to clean up the 2016 disaster. Operated with extreme caution, but his report noted the 'well is permanently scarred'."
+    },
+    {
+      "phase": "Current (2023)",
+      "role": "Well Integrity Engineer",
+      "name": "S. Patel",
+      "experience": "10 years",
+      "performance": "Inherited the well in 2020. Her detailed risk assessments and push for a comprehensive intervention plan are the reason this case study exists."
+    }
+  ],
+  "correspondence": [
+    {
+      "id": "corr_001",
+      "date": "2016-10-17",
+      "time": "22:30",
+      "type": "email",
+      "from": "J. Anderson (Night Drilling Supervisor)",
+      "to": "M. Chen (Office Engineer)",
+      "subject": "Re: Plug Pulling Operations",
+      "excerpt": "Mike, the crew is struggling to get a good latch on the plug. We've been working it for four hours now. The jarring is getting aggressive. I'm concerned about the TRSSV profile. The procedure says to pull, but my gut says we need to stop and run a LIB first. The day-shift guy wants to push on. Advise. -J.",
+      "significance": "Supervisor's instinct was overridden by schedule pressure",
+      "whatIfScenario": "If an LIB had been run at this point, the tong die may have been identified early, potentially saving $6M and 4 weeks NPT"
+    },
+    {
+      "id": "corr_002",
+      "date": "2016-12-01",
+      "type": "incident_report",
+      "title": "Post-2016 Incident Report - Executive Summary",
+      "excerpt": "The root cause was identified as Foreign Object Debris (FOD), specifically a 3/4\" tong die. While the immediate failure was procedural, a contributing factor was the intense schedule pressure to complete the zone isolation before the end of the fiscal year. The decision to proceed with aggressive jarring without a confirmatory LIB was a direct result of this pressure.",
+      "significance": "Formal acknowledgment of schedule pressure as contributing factor"
+    },
+    {
+      "id": "corr_003",
+      "date": "2016-11-01",
+      "type": "meeting_minutes",
+      "title": "Management Meeting Minutes",
+      "excerpt": "Action Item 4.2: Review PlugDown Solutions' performance on Well_666. The cost overrun is approaching $5M with no result. Consider alternative vendors for future complex fishing operations. The budget for the 2017 workover is now under review.",
+      "significance": "Management awareness of escalating costs mid-disaster"
+    }
+  ],
+  "riskAssessments": {
+    "preJob2016": [
+      {
+        "hazard": "FOD in wellbore",
+        "consequence": "Inability to latch plug, fishing job",
+        "likelihoodInitial": 2,
+        "consequenceInitial": 4,
+        "riskScoreInitial": 8,
+        "riskLevel": "Medium",
+        "mitigation": "Visual inspection of all wireline tools before RIH",
+        "likelihoodActual": 5,
+        "consequenceActual": 5,
+        "riskScoreActual": 25,
+        "lessonLearned": "Visual inspection was inadequate. Procedural controls failed. FOD was the root cause of the entire disaster."
+      },
+      {
+        "hazard": "Plug element stuck",
+        "consequence": "Extended NPT, fishing job",
+        "likelihoodInitial": 3,
+        "consequenceInitial": 3,
+        "riskScoreInitial": 9,
+        "riskLevel": "Medium",
+        "mitigation": "Allow 4-hour 'soak' time. Use certified jarring sequence.",
+        "likelihoodActual": 5,
+        "consequenceActual": 5,
+        "riskScoreActual": 25,
+        "lessonLearned": "Jarring forces were far more destructive than anticipated, causing secondary failures (SSV, casing)."
+      },
+      {
+        "hazard": "Damage to TRSSV profile",
+        "consequence": "Loss of primary safety barrier",
+        "likelihoodInitial": 1,
+        "consequenceInitial": 5,
+        "riskScoreInitial": 5,
+        "riskLevel": "Low",
+        "mitigation": "Use shearing safety joint above pulling tool. Pull at controlled speed.",
+        "likelihoodActual": 5,
+        "consequenceActual": 5,
+        "riskScoreActual": 25,
+        "lessonLearned": "The risk was severely underestimated. The expanded element acted as an 'uncontrolled spear', pulling the protection sleeve."
+      }
+    ]
+  },
+  "lessonsLearned": [
+    {
+      "id": "LL-666-001",
+      "category": "FOD",
+      "lesson": "Tong dies must be tethered and inventoried before and after every use",
+      "triggerCondition": "Tong use on wireline floor",
+      "recommendedAction": "Mandatory tether SOP, tool count verification",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "LL-666-002",
+      "category": "Fatigue",
+      "lesson": "14+ consecutive night shifts correlated with incident",
+      "triggerCondition": "Crew rotation >10 days",
+      "recommendedAction": "Flag for management review, mandatory fatigue assessment",
+      "severity": "HIGH"
+    },
+    {
+      "id": "LL-666-003",
+      "category": "Diagnostics",
+      "lesson": "LIB impression showing foreign object was dismissed by on-site team",
+      "triggerCondition": "Unexplained latching failure after 2+ attempts",
+      "recommendedAction": "Mandatory offsite expert review of all diagnostic results",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "LL-666-004",
+      "category": "Schedule Pressure",
+      "lesson": "Fiscal year deadline pressure contributed to decision to continue aggressive jarring",
+      "triggerCondition": "Operations approaching budget/schedule deadline",
+      "recommendedAction": "Formal risk review required when commercial pressure conflicts with operational caution",
+      "severity": "HIGH"
+    },
+    {
+      "id": "LL-666-005",
+      "category": "Barrier Awareness",
+      "lesson": "Team did not recognize that pulling through TRSSV profile with expanded element was high-risk",
+      "triggerCondition": "POOH with oversized or expanded equipment through safety valve",
+      "recommendedAction": "Mandatory barrier impact assessment for all retrieval operations",
+      "severity": "CRITICAL"
+    }
+  ],
+  "whatIfScenarios": [
+    {
+      "id": "WI-001",
+      "scenario": "If the LIB impression had been sent to shore for expert review on Nov 15",
+      "outcome": "The tong die would have been identified within 24 hours",
+      "savings": {
+        "cost": 6200000,
+        "time": "4 weeks"
+      },
+      "probability": "High"
+    },
+    {
+      "id": "WI-002",
+      "scenario": "If a shearing safety joint had been used above the overshot during the plug pull",
+      "outcome": "The TRSSV profile would not have been damaged. The well would still be producing.",
+      "savings": {
+        "cost": 25000000,
+        "production": "18 MMboe"
+      },
+      "probability": "High"
+    },
+    {
+      "id": "WI-003",
+      "scenario": "If crew rotation had been enforced at 10 days maximum",
+      "outcome": "Fresher crew may have caught the tong die during pre-job inspection or recognized the LIB impression",
+      "savings": {
+        "cost": "Unknown",
+        "time": "Unknown"
+      },
+      "probability": "Medium"
+    }
+  ],
+  "economics": {
+    "originalAFE": 48500000,
+    "drillingCompletionActual": 49100000,
+    "intervention2016AFE": 1500000,
+    "intervention2016Actual": 7200000,
+    "workover2017AFE": 15000000,
+    "workover2017Actual": 18500000,
+    "totalSpentToDate": 74800000,
+    "revenuePreDisaster": 220000000,
+    "lostProduction2016_17": 45000000,
+    "deferredProduction2017_21": 95000000,
+    "proposedInterventionAFE": 25000000,
+    "probabilityOfSuccess": {
+      "p10": 30,
+      "p50": 55,
+      "p90": 80
+    },
+    "npvIfSuccessful": 120000000,
+    "npvIfFailed": -40000000,
+    "expectedValue": 48000000,
+    "currency": "USD",
+    "economicConclusion": "Despite the high risk and cost, the Expected Value remains strongly positive, justifying the complex intervention as a necessary commercial investment."
+  },
+  "futurePlans": {
+    "immediate": {
+      "timeframe": "Next 6 months",
+      "priority": "CRITICAL",
+      "phases": [
+        {
+          "phase": 0,
+          "name": "Advanced Diagnostics",
+          "description": "High-resolution multi-finger caliper and ultrasonic imaging to map deformed casing and assess tubing/SSV profile damage"
+        },
+        {
+          "phase": 1,
+          "name": "SSV Replacement/Bypass",
+          "description": "Lock failed TRSSV open, install insert retrievable safety valve (IRSV) in dedicated profile above damaged valve"
+        },
+        {
+          "phase": 2,
+          "name": "Casing Remediation",
+          "description": "Deploy expandable steel liner or patch across deformed section to restore structural integrity"
+        },
+        {
+          "phase": 3,
+          "name": "Production Optimization",
+          "description": "Clean-out and potential stimulation of reservoir section to restore productivity"
+        }
+      ]
+    },
+    "mediumTerm": "Success of intervention is far from guaranteed. Well_666 will serve as the ultimate cautionary tale.",
+    "longTerm": "High risk of early abandonment if intervention fails. Abandonment cost significantly higher due to downhole complications."
+  },
+  "documents": [
+    {
+      "type": "image",
+      "id": "666_LIB_impression_2016-11-15.jpg",
+      "description": "Lead Impression Block showing tong die impression - the missed clue"
+    },
+    {
+      "type": "pdf",
+      "id": "666_caliper_log_2017.pdf",
+      "description": "Multi-finger caliper showing casing deformation at 4,500m"
+    },
+    {
+      "type": "svg",
+      "id": "666_WBS_current.svg",
+      "description": "Well Barrier Schematic showing current failed elements"
+    },
+    {
+      "type": "pdf",
+      "id": "666_incident_report_2016.pdf",
+      "description": "Full incident investigation report"
+    }
+  ],
+  "tags": [
+    "safety-locked",
+    "catastrophic-failure",
+    "case-study",
+    "lessons-learned",
+    "hpht",
+    "subsea"
+  ]
 }

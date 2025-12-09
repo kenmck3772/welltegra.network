@@ -988,9 +988,9 @@
 
         async function loadWellData() {
             try {
-                const response = await fetch('data/well_666.json');
+                const response = await fetch('data/w-666.json');
                 const data = await response.json();
-                wellData = data.wells[0];
+                wellData = data; // w-666.json has flat structure, not wells array
                 renderAll();
             } catch (error) {
                 console.error('Failed to load well data:', error);
