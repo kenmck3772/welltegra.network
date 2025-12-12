@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plug & Abandonment Professional Course | The Brahan Engine</title>
+    <meta name="description" content="Comprehensive Plug and Abandonment (P&A) training course covering regulatory frameworks, barrier systems, liability, and global best practices.">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #10b981;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --accent: #14b8a6;
+            --nav-bg: #0b1220;
+            --nav-border: #334155;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-light);
+        }
+
+        /* Unified Navigation */
+        .unified-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(11,18,32,.98), rgba(15,23,42,.95));
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--nav-border);
+        }
+        .header-wrap {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand img {
+            height: 40px;
+            width: auto;
+            border-radius: 8px;
+        }
+        .brand-text h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.025em;
+        }
+        .brand-text span {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .main-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        .main-nav-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.05);
+        }
+        .main-nav-link.active {
+            color: var(--accent);
+            background: rgba(20, 184, 166, 0.15);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto 24px;
+        }
+        .hero-meta {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        .hero-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+        }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .progress-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .progress-percent {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--secondary-color));
+            border-radius: 6px;
+            transition: width 0.3s ease;
+        }
+
+        /* Video Section */
+        .video-section {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+        }
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .video-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Module List */
+        .modules-section {
+            margin-bottom: 32px;
+        }
+        .module-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .module-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateX(4px);
+        }
+        .module-card.completed {
+            border-left-color: var(--success);
+        }
+        .module-card.in-progress {
+            border-left-color: var(--warning);
+        }
+        .module-card.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .module-title-group {
+            flex: 1;
+        }
+        .module-number {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .module-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .module-duration {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        .module-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .module-status.completed {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+        }
+        .module-status.in-progress {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        .module-status.locked {
+            background: var(--bg-light);
+            color: var(--text-secondary);
+        }
+        .module-description {
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .module-content {
+            display: none;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 16px;
+        }
+        .module-content.active {
+            display: block;
+        }
+        .key-points {
+            margin-bottom: 16px;
+        }
+        .key-points h4 {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .key-points ul {
+            margin-left: 20px;
+            color: var(--text-secondary);
+        }
+        .key-points li {
+            margin-bottom: 6px;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+        .quiz-title {
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .quiz-question {
+            margin-bottom: 20px;
+        }
+        .quiz-question p {
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .quiz-option {
+            padding: 12px;
+            background: var(--bg-white);
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover {
+            border-color: var(--accent);
+        }
+        .quiz-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.05);
+        }
+        .quiz-option.correct {
+            border-color: var(--success);
+            background: rgba(34, 197, 94, 0.1);
+        }
+        .quiz-option.incorrect {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Action Buttons */
+        .module-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            background: var(--border-color);
+        }
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Related Resources */
+        .resources-section {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+        }
+        .resources-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .resource-card {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            transition: all 0.2s;
+        }
+        .resource-card:hover {
+            box-shadow: var(--shadow-sm);
+        }
+        .resource-card h4 {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .resource-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+        .resource-link {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Certificate Section */
+        .certificate-section {
+            background: linear-gradient(135deg, var(--success) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            display: none;
+        }
+        .certificate-section.show {
+            display: block;
+        }
+        .certificate-section h2 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        .certificate-section p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            margin-bottom: 24px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .hero-meta {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .module-header {
+                flex-direction: column;
+            }
+            .module-status {
+                margin-top: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="unified-header">
+        <div class="header-wrap">
+            <a href="index.html" class="brand">
+                <img src="assets/images/logo.jpg" alt="WellTegra Logo">
+                <div class="brand-text">
+                    <h1>The Brahan Engine</h1>
+                    <span>Stop Paying the NPT Tax</span>
+                </div>
+            </a>
+            <nav class="main-nav">
+                <a href="index.html" class="main-nav-link">Dashboard</a>
+                <a href="sop-library.html" class="main-nav-link">SOP Library</a>
+                <a href="equipment.html" class="main-nav-link">Equipment</a>
+                <a href="intervention-guide.html" class="main-nav-link">Guide</a>
+                <a href="pa-course.html" class="main-nav-link active">P&A Course</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Plug & Abandonment Professional Course</h1>
+        <p>Master the regulatory frameworks, technical barriers, and long-term liability considerations essential for safe and compliant well abandonment operations</p>
+        <div class="hero-meta">
+            <div class="hero-meta-item">
+                <span>⏱️</span>
+                <span>~12 minutes core content</span>
+            </div>
+            <div class="hero-meta-item">
+                <span>📚</span>
+                <span>7 comprehensive modules</span>
+            </div>
+            <div class="hero-meta-item">
+                <span>🎯</span>
+                <span>Certificate of completion</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <div class="progress-title">Your Progress</div>
+                <div class="progress-percent" id="progress-percent">0%</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Video Section -->
+        <div class="video-section">
+            <h2 style="margin-bottom: 20px; font-size: 1.75rem;">Course Video</h2>
+            <div class="video-wrapper">
+                <iframe
+                    src="https://www.youtube.com/embed/V7Rn45Xjjp0"
+                    title="Plug and Abandonment Course"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-info">
+                <div>
+                    <strong>Duration:</strong> 11:45 | <strong>Source:</strong> Industry Expert
+                </div>
+                <div>
+                    <span style="color: var(--text-secondary); font-size: 0.9rem;">💡 Watch in full screen for best experience</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Modules -->
+        <div class="modules-section">
+            <h2 style="margin-bottom: 24px; font-size: 1.75rem;">Course Modules</h2>
+
+            <!-- Module 1 -->
+            <div class="module-card" data-module="1" onclick="toggleModule(1)">
+                <div class="module-header">
+                    <div class="module-title-group">
+                        <div class="module-number">MODULE 1</div>
+                        <div class="module-title">Introduction to P&A Importance</div>
+                        <div class="module-duration">📹 Video: 00:00 - 01:50</div>
+                    </div>
+                    <div class="module-status" id="status-1">
+                        <span>⭕</span>
+                        <span>Not Started</span>
+                    </div>
+                </div>
+                <div class="module-description">
+                    Understanding why proper well abandonment is critical for environmental protection, public safety, and regulatory compliance.
+                </div>
+                <div class="module-content" id="content-1">
+                    <div class="key-points">
+                        <h4>Key Learning Points:</h4>
+                        <ul>
+                            <li>Wells at end of productive life cannot be simply left open</li>
+                            <li>Severe risks include groundwater contamination, soil pollution, and greenhouse gas leaks</li>
+                            <li>P&A permanently seals wells using specialized equipment</li>
+                            <li>Primary goal: protect environment and public safety</li>
+                            <li>Legal and regulatory obligations for operators</li>
+                        </ul>
+                    </div>
+                    <div class="quiz-section">
+                        <div class="quiz-title">Knowledge Check</div>
+                        <div class="quiz-question">
+                            <p>What are the primary risks of improperly abandoned wells?</p>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q1" value="a"> Economic losses only
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q1" value="b"> Groundwater contamination, soil pollution, and greenhouse gas leaks
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q1" value="c"> Equipment depreciation
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q1" value="d"> Lost production revenue
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-actions">
+                        <button class="btn btn-primary" onclick="completeModule(1)">Mark Complete & Continue</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 2 -->
+            <div class="module-card" data-module="2" onclick="toggleModule(2)">
+                <div class="module-header">
+                    <div class="module-title-group">
+                        <div class="module-number">MODULE 2</div>
+                        <div class="module-title">Regulatory Frameworks: Prescriptive vs Goal-Setting</div>
+                        <div class="module-duration">📹 Video: 01:51 - 02:46</div>
+                    </div>
+                    <div class="module-status" id="status-2">
+                        <span>🔒</span>
+                        <span>Locked</span>
+                    </div>
+                </div>
+                <div class="module-description">
+                    Comparing the two fundamental approaches governments use to regulate P&A operations globally.
+                </div>
+                <div class="module-content" id="content-2">
+                    <div class="key-points">
+                        <h4>Key Learning Points:</h4>
+                        <ul>
+                            <li><strong>Prescriptive Regulations (USA):</strong> Detailed step-by-step requirements (e.g., specific cement plug lengths)</li>
+                            <li>Advantages: Consistency and clear compliance path</li>
+                            <li>Disadvantages: Can stifle innovation and adaptation</li>
+                            <li><strong>Goal-Setting Regulations (UK/Norway):</strong> Define objective without dictating method</li>
+                            <li>Requirement: Rigorous documentation proving effectiveness</li>
+                            <li>Advantage: Encourages innovation and best practices</li>
+                        </ul>
+                    </div>
+                    <div class="quiz-section">
+                        <div class="quiz-title">Knowledge Check</div>
+                        <div class="quiz-question">
+                            <p>Which regulatory approach requires operators to prove their methods work through rigorous documentation?</p>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q2" value="a"> Prescriptive regulations
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q2" value="b"> Goal-setting regulations
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q2" value="c"> Both equally
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q2" value="d"> Neither approach requires documentation
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-actions">
+                        <button class="btn btn-primary" onclick="completeModule(2)">Mark Complete & Continue</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 3 -->
+            <div class="module-card" data-module="3" onclick="toggleModule(3)">
+                <div class="module-header">
+                    <div class="module-title-group">
+                        <div class="module-number">MODULE 3</div>
+                        <div class="module-title">Global Standards & Country-Specific Approaches</div>
+                        <div class="module-duration">📹 Video: 02:47 - 06:49</div>
+                    </div>
+                    <div class="module-status" id="status-3">
+                        <span>🔒</span>
+                        <span>Locked</span>
+                    </div>
+                </div>
+                <div class="module-description">
+                    Exploring ISO 16530-1 standards and how different countries (Norway, UK, USA, Australia) implement P&A regulations.
+                </div>
+                <div class="module-content" id="content-3">
+                    <div class="key-points">
+                        <h4>Key Learning Points:</h4>
+                        <ul>
+                            <li><strong>ISO 16530-1:</strong> Universal global standard defining core P&A principles</li>
+                            <li>Defines permanent barriers as foundational requirement</li>
+                            <li><strong>Norway:</strong> Gold standard "rock-to-rock" barrier; scientific proof required</li>
+                            <li><strong>United Kingdom:</strong> Goal-setting with liability in perpetuity</li>
+                            <li><strong>United States:</strong> Primarily prescriptive state rules; federal shift to performance-based (Gulf of Mexico)</li>
+                            <li><strong>Australia:</strong> Transitioning from prescriptive to goal-setting; strong evidence required for leaving equipment</li>
+                        </ul>
+                    </div>
+                    <div class="quiz-section">
+                        <div class="quiz-title">Knowledge Check</div>
+                        <div class="quiz-question">
+                            <p>What is ISO 16530-1's role in global P&A operations?</p>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q3" value="a"> It replaces all national regulations
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q3" value="b"> It defines core principles and acts as a bridge between regulatory systems
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q3" value="c"> It only applies to offshore operations
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q3" value="d"> It is voluntary guidance with no legal weight
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-actions">
+                        <button class="btn btn-primary" onclick="completeModule(3)">Mark Complete & Continue</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 4 -->
+            <div class="module-card" data-module="4" onclick="toggleModule(4)">
+                <div class="module-header">
+                    <div class="module-title-group">
+                        <div class="module-number">MODULE 4</div>
+                        <div class="module-title">Technical Barrier Systems</div>
+                        <div class="module-duration">📹 Video: 06:50 - 07:42</div>
+                    </div>
+                    <div class="module-status" id="status-4">
+                        <span>🔒</span>
+                        <span>Locked</span>
+                    </div>
+                </div>
+                <div class="module-description">
+                    Understanding barrier design, components, and verification requirements for permanent well sealing.
+                </div>
+                <div class="module-content" id="content-4">
+                    <div class="key-points">
+                        <h4>Key Learning Points:</h4>
+                        <ul>
+                            <li>Barrier system blocks fluid movement permanently</li>
+                            <li>Components: Cement plug + steel casing + surrounding rock formation</li>
+                            <li>Objective: Restore natural seal that existed before drilling</li>
+                            <li>Verification methods: Pressure testing and logging</li>
+                            <li>Mandatory integrity confirmation before completion</li>
+                            <li>Multiple barriers for redundancy and safety</li>
+                        </ul>
+                    </div>
+                    <div class="quiz-section">
+                        <div class="quiz-title">Knowledge Check</div>
+                        <div class="quiz-question">
+                            <p>What are the three main components of a proper P&A barrier?</p>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q4" value="a"> Cement, steel, and rock formation
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q4" value="b"> Cement, mud, and gravel
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q4" value="c"> Steel, concrete, and plastic
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q4" value="d"> Only cement is required
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-actions">
+                        <button class="btn btn-primary" onclick="completeModule(4)">Mark Complete & Continue</button>
+                        <a href="sop-library.html" class="btn btn-secondary">View Related SOPs</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 5 -->
+            <div class="module-card" data-module="5" onclick="toggleModule(5)">
+                <div class="module-header">
+                    <div class="module-title-group">
+                        <div class="module-number">MODULE 5</div>
+                        <div class="module-title">Liability in Perpetuity & Long-Term Responsibility</div>
+                        <div class="module-duration">📹 Video: 07:43 - 09:48</div>
+                    </div>
+                    <div class="module-status" id="status-5">
+                        <span>🔒</span>
+                        <span>Locked</span>
+                    </div>
+                </div>
+                <div class="module-description">
+                    Critical understanding of permanent liability, trailing liability, and why operators remain responsible indefinitely.
+                </div>
+                <div class="module-content" id="content-5">
+                    <div class="key-points">
+                        <h4>Key Learning Points:</h4>
+                        <ul>
+                            <li><strong>Liability in Perpetuity:</strong> Responsibility continues indefinitely after plugging</li>
+                            <li>Current owner liable for leaks occurring decades after abandonment</li>
+                            <li>Cannot simply walk away after job completion</li>
+                            <li><strong>Trailing Liability (UK):</strong> Regulators can pursue previous owners if current owner goes bankrupt</li>
+                            <li>Prevents offloading risky assets to unstable operators</li>
+                            <li>Encourages thorough due diligence in asset transactions</li>
+                            <li>Long-term planning essential for corporate risk management</li>
+                        </ul>
+                    </div>
+                    <div class="quiz-section">
+                        <div class="quiz-title">Knowledge Check</div>
+                        <div class="quiz-question">
+                            <p>What is "trailing liability" in P&A operations?</p>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q5" value="a"> Liability only lasts 10 years
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q5" value="b"> Previous owners can be pursued if current owner goes bankrupt
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q5" value="c"> Liability transfers to the government
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q5" value="d"> Liability ends when the well is plugged
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-actions">
+                        <button class="btn btn-primary" onclick="completeModule(5)">Mark Complete & Continue</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 6 -->
+            <div class="module-card" data-module="6" onclick="toggleModule(6)">
+                <div class="module-header">
+                    <div class="module-title-group">
+                        <div class="module-number">MODULE 6</div>
+                        <div class="module-title">Financial Assurance & Innovation</div>
+                        <div class="module-duration">📹 Video: 09:49 - 11:24</div>
+                    </div>
+                    <div class="module-status" id="status-6">
+                        <span>🔒</span>
+                        <span>Locked</span>
+                    </div>
+                </div>
+                <div class="module-description">
+                    Understanding bonding requirements, financial guarantees, and innovative approaches like rigs-to-reefs programs.
+                </div>
+                <div class="module-content" id="content-6">
+                    <div class="key-points">
+                        <h4>Key Learning Points:</h4>
+                        <ul>
+                            <li><strong>Financial Bonds:</strong> Companies must post bonds guaranteeing P&A funding</li>
+                            <li>Regulators updating bond amounts to reflect real-world costs</li>
+                            <li>Prevents abandonment of wells due to financial insolvency</li>
+                            <li>Bond amounts increasing globally to match actual decommissioning costs</li>
+                            <li><strong>Rigs-to-Reefs:</strong> Offshore platforms converted to artificial reefs in some regions</li>
+                            <li>Requires strict environmental review confirming benefits > risks</li>
+                            <li>Not universally accepted; jurisdiction-specific approval needed</li>
+                        </ul>
+                    </div>
+                    <div class="quiz-section">
+                        <div class="quiz-title">Knowledge Check</div>
+                        <div class="quiz-question">
+                            <p>What is the purpose of financial bonds in P&A operations?</p>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q6" value="a"> To pay worker salaries
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q6" value="b"> To guarantee funding for P&A completion
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q6" value="c"> To cover production taxes
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q6" value="d"> To fund environmental monitoring only
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-actions">
+                        <button class="btn btn-primary" onclick="completeModule(6)">Mark Complete & Continue</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module 7 -->
+            <div class="module-card" data-module="7" onclick="toggleModule(7)">
+                <div class="module-header">
+                    <div class="module-title-group">
+                        <div class="module-number">MODULE 7</div>
+                        <div class="module-title">The Three Golden Rules of P&A</div>
+                        <div class="module-duration">📹 Video: 11:25 - 11:45</div>
+                    </div>
+                    <div class="module-status" id="status-7">
+                        <span>🔒</span>
+                        <span>Locked</span>
+                    </div>
+                </div>
+                <div class="module-description">
+                    Final synthesis: The three fundamental principles every P&A professional must follow.
+                </div>
+                <div class="module-content" id="content-7">
+                    <div class="key-points">
+                        <h4>The Three Golden Rules:</h4>
+                        <ul>
+                            <li><strong>1. Check Local Law:</strong> Regulations vary globally - always know your jurisdiction's specific requirements</li>
+                            <li><strong>2. Prove Safety:</strong> Use best materials, verify all barriers, document every step meticulously</li>
+                            <li><strong>3. Plan for the Future:</strong> Remember liability lasts generations - build for long-term integrity</li>
+                        </ul>
+                        <h4 style="margin-top: 16px;">Course Completion Criteria:</h4>
+                        <ul>
+                            <li>Understand prescriptive vs goal-setting regulatory frameworks</li>
+                            <li>Recognize global standard ISO 16530-1 and country-specific approaches</li>
+                            <li>Comprehend technical barrier systems and verification requirements</li>
+                            <li>Appreciate liability in perpetuity and trailing liability concepts</li>
+                            <li>Know financial assurance requirements and innovative programs</li>
+                        </ul>
+                    </div>
+                    <div class="quiz-section">
+                        <div class="quiz-title">Final Assessment</div>
+                        <div class="quiz-question">
+                            <p>Why is "planning for the future" critical in P&A operations?</p>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q7" value="a"> To reduce current operational costs
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q7" value="b"> Because liability can last for generations
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q7" value="c"> To comply with short-term regulations
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q7" value="d"> It's only a recommendation, not a requirement
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-actions">
+                        <button class="btn btn-success" onclick="completeModule(7)">Complete Course & Get Certificate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Resources -->
+        <div class="resources-section">
+            <h2 class="resources-title">Related WellTegra Resources</h2>
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <h4>🔧 Bridge Plug Setting SOP</h4>
+                    <p>Critical procedure for establishing P&A barriers with bridge plugs</p>
+                    <a href="sop-library.html#sop_002" class="resource-link">View SOP →</a>
+                </div>
+                <div class="resource-card">
+                    <h4>🔧 Bridge Plug Retrieval SOP</h4>
+                    <p>Troubleshooting and retrieval procedures for complex P&A scenarios</p>
+                    <a href="sop-library.html#sop_003" class="resource-link">View SOP →</a>
+                </div>
+                <div class="resource-card">
+                    <h4>📦 Well Abandonment Package</h4>
+                    <p>Pre-configured equipment assemblies for P&A operations</p>
+                    <a href="equipment.html" class="resource-link">View Equipment →</a>
+                </div>
+                <div class="resource-card">
+                    <h4>📚 Intervention Planning Guide</h4>
+                    <p>6-phase methodology for complex well interventions</p>
+                    <a href="intervention-guide.html" class="resource-link">View Guide →</a>
+                </div>
+                <div class="resource-card">
+                    <h4>⚠️ Well 666 Case Study</h4>
+                    <p>Lessons learned from "The Perfect Storm" - P&A considerations</p>
+                    <a href="well-666.html" class="resource-link">View Case Study →</a>
+                </div>
+                <div class="resource-card">
+                    <h4>🔍 Equipment Catalog</h4>
+                    <p>Complete inventory of P&A tools and pressure control equipment</p>
+                    <a href="equipment.html" class="resource-link">Browse Catalog →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certificate Section -->
+        <div class="certificate-section" id="certificate">
+            <h2>🎓 Congratulations!</h2>
+            <p>You have successfully completed the Plug & Abandonment Professional Course</p>
+            <p><strong>Certificate ID:</strong> <span id="cert-id"></span></p>
+            <p><strong>Completion Date:</strong> <span id="cert-date"></span></p>
+            <button class="btn" style="background: white; color: var(--success);" onclick="downloadCertificate()">Download Certificate</button>
+        </div>
+    </div>
+
+    <script>
+        // Course state management
+        const courseState = {
+            completedModules: new Set(),
+            currentModule: null
+        };
+
+        // Load saved progress
+        function loadProgress() {
+            const saved = localStorage.getItem('pa-course-progress');
+            if (saved) {
+                const data = JSON.parse(saved);
+                courseState.completedModules = new Set(data.completed || []);
+                updateProgress();
+                updateModuleStates();
+            }
+        }
+
+        // Save progress
+        function saveProgress() {
+            localStorage.setItem('pa-course-progress', JSON.stringify({
+                completed: Array.from(courseState.completedModules),
+                lastAccess: new Date().toISOString()
+            }));
+        }
+
+        // Toggle module content
+        function toggleModule(moduleNum) {
+            const card = document.querySelector(`[data-module="${moduleNum}"]`);
+            const content = document.getElementById(`content-${moduleNum}`);
+            const status = document.getElementById(`status-${moduleNum}`);
+
+            // Check if module is locked
+            if (moduleNum > 1 && !courseState.completedModules.has(moduleNum - 1)) {
+                alert(`Please complete Module ${moduleNum - 1} first`);
+                return;
+            }
+
+            // Toggle content
+            const isActive = content.classList.contains('active');
+
+            // Close all other modules
+            document.querySelectorAll('.module-content').forEach(c => c.classList.remove('active'));
+
+            if (!isActive) {
+                content.classList.add('active');
+
+                // Mark as in progress if not completed
+                if (!courseState.completedModules.has(moduleNum)) {
+                    card.classList.add('in-progress');
+                    status.innerHTML = '<span>⏳</span><span>In Progress</span>';
+                    status.className = 'module-status in-progress';
+                }
+            }
+        }
+
+        // Complete module
+        function completeModule(moduleNum) {
+            // Check quiz answer
+            const correctAnswers = {
+                1: 'b', 2: 'b', 3: 'b', 4: 'a', 5: 'b', 6: 'b', 7: 'b'
+            };
+
+            const selected = document.querySelector(`input[name="q${moduleNum}"]:checked`);
+            if (!selected) {
+                alert('Please answer the knowledge check question');
+                return;
+            }
+
+            const options = document.querySelectorAll(`input[name="q${moduleNum}"]`);
+            options.forEach(opt => {
+                const label = opt.parentElement;
+                label.classList.remove('selected', 'correct', 'incorrect');
+                if (opt.checked) {
+                    label.classList.add('selected');
+                    if (opt.value === correctAnswers[moduleNum]) {
+                        label.classList.add('correct');
+                    } else {
+                        label.classList.add('incorrect');
+                        alert('Incorrect answer. Please review the material and try again.');
+                        return;
+                    }
+                }
+            });
+
+            if (selected.value !== correctAnswers[moduleNum]) {
+                return;
+            }
+
+            // Mark as completed
+            courseState.completedModules.add(moduleNum);
+            const card = document.querySelector(`[data-module="${moduleNum}"]`);
+            const status = document.getElementById(`status-${moduleNum}`);
+
+            card.classList.remove('in-progress');
+            card.classList.add('completed');
+            status.innerHTML = '<span>✅</span><span>Completed</span>';
+            status.className = 'module-status completed';
+
+            // Close current module
+            document.getElementById(`content-${moduleNum}`).classList.remove('active');
+
+            // Unlock next module
+            if (moduleNum < 7) {
+                const nextCard = document.querySelector(`[data-module="${moduleNum + 1}"]`);
+                nextCard.classList.remove('locked');
+                document.getElementById(`status-${moduleNum + 1}`).innerHTML = '<span>⭕</span><span>Not Started</span>';
+                document.getElementById(`status-${moduleNum + 1}`).className = 'module-status';
+            }
+
+            // Update progress
+            updateProgress();
+            saveProgress();
+
+            // Check if course completed
+            if (moduleNum === 7) {
+                showCertificate();
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const total = 7;
+            const completed = courseState.completedModules.size;
+            const percent = Math.round((completed / total) * 100);
+
+            document.getElementById('progress-percent').textContent = `${percent}%`;
+            document.getElementById('progress-fill').style.width = `${percent}%`;
+        }
+
+        // Update module states on load
+        function updateModuleStates() {
+            courseState.completedModules.forEach(moduleNum => {
+                const card = document.querySelector(`[data-module="${moduleNum}"]`);
+                const status = document.getElementById(`status-${moduleNum}`);
+
+                card.classList.add('completed');
+                status.innerHTML = '<span>✅</span><span>Completed</span>';
+                status.className = 'module-status completed';
+            });
+
+            // Unlock next uncompleted module
+            const nextModule = courseState.completedModules.size + 1;
+            if (nextModule <= 7) {
+                const nextCard = document.querySelector(`[data-module="${nextModule}"]`);
+                if (nextCard) {
+                    nextCard.classList.remove('locked');
+                }
+            }
+        }
+
+        // Show certificate
+        function showCertificate() {
+            const certSection = document.getElementById('certificate');
+            const certId = 'PA-' + Date.now().toString(36).toUpperCase();
+            const certDate = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            document.getElementById('cert-id').textContent = certId;
+            document.getElementById('cert-date').textContent = certDate;
+            certSection.classList.add('show');
+            certSection.scrollIntoView({ behavior: 'smooth' });
+
+            // Save certificate data
+            localStorage.setItem('pa-course-certificate', JSON.stringify({
+                id: certId,
+                date: certDate,
+                completed: new Date().toISOString()
+            }));
+        }
+
+        // Download certificate
+        function downloadCertificate() {
+            alert('Certificate download functionality would generate a PDF certificate with your completion details.');
+            // In production, this would trigger PDF generation
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProgress();
+
+            // Check if already completed
+            const cert = localStorage.getItem('pa-course-certificate');
+            if (cert) {
+                const data = JSON.parse(cert);
+                document.getElementById('cert-id').textContent = data.id;
+                document.getElementById('cert-date').textContent = data.date;
+                document.getElementById('certificate').classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>
