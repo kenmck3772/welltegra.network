@@ -1408,6 +1408,838 @@
                 min-height: 44px;
             }
         }
+
+        /* Before/After Slider */
+        .before-after-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .before-after-slider {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        .before-image, .after-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .before-image {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 50%, #78350f 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .after-image {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #064e3b 100%);
+            clip-path: inset(0 50% 0 0);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+            cursor: ew-resize;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .slider-handle::before {
+            content: '⬌';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #0b1220;
+            font-weight: 900;
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.5);
+        }
+
+        .well-visual {
+            position: relative;
+            width: 120px;
+            height: 300px;
+            border: 3px solid currentColor;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        .well-label {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .well-description {
+            font-size: 0.9rem;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .before-content {
+            color: var(--danger);
+        }
+
+        .after-content {
+            color: var(--success);
+        }
+
+        .leak-indicator {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--danger);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .seal-indicator {
+            position: absolute;
+            width: 100%;
+            background: var(--success);
+            opacity: 0.8;
+        }
+
+        /* Well Depth Visualizer */
+        .depth-visualizer {
+            background: linear-gradient(180deg, #0ea5e9 0%, #1e293b 30%, #0f172a 70%, #78350f 100%);
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .depth-scale {
+            position: relative;
+            height: 500px;
+            border-left: 4px solid var(--accent);
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        .depth-marker {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+        }
+
+        .depth-marker:hover {
+            transform: translateX(10px);
+            border-color: var(--accent-hover);
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);
+        }
+
+        .depth-marker.active {
+            background: rgba(20, 184, 166, 0.2);
+            border-color: var(--accent-hover);
+            transform: translateX(15px);
+        }
+
+        .depth-label {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .depth-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .depth-info-panel {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .depth-info-panel.active {
+            display: block;
+        }
+
+        .depth-info-panel h4 {
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        /* Cement Volume Calculator */
+        .cement-calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .cement-calculator {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .calculator-inputs {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .calc-input {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .calc-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+        }
+
+        .calc-input:hover {
+            border-color: var(--accent);
+        }
+
+        .calculator-results {
+            background: linear-gradient(135deg, var(--card) 0%, var(--bg) 100%);
+            padding: 24px;
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 20px rgba(20, 184, 166, 0.1);
+        }
+
+        .result-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 12px;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .result-item:hover {
+            background: rgba(20, 184, 166, 0.1);
+            transform: translateX(4px);
+        }
+
+        .result-label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .result-value {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .result-unit {
+            color: var(--muted);
+            font-size: 0.9rem;
+            min-width: 100px;
+        }
+
+        /* P&A Decision Tree */
+        .decision-tree {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .decision-tree-container {
+            min-height: 300px;
+            position: relative;
+        }
+
+        .decision-slide {
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .decision-slide.active {
+            display: block;
+        }
+
+        .decision-question h4 {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .decision-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .decision-btn {
+            background: linear-gradient(135deg, var(--bg) 0%, var(--card) 100%);
+            border: 2px solid var(--border);
+            padding: 16px 20px;
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .decision-btn:hover {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary-color) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(20, 184, 166, 0.2);
+        }
+
+        .decision-result {
+            display: none;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .decision-result.active {
+            display: block;
+        }
+
+        .result-summary {
+            background: var(--bg);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .result-summary h5 {
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .result-summary p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .result-summary ul {
+            margin-left: 20px;
+            margin-top: 8px;
+            line-height: 1.8;
+        }
+
+        .decision-breadcrumb {
+            margin-top: 20px;
+            padding: 12px;
+            background: var(--bg);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            min-height: 40px;
+        }
+
+        .requirement-item {
+            background: rgba(20, 184, 166, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .cost-estimate {
+            background: rgba(234, 179, 8, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            border-left: 3px solid var(--warning);
+        }
+
+        /* Barrier Sequence Builder */
+        .sequence-builder {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 968px) {
+            .sequence-builder {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .builder-controls {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .barrier-type-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .barrier-type-card {
+            background: var(--bg);
+            padding: 16px;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .barrier-type-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(20, 184, 166, 0.1);
+        }
+
+        .btn-small {
+            padding: 8px 12px;
+            font-size: 0.85rem;
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .btn-accent:hover {
+            background: var(--primary-color);
+        }
+
+        .wellbore-visual {
+            background: linear-gradient(180deg, #0ea5e9 0%, #1e293b 20%, #0f172a 80%, #78350f 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+        }
+
+        .wellbore-container {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 10px;
+            padding: 16px;
+            backdrop-filter: blur(4px);
+        }
+
+        .depth-zone {
+            margin-bottom: 16px;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 8px;
+            border-left: 3px solid var(--muted);
+        }
+
+        .zone-label {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .barrier-slot {
+            min-height: 60px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .barrier-slot:empty::before {
+            content: 'Empty - Add barrier';
+        }
+
+        .barrier-slot.filled {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            border: 2px solid var(--accent);
+            border-style: solid;
+        }
+
+        .barrier-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: bold;
+        }
+
+        .barrier-item .icon {
+            font-size: 1.5rem;
+        }
+
+        /* Pressure Test Simulator */
+        .pressure-test-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 968px) {
+            .pressure-test-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .test-controls-panel {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .pressure-gauge-display {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .gauge-circle {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            border: 8px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--card) 100%);
+            box-shadow: 0 0 20px rgba(20, 184, 166, 0.3);
+            transition: all 0.3s;
+        }
+
+        .gauge-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .gauge-unit {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .gauge-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .test-visualization-panel {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+        }
+
+        .barrier-test-visual {
+            min-height: 300px;
+            position: relative;
+            background: var(--bg);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .wellbore-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            height: 250px;
+        }
+
+        .formation-wall {
+            width: 40px;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                #78350f,
+                #78350f 10px,
+                #92400e 10px,
+                #92400e 20px
+            );
+            border: 2px solid #451a03;
+        }
+
+        .cement-plug {
+            width: 120px;
+            height: 100%;
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            border: 3px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.5s;
+        }
+
+        .cement-plug.under-pressure {
+            box-shadow: 0 0 30px rgba(20, 184, 166, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .plug-label {
+            font-size: 0.75rem;
+            color: var(--text-primary);
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .pressure-arrows {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            gap: 100px;
+            animation: fadeIn 0.5s;
+        }
+
+        .pressure-arrows .arrow {
+            font-size: 1.2rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .leak-indicators {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .leak {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: leakFlow 1s ease-in-out infinite;
+        }
+
+        @keyframes leakFlow {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(10px); }
+        }
+
+        .test-progress {
+            margin-top: 20px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: var(--bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--border);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--primary-color) 100%);
+            transition: width 0.5s linear;
+            width: 0%;
+        }
+
+        /* Cost Breakdown Pie Chart */
+        .cost-breakdown-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 968px) {
+            .cost-breakdown-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pie-chart-section {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .pie-chart-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .pie-chart {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #3b82f6 0% 30%,
+                #10b981 30% 55%,
+                #f59e0b 55% 75%,
+                #8b5cf6 75% 85%,
+                #ec4899 85% 95%,
+                #14b8a6 95% 100%
+            );
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .pie-chart:hover {
+            transform: scale(1.05);
+        }
+
+        .pie-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .center-label {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .center-sublabel {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .pie-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .legend-item:hover {
+            background: rgba(20, 184, 166, 0.1);
+            transform: translateX(4px);
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .legend-label {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .cost-detail-panel {
+            background: linear-gradient(135deg, var(--card) 0%, var(--bg) 100%);
+            padding: 24px;
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+            min-height: 300px;
+        }
+
     </style>
 </head>
 <body>
@@ -1594,6 +2426,165 @@
                         <p style="margin-top: 16px; padding: 12px; background: rgba(239, 68, 68, 0.1); border-radius: 6px; border-left: 4px solid var(--danger);">
                             <strong>⚠️ Bottom Line:</strong> The cost of proper P&A ($100K-$10M) is far less than cleanup costs, legal liability, and environmental damage from improper abandonment. This is why regulations exist and why "just walking away" is never an option.
                         </p>
+
+                        <!-- Before/After P&A Slider -->
+                        <div class="interactive-section" style="margin-top: 24px;">
+                            <div class="interactive-title">Interactive: Before & After P&A Comparison</div>
+                            <p style="margin-bottom: 16px; color: var(--text-secondary);">Drag the slider to compare an improperly abandoned well vs. a properly sealed well</p>
+
+                            <div class="before-after-container">
+                                <div class="before-after-slider" id="beforeAfterSlider">
+                                    <!-- BEFORE: Leaking Well -->
+                                    <div class="before-image">
+                                        <div class="before-content">
+                                            <div class="well-label">❌ IMPROPERLY ABANDONED</div>
+                                            <div class="well-visual" style="border-color: var(--danger);">
+                                                <div class="leak-indicator" style="top: 20%; left: -10px;"></div>
+                                                <div class="leak-indicator" style="top: 40%; right: -10px;"></div>
+                                                <div class="leak-indicator" style="top: 60%; left: -10px;"></div>
+                                                <div class="leak-indicator" style="bottom: 10%; right: -10px;"></div>
+                                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3rem;">💀</div>
+                                            </div>
+                                            <div class="well-description">
+                                                • Leaking fluids<br>
+                                                • Groundwater contamination<br>
+                                                • Gas emissions<br>
+                                                • Safety hazard
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- AFTER: Properly Sealed Well -->
+                                    <div class="after-image" id="afterImage">
+                                        <div class="after-content">
+                                            <div class="well-label">✅ PROPERLY SEALED P&A</div>
+                                            <div class="well-visual" style="border-color: var(--success);">
+                                                <div class="seal-indicator" style="height: 30%; bottom: 0;">
+                                                    <div style="text-align: center; padding-top: 5px; font-size: 0.7rem;">Cement Plug</div>
+                                                </div>
+                                                <div class="seal-indicator" style="height: 25%; top: 35%;">
+                                                    <div style="text-align: center; padding-top: 5px; font-size: 0.7rem;">Barrier</div>
+                                                </div>
+                                                <div style="position: absolute; top: 5%; left: 50%; transform: translateX(-50%); font-size: 0.8rem;">Surface Seal</div>
+                                            </div>
+                                            <div class="well-description">
+                                                • Multiple barriers<br>
+                                                • No leakage<br>
+                                                • Permanent protection<br>
+                                                • Environmentally safe
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Slider Handle -->
+                                    <div class="slider-handle" id="sliderHandle"></div>
+                                </div>
+                            </div>
+
+                            <p style="margin-top: 16px; text-align: center; font-style: italic; color: var(--muted);">
+                                Move the slider to see the dramatic difference proper P&A makes
+                            </p>
+                        </div>
+
+                        <!-- Well Depth Visualizer -->
+                        <div class="interactive-section" style="margin-top: 24px;">
+                            <div class="interactive-title">Interactive: Understanding Well Depth & Formation Zones</div>
+                            <p style="margin-bottom: 16px; color: var(--text-secondary);">Click on each depth marker to learn what exists at different levels underground and why P&A must seal multiple zones</p>
+
+                            <div class="depth-visualizer">
+                                <div class="depth-scale">
+                                    <!-- Surface -->
+                                    <div class="depth-marker" style="top: 0;" onclick="selectDepth('surface')" data-depth="surface">
+                                        <strong>🏞️ Surface (0 ft)</strong>
+                                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
+                                    </div>
+
+                                    <!-- Shallow Aquifer -->
+                                    <div class="depth-marker" style="top: 10%;" onclick="selectDepth('shallow')" data-depth="shallow">
+                                        <strong>💧 Shallow Aquifer (500 ft)</strong>
+                                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
+                                    </div>
+
+                                    <!-- Intermediate Zone -->
+                                    <div class="depth-marker" style="top: 30%;" onclick="selectDepth('intermediate')" data-depth="intermediate">
+                                        <strong>🪨 Intermediate Zone (2,000 ft)</strong>
+                                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
+                                    </div>
+
+                                    <!-- Production Zone -->
+                                    <div class="depth-marker" style="top: 55%;" onclick="selectDepth('production')" data-depth="production">
+                                        <strong>⛽ Production Zone (5,000 ft)</strong>
+                                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
+                                    </div>
+
+                                    <!-- Deep Formation -->
+                                    <div class="depth-marker" style="top: 75%;" onclick="selectDepth('deep')" data-depth="deep">
+                                        <strong>🌋 Deep Formation (10,000 ft)</strong>
+                                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
+                                    </div>
+
+                                    <!-- Ultra Deep -->
+                                    <div class="depth-marker" style="top: 95%;" onclick="selectDepth('ultra-deep')" data-depth="ultra-deep">
+                                        <strong>🔥 Ultra Deep (15,000+ ft)</strong>
+                                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
+                                    </div>
+                                </div>
+
+                                <!-- Depth Information Panels -->
+                                <div class="depth-info reg-details" id="depth-surface" style="margin-top: 24px;">
+                                    <h4 style="color: var(--accent); margin-bottom: 12px;">🏞️ Surface Level (0 ft)</h4>
+                                    <p><strong>What's here:</strong> Wellhead, surface casing, topsoil, and immediate access point.</p>
+                                    <p style="margin-top: 8px;"><strong>P&A Requirements:</strong> Surface plug must be set, wellhead removed, and site restored to original condition.</p>
+                                    <p style="margin-top: 8px;"><strong>Critical Point:</strong> This is the first line of defense. A proper surface seal prevents rainwater infiltration and unauthorized access.</p>
+                                    <p style="margin-top: 8px;"><strong>Typical Materials:</strong> Cement plug extending 50-100 ft below surface, steel plate cap.</p>
+                                </div>
+
+                                <div class="depth-info reg-details" id="depth-shallow" style="margin-top: 24px;">
+                                    <h4 style="color: var(--accent); margin-bottom: 12px;">💧 Shallow Aquifer Zone (500 ft)</h4>
+                                    <p><strong>What's here:</strong> Freshwater aquifers used for drinking water, irrigation, and livestock.</p>
+                                    <p style="margin-top: 8px;"><strong>Why Critical:</strong> This is the #1 priority in P&A - protecting drinking water sources. Contamination here affects entire communities.</p>
+                                    <p style="margin-top: 8px;"><strong>P&A Requirements:</strong> Cement barrier MUST isolate aquifer from well bore. Typically requires 100+ ft cement plug across aquifer zone.</p>
+                                    <p style="margin-top: 8px;"><strong>Consequence of Failure:</strong> Aquifer contamination can cost millions to remediate and may be irreversible.</p>
+                                </div>
+
+                                <div class="depth-info reg-details" id="depth-intermediate" style="margin-top: 24px;">
+                                    <h4 style="color: var(--accent); margin-bottom: 12px;">🪨 Intermediate Zone (2,000 ft)</h4>
+                                    <p><strong>What's here:</strong> Transition zone between fresh and saline water, minor gas shows, geological transitions.</p>
+                                    <p style="margin-top: 8px;"><strong>P&A Challenge:</strong> May have multiple casing strings, varying pressure zones, and temperature changes.</p>
+                                    <p style="margin-top: 8px;"><strong>Barrier Placement:</strong> Strategic cement plugs isolate different pressure regimes and prevent vertical migration.</p>
+                                    <p style="margin-top: 8px;"><strong>Testing Required:</strong> Pressure testing confirms barriers hold against formation pressures.</p>
+                                </div>
+
+                                <div class="depth-info reg-details" id="depth-production" style="margin-top: 24px;">
+                                    <h4 style="color: var(--accent); margin-bottom: 12px;">⛽ Production Zone (5,000 ft)</h4>
+                                    <p><strong>What's here:</strong> The producing formation where oil/gas was extracted. High pressure, hydrocarbons, formation brine.</p>
+                                    <p style="margin-top: 8px;"><strong>Why Sealing Matters:</strong> Residual pressure and hydrocarbons can migrate upward if not properly sealed.</p>
+                                    <p style="margin-top: 8px;"><strong>P&A Method:</strong> Mechanical bridge plug or cement retainer set in casing, followed by cement plug across perforations and production interval.</p>
+                                    <p style="margin-top: 8px;"><strong>Typical Plug Length:</strong> 100-500 ft of cement to ensure complete isolation.</p>
+                                </div>
+
+                                <div class="depth-info reg-details" id="depth-deep" style="margin-top: 24px;">
+                                    <h4 style="color: var(--accent); margin-bottom: 12px;">🌋 Deep Formation (10,000 ft)</h4>
+                                    <p><strong>What's here:</strong> High pressure/high temperature zones, potential secondary hydrocarbon reservoirs.</p>
+                                    <p style="margin-top: 8px;"><strong>Conditions:</strong> Temperatures 200-300°F, pressures 5,000+ psi, specialized cement required.</p>
+                                    <p style="margin-top: 8px;"><strong>Equipment Challenges:</strong> Extreme conditions require specialized tools, high-temp cement, and careful planning.</p>
+                                    <p style="margin-top: 8px;"><strong>P&A Approach:</strong> Bottom plug typically set here to provide ultimate barrier against deep reservoir pressures.</p>
+                                </div>
+
+                                <div class="depth-info reg-details" id="depth-ultra-deep" style="margin-top: 24px;">
+                                    <h4 style="color: var(--accent); margin-bottom: 12px;">🔥 Ultra Deep Zone (15,000+ ft)</h4>
+                                    <p><strong>What's here:</strong> Deepest producing intervals, extreme conditions, possible salt formations.</p>
+                                    <p style="margin-top: 8px;"><strong>Extreme Conditions:</strong> Temperatures 300°F+, pressures 10,000+ psi, corrosive environments.</p>
+                                    <p style="margin-top: 8px;"><strong>P&A Strategy:</strong> If production occurred this deep, a permanent bottom plug is essential. May use balanced cement or specialized squeeze techniques.</p>
+                                    <p style="margin-top: 8px;"><strong>Cost Impact:</strong> Deep P&A operations are expensive but absolutely necessary - costs range $2M-$10M for ultra-deep wells.</p>
+                                    <p style="margin-top: 8px;"><strong>Fun Fact:</strong> Some wells exceed 30,000 ft - nearly 6 miles deep! That's deeper than Mount Everest is tall.</p>
+                                </div>
+                            </div>
+
+                            <p style="margin-top: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 6px; border-left: 4px solid var(--accent);">
+                                <strong>💡 Key Takeaway:</strong> P&A isn't just one plug at the surface - it's a carefully engineered system of multiple barriers at strategic depths, each designed to protect specific zones and prevent vertical fluid migration through thousands of feet of geology.
+                            </p>
+                        </div>
                     </div>
 
                     <div class="quiz-section">
@@ -1707,6 +2698,121 @@
                                 <li>Potential for inconsistency</li>
                             </ul>
                             <p style="margin-top: 8px;"><strong>Real-world example:</strong> Norway's "rock-to-rock" barrier requirement allows operators to choose their method, but they must scientifically prove it will prevent leaks in perpetuity.</p>
+                        </div>
+                    </div>
+
+                    <!-- P&A Decision Tree -->
+                    <div class="interactive-section" style="margin-top: 24px;">
+                        <div class="interactive-title">Interactive: P&A Decision Tree Navigator</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Answer a series of questions about your well to determine the P&A approach and regulatory requirements that apply</p>
+
+                        <div class="decision-tree">
+                            <div class="decision-tree-container">
+                                <!-- Question Slides -->
+                                <div class="decision-slide active" id="slide-1">
+                                    <div class="decision-question">
+                                        <h4>Where is the well located?</h4>
+                                        <p style="color: var(--muted); margin-top: 8px;">Geographic location determines applicable regulations</p>
+                                    </div>
+                                    <div class="decision-options">
+                                        <button class="decision-btn" onclick="nextDecision(2, 'usa', 'United States')">
+                                            🇺🇸 United States
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(2, 'uk', 'United Kingdom')">
+                                            🇬🇧 United Kingdom
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(2, 'norway', 'Norway')">
+                                            🇳🇴 Norway
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(2, 'other', 'Other')">
+                                            🌍 Other Country
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="decision-slide" id="slide-2">
+                                    <div class="decision-question">
+                                        <h4>What type of well is it?</h4>
+                                        <p style="color: var(--muted); margin-top: 8px;">Well type affects complexity and requirements</p>
+                                    </div>
+                                    <div class="decision-options">
+                                        <button class="decision-btn" onclick="nextDecision(3, 'oil', 'Oil Production Well')">
+                                            ⛽ Oil Production Well
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(3, 'gas', 'Gas Production Well')">
+                                            🔥 Gas Production Well
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(3, 'injection', 'Injection/Disposal Well')">
+                                            💉 Injection/Disposal Well
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(3, 'exploration', 'Exploration Well')">
+                                            🔍 Exploration Well
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="decision-slide" id="slide-3">
+                                    <div class="decision-question">
+                                        <h4>What is the well depth?</h4>
+                                        <p style="color: var(--muted); margin-top: 8px;">Depth impacts complexity and cost</p>
+                                    </div>
+                                    <div class="decision-options">
+                                        <button class="decision-btn" onclick="nextDecision(4, 'shallow', 'Shallow (< 5,000 ft)')">
+                                            📏 Shallow (< 5,000 ft)
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(4, 'medium', 'Medium (5,000 - 10,000 ft)')">
+                                            📐 Medium (5,000 - 10,000 ft)
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(4, 'deep', 'Deep (10,000 - 15,000 ft)')">
+                                            📊 Deep (10,000 - 15,000 ft)
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(4, 'ultra-deep', 'Ultra-Deep (> 15,000 ft)')">
+                                            🔬 Ultra-Deep (> 15,000 ft)
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="decision-slide" id="slide-4">
+                                    <div class="decision-question">
+                                        <h4>Are freshwater aquifers present?</h4>
+                                        <p style="color: var(--muted); margin-top: 8px;">Critical factor for environmental protection</p>
+                                    </div>
+                                    <div class="decision-options">
+                                        <button class="decision-btn" onclick="showResult('aquifer-yes')">
+                                            ✅ Yes - Freshwater aquifers present
+                                        </button>
+                                        <button class="decision-btn" onclick="showResult('aquifer-no')">
+                                            ❌ No - No freshwater zones
+                                        </button>
+                                        <button class="decision-btn" onclick="showResult('aquifer-unknown')">
+                                            ❓ Unknown - Needs assessment
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Result Section -->
+                                <div class="decision-result" id="decision-result">
+                                    <h4 style="color: var(--accent); margin-bottom: 16px;">Your P&A Requirements</h4>
+
+                                    <div class="result-summary" id="result-summary">
+                                        <!-- Populated by JavaScript -->
+                                    </div>
+
+                                    <button class="btn btn-secondary" onclick="resetDecisionTree()" style="margin-top: 20px; width: 100%;">
+                                        Start Over
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Breadcrumb Trail -->
+                            <div class="decision-breadcrumb" id="decision-breadcrumb">
+                                <span style="color: var(--muted);">Your selections: </span>
+                                <span id="breadcrumb-trail" style="color: var(--accent);"></span>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 6px; border-left: 4px solid var(--accent);">
+                            <p><strong>💡 Note:</strong> This decision tree provides general guidance. Always consult local regulations, qualified engineers, and regulatory authorities for your specific P&A requirements. Regulations vary by jurisdiction and can change over time.</p>
                         </div>
                     </div>
 
@@ -1949,6 +3055,316 @@
                         </p>
                     </div>
 
+                    <!-- Cement Volume Calculator -->
+                    <div class="interactive-section" style="margin-top: 24px;">
+                        <div class="interactive-title">Interactive: Cement Volume Calculator</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Calculate how much cement is needed to create a plug based on wellbore dimensions. Understanding volumes is critical for proper P&A planning.</p>
+
+                        <div class="cement-calculator">
+                            <div class="calculator-inputs">
+                                <div class="input-group">
+                                    <label for="hole-diameter">
+                                        <strong>Hole Diameter (inches)</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Inner diameter of the wellbore</span>
+                                    </label>
+                                    <input type="number" id="hole-diameter" class="calc-input" value="8.5" min="4" max="36" step="0.5" oninput="calculateCement()">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="plug-length">
+                                        <strong>Plug Length (feet)</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Height of cement plug required</span>
+                                    </label>
+                                    <input type="number" id="plug-length" class="calc-input" value="100" min="10" max="1000" step="10" oninput="calculateCement()">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="casing-od">
+                                        <strong>Casing Outer Diameter (inches)</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Leave at 0 if cementing open hole</span>
+                                    </label>
+                                    <input type="number" id="casing-od" class="calc-input" value="0" min="0" max="20" step="0.5" oninput="calculateCement()">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="safety-factor">
+                                        <strong>Safety Factor (%)</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Extra cement for washouts/irregularities</span>
+                                    </label>
+                                    <input type="number" id="safety-factor" class="calc-input" value="20" min="0" max="50" step="5" oninput="calculateCement()">
+                                </div>
+
+                                <button class="btn btn-primary" onclick="calculateCement()" style="width: 100%; margin-top: 12px;">
+                                    Calculate Volume
+                                </button>
+                            </div>
+
+                            <div class="calculator-results" id="cement-results">
+                                <h4 style="margin-bottom: 16px; color: var(--accent);">Calculation Results</h4>
+
+                                <div class="result-item">
+                                    <span class="result-label">Hole Volume:</span>
+                                    <span class="result-value" id="hole-volume">0</span>
+                                    <span class="result-unit">cubic feet</span>
+                                </div>
+
+                                <div class="result-item">
+                                    <span class="result-label">Annular Volume:</span>
+                                    <span class="result-value" id="annular-volume">0</span>
+                                    <span class="result-unit">cubic feet</span>
+                                </div>
+
+                                <div class="result-item">
+                                    <span class="result-label">Base Cement Required:</span>
+                                    <span class="result-value" id="base-cement">0</span>
+                                    <span class="result-unit">sacks (94 lb)</span>
+                                </div>
+
+                                <div class="result-item" style="border-top: 2px solid var(--accent); padding-top: 12px; margin-top: 12px;">
+                                    <span class="result-label"><strong>Total with Safety Factor:</strong></span>
+                                    <span class="result-value" id="total-cement" style="font-size: 1.4rem; color: var(--accent);"><strong>0</strong></span>
+                                    <span class="result-unit"><strong>sacks</strong></span>
+                                </div>
+
+                                <div class="result-item">
+                                    <span class="result-label">Estimated Cost:</span>
+                                    <span class="result-value" id="cement-cost">$0</span>
+                                    <span class="result-unit">@ $15/sack</span>
+                                </div>
+
+                                <div class="result-item">
+                                    <span class="result-label">Approximate Weight:</span>
+                                    <span class="result-value" id="cement-weight">0</span>
+                                    <span class="result-unit">lbs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 6px; border-left: 4px solid var(--accent);">
+                            <p style="margin-bottom: 8px;"><strong>📊 Understanding the Calculations:</strong></p>
+                            <ul style="font-size: 0.9rem; margin-left: 20px; line-height: 1.6;">
+                                <li><strong>Hole Volume:</strong> π × (diameter/2)² × length - the volume of the cylindrical space</li>
+                                <li><strong>Annular Volume:</strong> Volume between casing and hole wall (if casing present)</li>
+                                <li><strong>Cement Yield:</strong> One 94-lb sack of Class H cement yields approximately 1.15 cubic feet</li>
+                                <li><strong>Safety Factor:</strong> Industry standard 10-30% extra to account for washouts, hole irregularities, and losses</li>
+                                <li><strong>Real-World Application:</strong> Operators must order cement in advance - underestimating means job failure, overestimating wastes money</li>
+                            </ul>
+                        </div>
+
+                        <div style="margin-top: 12px; padding: 12px; background: rgba(234, 179, 8, 0.1); border-radius: 6px; border-left: 4px solid var(--warning);">
+                            <p><strong>⚠️ Pro Tip:</strong> For critical P&A plugs, always err on the side of excess cement. Running out mid-job means pulling equipment, waiting for more cement, and potentially compromising the plug integrity. A 20-30% safety factor is industry standard.</p>
+                        </div>
+                    </div>
+
+                    <!-- Barrier Sequence Builder -->
+                    <div class="interactive-section" style="margin-top: 24px;">
+                        <div class="interactive-title">Interactive: Multi-Barrier Sequence Builder</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Build a proper P&A sequence by placing barriers at strategic depths. A complete P&A requires multiple barriers from bottom to top.</p>
+
+                        <div class="sequence-builder">
+                            <div class="builder-controls">
+                                <h4 style="margin-bottom: 16px;">Available Barrier Types</h4>
+
+                                <div class="barrier-type-selector">
+                                    <div class="barrier-type-card" data-barrier="bridge-plug">
+                                        <div style="font-size: 2rem; text-align: center; margin-bottom: 8px;">🔩</div>
+                                        <strong>Bridge Plug</strong>
+                                        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Mechanical barrier at bottom</p>
+                                        <button class="btn btn-small btn-accent" onclick="addBarrier('bridge-plug', 'Bridge Plug', '🔩')" style="width: 100%; margin-top: 8px;">
+                                            Add to Sequence
+                                        </button>
+                                    </div>
+
+                                    <div class="barrier-type-card" data-barrier="cement-plug">
+                                        <div style="font-size: 2rem; text-align: center; margin-bottom: 8px;">🏗️</div>
+                                        <strong>Cement Plug</strong>
+                                        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Primary sealing barrier</p>
+                                        <button class="btn btn-small btn-accent" onclick="addBarrier('cement-plug', 'Cement Plug', '🏗️')" style="width: 100%; margin-top: 8px;">
+                                            Add to Sequence
+                                        </button>
+                                    </div>
+
+                                    <div class="barrier-type-card" data-barrier="aquifer-seal">
+                                        <div style="font-size: 2rem; text-align: center; margin-bottom: 8px;">💧</div>
+                                        <strong>Aquifer Seal</strong>
+                                        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Protects drinking water</p>
+                                        <button class="btn btn-small btn-accent" onclick="addBarrier('aquifer-seal', 'Aquifer Seal', '💧')" style="width: 100%; margin-top: 8px;">
+                                            Add to Sequence
+                                        </button>
+                                    </div>
+
+                                    <div class="barrier-type-card" data-barrier="surface-plug">
+                                        <div style="font-size: 2rem; text-align: center; margin-bottom: 8px;">🎯</div>
+                                        <strong>Surface Plug</strong>
+                                        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Final cap at top</p>
+                                        <button class="btn btn-small btn-accent" onclick="addBarrier('surface-plug', 'Surface Plug', '🎯')" style="width: 100%; margin-top: 8px;">
+                                            Add to Sequence
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top: 16px;">
+                                    <button class="btn btn-secondary" onclick="resetSequence()" style="width: 100%;">
+                                        Reset Sequence
+                                    </button>
+                                    <button class="btn btn-primary" onclick="validateSequence()" style="width: 100%; margin-top: 8px;">
+                                        Validate My Sequence
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="wellbore-visual">
+                                <h4 style="margin-bottom: 16px; text-align: center;">Wellbore Cross-Section</h4>
+                                <div class="wellbore-container">
+                                    <!-- Surface (0 ft) -->
+                                    <div class="depth-zone" data-zone="surface">
+                                        <div class="zone-label">Surface (0 ft)</div>
+                                        <div class="barrier-slot" id="slot-surface" data-required="surface-plug"></div>
+                                    </div>
+
+                                    <!-- Shallow Aquifer (500 ft) -->
+                                    <div class="depth-zone" data-zone="aquifer">
+                                        <div class="zone-label">Aquifer (500 ft)</div>
+                                        <div class="barrier-slot" id="slot-aquifer" data-required="aquifer-seal"></div>
+                                    </div>
+
+                                    <!-- Intermediate (2,000 ft) -->
+                                    <div class="depth-zone" data-zone="intermediate">
+                                        <div class="zone-label">Intermediate (2,000 ft)</div>
+                                        <div class="barrier-slot" id="slot-intermediate" data-required="cement-plug"></div>
+                                    </div>
+
+                                    <!-- Production Zone (5,000 ft) -->
+                                    <div class="depth-zone" data-zone="production">
+                                        <div class="zone-label">Production (5,000 ft)</div>
+                                        <div class="barrier-slot" id="slot-production" data-required="cement-plug"></div>
+                                    </div>
+
+                                    <!-- Bottom (8,000 ft) -->
+                                    <div class="depth-zone" data-zone="bottom">
+                                        <div class="zone-label">Bottom (8,000 ft)</div>
+                                        <div class="barrier-slot" id="slot-bottom" data-required="bridge-plug"></div>
+                                    </div>
+                                </div>
+
+                                <div id="sequence-feedback" style="margin-top: 16px; padding: 12px; border-radius: 8px; display: none;"></div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 6px; border-left: 4px solid var(--accent);">
+                            <p style="margin-bottom: 8px;"><strong>🎓 Proper P&A Sequence (Bottom to Top):</strong></p>
+                            <ol style="margin-left: 20px; line-height: 1.8;">
+                                <li><strong>Bridge Plug (Bottom):</strong> Mechanical barrier at TD (total depth) to hold cement above</li>
+                                <li><strong>Production Zone Cement:</strong> Seal production perforations and prevent hydrocarbon migration</li>
+                                <li><strong>Intermediate Cement:</strong> Isolate intermediate zones and provide redundancy</li>
+                                <li><strong>Aquifer Seal:</strong> CRITICAL - 100+ ft cement plug to protect drinking water</li>
+                                <li><strong>Surface Plug:</strong> Final 50-100 ft cement plug, wellhead cut below ground, site restored</li>
+                            </ol>
+                            <p style="margin-top: 8px; font-style: italic; color: var(--muted);">Each barrier must be pressure tested before proceeding to the next. Redundancy is key - if one barrier fails, others prevent leakage.</p>
+                        </div>
+                    </div>
+
+                    <!-- Pressure Test Simulator -->
+                    <div class="interactive-section" style="margin-top: 24px;">
+                        <div class="interactive-title">Interactive: Pressure Test Simulator</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Simulate a pressure test on a cement plug to verify barrier integrity. Set test pressure and watch for leaks.</p>
+
+                        <div class="pressure-test-container">
+                            <div class="test-controls-panel">
+                                <h4 style="margin-bottom: 16px;">Test Parameters</h4>
+
+                                <div class="pressure-gauge-display">
+                                    <div class="gauge-circle">
+                                        <div class="gauge-value" id="current-pressure">0</div>
+                                        <div class="gauge-unit">PSI</div>
+                                    </div>
+                                    <div class="gauge-label">Current Test Pressure</div>
+                                </div>
+
+                                <div class="input-group" style="margin-top: 20px;">
+                                    <label for="target-pressure">
+                                        <strong>Target Test Pressure (PSI)</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Typical: 500-2000 PSI</span>
+                                    </label>
+                                    <input type="number" id="target-pressure" class="calc-input" value="1000" min="100" max="5000" step="100">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="test-duration">
+                                        <strong>Test Duration (minutes)</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Standard: 30 minutes minimum</span>
+                                    </label>
+                                    <input type="number" id="test-duration" class="calc-input" value="30" min="10" max="120" step="5">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="plug-quality">
+                                        <strong>Plug Quality</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Simulated cement condition</span>
+                                    </label>
+                                    <select id="plug-quality" class="calc-input">
+                                        <option value="excellent">Excellent (Proper mix, full cure)</option>
+                                        <option value="good">Good (Minor imperfections)</option>
+                                        <option value="fair">Fair (Some voids present)</option>
+                                        <option value="poor">Poor (Major defects)</option>
+                                    </select>
+                                </div>
+
+                                <button class="btn btn-primary" onclick="startPressureTest()" id="start-test-btn" style="width: 100%; margin-top: 16px;">
+                                    Start Pressure Test
+                                </button>
+                                <button class="btn btn-secondary" onclick="resetPressureTest()" style="width: 100%; margin-top: 8px;">
+                                    Reset Test
+                                </button>
+                            </div>
+
+                            <div class="test-visualization-panel">
+                                <h4 style="margin-bottom: 16px; text-align: center;">Test Visualization</h4>
+
+                                <div class="barrier-test-visual">
+                                    <div class="wellbore-section">
+                                        <div class="formation-wall left"></div>
+                                        <div class="cement-plug" id="cement-plug">
+                                            <div class="plug-label">Cement Plug Under Test</div>
+                                        </div>
+                                        <div class="formation-wall right"></div>
+                                    </div>
+
+                                    <div class="pressure-arrows" id="pressure-arrows" style="display: none;">
+                                        <div class="arrow up">⬆️ Pressure Applied</div>
+                                        <div class="arrow down">⬇️ Pressure Applied</div>
+                                    </div>
+
+                                    <div class="leak-indicators" id="leak-indicators"></div>
+                                </div>
+
+                                <div class="test-progress" id="test-progress" style="display: none;">
+                                    <div class="progress-label">
+                                        <span>Test Progress</span>
+                                        <span id="progress-time">0%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progress-fill"></div>
+                                    </div>
+                                </div>
+
+                                <div id="test-results" style="margin-top: 16px; padding: 16px; border-radius: 8px; display: none;"></div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 6px; border-left: 4px solid var(--accent);">
+                            <p style="margin-bottom: 8px;"><strong>🧪 About Pressure Testing:</strong></p>
+                            <ul style="font-size: 0.9rem; margin-left: 20px; line-height: 1.8;">
+                                <li><strong>Purpose:</strong> Verify cement plug can withstand formation pressures without leaking</li>
+                                <li><strong>Method:</strong> Apply pressure from surface, monitor for pressure drop over time</li>
+                                <li><strong>Pass Criteria:</strong> Pressure must hold steady (±10 PSI max) for entire test duration</li>
+                                <li><strong>Failure:</strong> Significant pressure drop indicates leak - plug must be remediated</li>
+                                <li><strong>Regulation:</strong> Most jurisdictions require documented pressure test before approval</li>
+                                <li><strong>Consequences:</strong> Failed test means costly remediation: perforate plug, squeeze more cement, re-test</li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <div class="quiz-section">
                         <div class="quiz-title">Knowledge Check</div>
                         <div class="quiz-question">
@@ -2183,6 +3599,76 @@
                                 Historically, bond amounts were often underestimated. When operators went bankrupt, governments had to cover shortfalls using taxpayer money.
                                 Modern regulators now require bonds that reflect true P&A costs, protecting taxpayers and ensuring wells don't become "orphaned."
                             </p>
+                        </div>
+                    </div>
+
+                    <!-- Cost Breakdown Pie Chart -->
+                    <div class="interactive-section" style="margin-top: 24px;">
+                        <div class="interactive-title">Interactive: P&A Cost Breakdown Analysis</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Explore how P&A costs break down across different expense categories. Click each segment to see detailed cost information.</p>
+
+                        <div class="cost-breakdown-container">
+                            <div class="pie-chart-section">
+                                <div class="pie-chart-wrapper">
+                                    <div class="pie-chart" id="cost-pie-chart">
+                                        <!-- Segments created dynamically -->
+                                        <div class="pie-segment equipment" data-category="equipment" onclick="selectCostCategory('equipment')"></div>
+                                        <div class="pie-segment labor" data-category="labor" onclick="selectCostCategory('labor')"></div>
+                                        <div class="pie-segment materials" data-category="materials" onclick="selectCostCategory('materials')"></div>
+                                        <div class="pie-segment testing" data-category="testing" onclick="selectCostCategory('testing')"></div>
+                                        <div class="pie-segment mobilization" data-category="mobilization" onclick="selectCostCategory('mobilization')"></div>
+                                        <div class="pie-segment regulatory" data-category="regulatory" onclick="selectCostCategory('regulatory')"></div>
+                                        <div class="pie-center">
+                                            <div class="center-label">P&A</div>
+                                            <div class="center-sublabel">Cost Breakdown</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pie-legend">
+                                    <div class="legend-item" onclick="selectCostCategory('equipment')">
+                                        <div class="legend-color" style="background: #3b82f6;"></div>
+                                        <div class="legend-label">Equipment Rental (30%)</div>
+                                    </div>
+                                    <div class="legend-item" onclick="selectCostCategory('labor')">
+                                        <div class="legend-color" style="background: #10b981;"></div>
+                                        <div class="legend-label">Labor & Personnel (25%)</div>
+                                    </div>
+                                    <div class="legend-item" onclick="selectCostCategory('materials')">
+                                        <div class="legend-color" style="background: #f59e0b;"></div>
+                                        <div class="legend-label">Cement & Materials (20%)</div>
+                                    </div>
+                                    <div class="legend-item" onclick="selectCostCategory('testing')">
+                                        <div class="legend-color" style="background: #8b5cf6;"></div>
+                                        <div class="legend-label">Testing & Monitoring (10%)</div>
+                                    </div>
+                                    <div class="legend-item" onclick="selectCostCategory('mobilization')">
+                                        <div class="legend-color" style="background: #ec4899;"></div>
+                                        <div class="legend-label">Mobilization (10%)</div>
+                                    </div>
+                                    <div class="legend-item" onclick="selectCostCategory('regulatory')">
+                                        <div class="legend-color" style="background: #14b8a6;"></div>
+                                        <div class="legend-label">Regulatory & Permitting (5%)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cost-detail-panel" id="cost-details">
+                                <h4 style="margin-bottom: 16px; color: var(--accent);">Select a category to see details</h4>
+                                <p style="color: var(--muted);">Click on a pie segment or legend item to explore cost breakdowns for each category.</p>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 6px; border-left: 4px solid var(--accent);">
+                            <p style="margin-bottom: 8px;"><strong>💡 Cost Management Insights:</strong></p>
+                            <ul style="font-size: 0.9rem; margin-left: 20px; line-height: 1.8;">
+                                <li><strong>Equipment:</strong> Largest single expense - wireline units, coiled tubing, workover rigs ($3K-$50K/day)</li>
+                                <li><strong>Labor:</strong> Specialized crews required - cement specialists, wireline operators, supervisors</li>
+                                <li><strong>Materials:</strong> Cement costs scale with well depth - deep wells need hundreds of sacks</li>
+                                <li><strong>Testing:</strong> Mandatory pressure tests, logging, monitoring add 10-15% to costs</li>
+                                <li><strong>Mobilization:</strong> Moving equipment to/from site - offshore logistics especially expensive</li>
+                                <li><strong>Regulatory:</strong> Permits, inspections, documentation, bonding - varies by jurisdiction</li>
+                            </ul>
                         </div>
                     </div>
 
@@ -2780,6 +4266,827 @@
         // ============================================
         // INTERACTIVE ELEMENTS
         // ============================================
+
+        // Before/After Slider (Module 1)
+        document.addEventListener('DOMContentLoaded', () => {
+            const slider = document.getElementById('beforeAfterSlider');
+            const handle = document.getElementById('sliderHandle');
+            const afterImage = document.getElementById('afterImage');
+
+            if (slider && handle && afterImage) {
+                let isDragging = false;
+
+                function updateSlider(x) {
+                    const rect = slider.getBoundingClientRect();
+                    let position = ((x - rect.left) / rect.width) * 100;
+                    position = Math.max(0, Math.min(100, position));
+
+                    handle.style.left = position + '%';
+                    afterImage.style.clipPath = `inset(0 ${100 - position}% 0 0)`;
+                }
+
+                handle.addEventListener('mousedown', () => {
+                    isDragging = true;
+                });
+
+                document.addEventListener('mousemove', (e) => {
+                    if (isDragging) {
+                        updateSlider(e.clientX);
+                    }
+                });
+
+                document.addEventListener('mouseup', () => {
+                    isDragging = false;
+                });
+
+                // Touch support
+                handle.addEventListener('touchstart', () => {
+                    isDragging = true;
+                });
+
+                document.addEventListener('touchmove', (e) => {
+                    if (isDragging && e.touches[0]) {
+                        updateSlider(e.touches[0].clientX);
+                    }
+                });
+
+                document.addEventListener('touchend', () => {
+                    isDragging = false;
+                });
+
+                // Click anywhere on slider to move
+                slider.addEventListener('click', (e) => {
+                    updateSlider(e.clientX);
+                });
+            }
+        });
+
+        // Well Depth Visualizer (Module 1)
+        function selectDepth(depth) {
+            // Remove all active states from depth markers
+            document.querySelectorAll('.depth-marker').forEach(marker => {
+                marker.classList.remove('active');
+                marker.style.transform = 'scale(1)';
+                marker.style.background = 'rgba(15, 23, 42, 0.9)';
+            });
+
+            // Hide all depth info panels
+            document.querySelectorAll('.depth-info').forEach(info => {
+                info.classList.remove('active');
+                info.style.display = 'none';
+            });
+
+            // Activate selected depth marker with animation
+            const marker = document.querySelector(`[data-depth="${depth}"]`);
+            if (marker) {
+                marker.classList.add('active');
+                marker.style.transform = 'scale(1.05)';
+                marker.style.background = 'rgba(20, 184, 166, 0.2)';
+                marker.style.borderColor = 'var(--accent)';
+                marker.style.boxShadow = '0 0 20px rgba(20, 184, 166, 0.3)';
+            }
+
+            // Show selected depth info with smooth transition
+            const info = document.getElementById(`depth-${depth}`);
+            if (info) {
+                info.style.display = 'block';
+                setTimeout(() => {
+                    info.classList.add('active');
+                }, 10);
+            }
+        }
+
+        // Cement Volume Calculator (Module 4)
+        function calculateCement() {
+            // Get input values
+            const holeDiameter = parseFloat(document.getElementById('hole-diameter').value) || 0;
+            const plugLength = parseFloat(document.getElementById('plug-length').value) || 0;
+            const casingOD = parseFloat(document.getElementById('casing-od').value) || 0;
+            const safetyFactor = parseFloat(document.getElementById('safety-factor').value) || 0;
+
+            // Calculate volumes in cubic feet
+            // Formula: Volume = π × r² × h
+            const holeRadius = holeDiameter / 2 / 12; // Convert inches to feet
+            const casingRadius = casingOD / 2 / 12; // Convert inches to feet
+
+            // Hole volume (total cylinder volume)
+            const holeVolume = Math.PI * Math.pow(holeRadius, 2) * plugLength;
+
+            // Annular volume (volume between casing and hole)
+            let annularVolume = 0;
+            if (casingOD > 0 && casingOD < holeDiameter) {
+                annularVolume = Math.PI * (Math.pow(holeRadius, 2) - Math.pow(casingRadius, 2)) * plugLength;
+            }
+
+            // Use annular volume if casing present, otherwise use hole volume
+            const baseVolume = casingOD > 0 ? annularVolume : holeVolume;
+
+            // Cement yield: 1 sack (94 lb) of Class H cement = 1.15 cubic feet
+            const cementYield = 1.15;
+            const baseCementSacks = baseVolume / cementYield;
+
+            // Apply safety factor
+            const totalCementSacks = baseCementSacks * (1 + safetyFactor / 100);
+
+            // Calculate cost and weight
+            const costPerSack = 15; // $15 per sack
+            const totalCost = totalCementSacks * costPerSack;
+            const totalWeight = totalCementSacks * 94; // 94 lbs per sack
+
+            // Update display
+            document.getElementById('hole-volume').textContent = holeVolume.toFixed(2);
+            document.getElementById('annular-volume').textContent = annularVolume.toFixed(2);
+            document.getElementById('base-cement').textContent = Math.ceil(baseCementSacks);
+            document.getElementById('total-cement').textContent = Math.ceil(totalCementSacks);
+            document.getElementById('cement-cost').textContent = '$' + totalCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('cement-weight').textContent = totalWeight.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            // Add visual feedback animation
+            const results = document.getElementById('cement-results');
+            results.style.animation = 'none';
+            setTimeout(() => {
+                results.style.animation = 'fadeInUp 0.5s ease';
+            }, 10);
+        }
+
+        // Initialize calculator with default values on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Calculate initial values
+            if (document.getElementById('hole-diameter')) {
+                calculateCement();
+            }
+        });
+
+        // P&A Decision Tree (Module 2)
+        let decisionData = {
+            location: '',
+            wellType: '',
+            depth: '',
+            aquifer: '',
+            locationLabel: '',
+            wellTypeLabel: '',
+            depthLabel: '',
+            aquiferLabel: ''
+        };
+
+        function nextDecision(slideNum, dataKey, dataLabel) {
+            // Store the decision
+            const currentSlide = document.querySelector('.decision-slide.active');
+            const slideId = currentSlide.id;
+
+            if (slideId === 'slide-1') {
+                decisionData.location = dataKey;
+                decisionData.locationLabel = dataLabel;
+            } else if (slideId === 'slide-2') {
+                decisionData.wellType = dataKey;
+                decisionData.wellTypeLabel = dataLabel;
+            } else if (slideId === 'slide-3') {
+                decisionData.depth = dataKey;
+                decisionData.depthLabel = dataLabel;
+            }
+
+            // Update breadcrumb
+            updateBreadcrumb();
+
+            // Hide current slide
+            currentSlide.classList.remove('active');
+
+            // Show next slide
+            const nextSlide = document.getElementById('slide-' + slideNum);
+            if (nextSlide) {
+                setTimeout(() => {
+                    nextSlide.classList.add('active');
+                }, 100);
+            }
+        }
+
+        function showResult(aquiferStatus) {
+            decisionData.aquifer = aquiferStatus;
+            decisionData.aquiferLabel = aquiferStatus === 'aquifer-yes' ? 'Aquifers Present' :
+                                        aquiferStatus === 'aquifer-no' ? 'No Aquifers' : 'Aquifer Status Unknown';
+
+            updateBreadcrumb();
+
+            // Hide current slide
+            document.querySelector('.decision-slide.active').classList.remove('active');
+
+            // Generate result based on decisions
+            const resultHTML = generateResultHTML();
+            document.getElementById('result-summary').innerHTML = resultHTML;
+
+            // Show result
+            setTimeout(() => {
+                document.getElementById('decision-result').classList.add('active');
+            }, 100);
+        }
+
+        function generateResultHTML() {
+            let html = '<div>';
+
+            // Regulatory Framework
+            html += '<div class="requirement-item">';
+            html += '<h5>📋 Regulatory Framework</h5>';
+            if (decisionData.location === 'usa') {
+                html += '<p><strong>Prescriptive Regulations Apply</strong></p>';
+                html += '<p>U.S. regulations typically provide detailed, step-by-step requirements. You must follow specific procedures including:</p>';
+                html += '<ul>';
+                html += '<li>Exact cement plug lengths as specified by state regulations</li>';
+                html += '<li>Mandatory pressure testing of barriers</li>';
+                html += '<li>Required documentation and reporting to state oil & gas commission</li>';
+                html += '<li>Possible bond requirements for proper abandonment</li>';
+                html += '</ul>';
+            } else if (decisionData.location === 'uk' || decisionData.location === 'norway') {
+                html += '<p><strong>Goal-Setting Regulations Apply</strong></p>';
+                html += '<p>UK/Norway regulations require achieving permanent isolation without dictating exact methods. You must:</p>';
+                html += '<ul>';
+                html += '<li>Demonstrate your P&A method will achieve permanent seal</li>';
+                html += '<li>Provide rigorous engineering justification</li>';
+                html += '<li>Meet "rock-to-rock" barrier requirements</li>';
+                html += '<li>Submit detailed abandonment plans for approval</li>';
+                html += '</ul>';
+            } else {
+                html += '<p><strong>Local Regulations</strong></p>';
+                html += '<p>Consult your local regulatory authority for specific requirements. Most jurisdictions follow either prescriptive (detailed steps) or goal-setting (proven outcomes) approaches.</p>';
+            }
+            html += '</div>';
+
+            // Well-Specific Requirements
+            html += '<div class="requirement-item">';
+            html += '<h5>⛽ Well-Specific Requirements</h5>';
+            html += '<p><strong>Well Type:</strong> ' + decisionData.wellTypeLabel + '</p>';
+
+            if (decisionData.wellType === 'gas') {
+                html += '<p>Gas wells require extra attention to prevent methane migration. Expect enhanced monitoring and potentially more cement barriers.</p>';
+            } else if (decisionData.wellType === 'injection') {
+                html += '<p>Injection wells often require EPA approval and additional environmental safeguards due to waste disposal history.</p>';
+            }
+
+            html += '<p><strong>Depth:</strong> ' + decisionData.depthLabel + '</p>';
+            if (decisionData.depth === 'ultra-deep' || decisionData.depth === 'deep') {
+                html += '<p>Deep wells require specialized equipment, high-temperature cement, and typically multiple barrier intervals.</p>';
+            } else if (decisionData.depth === 'shallow') {
+                html += '<p>Shallow wells are simpler but aquifer protection is paramount. Surface plug and aquifer isolation are critical.</p>';
+            }
+            html += '</div>';
+
+            // Environmental Protection
+            if (decisionData.aquifer === 'aquifer-yes' || decisionData.aquifer === 'aquifer-unknown') {
+                html += '<div class="requirement-item">';
+                html += '<h5>💧 Environmental Protection - CRITICAL</h5>';
+                html += '<p><strong>Freshwater Aquifer Status:</strong> ' + decisionData.aquiferLabel + '</p>';
+                html += '<p style="color: var(--danger); font-weight: bold;">⚠️ HIGHEST PRIORITY: Aquifer isolation is mandatory.</p>';
+                html += '<ul>';
+                html += '<li>Cement plug MUST extend 100+ feet across aquifer zone</li>';
+                html += '<li>Pressure testing required to verify seal integrity</li>';
+                html += '<li>Zero tolerance for leakage into drinking water sources</li>';
+                if (decisionData.aquifer === 'aquifer-unknown') {
+                    html += '<li style="color: var(--warning);">⚠️ Geological survey required to identify aquifer locations before proceeding</li>';
+                }
+                html += '</ul>';
+                html += '</div>';
+            }
+
+            // Cost Estimate
+            html += '<div class="cost-estimate">';
+            html += '<h5>💰 Estimated P&A Cost Range</h5>';
+            let costRange = '';
+            if (decisionData.depth === 'shallow') {
+                costRange = '$50,000 - $200,000';
+            } else if (decisionData.depth === 'medium') {
+                costRange = '$150,000 - $500,000';
+            } else if (decisionData.depth === 'deep') {
+                costRange = '$500,000 - $2,000,000';
+            } else if (decisionData.depth === 'ultra-deep') {
+                costRange = '$2,000,000 - $10,000,000+';
+            }
+            html += '<p><strong>' + costRange + '</strong></p>';
+            html += '<p style="font-size: 0.9rem; margin-top: 8px;">Costs vary based on well complexity, equipment needs, location accessibility, and regulatory requirements. Deep wells with aquifer protection needs are most expensive.</p>';
+            html += '</div>';
+
+            // Next Steps
+            html += '<div class="requirement-item">';
+            html += '<h5>✅ Next Steps</h5>';
+            html += '<ol style="margin-left: 20px;">';
+            html += '<li>Consult qualified P&A engineer and local regulatory authority</li>';
+            html += '<li>Obtain well records and geological surveys</li>';
+            if (decisionData.aquifer === 'aquifer-unknown') {
+                html += '<li>Commission aquifer mapping study</li>';
+            }
+            html += '<li>Develop detailed P&A plan and submit for regulatory approval</li>';
+            html += '<li>Secure bonding/financial assurance as required</li>';
+            html += '<li>Contract specialized P&A service company</li>';
+            html += '<li>Execute P&A operations with required monitoring</li>';
+            html += '<li>Submit final abandonment report and documentation</li>';
+            html += '</ol>';
+            html += '</div>';
+
+            html += '</div>';
+            return html;
+        }
+
+        function updateBreadcrumb() {
+            const trail = [];
+            if (decisionData.locationLabel) trail.push(decisionData.locationLabel);
+            if (decisionData.wellTypeLabel) trail.push(decisionData.wellTypeLabel);
+            if (decisionData.depthLabel) trail.push(decisionData.depthLabel);
+            if (decisionData.aquiferLabel) trail.push(decisionData.aquiferLabel);
+
+            document.getElementById('breadcrumb-trail').textContent = trail.join(' → ') || 'None yet';
+        }
+
+        function resetDecisionTree() {
+            // Clear data
+            decisionData = {
+                location: '',
+                wellType: '',
+                depth: '',
+                aquifer: '',
+                locationLabel: '',
+                wellTypeLabel: '',
+                depthLabel: '',
+                aquiferLabel: ''
+            };
+
+            // Hide result
+            document.getElementById('decision-result').classList.remove('active');
+
+            // Hide all slides
+            document.querySelectorAll('.decision-slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+
+            // Show first slide
+            setTimeout(() => {
+                document.getElementById('slide-1').classList.add('active');
+            }, 100);
+
+            // Reset breadcrumb
+            document.getElementById('breadcrumb-trail').textContent = 'None yet';
+        }
+
+        // Barrier Sequence Builder (Module 4)
+        let selectedSlot = null;
+
+        function addBarrier(barrierType, barrierName, barrierIcon) {
+            // Find appropriate slot for this barrier type
+            let targetSlot = null;
+
+            if (barrierType === 'bridge-plug') {
+                targetSlot = document.getElementById('slot-bottom');
+            } else if (barrierType === 'cement-plug') {
+                // Try production first, then intermediate
+                const productionSlot = document.getElementById('slot-production');
+                const intermediateSlot = document.getElementById('slot-intermediate');
+                if (!productionSlot.classList.contains('filled')) {
+                    targetSlot = productionSlot;
+                } else if (!intermediateSlot.classList.contains('filled')) {
+                    targetSlot = intermediateSlot;
+                }
+            } else if (barrierType === 'aquifer-seal') {
+                targetSlot = document.getElementById('slot-aquifer');
+            } else if (barrierType === 'surface-plug') {
+                targetSlot = document.getElementById('slot-surface');
+            }
+
+            if (!targetSlot) {
+                showFeedback('No available slot for this barrier type. Try a different barrier or reset the sequence.', 'warning');
+                return;
+            }
+
+            if (targetSlot.classList.contains('filled')) {
+                showFeedback('This slot is already filled. Reset to try again.', 'warning');
+                return;
+            }
+
+            // Add barrier to slot
+            targetSlot.classList.add('filled');
+            targetSlot.innerHTML = `
+                <div class="barrier-item">
+                    <span class="icon">${barrierIcon}</span>
+                    <span>${barrierName}</span>
+                </div>
+            `;
+
+            // Add animation
+            targetSlot.style.animation = 'fadeInUp 0.5s ease';
+
+            showFeedback(`${barrierName} added successfully!`, 'success');
+        }
+
+        function resetSequence() {
+            // Clear all slots
+            document.querySelectorAll('.barrier-slot').forEach(slot => {
+                slot.classList.remove('filled');
+                slot.innerHTML = '';
+                slot.style.animation = '';
+            });
+
+            // Hide feedback
+            document.getElementById('sequence-feedback').style.display = 'none';
+        }
+
+        function validateSequence() {
+            const feedback = document.getElementById('sequence-feedback');
+            const slots = {
+                bottom: document.getElementById('slot-bottom'),
+                production: document.getElementById('slot-production'),
+                intermediate: document.getElementById('slot-intermediate'),
+                aquifer: document.getElementById('slot-aquifer'),
+                surface: document.getElementById('slot-surface')
+            };
+
+            // Check which barriers are placed
+            const filled = {
+                bottom: slots.bottom.classList.contains('filled'),
+                production: slots.production.classList.contains('filled'),
+                intermediate: slots.intermediate.classList.contains('filled'),
+                aquifer: slots.aquifer.classList.contains('filled'),
+                surface: slots.surface.classList.contains('filled')
+            };
+
+            let messages = [];
+            let isValid = true;
+
+            // Critical checks
+            if (!filled.bottom) {
+                messages.push('❌ Missing bottom bridge plug - required to support cement above');
+                isValid = false;
+            }
+
+            if (!filled.aquifer) {
+                messages.push('❌ CRITICAL: Missing aquifer seal - protecting drinking water is mandatory!');
+                isValid = false;
+            }
+
+            if (!filled.surface) {
+                messages.push('❌ Missing surface plug - required to seal wellhead');
+                isValid = false;
+            }
+
+            if (!filled.production) {
+                messages.push('⚠️ Missing production zone cement - recommended for proper sealing');
+            }
+
+            if (!filled.intermediate) {
+                messages.push('⚠️ Missing intermediate cement - provides valuable redundancy');
+            }
+
+            // Show results
+            if (isValid && filled.bottom && filled.production && filled.intermediate && filled.aquifer && filled.surface) {
+                feedback.style.background = 'rgba(34, 197, 94, 0.1)';
+                feedback.style.borderLeft = '4px solid var(--success)';
+                feedback.innerHTML = `
+                    <h5 style="color: var(--success); margin-bottom: 12px;">✅ Perfect P&A Sequence!</h5>
+                    <p>You've built a complete multi-barrier P&A system with all essential components:</p>
+                    <ul style="margin-left: 20px; margin-top: 8px; line-height: 1.8;">
+                        <li>Bottom bridge plug providing foundation</li>
+                        <li>Production zone sealed against hydrocarbon migration</li>
+                        <li>Intermediate barrier for redundancy</li>
+                        <li>Aquifer protected with dedicated seal</li>
+                        <li>Surface plug completing the abandonment</li>
+                    </ul>
+                    <p style="margin-top: 12px; font-weight: bold;">This meets industry best practices and regulatory standards!</p>
+                `;
+            } else if (isValid) {
+                feedback.style.background = 'rgba(234, 179, 8, 0.1)';
+                feedback.style.borderLeft = '4px solid var(--warning)';
+                feedback.innerHTML = `
+                    <h5 style="color: var(--warning); margin-bottom: 12px;">⚠️ Meets Minimum Requirements</h5>
+                    <p>Your sequence includes the critical barriers, but could be improved:</p>
+                    <ul style="margin-left: 20px; margin-top: 8px; line-height: 1.6;">
+                        ${messages.map(msg => `<li>${msg}</li>`).join('')}
+                    </ul>
+                    <p style="margin-top: 12px;">Consider adding intermediate barriers for redundancy and enhanced safety.</p>
+                `;
+            } else {
+                feedback.style.background = 'rgba(239, 68, 68, 0.1)';
+                feedback.style.borderLeft = '4px solid var(--danger)';
+                feedback.innerHTML = `
+                    <h5 style="color: var(--danger); margin-bottom: 12px;">❌ Incomplete Sequence</h5>
+                    <p>Your P&A sequence is missing critical barriers:</p>
+                    <ul style="margin-left: 20px; margin-top: 8px; line-height: 1.6;">
+                        ${messages.map(msg => `<li>${msg}</li>`).join('')}
+                    </ul>
+                    <p style="margin-top: 12px;">This sequence would be rejected by regulatory authorities. Add missing barriers.</p>
+                `;
+            }
+
+            feedback.style.display = 'block';
+            feedback.style.animation = 'fadeInUp 0.5s ease';
+        }
+
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('sequence-feedback');
+            if (type === 'success') {
+                feedback.style.background = 'rgba(34, 197, 94, 0.1)';
+                feedback.style.borderLeft = '4px solid var(--success)';
+            } else {
+                feedback.style.background = 'rgba(234, 179, 8, 0.1)';
+                feedback.style.borderLeft = '4px solid var(--warning)';
+            }
+            feedback.innerHTML = `<p>${message}</p>`;
+            feedback.style.display = 'block';
+
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 3000);
+        }
+
+        // Pressure Test Simulator (Module 4)
+        let testInterval = null;
+        let testStartTime = null;
+
+        function startPressureTest() {
+            const targetPressure = parseInt(document.getElementById('target-pressure').value);
+            const duration = parseInt(document.getElementById('test-duration').value);
+            const quality = document.getElementById('plug-quality').value;
+
+            // Reset previous test
+            resetPressureTest();
+
+            // Show test UI
+            document.getElementById('pressure-arrows').style.display = 'flex';
+            document.getElementById('test-progress').style.display = 'block';
+            document.getElementById('cement-plug').classList.add('under-pressure');
+
+            // Disable start button
+            document.getElementById('start-test-btn').disabled = true;
+
+            testStartTime = Date.now();
+            const testDurationMs = duration * 1000; // Convert to ms for simulation (1 min = 1 sec)
+            let currentPressure = 0;
+            let pressureDropRate = 0;
+
+            // Determine leak rate based on quality
+            if (quality === 'poor') {
+                pressureDropRate = targetPressure / (testDurationMs / 100) * 3; // Fails quickly
+            } else if (quality === 'fair') {
+                pressureDropRate = targetPressure / (testDurationMs / 100) * 0.8; // Gradual failure
+            } else if (quality === 'good') {
+                pressureDropRate = targetPressure / (testDurationMs / 100) * 0.1; // Minor drop
+            } else {
+                pressureDropRate = 0; // No drop - perfect
+            }
+
+            // Ramp up pressure
+            let rampInterval = setInterval(() => {
+                currentPressure += targetPressure / 20;
+                if (currentPressure >= targetPressure) {
+                    currentPressure = targetPressure;
+                    clearInterval(rampInterval);
+
+                    // Start main test
+                    startMainTest(targetPressure, testDurationMs, pressureDropRate, quality);
+                }
+                document.getElementById('current-pressure').textContent = Math.round(currentPressure);
+            }, 100);
+        }
+
+        function startMainTest(targetPressure, testDurationMs, pressureDropRate, quality) {
+            let elapsed = 0;
+            let currentPressure = targetPressure;
+
+            testInterval = setInterval(() => {
+                elapsed += 100;
+                const progress = (elapsed / testDurationMs) * 100;
+
+                // Update progress bar
+                document.getElementById('progress-fill').style.width = progress + '%';
+                document.getElementById('progress-time').textContent = Math.round(progress) + '%';
+
+                // Apply pressure drop
+                currentPressure -= pressureDropRate;
+                currentPressure = Math.max(0, currentPressure);
+                document.getElementById('current-pressure').textContent = Math.round(currentPressure);
+
+                // Show leaks for poor/fair quality
+                if (quality === 'poor' && elapsed > testDurationMs * 0.2) {
+                    showLeaks(3);
+                } else if (quality === 'fair' && elapsed > testDurationMs * 0.5) {
+                    showLeaks(1);
+                }
+
+                // Test complete
+                if (elapsed >= testDurationMs) {
+                    clearInterval(testInterval);
+                    showTestResults(targetPressure, currentPressure, quality);
+                }
+            }, 100);
+        }
+
+        function showLeaks(count) {
+            const container = document.getElementById('leak-indicators');
+            if (container.children.length > 0) return; // Already showing leaks
+
+            for (let i = 0; i < count; i++) {
+                const leak = document.createElement('div');
+                leak.className = 'leak';
+                leak.textContent = '💧';
+                leak.style.left = (30 + Math.random() * 40) + '%';
+                leak.style.top = (20 + Math.random() * 60) + '%';
+                container.appendChild(leak);
+            }
+        }
+
+        function showTestResults(targetPressure, finalPressure, quality) {
+            const results = document.getElementById('test-results');
+            const pressureDrop = targetPressure - finalPressure;
+            const dropPercentage = (pressureDrop / targetPressure) * 100;
+
+            let status, message, bgColor, borderColor;
+
+            if (dropPercentage <= 1) {
+                // Pass - excellent
+                status = '✅ TEST PASSED';
+                message = `
+                    <p><strong>Result:</strong> Barrier integrity confirmed! Pressure held at ${Math.round(finalPressure)} PSI with only ${Math.round(pressureDrop)} PSI drop (${dropPercentage.toFixed(1)}%).</p>
+                    <p style="margin-top: 8px;"><strong>Status:</strong> This plug meets regulatory requirements. The barrier is approved for permanent abandonment.</p>
+                    <p style="margin-top: 8px;"><strong>Next Steps:</strong> Document results, submit to regulatory authority, proceed with next barrier.</p>
+                `;
+                bgColor = 'rgba(34, 197, 94, 0.1)';
+                borderColor = 'var(--success)';
+            } else if (dropPercentage <= 5) {
+                // Borderline
+                status = '⚠️ TEST QUESTIONABLE';
+                message = `
+                    <p><strong>Result:</strong> Pressure dropped from ${targetPressure} PSI to ${Math.round(finalPressure)} PSI (${dropPercentage.toFixed(1)}% loss).</p>
+                    <p style="margin-top: 8px;"><strong>Status:</strong> Minor leakage detected. May require remediation depending on regulations.</p>
+                    <p style="margin-top: 8px;"><strong>Recommended Action:</strong> Consult engineer. Consider squeeze cementing or re-test with longer duration.</p>
+                `;
+                bgColor = 'rgba(234, 179, 8, 0.1)';
+                borderColor = 'var(--warning)';
+            } else {
+                // Fail
+                status = '❌ TEST FAILED';
+                message = `
+                    <p><strong>Result:</strong> Significant pressure loss from ${targetPressure} PSI to ${Math.round(finalPressure)} PSI (${dropPercentage.toFixed(1)}% drop).</p>
+                    <p style="margin-top: 8px;"><strong>Status:</strong> Barrier has failed integrity test. NOT approved for abandonment.</p>
+                    <p style="margin-top: 8px;"><strong>Required Action:</strong> Remediate plug immediately:</p>
+                    <ul style="margin-left: 20px; margin-top: 4px;">
+                        <li>Perforate plug at leak zone</li>
+                        <li>Squeeze additional cement</li>
+                        <li>Re-test until passing</li>
+                        <li>Document all remediation work</li>
+                    </ul>
+                    <p style="margin-top: 8px;"><strong>Cost Impact:</strong> Failed tests typically add $50K-$200K in remediation costs and 1-2 weeks delay.</p>
+                `;
+                bgColor = 'rgba(239, 68, 68, 0.1)';
+                borderColor = 'var(--danger)';
+            }
+
+            results.innerHTML = `
+                <h5 style="margin-bottom: 12px; color: ${borderColor};">${status}</h5>
+                ${message}
+            `;
+            results.style.background = bgColor;
+            results.style.borderLeft = `4px solid ${borderColor}`;
+            results.style.display = 'block';
+
+            // Re-enable start button
+            document.getElementById('start-test-btn').disabled = false;
+        }
+
+        function resetPressureTest() {
+            // Clear interval
+            if (testInterval) {
+                clearInterval(testInterval);
+                testInterval = null;
+            }
+
+            // Reset UI
+            document.getElementById('current-pressure').textContent = '0';
+            document.getElementById('pressure-arrows').style.display = 'none';
+            document.getElementById('test-progress').style.display = 'none';
+            document.getElementById('progress-fill').style.width = '0%';
+            document.getElementById('progress-time').textContent = '0%';
+            document.getElementById('cement-plug').classList.remove('under-pressure');
+            document.getElementById('leak-indicators').innerHTML = '';
+            document.getElementById('test-results').style.display = 'none';
+            document.getElementById('start-test-btn').disabled = false;
+        }
+
+        // Cost Breakdown Pie Chart (Module 6)
+        function selectCostCategory(category) {
+            const details = document.getElementById('cost-details');
+            const categoryData = {
+                'equipment': {
+                    title: '🏗️ Equipment Rental (30% of Total Cost)',
+                    percentage: '30%',
+                    typical: '$90K - $900K',
+                    description: 'Specialized equipment rental is typically the largest P&A expense.',
+                    breakdown: [
+                        '<strong>Wireline Units:</strong> $5K-$15K/day - Setting bridge plugs, running logs',
+                        '<strong>Coiled Tubing:</strong> $8K-$25K/day - Milling, cleanout, cement placement',
+                        '<strong>Workover Rigs:</strong> $10K-$50K/day - Heavy lifting, casing removal',
+                        '<strong>Cement Units:</strong> $3K-$8K/day - Mixing and pumping cement',
+                        '<strong>Support Equipment:</strong> Trucks, tanks, power units, safety equipment'
+                    ],
+                    notes: 'Deep or complex wells may require multiple equipment types simultaneously, significantly increasing daily costs.'
+                },
+                'labor': {
+                    title: '👷 Labor & Personnel (25% of Total Cost)',
+                    percentage: '25%',
+                    typical: '$75K - $750K',
+                    description: 'Skilled specialists required for safe, compliant P&A operations.',
+                    breakdown: [
+                        '<strong>Wireline Operators:</strong> Specialized certification required',
+                        '<strong>Cement Engineers:</strong> Design plugs, supervise placement',
+                        '<strong>Rig Crew:</strong> Operators, derrickmen, roughnecks (5-10 personnel)',
+                        '<strong>Supervisors:</strong> Company man, toolpusher overseeing operations',
+                        '<strong>Safety Personnel:</strong> H2S monitors, fire watch, safety coordinators',
+                        '<strong>Consultants:</strong> Wellbore integrity, regulatory compliance experts'
+                    ],
+                    notes: 'Offshore operations require crew rotation, transportation, accommodations - adding 30-50% to labor costs.'
+                },
+                'materials': {
+                    title: '🏗️ Cement & Materials (20% of Total Cost)',
+                    percentage: '20%',
+                    typical: '$60K - $600K',
+                    description: 'High-quality materials ensure permanent sealing.',
+                    breakdown: [
+                        '<strong>Cement:</strong> Class H cement, additives, retarders ($15-$30/sack × hundreds of sacks)',
+                        '<strong>Bridge Plugs:</strong> Mechanical barriers ($5K-$50K each)',
+                        '<strong>Completion Fluids:</strong> Kill fluids, spacers, wash fluids',
+                        '<strong>Casing Patches:</strong> For casing repairs if needed',
+                        '<strong>Consumables:</strong> Chemicals, lubricants, misc supplies'
+                    ],
+                    notes: 'Material costs scale directly with well depth and number of barriers. Deep wells requiring multiple cement plugs can consume 500+ sacks.'
+                },
+                'testing': {
+                    title: '🧪 Testing & Monitoring (10% of Total Cost)',
+                    percentage: '10%',
+                    typical: '$30K - $300K',
+                    description: 'Mandatory verification ensures barrier integrity.',
+                    breakdown: [
+                        '<strong>Pressure Testing:</strong> Each barrier must pass pressure test',
+                        '<strong>Cement Bond Logs:</strong> Verify cement quality and bonding',
+                        '<strong>Temperature Logs:</strong> Confirm cement placement locations',
+                        '<strong>Radioactive Tracer:</strong> Detect cement top and channels',
+                        '<strong>Monitoring:</strong> Environmental monitoring during operations'
+                    ],
+                    notes: 'Testing cannot be skipped - failed tests require costly remediation and re-testing until barriers pass.'
+                },
+                'mobilization': {
+                    title: '🚚 Mobilization & Logistics (10% of Total Cost)',
+                    percentage: '10%',
+                    typical: '$30K - $300K',
+                    description: 'Moving equipment and personnel to/from well site.',
+                    breakdown: [
+                        '<strong>Rig Mobilization:</strong> Transporting workover rig to location',
+                        '<strong>Equipment Transport:</strong> Multiple trucks for wireline, coiled tubing, cement',
+                        '<strong>Road Construction:</strong> Access roads for remote locations',
+                        '<strong>Offshore Logistics:</strong> Boats, helicopters, platform preparation',
+                        '<strong>Demobilization:</strong> Removal and site restoration after completion'
+                    ],
+                    notes: 'Offshore and remote locations can see mobilization costs exceed 20% of total. Ultra-deep water mobilization may cost $1M+.'
+                },
+                'regulatory': {
+                    title: '📋 Regulatory & Permitting (5% of Total Cost)',
+                    percentage: '5%',
+                    typical: '$15K - $150K',
+                    description: 'Compliance, permitting, bonding, and documentation.',
+                    breakdown: [
+                        '<strong>Permits:</strong> State/federal abandonment permits, environmental permits',
+                        '<strong>Engineering Studies:</strong> P&A plan development and submission',
+                        '<strong>Bonding:</strong> Financial assurance posting (refundable)',
+                        '<strong>Inspections:</strong> Third-party verification, regulatory witness',
+                        '<strong>Documentation:</strong> Final abandonment report, as-built diagrams',
+                        '<strong>Legal/Consulting:</strong> Regulatory compliance experts'
+                    ],
+                    notes: 'While smallest percentage, non-compliance can result in operations shutdown and penalties exceeding $100K/day.'
+                }
+            };
+
+            const data = categoryData[category];
+            if (!data) return;
+
+            let html = `
+                <h4 style="margin-bottom: 16px; color: var(--accent);">${data.title}</h4>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 8px;">
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--muted);">Percentage of Total</div>
+                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--accent);">${data.percentage}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.85rem; color: var(--muted);">Typical Range</div>
+                        <div style="font-size: 1.2rem; font-weight: bold; color: var(--text-primary);">${data.typical}</div>
+                    </div>
+                </div>
+                <p style="margin-bottom: 16px; line-height: 1.6;">${data.description}</p>
+                <div style="background: var(--bg); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                    <h5 style="margin-bottom: 12px; color: var(--text-primary);">Breakdown:</h5>
+                    <ul style="margin-left: 20px; line-height: 2;">
+                        ${data.breakdown.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+                <div style="padding: 12px; background: rgba(234, 179, 8, 0.1); border-radius: 6px; border-left: 3px solid var(--warning);">
+                    <p style="font-size: 0.9rem;"><strong>💡 Note:</strong> ${data.notes}</p>
+                </div>
+            `;
+
+            details.innerHTML = html;
+            details.style.animation = 'fadeInUp 0.5s ease';
+        }
 
         // Environmental Risk Visualizer (Module 1)
         function selectRisk(risk) {
