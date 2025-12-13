@@ -1408,6 +1408,134 @@
                 min-height: 44px;
             }
         }
+
+        /* Before/After Slider */
+        .before-after-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .before-after-slider {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        .before-image, .after-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .before-image {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 50%, #78350f 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .after-image {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #064e3b 100%);
+            clip-path: inset(0 50% 0 0);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+            cursor: ew-resize;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .slider-handle::before {
+            content: '⬌';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #0b1220;
+            font-weight: 900;
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.5);
+        }
+
+        .well-visual {
+            position: relative;
+            width: 120px;
+            height: 300px;
+            border: 3px solid currentColor;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        .well-label {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .well-description {
+            font-size: 0.9rem;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .before-content {
+            color: var(--danger);
+        }
+
+        .after-content {
+            color: var(--success);
+        }
+
+        .leak-indicator {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--danger);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .seal-indicator {
+            position: absolute;
+            width: 100%;
+            background: var(--success);
+            opacity: 0.8;
+        }
+
     </style>
 </head>
 <body>
@@ -1594,6 +1722,65 @@
                         <p style="margin-top: 16px; padding: 12px; background: rgba(239, 68, 68, 0.1); border-radius: 6px; border-left: 4px solid var(--danger);">
                             <strong>⚠️ Bottom Line:</strong> The cost of proper P&A ($100K-$10M) is far less than cleanup costs, legal liability, and environmental damage from improper abandonment. This is why regulations exist and why "just walking away" is never an option.
                         </p>
+
+                        <!-- Before/After P&A Slider -->
+                        <div class="interactive-section" style="margin-top: 24px;">
+                            <div class="interactive-title">Interactive: Before & After P&A Comparison</div>
+                            <p style="margin-bottom: 16px; color: var(--text-secondary);">Drag the slider to compare an improperly abandoned well vs. a properly sealed well</p>
+
+                            <div class="before-after-container">
+                                <div class="before-after-slider" id="beforeAfterSlider">
+                                    <!-- BEFORE: Leaking Well -->
+                                    <div class="before-image">
+                                        <div class="before-content">
+                                            <div class="well-label">❌ IMPROPERLY ABANDONED</div>
+                                            <div class="well-visual" style="border-color: var(--danger);">
+                                                <div class="leak-indicator" style="top: 20%; left: -10px;"></div>
+                                                <div class="leak-indicator" style="top: 40%; right: -10px;"></div>
+                                                <div class="leak-indicator" style="top: 60%; left: -10px;"></div>
+                                                <div class="leak-indicator" style="bottom: 10%; right: -10px;"></div>
+                                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3rem;">💀</div>
+                                            </div>
+                                            <div class="well-description">
+                                                • Leaking fluids<br>
+                                                • Groundwater contamination<br>
+                                                • Gas emissions<br>
+                                                • Safety hazard
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- AFTER: Properly Sealed Well -->
+                                    <div class="after-image" id="afterImage">
+                                        <div class="after-content">
+                                            <div class="well-label">✅ PROPERLY SEALED P&A</div>
+                                            <div class="well-visual" style="border-color: var(--success);">
+                                                <div class="seal-indicator" style="height: 30%; bottom: 0;">
+                                                    <div style="text-align: center; padding-top: 5px; font-size: 0.7rem;">Cement Plug</div>
+                                                </div>
+                                                <div class="seal-indicator" style="height: 25%; top: 35%;">
+                                                    <div style="text-align: center; padding-top: 5px; font-size: 0.7rem;">Barrier</div>
+                                                </div>
+                                                <div style="position: absolute; top: 5%; left: 50%; transform: translateX(-50%); font-size: 0.8rem;">Surface Seal</div>
+                                            </div>
+                                            <div class="well-description">
+                                                • Multiple barriers<br>
+                                                • No leakage<br>
+                                                • Permanent protection<br>
+                                                • Environmentally safe
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Slider Handle -->
+                                    <div class="slider-handle" id="sliderHandle"></div>
+                                </div>
+                            </div>
+
+                            <p style="margin-top: 16px; text-align: center; font-style: italic; color: var(--muted);">
+                                Move the slider to see the dramatic difference proper P&A makes
+                            </p>
+                        </div>
                     </div>
 
                     <div class="quiz-section">
@@ -2780,6 +2967,60 @@
         // ============================================
         // INTERACTIVE ELEMENTS
         // ============================================
+
+        // Before/After Slider (Module 1)
+        document.addEventListener('DOMContentLoaded', () => {
+            const slider = document.getElementById('beforeAfterSlider');
+            const handle = document.getElementById('sliderHandle');
+            const afterImage = document.getElementById('afterImage');
+
+            if (slider && handle && afterImage) {
+                let isDragging = false;
+
+                function updateSlider(x) {
+                    const rect = slider.getBoundingClientRect();
+                    let position = ((x - rect.left) / rect.width) * 100;
+                    position = Math.max(0, Math.min(100, position));
+
+                    handle.style.left = position + '%';
+                    afterImage.style.clipPath = `inset(0 ${100 - position}% 0 0)`;
+                }
+
+                handle.addEventListener('mousedown', () => {
+                    isDragging = true;
+                });
+
+                document.addEventListener('mousemove', (e) => {
+                    if (isDragging) {
+                        updateSlider(e.clientX);
+                    }
+                });
+
+                document.addEventListener('mouseup', () => {
+                    isDragging = false;
+                });
+
+                // Touch support
+                handle.addEventListener('touchstart', () => {
+                    isDragging = true;
+                });
+
+                document.addEventListener('touchmove', (e) => {
+                    if (isDragging && e.touches[0]) {
+                        updateSlider(e.touches[0].clientX);
+                    }
+                });
+
+                document.addEventListener('touchend', () => {
+                    isDragging = false;
+                });
+
+                // Click anywhere on slider to move
+                slider.addEventListener('click', (e) => {
+                    updateSlider(e.clientX);
+                });
+            }
+        });
 
         // Environmental Risk Visualizer (Module 1)
         function selectRisk(risk) {
