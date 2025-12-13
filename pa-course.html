@@ -1277,6 +1277,75 @@
                             <li><strong>Australia:</strong> Transitioning from prescriptive to goal-setting; strong evidence required for leaving equipment</li>
                         </ul>
                     </div>
+
+                    <!-- Interactive Global Standards Explorer -->
+                    <div class="interactive-section">
+                        <div class="interactive-title">Interactive: Explore Global P&A Standards</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Click on each country to explore how they implement P&A regulations under the ISO 16530-1 framework.</p>
+
+                        <div class="standards-grid">
+                            <div class="country-card" data-country="norway" onclick="exploreCountry('norway')">
+                                <div class="country-flag">🇳🇴</div>
+                                <div class="country-name">Norway</div>
+                                <div class="country-type">Goal-Setting</div>
+                            </div>
+
+                            <div class="country-card" data-country="uk" onclick="exploreCountry('uk')">
+                                <div class="country-flag">🇬🇧</div>
+                                <div class="country-name">United Kingdom</div>
+                                <div class="country-type">Goal-Setting</div>
+                            </div>
+
+                            <div class="country-card" data-country="usa" onclick="exploreCountry('usa')">
+                                <div class="country-flag">🇺🇸</div>
+                                <div class="country-name">United States</div>
+                                <div class="country-type">Prescriptive</div>
+                            </div>
+
+                            <div class="country-card" data-country="australia" onclick="exploreCountry('australia')">
+                                <div class="country-flag">🇦🇺</div>
+                                <div class="country-name">Australia</div>
+                                <div class="country-type">Transitioning</div>
+                            </div>
+                        </div>
+
+                        <div class="country-details reg-details" id="country-details-norway">
+                            <h4 style="color: var(--primary-color); margin-bottom: 12px;">🇳🇴 Norway - The Gold Standard</h4>
+                            <p><strong>Regulatory Approach:</strong> Goal-setting with rigorous scientific validation</p>
+                            <p style="margin-top: 8px;"><strong>Key Requirement:</strong> "Rock-to-rock" barrier - operators must scientifically prove their P&A design will prevent leaks in perpetuity.</p>
+                            <p style="margin-top: 8px;"><strong>Innovation:</strong> Encourages cutting-edge technology and methods, but demands comprehensive documentation and proof.</p>
+                            <p style="margin-top: 8px;"><strong>Why it's considered the gold standard:</strong> Combines flexibility with the highest safety standards, requiring operators to think beyond simple compliance.</p>
+                        </div>
+
+                        <div class="country-details reg-details" id="country-details-uk">
+                            <h4 style="color: var(--primary-color); margin-bottom: 12px;">🇬🇧 United Kingdom - Perpetual Accountability</h4>
+                            <p><strong>Regulatory Approach:</strong> Goal-setting with liability in perpetuity</p>
+                            <p style="margin-top: 8px;"><strong>Key Requirement:</strong> Well must never leak - operators choose methods but bear responsibility forever.</p>
+                            <p style="margin-top: 8px;"><strong>Trailing Liability:</strong> If current owner goes bankrupt, regulators can pursue previous owners for decommissioning costs.</p>
+                            <p style="margin-top: 8px;"><strong>Impact:</strong> Creates culture of meticulous planning and long-term thinking, as liability truly never ends.</p>
+                        </div>
+
+                        <div class="country-details reg-details" id="country-details-usa">
+                            <h4 style="color: var(--primary-color); margin-bottom: 12px;">🇺🇸 United States - State-by-State Prescriptive</h4>
+                            <p><strong>Regulatory Approach:</strong> Primarily prescriptive state regulations</p>
+                            <p style="margin-top: 8px;"><strong>Key Requirement:</strong> Detailed step-by-step instructions (e.g., "cement plug must be X feet long at Y depth").</p>
+                            <p style="margin-top: 8px;"><strong>Evolution:</strong> Federal regulators in complex areas like Gulf of Mexico shifting toward performance-based models.</p>
+                            <p style="margin-top: 8px;"><strong>Advantage:</strong> Clear compliance pathway, easy to audit and enforce across thousands of operators.</p>
+                        </div>
+
+                        <div class="country-details reg-details" id="country-details-australia">
+                            <h4 style="color: var(--primary-color); margin-bottom: 12px;">🇦🇺 Australia - In Transition</h4>
+                            <p><strong>Regulatory Approach:</strong> Actively transitioning from prescriptive to goal-setting</p>
+                            <p style="margin-top: 8px;"><strong>Key Requirement:</strong> Strong evidence required if equipment is left in place rather than removed.</p>
+                            <p style="margin-top: 8px;"><strong>Current Focus:</strong> Building regulatory capacity and operator expertise for goal-setting framework.</p>
+                            <p style="margin-top: 8px;"><strong>Future:</strong> Moving toward Norwegian-style scientific validation with Australian environmental considerations.</p>
+                        </div>
+
+                        <p style="margin-top: 16px; font-size: 0.9rem; padding: 12px; background: var(--bg-light); border-radius: 6px;">
+                            <strong>🌍 ISO 16530-1 Role:</strong> Provides universal grammar defining permanent barriers and core principles, allowing each country to implement based on their specific needs while maintaining global safety standards.
+                        </p>
+                    </div>
+
                     <div class="quiz-section">
                         <div class="quiz-title">Knowledge Check</div>
                         <div class="quiz-question">
@@ -1331,6 +1400,68 @@
                             <li>Multiple barriers for redundancy and safety</li>
                         </ul>
                     </div>
+
+                    <!-- Interactive Barrier Builder -->
+                    <div class="interactive-section">
+                        <div class="interactive-title">Interactive: Build a P&A Barrier</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Drag and drop the three essential components to build a proper P&A barrier in the correct sequence.</p>
+
+                        <div class="barrier-builder">
+                            <div class="barrier-components">
+                                <h4 style="margin-bottom: 12px; font-size: 1rem;">Available Components</h4>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">Drag these to the right →</p>
+
+                                <div class="component-item" draggable="true" data-type="cement" data-name="Cement Plug"
+                                     ondragstart="drag(event)" ondragend="dragEnd(event)">
+                                    <strong>🏗️ Cement Plug</strong>
+                                    <p style="font-size: 0.85rem; margin-top: 4px; color: var(--text-secondary);">Primary sealing material</p>
+                                </div>
+
+                                <div class="component-item" draggable="true" data-type="casing" data-name="Steel Casing"
+                                     ondragstart="drag(event)" ondragend="dragEnd(event)">
+                                    <strong>⚙️ Steel Casing</strong>
+                                    <p style="font-size: 0.85rem; margin-top: 4px; color: var(--text-secondary);">Structural integrity</p>
+                                </div>
+
+                                <div class="component-item" draggable="true" data-type="formation" data-name="Rock Formation"
+                                     ondragstart="drag(event)" ondragend="dragEnd(event)">
+                                    <strong>🪨 Rock Formation</strong>
+                                    <p style="font-size: 0.85rem; margin-top: 4px; color: var(--text-secondary);">Natural geological seal</p>
+                                </div>
+
+                                <button class="btn btn-secondary" onclick="resetBarrier()" style="margin-top: 16px; width: 100%;">
+                                    Reset Barrier
+                                </button>
+                            </div>
+
+                            <div class="barrier-preview">
+                                <h4 style="margin-bottom: 12px; font-size: 1rem;">Barrier Design</h4>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">Drop components here in correct order ↓</p>
+
+                                <div class="barrier-layer" data-type="formation"
+                                     ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDragOver(event)">
+                                    Drop formation here
+                                </div>
+
+                                <div class="barrier-layer" data-type="casing"
+                                     ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDragOver(event)">
+                                    Drop casing here
+                                </div>
+
+                                <div class="barrier-layer" data-type="cement"
+                                     ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDragOver(event)">
+                                    Drop cement here
+                                </div>
+
+                                <div id="barrier-result" style="display: none; margin-top: 16px; padding: 16px; background: rgba(34, 197, 94, 0.1); border-radius: 8px; border-left: 4px solid var(--success);"></div>
+                            </div>
+                        </div>
+
+                        <p style="margin-top: 16px; font-size: 0.9rem; color: var(--text-secondary);">
+                            <strong>💡 Tip:</strong> A proper barrier requires all three components working together - the rock formation provides natural containment, steel casing provides structural integrity, and cement creates the permanent seal.
+                        </p>
+                    </div>
+
                     <div class="quiz-section">
                         <div class="quiz-title">Knowledge Check</div>
                         <div class="quiz-question">
@@ -1387,6 +1518,69 @@
                             <li>Long-term planning essential for corporate risk management</li>
                         </ul>
                     </div>
+
+                    <!-- Interactive Liability Timeline -->
+                    <div class="interactive-section">
+                        <div class="interactive-title">Interactive: Perpetual Liability Timeline</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Click on timeline events to see how liability persists across generations. This visualization demonstrates why "in perpetuity" truly means forever.</p>
+
+                        <div class="timeline-container">
+                            <div class="timeline">
+                                <div class="timeline-item" data-year="0" onclick="highlightTimelineItem(0)">
+                                    <div class="timeline-year">Year 0: Well Plugged</div>
+                                    <div class="timeline-description">
+                                        Well is permanently abandoned using approved P&A procedures. Operator believes job is complete.
+                                        <strong style="display: block; margin-top: 4px; color: var(--accent);">⚠️ Liability begins - and never ends.</strong>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-item" data-year="10" onclick="highlightTimelineItem(10)">
+                                    <div class="timeline-year">Year 10: First Decade</div>
+                                    <div class="timeline-description">
+                                        Barriers remain intact. Operator still liable for any leaks or integrity issues.
+                                        Original engineers may still be with company, institutional knowledge preserved.
+                                    </div>
+                                </div>
+
+                                <div class="timeline-item" data-year="25" onclick="highlightTimelineItem(25)">
+                                    <div class="timeline-year">Year 25: Generation Shift</div>
+                                    <div class="timeline-description">
+                                        Original P&A team has retired. New generation manages liability.
+                                        Documentation becomes critical - institutional knowledge fading.
+                                        <strong style="display: block; margin-top: 4px; color: var(--warning);">Current owner still liable, regardless of ownership changes.</strong>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-item" data-year="50" onclick="highlightTimelineItem(50)">
+                                    <div class="timeline-year">Year 50: Half Century</div>
+                                    <div class="timeline-description">
+                                        Two generations since plugging. Company may have changed hands multiple times.
+                                        If leak occurs, current owner bears full responsibility AND cleanup costs.
+                                        <strong style="display: block; margin-top: 4px; color: var(--danger);">UK Trailing Liability: Previous owners can also be pursued.</strong>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-item" data-year="100" onclick="highlightTimelineItem(100)">
+                                    <div class="timeline-year">Year 100+: Perpetuity</div>
+                                    <div class="timeline-description">
+                                        A century later, the well must still never leak. No statute of limitations exists.
+                                        Demonstrates why "permanent" barrier design is critical - there is no end date.
+                                        <strong style="display: block; margin-top: 4px; color: var(--success);">This is why proper P&A design and documentation matters.</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px; padding: 16px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(245, 158, 11, 0.1)); border-radius: 8px; border-left: 4px solid var(--danger);">
+                            <p style="font-weight: 600; margin-bottom: 8px;">💡 Key Insight: The Forever Responsibility</p>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary);">
+                                Unlike most business transactions with defined liability periods, P&A liability truly has no expiration date.
+                                This drives conservative design choices, meticulous documentation, and long-term financial planning.
+                                Companies must consider: "Will this barrier work in 100 years? Can we prove it?"
+                            </p>
+                        </div>
+                    </div>
+
                     <div class="quiz-section">
                         <div class="quiz-title">Knowledge Check</div>
                         <div class="quiz-question">
@@ -1442,6 +1636,69 @@
                             <li>Not universally accepted; jurisdiction-specific approval needed</li>
                         </ul>
                     </div>
+
+                    <!-- Interactive Financial Calculator -->
+                    <div class="interactive-section">
+                        <div class="interactive-title">Interactive: P&A Bond Calculator</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Calculate estimated P&A bonding requirements based on well characteristics. Adjust parameters to see how depth, complexity, and location affect financial assurance needs.</p>
+
+                        <div class="calculator">
+                            <div class="calc-input-group">
+                                <label class="calc-label" for="well-depth">Well Depth (feet)</label>
+                                <input type="number" id="well-depth" class="calc-input" value="10000" min="0" max="35000" step="1000" onchange="calculatePABond()">
+                                <small style="color: var(--text-secondary);">Deeper wells = higher complexity and cost</small>
+                            </div>
+
+                            <div class="calc-input-group">
+                                <label class="calc-label" for="complexity">Operation Complexity: <span id="complexity-value">Medium</span></label>
+                                <input type="range" id="complexity" class="calc-slider" value="2" min="1" max="3" step="1" oninput="calculatePABond()">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">
+                                    <span>Low</span>
+                                    <span>Medium</span>
+                                    <span>High</span>
+                                </div>
+                                <small style="color: var(--text-secondary);">Complexity factors: multiple zones, high pressure, contamination, difficult access</small>
+                            </div>
+
+                            <div class="calc-input-group">
+                                <label class="calc-label" for="location">Well Location</label>
+                                <select id="location" class="calc-input" onchange="calculatePABond()">
+                                    <option value="onshore">Onshore (Land)</option>
+                                    <option value="shallow-water" selected>Shallow Water (< 500 ft)</option>
+                                    <option value="deep-water">Deep Water (500-5000 ft)</option>
+                                    <option value="ultra-deep">Ultra-Deep Water (> 5000 ft)</option>
+                                </select>
+                                <small style="color: var(--text-secondary);">Offshore operations significantly increase costs due to logistics and equipment</small>
+                            </div>
+
+                            <div class="calc-result">
+                                <div class="calc-result-label">Estimated P&A Bond Requirement</div>
+                                <div class="calc-result-value" id="bond-amount">$750,000</div>
+                                <small style="display: block; margin-top: 8px; opacity: 0.9;">
+                                    This is a simplified educational calculation. Actual bonding requirements vary by jurisdiction and specific well conditions.
+                                </small>
+                            </div>
+
+                            <div style="margin-top: 16px; padding: 12px; background: var(--bg-light); border-radius: 6px; font-size: 0.9rem;">
+                                <p style="margin-bottom: 8px;"><strong>📊 Understanding the Factors:</strong></p>
+                                <ul style="margin-left: 20px; color: var(--text-secondary);">
+                                    <li><strong>Depth:</strong> Base rate of ~$50/foot increases with complexity</li>
+                                    <li><strong>Complexity:</strong> 1x (simple) to 3x (high complexity) multiplier</li>
+                                    <li><strong>Location:</strong> Offshore adds 1.5x to 4x due to logistics, rig costs, weather delays</li>
+                                    <li><strong>Actual Costs:</strong> Can range from $100K (simple onshore) to $10M+ (ultra-deep complex)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px; padding: 16px; background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(16, 185, 129, 0.1)); border-radius: 8px; border-left: 4px solid var(--accent);">
+                            <p style="font-weight: 600; margin-bottom: 8px;">💰 Why Bonds Are Increasing</p>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary);">
+                                Historically, bond amounts were often underestimated. When operators went bankrupt, governments had to cover shortfalls using taxpayer money.
+                                Modern regulators now require bonds that reflect true P&A costs, protecting taxpayers and ensuring wells don't become "orphaned."
+                            </p>
+                        </div>
+                    </div>
+
                     <div class="quiz-section">
                         <div class="quiz-title">Knowledge Check</div>
                         <div class="quiz-question">
