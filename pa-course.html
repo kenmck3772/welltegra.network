@@ -2639,7 +2639,7 @@
                         </div>
                     </div>
                     <div class="module-actions">
-                        <button class="btn btn-primary" onclick="completeModule(1)">Mark Complete & Continue</button>
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); completeModule(1)">Mark Complete & Continue</button>
                     </div>
                 </div>
             </div>
@@ -2746,16 +2746,16 @@
                                         <p style="color: var(--muted); margin-top: 8px;">Geographic location determines applicable regulations</p>
                                     </div>
                                     <div class="decision-options">
-                                        <button class="decision-btn" onclick="nextDecision(2, 'usa', 'United States')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); nextDecision(2, 'usa', 'United States')">
                                             🇺🇸 United States
                                         </button>
-                                        <button class="decision-btn" onclick="nextDecision(2, 'uk', 'United Kingdom')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); nextDecision(2, 'uk', 'United Kingdom')">
                                             🇬🇧 United Kingdom
                                         </button>
-                                        <button class="decision-btn" onclick="nextDecision(2, 'norway', 'Norway')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); nextDecision(2, 'norway', 'Norway')">
                                             🇳🇴 Norway
                                         </button>
-                                        <button class="decision-btn" onclick="nextDecision(2, 'other', 'Other')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); nextDecision(2, 'other', 'Other')">
                                             🌍 Other Country
                                         </button>
                                     </div>
@@ -2767,16 +2767,16 @@
                                         <p style="color: var(--muted); margin-top: 8px;">Well type affects complexity and requirements</p>
                                     </div>
                                     <div class="decision-options">
-                                        <button class="decision-btn" onclick="nextDecision(3, 'oil', 'Oil Production Well')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); nextDecision(3, 'oil', 'Oil Production Well')">
                                             ⛽ Oil Production Well
                                         </button>
-                                        <button class="decision-btn" onclick="nextDecision(3, 'gas', 'Gas Production Well')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); nextDecision(3, 'gas', 'Gas Production Well')">
                                             🔥 Gas Production Well
                                         </button>
-                                        <button class="decision-btn" onclick="nextDecision(3, 'injection', 'Injection/Disposal Well')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); nextDecision(3, 'injection', 'Injection/Disposal Well')">
                                             💉 Injection/Disposal Well
                                         </button>
-                                        <button class="decision-btn" onclick="nextDecision(3, 'exploration', 'Exploration Well')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); nextDecision(3, 'exploration', 'Exploration Well')">
                                             🔍 Exploration Well
                                         </button>
                                     </div>
@@ -2788,16 +2788,16 @@
                                         <p style="color: var(--muted); margin-top: 8px;">Depth impacts complexity and cost</p>
                                     </div>
                                     <div class="decision-options">
-                                        <button class="decision-btn" onclick="nextDecision(4, 'shallow', 'Shallow (< 5,000 ft)')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); nextDecision(4, 'shallow', 'Shallow (< 5,000 ft)')">
                                             📏 Shallow (< 5,000 ft)
                                         </button>
-                                        <button class="decision-btn" onclick="nextDecision(4, 'medium', 'Medium (5,000 - 10,000 ft)')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); nextDecision(4, 'medium', 'Medium (5,000 - 10,000 ft)')">
                                             📐 Medium (5,000 - 10,000 ft)
                                         </button>
-                                        <button class="decision-btn" onclick="nextDecision(4, 'deep', 'Deep (10,000 - 15,000 ft)')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); nextDecision(4, 'deep', 'Deep (10,000 - 15,000 ft)')">
                                             📊 Deep (10,000 - 15,000 ft)
                                         </button>
-                                        <button class="decision-btn" onclick="nextDecision(4, 'ultra-deep', 'Ultra-Deep (> 15,000 ft)')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); nextDecision(4, 'ultra-deep', 'Ultra-Deep (> 15,000 ft)')">
                                             🔬 Ultra-Deep (> 15,000 ft)
                                         </button>
                                     </div>
@@ -2809,13 +2809,13 @@
                                         <p style="color: var(--muted); margin-top: 8px;">Critical factor for environmental protection</p>
                                     </div>
                                     <div class="decision-options">
-                                        <button class="decision-btn" onclick="showResult('aquifer-yes')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); showResult('aquifer-yes')">
                                             ✅ Yes - Freshwater aquifers present
                                         </button>
-                                        <button class="decision-btn" onclick="showResult('aquifer-no')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); showResult('aquifer-no')">
                                             ❌ No - No freshwater zones
                                         </button>
-                                        <button class="decision-btn" onclick="showResult('aquifer-unknown')">
+                                        <button class="decision-btn" onclick="event.stopPropagation(); showResult('aquifer-unknown')">
                                             ❓ Unknown - Needs assessment
                                         </button>
                                     </div>
@@ -2829,7 +2829,7 @@
                                         <!-- Populated by JavaScript -->
                                     </div>
 
-                                    <button class="btn btn-secondary" onclick="resetDecisionTree()" style="margin-top: 20px; width: 100%;">
+                                    <button class="btn btn-secondary" onclick="event.stopPropagation(); resetDecisionTree()" style="margin-top: 20px; width: 100%;">
                                         Start Over
                                     </button>
                                 </div>
@@ -2868,7 +2868,7 @@
                         </div>
                     </div>
                     <div class="module-actions">
-                        <button class="btn btn-primary" onclick="completeModule(2)">Mark Complete & Continue</button>
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); completeModule(2)">Mark Complete & Continue</button>
                     </div>
                 </div>
             </div>
@@ -2991,7 +2991,7 @@
                         </div>
                     </div>
                     <div class="module-actions">
-                        <button class="btn btn-primary" onclick="completeModule(3)">Mark Complete & Continue</button>
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); completeModule(3)">Mark Complete & Continue</button>
                     </div>
                 </div>
             </div>
@@ -3053,7 +3053,7 @@
                                     <p style="font-size: 0.85rem; margin-top: 4px; color: var(--text-secondary);">Natural geological seal</p>
                                 </div>
 
-                                <button class="btn btn-secondary" onclick="resetBarrier()" style="margin-top: 16px; width: 100%;">
+                                <button class="btn btn-secondary" onclick="event.stopPropagation(); resetBarrier()" style="margin-top: 16px; width: 100%;">
                                     Reset Barrier
                                 </button>
                             </div>
@@ -3125,7 +3125,7 @@
                                     <input type="number" id="safety-factor" class="calc-input" value="20" min="0" max="50" step="5" oninput="calculateCement()">
                                 </div>
 
-                                <button class="btn btn-primary" onclick="calculateCement()" style="width: 100%; margin-top: 12px;">
+                                <button class="btn btn-primary" onclick="event.stopPropagation(); calculateCement()" style="width: 100%; margin-top: 12px;">
                                     Calculate Volume
                                 </button>
                             </div>
@@ -3341,10 +3341,10 @@
                                     </select>
                                 </div>
 
-                                <button class="btn btn-primary" onclick="startPressureTest()" id="start-test-btn" style="width: 100%; margin-top: 16px;">
+                                <button class="btn btn-primary" onclick="event.stopPropagation(); startPressureTest()" id="start-test-btn" style="width: 100%; margin-top: 16px;">
                                     Start Pressure Test
                                 </button>
-                                <button class="btn btn-secondary" onclick="resetPressureTest()" style="width: 100%; margin-top: 8px;">
+                                <button class="btn btn-secondary" onclick="event.stopPropagation(); resetPressureTest()" style="width: 100%; margin-top: 8px;">
                                     Reset Test
                                 </button>
                             </div>
@@ -3417,7 +3417,7 @@
                         </div>
                     </div>
                     <div class="module-actions">
-                        <button class="btn btn-primary" onclick="completeModule(4)">Mark Complete & Continue</button>
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); completeModule(4)">Mark Complete & Continue</button>
                         <a href="sop-library.html" class="btn btn-secondary">View Related SOPs</a>
                     </div>
                 </div>
@@ -3460,7 +3460,7 @@
 
                         <div class="timeline-container">
                             <div class="timeline">
-                                <div class="timeline-item" data-year="0" onclick="highlightTimelineItem(0)">
+                                <div class="timeline-item" data-year="0" onclick="event.stopPropagation(); highlightTimelineItem(0)">
                                     <div class="timeline-year">Year 0: Well Plugged</div>
                                     <div class="timeline-description">
                                         Well is permanently abandoned using approved P&A procedures. Operator believes job is complete.
@@ -3468,7 +3468,7 @@
                                     </div>
                                 </div>
 
-                                <div class="timeline-item" data-year="10" onclick="highlightTimelineItem(10)">
+                                <div class="timeline-item" data-year="10" onclick="event.stopPropagation(); highlightTimelineItem(10)">
                                     <div class="timeline-year">Year 10: First Decade</div>
                                     <div class="timeline-description">
                                         Barriers remain intact. Operator still liable for any leaks or integrity issues.
@@ -3476,7 +3476,7 @@
                                     </div>
                                 </div>
 
-                                <div class="timeline-item" data-year="25" onclick="highlightTimelineItem(25)">
+                                <div class="timeline-item" data-year="25" onclick="event.stopPropagation(); highlightTimelineItem(25)">
                                     <div class="timeline-year">Year 25: Generation Shift</div>
                                     <div class="timeline-description">
                                         Original P&A team has retired. New generation manages liability.
@@ -3485,7 +3485,7 @@
                                     </div>
                                 </div>
 
-                                <div class="timeline-item" data-year="50" onclick="highlightTimelineItem(50)">
+                                <div class="timeline-item" data-year="50" onclick="event.stopPropagation(); highlightTimelineItem(50)">
                                     <div class="timeline-year">Year 50: Half Century</div>
                                     <div class="timeline-description">
                                         Two generations since plugging. Company may have changed hands multiple times.
@@ -3494,7 +3494,7 @@
                                     </div>
                                 </div>
 
-                                <div class="timeline-item" data-year="100" onclick="highlightTimelineItem(100)">
+                                <div class="timeline-item" data-year="100" onclick="event.stopPropagation(); highlightTimelineItem(100)">
                                     <div class="timeline-year">Year 100+: Perpetuity</div>
                                     <div class="timeline-description">
                                         A century later, the well must still never leak. No statute of limitations exists.
@@ -3536,7 +3536,7 @@
                         </div>
                     </div>
                     <div class="module-actions">
-                        <button class="btn btn-primary" onclick="completeModule(5)">Mark Complete & Continue</button>
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); completeModule(5)">Mark Complete & Continue</button>
                     </div>
                 </div>
             </div>
@@ -3643,12 +3643,12 @@
                                 <div class="pie-chart-wrapper">
                                     <div class="pie-chart" id="cost-pie-chart">
                                         <!-- Segments created dynamically -->
-                                        <div class="pie-segment equipment" data-category="equipment" onclick="selectCostCategory('equipment')"></div>
-                                        <div class="pie-segment labor" data-category="labor" onclick="selectCostCategory('labor')"></div>
-                                        <div class="pie-segment materials" data-category="materials" onclick="selectCostCategory('materials')"></div>
-                                        <div class="pie-segment testing" data-category="testing" onclick="selectCostCategory('testing')"></div>
-                                        <div class="pie-segment mobilization" data-category="mobilization" onclick="selectCostCategory('mobilization')"></div>
-                                        <div class="pie-segment regulatory" data-category="regulatory" onclick="selectCostCategory('regulatory')"></div>
+                                        <div class="pie-segment equipment" data-category="equipment" onclick="event.stopPropagation(); selectCostCategory('equipment')"></div>
+                                        <div class="pie-segment labor" data-category="labor" onclick="event.stopPropagation(); selectCostCategory('labor')"></div>
+                                        <div class="pie-segment materials" data-category="materials" onclick="event.stopPropagation(); selectCostCategory('materials')"></div>
+                                        <div class="pie-segment testing" data-category="testing" onclick="event.stopPropagation(); selectCostCategory('testing')"></div>
+                                        <div class="pie-segment mobilization" data-category="mobilization" onclick="event.stopPropagation(); selectCostCategory('mobilization')"></div>
+                                        <div class="pie-segment regulatory" data-category="regulatory" onclick="event.stopPropagation(); selectCostCategory('regulatory')"></div>
                                         <div class="pie-center">
                                             <div class="center-label">P&A</div>
                                             <div class="center-sublabel">Cost Breakdown</div>
@@ -3657,27 +3657,27 @@
                                 </div>
 
                                 <div class="pie-legend">
-                                    <div class="legend-item" onclick="selectCostCategory('equipment')">
+                                    <div class="legend-item" onclick="event.stopPropagation(); selectCostCategory('equipment')">
                                         <div class="legend-color" style="background: #3b82f6;"></div>
                                         <div class="legend-label">Equipment Rental (30%)</div>
                                     </div>
-                                    <div class="legend-item" onclick="selectCostCategory('labor')">
+                                    <div class="legend-item" onclick="event.stopPropagation(); selectCostCategory('labor')">
                                         <div class="legend-color" style="background: #10b981;"></div>
                                         <div class="legend-label">Labor & Personnel (25%)</div>
                                     </div>
-                                    <div class="legend-item" onclick="selectCostCategory('materials')">
+                                    <div class="legend-item" onclick="event.stopPropagation(); selectCostCategory('materials')">
                                         <div class="legend-color" style="background: #f59e0b;"></div>
                                         <div class="legend-label">Cement & Materials (20%)</div>
                                     </div>
-                                    <div class="legend-item" onclick="selectCostCategory('testing')">
+                                    <div class="legend-item" onclick="event.stopPropagation(); selectCostCategory('testing')">
                                         <div class="legend-color" style="background: #8b5cf6;"></div>
                                         <div class="legend-label">Testing & Monitoring (10%)</div>
                                     </div>
-                                    <div class="legend-item" onclick="selectCostCategory('mobilization')">
+                                    <div class="legend-item" onclick="event.stopPropagation(); selectCostCategory('mobilization')">
                                         <div class="legend-color" style="background: #ec4899;"></div>
                                         <div class="legend-label">Mobilization (10%)</div>
                                     </div>
-                                    <div class="legend-item" onclick="selectCostCategory('regulatory')">
+                                    <div class="legend-item" onclick="event.stopPropagation(); selectCostCategory('regulatory')">
                                         <div class="legend-color" style="background: #14b8a6;"></div>
                                         <div class="legend-label">Regulatory & Permitting (5%)</div>
                                     </div>
@@ -3724,7 +3724,7 @@
                         </div>
                     </div>
                     <div class="module-actions">
-                        <button class="btn btn-primary" onclick="completeModule(6)">Mark Complete & Continue</button>
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); completeModule(6)">Mark Complete & Continue</button>
                     </div>
                 </div>
             </div>
@@ -3864,7 +3864,7 @@
                         </div>
                     </div>
                     <div class="module-actions">
-                        <button class="btn btn-success" onclick="completeModule(7)">Complete Course & Get Certificate</button>
+                        <button class="btn btn-success" onclick="event.stopPropagation(); completeModule(7)">Complete Course & Get Certificate</button>
                     </div>
                 </div>
             </div>
@@ -3913,7 +3913,7 @@
             <p>You have successfully completed the Plug & Abandonment Demo Course</p>
             <p><strong>Certificate ID:</strong> <span id="cert-id"></span></p>
             <p><strong>Completion Date:</strong> <span id="cert-date"></span></p>
-            <button class="btn" style="background: var(--success); color: white;" onclick="downloadCertificate()">Download Certificate</button>
+            <button class="btn" style="background: var(--success); color: white;" onclick="event.stopPropagation(); downloadCertificate()">Download Certificate</button>
         </div>
     </div>
 
