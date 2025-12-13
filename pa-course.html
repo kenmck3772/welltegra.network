@@ -4159,6 +4159,8 @@
             }
 
             const options = document.querySelectorAll(`input[name="q${moduleNum}"]`);
+            let isCorrect = false;
+
             options.forEach(opt => {
                 const label = opt.parentElement;
                 label.classList.remove('selected', 'correct', 'incorrect');
@@ -4166,15 +4168,20 @@
                     label.classList.add('selected');
                     if (opt.value === correctAnswers[moduleNum]) {
                         label.classList.add('correct');
+                        isCorrect = true;
                     } else {
                         label.classList.add('incorrect');
-                        alert('Incorrect answer. Please review the material and try again.');
-                        return;
                     }
                 }
             });
 
-            if (selected.value !== correctAnswers[moduleNum]) {
+            if (!isCorrect) {
+                alert('❌ Incorrect answer. Please review the module content and try again.\n\nTip: The correct information can be found in the interactive sections above.');
+                // Uncheck the incorrect answer so they can select a new one
+                selected.checked = false;
+                options.forEach(opt => {
+                    opt.parentElement.classList.remove('selected', 'correct', 'incorrect');
+                });
                 return;
             }
 
@@ -4195,11 +4202,13 @@
             // Check if this module completion should resume the video
             const checkpointAlert = document.getElementById('checkpoint-alert');
             const continueBtn = document.getElementById('continue-btn');
+            let willResumeVideo = false;
 
             // If a checkpoint is active, check if it's for this module
             if (checkpointAlert.style.display !== 'none' && currentCheckpointIndex < checkpoints.length) {
                 const currentCheckpoint = checkpoints[currentCheckpointIndex];
                 if (currentCheckpoint && currentCheckpoint.module === moduleNum) {
+                    willResumeVideo = true;
                     // Enable continue button and show completion message
                     continueBtn.disabled = false;
                     continueBtn.textContent = '▶️ Continue Video';
@@ -4216,8 +4225,9 @@
             // Close current module
             document.getElementById(`content-${moduleNum}`).classList.remove('active');
 
-            // Unlock next module with animation
-            if (moduleNum < 7) {
+            // Only auto-open next module if NOT resuming video
+            // (video will handle opening next module at next checkpoint)
+            if (!willResumeVideo && moduleNum < 7) {
                 const nextCard = document.querySelector(`[data-module="${moduleNum + 1}"]`);
                 nextCard.classList.remove('locked');
                 nextCard.style.animation = 'fadeInUp 0.5s ease';
@@ -4228,6 +4238,12 @@
                 setTimeout(() => {
                     toggleModule(moduleNum + 1);
                 }, 600);
+            } else if (moduleNum < 7) {
+                // Still unlock next module, but don't auto-open it
+                const nextCard = document.querySelector(`[data-module="${moduleNum + 1}"]`);
+                nextCard.classList.remove('locked');
+                document.getElementById(`status-${moduleNum + 1}`).innerHTML = '<span>⭕</span><span>Not Started</span>';
+                document.getElementById(`status-${moduleNum + 1}`).className = 'module-status';
             }
 
             // Update progress
