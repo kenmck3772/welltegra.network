@@ -603,6 +603,17 @@
             }
         }
 
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.7);
+                border-color: var(--accent);
+            }
+            50% {
+                box-shadow: 0 0 0 15px rgba(20, 184, 166, 0);
+                border-color: var(--warning);
+            }
+        }
+
         /* Global Standards Explorer */
         .standards-grid {
             display: grid;
@@ -1059,21 +1070,32 @@
 
         <!-- Video Section -->
         <div class="video-section">
-            <h2 style="margin-bottom: 20px; font-size: 1.75rem;">Course Video</h2>
-            <div class="video-wrapper">
-                <iframe
-                    src="https://www.youtube.com/embed/V7Rn45Xjjp0"
-                    title="Plug and Abandonment Course"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
+            <h2 style="margin-bottom: 20px; font-size: 1.75rem;">Interactive Course Video</h2>
+            <div style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(20, 184, 166, 0.1)); padding: 16px; border-radius: 8px; margin-bottom: 16px; border-left: 4px solid var(--accent);">
+                <p style="margin: 0; font-weight: 600; color: var(--primary-color);">
+                    🎯 Interactive Learning Mode: The video will pause at key moments for you to practice what you've learned!
+                </p>
             </div>
-            <div class="video-info">
+            <div class="video-wrapper">
+                <div id="youtube-player"></div>
+            </div>
+
+            <!-- Video Checkpoint Alert -->
+            <div id="checkpoint-alert" style="display: none; margin-top: 16px; padding: 20px; background: linear-gradient(135deg, var(--warning), var(--accent)); color: white; border-radius: 8px; text-align: center;">
+                <h3 style="margin-bottom: 12px; font-size: 1.3rem;">⏸️ Checkpoint Reached!</h3>
+                <p id="checkpoint-message" style="margin-bottom: 16px; font-size: 1.1rem;"></p>
+                <p style="font-size: 0.95rem; opacity: 0.9;">Scroll down to complete the interactive exercise, then click Continue.</p>
+                <button id="continue-btn" class="btn" style="background: white; color: var(--accent); margin-top: 12px; font-weight: 700;" onclick="continueVideo()" disabled>
+                    ✓ Complete Exercise First
+                </button>
+            </div>
+
+            <div class="video-info" style="margin-top: 16px;">
                 <div>
-                    <strong>Duration:</strong> 11:45 | <strong>Source:</strong> Industry Expert
+                    <strong>Duration:</strong> 11:45 | <strong>Checkpoints:</strong> 5 Interactive Elements
                 </div>
-                <div>
-                    <span style="color: var(--text-secondary); font-size: 0.9rem;">💡 Watch in full screen for best experience</span>
+                <div id="current-checkpoint" style="color: var(--text-secondary); font-size: 0.9rem;">
+                    📍 Next checkpoint: Module 2 at 2:46
                 </div>
             </div>
         </div>
@@ -1833,6 +1855,137 @@
     </div>
 
     <script>
+        // YouTube IFrame API
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        var checkpoints = [
+            { time: 166, module: 2, title: "Regulatory Frameworks", exercise: "Compare regulatory approaches" },
+            { time: 409, module: 3, title: "Global Standards", exercise: "Explore country regulations" },
+            { time: 462, module: 4, title: "Barrier Systems", exercise: "Build a P&A barrier" },
+            { time: 588, module: 5, title: "Perpetual Liability", exercise: "Explore liability timeline" },
+            { time: 684, module: 6, title: "Financial Assurance", exercise: "Calculate bond requirements" }
+        ];
+        var currentCheckpointIndex = 0;
+        var checkpointCompleted = false;
+        var videoInterval;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '100%',
+                width: '100%',
+                videoId: 'V7Rn45Xjjp0',
+                playerVars: {
+                    'enablejsapi': 1,
+                    'origin': window.location.origin
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            updateNextCheckpoint();
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING) {
+                startCheckpointMonitoring();
+            } else {
+                stopCheckpointMonitoring();
+            }
+        }
+
+        function startCheckpointMonitoring() {
+            videoInterval = setInterval(() => {
+                const currentTime = player.getCurrentTime();
+                const nextCheckpoint = checkpoints[currentCheckpointIndex];
+
+                if (nextCheckpoint && currentTime >= nextCheckpoint.time && !checkpointCompleted) {
+                    reachCheckpoint(nextCheckpoint);
+                }
+            }, 1000);
+        }
+
+        function stopCheckpointMonitoring() {
+            if (videoInterval) {
+                clearInterval(videoInterval);
+            }
+        }
+
+        function reachCheckpoint(checkpoint) {
+            player.pauseVideo();
+            checkpointCompleted = true;
+
+            // Show checkpoint alert
+            document.getElementById('checkpoint-alert').style.display = 'block';
+            document.getElementById('checkpoint-message').textContent =
+                `Module ${checkpoint.module}: ${checkpoint.title} - ${checkpoint.exercise}`;
+
+            // Scroll to and highlight interactive element
+            const moduleCard = document.querySelector(`[data-module="${checkpoint.module}"]`);
+            if (moduleCard) {
+                // Open the module
+                toggleModule(checkpoint.module);
+
+                // Highlight the interactive section
+                setTimeout(() => {
+                    const interactiveSection = moduleCard.querySelector('.interactive-section');
+                    if (interactiveSection) {
+                        interactiveSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        interactiveSection.style.animation = 'pulse 2s infinite';
+                    }
+                }, 500);
+            }
+        }
+
+        function continueVideo() {
+            // Hide checkpoint alert
+            document.getElementById('checkpoint-alert').style.display = 'none';
+
+            // Remove highlight animation
+            const allInteractive = document.querySelectorAll('.interactive-section');
+            allInteractive.forEach(section => {
+                section.style.animation = '';
+            });
+
+            // Move to next checkpoint
+            currentCheckpointIndex++;
+            checkpointCompleted = false;
+            updateNextCheckpoint();
+
+            // Resume video
+            player.playVideo();
+        }
+
+        function updateNextCheckpoint() {
+            const nextCheckpoint = checkpoints[currentCheckpointIndex];
+            const checkpointDiv = document.getElementById('current-checkpoint');
+
+            if (nextCheckpoint) {
+                const minutes = Math.floor(nextCheckpoint.time / 60);
+                const seconds = nextCheckpoint.time % 60;
+                checkpointDiv.textContent =
+                    `📍 Next checkpoint: Module ${nextCheckpoint.module} at ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            } else {
+                checkpointDiv.textContent = '🎉 All checkpoints completed!';
+            }
+        }
+
+        // Enable continue button when interactive element is completed
+        function enableContinue() {
+            const continueBtn = document.getElementById('continue-btn');
+            continueBtn.disabled = false;
+            continueBtn.textContent = '▶️ Continue Video';
+            continueBtn.style.background = 'var(--success)';
+            continueBtn.style.color = 'white';
+        }
+
         // Course state management
         const courseState = {
             completedModules: new Set(),
@@ -2041,6 +2194,9 @@
             if (card) {
                 card.classList.add('selected');
                 document.getElementById(`reg-details-${type}`).classList.add('active');
+
+                // Enable continue button after interaction
+                enableContinue();
             }
         }
 
@@ -2062,6 +2218,9 @@
                 document.querySelectorAll('.country-details').forEach(d => d.classList.remove('active'));
                 if (!isActive) {
                     details.classList.add('active');
+
+                    // Enable continue button after exploring a country
+                    enableContinue();
                 }
             }
         }
@@ -2115,6 +2274,9 @@
                 if (result) {
                     result.style.display = 'block';
                     result.innerHTML = '<strong style="color: var(--success);">✓ Barrier Complete!</strong><p>You have successfully designed a proper P&A barrier with all three essential components in the correct sequence.</p>';
+
+                    // Enable continue button after completing barrier
+                    enableContinue();
                 }
             }
         }
@@ -2156,6 +2318,9 @@
             // Update slider display
             document.getElementById('complexity-value').textContent =
                 complexity === 1 ? 'Low' : complexity === 2 ? 'Medium' : 'High';
+
+            // Enable continue button after calculation
+            enableContinue();
         }
 
         // Liability Timeline Interaction
@@ -2169,6 +2334,9 @@
                     item.style.transform = 'translateX(4px)';
                 }
             });
+
+            // Enable continue button after clicking timeline items
+            enableContinue();
         }
     </script>
 </body>
