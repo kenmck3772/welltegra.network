@@ -1940,6 +1940,188 @@
             font-size: 1.5rem;
         }
 
+        /* Pressure Test Simulator */
+        .pressure-test-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 968px) {
+            .pressure-test-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .test-controls-panel {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .pressure-gauge-display {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .gauge-circle {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            border: 8px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--card) 100%);
+            box-shadow: 0 0 20px rgba(20, 184, 166, 0.3);
+            transition: all 0.3s;
+        }
+
+        .gauge-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .gauge-unit {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .gauge-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .test-visualization-panel {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+        }
+
+        .barrier-test-visual {
+            min-height: 300px;
+            position: relative;
+            background: var(--bg);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .wellbore-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            height: 250px;
+        }
+
+        .formation-wall {
+            width: 40px;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                #78350f,
+                #78350f 10px,
+                #92400e 10px,
+                #92400e 20px
+            );
+            border: 2px solid #451a03;
+        }
+
+        .cement-plug {
+            width: 120px;
+            height: 100%;
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            border: 3px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.5s;
+        }
+
+        .cement-plug.under-pressure {
+            box-shadow: 0 0 30px rgba(20, 184, 166, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .plug-label {
+            font-size: 0.75rem;
+            color: var(--text-primary);
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .pressure-arrows {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            gap: 100px;
+            animation: fadeIn 0.5s;
+        }
+
+        .pressure-arrows .arrow {
+            font-size: 1.2rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .leak-indicators {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .leak {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: leakFlow 1s ease-in-out infinite;
+        }
+
+        @keyframes leakFlow {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(10px); }
+        }
+
+        .test-progress {
+            margin-top: 20px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: var(--bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--border);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--primary-color) 100%);
+            transition: width 0.5s linear;
+            width: 0%;
+        }
+
     </style>
 </head>
 <body>
@@ -2961,6 +3143,107 @@
                                 <li><strong>Surface Plug:</strong> Final 50-100 ft cement plug, wellhead cut below ground, site restored</li>
                             </ol>
                             <p style="margin-top: 8px; font-style: italic; color: var(--muted);">Each barrier must be pressure tested before proceeding to the next. Redundancy is key - if one barrier fails, others prevent leakage.</p>
+                        </div>
+                    </div>
+
+                    <!-- Pressure Test Simulator -->
+                    <div class="interactive-section" style="margin-top: 24px;">
+                        <div class="interactive-title">Interactive: Pressure Test Simulator</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Simulate a pressure test on a cement plug to verify barrier integrity. Set test pressure and watch for leaks.</p>
+
+                        <div class="pressure-test-container">
+                            <div class="test-controls-panel">
+                                <h4 style="margin-bottom: 16px;">Test Parameters</h4>
+
+                                <div class="pressure-gauge-display">
+                                    <div class="gauge-circle">
+                                        <div class="gauge-value" id="current-pressure">0</div>
+                                        <div class="gauge-unit">PSI</div>
+                                    </div>
+                                    <div class="gauge-label">Current Test Pressure</div>
+                                </div>
+
+                                <div class="input-group" style="margin-top: 20px;">
+                                    <label for="target-pressure">
+                                        <strong>Target Test Pressure (PSI)</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Typical: 500-2000 PSI</span>
+                                    </label>
+                                    <input type="number" id="target-pressure" class="calc-input" value="1000" min="100" max="5000" step="100">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="test-duration">
+                                        <strong>Test Duration (minutes)</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Standard: 30 minutes minimum</span>
+                                    </label>
+                                    <input type="number" id="test-duration" class="calc-input" value="30" min="10" max="120" step="5">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="plug-quality">
+                                        <strong>Plug Quality</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Simulated cement condition</span>
+                                    </label>
+                                    <select id="plug-quality" class="calc-input">
+                                        <option value="excellent">Excellent (Proper mix, full cure)</option>
+                                        <option value="good">Good (Minor imperfections)</option>
+                                        <option value="fair">Fair (Some voids present)</option>
+                                        <option value="poor">Poor (Major defects)</option>
+                                    </select>
+                                </div>
+
+                                <button class="btn btn-primary" onclick="startPressureTest()" id="start-test-btn" style="width: 100%; margin-top: 16px;">
+                                    Start Pressure Test
+                                </button>
+                                <button class="btn btn-secondary" onclick="resetPressureTest()" style="width: 100%; margin-top: 8px;">
+                                    Reset Test
+                                </button>
+                            </div>
+
+                            <div class="test-visualization-panel">
+                                <h4 style="margin-bottom: 16px; text-align: center;">Test Visualization</h4>
+
+                                <div class="barrier-test-visual">
+                                    <div class="wellbore-section">
+                                        <div class="formation-wall left"></div>
+                                        <div class="cement-plug" id="cement-plug">
+                                            <div class="plug-label">Cement Plug Under Test</div>
+                                        </div>
+                                        <div class="formation-wall right"></div>
+                                    </div>
+
+                                    <div class="pressure-arrows" id="pressure-arrows" style="display: none;">
+                                        <div class="arrow up">⬆️ Pressure Applied</div>
+                                        <div class="arrow down">⬇️ Pressure Applied</div>
+                                    </div>
+
+                                    <div class="leak-indicators" id="leak-indicators"></div>
+                                </div>
+
+                                <div class="test-progress" id="test-progress" style="display: none;">
+                                    <div class="progress-label">
+                                        <span>Test Progress</span>
+                                        <span id="progress-time">0%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progress-fill"></div>
+                                    </div>
+                                </div>
+
+                                <div id="test-results" style="margin-top: 16px; padding: 16px; border-radius: 8px; display: none;"></div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 6px; border-left: 4px solid var(--accent);">
+                            <p style="margin-bottom: 8px;"><strong>🧪 About Pressure Testing:</strong></p>
+                            <ul style="font-size: 0.9rem; margin-left: 20px; line-height: 1.8;">
+                                <li><strong>Purpose:</strong> Verify cement plug can withstand formation pressures without leaking</li>
+                                <li><strong>Method:</strong> Apply pressure from surface, monitor for pressure drop over time</li>
+                                <li><strong>Pass Criteria:</strong> Pressure must hold steady (±10 PSI max) for entire test duration</li>
+                                <li><strong>Failure:</strong> Significant pressure drop indicates leak - plug must be remediated</li>
+                                <li><strong>Regulation:</strong> Most jurisdictions require documented pressure test before approval</li>
+                                <li><strong>Consequences:</strong> Failed test means costly remediation: perforate plug, squeeze more cement, re-test</li>
+                            </ul>
                         </div>
                     </div>
 
@@ -4319,6 +4602,179 @@
             setTimeout(() => {
                 feedback.style.display = 'none';
             }, 3000);
+        }
+
+        // Pressure Test Simulator (Module 4)
+        let testInterval = null;
+        let testStartTime = null;
+
+        function startPressureTest() {
+            const targetPressure = parseInt(document.getElementById('target-pressure').value);
+            const duration = parseInt(document.getElementById('test-duration').value);
+            const quality = document.getElementById('plug-quality').value;
+
+            // Reset previous test
+            resetPressureTest();
+
+            // Show test UI
+            document.getElementById('pressure-arrows').style.display = 'flex';
+            document.getElementById('test-progress').style.display = 'block';
+            document.getElementById('cement-plug').classList.add('under-pressure');
+
+            // Disable start button
+            document.getElementById('start-test-btn').disabled = true;
+
+            testStartTime = Date.now();
+            const testDurationMs = duration * 1000; // Convert to ms for simulation (1 min = 1 sec)
+            let currentPressure = 0;
+            let pressureDropRate = 0;
+
+            // Determine leak rate based on quality
+            if (quality === 'poor') {
+                pressureDropRate = targetPressure / (testDurationMs / 100) * 3; // Fails quickly
+            } else if (quality === 'fair') {
+                pressureDropRate = targetPressure / (testDurationMs / 100) * 0.8; // Gradual failure
+            } else if (quality === 'good') {
+                pressureDropRate = targetPressure / (testDurationMs / 100) * 0.1; // Minor drop
+            } else {
+                pressureDropRate = 0; // No drop - perfect
+            }
+
+            // Ramp up pressure
+            let rampInterval = setInterval(() => {
+                currentPressure += targetPressure / 20;
+                if (currentPressure >= targetPressure) {
+                    currentPressure = targetPressure;
+                    clearInterval(rampInterval);
+
+                    // Start main test
+                    startMainTest(targetPressure, testDurationMs, pressureDropRate, quality);
+                }
+                document.getElementById('current-pressure').textContent = Math.round(currentPressure);
+            }, 100);
+        }
+
+        function startMainTest(targetPressure, testDurationMs, pressureDropRate, quality) {
+            let elapsed = 0;
+            let currentPressure = targetPressure;
+
+            testInterval = setInterval(() => {
+                elapsed += 100;
+                const progress = (elapsed / testDurationMs) * 100;
+
+                // Update progress bar
+                document.getElementById('progress-fill').style.width = progress + '%';
+                document.getElementById('progress-time').textContent = Math.round(progress) + '%';
+
+                // Apply pressure drop
+                currentPressure -= pressureDropRate;
+                currentPressure = Math.max(0, currentPressure);
+                document.getElementById('current-pressure').textContent = Math.round(currentPressure);
+
+                // Show leaks for poor/fair quality
+                if (quality === 'poor' && elapsed > testDurationMs * 0.2) {
+                    showLeaks(3);
+                } else if (quality === 'fair' && elapsed > testDurationMs * 0.5) {
+                    showLeaks(1);
+                }
+
+                // Test complete
+                if (elapsed >= testDurationMs) {
+                    clearInterval(testInterval);
+                    showTestResults(targetPressure, currentPressure, quality);
+                }
+            }, 100);
+        }
+
+        function showLeaks(count) {
+            const container = document.getElementById('leak-indicators');
+            if (container.children.length > 0) return; // Already showing leaks
+
+            for (let i = 0; i < count; i++) {
+                const leak = document.createElement('div');
+                leak.className = 'leak';
+                leak.textContent = '💧';
+                leak.style.left = (30 + Math.random() * 40) + '%';
+                leak.style.top = (20 + Math.random() * 60) + '%';
+                container.appendChild(leak);
+            }
+        }
+
+        function showTestResults(targetPressure, finalPressure, quality) {
+            const results = document.getElementById('test-results');
+            const pressureDrop = targetPressure - finalPressure;
+            const dropPercentage = (pressureDrop / targetPressure) * 100;
+
+            let status, message, bgColor, borderColor;
+
+            if (dropPercentage <= 1) {
+                // Pass - excellent
+                status = '✅ TEST PASSED';
+                message = `
+                    <p><strong>Result:</strong> Barrier integrity confirmed! Pressure held at ${Math.round(finalPressure)} PSI with only ${Math.round(pressureDrop)} PSI drop (${dropPercentage.toFixed(1)}%).</p>
+                    <p style="margin-top: 8px;"><strong>Status:</strong> This plug meets regulatory requirements. The barrier is approved for permanent abandonment.</p>
+                    <p style="margin-top: 8px;"><strong>Next Steps:</strong> Document results, submit to regulatory authority, proceed with next barrier.</p>
+                `;
+                bgColor = 'rgba(34, 197, 94, 0.1)';
+                borderColor = 'var(--success)';
+            } else if (dropPercentage <= 5) {
+                // Borderline
+                status = '⚠️ TEST QUESTIONABLE';
+                message = `
+                    <p><strong>Result:</strong> Pressure dropped from ${targetPressure} PSI to ${Math.round(finalPressure)} PSI (${dropPercentage.toFixed(1)}% loss).</p>
+                    <p style="margin-top: 8px;"><strong>Status:</strong> Minor leakage detected. May require remediation depending on regulations.</p>
+                    <p style="margin-top: 8px;"><strong>Recommended Action:</strong> Consult engineer. Consider squeeze cementing or re-test with longer duration.</p>
+                `;
+                bgColor = 'rgba(234, 179, 8, 0.1)';
+                borderColor = 'var(--warning)';
+            } else {
+                // Fail
+                status = '❌ TEST FAILED';
+                message = `
+                    <p><strong>Result:</strong> Significant pressure loss from ${targetPressure} PSI to ${Math.round(finalPressure)} PSI (${dropPercentage.toFixed(1)}% drop).</p>
+                    <p style="margin-top: 8px;"><strong>Status:</strong> Barrier has failed integrity test. NOT approved for abandonment.</p>
+                    <p style="margin-top: 8px;"><strong>Required Action:</strong> Remediate plug immediately:</p>
+                    <ul style="margin-left: 20px; margin-top: 4px;">
+                        <li>Perforate plug at leak zone</li>
+                        <li>Squeeze additional cement</li>
+                        <li>Re-test until passing</li>
+                        <li>Document all remediation work</li>
+                    </ul>
+                    <p style="margin-top: 8px;"><strong>Cost Impact:</strong> Failed tests typically add $50K-$200K in remediation costs and 1-2 weeks delay.</p>
+                `;
+                bgColor = 'rgba(239, 68, 68, 0.1)';
+                borderColor = 'var(--danger)';
+            }
+
+            results.innerHTML = `
+                <h5 style="margin-bottom: 12px; color: ${borderColor};">${status}</h5>
+                ${message}
+            `;
+            results.style.background = bgColor;
+            results.style.borderLeft = `4px solid ${borderColor}`;
+            results.style.display = 'block';
+
+            // Re-enable start button
+            document.getElementById('start-test-btn').disabled = false;
+        }
+
+        function resetPressureTest() {
+            // Clear interval
+            if (testInterval) {
+                clearInterval(testInterval);
+                testInterval = null;
+            }
+
+            // Reset UI
+            document.getElementById('current-pressure').textContent = '0';
+            document.getElementById('pressure-arrows').style.display = 'none';
+            document.getElementById('test-progress').style.display = 'none';
+            document.getElementById('progress-fill').style.width = '0%';
+            document.getElementById('progress-time').textContent = '0%';
+            document.getElementById('cement-plug').classList.remove('under-pressure');
+            document.getElementById('leak-indicators').innerHTML = '';
+            document.getElementById('test-results').style.display = 'none';
+            document.getElementById('start-test-btn').disabled = false;
         }
 
         // Environmental Risk Visualizer (Module 1)
