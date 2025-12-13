@@ -505,6 +505,11 @@
             border: 2px solid var(--border-color);
             position: relative;
             overflow: hidden;
+            user-select: none;
+        }
+        .risk-card * {
+            cursor: pointer;
+            pointer-events: none;
         }
         .risk-card::before {
             content: '';
@@ -545,6 +550,11 @@
             transition: all 0.3s;
             border: 3px solid var(--border-color);
             text-align: center;
+            user-select: none;
+        }
+        .golden-rule-card * {
+            cursor: pointer;
+            pointer-events: none;
         }
         .golden-rule-card:hover {
             transform: translateY(-4px) scale(1.02);
@@ -554,6 +564,7 @@
         .golden-rule-card.active {
             border-color: var(--success);
             background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(20, 184, 166, 0.1));
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
         }
         .rule-number {
             width: 60px;
@@ -683,6 +694,11 @@
             border-top: 4px solid var(--border-color);
             cursor: pointer;
             transition: all 0.3s;
+            user-select: none;
+        }
+        .reg-card * {
+            cursor: pointer;
+            pointer-events: none;
         }
         .reg-card:hover {
             transform: translateY(-4px);
@@ -691,6 +707,7 @@
         .reg-card.selected {
             border-top-color: var(--accent);
             background: rgba(20, 184, 166, 0.05);
+            box-shadow: 0 0 15px rgba(20, 184, 166, 0.3);
         }
         .reg-card h5 {
             font-weight: 700;
@@ -980,6 +997,11 @@
             border: 2px solid var(--border-color);
             position: relative;
             overflow: hidden;
+            user-select: none;
+        }
+        .country-card * {
+            cursor: pointer;
+            pointer-events: none;
         }
         .country-card::before {
             content: '';
