@@ -464,23 +464,237 @@
             margin-bottom: 24px;
         }
 
-        /* Responsive */
+        /* Responsive Design */
+
+        /* Tablet */
+        @media (max-width: 1024px) {
+            .container {
+                padding: 32px 16px;
+            }
+            .video-section {
+                padding: 24px 16px;
+            }
+            .resources-section {
+                padding: 24px 16px;
+            }
+            .resource-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        /* Mobile */
         @media (max-width: 768px) {
+            /* Header */
+            .header-wrap {
+                flex-wrap: wrap;
+                padding: 10px 12px;
+            }
+            .brand img {
+                height: 32px;
+            }
+            .brand-text h1 {
+                font-size: 1rem;
+            }
+            .brand-text span {
+                font-size: 0.65rem;
+            }
+            .main-nav {
+                width: 100%;
+                order: 3;
+                margin-top: 8px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .main-nav-link {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+                white-space: nowrap;
+            }
+
+            /* Hero */
+            .hero {
+                padding: 40px 16px;
+            }
             .hero h1 {
-                font-size: 2rem;
+                font-size: 1.75rem;
+                line-height: 1.3;
             }
             .hero p {
-                font-size: 1rem;
+                font-size: 0.95rem;
+                margin-bottom: 16px;
             }
             .hero-meta {
                 flex-direction: column;
                 gap: 8px;
+                font-size: 0.85rem;
+            }
+
+            /* Container */
+            .container {
+                padding: 24px 12px;
+            }
+
+            /* Progress */
+            .progress-container {
+                padding: 16px;
+                margin-bottom: 20px;
+            }
+            .progress-title {
+                font-size: 1rem;
+            }
+            .progress-percent {
+                font-size: 1.1rem;
+            }
+
+            /* Video */
+            .video-section {
+                padding: 20px 12px;
+                margin-bottom: 20px;
+            }
+            .video-section h2 {
+                font-size: 1.35rem;
+                margin-bottom: 16px;
+            }
+            .video-info {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start;
+            }
+
+            /* Modules */
+            .modules-section h2 {
+                font-size: 1.35rem;
+                margin-bottom: 16px;
+            }
+            .module-card {
+                padding: 16px;
+                margin-bottom: 12px;
             }
             .module-header {
                 flex-direction: column;
+                gap: 8px;
+            }
+            .module-number {
+                font-size: 0.8rem;
+            }
+            .module-title {
+                font-size: 1.1rem;
+                line-height: 1.3;
+            }
+            .module-duration {
+                font-size: 0.8rem;
             }
             .module-status {
-                margin-top: 8px;
+                align-self: flex-start;
+                padding: 4px 10px;
+                font-size: 0.8rem;
+            }
+            .module-description {
+                font-size: 0.9rem;
+            }
+
+            /* Quiz */
+            .quiz-section {
+                padding: 16px;
+            }
+            .quiz-title {
+                font-size: 1rem;
+            }
+            .quiz-question p {
+                font-size: 0.95rem;
+            }
+            .quiz-option {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            /* Buttons */
+            .module-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            /* Resources */
+            .resources-section {
+                padding: 20px 12px;
+                margin-bottom: 20px;
+            }
+            .resources-title {
+                font-size: 1.35rem;
+                margin-bottom: 16px;
+            }
+            .resource-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .resource-card {
+                padding: 16px;
+            }
+            .resource-card h4 {
+                font-size: 1rem;
+            }
+            .resource-card p {
+                font-size: 0.875rem;
+            }
+
+            /* Certificate */
+            .certificate-section {
+                padding: 24px 16px;
+            }
+            .certificate-section h2 {
+                font-size: 1.5rem;
+            }
+            .certificate-section p {
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            .hero p {
+                font-size: 0.875rem;
+            }
+            .hero-meta-item {
+                font-size: 0.8rem;
+            }
+
+            .module-title {
+                font-size: 1rem;
+            }
+
+            .video-section h2,
+            .modules-section h2,
+            .resources-title {
+                font-size: 1.25rem;
+            }
+
+            .main-nav-link span {
+                display: none;
+            }
+            .main-nav-link {
+                padding: 8px;
+            }
+        }
+
+        /* Touch improvements for all mobile devices */
+        @media (hover: none) and (pointer: coarse) {
+            .module-card {
+                -webkit-tap-highlight-color: transparent;
+            }
+            .btn {
+                min-height: 44px;
+            }
+            .quiz-option {
+                min-height: 44px;
             }
         }
     </style>
