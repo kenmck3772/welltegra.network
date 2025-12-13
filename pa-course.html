@@ -4126,6 +4126,11 @@
                     status.innerHTML = '<span>⏳</span><span>In Progress</span>';
                     status.className = 'module-status in-progress';
                 }
+
+                // Smooth scroll to the module card
+                setTimeout(() => {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
             }
         }
 
@@ -4186,6 +4191,11 @@
                 nextCard.style.animation = 'fadeInUp 0.5s ease';
                 document.getElementById(`status-${moduleNum + 1}`).innerHTML = '<span>⭕</span><span>Not Started</span>';
                 document.getElementById(`status-${moduleNum + 1}`).className = 'module-status';
+
+                // Automatically open next module and scroll to it
+                setTimeout(() => {
+                    toggleModule(moduleNum + 1);
+                }, 600);
             }
 
             // Update progress
