@@ -1703,6 +1703,121 @@
             min-width: 100px;
         }
 
+        /* P&A Decision Tree */
+        .decision-tree {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .decision-tree-container {
+            min-height: 300px;
+            position: relative;
+        }
+
+        .decision-slide {
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .decision-slide.active {
+            display: block;
+        }
+
+        .decision-question h4 {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .decision-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .decision-btn {
+            background: linear-gradient(135deg, var(--bg) 0%, var(--card) 100%);
+            border: 2px solid var(--border);
+            padding: 16px 20px;
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .decision-btn:hover {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary-color) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(20, 184, 166, 0.2);
+        }
+
+        .decision-result {
+            display: none;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .decision-result.active {
+            display: block;
+        }
+
+        .result-summary {
+            background: var(--bg);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .result-summary h5 {
+            color: var(--accent);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .result-summary p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .result-summary ul {
+            margin-left: 20px;
+            margin-top: 8px;
+            line-height: 1.8;
+        }
+
+        .decision-breadcrumb {
+            margin-top: 20px;
+            padding: 12px;
+            background: var(--bg);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            min-height: 40px;
+        }
+
+        .requirement-item {
+            background: rgba(20, 184, 166, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .cost-estimate {
+            background: rgba(234, 179, 8, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            border-left: 3px solid var(--warning);
+        }
+
     </style>
 </head>
 <body>
@@ -2161,6 +2276,121 @@
                                 <li>Potential for inconsistency</li>
                             </ul>
                             <p style="margin-top: 8px;"><strong>Real-world example:</strong> Norway's "rock-to-rock" barrier requirement allows operators to choose their method, but they must scientifically prove it will prevent leaks in perpetuity.</p>
+                        </div>
+                    </div>
+
+                    <!-- P&A Decision Tree -->
+                    <div class="interactive-section" style="margin-top: 24px;">
+                        <div class="interactive-title">Interactive: P&A Decision Tree Navigator</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Answer a series of questions about your well to determine the P&A approach and regulatory requirements that apply</p>
+
+                        <div class="decision-tree">
+                            <div class="decision-tree-container">
+                                <!-- Question Slides -->
+                                <div class="decision-slide active" id="slide-1">
+                                    <div class="decision-question">
+                                        <h4>Where is the well located?</h4>
+                                        <p style="color: var(--muted); margin-top: 8px;">Geographic location determines applicable regulations</p>
+                                    </div>
+                                    <div class="decision-options">
+                                        <button class="decision-btn" onclick="nextDecision(2, 'usa', 'United States')">
+                                            🇺🇸 United States
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(2, 'uk', 'United Kingdom')">
+                                            🇬🇧 United Kingdom
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(2, 'norway', 'Norway')">
+                                            🇳🇴 Norway
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(2, 'other', 'Other')">
+                                            🌍 Other Country
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="decision-slide" id="slide-2">
+                                    <div class="decision-question">
+                                        <h4>What type of well is it?</h4>
+                                        <p style="color: var(--muted); margin-top: 8px;">Well type affects complexity and requirements</p>
+                                    </div>
+                                    <div class="decision-options">
+                                        <button class="decision-btn" onclick="nextDecision(3, 'oil', 'Oil Production Well')">
+                                            ⛽ Oil Production Well
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(3, 'gas', 'Gas Production Well')">
+                                            🔥 Gas Production Well
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(3, 'injection', 'Injection/Disposal Well')">
+                                            💉 Injection/Disposal Well
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(3, 'exploration', 'Exploration Well')">
+                                            🔍 Exploration Well
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="decision-slide" id="slide-3">
+                                    <div class="decision-question">
+                                        <h4>What is the well depth?</h4>
+                                        <p style="color: var(--muted); margin-top: 8px;">Depth impacts complexity and cost</p>
+                                    </div>
+                                    <div class="decision-options">
+                                        <button class="decision-btn" onclick="nextDecision(4, 'shallow', 'Shallow (< 5,000 ft)')">
+                                            📏 Shallow (< 5,000 ft)
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(4, 'medium', 'Medium (5,000 - 10,000 ft)')">
+                                            📐 Medium (5,000 - 10,000 ft)
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(4, 'deep', 'Deep (10,000 - 15,000 ft)')">
+                                            📊 Deep (10,000 - 15,000 ft)
+                                        </button>
+                                        <button class="decision-btn" onclick="nextDecision(4, 'ultra-deep', 'Ultra-Deep (> 15,000 ft)')">
+                                            🔬 Ultra-Deep (> 15,000 ft)
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="decision-slide" id="slide-4">
+                                    <div class="decision-question">
+                                        <h4>Are freshwater aquifers present?</h4>
+                                        <p style="color: var(--muted); margin-top: 8px;">Critical factor for environmental protection</p>
+                                    </div>
+                                    <div class="decision-options">
+                                        <button class="decision-btn" onclick="showResult('aquifer-yes')">
+                                            ✅ Yes - Freshwater aquifers present
+                                        </button>
+                                        <button class="decision-btn" onclick="showResult('aquifer-no')">
+                                            ❌ No - No freshwater zones
+                                        </button>
+                                        <button class="decision-btn" onclick="showResult('aquifer-unknown')">
+                                            ❓ Unknown - Needs assessment
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Result Section -->
+                                <div class="decision-result" id="decision-result">
+                                    <h4 style="color: var(--accent); margin-bottom: 16px;">Your P&A Requirements</h4>
+
+                                    <div class="result-summary" id="result-summary">
+                                        <!-- Populated by JavaScript -->
+                                    </div>
+
+                                    <button class="btn btn-secondary" onclick="resetDecisionTree()" style="margin-top: 20px; width: 100%;">
+                                        Start Over
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Breadcrumb Trail -->
+                            <div class="decision-breadcrumb" id="decision-breadcrumb">
+                                <span style="color: var(--muted);">Your selections: </span>
+                                <span id="breadcrumb-trail" style="color: var(--accent);"></span>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 6px; border-left: 4px solid var(--accent);">
+                            <p><strong>💡 Note:</strong> This decision tree provides general guidance. Always consult local regulations, qualified engineers, and regulatory authorities for your specific P&A requirements. Regulations vary by jurisdiction and can change over time.</p>
                         </div>
                     </div>
 
@@ -3485,6 +3715,213 @@
                 calculateCement();
             }
         });
+
+        // P&A Decision Tree (Module 2)
+        let decisionData = {
+            location: '',
+            wellType: '',
+            depth: '',
+            aquifer: '',
+            locationLabel: '',
+            wellTypeLabel: '',
+            depthLabel: '',
+            aquiferLabel: ''
+        };
+
+        function nextDecision(slideNum, dataKey, dataLabel) {
+            // Store the decision
+            const currentSlide = document.querySelector('.decision-slide.active');
+            const slideId = currentSlide.id;
+
+            if (slideId === 'slide-1') {
+                decisionData.location = dataKey;
+                decisionData.locationLabel = dataLabel;
+            } else if (slideId === 'slide-2') {
+                decisionData.wellType = dataKey;
+                decisionData.wellTypeLabel = dataLabel;
+            } else if (slideId === 'slide-3') {
+                decisionData.depth = dataKey;
+                decisionData.depthLabel = dataLabel;
+            }
+
+            // Update breadcrumb
+            updateBreadcrumb();
+
+            // Hide current slide
+            currentSlide.classList.remove('active');
+
+            // Show next slide
+            const nextSlide = document.getElementById('slide-' + slideNum);
+            if (nextSlide) {
+                setTimeout(() => {
+                    nextSlide.classList.add('active');
+                }, 100);
+            }
+        }
+
+        function showResult(aquiferStatus) {
+            decisionData.aquifer = aquiferStatus;
+            decisionData.aquiferLabel = aquiferStatus === 'aquifer-yes' ? 'Aquifers Present' :
+                                        aquiferStatus === 'aquifer-no' ? 'No Aquifers' : 'Aquifer Status Unknown';
+
+            updateBreadcrumb();
+
+            // Hide current slide
+            document.querySelector('.decision-slide.active').classList.remove('active');
+
+            // Generate result based on decisions
+            const resultHTML = generateResultHTML();
+            document.getElementById('result-summary').innerHTML = resultHTML;
+
+            // Show result
+            setTimeout(() => {
+                document.getElementById('decision-result').classList.add('active');
+            }, 100);
+        }
+
+        function generateResultHTML() {
+            let html = '<div>';
+
+            // Regulatory Framework
+            html += '<div class="requirement-item">';
+            html += '<h5>📋 Regulatory Framework</h5>';
+            if (decisionData.location === 'usa') {
+                html += '<p><strong>Prescriptive Regulations Apply</strong></p>';
+                html += '<p>U.S. regulations typically provide detailed, step-by-step requirements. You must follow specific procedures including:</p>';
+                html += '<ul>';
+                html += '<li>Exact cement plug lengths as specified by state regulations</li>';
+                html += '<li>Mandatory pressure testing of barriers</li>';
+                html += '<li>Required documentation and reporting to state oil & gas commission</li>';
+                html += '<li>Possible bond requirements for proper abandonment</li>';
+                html += '</ul>';
+            } else if (decisionData.location === 'uk' || decisionData.location === 'norway') {
+                html += '<p><strong>Goal-Setting Regulations Apply</strong></p>';
+                html += '<p>UK/Norway regulations require achieving permanent isolation without dictating exact methods. You must:</p>';
+                html += '<ul>';
+                html += '<li>Demonstrate your P&A method will achieve permanent seal</li>';
+                html += '<li>Provide rigorous engineering justification</li>';
+                html += '<li>Meet "rock-to-rock" barrier requirements</li>';
+                html += '<li>Submit detailed abandonment plans for approval</li>';
+                html += '</ul>';
+            } else {
+                html += '<p><strong>Local Regulations</strong></p>';
+                html += '<p>Consult your local regulatory authority for specific requirements. Most jurisdictions follow either prescriptive (detailed steps) or goal-setting (proven outcomes) approaches.</p>';
+            }
+            html += '</div>';
+
+            // Well-Specific Requirements
+            html += '<div class="requirement-item">';
+            html += '<h5>⛽ Well-Specific Requirements</h5>';
+            html += '<p><strong>Well Type:</strong> ' + decisionData.wellTypeLabel + '</p>';
+
+            if (decisionData.wellType === 'gas') {
+                html += '<p>Gas wells require extra attention to prevent methane migration. Expect enhanced monitoring and potentially more cement barriers.</p>';
+            } else if (decisionData.wellType === 'injection') {
+                html += '<p>Injection wells often require EPA approval and additional environmental safeguards due to waste disposal history.</p>';
+            }
+
+            html += '<p><strong>Depth:</strong> ' + decisionData.depthLabel + '</p>';
+            if (decisionData.depth === 'ultra-deep' || decisionData.depth === 'deep') {
+                html += '<p>Deep wells require specialized equipment, high-temperature cement, and typically multiple barrier intervals.</p>';
+            } else if (decisionData.depth === 'shallow') {
+                html += '<p>Shallow wells are simpler but aquifer protection is paramount. Surface plug and aquifer isolation are critical.</p>';
+            }
+            html += '</div>';
+
+            // Environmental Protection
+            if (decisionData.aquifer === 'aquifer-yes' || decisionData.aquifer === 'aquifer-unknown') {
+                html += '<div class="requirement-item">';
+                html += '<h5>💧 Environmental Protection - CRITICAL</h5>';
+                html += '<p><strong>Freshwater Aquifer Status:</strong> ' + decisionData.aquiferLabel + '</p>';
+                html += '<p style="color: var(--danger); font-weight: bold;">⚠️ HIGHEST PRIORITY: Aquifer isolation is mandatory.</p>';
+                html += '<ul>';
+                html += '<li>Cement plug MUST extend 100+ feet across aquifer zone</li>';
+                html += '<li>Pressure testing required to verify seal integrity</li>';
+                html += '<li>Zero tolerance for leakage into drinking water sources</li>';
+                if (decisionData.aquifer === 'aquifer-unknown') {
+                    html += '<li style="color: var(--warning);">⚠️ Geological survey required to identify aquifer locations before proceeding</li>';
+                }
+                html += '</ul>';
+                html += '</div>';
+            }
+
+            // Cost Estimate
+            html += '<div class="cost-estimate">';
+            html += '<h5>💰 Estimated P&A Cost Range</h5>';
+            let costRange = '';
+            if (decisionData.depth === 'shallow') {
+                costRange = '$50,000 - $200,000';
+            } else if (decisionData.depth === 'medium') {
+                costRange = '$150,000 - $500,000';
+            } else if (decisionData.depth === 'deep') {
+                costRange = '$500,000 - $2,000,000';
+            } else if (decisionData.depth === 'ultra-deep') {
+                costRange = '$2,000,000 - $10,000,000+';
+            }
+            html += '<p><strong>' + costRange + '</strong></p>';
+            html += '<p style="font-size: 0.9rem; margin-top: 8px;">Costs vary based on well complexity, equipment needs, location accessibility, and regulatory requirements. Deep wells with aquifer protection needs are most expensive.</p>';
+            html += '</div>';
+
+            // Next Steps
+            html += '<div class="requirement-item">';
+            html += '<h5>✅ Next Steps</h5>';
+            html += '<ol style="margin-left: 20px;">';
+            html += '<li>Consult qualified P&A engineer and local regulatory authority</li>';
+            html += '<li>Obtain well records and geological surveys</li>';
+            if (decisionData.aquifer === 'aquifer-unknown') {
+                html += '<li>Commission aquifer mapping study</li>';
+            }
+            html += '<li>Develop detailed P&A plan and submit for regulatory approval</li>';
+            html += '<li>Secure bonding/financial assurance as required</li>';
+            html += '<li>Contract specialized P&A service company</li>';
+            html += '<li>Execute P&A operations with required monitoring</li>';
+            html += '<li>Submit final abandonment report and documentation</li>';
+            html += '</ol>';
+            html += '</div>';
+
+            html += '</div>';
+            return html;
+        }
+
+        function updateBreadcrumb() {
+            const trail = [];
+            if (decisionData.locationLabel) trail.push(decisionData.locationLabel);
+            if (decisionData.wellTypeLabel) trail.push(decisionData.wellTypeLabel);
+            if (decisionData.depthLabel) trail.push(decisionData.depthLabel);
+            if (decisionData.aquiferLabel) trail.push(decisionData.aquiferLabel);
+
+            document.getElementById('breadcrumb-trail').textContent = trail.join(' → ') || 'None yet';
+        }
+
+        function resetDecisionTree() {
+            // Clear data
+            decisionData = {
+                location: '',
+                wellType: '',
+                depth: '',
+                aquifer: '',
+                locationLabel: '',
+                wellTypeLabel: '',
+                depthLabel: '',
+                aquiferLabel: ''
+            };
+
+            // Hide result
+            document.getElementById('decision-result').classList.remove('active');
+
+            // Hide all slides
+            document.querySelectorAll('.decision-slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+
+            // Show first slide
+            setTimeout(() => {
+                document.getElementById('slide-1').classList.add('active');
+            }, 100);
+
+            // Reset breadcrumb
+            document.getElementById('breadcrumb-trail').textContent = 'None yet';
+        }
 
         // Environmental Risk Visualizer (Module 1)
         function selectRisk(risk) {
