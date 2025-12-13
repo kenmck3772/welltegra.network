@@ -3201,7 +3201,7 @@
                                         <div style="font-size: 2rem; text-align: center; margin-bottom: 8px;">🔩</div>
                                         <strong>Bridge Plug</strong>
                                         <p style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Mechanical barrier at bottom</p>
-                                        <button class="btn btn-small btn-accent" onclick="addBarrier('bridge-plug', 'Bridge Plug', '🔩')" style="width: 100%; margin-top: 8px;">
+                                        <button class="btn btn-small btn-accent" onclick="event.stopPropagation(); addBarrier('bridge-plug', 'Bridge Plug', '🔩')" style="width: 100%; margin-top: 8px;">
                                             Add to Sequence
                                         </button>
                                     </div>
@@ -3210,7 +3210,7 @@
                                         <div style="font-size: 2rem; text-align: center; margin-bottom: 8px;">🏗️</div>
                                         <strong>Cement Plug</strong>
                                         <p style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Primary sealing barrier</p>
-                                        <button class="btn btn-small btn-accent" onclick="addBarrier('cement-plug', 'Cement Plug', '🏗️')" style="width: 100%; margin-top: 8px;">
+                                        <button class="btn btn-small btn-accent" onclick="event.stopPropagation(); addBarrier('cement-plug', 'Cement Plug', '🏗️')" style="width: 100%; margin-top: 8px;">
                                             Add to Sequence
                                         </button>
                                     </div>
@@ -3219,7 +3219,7 @@
                                         <div style="font-size: 2rem; text-align: center; margin-bottom: 8px;">💧</div>
                                         <strong>Aquifer Seal</strong>
                                         <p style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Protects drinking water</p>
-                                        <button class="btn btn-small btn-accent" onclick="addBarrier('aquifer-seal', 'Aquifer Seal', '💧')" style="width: 100%; margin-top: 8px;">
+                                        <button class="btn btn-small btn-accent" onclick="event.stopPropagation(); addBarrier('aquifer-seal', 'Aquifer Seal', '💧')" style="width: 100%; margin-top: 8px;">
                                             Add to Sequence
                                         </button>
                                     </div>
@@ -3228,17 +3228,17 @@
                                         <div style="font-size: 2rem; text-align: center; margin-bottom: 8px;">🎯</div>
                                         <strong>Surface Plug</strong>
                                         <p style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Final cap at top</p>
-                                        <button class="btn btn-small btn-accent" onclick="addBarrier('surface-plug', 'Surface Plug', '🎯')" style="width: 100%; margin-top: 8px;">
+                                        <button class="btn btn-small btn-accent" onclick="event.stopPropagation(); addBarrier('surface-plug', 'Surface Plug', '🎯')" style="width: 100%; margin-top: 8px;">
                                             Add to Sequence
                                         </button>
                                     </div>
                                 </div>
 
                                 <div style="margin-top: 16px;">
-                                    <button class="btn btn-secondary" onclick="resetSequence()" style="width: 100%;">
+                                    <button class="btn btn-secondary" onclick="event.stopPropagation(); resetSequence()" style="width: 100%;">
                                         Reset Sequence
                                     </button>
-                                    <button class="btn btn-primary" onclick="validateSequence()" style="width: 100%; margin-top: 8px;">
+                                    <button class="btn btn-primary" onclick="event.stopPropagation(); validateSequence()" style="width: 100%; margin-top: 8px;">
                                         Validate My Sequence
                                     </button>
                                 </div>
@@ -4861,13 +4861,29 @@
             } else {
                 feedback.style.background = 'rgba(239, 68, 68, 0.1)';
                 feedback.style.borderLeft = '4px solid var(--danger)';
+
+                // Generate specific advice based on what's missing
+                let advice = '';
+                if (!filled.bottom) {
+                    advice += '<p style="margin-top: 12px;"><strong>💡 How to fix:</strong> Click "Add to Sequence" on the <strong>Bridge Plug</strong> button to place it at the bottom (8,000 ft).</p>';
+                } else if (!filled.aquifer) {
+                    advice += '<p style="margin-top: 12px;"><strong>💡 How to fix:</strong> Click "Add to Sequence" on the <strong>Aquifer Seal</strong> button to protect the drinking water zone.</p>';
+                } else if (!filled.surface) {
+                    advice += '<p style="margin-top: 12px;"><strong>💡 How to fix:</strong> Click "Add to Sequence" on the <strong>Surface Plug</strong> button to seal the wellhead.</p>';
+                } else {
+                    advice += '<p style="margin-top: 12px;"><strong>💡 How to fix:</strong> Review the list above and add the missing barriers using the buttons on the left.</p>';
+                }
+
                 feedback.innerHTML = `
-                    <h5 style="color: var(--danger); margin-bottom: 12px;">❌ Incomplete Sequence</h5>
-                    <p>Your P&A sequence is missing critical barriers:</p>
-                    <ul style="margin-left: 20px; margin-top: 8px; line-height: 1.6;">
+                    <h5 style="color: var(--danger); margin-bottom: 12px;">❌ Incomplete Sequence - Regulatory Failure</h5>
+                    <p style="font-weight: 600;">Your P&A sequence is missing critical barriers:</p>
+                    <ul style="margin-left: 20px; margin-top: 8px; line-height: 1.8;">
                         ${messages.map(msg => `<li>${msg}</li>`).join('')}
                     </ul>
-                    <p style="margin-top: 12px;">This sequence would be rejected by regulatory authorities. Add missing barriers.</p>
+                    ${advice}
+                    <p style="margin-top: 12px; padding: 10px; background: rgba(239, 68, 68, 0.15); border-radius: 6px; font-weight: 600;">
+                        ⚠️ This sequence would be rejected by regulatory authorities and could result in environmental contamination.
+                    </p>
                 `;
             }
 
