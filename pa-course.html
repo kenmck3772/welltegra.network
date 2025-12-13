@@ -4024,8 +4024,16 @@
             checkpointCompleted = false;
             updateNextCheckpoint();
 
-            // Resume video
-            player.playVideo();
+            // Scroll to video player
+            const videoSection = document.querySelector('.video-section');
+            if (videoSection) {
+                videoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            // Resume video after scroll
+            setTimeout(() => {
+                player.playVideo();
+            }, 300);
         }
 
         function updateNextCheckpoint() {
@@ -4183,6 +4191,27 @@
             // Add visual celebration
             createConfetti();
             card.style.animation = 'successPulse 0.5s ease';
+
+            // Check if this module completion should resume the video
+            const checkpointAlert = document.getElementById('checkpoint-alert');
+            const continueBtn = document.getElementById('continue-btn');
+
+            // If a checkpoint is active, check if it's for this module
+            if (checkpointAlert.style.display !== 'none' && currentCheckpointIndex < checkpoints.length) {
+                const currentCheckpoint = checkpoints[currentCheckpointIndex];
+                if (currentCheckpoint && currentCheckpoint.module === moduleNum) {
+                    // Enable continue button and show completion message
+                    continueBtn.disabled = false;
+                    continueBtn.textContent = '▶️ Continue Video';
+                    continueBtn.style.background = 'linear-gradient(135deg, var(--accent), var(--primary-color))';
+                    continueBtn.style.color = 'white';
+
+                    // Automatically resume video after a short celebration
+                    setTimeout(() => {
+                        continueVideo();
+                    }, 1500);
+                }
+            }
 
             // Close current module
             document.getElementById(`content-${moduleNum}`).classList.remove('active');
