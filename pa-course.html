@@ -2394,25 +2394,25 @@
                         <p style="margin-bottom: 16px; color: var(--text-secondary);">Click on each risk area to explore the environmental and safety consequences of improperly abandoned wells.</p>
 
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
-                            <div class="risk-card" onclick="selectRisk('groundwater')" data-risk="groundwater">
+                            <div class="risk-card" onclick="event.stopPropagation(); selectRisk('groundwater')" data-risk="groundwater">
                                 <div style="font-size: 3rem; text-align: center; margin-bottom: 8px;">💧</div>
                                 <h4 style="text-align: center; font-size: 1rem; margin-bottom: 8px;">Groundwater Contamination</h4>
                                 <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center;">Click to explore</p>
                             </div>
 
-                            <div class="risk-card" onclick="selectRisk('soil')" data-risk="soil">
+                            <div class="risk-card" onclick="event.stopPropagation(); selectRisk('soil')" data-risk="soil">
                                 <div style="font-size: 3rem; text-align: center; margin-bottom: 8px;">🌱</div>
                                 <h4 style="text-align: center; font-size: 1rem; margin-bottom: 8px;">Soil Pollution</h4>
                                 <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center;">Click to explore</p>
                             </div>
 
-                            <div class="risk-card" onclick="selectRisk('greenhouse')" data-risk="greenhouse">
+                            <div class="risk-card" onclick="event.stopPropagation(); selectRisk('greenhouse')" data-risk="greenhouse">
                                 <div style="font-size: 3rem; text-align: center; margin-bottom: 8px;">🌍</div>
                                 <h4 style="text-align: center; font-size: 1rem; margin-bottom: 8px;">Greenhouse Gas Leaks</h4>
                                 <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center;">Click to explore</p>
                             </div>
 
-                            <div class="risk-card" onclick="selectRisk('safety')" data-risk="safety">
+                            <div class="risk-card" onclick="event.stopPropagation(); selectRisk('safety')" data-risk="safety">
                                 <div style="font-size: 3rem; text-align: center; margin-bottom: 8px;">⚠️</div>
                                 <h4 style="text-align: center; font-size: 1rem; margin-bottom: 8px;">Public Safety</h4>
                                 <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center;">Click to explore</p>
@@ -2676,13 +2676,13 @@
                         <p style="margin-bottom: 16px; color: var(--text-secondary);">Click on each regulatory approach to explore their characteristics, advantages, and real-world applications.</p>
 
                         <div class="reg-comparison">
-                            <div class="reg-card" data-reg="prescriptive" onclick="selectRegulation('prescriptive')">
+                            <div class="reg-card" data-reg="prescriptive" onclick="event.stopPropagation(); selectRegulation('prescriptive')">
                                 <h5>📋 Prescriptive</h5>
                                 <p style="font-size: 0.9rem; color: var(--text-secondary);">Detailed step-by-step requirements</p>
                                 <p style="font-size: 0.85rem; margin-top: 8px;"><strong>Primary Use:</strong> United States</p>
                             </div>
 
-                            <div class="reg-card" data-reg="goal-setting" onclick="selectRegulation('goal-setting')">
+                            <div class="reg-card" data-reg="goal-setting" onclick="event.stopPropagation(); selectRegulation('goal-setting')">
                                 <h5>🎯 Goal-Setting</h5>
                                 <p style="font-size: 0.9rem; color: var(--text-secondary);">Define objectives, flexible methods</p>
                                 <p style="font-size: 0.85rem; margin-top: 8px;"><strong>Primary Use:</strong> UK, Norway</p>
@@ -2905,25 +2905,25 @@
                         <p style="margin-bottom: 16px; color: var(--text-secondary);">Click on each country to explore how they implement P&A regulations under the ISO 16530-1 framework.</p>
 
                         <div class="standards-grid">
-                            <div class="country-card" data-country="norway" onclick="exploreCountry('norway')">
+                            <div class="country-card" data-country="norway" onclick="event.stopPropagation(); exploreCountry('norway')">
                                 <div class="country-flag">🇳🇴</div>
                                 <div class="country-name">Norway</div>
                                 <div class="country-type">Goal-Setting</div>
                             </div>
 
-                            <div class="country-card" data-country="uk" onclick="exploreCountry('uk')">
+                            <div class="country-card" data-country="uk" onclick="event.stopPropagation(); exploreCountry('uk')">
                                 <div class="country-flag">🇬🇧</div>
                                 <div class="country-name">United Kingdom</div>
                                 <div class="country-type">Goal-Setting</div>
                             </div>
 
-                            <div class="country-card" data-country="usa" onclick="exploreCountry('usa')">
+                            <div class="country-card" data-country="usa" onclick="event.stopPropagation(); exploreCountry('usa')">
                                 <div class="country-flag">🇺🇸</div>
                                 <div class="country-name">United States</div>
                                 <div class="country-type">Prescriptive</div>
                             </div>
 
-                            <div class="country-card" data-country="australia" onclick="exploreCountry('australia')">
+                            <div class="country-card" data-country="australia" onclick="event.stopPropagation(); exploreCountry('australia')">
                                 <div class="country-flag">🇦🇺</div>
                                 <div class="country-name">Australia</div>
                                 <div class="country-type">Transitioning</div>
@@ -3766,19 +3766,19 @@
                         <p style="margin-bottom: 16px; color: var(--text-secondary);">Click each rule to explore how it applies to real-world P&A planning. These are the foundational principles every professional must follow.</p>
 
                         <div class="golden-rules-grid">
-                            <div class="golden-rule-card" onclick="selectGoldenRule(1)" data-rule="1">
+                            <div class="golden-rule-card" onclick="event.stopPropagation(); selectGoldenRule(1)" data-rule="1">
                                 <div class="rule-number">1</div>
                                 <h4>Check Local Law</h4>
                                 <p>Know your jurisdiction's requirements</p>
                             </div>
 
-                            <div class="golden-rule-card" onclick="selectGoldenRule(2)" data-rule="2">
+                            <div class="golden-rule-card" onclick="event.stopPropagation(); selectGoldenRule(2)" data-rule="2">
                                 <div class="rule-number">2</div>
                                 <h4>Prove Safety</h4>
                                 <p>Verify, document, demonstrate</p>
                             </div>
 
-                            <div class="golden-rule-card" onclick="selectGoldenRule(3)" data-rule="3">
+                            <div class="golden-rule-card" onclick="event.stopPropagation(); selectGoldenRule(3)" data-rule="3">
                                 <div class="rule-number">3</div>
                                 <h4>Plan for the Future</h4>
                                 <p>Build for generations, not decades</p>
