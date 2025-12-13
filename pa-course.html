@@ -2364,7 +2364,7 @@
             <h2 style="margin-bottom: 24px; font-size: 1.75rem;">Course Modules</h2>
 
             <!-- Module 1 -->
-            <div class="module-card" data-module="1" onclick="toggleModule(1)">
+            <div class="module-card locked" data-module="1" onclick="toggleModule(1)">
                 <div class="module-header">
                     <div class="module-title-group">
                         <div class="module-number">MODULE 1</div>
@@ -2645,7 +2645,7 @@
             </div>
 
             <!-- Module 2 -->
-            <div class="module-card" data-module="2" onclick="toggleModule(2)">
+            <div class="module-card locked" data-module="2" onclick="toggleModule(2)">
                 <div class="module-header">
                     <div class="module-title-group">
                         <div class="module-number">MODULE 2</div>
@@ -2874,7 +2874,7 @@
             </div>
 
             <!-- Module 3 -->
-            <div class="module-card" data-module="3" onclick="toggleModule(3)">
+            <div class="module-card locked" data-module="3" onclick="toggleModule(3)">
                 <div class="module-header">
                     <div class="module-title-group">
                         <div class="module-number">MODULE 3</div>
@@ -2997,7 +2997,7 @@
             </div>
 
             <!-- Module 4 -->
-            <div class="module-card" data-module="4" onclick="toggleModule(4)">
+            <div class="module-card locked" data-module="4" onclick="toggleModule(4)">
                 <div class="module-header">
                     <div class="module-title-group">
                         <div class="module-number">MODULE 4</div>
@@ -3424,7 +3424,7 @@
             </div>
 
             <!-- Module 5 -->
-            <div class="module-card" data-module="5" onclick="toggleModule(5)">
+            <div class="module-card locked" data-module="5" onclick="toggleModule(5)">
                 <div class="module-header">
                     <div class="module-title-group">
                         <div class="module-number">MODULE 5</div>
@@ -3542,7 +3542,7 @@
             </div>
 
             <!-- Module 6 -->
-            <div class="module-card" data-module="6" onclick="toggleModule(6)">
+            <div class="module-card locked" data-module="6" onclick="toggleModule(6)">
                 <div class="module-header">
                     <div class="module-title-group">
                         <div class="module-number">MODULE 6</div>
@@ -3730,7 +3730,7 @@
             </div>
 
             <!-- Module 7 -->
-            <div class="module-card" data-module="7" onclick="toggleModule(7)">
+            <div class="module-card locked" data-module="7" onclick="toggleModule(7)">
                 <div class="module-header">
                     <div class="module-title-group">
                         <div class="module-number">MODULE 7</div>
@@ -3937,6 +3937,7 @@
         var currentCheckpointIndex = 0;
         var checkpointCompleted = false;
         var videoInterval;
+        var reachedCheckpoints = new Set(); // Track which module checkpoints have been reached
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
@@ -3987,6 +3988,10 @@
             player.pauseVideo();
             checkpointCompleted = true;
 
+            // Mark this module's checkpoint as reached
+            reachedCheckpoints.add(checkpoint.module);
+            saveProgress(); // Save checkpoint progress
+
             // Show checkpoint alert
             document.getElementById('checkpoint-alert').style.display = 'block';
             document.getElementById('checkpoint-message').textContent =
@@ -3995,7 +4000,8 @@
             // Scroll to and highlight interactive element
             const moduleCard = document.querySelector(`[data-module="${checkpoint.module}"]`);
             if (moduleCard) {
-                // Open the module
+                // Unlock and open the module
+                moduleCard.classList.remove('locked');
                 toggleModule(checkpoint.module);
 
                 // Highlight the interactive section
@@ -4097,6 +4103,7 @@
             if (saved) {
                 const data = JSON.parse(saved);
                 courseState.completedModules = new Set(data.completed || []);
+                reachedCheckpoints = new Set(data.reachedCheckpoints || []);
                 updateProgress();
                 updateModuleStates();
             }
@@ -4106,6 +4113,7 @@
         function saveProgress() {
             localStorage.setItem('pa-course-progress', JSON.stringify({
                 completed: Array.from(courseState.completedModules),
+                reachedCheckpoints: Array.from(reachedCheckpoints),
                 lastAccess: new Date().toISOString()
             }));
         }
@@ -4116,9 +4124,9 @@
             const content = document.getElementById(`content-${moduleNum}`);
             const status = document.getElementById(`status-${moduleNum}`);
 
-            // Check if module is locked
-            if (moduleNum > 1 && !courseState.completedModules.has(moduleNum - 1)) {
-                alert(`Please complete Module ${moduleNum - 1} first`);
+            // Check if module is locked - must have reached video checkpoint
+            if (!reachedCheckpoints.has(moduleNum)) {
+                alert(`🔒 Please watch the video to unlock Module ${moduleNum}\n\nThis module will automatically unlock when the video reaches the corresponding section.`);
                 return;
             }
 
@@ -4147,6 +4155,12 @@
 
         // Complete module
         function completeModule(moduleNum) {
+            // Check if video checkpoint was reached for this module
+            if (!reachedCheckpoints.has(moduleNum)) {
+                alert(`🔒 You must watch the video to unlock this module first!\n\nThe video will automatically pause at Module ${moduleNum} for you to complete the interactive exercises.`);
+                return;
+            }
+
             // Check quiz answer
             const correctAnswers = {
                 1: 'b', 2: 'b', 3: 'b', 4: 'a', 5: 'b', 6: 'b', 7: 'b'
@@ -4281,6 +4295,7 @@
 
         // Update module states on load
         function updateModuleStates() {
+            // Mark completed modules
             courseState.completedModules.forEach(moduleNum => {
                 const card = document.querySelector(`[data-module="${moduleNum}"]`);
                 const status = document.getElementById(`status-${moduleNum}`);
@@ -4290,14 +4305,13 @@
                 status.className = 'module-status completed';
             });
 
-            // Unlock next uncompleted module
-            const nextModule = courseState.completedModules.size + 1;
-            if (nextModule <= 7) {
-                const nextCard = document.querySelector(`[data-module="${nextModule}"]`);
-                if (nextCard) {
-                    nextCard.classList.remove('locked');
+            // Unlock modules that have reached their video checkpoint
+            reachedCheckpoints.forEach(moduleNum => {
+                const card = document.querySelector(`[data-module="${moduleNum}"]`);
+                if (card) {
+                    card.classList.remove('locked');
                 }
-            }
+            });
         }
 
         // Show certificate
@@ -5176,13 +5190,13 @@
 
         // Reset Course Progress
         function resetCourseProgress() {
-            if (confirm('⚠️ Are you sure you want to reset all course progress?\n\nThis will:\n• Clear all completed modules\n• Remove your certificate\n• Reset all quiz answers\n• Start the course from the beginning\n\nThis action cannot be undone!')) {
+            if (confirm('⚠️ Are you sure you want to reset all course progress?\n\nThis will:\n• Clear all completed modules\n• Reset video checkpoint progress\n• Lock all modules (must watch video)\n• Remove your certificate\n• Reset all quiz answers\n• Start the course from the beginning\n\nThis action cannot be undone!')) {
                 // Clear localStorage
                 localStorage.removeItem('pa-course-progress');
                 localStorage.removeItem('pa-course-certificate');
 
                 // Show success message
-                alert('✅ Course progress has been reset successfully!\n\nThe page will now reload to start fresh.');
+                alert('✅ Course progress has been reset successfully!\n\nThe page will now reload. Remember to watch the video to unlock modules!');
 
                 // Reload the page
                 window.location.reload();
