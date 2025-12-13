@@ -2122,6 +2122,124 @@
             width: 0%;
         }
 
+        /* Cost Breakdown Pie Chart */
+        .cost-breakdown-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 968px) {
+            .cost-breakdown-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pie-chart-section {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .pie-chart-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .pie-chart {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #3b82f6 0% 30%,
+                #10b981 30% 55%,
+                #f59e0b 55% 75%,
+                #8b5cf6 75% 85%,
+                #ec4899 85% 95%,
+                #14b8a6 95% 100%
+            );
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .pie-chart:hover {
+            transform: scale(1.05);
+        }
+
+        .pie-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .center-label {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .center-sublabel {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .pie-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .legend-item:hover {
+            background: rgba(20, 184, 166, 0.1);
+            transform: translateX(4px);
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .legend-label {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .cost-detail-panel {
+            background: linear-gradient(135deg, var(--card) 0%, var(--bg) 100%);
+            padding: 24px;
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+            min-height: 300px;
+        }
+
     </style>
 </head>
 <body>
@@ -3484,6 +3602,76 @@
                         </div>
                     </div>
 
+                    <!-- Cost Breakdown Pie Chart -->
+                    <div class="interactive-section" style="margin-top: 24px;">
+                        <div class="interactive-title">Interactive: P&A Cost Breakdown Analysis</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Explore how P&A costs break down across different expense categories. Click each segment to see detailed cost information.</p>
+
+                        <div class="cost-breakdown-container">
+                            <div class="pie-chart-section">
+                                <div class="pie-chart-wrapper">
+                                    <div class="pie-chart" id="cost-pie-chart">
+                                        <!-- Segments created dynamically -->
+                                        <div class="pie-segment equipment" data-category="equipment" onclick="selectCostCategory('equipment')"></div>
+                                        <div class="pie-segment labor" data-category="labor" onclick="selectCostCategory('labor')"></div>
+                                        <div class="pie-segment materials" data-category="materials" onclick="selectCostCategory('materials')"></div>
+                                        <div class="pie-segment testing" data-category="testing" onclick="selectCostCategory('testing')"></div>
+                                        <div class="pie-segment mobilization" data-category="mobilization" onclick="selectCostCategory('mobilization')"></div>
+                                        <div class="pie-segment regulatory" data-category="regulatory" onclick="selectCostCategory('regulatory')"></div>
+                                        <div class="pie-center">
+                                            <div class="center-label">P&A</div>
+                                            <div class="center-sublabel">Cost Breakdown</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pie-legend">
+                                    <div class="legend-item" onclick="selectCostCategory('equipment')">
+                                        <div class="legend-color" style="background: #3b82f6;"></div>
+                                        <div class="legend-label">Equipment Rental (30%)</div>
+                                    </div>
+                                    <div class="legend-item" onclick="selectCostCategory('labor')">
+                                        <div class="legend-color" style="background: #10b981;"></div>
+                                        <div class="legend-label">Labor & Personnel (25%)</div>
+                                    </div>
+                                    <div class="legend-item" onclick="selectCostCategory('materials')">
+                                        <div class="legend-color" style="background: #f59e0b;"></div>
+                                        <div class="legend-label">Cement & Materials (20%)</div>
+                                    </div>
+                                    <div class="legend-item" onclick="selectCostCategory('testing')">
+                                        <div class="legend-color" style="background: #8b5cf6;"></div>
+                                        <div class="legend-label">Testing & Monitoring (10%)</div>
+                                    </div>
+                                    <div class="legend-item" onclick="selectCostCategory('mobilization')">
+                                        <div class="legend-color" style="background: #ec4899;"></div>
+                                        <div class="legend-label">Mobilization (10%)</div>
+                                    </div>
+                                    <div class="legend-item" onclick="selectCostCategory('regulatory')">
+                                        <div class="legend-color" style="background: #14b8a6;"></div>
+                                        <div class="legend-label">Regulatory & Permitting (5%)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cost-detail-panel" id="cost-details">
+                                <h4 style="margin-bottom: 16px; color: var(--accent);">Select a category to see details</h4>
+                                <p style="color: var(--muted);">Click on a pie segment or legend item to explore cost breakdowns for each category.</p>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 6px; border-left: 4px solid var(--accent);">
+                            <p style="margin-bottom: 8px;"><strong>💡 Cost Management Insights:</strong></p>
+                            <ul style="font-size: 0.9rem; margin-left: 20px; line-height: 1.8;">
+                                <li><strong>Equipment:</strong> Largest single expense - wireline units, coiled tubing, workover rigs ($3K-$50K/day)</li>
+                                <li><strong>Labor:</strong> Specialized crews required - cement specialists, wireline operators, supervisors</li>
+                                <li><strong>Materials:</strong> Cement costs scale with well depth - deep wells need hundreds of sacks</li>
+                                <li><strong>Testing:</strong> Mandatory pressure tests, logging, monitoring add 10-15% to costs</li>
+                                <li><strong>Mobilization:</strong> Moving equipment to/from site - offshore logistics especially expensive</li>
+                                <li><strong>Regulatory:</strong> Permits, inspections, documentation, bonding - varies by jurisdiction</li>
+                            </ul>
+                        </div>
+                    </div>
+
                     <div class="quiz-section">
                         <div class="quiz-title">Knowledge Check</div>
                         <div class="quiz-question">
@@ -4775,6 +4963,129 @@
             document.getElementById('leak-indicators').innerHTML = '';
             document.getElementById('test-results').style.display = 'none';
             document.getElementById('start-test-btn').disabled = false;
+        }
+
+        // Cost Breakdown Pie Chart (Module 6)
+        function selectCostCategory(category) {
+            const details = document.getElementById('cost-details');
+            const categoryData = {
+                'equipment': {
+                    title: '🏗️ Equipment Rental (30% of Total Cost)',
+                    percentage: '30%',
+                    typical: '$90K - $900K',
+                    description: 'Specialized equipment rental is typically the largest P&A expense.',
+                    breakdown: [
+                        '<strong>Wireline Units:</strong> $5K-$15K/day - Setting bridge plugs, running logs',
+                        '<strong>Coiled Tubing:</strong> $8K-$25K/day - Milling, cleanout, cement placement',
+                        '<strong>Workover Rigs:</strong> $10K-$50K/day - Heavy lifting, casing removal',
+                        '<strong>Cement Units:</strong> $3K-$8K/day - Mixing and pumping cement',
+                        '<strong>Support Equipment:</strong> Trucks, tanks, power units, safety equipment'
+                    ],
+                    notes: 'Deep or complex wells may require multiple equipment types simultaneously, significantly increasing daily costs.'
+                },
+                'labor': {
+                    title: '👷 Labor & Personnel (25% of Total Cost)',
+                    percentage: '25%',
+                    typical: '$75K - $750K',
+                    description: 'Skilled specialists required for safe, compliant P&A operations.',
+                    breakdown: [
+                        '<strong>Wireline Operators:</strong> Specialized certification required',
+                        '<strong>Cement Engineers:</strong> Design plugs, supervise placement',
+                        '<strong>Rig Crew:</strong> Operators, derrickmen, roughnecks (5-10 personnel)',
+                        '<strong>Supervisors:</strong> Company man, toolpusher overseeing operations',
+                        '<strong>Safety Personnel:</strong> H2S monitors, fire watch, safety coordinators',
+                        '<strong>Consultants:</strong> Wellbore integrity, regulatory compliance experts'
+                    ],
+                    notes: 'Offshore operations require crew rotation, transportation, accommodations - adding 30-50% to labor costs.'
+                },
+                'materials': {
+                    title: '🏗️ Cement & Materials (20% of Total Cost)',
+                    percentage: '20%',
+                    typical: '$60K - $600K',
+                    description: 'High-quality materials ensure permanent sealing.',
+                    breakdown: [
+                        '<strong>Cement:</strong> Class H cement, additives, retarders ($15-$30/sack × hundreds of sacks)',
+                        '<strong>Bridge Plugs:</strong> Mechanical barriers ($5K-$50K each)',
+                        '<strong>Completion Fluids:</strong> Kill fluids, spacers, wash fluids',
+                        '<strong>Casing Patches:</strong> For casing repairs if needed',
+                        '<strong>Consumables:</strong> Chemicals, lubricants, misc supplies'
+                    ],
+                    notes: 'Material costs scale directly with well depth and number of barriers. Deep wells requiring multiple cement plugs can consume 500+ sacks.'
+                },
+                'testing': {
+                    title: '🧪 Testing & Monitoring (10% of Total Cost)',
+                    percentage: '10%',
+                    typical: '$30K - $300K',
+                    description: 'Mandatory verification ensures barrier integrity.',
+                    breakdown: [
+                        '<strong>Pressure Testing:</strong> Each barrier must pass pressure test',
+                        '<strong>Cement Bond Logs:</strong> Verify cement quality and bonding',
+                        '<strong>Temperature Logs:</strong> Confirm cement placement locations',
+                        '<strong>Radioactive Tracer:</strong> Detect cement top and channels',
+                        '<strong>Monitoring:</strong> Environmental monitoring during operations'
+                    ],
+                    notes: 'Testing cannot be skipped - failed tests require costly remediation and re-testing until barriers pass.'
+                },
+                'mobilization': {
+                    title: '🚚 Mobilization & Logistics (10% of Total Cost)',
+                    percentage: '10%',
+                    typical: '$30K - $300K',
+                    description: 'Moving equipment and personnel to/from well site.',
+                    breakdown: [
+                        '<strong>Rig Mobilization:</strong> Transporting workover rig to location',
+                        '<strong>Equipment Transport:</strong> Multiple trucks for wireline, coiled tubing, cement',
+                        '<strong>Road Construction:</strong> Access roads for remote locations',
+                        '<strong>Offshore Logistics:</strong> Boats, helicopters, platform preparation',
+                        '<strong>Demobilization:</strong> Removal and site restoration after completion'
+                    ],
+                    notes: 'Offshore and remote locations can see mobilization costs exceed 20% of total. Ultra-deep water mobilization may cost $1M+.'
+                },
+                'regulatory': {
+                    title: '📋 Regulatory & Permitting (5% of Total Cost)',
+                    percentage: '5%',
+                    typical: '$15K - $150K',
+                    description: 'Compliance, permitting, bonding, and documentation.',
+                    breakdown: [
+                        '<strong>Permits:</strong> State/federal abandonment permits, environmental permits',
+                        '<strong>Engineering Studies:</strong> P&A plan development and submission',
+                        '<strong>Bonding:</strong> Financial assurance posting (refundable)',
+                        '<strong>Inspections:</strong> Third-party verification, regulatory witness',
+                        '<strong>Documentation:</strong> Final abandonment report, as-built diagrams',
+                        '<strong>Legal/Consulting:</strong> Regulatory compliance experts'
+                    ],
+                    notes: 'While smallest percentage, non-compliance can result in operations shutdown and penalties exceeding $100K/day.'
+                }
+            };
+
+            const data = categoryData[category];
+            if (!data) return;
+
+            let html = `
+                <h4 style="margin-bottom: 16px; color: var(--accent);">${data.title}</h4>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 8px;">
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--muted);">Percentage of Total</div>
+                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--accent);">${data.percentage}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.85rem; color: var(--muted);">Typical Range</div>
+                        <div style="font-size: 1.2rem; font-weight: bold; color: var(--text-primary);">${data.typical}</div>
+                    </div>
+                </div>
+                <p style="margin-bottom: 16px; line-height: 1.6;">${data.description}</p>
+                <div style="background: var(--bg); padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                    <h5 style="margin-bottom: 12px; color: var(--text-primary);">Breakdown:</h5>
+                    <ul style="margin-left: 20px; line-height: 2;">
+                        ${data.breakdown.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+                <div style="padding: 12px; background: rgba(234, 179, 8, 0.1); border-radius: 6px; border-left: 3px solid var(--warning);">
+                    <p style="font-size: 0.9rem;"><strong>💡 Note:</strong> ${data.notes}</p>
+                </div>
+            `;
+
+            details.innerHTML = html;
+            details.style.animation = 'fadeInUp 0.5s ease';
         }
 
         // Environmental Risk Visualizer (Module 1)
