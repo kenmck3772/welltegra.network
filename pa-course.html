@@ -3934,6 +3934,18 @@
             { time: 684, module: 6, title: "Financial Assurance", exercise: "Calculate bond requirements" },
             { time: 705, module: 7, title: "Three Golden Rules", exercise: "Review professional principles" }
         ];
+
+        // Module start times in seconds (when each module begins in the video)
+        var moduleStartTimes = {
+            1: 0,      // 00:00
+            2: 111,    // 01:51
+            3: 167,    // 02:47
+            4: 410,    // 06:50
+            5: 463,    // 07:43
+            6: 589,    // 09:49
+            7: 685     // 11:25
+        };
+
         var currentCheckpointIndex = 0;
         var checkpointCompleted = false;
         var videoInterval;
@@ -4146,12 +4158,28 @@
                     card.classList.add('in-progress');
                     status.innerHTML = '<span>⏳</span><span>In Progress</span>';
                     status.className = 'module-status in-progress';
-                }
 
-                // Smooth scroll to the module card
-                setTimeout(() => {
-                    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
+                    // If module not completed, start video at this module's beginning
+                    if (player && player.seekTo && moduleStartTimes[moduleNum] !== undefined) {
+                        // Scroll to video first
+                        const videoSection = document.querySelector('.video-section');
+                        if (videoSection) {
+                            videoSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+
+                        // Seek to module start time and play
+                        setTimeout(() => {
+                            player.seekTo(moduleStartTimes[moduleNum], true);
+                            player.playVideo();
+                            console.log(`Video started at ${moduleStartTimes[moduleNum]}s for Module ${moduleNum}`);
+                        }, 800);
+                    }
+                } else {
+                    // If already completed, just scroll to the module
+                    setTimeout(() => {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }
             }
         }
 
