@@ -3,37 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plug & Abandonment Professional Course | The Brahan Engine</title>
+    <title>Plug & Abandonment Demo Course | The Brahan Engine</title>
     <meta name="description" content="Comprehensive Plug and Abandonment (P&A) training course covering regulatory frameworks, barrier systems, liability, and global best practices.">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
+            --bg: #0b1220;
+            --panel: #0f172a;
+            --card: #1e293b;
+            --border: #334155;
+            --fg: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #14b8a6;
+            --accent-hover: #2dd4bf;
             --primary-color: #2563eb;
             --primary-dark: #1e40af;
             --secondary-color: #10b981;
-            --text-primary: #1f2937;
-            --text-secondary: #6b7280;
-            --bg-light: #f9fafb;
-            --bg-white: #ffffff;
-            --border-color: #e5e7eb;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --accent: #14b8a6;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --bg-light: #0f172a;
+            --bg-white: #1e293b;
+            --border-color: #334155;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
             --nav-bg: #0b1220;
             --nav-border: #334155;
             --success: #22c55e;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --info: #3b82f6;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             color: var(--text-primary);
-            background-color: var(--bg-light);
+            background-color: var(--bg);
         }
 
         /* Unified Navigation */
@@ -1425,7 +1433,7 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1>Plug & Abandonment Professional Course</h1>
+        <h1>Plug & Abandonment Demo Course</h1>
         <p>Master the regulatory frameworks, technical barriers, and long-term liability considerations essential for safe and compliant well abandonment operations</p>
         <div class="hero-meta">
             <div class="hero-meta-item">
@@ -2385,10 +2393,10 @@
         <!-- Certificate Section -->
         <div class="certificate-section" id="certificate">
             <h2>🎓 Congratulations!</h2>
-            <p>You have successfully completed the Plug & Abandonment Professional Course</p>
+            <p>You have successfully completed the Plug & Abandonment Demo Course</p>
             <p><strong>Certificate ID:</strong> <span id="cert-id"></span></p>
             <p><strong>Completion Date:</strong> <span id="cert-date"></span></p>
-            <button class="btn" style="background: white; color: var(--success);" onclick="downloadCertificate()">Download Certificate</button>
+            <button class="btn" style="background: var(--success); color: white;" onclick="downloadCertificate()">Download Certificate</button>
         </div>
     </div>
 
