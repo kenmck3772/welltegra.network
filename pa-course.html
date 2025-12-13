@@ -4120,6 +4120,8 @@
 
         // Toggle module content
         function toggleModule(moduleNum) {
+            console.log('toggleModule called for module:', moduleNum);
+
             const card = document.querySelector(`[data-module="${moduleNum}"]`);
             const content = document.getElementById(`content-${moduleNum}`);
             const status = document.getElementById(`status-${moduleNum}`);
@@ -4155,6 +4157,8 @@
 
         // Complete module
         function completeModule(moduleNum) {
+            console.log('completeModule called for module:', moduleNum);
+
             // Check if video checkpoint was reached for this module
             if (!reachedCheckpoints.has(moduleNum)) {
                 alert(`🔒 You must watch the video to unlock this module first!\n\nThe video will automatically pause at Module ${moduleNum} for you to complete the interactive exercises.`);
@@ -4732,6 +4736,8 @@
         let draggedBarrier = null;
 
         function addBarrier(barrierType, barrierName, barrierIcon) {
+            console.log('addBarrier called:', barrierType, barrierName);
+
             // Find appropriate slot for this barrier type
             let targetSlot = null;
 
