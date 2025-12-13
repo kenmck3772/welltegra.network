@@ -1818,6 +1818,128 @@
             border-left: 3px solid var(--warning);
         }
 
+        /* Barrier Sequence Builder */
+        .sequence-builder {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 968px) {
+            .sequence-builder {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .builder-controls {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .barrier-type-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .barrier-type-card {
+            background: var(--bg);
+            padding: 16px;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .barrier-type-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(20, 184, 166, 0.1);
+        }
+
+        .btn-small {
+            padding: 8px 12px;
+            font-size: 0.85rem;
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .btn-accent:hover {
+            background: var(--primary-color);
+        }
+
+        .wellbore-visual {
+            background: linear-gradient(180deg, #0ea5e9 0%, #1e293b 20%, #0f172a 80%, #78350f 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+        }
+
+        .wellbore-container {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 10px;
+            padding: 16px;
+            backdrop-filter: blur(4px);
+        }
+
+        .depth-zone {
+            margin-bottom: 16px;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 8px;
+            border-left: 3px solid var(--muted);
+        }
+
+        .zone-label {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .barrier-slot {
+            min-height: 60px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .barrier-slot:empty::before {
+            content: 'Empty - Add barrier';
+        }
+
+        .barrier-slot.filled {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+            border: 2px solid var(--accent);
+            border-style: solid;
+        }
+
+        .barrier-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: bold;
+        }
+
+        .barrier-item .icon {
+            font-size: 1.5rem;
+        }
+
     </style>
 </head>
 <body>
@@ -2731,6 +2853,114 @@
 
                         <div style="margin-top: 12px; padding: 12px; background: rgba(234, 179, 8, 0.1); border-radius: 6px; border-left: 4px solid var(--warning);">
                             <p><strong>⚠️ Pro Tip:</strong> For critical P&A plugs, always err on the side of excess cement. Running out mid-job means pulling equipment, waiting for more cement, and potentially compromising the plug integrity. A 20-30% safety factor is industry standard.</p>
+                        </div>
+                    </div>
+
+                    <!-- Barrier Sequence Builder -->
+                    <div class="interactive-section" style="margin-top: 24px;">
+                        <div class="interactive-title">Interactive: Multi-Barrier Sequence Builder</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Build a proper P&A sequence by placing barriers at strategic depths. A complete P&A requires multiple barriers from bottom to top.</p>
+
+                        <div class="sequence-builder">
+                            <div class="builder-controls">
+                                <h4 style="margin-bottom: 16px;">Available Barrier Types</h4>
+
+                                <div class="barrier-type-selector">
+                                    <div class="barrier-type-card" data-barrier="bridge-plug">
+                                        <div style="font-size: 2rem; text-align: center; margin-bottom: 8px;">🔩</div>
+                                        <strong>Bridge Plug</strong>
+                                        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Mechanical barrier at bottom</p>
+                                        <button class="btn btn-small btn-accent" onclick="addBarrier('bridge-plug', 'Bridge Plug', '🔩')" style="width: 100%; margin-top: 8px;">
+                                            Add to Sequence
+                                        </button>
+                                    </div>
+
+                                    <div class="barrier-type-card" data-barrier="cement-plug">
+                                        <div style="font-size: 2rem; text-align: center; margin-bottom: 8px;">🏗️</div>
+                                        <strong>Cement Plug</strong>
+                                        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Primary sealing barrier</p>
+                                        <button class="btn btn-small btn-accent" onclick="addBarrier('cement-plug', 'Cement Plug', '🏗️')" style="width: 100%; margin-top: 8px;">
+                                            Add to Sequence
+                                        </button>
+                                    </div>
+
+                                    <div class="barrier-type-card" data-barrier="aquifer-seal">
+                                        <div style="font-size: 2rem; text-align: center; margin-bottom: 8px;">💧</div>
+                                        <strong>Aquifer Seal</strong>
+                                        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Protects drinking water</p>
+                                        <button class="btn btn-small btn-accent" onclick="addBarrier('aquifer-seal', 'Aquifer Seal', '💧')" style="width: 100%; margin-top: 8px;">
+                                            Add to Sequence
+                                        </button>
+                                    </div>
+
+                                    <div class="barrier-type-card" data-barrier="surface-plug">
+                                        <div style="font-size: 2rem; text-align: center; margin-bottom: 8px;">🎯</div>
+                                        <strong>Surface Plug</strong>
+                                        <p style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Final cap at top</p>
+                                        <button class="btn btn-small btn-accent" onclick="addBarrier('surface-plug', 'Surface Plug', '🎯')" style="width: 100%; margin-top: 8px;">
+                                            Add to Sequence
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top: 16px;">
+                                    <button class="btn btn-secondary" onclick="resetSequence()" style="width: 100%;">
+                                        Reset Sequence
+                                    </button>
+                                    <button class="btn btn-primary" onclick="validateSequence()" style="width: 100%; margin-top: 8px;">
+                                        Validate My Sequence
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="wellbore-visual">
+                                <h4 style="margin-bottom: 16px; text-align: center;">Wellbore Cross-Section</h4>
+                                <div class="wellbore-container">
+                                    <!-- Surface (0 ft) -->
+                                    <div class="depth-zone" data-zone="surface">
+                                        <div class="zone-label">Surface (0 ft)</div>
+                                        <div class="barrier-slot" id="slot-surface" data-required="surface-plug"></div>
+                                    </div>
+
+                                    <!-- Shallow Aquifer (500 ft) -->
+                                    <div class="depth-zone" data-zone="aquifer">
+                                        <div class="zone-label">Aquifer (500 ft)</div>
+                                        <div class="barrier-slot" id="slot-aquifer" data-required="aquifer-seal"></div>
+                                    </div>
+
+                                    <!-- Intermediate (2,000 ft) -->
+                                    <div class="depth-zone" data-zone="intermediate">
+                                        <div class="zone-label">Intermediate (2,000 ft)</div>
+                                        <div class="barrier-slot" id="slot-intermediate" data-required="cement-plug"></div>
+                                    </div>
+
+                                    <!-- Production Zone (5,000 ft) -->
+                                    <div class="depth-zone" data-zone="production">
+                                        <div class="zone-label">Production (5,000 ft)</div>
+                                        <div class="barrier-slot" id="slot-production" data-required="cement-plug"></div>
+                                    </div>
+
+                                    <!-- Bottom (8,000 ft) -->
+                                    <div class="depth-zone" data-zone="bottom">
+                                        <div class="zone-label">Bottom (8,000 ft)</div>
+                                        <div class="barrier-slot" id="slot-bottom" data-required="bridge-plug"></div>
+                                    </div>
+                                </div>
+
+                                <div id="sequence-feedback" style="margin-top: 16px; padding: 12px; border-radius: 8px; display: none;"></div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 6px; border-left: 4px solid var(--accent);">
+                            <p style="margin-bottom: 8px;"><strong>🎓 Proper P&A Sequence (Bottom to Top):</strong></p>
+                            <ol style="margin-left: 20px; line-height: 1.8;">
+                                <li><strong>Bridge Plug (Bottom):</strong> Mechanical barrier at TD (total depth) to hold cement above</li>
+                                <li><strong>Production Zone Cement:</strong> Seal production perforations and prevent hydrocarbon migration</li>
+                                <li><strong>Intermediate Cement:</strong> Isolate intermediate zones and provide redundancy</li>
+                                <li><strong>Aquifer Seal:</strong> CRITICAL - 100+ ft cement plug to protect drinking water</li>
+                                <li><strong>Surface Plug:</strong> Final 50-100 ft cement plug, wellhead cut below ground, site restored</li>
+                            </ol>
+                            <p style="margin-top: 8px; font-style: italic; color: var(--muted);">Each barrier must be pressure tested before proceeding to the next. Redundancy is key - if one barrier fails, others prevent leakage.</p>
                         </div>
                     </div>
 
@@ -3921,6 +4151,174 @@
 
             // Reset breadcrumb
             document.getElementById('breadcrumb-trail').textContent = 'None yet';
+        }
+
+        // Barrier Sequence Builder (Module 4)
+        let selectedSlot = null;
+
+        function addBarrier(barrierType, barrierName, barrierIcon) {
+            // Find appropriate slot for this barrier type
+            let targetSlot = null;
+
+            if (barrierType === 'bridge-plug') {
+                targetSlot = document.getElementById('slot-bottom');
+            } else if (barrierType === 'cement-plug') {
+                // Try production first, then intermediate
+                const productionSlot = document.getElementById('slot-production');
+                const intermediateSlot = document.getElementById('slot-intermediate');
+                if (!productionSlot.classList.contains('filled')) {
+                    targetSlot = productionSlot;
+                } else if (!intermediateSlot.classList.contains('filled')) {
+                    targetSlot = intermediateSlot;
+                }
+            } else if (barrierType === 'aquifer-seal') {
+                targetSlot = document.getElementById('slot-aquifer');
+            } else if (barrierType === 'surface-plug') {
+                targetSlot = document.getElementById('slot-surface');
+            }
+
+            if (!targetSlot) {
+                showFeedback('No available slot for this barrier type. Try a different barrier or reset the sequence.', 'warning');
+                return;
+            }
+
+            if (targetSlot.classList.contains('filled')) {
+                showFeedback('This slot is already filled. Reset to try again.', 'warning');
+                return;
+            }
+
+            // Add barrier to slot
+            targetSlot.classList.add('filled');
+            targetSlot.innerHTML = `
+                <div class="barrier-item">
+                    <span class="icon">${barrierIcon}</span>
+                    <span>${barrierName}</span>
+                </div>
+            `;
+
+            // Add animation
+            targetSlot.style.animation = 'fadeInUp 0.5s ease';
+
+            showFeedback(`${barrierName} added successfully!`, 'success');
+        }
+
+        function resetSequence() {
+            // Clear all slots
+            document.querySelectorAll('.barrier-slot').forEach(slot => {
+                slot.classList.remove('filled');
+                slot.innerHTML = '';
+                slot.style.animation = '';
+            });
+
+            // Hide feedback
+            document.getElementById('sequence-feedback').style.display = 'none';
+        }
+
+        function validateSequence() {
+            const feedback = document.getElementById('sequence-feedback');
+            const slots = {
+                bottom: document.getElementById('slot-bottom'),
+                production: document.getElementById('slot-production'),
+                intermediate: document.getElementById('slot-intermediate'),
+                aquifer: document.getElementById('slot-aquifer'),
+                surface: document.getElementById('slot-surface')
+            };
+
+            // Check which barriers are placed
+            const filled = {
+                bottom: slots.bottom.classList.contains('filled'),
+                production: slots.production.classList.contains('filled'),
+                intermediate: slots.intermediate.classList.contains('filled'),
+                aquifer: slots.aquifer.classList.contains('filled'),
+                surface: slots.surface.classList.contains('filled')
+            };
+
+            let messages = [];
+            let isValid = true;
+
+            // Critical checks
+            if (!filled.bottom) {
+                messages.push('❌ Missing bottom bridge plug - required to support cement above');
+                isValid = false;
+            }
+
+            if (!filled.aquifer) {
+                messages.push('❌ CRITICAL: Missing aquifer seal - protecting drinking water is mandatory!');
+                isValid = false;
+            }
+
+            if (!filled.surface) {
+                messages.push('❌ Missing surface plug - required to seal wellhead');
+                isValid = false;
+            }
+
+            if (!filled.production) {
+                messages.push('⚠️ Missing production zone cement - recommended for proper sealing');
+            }
+
+            if (!filled.intermediate) {
+                messages.push('⚠️ Missing intermediate cement - provides valuable redundancy');
+            }
+
+            // Show results
+            if (isValid && filled.bottom && filled.production && filled.intermediate && filled.aquifer && filled.surface) {
+                feedback.style.background = 'rgba(34, 197, 94, 0.1)';
+                feedback.style.borderLeft = '4px solid var(--success)';
+                feedback.innerHTML = `
+                    <h5 style="color: var(--success); margin-bottom: 12px;">✅ Perfect P&A Sequence!</h5>
+                    <p>You've built a complete multi-barrier P&A system with all essential components:</p>
+                    <ul style="margin-left: 20px; margin-top: 8px; line-height: 1.8;">
+                        <li>Bottom bridge plug providing foundation</li>
+                        <li>Production zone sealed against hydrocarbon migration</li>
+                        <li>Intermediate barrier for redundancy</li>
+                        <li>Aquifer protected with dedicated seal</li>
+                        <li>Surface plug completing the abandonment</li>
+                    </ul>
+                    <p style="margin-top: 12px; font-weight: bold;">This meets industry best practices and regulatory standards!</p>
+                `;
+            } else if (isValid) {
+                feedback.style.background = 'rgba(234, 179, 8, 0.1)';
+                feedback.style.borderLeft = '4px solid var(--warning)';
+                feedback.innerHTML = `
+                    <h5 style="color: var(--warning); margin-bottom: 12px;">⚠️ Meets Minimum Requirements</h5>
+                    <p>Your sequence includes the critical barriers, but could be improved:</p>
+                    <ul style="margin-left: 20px; margin-top: 8px; line-height: 1.6;">
+                        ${messages.map(msg => `<li>${msg}</li>`).join('')}
+                    </ul>
+                    <p style="margin-top: 12px;">Consider adding intermediate barriers for redundancy and enhanced safety.</p>
+                `;
+            } else {
+                feedback.style.background = 'rgba(239, 68, 68, 0.1)';
+                feedback.style.borderLeft = '4px solid var(--danger)';
+                feedback.innerHTML = `
+                    <h5 style="color: var(--danger); margin-bottom: 12px;">❌ Incomplete Sequence</h5>
+                    <p>Your P&A sequence is missing critical barriers:</p>
+                    <ul style="margin-left: 20px; margin-top: 8px; line-height: 1.6;">
+                        ${messages.map(msg => `<li>${msg}</li>`).join('')}
+                    </ul>
+                    <p style="margin-top: 12px;">This sequence would be rejected by regulatory authorities. Add missing barriers.</p>
+                `;
+            }
+
+            feedback.style.display = 'block';
+            feedback.style.animation = 'fadeInUp 0.5s ease';
+        }
+
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('sequence-feedback');
+            if (type === 'success') {
+                feedback.style.background = 'rgba(34, 197, 94, 0.1)';
+                feedback.style.borderLeft = '4px solid var(--success)';
+            } else {
+                feedback.style.background = 'rgba(234, 179, 8, 0.1)';
+                feedback.style.borderLeft = '4px solid var(--warning)';
+            }
+            feedback.innerHTML = `<p>${message}</p>`;
+            feedback.style.display = 'block';
+
+            setTimeout(() => {
+                feedback.style.display = 'none';
+            }, 3000);
         }
 
         // Environmental Risk Visualizer (Module 1)
