@@ -2240,6 +2240,31 @@
             min-height: 300px;
         }
 
+        /* Reset Course Button */
+        .btn-reset-course {
+            margin-top: 24px;
+            padding: 12px 24px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid #ef4444;
+            color: #ef4444;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-reset-course:hover {
+            background: #ef4444;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-reset-course:active {
+            transform: translateY(0);
+        }
+
     </style>
 </head>
 <body>
@@ -2281,6 +2306,9 @@
                 <span>Certificate of completion</span>
             </div>
         </div>
+        <button onclick="resetCourseProgress()" class="btn-reset-course" title="Clear all progress and start over">
+            🔄 Reset Course Progress
+        </button>
     </section>
 
     <!-- Main Content -->
@@ -5086,6 +5114,21 @@
 
             details.innerHTML = html;
             details.style.animation = 'fadeInUp 0.5s ease';
+        }
+
+        // Reset Course Progress
+        function resetCourseProgress() {
+            if (confirm('⚠️ Are you sure you want to reset all course progress?\n\nThis will:\n• Clear all completed modules\n• Remove your certificate\n• Reset all quiz answers\n• Start the course from the beginning\n\nThis action cannot be undone!')) {
+                // Clear localStorage
+                localStorage.removeItem('pa-course-progress');
+                localStorage.removeItem('pa-course-certificate');
+
+                // Show success message
+                alert('✅ Course progress has been reset successfully!\n\nThe page will now reload to start fresh.');
+
+                // Reload the page
+                window.location.reload();
+            }
         }
 
         // Environmental Risk Visualizer (Module 1)
