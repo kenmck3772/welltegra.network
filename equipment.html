@@ -135,6 +135,51 @@
             }
         }
 
+        /* Tab Navigation */
+        .tab-nav {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+        }
+
+        .tab-button {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.875rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            font-weight: 700;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .tab-button:hover {
+            background: var(--card);
+            color: var(--fg);
+        }
+
+        .tab-button.active {
+            background: var(--accent);
+            color: #0b1220;
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+        }
+
+        .tab-icon {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
         /* Sidebar */
         .sidebar {
             position: sticky;
@@ -194,7 +239,7 @@
             height: 18px;
         }
 
-        /* Category list */
+        /* Subcategory list */
         .category-list {
             list-style: none;
         }
@@ -217,8 +262,9 @@
         }
 
         .category-item.active {
-            background: var(--accent);
-            color: #0b1220;
+            background: rgba(20, 184, 166, 0.2);
+            color: var(--accent);
+            border-left: 3px solid var(--accent);
         }
 
         .category-count {
@@ -229,7 +275,8 @@
         }
 
         .category-item.active .category-count {
-            background: rgba(0,0,0,0.2);
+            background: rgba(20, 184, 166, 0.3);
+            color: var(--accent);
         }
 
         /* Stats */
@@ -651,7 +698,7 @@
             </div>
 
             <div class="sidebar-section">
-                <div class="sidebar-title">Categories</div>
+                <div class="sidebar-title" id="sidebarTitle">Subcategories</div>
                 <ul class="category-list" id="categoryList">
                     <!-- Rendered by JS -->
                 </ul>
@@ -682,8 +729,28 @@
 
         <!-- Content -->
         <section class="content">
+            <!-- Tab Navigation -->
+            <div class="tab-nav">
+                <button class="tab-button active" data-tab="wireline">
+                    <span class="tab-icon">🔌</span>
+                    Wire Line
+                </button>
+                <button class="tab-button" data-tab="slickline">
+                    <span class="tab-icon">🧵</span>
+                    Slick Line
+                </button>
+                <button class="tab-button" data-tab="coiled_tubing">
+                    <span class="tab-icon">🔧</span>
+                    Coil Tubing
+                </button>
+                <button class="tab-button" data-tab="well_maintenance">
+                    <span class="tab-icon">⚙️</span>
+                    Well Maintenance
+                </button>
+            </div>
+
             <div class="content-header">
-                <h2 class="content-title" id="contentTitle">All Equipment</h2>
+                <h2 class="content-title" id="contentTitle">Wire Line Equipment</h2>
                 <div class="content-actions">
                     <button class="btn btn-secondary" id="btnClearSelection">
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
@@ -751,7 +818,23 @@
         // Equipment data
         let catalogData = null;
         let selectedItems = new Set();
-        let activeCategory = 'all';
+        let activeTab = 'wireline';
+        let activeSubcategory = 'all';
+
+        // Category mapping to main tabs
+        const tabMapping = {
+            wireline: ['toolstring', 'electric_line', 'gauges'],
+            slickline: ['slickline', 'pulling', 'locks'],
+            coiled_tubing: ['coiled_tubing', 'equipment_packages'],
+            well_maintenance: ['fishing', 'bailers', 'gaslift', 'otis', 'baker', 'camco', 'petroline', 'pes', 'pressure_control']
+        };
+
+        const tabTitles = {
+            wireline: 'Wire Line Equipment',
+            slickline: 'Slick Line Equipment',
+            coiled_tubing: 'Coil Tubing Equipment',
+            well_maintenance: 'Well Maintenance Equipment'
+        };
 
         // Load catalog data
         async function loadCatalogData() {
@@ -802,27 +885,31 @@
             document.getElementById('statMissing').textContent = allItems.length - complete.length;
         }
 
-        // Render categories
+        // Render subcategories based on active tab
         function renderCategories() {
             const list = document.getElementById('categoryList');
-            const allCount = catalogData.categories.reduce((sum, c) => sum + c.equipment.length, 0);
-            
+            const allowedCategories = tabMapping[activeTab];
+
+            // Filter categories for this tab
+            const tabCategories = catalogData.categories.filter(c => allowedCategories.includes(c.id));
+            const allCount = tabCategories.reduce((sum, c) => sum + c.equipment.length, 0);
+
             let html = `
-                <li class="category-item ${activeCategory === 'all' ? 'active' : ''}" data-category="all">
-                    <span>All Equipment</span>
+                <li class="category-item ${activeSubcategory === 'all' ? 'active' : ''}" data-category="all">
+                    <span>All ${tabTitles[activeTab]}</span>
                     <span class="category-count">${allCount}</span>
                 </li>
             `;
-            
-            catalogData.categories.forEach(cat => {
+
+            tabCategories.forEach(cat => {
                 html += `
-                    <li class="category-item ${activeCategory === cat.id ? 'active' : ''}" data-category="${cat.id}">
+                    <li class="category-item ${activeSubcategory === cat.id ? 'active' : ''}" data-category="${cat.id}">
                         <span>${cat.name}</span>
                         <span class="category-count">${cat.equipment.length}</span>
                     </li>
                 `;
             });
-            
+
             list.innerHTML = html;
         }
 
@@ -830,36 +917,41 @@
         function renderEquipment(searchTerm = '') {
             const grid = document.getElementById('equipmentGrid');
             const search = searchTerm.toLowerCase();
-            
+            const allowedCategories = tabMapping[activeTab];
+
             let items = [];
-            
-            if (activeCategory === 'all') {
+
+            if (activeSubcategory === 'all') {
+                // Show all equipment from this tab's categories
                 catalogData.categories.forEach(cat => {
-                    cat.equipment.forEach(eq => {
-                        items.push({ ...eq, categoryName: cat.name, categoryId: cat.id });
-                    });
+                    if (allowedCategories.includes(cat.id)) {
+                        cat.equipment.forEach(eq => {
+                            items.push({ ...eq, categoryName: cat.name, categoryId: cat.id });
+                        });
+                    }
                 });
             } else {
-                const cat = catalogData.categories.find(c => c.id === activeCategory);
+                // Show equipment from specific subcategory
+                const cat = catalogData.categories.find(c => c.id === activeSubcategory);
                 if (cat) {
                     items = cat.equipment.map(eq => ({ ...eq, categoryName: cat.name, categoryId: cat.id }));
                 }
             }
-            
+
             // Filter by search
             if (search) {
-                items = items.filter(eq => 
+                items = items.filter(eq =>
                     eq.name.toLowerCase().includes(search) ||
                     (eq.partNumber && eq.partNumber.toLowerCase().includes(search)) ||
                     (eq.manufacturer && eq.manufacturer.toLowerCase().includes(search))
                 );
             }
-            
+
             // Update title
-            if (activeCategory === 'all') {
-                document.getElementById('contentTitle').textContent = `All Equipment (${items.length})`;
+            if (activeSubcategory === 'all') {
+                document.getElementById('contentTitle').textContent = `${tabTitles[activeTab]} (${items.length})`;
             } else {
-                const cat = catalogData.categories.find(c => c.id === activeCategory);
+                const cat = catalogData.categories.find(c => c.id === activeSubcategory);
                 document.getElementById('contentTitle').textContent = `${cat?.name || 'Equipment'} (${items.length})`;
             }
             
@@ -1019,11 +1111,27 @@
 
         // Setup event listeners
         function setupEventListeners() {
-            // Category clicks
+            // Tab clicks
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active tab
+                    document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    activeTab = btn.dataset.tab;
+                    activeSubcategory = 'all'; // Reset subcategory when changing tabs
+
+                    // Re-render
+                    renderCategories();
+                    renderEquipment(document.getElementById('searchInput').value);
+                });
+            });
+
+            // Subcategory clicks
             document.getElementById('categoryList').addEventListener('click', (e) => {
                 const item = e.target.closest('.category-item');
                 if (item) {
-                    activeCategory = item.dataset.category;
+                    activeSubcategory = item.dataset.category;
                     renderCategories();
                     renderEquipment(document.getElementById('searchInput').value);
                 }
