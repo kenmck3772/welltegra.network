@@ -4385,7 +4385,8 @@
                     afterImage.style.clipPath = `inset(0 ${100 - position}% 0 0)`;
                 }
 
-                handle.addEventListener('mousedown', () => {
+                handle.addEventListener('mousedown', (e) => {
+                    e.stopPropagation();
                     isDragging = true;
                 });
 
@@ -4400,7 +4401,8 @@
                 });
 
                 // Touch support
-                handle.addEventListener('touchstart', () => {
+                handle.addEventListener('touchstart', (e) => {
+                    e.stopPropagation();
                     isDragging = true;
                 });
 
@@ -4416,6 +4418,7 @@
 
                 // Click anywhere on slider to move
                 slider.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     updateSlider(e.clientX);
                 });
             }
@@ -4726,6 +4729,7 @@
 
         // Barrier Sequence Builder (Module 4)
         let selectedSlot = null;
+        let draggedBarrier = null;
 
         function addBarrier(barrierType, barrierName, barrierIcon) {
             // Find appropriate slot for this barrier type
@@ -4749,36 +4753,131 @@
             }
 
             if (!targetSlot) {
-                showFeedback('No available slot for this barrier type. Try a different barrier or reset the sequence.', 'warning');
+                showFeedback('⚠️ No available slot for this barrier type. Try a different barrier or reset the sequence.', 'warning');
                 return;
             }
 
             if (targetSlot.classList.contains('filled')) {
-                showFeedback('This slot is already filled. Reset to try again.', 'warning');
+                showFeedback('⚠️ This slot is already filled. Click "Reset Sequence" to try again.', 'warning');
                 return;
             }
 
             // Add barrier to slot
             targetSlot.classList.add('filled');
+            targetSlot.setAttribute('data-barrier-type', barrierType);
             targetSlot.innerHTML = `
-                <div class="barrier-item">
-                    <span class="icon">${barrierIcon}</span>
-                    <span>${barrierName}</span>
+                <div class="barrier-item" style="animation: fadeInUp 0.5s ease;">
+                    <span class="icon" style="font-size: 1.5rem;">${barrierIcon}</span>
+                    <span style="font-weight: 600; margin-left: 8px;">${barrierName}</span>
                 </div>
             `;
 
-            // Add animation
-            targetSlot.style.animation = 'fadeInUp 0.5s ease';
+            // Visual feedback
+            targetSlot.style.background = 'rgba(20, 184, 166, 0.2)';
+            targetSlot.style.border = '2px solid var(--accent)';
 
-            showFeedback(`${barrierName} added successfully!`, 'success');
+            showFeedback(`✅ ${barrierName} added successfully!`, 'success');
         }
+
+        // Initialize drag and drop for barrier types
+        function initializeBarrierDragDrop() {
+            const barrierCards = document.querySelectorAll('.barrier-type-card');
+            const barrierSlots = document.querySelectorAll('.barrier-slot');
+
+            barrierCards.forEach(card => {
+                card.setAttribute('draggable', 'true');
+
+                card.addEventListener('dragstart', (e) => {
+                    e.stopPropagation();
+                    const barrierType = card.getAttribute('data-barrier');
+                    draggedBarrier = {
+                        type: barrierType,
+                        name: card.querySelector('strong').textContent,
+                        icon: card.querySelector('div').textContent
+                    };
+                    card.style.opacity = '0.5';
+                });
+
+                card.addEventListener('dragend', (e) => {
+                    card.style.opacity = '1';
+                    draggedBarrier = null;
+                });
+            });
+
+            barrierSlots.forEach(slot => {
+                slot.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (!slot.classList.contains('filled')) {
+                        slot.style.background = 'rgba(20, 184, 166, 0.15)';
+                        slot.style.border = '2px dashed var(--accent)';
+                    }
+                });
+
+                slot.addEventListener('dragleave', (e) => {
+                    e.stopPropagation();
+                    if (!slot.classList.contains('filled')) {
+                        slot.style.background = '';
+                        slot.style.border = '';
+                    }
+                });
+
+                slot.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (draggedBarrier && !slot.classList.contains('filled')) {
+                        // Check if this is the correct slot for this barrier type
+                        const slotId = slot.id;
+                        let isCorrectSlot = false;
+
+                        if (draggedBarrier.type === 'bridge-plug' && slotId === 'slot-bottom') {
+                            isCorrectSlot = true;
+                        } else if (draggedBarrier.type === 'aquifer-seal' && slotId === 'slot-aquifer') {
+                            isCorrectSlot = true;
+                        } else if (draggedBarrier.type === 'surface-plug' && slotId === 'slot-surface') {
+                            isCorrectSlot = true;
+                        } else if (draggedBarrier.type === 'cement-plug' &&
+                                   (slotId === 'slot-production' || slotId === 'slot-intermediate')) {
+                            isCorrectSlot = true;
+                        }
+
+                        if (isCorrectSlot) {
+                            slot.classList.add('filled');
+                            slot.setAttribute('data-barrier-type', draggedBarrier.type);
+                            slot.innerHTML = `
+                                <div class="barrier-item" style="animation: fadeInUp 0.5s ease;">
+                                    <span class="icon" style="font-size: 1.5rem;">${draggedBarrier.icon}</span>
+                                    <span style="font-weight: 600; margin-left: 8px;">${draggedBarrier.name}</span>
+                                </div>
+                            `;
+                            slot.style.background = 'rgba(20, 184, 166, 0.2)';
+                            slot.style.border = '2px solid var(--accent)';
+                            showFeedback(`✅ ${draggedBarrier.name} placed successfully!`, 'success');
+                        } else {
+                            slot.style.background = '';
+                            slot.style.border = '';
+                            showFeedback(`❌ ${draggedBarrier.name} cannot be placed in this zone. Try the correct depth zone.`, 'warning');
+                        }
+                    }
+                });
+            });
+        }
+
+        // Initialize drag-and-drop when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeBarrierDragDrop();
+        });
 
         function resetSequence() {
             // Clear all slots
             document.querySelectorAll('.barrier-slot').forEach(slot => {
                 slot.classList.remove('filled');
+                slot.removeAttribute('data-barrier-type');
                 slot.innerHTML = '';
                 slot.style.animation = '';
+                slot.style.background = '';
+                slot.style.border = '';
             });
 
             // Hide feedback
