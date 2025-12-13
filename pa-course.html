@@ -472,6 +472,84 @@
             padding: 24px;
             margin: 20px 0;
         }
+
+        /* Risk Cards (Module 1) */
+        .risk-card {
+            background: var(--bg-white);
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid var(--border-color);
+        }
+        .risk-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--danger);
+        }
+        .risk-card.active {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        /* Golden Rules (Module 7) */
+        .golden-rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .golden-rule-card {
+            background: var(--bg-white);
+            padding: 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid var(--border-color);
+            text-align: center;
+        }
+        .golden-rule-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--success);
+        }
+        .golden-rule-card.active {
+            border-color: var(--success);
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(20, 184, 166, 0.1));
+        }
+        .rule-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--secondary-color));
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        .golden-rule-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+        .golden-rule-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .rule-application {
+            background: var(--bg-white);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 16px;
+            display: none;
+        }
+        .rule-application.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
         .interactive-title {
             font-size: 1.1rem;
             font-weight: 700;
@@ -1131,6 +1209,75 @@
                             <li>Legal and regulatory obligations for operators</li>
                         </ul>
                     </div>
+
+                    <!-- Interactive Environmental Risk Visualizer -->
+                    <div class="interactive-section">
+                        <div class="interactive-title">Interactive: Environmental Risks of Abandoned Wells</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Click on each risk area to explore the environmental and safety consequences of improperly abandoned wells.</p>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
+                            <div class="risk-card" onclick="selectRisk('groundwater')" data-risk="groundwater">
+                                <div style="font-size: 3rem; text-align: center; margin-bottom: 8px;">💧</div>
+                                <h4 style="text-align: center; font-size: 1rem; margin-bottom: 8px;">Groundwater Contamination</h4>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center;">Click to explore</p>
+                            </div>
+
+                            <div class="risk-card" onclick="selectRisk('soil')" data-risk="soil">
+                                <div style="font-size: 3rem; text-align: center; margin-bottom: 8px;">🌱</div>
+                                <h4 style="text-align: center; font-size: 1rem; margin-bottom: 8px;">Soil Pollution</h4>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center;">Click to explore</p>
+                            </div>
+
+                            <div class="risk-card" onclick="selectRisk('greenhouse')" data-risk="greenhouse">
+                                <div style="font-size: 3rem; text-align: center; margin-bottom: 8px;">🌍</div>
+                                <h4 style="text-align: center; font-size: 1rem; margin-bottom: 8px;">Greenhouse Gas Leaks</h4>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center;">Click to explore</p>
+                            </div>
+
+                            <div class="risk-card" onclick="selectRisk('safety')" data-risk="safety">
+                                <div style="font-size: 3rem; text-align: center; margin-bottom: 8px;">⚠️</div>
+                                <h4 style="text-align: center; font-size: 1rem; margin-bottom: 8px;">Public Safety</h4>
+                                <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center;">Click to explore</p>
+                            </div>
+                        </div>
+
+                        <div class="risk-details reg-details" id="risk-groundwater">
+                            <h4 style="color: var(--danger); margin-bottom: 12px;">💧 Groundwater Contamination</h4>
+                            <p><strong>What happens:</strong> Well fluids (brine, oil, gas, chemicals) leak into freshwater aquifers used for drinking water.</p>
+                            <p style="margin-top: 8px;"><strong>Impact:</strong> Entire communities can lose access to safe drinking water. Cleanup costs can exceed millions of dollars.</p>
+                            <p style="margin-top: 8px;"><strong>Real Example:</strong> In some regions, thousands of abandoned wells contaminate groundwater, requiring expensive water treatment or new water sources.</p>
+                            <p style="margin-top: 8px;"><strong>Prevention:</strong> Proper P&A creates permanent barriers preventing fluid migration into aquifers.</p>
+                        </div>
+
+                        <div class="risk-details reg-details" id="risk-soil">
+                            <h4 style="color: var(--danger); margin-bottom: 12px;">🌱 Soil Pollution</h4>
+                            <p><strong>What happens:</strong> Hydrocarbons and chemicals seep to surface, contaminating agricultural land and ecosystems.</p>
+                            <p style="margin-top: 8px;"><strong>Impact:</strong> Land becomes unusable for farming or development. Vegetation dies, wildlife affected, property values plummet.</p>
+                            <p style="margin-top: 8px;"><strong>Cleanup Cost:</strong> Soil remediation can cost $100K-$1M+ per site and take years to complete.</p>
+                            <p style="margin-top: 8px;"><strong>Prevention:</strong> Proper wellhead abandonment and surface restoration prevents leakage pathways.</p>
+                        </div>
+
+                        <div class="risk-details reg-details" id="risk-greenhouse">
+                            <h4 style="color: var(--danger); margin-bottom: 12px;">🌍 Greenhouse Gas Emissions</h4>
+                            <p><strong>What happens:</strong> Methane (CH₄) and CO₂ escape from poorly sealed wells into atmosphere.</p>
+                            <p style="margin-top: 8px;"><strong>Impact:</strong> Methane is 25x more potent than CO₂ as greenhouse gas. One leaking well = emissions of thousands of cars.</p>
+                            <p style="margin-top: 8px;"><strong>Global Scale:</strong> Millions of abandoned wells worldwide contribute significantly to climate change.</p>
+                            <p style="margin-top: 8px;"><strong>Prevention:</strong> Permanent cement seals block gas migration pathways upward.</p>
+                        </div>
+
+                        <div class="risk-details reg-details" id="risk-safety">
+                            <h4 style="color: var(--danger); margin-bottom: 12px;">⚠️ Public Safety Hazards</h4>
+                            <p><strong>What happens:</strong> Gas accumulation in buildings, explosive risk, asphyxiation hazards, physical well bore collapse.</p>
+                            <p style="margin-top: 8px;"><strong>Impact:</strong> Injuries, deaths, property damage. Liability extends to current landowner and operator.</p>
+                            <p style="margin-top: 8px;"><strong>Legal Consequence:</strong> Criminal charges possible if negligence leads to injury or death.</p>
+                            <p style="margin-top: 8px;"><strong>Prevention:</strong> Complete P&A eliminates pathways for dangerous gases and secures wellhead.</p>
+                        </div>
+
+                        <p style="margin-top: 16px; padding: 12px; background: rgba(239, 68, 68, 0.1); border-radius: 6px; border-left: 4px solid var(--danger);">
+                            <strong>⚠️ Bottom Line:</strong> The cost of proper P&A ($100K-$10M) is far less than cleanup costs, legal liability, and environmental damage from improper abandonment. This is why regulations exist and why "just walking away" is never an option.
+                        </p>
+                    </div>
+
                     <div class="quiz-section">
                         <div class="quiz-title">Knowledge Check</div>
                         <div class="quiz-question">
@@ -1780,6 +1927,87 @@
                             <li>Know financial assurance requirements and innovative programs</li>
                         </ul>
                     </div>
+
+                    <!-- Interactive Three Golden Rules Checklist -->
+                    <div class="interactive-section">
+                        <div class="interactive-title">Interactive: Apply the Three Golden Rules</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Click each rule to explore how it applies to real-world P&A planning. These are the foundational principles every professional must follow.</p>
+
+                        <div class="golden-rules-grid">
+                            <div class="golden-rule-card" onclick="selectGoldenRule(1)" data-rule="1">
+                                <div class="rule-number">1</div>
+                                <h4>Check Local Law</h4>
+                                <p>Know your jurisdiction's requirements</p>
+                            </div>
+
+                            <div class="golden-rule-card" onclick="selectGoldenRule(2)" data-rule="2">
+                                <div class="rule-number">2</div>
+                                <h4>Prove Safety</h4>
+                                <p>Verify, document, demonstrate</p>
+                            </div>
+
+                            <div class="golden-rule-card" onclick="selectGoldenRule(3)" data-rule="3">
+                                <div class="rule-number">3</div>
+                                <h4>Plan for the Future</h4>
+                                <p>Build for generations, not decades</p>
+                            </div>
+                        </div>
+
+                        <div class="rule-application reg-details" id="rule-app-1">
+                            <h4 style="color: var(--primary-color); margin-bottom: 12px;">📋 Rule 1: Check Local Law</h4>
+                            <p><strong>Why it matters:</strong> P&A regulations vary dramatically by jurisdiction. What's acceptable in Texas may be illegal in Norway.</p>
+                            <p style="margin-top: 12px;"><strong>Practical Application:</strong></p>
+                            <ul style="margin-left: 20px; margin-top: 8px;">
+                                <li>Before planning: Identify all applicable federal, state/provincial, and local regulations</li>
+                                <li>Determine if prescriptive (follow exact steps) or goal-setting (prove your method works)</li>
+                                <li>Check for recent regulatory updates - requirements change frequently</li>
+                                <li>For multi-jurisdictional projects: Apply most stringent requirements</li>
+                                <li>Engage legal/regulatory experts early in planning</li>
+                            </ul>
+                            <p style="margin-top: 12px; padding: 12px; background: rgba(37, 99, 235, 0.1); border-radius: 6px;">
+                                <strong>💡 Pro Tip:</strong> Create a regulatory compliance checklist specific to your well's location before designing P&A program.
+                            </p>
+                        </div>
+
+                        <div class="rule-application reg-details" id="rule-app-2">
+                            <h4 style="color: var(--primary-color); margin-bottom: 12px;">✅ Rule 2: Prove Safety</h4>
+                            <p><strong>Why it matters:</strong> In goal-setting jurisdictions, you must scientifically demonstrate your P&A design will work forever. Even in prescriptive jurisdictions, proving safety protects you from liability.</p>
+                            <p style="margin-top: 12px;"><strong>Practical Application:</strong></p>
+                            <ul style="margin-left: 20px; margin-top: 8px;">
+                                <li><strong>Materials:</strong> Use highest quality cement, tested for downhole conditions</li>
+                                <li><strong>Verification:</strong> Pressure test every barrier - don't assume success</li>
+                                <li><strong>Logging:</strong> Run cement bond logs, temperature logs to confirm placement</li>
+                                <li><strong>Documentation:</strong> Record everything - procedures, test results, deviations, decisions</li>
+                                <li><strong>Third-party review:</strong> Have independent experts validate critical decisions</li>
+                                <li><strong>Photos/video:</strong> Visual evidence of surface conditions, equipment used</li>
+                            </ul>
+                            <p style="margin-top: 12px; padding: 12px; background: rgba(37, 99, 235, 0.1); border-radius: 6px;">
+                                <strong>💡 Pro Tip:</strong> Document as if you'll need to defend this work in court 50 years from now - because you might.
+                            </p>
+                        </div>
+
+                        <div class="rule-application reg-details" id="rule-app-3">
+                            <h4 style="color: var(--primary-color); margin-bottom: 12px;">🔮 Rule 3: Plan for the Future</h4>
+                            <p><strong>Why it matters:</strong> Liability is perpetual. Your company (or its successor) will be responsible for this well in 100+ years.</p>
+                            <p style="margin-top: 12px;"><strong>Practical Application:</strong></p>
+                            <ul style="margin-left: 20px; margin-top: 8px;">
+                                <li><strong>Conservative design:</strong> Exceed minimum requirements - design for worst-case scenarios</li>
+                                <li><strong>Material longevity:</strong> Will cement remain intact for centuries? Consider corrosion, pressure cycling</li>
+                                <li><strong>Climate change:</strong> Could sea level rise, permafrost thaw, seismic activity affect barriers?</li>
+                                <li><strong>Institutional knowledge:</strong> Create records that future generations can understand</li>
+                                <li><strong>Financial planning:</strong> Set aside funds for monitoring and potential remediation</li>
+                                <li><strong>Succession planning:</strong> Ensure corporate records survive mergers, bankruptcies, ownership changes</li>
+                            </ul>
+                            <p style="margin-top: 12px; padding: 12px; background: rgba(37, 99, 235, 0.1); border-radius: 6px;">
+                                <strong>💡 Pro Tip:</strong> Ask yourself: "If I have to explain this decision to a regulator in 2100, will I be proud of the choices we made today?"
+                            </p>
+                        </div>
+
+                        <p style="margin-top: 16px; padding: 16px; background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(20, 184, 166, 0.1)); border-radius: 8px; border-left: 4px solid var(--success);">
+                            <strong>🎯 Integration:</strong> These three rules work together. Checking local law tells you WHAT to do. Proving safety shows HOW you'll do it. Planning for the future explains WHY you're doing it this way. Master all three for successful P&A operations.
+                        </p>
+                    </div>
+
                     <div class="quiz-section">
                         <div class="quiz-title">Final Assessment</div>
                         <div class="quiz-question">
@@ -1863,11 +2091,13 @@
 
         var player;
         var checkpoints = [
+            { time: 110, module: 1, title: "P&A Importance", exercise: "Explore environmental risks" },
             { time: 166, module: 2, title: "Regulatory Frameworks", exercise: "Compare regulatory approaches" },
             { time: 409, module: 3, title: "Global Standards", exercise: "Explore country regulations" },
             { time: 462, module: 4, title: "Barrier Systems", exercise: "Build a P&A barrier" },
             { time: 588, module: 5, title: "Perpetual Liability", exercise: "Explore liability timeline" },
-            { time: 684, module: 6, title: "Financial Assurance", exercise: "Calculate bond requirements" }
+            { time: 684, module: 6, title: "Financial Assurance", exercise: "Calculate bond requirements" },
+            { time: 705, module: 7, title: "Three Golden Rules", exercise: "Review professional principles" }
         ];
         var currentCheckpointIndex = 0;
         var checkpointCompleted = false;
@@ -2182,6 +2412,40 @@
         // ============================================
         // INTERACTIVE ELEMENTS
         // ============================================
+
+        // Environmental Risk Visualizer (Module 1)
+        function selectRisk(risk) {
+            // Remove all active states
+            document.querySelectorAll('.risk-card').forEach(card => card.classList.remove('active'));
+            document.querySelectorAll('.risk-details').forEach(detail => detail.classList.remove('active'));
+
+            // Activate selected risk
+            const card = document.querySelector(`[data-risk="${risk}"]`);
+            if (card) {
+                card.classList.add('active');
+                document.getElementById(`risk-${risk}`).classList.add('active');
+
+                // Enable continue button
+                enableContinue();
+            }
+        }
+
+        // Three Golden Rules (Module 7)
+        function selectGoldenRule(ruleNum) {
+            // Remove all active states
+            document.querySelectorAll('.golden-rule-card').forEach(card => card.classList.remove('active'));
+            document.querySelectorAll('.rule-application').forEach(app => app.classList.remove('active'));
+
+            // Activate selected rule
+            const card = document.querySelector(`[data-rule="${ruleNum}"]`);
+            if (card) {
+                card.classList.add('active');
+                document.getElementById(`rule-app-${ruleNum}`).classList.add('active');
+
+                // Enable continue button
+                enableContinue();
+            }
+        }
 
         // Regulatory Comparison Tool
         function selectRegulation(type) {
