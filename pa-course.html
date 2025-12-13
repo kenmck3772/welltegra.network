@@ -1608,6 +1608,101 @@
             margin-bottom: 12px;
         }
 
+        /* Cement Volume Calculator */
+        .cement-calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .cement-calculator {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .calculator-inputs {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .calc-input {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .calc-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+        }
+
+        .calc-input:hover {
+            border-color: var(--accent);
+        }
+
+        .calculator-results {
+            background: linear-gradient(135deg, var(--card) 0%, var(--bg) 100%);
+            padding: 24px;
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 20px rgba(20, 184, 166, 0.1);
+        }
+
+        .result-item {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 12px;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .result-item:hover {
+            background: rgba(20, 184, 166, 0.1);
+            transform: translateX(4px);
+        }
+
+        .result-label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .result-value {
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .result-unit {
+            color: var(--muted);
+            font-size: 0.9rem;
+            min-width: 100px;
+        }
+
     </style>
 </head>
 <body>
@@ -1851,6 +1946,106 @@
 
                             <p style="margin-top: 16px; text-align: center; font-style: italic; color: var(--muted);">
                                 Move the slider to see the dramatic difference proper P&A makes
+                            </p>
+                        </div>
+
+                        <!-- Well Depth Visualizer -->
+                        <div class="interactive-section" style="margin-top: 24px;">
+                            <div class="interactive-title">Interactive: Understanding Well Depth & Formation Zones</div>
+                            <p style="margin-bottom: 16px; color: var(--text-secondary);">Click on each depth marker to learn what exists at different levels underground and why P&A must seal multiple zones</p>
+
+                            <div class="depth-visualizer">
+                                <div class="depth-scale">
+                                    <!-- Surface -->
+                                    <div class="depth-marker" style="top: 0;" onclick="selectDepth('surface')" data-depth="surface">
+                                        <strong>🏞️ Surface (0 ft)</strong>
+                                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
+                                    </div>
+
+                                    <!-- Shallow Aquifer -->
+                                    <div class="depth-marker" style="top: 10%;" onclick="selectDepth('shallow')" data-depth="shallow">
+                                        <strong>💧 Shallow Aquifer (500 ft)</strong>
+                                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
+                                    </div>
+
+                                    <!-- Intermediate Zone -->
+                                    <div class="depth-marker" style="top: 30%;" onclick="selectDepth('intermediate')" data-depth="intermediate">
+                                        <strong>🪨 Intermediate Zone (2,000 ft)</strong>
+                                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
+                                    </div>
+
+                                    <!-- Production Zone -->
+                                    <div class="depth-marker" style="top: 55%;" onclick="selectDepth('production')" data-depth="production">
+                                        <strong>⛽ Production Zone (5,000 ft)</strong>
+                                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
+                                    </div>
+
+                                    <!-- Deep Formation -->
+                                    <div class="depth-marker" style="top: 75%;" onclick="selectDepth('deep')" data-depth="deep">
+                                        <strong>🌋 Deep Formation (10,000 ft)</strong>
+                                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
+                                    </div>
+
+                                    <!-- Ultra Deep -->
+                                    <div class="depth-marker" style="top: 95%;" onclick="selectDepth('ultra-deep')" data-depth="ultra-deep">
+                                        <strong>🔥 Ultra Deep (15,000+ ft)</strong>
+                                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
+                                    </div>
+                                </div>
+
+                                <!-- Depth Information Panels -->
+                                <div class="depth-info reg-details" id="depth-surface" style="margin-top: 24px;">
+                                    <h4 style="color: var(--accent); margin-bottom: 12px;">🏞️ Surface Level (0 ft)</h4>
+                                    <p><strong>What's here:</strong> Wellhead, surface casing, topsoil, and immediate access point.</p>
+                                    <p style="margin-top: 8px;"><strong>P&A Requirements:</strong> Surface plug must be set, wellhead removed, and site restored to original condition.</p>
+                                    <p style="margin-top: 8px;"><strong>Critical Point:</strong> This is the first line of defense. A proper surface seal prevents rainwater infiltration and unauthorized access.</p>
+                                    <p style="margin-top: 8px;"><strong>Typical Materials:</strong> Cement plug extending 50-100 ft below surface, steel plate cap.</p>
+                                </div>
+
+                                <div class="depth-info reg-details" id="depth-shallow" style="margin-top: 24px;">
+                                    <h4 style="color: var(--accent); margin-bottom: 12px;">💧 Shallow Aquifer Zone (500 ft)</h4>
+                                    <p><strong>What's here:</strong> Freshwater aquifers used for drinking water, irrigation, and livestock.</p>
+                                    <p style="margin-top: 8px;"><strong>Why Critical:</strong> This is the #1 priority in P&A - protecting drinking water sources. Contamination here affects entire communities.</p>
+                                    <p style="margin-top: 8px;"><strong>P&A Requirements:</strong> Cement barrier MUST isolate aquifer from well bore. Typically requires 100+ ft cement plug across aquifer zone.</p>
+                                    <p style="margin-top: 8px;"><strong>Consequence of Failure:</strong> Aquifer contamination can cost millions to remediate and may be irreversible.</p>
+                                </div>
+
+                                <div class="depth-info reg-details" id="depth-intermediate" style="margin-top: 24px;">
+                                    <h4 style="color: var(--accent); margin-bottom: 12px;">🪨 Intermediate Zone (2,000 ft)</h4>
+                                    <p><strong>What's here:</strong> Transition zone between fresh and saline water, minor gas shows, geological transitions.</p>
+                                    <p style="margin-top: 8px;"><strong>P&A Challenge:</strong> May have multiple casing strings, varying pressure zones, and temperature changes.</p>
+                                    <p style="margin-top: 8px;"><strong>Barrier Placement:</strong> Strategic cement plugs isolate different pressure regimes and prevent vertical migration.</p>
+                                    <p style="margin-top: 8px;"><strong>Testing Required:</strong> Pressure testing confirms barriers hold against formation pressures.</p>
+                                </div>
+
+                                <div class="depth-info reg-details" id="depth-production" style="margin-top: 24px;">
+                                    <h4 style="color: var(--accent); margin-bottom: 12px;">⛽ Production Zone (5,000 ft)</h4>
+                                    <p><strong>What's here:</strong> The producing formation where oil/gas was extracted. High pressure, hydrocarbons, formation brine.</p>
+                                    <p style="margin-top: 8px;"><strong>Why Sealing Matters:</strong> Residual pressure and hydrocarbons can migrate upward if not properly sealed.</p>
+                                    <p style="margin-top: 8px;"><strong>P&A Method:</strong> Mechanical bridge plug or cement retainer set in casing, followed by cement plug across perforations and production interval.</p>
+                                    <p style="margin-top: 8px;"><strong>Typical Plug Length:</strong> 100-500 ft of cement to ensure complete isolation.</p>
+                                </div>
+
+                                <div class="depth-info reg-details" id="depth-deep" style="margin-top: 24px;">
+                                    <h4 style="color: var(--accent); margin-bottom: 12px;">🌋 Deep Formation (10,000 ft)</h4>
+                                    <p><strong>What's here:</strong> High pressure/high temperature zones, potential secondary hydrocarbon reservoirs.</p>
+                                    <p style="margin-top: 8px;"><strong>Conditions:</strong> Temperatures 200-300°F, pressures 5,000+ psi, specialized cement required.</p>
+                                    <p style="margin-top: 8px;"><strong>Equipment Challenges:</strong> Extreme conditions require specialized tools, high-temp cement, and careful planning.</p>
+                                    <p style="margin-top: 8px;"><strong>P&A Approach:</strong> Bottom plug typically set here to provide ultimate barrier against deep reservoir pressures.</p>
+                                </div>
+
+                                <div class="depth-info reg-details" id="depth-ultra-deep" style="margin-top: 24px;">
+                                    <h4 style="color: var(--accent); margin-bottom: 12px;">🔥 Ultra Deep Zone (15,000+ ft)</h4>
+                                    <p><strong>What's here:</strong> Deepest producing intervals, extreme conditions, possible salt formations.</p>
+                                    <p style="margin-top: 8px;"><strong>Extreme Conditions:</strong> Temperatures 300°F+, pressures 10,000+ psi, corrosive environments.</p>
+                                    <p style="margin-top: 8px;"><strong>P&A Strategy:</strong> If production occurred this deep, a permanent bottom plug is essential. May use balanced cement or specialized squeeze techniques.</p>
+                                    <p style="margin-top: 8px;"><strong>Cost Impact:</strong> Deep P&A operations are expensive but absolutely necessary - costs range $2M-$10M for ultra-deep wells.</p>
+                                    <p style="margin-top: 8px;"><strong>Fun Fact:</strong> Some wells exceed 30,000 ft - nearly 6 miles deep! That's deeper than Mount Everest is tall.</p>
+                                </div>
+                            </div>
+
+                            <p style="margin-top: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 6px; border-left: 4px solid var(--accent);">
+                                <strong>💡 Key Takeaway:</strong> P&A isn't just one plug at the surface - it's a carefully engineered system of multiple barriers at strategic depths, each designed to protect specific zones and prevent vertical fluid migration through thousands of feet of geology.
                             </p>
                         </div>
                     </div>
@@ -2206,6 +2401,107 @@
                         <p style="margin-top: 16px; font-size: 0.9rem; color: var(--text-secondary);">
                             <strong>💡 Tip:</strong> A proper barrier requires all three components working together - the rock formation provides natural containment, steel casing provides structural integrity, and cement creates the permanent seal.
                         </p>
+                    </div>
+
+                    <!-- Cement Volume Calculator -->
+                    <div class="interactive-section" style="margin-top: 24px;">
+                        <div class="interactive-title">Interactive: Cement Volume Calculator</div>
+                        <p style="margin-bottom: 16px; color: var(--text-secondary);">Calculate how much cement is needed to create a plug based on wellbore dimensions. Understanding volumes is critical for proper P&A planning.</p>
+
+                        <div class="cement-calculator">
+                            <div class="calculator-inputs">
+                                <div class="input-group">
+                                    <label for="hole-diameter">
+                                        <strong>Hole Diameter (inches)</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Inner diameter of the wellbore</span>
+                                    </label>
+                                    <input type="number" id="hole-diameter" class="calc-input" value="8.5" min="4" max="36" step="0.5" oninput="calculateCement()">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="plug-length">
+                                        <strong>Plug Length (feet)</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Height of cement plug required</span>
+                                    </label>
+                                    <input type="number" id="plug-length" class="calc-input" value="100" min="10" max="1000" step="10" oninput="calculateCement()">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="casing-od">
+                                        <strong>Casing Outer Diameter (inches)</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Leave at 0 if cementing open hole</span>
+                                    </label>
+                                    <input type="number" id="casing-od" class="calc-input" value="0" min="0" max="20" step="0.5" oninput="calculateCement()">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="safety-factor">
+                                        <strong>Safety Factor (%)</strong>
+                                        <span style="display: block; font-size: 0.85rem; color: var(--muted); font-weight: normal;">Extra cement for washouts/irregularities</span>
+                                    </label>
+                                    <input type="number" id="safety-factor" class="calc-input" value="20" min="0" max="50" step="5" oninput="calculateCement()">
+                                </div>
+
+                                <button class="btn btn-primary" onclick="calculateCement()" style="width: 100%; margin-top: 12px;">
+                                    Calculate Volume
+                                </button>
+                            </div>
+
+                            <div class="calculator-results" id="cement-results">
+                                <h4 style="margin-bottom: 16px; color: var(--accent);">Calculation Results</h4>
+
+                                <div class="result-item">
+                                    <span class="result-label">Hole Volume:</span>
+                                    <span class="result-value" id="hole-volume">0</span>
+                                    <span class="result-unit">cubic feet</span>
+                                </div>
+
+                                <div class="result-item">
+                                    <span class="result-label">Annular Volume:</span>
+                                    <span class="result-value" id="annular-volume">0</span>
+                                    <span class="result-unit">cubic feet</span>
+                                </div>
+
+                                <div class="result-item">
+                                    <span class="result-label">Base Cement Required:</span>
+                                    <span class="result-value" id="base-cement">0</span>
+                                    <span class="result-unit">sacks (94 lb)</span>
+                                </div>
+
+                                <div class="result-item" style="border-top: 2px solid var(--accent); padding-top: 12px; margin-top: 12px;">
+                                    <span class="result-label"><strong>Total with Safety Factor:</strong></span>
+                                    <span class="result-value" id="total-cement" style="font-size: 1.4rem; color: var(--accent);"><strong>0</strong></span>
+                                    <span class="result-unit"><strong>sacks</strong></span>
+                                </div>
+
+                                <div class="result-item">
+                                    <span class="result-label">Estimated Cost:</span>
+                                    <span class="result-value" id="cement-cost">$0</span>
+                                    <span class="result-unit">@ $15/sack</span>
+                                </div>
+
+                                <div class="result-item">
+                                    <span class="result-label">Approximate Weight:</span>
+                                    <span class="result-value" id="cement-weight">0</span>
+                                    <span class="result-unit">lbs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(20, 184, 166, 0.1); border-radius: 6px; border-left: 4px solid var(--accent);">
+                            <p style="margin-bottom: 8px;"><strong>📊 Understanding the Calculations:</strong></p>
+                            <ul style="font-size: 0.9rem; margin-left: 20px; line-height: 1.6;">
+                                <li><strong>Hole Volume:</strong> π × (diameter/2)² × length - the volume of the cylindrical space</li>
+                                <li><strong>Annular Volume:</strong> Volume between casing and hole wall (if casing present)</li>
+                                <li><strong>Cement Yield:</strong> One 94-lb sack of Class H cement yields approximately 1.15 cubic feet</li>
+                                <li><strong>Safety Factor:</strong> Industry standard 10-30% extra to account for washouts, hole irregularities, and losses</li>
+                                <li><strong>Real-World Application:</strong> Operators must order cement in advance - underestimating means job failure, overestimating wastes money</li>
+                            </ul>
+                        </div>
+
+                        <div style="margin-top: 12px; padding: 12px; background: rgba(234, 179, 8, 0.1); border-radius: 6px; border-left: 4px solid var(--warning);">
+                            <p><strong>⚠️ Pro Tip:</strong> For critical P&A plugs, always err on the side of excess cement. Running out mid-job means pulling equipment, waiting for more cement, and potentially compromising the plug integrity. A 20-30% safety factor is industry standard.</p>
+                        </div>
                     </div>
 
                     <div class="quiz-section">
@@ -3091,6 +3387,102 @@
                 slider.addEventListener('click', (e) => {
                     updateSlider(e.clientX);
                 });
+            }
+        });
+
+        // Well Depth Visualizer (Module 1)
+        function selectDepth(depth) {
+            // Remove all active states from depth markers
+            document.querySelectorAll('.depth-marker').forEach(marker => {
+                marker.classList.remove('active');
+                marker.style.transform = 'scale(1)';
+                marker.style.background = 'rgba(15, 23, 42, 0.9)';
+            });
+
+            // Hide all depth info panels
+            document.querySelectorAll('.depth-info').forEach(info => {
+                info.classList.remove('active');
+                info.style.display = 'none';
+            });
+
+            // Activate selected depth marker with animation
+            const marker = document.querySelector(`[data-depth="${depth}"]`);
+            if (marker) {
+                marker.classList.add('active');
+                marker.style.transform = 'scale(1.05)';
+                marker.style.background = 'rgba(20, 184, 166, 0.2)';
+                marker.style.borderColor = 'var(--accent)';
+                marker.style.boxShadow = '0 0 20px rgba(20, 184, 166, 0.3)';
+            }
+
+            // Show selected depth info with smooth transition
+            const info = document.getElementById(`depth-${depth}`);
+            if (info) {
+                info.style.display = 'block';
+                setTimeout(() => {
+                    info.classList.add('active');
+                }, 10);
+            }
+        }
+
+        // Cement Volume Calculator (Module 4)
+        function calculateCement() {
+            // Get input values
+            const holeDiameter = parseFloat(document.getElementById('hole-diameter').value) || 0;
+            const plugLength = parseFloat(document.getElementById('plug-length').value) || 0;
+            const casingOD = parseFloat(document.getElementById('casing-od').value) || 0;
+            const safetyFactor = parseFloat(document.getElementById('safety-factor').value) || 0;
+
+            // Calculate volumes in cubic feet
+            // Formula: Volume = π × r² × h
+            const holeRadius = holeDiameter / 2 / 12; // Convert inches to feet
+            const casingRadius = casingOD / 2 / 12; // Convert inches to feet
+
+            // Hole volume (total cylinder volume)
+            const holeVolume = Math.PI * Math.pow(holeRadius, 2) * plugLength;
+
+            // Annular volume (volume between casing and hole)
+            let annularVolume = 0;
+            if (casingOD > 0 && casingOD < holeDiameter) {
+                annularVolume = Math.PI * (Math.pow(holeRadius, 2) - Math.pow(casingRadius, 2)) * plugLength;
+            }
+
+            // Use annular volume if casing present, otherwise use hole volume
+            const baseVolume = casingOD > 0 ? annularVolume : holeVolume;
+
+            // Cement yield: 1 sack (94 lb) of Class H cement = 1.15 cubic feet
+            const cementYield = 1.15;
+            const baseCementSacks = baseVolume / cementYield;
+
+            // Apply safety factor
+            const totalCementSacks = baseCementSacks * (1 + safetyFactor / 100);
+
+            // Calculate cost and weight
+            const costPerSack = 15; // $15 per sack
+            const totalCost = totalCementSacks * costPerSack;
+            const totalWeight = totalCementSacks * 94; // 94 lbs per sack
+
+            // Update display
+            document.getElementById('hole-volume').textContent = holeVolume.toFixed(2);
+            document.getElementById('annular-volume').textContent = annularVolume.toFixed(2);
+            document.getElementById('base-cement').textContent = Math.ceil(baseCementSacks);
+            document.getElementById('total-cement').textContent = Math.ceil(totalCementSacks);
+            document.getElementById('cement-cost').textContent = '$' + totalCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById('cement-weight').textContent = totalWeight.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            // Add visual feedback animation
+            const results = document.getElementById('cement-results');
+            results.style.animation = 'none';
+            setTimeout(() => {
+                results.style.animation = 'fadeInUp 0.5s ease';
+            }, 10);
+        }
+
+        // Initialize calculator with default values on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Calculate initial values
+            if (document.getElementById('hole-diameter')) {
+                calculateCement();
             }
         });
 
