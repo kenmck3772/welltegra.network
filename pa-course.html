@@ -1590,7 +1590,8 @@
             margin-top: 4px;
         }
 
-        .depth-info-panel {
+        .depth-info-panel,
+        .depth-info {
             background: var(--card);
             border-radius: 12px;
             padding: 20px;
@@ -1599,11 +1600,13 @@
             animation: fadeInUp 0.5s ease;
         }
 
-        .depth-info-panel.active {
+        .depth-info-panel.active,
+        .depth-info.active {
             display: block;
         }
 
-        .depth-info-panel h4 {
+        .depth-info-panel h4,
+        .depth-info h4 {
             color: var(--accent);
             margin-bottom: 12px;
         }
@@ -2522,37 +2525,37 @@
                             <div class="depth-visualizer">
                                 <div class="depth-scale">
                                     <!-- Surface -->
-                                    <div class="depth-marker" style="top: 0;" onclick="selectDepth('surface')" data-depth="surface">
+                                    <div class="depth-marker" style="top: 0;" onclick="event.stopPropagation(); selectDepth('surface')" data-depth="surface">
                                         <strong>🏞️ Surface (0 ft)</strong>
                                         <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
                                     </div>
 
                                     <!-- Shallow Aquifer -->
-                                    <div class="depth-marker" style="top: 10%;" onclick="selectDepth('shallow')" data-depth="shallow">
+                                    <div class="depth-marker" style="top: 10%;" onclick="event.stopPropagation(); selectDepth('shallow')" data-depth="shallow">
                                         <strong>💧 Shallow Aquifer (500 ft)</strong>
                                         <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
                                     </div>
 
                                     <!-- Intermediate Zone -->
-                                    <div class="depth-marker" style="top: 30%;" onclick="selectDepth('intermediate')" data-depth="intermediate">
+                                    <div class="depth-marker" style="top: 30%;" onclick="event.stopPropagation(); selectDepth('intermediate')" data-depth="intermediate">
                                         <strong>🪨 Intermediate Zone (2,000 ft)</strong>
                                         <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
                                     </div>
 
                                     <!-- Production Zone -->
-                                    <div class="depth-marker" style="top: 55%;" onclick="selectDepth('production')" data-depth="production">
+                                    <div class="depth-marker" style="top: 55%;" onclick="event.stopPropagation(); selectDepth('production')" data-depth="production">
                                         <strong>⛽ Production Zone (5,000 ft)</strong>
                                         <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
                                     </div>
 
                                     <!-- Deep Formation -->
-                                    <div class="depth-marker" style="top: 75%;" onclick="selectDepth('deep')" data-depth="deep">
+                                    <div class="depth-marker" style="top: 75%;" onclick="event.stopPropagation(); selectDepth('deep')" data-depth="deep">
                                         <strong>🌋 Deep Formation (10,000 ft)</strong>
                                         <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
                                     </div>
 
                                     <!-- Ultra Deep -->
-                                    <div class="depth-marker" style="top: 95%;" onclick="selectDepth('ultra-deep')" data-depth="ultra-deep">
+                                    <div class="depth-marker" style="top: 95%;" onclick="event.stopPropagation(); selectDepth('ultra-deep')" data-depth="ultra-deep">
                                         <strong>🔥 Ultra Deep (15,000+ ft)</strong>
                                         <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Click to explore</div>
                                     </div>
