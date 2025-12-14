@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro-Annulus Detection Course | Well-Tegra Learn</title>
+    <meta name="description" content="Learn about micro-annulus detection, sustained casing pressure, and diagnostic bleed down procedures in well integrity management.">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0f172a;
+            --panel: #1e293b;
+            --card: #334155;
+            --border: #475569;
+            --fg: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --purple: #a855f7;
+            --purple-dark: #7c3aed;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--fg);
+            background-color: var(--bg);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .unified-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(15,23,42,.98), rgba(30,41,59,.95));
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+        }
+        .header-wrap {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand img {
+            height: 40px;
+            width: auto;
+            border-radius: 8px;
+        }
+        .brand-text h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.025em;
+        }
+        .brand-text span {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .main-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        .main-nav-link:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-hover);
+        }
+
+        /* Layout */
+        .course-container {
+            display: flex;
+            min-height: calc(100vh - 65px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 65px;
+            height: calc(100vh - 65px);
+            overflow-y: auto;
+        }
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .course-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+        .course-subtitle {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .module-list {
+            padding: 16px;
+            flex: 1;
+        }
+        .module-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .module-card:hover:not(.locked) {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--accent);
+            transform: translateX(4px);
+        }
+        .module-card.active {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent);
+        }
+        .module-card.completed {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: var(--success);
+        }
+        .module-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .module-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card);
+            color: var(--muted);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .module-card.active .module-icon {
+            background: var(--accent);
+            color: white;
+        }
+        .module-card.completed .module-icon {
+            background: var(--success);
+            color: white;
+        }
+        .module-info {
+            flex: 1;
+        }
+        .module-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 2px;
+        }
+        .module-time {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .progress-bar-container {
+            padding: 16px 24px 24px;
+            border-top: 1px solid var(--border);
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--card);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--accent));
+            border-radius: 999px;
+            transition: width 0.5s ease;
+        }
+        .progress-text {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 8px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .phase-indicator {
+            display: flex;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 24px;
+            width: fit-content;
+        }
+        .phase-badge {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--muted);
+            transition: all 0.2s;
+        }
+        .phase-badge.active {
+            background: var(--accent);
+            color: white;
+        }
+        .phase-badge.completed {
+            background: var(--success);
+            color: white;
+        }
+
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            margin-bottom: 32px;
+        }
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .content-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+        .content-card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .content-card p {
+            font-size: 1.125rem;
+            color: var(--fg);
+            line-height: 1.8;
+        }
+
+        /* Puzzle Card */
+        .puzzle-card {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(124, 58, 237, 0.05));
+            border: 1px solid var(--purple);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            animation: slideUp 0.3s ease;
+        }
+        .puzzle-header {
+            padding: 24px;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .puzzle-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--purple);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        .puzzle-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+        .puzzle-instruction {
+            font-size: 0.875rem;
+            color: var(--muted);
+        }
+        .puzzle-body {
+            padding: 32px;
+        }
+
+        /* Scramble Puzzle */
+        .scramble-display {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 32px;
+            min-height: 60px;
+        }
+        .letter-slot {
+            width: 50px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--card);
+            transition: all 0.3s;
+        }
+        .letter-slot.filled {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: white;
+        }
+        .letter-slot.correct {
+            border-color: var(--success);
+            background: var(--success);
+            color: white;
+            animation: bounce 0.5s ease;
+        }
+        .letter-slot.empty {
+            border-style: dashed;
+            background: rgba(30, 41, 59, 0.5);
+        }
+        .scramble-letters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+        .letter-btn {
+            width: 56px;
+            height: 56px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        .letter-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+        }
+        .letter-btn:active {
+            transform: translateY(0) scale(0.95);
+        }
+
+        /* Slider Puzzle */
+        .slider-container {
+            padding: 24px 0;
+        }
+        .slider-track {
+            position: relative;
+            height: 60px;
+            background: var(--card);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        .slider-target-zone {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            background: rgba(245, 158, 11, 0.2);
+            border-left: 2px solid rgba(245, 158, 11, 0.5);
+            border-right: 2px solid rgba(245, 158, 11, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .slider-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 999px;
+            transition: background 0.3s, width 0.1s;
+        }
+        .slider-fill.success {
+            background: var(--success);
+        }
+        .slider-input {
+            width: 100%;
+            height: 12px;
+            background: var(--card);
+            border-radius: 999px;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        .slider-input::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        .slider-feedback {
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--muted);
+            min-height: 24px;
+        }
+        .slider-feedback.success {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        /* Sequence Puzzle */
+        .sequence-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .sequence-section h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--muted);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .sequence-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .sequence-step {
+            padding: 16px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .sequence-step:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--accent);
+        }
+        .sequence-step.placed {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: var(--success);
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .sequence-step.empty {
+            border-style: dashed;
+            color: var(--muted);
+            cursor: default;
+            justify-content: center;
+            display: flex;
+        }
+        .sequence-number {
+            width: 24px;
+            height: 24px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        /* Quiz Card */
+        .quiz-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            animation: slideUp 0.3s ease;
+        }
+        .quiz-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .quiz-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+        }
+        .quiz-badge {
+            padding: 6px 12px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .quiz-body {
+            padding: 32px;
+        }
+        .quiz-question {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 24px;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .quiz-option {
+            padding: 16px;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .quiz-option:hover:not(.disabled) {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--accent);
+        }
+        .quiz-option.selected {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: var(--accent);
+        }
+        .quiz-option.correct {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: var(--success);
+            color: var(--success);
+        }
+        .quiz-option.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+        .quiz-option.disabled {
+            cursor: not-allowed;
+        }
+        .option-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .option-radio.selected::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: currentColor;
+            border-radius: 50%;
+        }
+        .quiz-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .quiz-feedback {
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .quiz-feedback.error {
+            color: var(--danger);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        .btn-success:hover:not(:disabled) {
+            background: #16a34a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-lg {
+            padding: 16px 32px;
+            font-size: 1rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Certificate */
+        .certificate {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1));
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            padding: 48px;
+            text-align: center;
+            margin-bottom: 24px;
+            animation: slideUp 0.3s ease;
+        }
+        .certificate-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+        .certificate h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 12px;
+        }
+        .certificate p {
+            font-size: 1.125rem;
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            position: absolute;
+            animation: confetti-fall 3s linear forwards;
+            pointer-events: none;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                padding: 16px;
+            }
+            .sequence-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Checkpoint Alert */
+        .checkpoint-alert {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(251, 191, 36, 0.1));
+            border: 2px solid var(--warning);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+        .checkpoint-alert h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--warning);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .checkpoint-alert p {
+            color: var(--fg);
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="unified-header">
+    <div class="header-wrap">
+        <a href="index.html" class="brand">
+            <img src="assets/images/logo.jpg" alt="Well-Tegra Logo">
+            <div class="brand-text">
+                <h1>Well-Tegra<span style="color: var(--accent);">Learn</span></h1>
+                <span>Micro-Annulus Detection</span>
+            </div>
+        </a>
+        <nav class="main-nav">
+            <a href="index.html" class="main-nav-link">← Back to Dashboard</a>
+            <a href="pa-course.html" class="main-nav-link">P&A Course</a>
+        </nav>
+    </div>
+</header>
+
+<div class="course-container">
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="course-title">Micro-Annulus Detection</div>
+            <div class="course-subtitle">Interactive Course • 5 Modules</div>
+        </div>
+
+        <div class="module-list" id="module-list">
+            <!-- Modules will be rendered here by JavaScript -->
+        </div>
+
+        <div class="progress-bar-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <div class="progress-text"><span id="progress-count">0</span> of 5 Completed</div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Phase Indicator -->
+        <div class="phase-indicator">
+            <div class="phase-badge active" id="phase-watch">📺 Watch</div>
+            <div class="phase-badge" id="phase-puzzle">🧩 Puzzle</div>
+            <div class="phase-badge" id="phase-quiz">✅ Quiz</div>
+        </div>
+
+        <!-- Checkpoint Alert -->
+        <div class="checkpoint-alert" id="checkpoint-alert">
+            <h3>⏸️ Checkpoint Reached!</h3>
+            <p id="checkpoint-text"></p>
+            <button class="btn btn-primary" id="continue-btn" onclick="event.stopPropagation(); continueVideo()">▶️ Continue Video</button>
+        </div>
+
+        <!-- Video Player -->
+        <div class="video-container">
+            <div id="video-player"></div>
+        </div>
+
+        <!-- Content Area -->
+        <div id="content-area">
+            <!-- Content will be rendered here by JavaScript -->
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+// ============================================
+// COURSE DATA
+// ============================================
+
+const COURSE_DATA = [
+    {
+        id: 1,
+        title: "The Unpredictable Subsurface",
+        timestampStart: 0,
+        timestampEnd: 27,
+        icon: "🌍",
+        content: "Even with the best cement job, high-quality materials, and experienced crews, the subsurface environment remains unpredictable. Forces deep underground can challenge robust barriers over time.",
+        puzzle: {
+            type: 'scramble',
+            instruction: "Unscramble the key term describing the underground environment.",
+            word: "SUBSURFACE"
+        },
+        question: {
+            text: "Despite following best practices and using high-quality materials, why can well integrity still be compromised?",
+            options: [
+                "The cement quality is always poor",
+                "The subsurface environment and forces are unpredictable",
+                "Crews are rarely experienced enough",
+                "Steel casing is naturally porous"
+            ],
+            correctAnswer: 1
+        }
+    },
+    {
+        id: 2,
+        title: "The Micro-Annulus Mystery",
+        timestampStart: 27,
+        timestampEnd: 46,
+        icon: "🔬",
+        content: "Forces like gas migration or casing expansion/contraction can create a 'micro-annulus'. This is a tiny gap between cement and steel—invisible to the naked eye but large enough for fluids to migrate.",
+        puzzle: {
+            type: 'slider',
+            instruction: "Adjust the microscope focus slider to find the hidden micro-annulus gap (Target: 85-90%).",
+            targetMin: 85,
+            targetMax: 90
+        },
+        question: {
+            text: "Which of the following best describes a micro-annulus?",
+            options: [
+                "A large, visible crack in the cement",
+                "A tool used to measure pressure",
+                "A microscopic gap between cement and casing acting like a hairline crack",
+                "A type of high-grade steel casing"
+            ],
+            correctAnswer: 2
+        }
+    },
+    {
+        id: 3,
+        title: "Detection: Sustained Casing Pressure",
+        timestampStart: 46,
+        timestampEnd: 58,
+        icon: "📊",
+        content: "Since we cannot see through rock and steel, we rely on data. The primary warning sign at the surface is Sustained Casing Pressure (SCP).",
+        puzzle: {
+            type: 'scramble',
+            instruction: "Unscramble the acronym for the primary warning sign.",
+            word: "PRESSURE"
+        },
+        question: {
+            text: "What is the primary 'red flag' or warning sign observable at the surface?",
+            options: [
+                "Visible gas leaks on the ground",
+                "Sustained Casing Pressure (SCP)",
+                "Discolored mud returns",
+                "Vibrations in the drill string"
+            ],
+            correctAnswer: 1
+        }
+    },
+    {
+        id: 4,
+        title: "Safety & Diagnostic Bleed Down",
+        timestampStart: 58,
+        timestampEnd: 80,
+        icon: "🛡️",
+        content: "To diagnose if pressure is active, we perform a bleed down. Safety is paramount: hydrocarbons must NEVER be vented directly to the atmosphere. We use closed containment or flare lines.",
+        puzzle: {
+            type: 'sequence',
+            instruction: "Click the safety steps in the correct logical order.",
+            steps: ["Assess Environment", "Connect Flare Line", "Open Valve Slowly", "Monitor Pressure"]
+        },
+        question: {
+            text: "When performing a diagnostic bleed down, what is a critical safety rule?",
+            options: [
+                "Always vent directly to the atmosphere to save time",
+                "Do it as quickly as possible regardless of containment",
+                "Never vent hydrocarbons directly to the atmosphere",
+                "Only perform bleed downs at night"
+            ],
+            correctAnswer: 2
+        }
+    },
+    {
+        id: 5,
+        title: "Interpreting the Recharge",
+        timestampStart: 80,
+        timestampEnd: 111,
+        icon: "⚠️",
+        content: "After bleeding to zero, we watch the needle. If pressure builds back up, the leak is 'recharging', indicating a failure in the downhole barrier that must be fixed.",
+        puzzle: {
+            type: 'slider',
+            instruction: "Simulate a 'Recharge'. Drag the pressure needle back up to indicate a leak.",
+            targetMin: 60,
+            targetMax: 100
+        },
+        question: {
+            text: "If the pressure needle creeps back up after a bleed down, what does it indicate?",
+            options: [
+                "The gauge is broken",
+                "The leak is recharging due to a downhole barrier failure",
+                "The well is secure and safe to abandon",
+                "Atmospheric pressure is changing"
+            ],
+            correctAnswer: 1
+        }
+    }
+];
+
+// ============================================
+// STATE MANAGEMENT
+// ============================================
+
+let player;
+let currentModuleIndex = 0;
+let currentPhase = 'learning'; // learning, puzzle, quiz, completed
+let completedModules = new Set();
+let reachedCheckpoints = new Set();
+let puzzleCompleted = false;
+let selectedOption = null;
+
+// Checkpoint configuration
+const checkpoints = COURSE_DATA.map((module, index) => ({
+    time: module.timestampStart,
+    module: index,
+    title: module.title
+}));
+
+let currentCheckpointIndex = 0;
+let videoInterval;
+
+// ============================================
+// INITIALIZATION
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadProgress();
+    renderModuleList();
+    renderContent();
+
+    // Load YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+});
+
+// YouTube API Ready
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('video-player', {
+        height: '100%',
+        width: '100%',
+        videoId: '7eWPe5Y8ve4',
+        playerVars: {
+            'autoplay': 1,
+            'rel': 0,
+            'modestbranding': 1
+        },
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+        }
+    });
+}
+
+function onPlayerReady(event) {
+    console.log('YouTube player ready');
+    startVideoMonitoring();
+}
+
+function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING) {
+        startVideoMonitoring();
+    }
+}
+
+// ============================================
+// VIDEO CHECKPOINT SYSTEM
+// ============================================
+
+function startVideoMonitoring() {
+    if (videoInterval) clearInterval(videoInterval);
+
+    videoInterval = setInterval(() => {
+        if (!player || !player.getCurrentTime) return;
+
+        const currentTime = player.getCurrentTime();
+
+        // Check if we've reached the next checkpoint
+        if (currentCheckpointIndex < checkpoints.length) {
+            const checkpoint = checkpoints[currentCheckpointIndex];
+
+            if (currentTime >= checkpoint.time && !reachedCheckpoints.has(checkpoint.module)) {
+                reachCheckpoint(checkpoint);
+            }
+        }
+    }, 500);
+}
+
+function reachCheckpoint(checkpoint) {
+    console.log('Checkpoint reached:', checkpoint.title);
+
+    player.pauseVideo();
+    reachedCheckpoints.add(checkpoint.module);
+    saveProgress();
+
+    // Show checkpoint alert
+    const alert = document.getElementById('checkpoint-alert');
+    const text = document.getElementById('checkpoint-text');
+    const continueBtn = document.getElementById('continue-btn');
+
+    text.textContent = `Module ${checkpoint.module + 1}: ${checkpoint.title} - Complete the interactive exercises to continue.`;
+    alert.style.display = 'block';
+    continueBtn.disabled = true;
+    continueBtn.style.opacity = '0.5';
+
+    // Switch to this module if not already active
+    if (currentModuleIndex !== checkpoint.module) {
+        currentModuleIndex = checkpoint.module;
+        currentPhase = 'learning';
+        renderModuleList();
+        renderContent();
+    }
+
+    // Scroll to module content
+    setTimeout(() => {
+        document.getElementById('content-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
+}
+
+function continueVideo() {
+    const alert = document.getElementById('checkpoint-alert');
+    alert.style.display = 'none';
+
+    currentCheckpointIndex++;
+    player.playVideo();
+
+    // If there are more modules, prepare for next checkpoint
+    if (currentModuleIndex < COURSE_DATA.length - 1) {
+        setTimeout(() => {
+            currentModuleIndex++;
+            currentPhase = 'learning';
+            puzzleCompleted = false;
+            selectedOption = null;
+            renderModuleList();
+            renderContent();
+        }, 1000);
+    }
+}
+
+// ============================================
+// RENDER FUNCTIONS
+// ============================================
+
+function renderModuleList() {
+    const container = document.getElementById('module-list');
+    container.innerHTML = '';
+
+    COURSE_DATA.forEach((module, index) => {
+        const isActive = index === currentModuleIndex;
+        const isCompleted = completedModules.has(index);
+        const isLocked = index > 0 && !reachedCheckpoints.has(index) && !isActive && !isCompleted;
+
+        const card = document.createElement('div');
+        card.className = `module-card ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}`;
+        card.onclick = () => !isLocked && switchModule(index);
+
+        card.innerHTML = `
+            <div class="module-icon">
+                ${isCompleted ? '✓' : module.icon}
+            </div>
+            <div class="module-info">
+                <div class="module-title">${module.title}</div>
+                <div class="module-time">${module.timestampStart}s - ${module.timestampEnd}s</div>
+            </div>
+            ${isLocked ? '<span style="color: var(--muted);">🔒</span>' : ''}
+        `;
+
+        container.appendChild(card);
+    });
+
+    updateProgress();
+}
+
+function renderContent() {
+    const container = document.getElementById('content-area');
+    const module = COURSE_DATA[currentModuleIndex];
+
+    // Update phase badges
+    document.getElementById('phase-watch').className = 'phase-badge' + (currentPhase === 'learning' ? ' active' : completedModules.has(currentModuleIndex) ? ' completed' : '');
+    document.getElementById('phase-puzzle').className = 'phase-badge' + (currentPhase === 'puzzle' ? ' active' : puzzleCompleted ? ' completed' : '');
+    document.getElementById('phase-quiz').className = 'phase-badge' + (currentPhase === 'quiz' || currentPhase === 'completed' ? ' active' : completedModules.has(currentModuleIndex) ? ' completed' : '');
+
+    let html = '';
+
+    // Learning Content
+    html += `
+        <div class="content-card">
+            <h2><span style="font-size: 2rem;">${module.icon}</span> Key Concepts</h2>
+            <p>${module.content}</p>
+            ${currentPhase === 'learning' && !completedModules.has(currentModuleIndex) ? `
+                <button class="btn btn-primary btn-lg" onclick="event.stopPropagation(); startPuzzle()" style="margin-top: 24px;">
+                    🧩 Start Practical Exercise
+                </button>
+            ` : ''}
+        </div>
+    `;
+
+    // Puzzle Phase
+    if (currentPhase === 'puzzle' || puzzleCompleted) {
+        html += renderPuzzle(module);
+    }
+
+    // Quiz Phase
+    if (currentPhase === 'quiz' || currentPhase === 'completed' || completedModules.has(currentModuleIndex)) {
+        html += renderQuiz(module);
+    }
+
+    // Certificate (if all modules completed)
+    if (completedModules.size === COURSE_DATA.length) {
+        html += renderCertificate();
+    }
+
+    container.innerHTML = html;
+
+    // Initialize puzzle if needed
+    if (currentPhase === 'puzzle' && !puzzleCompleted) {
+        initializePuzzle(module);
+    }
+}
+
+function renderPuzzle(module) {
+    const puzzle = module.puzzle;
+    let puzzleContent = '';
+
+    if (puzzle.type === 'scramble') {
+        puzzleContent = `
+            <div class="scramble-display" id="scramble-display"></div>
+            <div class="scramble-letters" id="scramble-letters"></div>
+        `;
+    } else if (puzzle.type === 'slider') {
+        puzzleContent = `
+            <div class="slider-container">
+                <div class="slider-track">
+                    <div class="slider-target-zone" id="slider-target" style="left: ${puzzle.targetMin}%; width: ${puzzle.targetMax - puzzle.targetMin}%;">
+                        <span id="slider-success-icon" style="display: none; font-size: 24px;">✓</span>
+                    </div>
+                    <div class="slider-fill" id="slider-fill" style="width: 0%"></div>
+                </div>
+                <input type="range" min="0" max="100" value="0" class="slider-input" id="slider-input">
+                <div class="slider-feedback" id="slider-feedback">Drag slider to scan...</div>
+            </div>
+        `;
+    } else if (puzzle.type === 'sequence') {
+        puzzleContent = `
+            <div class="sequence-container">
+                <div class="sequence-section">
+                    <h4>Available Steps</h4>
+                    <div class="sequence-steps" id="available-steps"></div>
+                </div>
+                <div class="sequence-section">
+                    <h4>Correct Order</h4>
+                    <div class="sequence-steps" id="sequence-order"></div>
+                </div>
+            </div>
+        `;
+    }
+
+    return `
+        <div class="puzzle-card">
+            <div class="puzzle-header">
+                <div class="puzzle-icon">🧩</div>
+                <div>
+                    <h3>Practical Challenge</h3>
+                    <p class="puzzle-instruction">${puzzle.instruction}</p>
+                </div>
+            </div>
+            <div class="puzzle-body">
+                ${puzzleContent}
+            </div>
+        </div>
+    `;
+}
+
+function renderQuiz(module) {
+    const question = module.question;
+    const isCompleted = completedModules.has(currentModuleIndex);
+
+    let optionsHtml = '';
+    question.options.forEach((option, index) => {
+        const isSelected = selectedOption === index;
+        const isCorrect = index === question.correctAnswer;
+        let className = 'quiz-option';
+
+        if (isCompleted && isCorrect) className += ' correct';
+        else if (isSelected && !isCompleted) className += ' selected';
+        if (isCompleted) className += ' disabled';
+
+        optionsHtml += `
+            <div class="${className}" onclick="event.stopPropagation(); ${!isCompleted ? `selectOption(${index})` : ''}">
+                <div class="option-radio ${(isSelected || (isCompleted && isCorrect)) ? 'selected' : ''}"></div>
+                <span>${option}</span>
+            </div>
+        `;
+    });
+
+    return `
+        <div class="quiz-card">
+            <div class="quiz-header">
+                <h3>Final Assessment</h3>
+                ${isCompleted ? '<div class="quiz-badge">✓ Passed</div>' : ''}
+            </div>
+            <div class="quiz-body">
+                <div class="quiz-question">${question.text}</div>
+                <div class="quiz-options">
+                    ${optionsHtml}
+                </div>
+                <div class="quiz-footer">
+                    <div class="quiz-feedback" id="quiz-feedback"></div>
+                    ${!isCompleted ? `
+                        <button class="btn btn-primary" onclick="event.stopPropagation(); submitQuiz()" ${selectedOption === null ? 'disabled' : ''}>
+                            Submit Answer
+                        </button>
+                    ` : currentModuleIndex < COURSE_DATA.length - 1 ? `
+                        <button class="btn btn-success" onclick="event.stopPropagation(); nextModule()">
+                            Next Module →
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function renderCertificate() {
+    return `
+        <div class="certificate">
+            <div class="certificate-icon">🏆</div>
+            <h2>Course Complete!</h2>
+            <p>You've mastered Micro-Annulus Detection and Diagnostic Procedures.</p>
+            <button class="btn btn-success" onclick="event.stopPropagation(); resetCourse()">
+                🔄 Reset Course
+            </button>
+        </div>
+    `;
+}
+
+// ============================================
+// PUZZLE INITIALIZATION
+// ============================================
+
+function initializePuzzle(module) {
+    const puzzle = module.puzzle;
+
+    if (puzzle.type === 'scramble') {
+        initScramblePuzzle(puzzle.word);
+    } else if (puzzle.type === 'slider') {
+        initSliderPuzzle(puzzle.targetMin, puzzle.targetMax);
+    } else if (puzzle.type === 'sequence') {
+        initSequencePuzzle(puzzle.steps);
+    }
+}
+
+// Scramble Puzzle
+let scrambledLetters = [];
+let selectedLetters = [];
+
+function initScramblePuzzle(word) {
+    scrambledLetters = word.split('').sort(() => Math.random() - 0.5);
+    selectedLetters = [];
+
+    updateScrambleDisplay(word);
+    updateScrambleLetters();
+}
+
+function updateScrambleDisplay(word) {
+    const display = document.getElementById('scramble-display');
+    let html = '';
+
+    for (let i = 0; i < word.length; i++) {
+        const letter = selectedLetters[i] || '';
+        const className = letter ? (selectedLetters.join('') === word && i < selectedLetters.length ? 'letter-slot filled correct' : 'letter-slot filled') : 'letter-slot empty';
+        html += `<div class="${className}">${letter}</div>`;
+    }
+
+    display.innerHTML = html;
+
+    // Check if complete
+    if (selectedLetters.join('') === word) {
+        setTimeout(() => {
+            completePuzzle();
+        }, 1000);
+    } else if (selectedLetters.length === word.length) {
+        // Wrong answer, reset
+        setTimeout(() => {
+            scrambledLetters = word.split('').sort(() => Math.random() - 0.5);
+            selectedLetters = [];
+            updateScrambleDisplay(word);
+            updateScrambleLetters();
+        }, 800);
+    }
+}
+
+function updateScrambleLetters() {
+    const container = document.getElementById('scramble-letters');
+    let html = '';
+
+    scrambledLetters.forEach((letter, index) => {
+        html += `<button class="letter-btn" onclick="event.stopPropagation(); selectLetter('${letter}', ${index})">${letter}</button>`;
+    });
+
+    container.innerHTML = html;
+}
+
+function selectLetter(letter, index) {
+    const word = COURSE_DATA[currentModuleIndex].puzzle.word;
+    selectedLetters.push(letter);
+    scrambledLetters.splice(index, 1);
+
+    updateScrambleDisplay(word);
+    updateScrambleLetters();
+}
+
+// Slider Puzzle
+function initSliderPuzzle(targetMin, targetMax) {
+    const slider = document.getElementById('slider-input');
+    const fill = document.getElementById('slider-fill');
+    const feedback = document.getElementById('slider-feedback');
+    const successIcon = document.getElementById('slider-success-icon');
+
+    let isComplete = false;
+
+    slider.addEventListener('input', (e) => {
+        const value = parseInt(e.target.value);
+        fill.style.width = value + '%';
+
+        if (value >= targetMin && value <= targetMax) {
+            if (!isComplete) {
+                fill.classList.add('success');
+                feedback.textContent = '✓ Target Located!';
+                feedback.classList.add('success');
+                successIcon.style.display = 'block';
+                isComplete = true;
+
+                setTimeout(() => {
+                    completePuzzle();
+                }, 1000);
+            }
+        } else {
+            fill.classList.remove('success');
+            feedback.textContent = 'Drag slider to scan...';
+            feedback.classList.remove('success');
+            successIcon.style.display = 'none';
+        }
+    });
+}
+
+// Sequence Puzzle
+let availableSteps = [];
+let placedSteps = [];
+let correctSteps = [];
+
+function initSequencePuzzle(steps) {
+    correctSteps = steps;
+    availableSteps = [...steps].sort(() => Math.random() - 0.5);
+    placedSteps = [];
+
+    updateSequenceDisplay();
+}
+
+function updateSequenceDisplay() {
+    const availableContainer = document.getElementById('available-steps');
+    const orderContainer = document.getElementById('sequence-order');
+
+    // Available steps
+    let availableHtml = '';
+    availableSteps.forEach(step => {
+        availableHtml += `<div class="sequence-step" onclick="event.stopPropagation(); placeStep('${step}')">${step}</div>`;
+    });
+    if (availableSteps.length === 0) {
+        availableHtml = '<div class="sequence-step empty">All steps placed</div>';
+    }
+    availableContainer.innerHTML = availableHtml;
+
+    // Placed steps
+    let orderHtml = '';
+    placedSteps.forEach((step, index) => {
+        orderHtml += `
+            <div class="sequence-step placed">
+                <div class="sequence-number">${index + 1}</div>
+                ${step}
+            </div>
+        `;
+    });
+    for (let i = placedSteps.length; i < correctSteps.length; i++) {
+        orderHtml += '<div class="sequence-step empty">Next step...</div>';
+    }
+    orderContainer.innerHTML = orderHtml;
+
+    // Check if complete
+    if (placedSteps.length === correctSteps.length) {
+        setTimeout(() => {
+            completePuzzle();
+        }, 1000);
+    }
+}
+
+function placeStep(step) {
+    const expectedStep = correctSteps[placedSteps.length];
+
+    if (step === expectedStep) {
+        placedSteps.push(step);
+        availableSteps = availableSteps.filter(s => s !== step);
+        updateSequenceDisplay();
+    } else {
+        alert('⚠️ Incorrect order! Think about safety first.');
+    }
+}
+
+// ============================================
+// INTERACTION HANDLERS
+// ============================================
+
+function switchModule(index) {
+    if (!reachedCheckpoints.has(index) && !completedModules.has(index)) {
+        alert(`🔒 Please watch the video to unlock Module ${index + 1}\n\nThis module will automatically unlock when the video reaches the corresponding section.`);
+        return;
+    }
+
+    currentModuleIndex = index;
+    currentPhase = completedModules.has(index) ? 'completed' : 'learning';
+    puzzleCompleted = false;
+    selectedOption = null;
+
+    renderModuleList();
+    renderContent();
+
+    // Seek video to module start
+    if (player && player.seekTo) {
+        player.seekTo(COURSE_DATA[index].timestampStart, true);
+    }
+}
+
+function startPuzzle() {
+    currentPhase = 'puzzle';
+    puzzleCompleted = false;
+    renderContent();
+
+    setTimeout(() => {
+        document.querySelector('.puzzle-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+}
+
+function completePuzzle() {
+    puzzleCompleted = true;
+    currentPhase = 'quiz';
+    createConfetti();
+    renderContent();
+
+    setTimeout(() => {
+        document.querySelector('.quiz-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+}
+
+function selectOption(index) {
+    selectedOption = index;
+    renderContent();
+}
+
+function submitQuiz() {
+    if (selectedOption === null) return;
+
+    const module = COURSE_DATA[currentModuleIndex];
+    const isCorrect = selectedOption === module.question.correctAnswer;
+
+    if (isCorrect) {
+        completedModules.add(currentModuleIndex);
+        currentPhase = 'completed';
+        createConfetti();
+        saveProgress();
+        renderModuleList();
+        renderContent();
+
+        // Enable continue button if at checkpoint
+        const continueBtn = document.getElementById('continue-btn');
+        if (continueBtn && continueBtn.disabled) {
+            continueBtn.disabled = false;
+            continueBtn.style.opacity = '1';
+        }
+    } else {
+        const feedback = document.getElementById('quiz-feedback');
+        feedback.innerHTML = '❌ Incorrect. Try again.';
+        feedback.className = 'quiz-feedback error';
+        selectedOption = null;
+
+        setTimeout(() => {
+            renderContent();
+        }, 1500);
+    }
+}
+
+function nextModule() {
+    if (currentModuleIndex < COURSE_DATA.length - 1) {
+        currentModuleIndex++;
+        currentPhase = 'learning';
+        puzzleCompleted = false;
+        selectedOption = null;
+        renderModuleList();
+        renderContent();
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function resetCourse() {
+    if (confirm('Are you sure you want to reset all progress?')) {
+        completedModules.clear();
+        reachedCheckpoints.clear();
+        currentModuleIndex = 0;
+        currentPhase = 'learning';
+        currentCheckpointIndex = 0;
+        puzzleCompleted = false;
+        selectedOption = null;
+
+        saveProgress();
+        renderModuleList();
+        renderContent();
+
+        if (player && player.seekTo) {
+            player.seekTo(0, true);
+            player.playVideo();
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+// ============================================
+// PROGRESS PERSISTENCE
+// ============================================
+
+function saveProgress() {
+    const progress = {
+        completedModules: Array.from(completedModules),
+        reachedCheckpoints: Array.from(reachedCheckpoints),
+        currentModuleIndex: currentModuleIndex,
+        currentCheckpointIndex: currentCheckpointIndex
+    };
+    localStorage.setItem('microAnnulusProgress', JSON.stringify(progress));
+}
+
+function loadProgress() {
+    const saved = localStorage.getItem('microAnnulusProgress');
+    if (saved) {
+        const progress = JSON.parse(saved);
+        completedModules = new Set(progress.completedModules || []);
+        reachedCheckpoints = new Set(progress.reachedCheckpoints || []);
+        currentModuleIndex = progress.currentModuleIndex || 0;
+        currentCheckpointIndex = progress.currentCheckpointIndex || 0;
+    }
+}
+
+function updateProgress() {
+    const fill = document.getElementById('progress-fill');
+    const count = document.getElementById('progress-count');
+
+    const percentage = (completedModules.size / COURSE_DATA.length) * 100;
+    fill.style.width = percentage + '%';
+    count.textContent = completedModules.size;
+}
+
+// ============================================
+// CONFETTI ANIMATION
+// ============================================
+
+function createConfetti() {
+    const colors = ['#3b82f6', '#22c55e', '#a855f7', '#f59e0b', '#ef4444'];
+
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 3000);
+    }
+}
+
+// Save progress on page unload
+window.addEventListener('beforeunload', saveProgress);
+
+</script>
+
+</body>
+</html>
