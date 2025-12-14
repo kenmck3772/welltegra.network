@@ -4159,8 +4159,12 @@
                     status.innerHTML = '<span>⏳</span><span>In Progress</span>';
                     status.className = 'module-status in-progress';
 
-                    // If module not completed, start video at this module's beginning
-                    if (player && player.seekTo && moduleStartTimes[moduleNum] !== undefined) {
+                    // Only seek video if NOT at a checkpoint (to avoid restarting video)
+                    const checkpointAlert = document.getElementById('checkpoint-alert');
+                    const isAtCheckpoint = checkpointAlert && checkpointAlert.style.display !== 'none';
+
+                    // If module not completed AND not at an active checkpoint, start video
+                    if (!isAtCheckpoint && player && player.seekTo && moduleStartTimes[moduleNum] !== undefined) {
                         // Scroll to video first
                         const videoSection = document.querySelector('.video-section');
                         if (videoSection) {
@@ -4173,6 +4177,11 @@
                             player.playVideo();
                             console.log(`Video started at ${moduleStartTimes[moduleNum]}s for Module ${moduleNum}`);
                         }, 800);
+                    } else if (isAtCheckpoint) {
+                        // At checkpoint - just scroll to module, don't touch video
+                        setTimeout(() => {
+                            card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
                     }
                 } else {
                     // If already completed, just scroll to the module
