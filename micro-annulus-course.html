@@ -308,6 +308,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            flex-wrap: wrap;
         }
         .puzzle-icon {
             width: 48px;
@@ -996,12 +997,14 @@ let reachedCheckpoints = new Set();
 let puzzleCompleted = false;
 let selectedOption = null;
 
-// Checkpoint configuration
-const checkpoints = COURSE_DATA.map((module, index) => ({
-    time: module.timestampStart,
-    module: index,
-    title: module.title
-}));
+// Checkpoint configuration - pause AFTER watching each section
+const checkpoints = [
+    { time: 25, module: 0, title: "The Unpredictable Subsurface" },  // End of 0-27s
+    { time: 44, module: 1, title: "The Micro-Annulus Mystery" },     // End of 27-46s
+    { time: 56, module: 2, title: "Detection: Sustained Casing Pressure" },  // End of 46-58s
+    { time: 78, module: 3, title: "Safety & Diagnostic Bleed Down" }, // End of 58-80s
+    { time: 109, module: 4, title: "Interpreting the Recharge" }     // End of 80-111s
+];
 
 let currentCheckpointIndex = 0;
 let videoInterval;
@@ -1252,14 +1255,30 @@ function renderPuzzle(module) {
         `;
     }
 
+    // Get puzzle hints
+    const hints = {
+        'SUBSURFACE': '💡 Hint: Think about what\'s beneath the surface of the earth',
+        'PRESSURE': '💡 Hint: What builds up when there\'s a leak? (8 letters)',
+        'slider': '💡 Hint: Look for the yellow highlighted zone',
+        'sequence': '💡 Hint: Safety first! What should you check before opening valves?'
+    };
+
+    const hintText = puzzle.word ? hints[puzzle.word] : (puzzle.type === 'slider' ? hints.slider : hints.sequence);
+
     return `
         <div class="puzzle-card">
             <div class="puzzle-header">
                 <div class="puzzle-icon">🧩</div>
-                <div>
+                <div style="flex: 1;">
                     <h3>Practical Challenge</h3>
                     <p class="puzzle-instruction">${puzzle.instruction}</p>
                 </div>
+                <button class="btn" style="background: var(--purple); padding: 8px 16px; font-size: 0.875rem;" onclick="event.stopPropagation(); toggleHint('puzzle-hint')">
+                    💡 Hint
+                </button>
+            </div>
+            <div id="puzzle-hint" style="display: none; padding: 16px; background: rgba(168, 85, 247, 0.1); border-top: 1px solid rgba(168, 85, 247, 0.3); color: var(--purple); font-size: 0.875rem;">
+                ${hintText}
             </div>
             <div class="puzzle-body">
                 ${puzzleContent}
@@ -1271,6 +1290,15 @@ function renderPuzzle(module) {
 function renderQuiz(module) {
     const question = module.question;
     const isCompleted = completedModules.has(currentModuleIndex);
+
+    // Quiz hints for each module
+    const quizHints = [
+        '💡 Hint: Think about forces underground that we cannot control',
+        '💡 Hint: It\'s a very small gap between two materials',
+        '💡 Hint: What reading do you see at the surface when there\'s a problem?',
+        '💡 Hint: What\'s the safest way to handle hydrocarbons?',
+        '💡 Hint: If pressure comes back after bleeding down, what does that tell you?'
+    ];
 
     let optionsHtml = '';
     question.options.forEach((option, index) => {
@@ -1293,8 +1321,17 @@ function renderQuiz(module) {
     return `
         <div class="quiz-card">
             <div class="quiz-header">
-                <h3>Final Assessment</h3>
-                ${isCompleted ? '<div class="quiz-badge">✓ Passed</div>' : ''}
+                <div style="flex: 1;">
+                    <h3>Final Assessment</h3>
+                </div>
+                ${isCompleted ? '<div class="quiz-badge">✓ Passed</div>' : `
+                    <button class="btn" style="background: var(--success); padding: 6px 12px; font-size: 0.75rem;" onclick="event.stopPropagation(); toggleHint('quiz-hint')">
+                        💡 Hint
+                    </button>
+                `}
+            </div>
+            <div id="quiz-hint" style="display: none; padding: 16px; background: rgba(34, 197, 94, 0.1); border-bottom: 1px solid rgba(34, 197, 94, 0.3); color: var(--success); font-size: 0.875rem;">
+                ${quizHints[currentModuleIndex]}
             </div>
             <div class="quiz-body">
                 <div class="quiz-question">${question.text}</div>
@@ -1599,6 +1636,13 @@ function nextModule() {
         renderContent();
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function toggleHint(hintId) {
+    const hint = document.getElementById(hintId);
+    if (hint) {
+        hint.style.display = hint.style.display === 'none' ? 'block' : 'none';
     }
 }
 
