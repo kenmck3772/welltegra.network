@@ -1110,6 +1110,15 @@ function continueVideo() {
     alert.style.display = 'none';
 
     currentCheckpointIndex++;
+
+    // Seek to end of current module before playing to avoid restart
+    const currentModule = COURSE_DATA[currentModuleIndex];
+    if (player && player.seekTo && currentModule) {
+        // Seek to 1 second before the end to ensure smooth transition
+        const seekTime = Math.max(currentModule.timestampEnd - 1, currentModule.timestampStart + 1);
+        player.seekTo(seekTime, true);
+    }
+
     player.playVideo();
 
     // If there are more modules, prepare for next checkpoint
@@ -1512,8 +1521,12 @@ function switchModule(index) {
     renderModuleList();
     renderContent();
 
-    // Seek video to module start
-    if (player && player.seekTo) {
+    // Only seek video if NOT at a checkpoint (to avoid restarting video)
+    const checkpointAlert = document.getElementById('checkpoint-alert');
+    const isAtCheckpoint = checkpointAlert && checkpointAlert.style.display !== 'none';
+
+    if (!isAtCheckpoint && player && player.seekTo && !completedModules.has(index)) {
+        // If module not completed AND not at an active checkpoint, seek to module start
         player.seekTo(COURSE_DATA[index].timestampStart, true);
     }
 }
