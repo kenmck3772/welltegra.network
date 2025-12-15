@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Well-Tegra Learn | Professional Well Integrity Training</title>
+    <meta name="description" content="Interactive online courses for well integrity professionals. Learn P&A fundamentals, micro-annulus detection, and diagnostic procedures.">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0f172a;
+            --panel: #1e293b;
+            --card: #334155;
+            --border: #475569;
+            --fg: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #60a5fa;
+            --success: #22c55e;
+            --purple: #a855f7;
+            --orange: #f97316;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--fg);
+            background-color: var(--bg);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .unified-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(180deg, rgba(15,23,42,.98), rgba(30,41,59,.95));
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+        }
+        .header-wrap {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .brand img {
+            height: 40px;
+            width: auto;
+            border-radius: 8px;
+        }
+        .brand-text h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.025em;
+        }
+        .brand-text span {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .main-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        .main-nav-link:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-hover);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 80px 24px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.1), transparent);
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            color: white;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--muted);
+            max-width: 700px;
+            margin: 0 auto 32px;
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            flex-wrap: wrap;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+        }
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Courses Grid */
+        .courses-section {
+            padding: 80px 24px;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+        }
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--muted);
+        }
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Course Card */
+        .course-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent);
+        }
+        .course-header {
+            padding: 32px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.05));
+            border-bottom: 1px solid var(--border);
+        }
+        .course-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--accent);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+        .course-badge.beginner {
+            background: var(--success);
+        }
+        .course-badge.intermediate {
+            background: var(--orange);
+        }
+        .course-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+        }
+        .course-description {
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        .course-meta {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.875rem;
+            color: var(--muted);
+        }
+        .meta-icon {
+            font-size: 1.125rem;
+        }
+        .course-body {
+            padding: 32px;
+            flex: 1;
+        }
+        .course-features {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+        .course-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+            display: flex;
+            align-items: start;
+            gap: 12px;
+            color: var(--fg);
+        }
+        .course-features li:last-child {
+            border-bottom: none;
+        }
+        .feature-icon {
+            font-size: 1.125rem;
+            flex-shrink: 0;
+        }
+        .course-footer {
+            padding: 0 32px 32px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--accent);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 80px 24px;
+            background: rgba(30, 41, 59, 0.5);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature {
+            text-align: center;
+            padding: 32px;
+        }
+        .feature-icon-large {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            display: block;
+        }
+        .feature h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+        }
+        .feature p {
+            color: var(--muted);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 24px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        .footer p {
+            color: var(--muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero {
+                padding: 48px 24px;
+            }
+            .hero-stats {
+                gap: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="unified-header">
+    <div class="header-wrap">
+        <a href="index.html" class="brand">
+            <img src="assets/images/logo.jpg" alt="Well-Tegra Logo">
+            <div class="brand-text">
+                <h1>Well-Tegra<span style="color: var(--accent);">Learn</span></h1>
+                <span>Professional Training Platform</span>
+            </div>
+        </a>
+        <nav class="main-nav">
+            <a href="index.html" class="main-nav-link">← Back to Dashboard</a>
+        </nav>
+    </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="container">
+        <h1>Master Well Integrity</h1>
+        <p>Interactive courses designed by industry experts with decades of real-world experience. Learn at your own pace with hands-on exercises and video instruction.</p>
+
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-value">2</span>
+                <span class="stat-label">Courses Available</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">12</span>
+                <span class="stat-label">Total Modules</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">70+</span>
+                <span class="stat-label">Interactive Elements</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Courses -->
+<section class="courses-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Available Courses</h2>
+            <p>Choose a course to begin your learning journey</p>
+        </div>
+
+        <div class="courses-grid">
+
+            <!-- Course 1: Basic Introduction to P&A -->
+            <div class="course-card">
+                <div class="course-header">
+                    <div class="course-badge beginner">Beginner</div>
+                    <h3 class="course-title">Basic Introduction to P&A</h3>
+                    <p class="course-description">
+                        Learn the fundamentals of Plug & Abandonment operations, regulatory frameworks, and long-term liability considerations.
+                    </p>
+                    <div class="course-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">⏱️</span>
+                            <span>~12 minutes</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">📚</span>
+                            <span>7 Modules</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">🎓</span>
+                            <span>Certificate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-body">
+                    <ul class="course-features">
+                        <li>
+                            <span class="feature-icon">✓</span>
+                            <span>Environmental and regulatory importance</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">✓</span>
+                            <span>Global P&A standards and frameworks</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">✓</span>
+                            <span>Technical barrier systems explained</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">✓</span>
+                            <span>Perpetual liability and financial assurance</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">✓</span>
+                            <span>Professional principles and best practices</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">✓</span>
+                            <span>Interactive exercises and quizzes</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="course-footer">
+                    <a href="pa-course.html" class="btn">Start Learning →</a>
+                </div>
+            </div>
+
+            <!-- Course 2: Micro-Annulus Detection -->
+            <div class="course-card">
+                <div class="course-header">
+                    <div class="course-badge intermediate">Intermediate</div>
+                    <h3 class="course-title">Micro-Annulus Detection</h3>
+                    <p class="course-description">
+                        Deep dive into micro-annulus detection, sustained casing pressure analysis, and diagnostic bleed down procedures.
+                    </p>
+                    <div class="course-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">⏱️</span>
+                            <span>~2 minutes</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">📚</span>
+                            <span>5 Modules</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">🎓</span>
+                            <span>Certificate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-body">
+                    <ul class="course-features">
+                        <li>
+                            <span class="feature-icon">✓</span>
+                            <span>Understanding unpredictable subsurface forces</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">✓</span>
+                            <span>Micro-annulus formation and detection</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">✓</span>
+                            <span>Sustained Casing Pressure (SCP) analysis</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">✓</span>
+                            <span>Safe diagnostic bleed down procedures</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">✓</span>
+                            <span>Pressure recharge interpretation</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon">✓</span>
+                            <span>Hands-on puzzles and simulations</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="course-footer">
+                    <a href="micro-annulus-course.html" class="btn">Start Learning →</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Why Well-Tegra Learn?</h2>
+            <p>Professional training built for the real world</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature">
+                <span class="feature-icon-large">🎥</span>
+                <h3>Video-Based Learning</h3>
+                <p>High-quality video instruction with checkpoint-based progress tracking</p>
+            </div>
+
+            <div class="feature">
+                <span class="feature-icon-large">🧩</span>
+                <h3>Interactive Exercises</h3>
+                <p>Hands-on puzzles and simulations to reinforce key concepts</p>
+            </div>
+
+            <div class="feature">
+                <span class="feature-icon-large">✅</span>
+                <h3>Knowledge Validation</h3>
+                <p>Quiz questions ensure comprehension before advancing</p>
+            </div>
+
+            <div class="feature">
+                <span class="feature-icon-large">🏆</span>
+                <h3>Certificates</h3>
+                <p>Earn completion certificates for your professional portfolio</p>
+            </div>
+
+            <div class="feature">
+                <span class="feature-icon-large">💾</span>
+                <h3>Progress Tracking</h3>
+                <p>Your progress is automatically saved - learn at your own pace</p>
+            </div>
+
+            <div class="feature">
+                <span class="feature-icon-large">📱</span>
+                <h3>Mobile Friendly</h3>
+                <p>Access courses from any device - desktop, tablet, or mobile</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2024 Well-Tegra. All rights reserved. | <a href="index.html" style="color: var(--accent);">Back to Dashboard</a></p>
+    </div>
+</footer>
+
+</body>
+</html>
