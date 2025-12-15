@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crisis Command | Well-Tegra Training</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#0B1120',      // Darker blue-black
+                        panel: '#151e32',   // Navy tint
+                        border: '#1e293b',
+                        brand: '#06b6d4',   // Cyan (Well-Tegra Brand)
+                        brand_glow: '#22d3ee',
+                        danger: '#DC2626',  // Red (Crisis)
+                        accent: '#F59E0B',  // Amber (Warning)
+                        success: '#10B981', // Green (Safe)
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan': 'scan 3s linear infinite',
+                        'fade-in': 'fadeIn 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        scan: { '0%': { top: '0%' }, '100%': { top: '100%' } },
+                        fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0B1120; color: #E2E8F0; overflow: hidden; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0F172A; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .view-section { display: none; height: 100%; overflow-y: auto; opacity: 0; transition: opacity 0.3s ease; }
+        .view-active { display: block; opacity: 1; }
+
+        /* Navigation State */
+        .nav-item { border-left: 3px solid transparent; transition: all 0.2s; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .nav-item.active { border-left: 3px solid #06b6d4; background: rgba(6, 182, 212, 0.1); color: #22d3ee; }
+
+        /* CCTV Effect */
+        .cctv-screen {
+            position: relative; overflow: hidden; background: #000;
+            border: 1px solid #1e293b;
+        }
+        .cctv-overlay {
+            position: absolute; inset: 0; pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            z-index: 5;
+        }
+        .cctv-scanline {
+            width: 100%; height: 2px; background: rgba(6, 182, 212, 0.3);
+            position: absolute; animation: scan 4s linear infinite; z-index: 10;
+            box-shadow: 0 0 4px rgba(6, 182, 212, 0.5);
+        }
+
+        /* Tech Background Grid */
+        .tech-bg {
+            background-image: radial-gradient(#1e293b 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+
+        /* Chat Log */
+        .msg-bubble { margin-bottom: 8px; padding: 10px 12px; border-radius: 6px; font-size: 12px; border: 1px solid transparent; }
+        .msg-pusher { background: rgba(245, 158, 11, 0.05); border-color: rgba(245, 158, 11, 0.2); color: #FCD34D; }
+        .msg-mud { background: rgba(6, 182, 212, 0.05); border-color: rgba(6, 182, 212, 0.2); color: #67e8f9; }
+        .msg-user { background: rgba(255, 255, 255, 0.05); border-color: rgba(255,255,255,0.1); text-align: right; }
+        .msg-alarm { background: rgba(220, 38, 38, 0.1); border-color: #DC2626; color: #FCA5A5; font-weight: bold; text-align: center; }
+
+        /* Dynamic Theme Classes */
+        .theme-crisis .nav-item.active { border-color: #DC2626; background: rgba(220, 38, 38, 0.1); color: #FCA5A5; }
+        .theme-crisis .brand-text { color: #DC2626; text-shadow: 0 0 10px rgba(220,38,38,0.5); }
+    </style>
+</head>
+<body class="h-screen flex text-sm relative" id="app-body">
+
+    <!-- Tech Background -->
+    <div class="absolute inset-0 tech-bg pointer-events-none -z-10"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-panel border-r border-border flex flex-col flex-shrink-0 z-20 backdrop-blur-sm bg-opacity-95">
+        <!-- BRAND HEADER -->
+        <div class="h-20 flex items-center gap-3 px-6 border-b border-border bg-gradient-to-r from-panel to-bg">
+            <div id="brand-logo" class="w-10 h-10 bg-gradient-to-br from-cyan-600 to-blue-900 rounded-lg flex items-center justify-center text-white shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-500">
+                <i class="ph ph-brain text-xl"></i>
+            </div>
+            <div>
+                <span id="brand-title" class="brand-text font-bold text-lg tracking-tight text-white transition-colors duration-500">Well-Tegra</span>
+                <span id="brand-subtitle" class="text-[10px] text-brand uppercase tracking-widest block -mt-1 font-medium transition-colors duration-500">Training</span>
+            </div>
+        </div>
+
+        <!-- USER PROFILE -->
+        <div class="p-6 border-b border-border">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-slate-800 border border-slate-600 flex items-center justify-center text-xl shadow-inner">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=b6e3f4" class="w-full h-full rounded-full opacity-90" alt="Avatar">
+                </div>
+                <div>
+                    <div class="font-bold text-white">Training Mode</div>
+                    <div class="text-[10px] text-slate-400 font-medium">Sr. Driller</div>
+                </div>
+            </div>
+
+            <!-- Lens Selector (Cognitive Filter) -->
+            <label class="text-[10px] uppercase text-slate-500 font-bold mb-2 block">Cognitive Filter</label>
+            <div class="grid grid-cols-3 gap-1 bg-bg p-1 rounded-lg border border-border">
+                <button onclick="setLens('mechanic')" id="btn-mechanic" class="lens-btn p-1.5 rounded hover:bg-slate-800 text-slate-500 transition-all duration-200 flex flex-col items-center gap-1">
+                    <i class="ph ph-wrench"></i>
+                </button>
+                <button onclick="setLens('gamer')" id="btn-gamer" class="lens-btn p-1.5 rounded hover:bg-slate-800 text-slate-500 transition-all duration-200 flex flex-col items-center gap-1">
+                    <i class="ph ph-game-controller"></i>
+                </button>
+                <button onclick="setLens('athlete')" id="btn-athlete" class="lens-btn p-1.5 rounded hover:bg-slate-800 text-slate-500 transition-all duration-200 flex flex-col items-center gap-1">
+                    <i class="ph ph-whistle"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- NAVIGATION -->
+        <nav class="flex-grow py-4 space-y-1">
+            <a href="courses.html" id="nav-courses" class="nav-item block w-full text-left px-6 py-3 text-slate-400 font-medium flex items-center gap-3">
+                <i class="ph ph-graduation-cap text-lg"></i> All Courses
+            </a>
+            <div class="px-6 py-2 mt-4 text-[10px] font-bold text-slate-600 uppercase tracking-widest flex items-center gap-2">
+                Simulations <div class="h-px bg-slate-700 flex-grow"></div>
+            </div>
+            <button onclick="navigate('mod_crm')" id="nav-mod_crm" class="nav-item active w-full text-left px-6 py-3 text-slate-400 font-medium flex items-center gap-3 group">
+                <div class="relative">
+                    <i class="ph ph-warning-octagon text-lg group-hover:text-brand transition-colors"></i>
+                    <span class="absolute top-0 right-0 w-2 h-2 bg-danger rounded-full animate-ping opacity-0 group-hover:opacity-100"></span>
+                </div>
+                Crisis Command
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-border">
+            <div class="text-[10px] text-slate-600 text-center">Well-Tegra Training Platform</div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow relative overflow-hidden flex flex-col">
+
+        <!-- === VIEW: CRM SIMULATION === -->
+        <section id="view-mod_crm" class="view-section view-active flex flex-col h-full overflow-hidden bg-bg">
+
+            <!-- Sim Header -->
+            <div class="h-14 bg-panel border-b border-border flex items-center justify-between px-6 flex-shrink-0 z-30 shadow-lg">
+                <div class="flex items-center gap-4">
+                    <a href="courses.html" class="text-slate-400 hover:text-white transition-colors"><i class="ph ph-arrow-left text-lg"></i></a>
+                    <div class="h-6 w-px bg-slate-700"></div>
+                    <div>
+                        <span class="text-[10px] font-bold text-slate-500 uppercase block leading-none mb-1">Scenario ID: KICK-042</span>
+                        <span class="text-sm font-bold text-white leading-none flex items-center gap-2">
+                            <span id="sim-status-dot" class="w-2 h-2 rounded-full bg-success"></span>
+                            <span id="sim-status-text">NORMAL OPERATIONS</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Dynamic Hint Box -->
+                <div class="bg-black/40 backdrop-blur border border-border px-4 py-1.5 rounded-full flex items-center gap-3 transition-all duration-300" id="hint-box">
+                    <i class="ph ph-info text-brand" id="hint-icon"></i>
+                    <span class="text-xs text-slate-300 truncate max-w-md" id="crm-hint">Loading cognitive model...</span>
+                </div>
+            </div>
+
+            <!-- Main Layout -->
+            <div class="flex-grow flex flex-col lg:flex-row h-full overflow-hidden relative">
+
+                <!-- LEFT: TELEMETRY (Scientific Truth) -->
+                <div class="w-full lg:w-1/3 border-r border-border flex flex-col bg-bg/50 backdrop-blur-sm relative">
+                    <!-- Scanline Overlay -->
+                    <div class="absolute inset-0 pointer-events-none opacity-5 bg-[linear-gradient(rgba(18,16,16,0)50%,rgba(0,0,0,0.25)50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%] z-0"></div>
+
+                    <div class="p-4 border-b border-border flex justify-between items-center z-10 bg-panel/50">
+                        <span class="text-xs font-bold text-brand uppercase tracking-wider"><i class="ph ph-chart-line-up mr-1"></i> Data Stream</span>
+                        <span class="text-[10px] bg-brand/10 text-brand px-2 py-0.5 rounded border border-brand/20 animate-pulse">LIVE FEED</span>
+                    </div>
+
+                    <div class="p-4 flex-grow overflow-y-auto space-y-4 z-10">
+                        <!-- Chart -->
+                        <div class="bg-black/60 border border-slate-700 rounded-lg p-2 relative shadow-inner">
+                            <div class="flex justify-between items-end mb-2 px-1">
+                                <span class="text-[10px] text-slate-400 font-mono">SENSOR: PIT_VOL_TOTAL</span>
+                                <span class="text-xs font-bold text-white font-mono" id="chart-val">100.0 bbl</span>
+                            </div>
+                            <div class="h-32 w-full">
+                                <canvas id="pitChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Digital Readouts -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-panel border border-border rounded p-3 relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-brand/5 group-hover:bg-brand/10 transition-colors"></div>
+                                <span class="block text-[10px] text-slate-500 mb-1">RATE OF PENETRATION</span>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-2xl font-mono text-white font-bold tracking-tighter" id="val-rop">150</span>
+                                    <span class="text-xs text-slate-500">ft/hr</span>
+                                </div>
+                            </div>
+                            <div class="bg-panel border border-border rounded p-3 relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-brand/5 group-hover:bg-brand/10 transition-colors"></div>
+                                <span class="block text-[10px] text-slate-500 mb-1">FLOW OUT %</span>
+                                <div class="flex items-baseline gap-1">
+                                    <span class="text-2xl font-mono text-white font-bold tracking-tighter transition-colors duration-300" id="val-flow">52</span>
+                                    <span class="text-xs text-slate-500">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CCTV Feed -->
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <div class="cctv-screen aspect-video rounded">
+                                <div class="cctv-overlay"></div>
+                                <div class="cctv-scanline"></div>
+                                <div class="absolute top-1 left-1 text-[8px] text-brand bg-black/80 px-1 border border-brand/30 rounded-sm">CAM 04: SHAKERS</div>
+                                <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1516937941348-c09645f871cd?q=80&w=400&auto=format&fit=crop')] bg-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-500"></div>
+                            </div>
+                            <div class="cctv-screen aspect-video rounded">
+                                <div class="cctv-overlay"></div>
+                                <div class="cctv-scanline" style="animation-delay: 1.5s;"></div>
+                                <div class="absolute top-1 left-1 text-[8px] text-brand bg-black/80 px-1 border border-brand/30 rounded-sm">CAM 01: FLOOR</div>
+                                <div class="w-full h-full bg-[url('https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=400&auto=format&fit=crop')] bg-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MIDDLE: COMMS (Human Noise) -->
+                <div class="w-full lg:w-1/3 border-r border-border flex flex-col bg-panel">
+                    <div class="p-4 border-b border-border bg-slate-900 flex justify-between items-center shadow-md">
+                        <span class="text-xs font-bold text-white uppercase flex items-center gap-2">
+                            <i class="ph ph-chats-circle text-brand"></i> Rig Intercom
+                        </span>
+                        <div class="flex gap-1.5">
+                            <div class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                            <div class="w-1.5 h-1.5 rounded-full bg-slate-600"></div>
+                            <div class="w-1.5 h-1.5 rounded-full bg-slate-600"></div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Area -->
+                    <div class="flex-grow p-4 overflow-y-auto bg-slate-900/50" id="chat-feed">
+                        <!-- Messages Injected Here -->
+                        <div class="text-center text-xs text-slate-600 my-4 italic opacity-50">--- Encrypted Channel Established ---</div>
+                    </div>
+
+                    <!-- Response Area -->
+                    <div class="p-4 bg-panel border-t border-border min-h-[140px] z-20 shadow-[0_-5px_15px_rgba(0,0,0,0.2)]">
+                        <p class="text-[10px] text-slate-500 uppercase mb-3 font-bold tracking-wider">Awaiting Command Input</p>
+                        <div id="response-area" class="grid grid-cols-1 gap-2">
+                            <button onclick="startGame()" class="group relative w-full overflow-hidden rounded-lg bg-brand p-3 text-left shadow transition-all hover:bg-cyan-400">
+                                <div class="relative z-10 flex items-center justify-between font-bold text-black">
+                                    <span class="text-xs">INITIATE SHIFT HANDOVER</span>
+                                    <i class="ph ph-play-circle text-lg opacity-70 group-hover:opacity-100 transition-opacity"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: ACTION (Controls) -->
+                <div class="w-full lg:w-1/3 bg-slate-900 p-6 flex flex-col items-center justify-center relative">
+                    <!-- Background Pattern -->
+                    <div class="absolute inset-0 opacity-5" style="background-image: linear-gradient(0deg, transparent 24%, #ffffff 25%, #ffffff 26%, transparent 27%, transparent 74%, #ffffff 75%, #ffffff 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, #ffffff 25%, #ffffff 26%, transparent 27%, transparent 74%, #ffffff 75%, #ffffff 76%, transparent 77%, transparent); background-size: 30px 30px;"></div>
+
+                    <div class="w-full max-w-xs text-center mb-10 z-10">
+                        <h2 class="text-xl font-bold text-white mb-4 flex items-center justify-center gap-2">
+                            <i class="ph ph-faders"></i> Driller's Console
+                        </h2>
+
+                        <!-- Stress Meter -->
+                        <div class="relative pt-4">
+                            <div class="flex justify-between text-[10px] text-slate-500 mb-1 uppercase font-bold">
+                                <span>Calm</span>
+                                <span>Panic</span>
+                            </div>
+                            <div class="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-success via-accent to-danger w-0 transition-all duration-1000 ease-out" id="stress-bar" style="width: 10%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Control Grid -->
+                    <div class="grid grid-cols-2 gap-4 w-full max-w-xs z-10">
+                        <!-- Drill Button -->
+                        <button id="btn-drill" class="h-32 bg-slate-800 rounded-xl border border-slate-700 border-b-4 hover:bg-slate-750 flex flex-col items-center justify-center transition-all opacity-50 cursor-not-allowed group">
+                            <div class="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center mb-2 shadow-inner group-hover:scale-110 transition-transform">
+                                <i class="ph ph-arrow-circle-down text-3xl text-slate-500"></i>
+                            </div>
+                            <span class="text-xs font-bold text-slate-400">DRILL AHEAD</span>
+                        </button>
+
+                        <!-- Flow Check Button -->
+                        <button id="btn-flow" onclick="makeDecision('flowcheck')" class="h-32 bg-slate-800 rounded-xl border border-slate-600 border-b-4 hover:border-brand hover:bg-slate-700 active:translate-y-1 active:border-b-0 transition-all flex flex-col items-center justify-center group relative overflow-hidden">
+                            <div class="absolute inset-0 bg-brand/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <div class="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center mb-2 shadow-inner group-hover:shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all">
+                                <i class="ph ph-eye text-3xl text-brand group-hover:text-cyan-300"></i>
+                            </div>
+                            <span class="text-xs font-bold text-white relative z-10">FLOW CHECK</span>
+                        </button>
+
+                        <!-- BOP / Shut In -->
+                        <div class="col-span-2 mt-4 relative">
+                            <div class="absolute -inset-1 bg-red-500/20 blur opacity-0 transition-opacity duration-300" id="bop-glow"></div>
+                            <button id="btn-shutin" onclick="makeDecision('shutin')" class="relative w-full py-5 bg-gradient-to-r from-red-900 to-red-800 hover:from-red-800 hover:to-red-700 active:translate-y-1 active:shadow-none transition-all rounded-xl border-b-4 border-red-950 text-white font-bold shadow-lg flex items-center justify-center gap-3 group">
+                                <div class="bg-red-950/50 p-1.5 rounded-md border border-red-500/30">
+                                    <i class="ph ph-siren text-xl text-red-200 animate-pulse"></i>
+                                </div>
+                                <span>ACTIVATE BOP</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- DATA MODELS ---
+        const Lenses = {
+            mechanic: {
+                id: 'mechanic',
+                icon: 'wrench',
+                hint: "MECHANIC LENS: The Toolpusher (Boss) is focused on schedule. The Logger (Data) is focused on anomalies. You are the filter.",
+                msgPush: "PUSHER: We are behind schedule. I want 200ft before lunch. Keep that bit turning!",
+                msgMud: "LOGGER: Getting weird torque readings. Possible bearing failure? Maybe formation change?",
+                color: "text-slate-400"
+            },
+            gamer: {
+                id: 'gamer',
+                icon: 'game-controller',
+                hint: "GAMER LENS: Raid Leader (Pusher) calls for DPS burn. Healer (Logger) is calling OOM. You are the Tank.",
+                msgPush: "PUSHER: DPS is low! Burn phase now! Don't stop casting!",
+                msgMud: "LOGGER: Adds spawned! I think we pulled aggro (Influx). Check connection!",
+                color: "text-purple-400"
+            },
+            athlete: {
+                id: 'athlete',
+                icon: 'whistle',
+                hint: "ATHLETE LENS: Coach (Pusher) calls the play. Spotter (Logger) sees the defense shift. You are QB.",
+                msgPush: "PUSHER: Run the play! No audibles! We need this touchdown now.",
+                msgMud: "LOGGER: They are blitzing! The line is breaking! Watch the blind side!",
+                color: "text-emerald-400"
+            }
+        };
+
+        // --- STATE ---
+        let currentLens = 'mechanic';
+        let chart;
+        let timeStep = 0;
+        let pitVolume = 100;
+        let flowOut = 50;
+        let simInterval;
+        let isKicking = false;
+        let stressLevel = 10;
+
+        // --- NAVIGATION & UI ---
+        function navigate(viewId) {
+            // For this standalone page, just reset to main simulation view
+            const target = document.getElementById(`view-${viewId}`);
+            if(target) {
+                target.classList.add('view-active');
+                target.classList.add('animate-fade-in');
+            }
+
+            if(viewId === 'mod_crm') {
+                initChart();
+            }
+        }
+
+        function setLens(lens) {
+            currentLens = lens;
+            const data = Lenses[lens];
+
+            // Update Hint
+            const hintEl = document.getElementById('crm-hint');
+            hintEl.style.opacity = 0;
+            setTimeout(() => {
+                hintEl.innerText = data.hint;
+                hintEl.style.opacity = 1;
+            }, 200);
+
+            // Update Buttons
+            document.querySelectorAll('.lens-btn').forEach(b => {
+                b.classList.remove('bg-brand', 'text-black', 'shadow-lg', 'scale-110');
+                b.classList.add('text-slate-500');
+            });
+            const btn = document.getElementById(`btn-${lens}`);
+            btn.classList.remove('text-slate-500');
+            btn.classList.add('bg-brand', 'text-black', 'shadow-lg', 'scale-110');
+        }
+
+        // --- CHARTING ---
+        function initChart() {
+            if(chart) return;
+            const ctx = document.getElementById('pitChart').getContext('2d');
+
+            // Create Gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+            gradient.addColorStop(0, 'rgba(6, 182, 212, 0.2)'); // Brand Color
+            gradient.addColorStop(1, 'rgba(6, 182, 212, 0)');
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Vol',
+                        data: [],
+                        borderColor: '#06b6d4',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: true,
+                        backgroundColor: gradient,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    scales: {
+                        x: { display: false },
+                        y: {
+                            min: 98,
+                            max: 110,
+                            grid: { color: '#1e293b' },
+                            ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 10 } }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // --- SIMULATION LOGIC ---
+        function startGame() {
+            // Reset UI
+            document.getElementById('chat-feed').innerHTML = "";
+            document.getElementById('response-area').innerHTML = "";
+            document.body.classList.remove('theme-crisis');
+
+            // Reset Branding to Default
+            const brandLogo = document.getElementById('brand-logo');
+            brandLogo.className = 'w-10 h-10 bg-gradient-to-br from-cyan-600 to-blue-900 rounded-lg flex items-center justify-center text-white shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-500';
+            document.getElementById('brand-title').classList.remove('text-red-500');
+            document.getElementById('brand-subtitle').innerText = "Training";
+            document.getElementById('brand-subtitle').classList.remove('text-red-500');
+
+            // Reset Vars
+            pitVolume = 100;
+            flowOut = 50;
+            timeStep = 0;
+            isKicking = false;
+            stressLevel = 10;
+            updateStress();
+
+            // Initial Message
+            addMsg("SYSTEM", "Shift Handover Complete. Drilling ahead at 150 fph. Formation: Sandstone.", "msg-mud");
+
+            if(simInterval) clearInterval(simInterval);
+            simInterval = setInterval(tick, 500);
+        }
+
+        function stopSim() {
+            if(simInterval) clearInterval(simInterval);
+        }
+
+        function tick() {
+            timeStep++;
+
+            // --- SCENARIO SCRIPT ---
+
+            // Step 1: Normal Ops
+            if(timeStep === 4) {
+                addMsg("PUSHER", Lenses[currentLens].msgPush, "msg-pusher");
+            }
+
+            // Step 2: The Kick Starts (Subtle)
+            if(timeStep === 12) {
+                isKicking = true;
+                // Change Chart Color to Warn
+                chart.data.datasets[0].borderColor = "#F59E0B";
+                chart.data.datasets[0].backgroundColor = "rgba(245, 158, 11, 0.1)";
+
+                addMsg("LOGGER", "Driller, drilling break detected. ROP just doubled to 300. Connection gas is rising.", "msg-mud");
+                stressLevel = 30;
+                updateStress();
+            }
+
+            // Step 3: Conflict
+            if(timeStep === 18) {
+                addMsg("PUSHER", "Ignore him. It's just background gas from the sand. Don't stop drilling, we are behind schedule!", "msg-pusher");
+                stressLevel = 50;
+                updateStress();
+
+                // Present Choices
+                setChoices([
+                    {
+                        txt: "AGREE: Continue Drilling",
+                        sub: "Trust the schedule",
+                        act: "drill",
+                        icon: "arrow-circle-down",
+                        danger: false
+                    },
+                    {
+                        txt: "DISAGREE: Flow Check",
+                        sub: "Trust the data",
+                        act: "flowcheck",
+                        icon: "eye",
+                        danger: false
+                    }
+                ]);
+            }
+
+            // --- PHYSICS ENGINE ---
+            if(isKicking) {
+                pitVolume += 0.15; // Influx
+                flowOut += 0.8;
+
+                // Visual Alarm Trigger
+                if(pitVolume > 103 && !document.body.classList.contains('theme-crisis')) {
+                    activateCrisisMode();
+                }
+            } else {
+                // Noise
+                pitVolume = 100 + (Math.random() * 0.2);
+                flowOut = 50 + (Math.random() * 2);
+            }
+
+            // --- UPDATE DOM ---
+            document.getElementById('val-flow').innerText = Math.round(flowOut);
+            document.getElementById('chart-val').innerText = pitVolume.toFixed(1) + " bbl";
+
+            // Chart Update
+            if(chart.data.labels.length > 30) {
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+            }
+            chart.data.labels.push(timeStep);
+            chart.data.datasets[0].data.push(pitVolume);
+            chart.update();
+        }
+
+        function activateCrisisMode() {
+            document.body.classList.add('theme-crisis');
+
+            // Change Branding to Red
+            const brandLogo = document.getElementById('brand-logo');
+            brandLogo.className = 'w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white shadow-[0_0_15px_rgba(220,38,38,0.3)] transition-all duration-500 animate-pulse';
+            document.getElementById('brand-title').classList.add('text-red-500');
+            document.getElementById('brand-subtitle').innerText = "CRISIS EVENT";
+            document.getElementById('brand-subtitle').classList.add('text-red-500');
+
+            // UI Updates
+            document.getElementById('sim-status-dot').classList.remove('bg-success');
+            document.getElementById('sim-status-dot').classList.add('bg-danger', 'animate-ping');
+            document.getElementById('sim-status-text').innerText = "WELL CONTROL EVENT";
+            document.getElementById('sim-status-text').classList.add('text-danger');
+
+            // Chart to Red
+            chart.data.datasets[0].borderColor = "#DC2626";
+            chart.data.datasets[0].backgroundColor = "rgba(220, 38, 38, 0.2)";
+
+            document.getElementById('bop-glow').classList.remove('opacity-0');
+        }
+
+        // --- INTERACTION ---
+        function addMsg(role, text, cssClass="msg-user") {
+            const feed = document.getElementById('chat-feed');
+            const div = document.createElement('div');
+            div.className = `msg-bubble ${cssClass} animate-fade-in`;
+            div.innerHTML = `<strong class="block text-[10px] opacity-70 mb-1">${role}</strong>${text}`;
+            feed.appendChild(div);
+            feed.scrollTop = feed.scrollHeight;
+        }
+
+        function setChoices(opts) {
+            const area = document.getElementById('response-area');
+            area.innerHTML = "";
+            opts.forEach(o => {
+                const btn = document.createElement('button');
+                btn.className = `group w-full p-3 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 transition-all text-left flex items-center gap-3 mb-2 shadow-sm hover:shadow-md hover:border-brand`;
+                btn.onclick = () => makeDecision(o.act);
+                btn.innerHTML = `
+                    <div class="w-8 h-8 rounded bg-slate-900 flex items-center justify-center text-slate-400 group-hover:text-white transition-colors">
+                        <i class="ph ph-${o.icon}"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold text-white">${o.txt}</div>
+                        <div class="text-[10px] text-slate-500 group-hover:text-brand transition-colors">${o.sub}</div>
+                    </div>
+                `;
+                area.appendChild(btn);
+            });
+        }
+
+        function makeDecision(act) {
+            document.getElementById('response-area').innerHTML = "<span class='text-xs text-slate-500 animate-pulse'>Transmitting Command...</span>";
+
+            if(act === 'drill') {
+                addMsg("YOU", "Copy Pusher. Drilling ahead.");
+                setTimeout(() => {
+                    addMsg("ALARM", "🚨 CRITICAL ALARM: RAPID PIT GAIN (+15 BBLS)", "msg-alarm");
+                    activateCrisisMode();
+                    failScenario("BLOWOUT IMMINENT. You prioritized the schedule over critical indicators.");
+                }, 2000);
+            }
+            else if(act === 'flowcheck') {
+                addMsg("YOU", "Negative. I see positive indicators. Picking up to Flow Check.", "msg-user border-l-2 border-brand");
+                addMsg("PUSHER", "Don't waste my time...", "msg-pusher");
+
+                setTimeout(() => {
+                    addMsg("DRILL FLOOR", "Pumps off. Well is flowing! It's a Kick!", "msg-mud font-bold");
+                    activateCrisisMode();
+                    setChoices([
+                        {
+                            txt: "ACTIVATE BOP (SHUT IN)",
+                            sub: "Secure the well immediately",
+                            act: "shutin",
+                            icon: "siren",
+                            danger: true
+                        }
+                    ]);
+                }, 2000);
+            }
+            else if(act === 'shutin') {
+                addMsg("YOU", "Space out! Shutting in!", "msg-alarm");
+                isKicking = false; // Stop physics
+                stopSim();
+
+                // Visual Success
+                document.getElementById('btn-shutin').classList.add('bg-green-600', 'border-green-800');
+                document.getElementById('bop-glow').classList.remove('bg-red-500/20');
+                document.getElementById('bop-glow').classList.add('bg-green-500/20');
+
+                setTimeout(() => {
+                    addMsg("SYSTEM", "BOP CLOSED. PRESSURE STABILIZED.", "msg-mud text-green-400 font-bold");
+                    winScenario();
+                }, 2000);
+            }
+        }
+
+        function failScenario(reason) {
+            stopSim();
+            document.getElementById('stress-bar').style.width = "100%";
+            document.getElementById('stress-bar').classList.add('bg-red-600');
+            setTimeout(() => {
+                alert("SCENARIO FAILED: " + reason);
+            }, 500);
+        }
+
+        function winScenario() {
+            document.getElementById('stress-bar').style.width = "0%";
+            document.getElementById('response-area').innerHTML = `
+                <div class="text-center p-4 bg-green-900/20 border border-green-500/30 rounded-lg">
+                    <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-black mx-auto mb-2 shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+                        <i class="ph ph-check font-bold text-xl"></i>
+                    </div>
+                    <h3 class="text-white font-bold text-sm mb-1">GOOD DECISION</h3>
+                    <p class="text-[10px] text-slate-300 mb-3">You successfully identified the kick and shut in the well despite social pressure.</p>
+                    <a href="courses.html" class="inline-block px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded text-white text-xs font-bold transition-colors">Return to Courses</a>
+                </div>
+            `;
+        }
+
+        function updateStress() {
+            const bar = document.getElementById('stress-bar');
+            bar.style.width = stressLevel + "%";
+        }
+
+        // Init
+        setLens('mechanic');
+        initChart();
+    </script>
+</body>
+</html>
