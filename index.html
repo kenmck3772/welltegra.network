@@ -258,15 +258,17 @@
 
         .nav__list {
             display: flex;
-            gap: var(--space-md);
+            gap: var(--space-lg);
             list-style: none;
+            align-items: center;
         }
 
         .nav__link {
-            font-size: 0.9375rem;
+            font-size: 1rem;
             font-weight: 500;
             color: var(--silver);
-            transition: color 0.2s;
+            transition: all 0.2s;
+            white-space: nowrap;
         }
 
         .nav__link:hover {
@@ -1527,12 +1529,11 @@
 
             <nav class="nav">
                 <ul class="nav__list">
+                    <li><a href="#home" class="nav__link">Home</a></li>
                     <li><a href="planner.html" class="nav__link">Planner</a></li>
-                    <li><a href="case-studies.html" class="nav__link">Case Studies</a></li>
-                    <li><a href="equipment.html" class="nav__link">Equipment</a></li>
                     <li><a href="courses.html" class="nav__link">Courses</a></li>
-                    <li><a href="#pillars" class="nav__link">11 Pillars</a></li>
-                    <li><a href="#calculator" class="nav__link">ROI</a></li>
+                    <li><a href="equipment.html" class="nav__link">Equipment</a></li>
+                    <li><a href="#about" class="nav__link">About</a></li>
                 </ul>
             </nav>
 
@@ -1551,13 +1552,13 @@
     <nav class="mobile-nav" id="mobileNav">
         <button class="mobile-nav__close" id="mobileClose" aria-label="Close menu">×</button>
         <ul class="mobile-nav__list">
+            <li><a href="#home" class="mobile-nav__link">Home</a></li>
             <li><a href="planner.html" class="mobile-nav__link">Planner</a></li>
-            <li><a href="case-studies.html" class="mobile-nav__link">Case Studies</a></li>
-            <li><a href="equipment.html" class="mobile-nav__link">Equipment</a></li>
             <li><a href="courses.html" class="mobile-nav__link">Courses</a></li>
-            <li><a href="#pillars" class="mobile-nav__link">11 Pillars</a></li>
-            <li><a href="#calculator" class="mobile-nav__link">ROI Calculator</a></li>
-            <li><a href="#contact" class="mobile-nav__link">Request Demo</a></li>
+            <li><a href="equipment.html" class="mobile-nav__link">Equipment</a></li>
+            <li><a href="case-studies.html" class="mobile-nav__link">Case Studies</a></li>
+            <li><a href="#about" class="mobile-nav__link">About</a></li>
+            <li><a href="#contact" class="mobile-nav__link">Contact</a></li>
         </ul>
     </nav>
 
