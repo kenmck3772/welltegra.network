@@ -234,5 +234,217 @@
         </div>
     </footer>
 
+    <!-- Version Switcher Component -->
+    <div id="version-switcher" data-current-version="home">
+        <style>
+            #version-switcher {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            }
+
+            .version-trigger {
+                background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+                border: 1px solid rgba(59, 130, 246, 0.3);
+                border-radius: 12px;
+                padding: 10px 16px;
+                color: #e2e8f0;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                transition: all 0.3s ease;
+                backdrop-filter: blur(10px);
+            }
+
+            .version-trigger:hover {
+                border-color: #3b82f6;
+                box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+                transform: translateY(-2px);
+            }
+
+            .version-trigger .icon {
+                font-size: 16px;
+            }
+
+            .version-dropdown {
+                position: absolute;
+                top: 100%;
+                right: 0;
+                margin-top: 8px;
+                background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+                border: 1px solid rgba(59, 130, 246, 0.3);
+                border-radius: 12px;
+                padding: 8px;
+                min-width: 220px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: all 0.3s ease;
+                backdrop-filter: blur(10px);
+            }
+
+            .version-dropdown.open {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .version-option {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px;
+                border-radius: 8px;
+                color: #e2e8f0;
+                text-decoration: none;
+                transition: all 0.2s ease;
+                margin-bottom: 4px;
+            }
+
+            .version-option:last-child {
+                margin-bottom: 0;
+            }
+
+            .version-option:hover {
+                background: rgba(59, 130, 246, 0.15);
+                transform: translateX(4px);
+            }
+
+            .version-option.active {
+                background: rgba(59, 130, 246, 0.2);
+                border-left: 3px solid #3b82f6;
+            }
+
+            .version-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                flex-shrink: 0;
+            }
+
+            .version-info {
+                flex: 1;
+            }
+
+            .version-label {
+                font-size: 11px;
+                color: #94a3b8;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                font-weight: 600;
+            }
+
+            .version-name {
+                font-size: 14px;
+                font-weight: 600;
+                color: #e2e8f0;
+            }
+
+            .version-badge {
+                padding: 2px 8px;
+                background: rgba(34, 197, 94, 0.2);
+                color: #22c55e;
+                font-size: 10px;
+                font-weight: 700;
+                border-radius: 4px;
+                text-transform: uppercase;
+            }
+
+            /* Mobile Responsive */
+            @media (max-width: 640px) {
+                #version-switcher {
+                    top: 10px;
+                    right: 10px;
+                }
+
+                .version-trigger {
+                    padding: 8px 12px;
+                    font-size: 12px;
+                }
+
+                .version-dropdown {
+                    min-width: 200px;
+                }
+            }
+        </style>
+
+        <button class="version-trigger" onclick="toggleVersionDropdown()">
+            <span class="icon">🔀</span>
+            <span id="current-version-text">Quick Access</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 5l3 3 3-3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+
+        <div class="version-dropdown" id="version-dropdown">
+            <a href="https://v1.welltegra.network/" class="version-option" data-version="1" target="_blank" rel="noopener noreferrer">
+                <div class="version-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);">
+                    📄
+                </div>
+                <div class="version-info">
+                    <div class="version-label">Version 1</div>
+                    <div class="version-name">Initial Concept</div>
+                </div>
+            </a>
+
+            <a href="https://v2.welltegra.network/" class="version-option" data-version="2" target="_blank" rel="noopener noreferrer">
+                <div class="version-icon" style="background: linear-gradient(135deg, #a855f7 0%, #3b82f6 100%);">
+                    ⚡
+                </div>
+                <div class="version-info">
+                    <div class="version-label">Version 2</div>
+                    <div class="version-name">The Brahan Engine</div>
+                </div>
+                <span class="version-badge">Core</span>
+            </a>
+
+            <a href="https://v3.welltegra.network/" class="version-option" data-version="3" target="_blank" rel="noopener noreferrer">
+                <div class="version-icon" style="background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);">
+                    📱
+                </div>
+                <div class="version-info">
+                    <div class="version-label">Version 3</div>
+                    <div class="version-name">Refined Experience</div>
+                </div>
+                <span class="version-badge">Latest</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const switcher = document.getElementById('version-switcher');
+        const dropdown = document.getElementById('version-dropdown');
+
+        // Toggle dropdown
+        window.toggleVersionDropdown = function() {
+            dropdown.classList.toggle('open');
+        };
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!switcher.contains(event.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
+
+        // Prevent dropdown from closing when clicking inside
+        dropdown.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    })();
+    </script>
+
 </body>
 </html>
