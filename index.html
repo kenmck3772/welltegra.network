@@ -1799,38 +1799,156 @@
     </section>
 
     <!-- ============================================
-         METRICS STRIP
+         PORTFOLIO SECTION
+         ============================================ -->
+    <section class="section section--mist" id="portfolio">
+        <div class="container">
+            <div class="fade-in" style="text-align: center; margin-bottom: 60px;">
+                <span class="label">Technical Projects</span>
+                <h2 style="font-size: 2.5rem; margin-bottom: 16px; color: var(--white);">Portfolio</h2>
+                <p style="color: var(--silver); font-size: 1.125rem; max-width: 700px; margin: 0 auto;">
+                    Technical demonstrations showcasing full-stack development, AI integration, and domain expertise
+                </p>
+            </div>
+
+            <div class="grid grid--2" style="gap: 48px; align-items: start;">
+                <!-- Brahan Engine Project -->
+                <div class="fade-in" style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 12px; padding: 40px;">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+                        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px;">
+                            🛢️
+                        </div>
+                        <div>
+                            <h3 style="font-size: 1.5rem; margin: 0; color: var(--white);">The Brahan Engine</h3>
+                            <p style="margin: 4px 0 0 0; color: var(--steel); font-size: 0.875rem;">AI-Powered Well Intervention Planner</p>
+                        </div>
+                    </div>
+
+                    <p style="color: var(--silver); line-height: 1.7; margin-bottom: 24px;">
+                        Full-stack web application demonstrating how AI and structured data can revolutionize well intervention planning.
+                        Built to solve real problems I encountered during 25+ years offshore: disconnected workflows, manual data wrangling,
+                        and opaque risk assessment.
+                    </p>
+
+                    <div style="margin-bottom: 24px;">
+                        <h4 style="color: var(--white); font-size: 1rem; margin-bottom: 12px;">Technical Stack:</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <span style="background: rgba(249, 115, 22, 0.1); color: var(--accent); padding: 6px 12px; border-radius: 6px; font-size: 0.875rem;">Python</span>
+                            <span style="background: rgba(249, 115, 22, 0.1); color: var(--accent); padding: 6px 12px; border-radius: 6px; font-size: 0.875rem;">PostgreSQL</span>
+                            <span style="background: rgba(249, 115, 22, 0.1); color: var(--accent); padding: 6px 12px; border-radius: 6px; font-size: 0.875rem;">LLM APIs</span>
+                            <span style="background: rgba(249, 115, 22, 0.1); color: var(--accent); padding: 6px 12px; border-radius: 6px; font-size: 0.875rem;">HTML/CSS/JS</span>
+                            <span style="background: rgba(249, 115, 22, 0.1); color: var(--accent); padding: 6px 12px; border-radius: 6px; font-size: 0.875rem;">Chart.js</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 24px;">
+                        <h4 style="color: var(--white); font-size: 1rem; margin-bottom: 12px;">Key Features:</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0; color: var(--silver); line-height: 1.8;">
+                            <li>• Automated clash detection & safety barrier validation</li>
+                            <li>• 11 Pillars framework for unified well data architecture</li>
+                            <li>• Real-time risk scoring and conflict visualization</li>
+                            <li>• Equipment database with 900+ intervention tools</li>
+                            <li>• AI-assisted SOP generation and planning optimization</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: rgba(251, 191, 36, 0.1); border-left: 3px solid #fbbf24; padding: 16px; border-radius: 6px; margin-bottom: 24px;">
+                        <p style="margin: 0; color: var(--silver); font-size: 0.875rem;">
+                            <strong style="color: #fbbf24;">Note:</strong> Built with synthetic well data for demonstration purposes.
+                            Showcases technical architecture, problem-solving approach, and domain expertise.
+                        </p>
+                    </div>
+
+                    <a href="planner.html" class="btn btn--ghost" style="width: 100%; justify-content: center;">
+                        Explore Technical Demo →
+                    </a>
+                </div>
+
+                <!-- Well-Tegra Academy Project -->
+                <div class="fade-in" style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 12px; padding: 40px;">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+                        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px;">
+                            🎓
+                        </div>
+                        <div>
+                            <h3 style="font-size: 1.5rem; margin: 0; color: var(--white);">Well-Tegra Academy</h3>
+                            <p style="margin: 4px 0 0 0; color: var(--steel); font-size: 0.875rem;">Interactive Training Modules</p>
+                        </div>
+                    </div>
+
+                    <p style="color: var(--silver); line-height: 1.7; margin-bottom: 24px;">
+                        Comprehensive training curriculum bridging the gap between office planning and rig-floor reality.
+                        Designed interactive modules for P&A operations, micro-annulus diagnostics, and crew resource management.
+                    </p>
+
+                    <div style="margin-bottom: 24px;">
+                        <h4 style="color: var(--white); font-size: 1rem; margin-bottom: 12px;">Technologies Used:</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <span style="background: rgba(20, 184, 166, 0.1); color: #14b8a6; padding: 6px 12px; border-radius: 6px; font-size: 0.875rem;">HTML5</span>
+                            <span style="background: rgba(20, 184, 166, 0.1); color: #14b8a6; padding: 6px 12px; border-radius: 6px; font-size: 0.875rem;">Tailwind CSS</span>
+                            <span style="background: rgba(20, 184, 166, 0.1); color: #14b8a6; padding: 6px 12px; border-radius: 6px; font-size: 0.875rem;">JavaScript</span>
+                            <span style="background: rgba(20, 184, 166, 0.1); color: #14b8a6; padding: 6px 12px; border-radius: 6px; font-size: 0.875rem;">Chart.js</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 24px;">
+                        <h4 style="color: var(--white); font-size: 1rem; margin-bottom: 12px;">Modules Developed:</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0; color: var(--silver); line-height: 1.8;">
+                            <li>• <strong>P&A Operations:</strong> Section milling, cement placement, barrier verification</li>
+                            <li>• <strong>Micro-Annulus Course:</strong> Diagnostic decision trees and risk assessment</li>
+                            <li>• <strong>Crisis Command:</strong> Real-time CRM simulation with cognitive filters</li>
+                            <li>• <strong>SOP Library:</strong> Searchable database of well intervention procedures</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: rgba(20, 184, 166, 0.1); border-left: 3px solid #14b8a6; padding: 16px; border-radius: 6px; margin-bottom: 24px;">
+                        <p style="margin: 0; color: var(--silver); font-size: 0.875rem;">
+                            <strong style="color: #14b8a6;">Demonstrates:</strong> Instructional design, technical writing,
+                            interactive UI development, and ability to translate complex field operations into training content.
+                        </p>
+                    </div>
+
+                    <a href="courses.html" class="btn btn--ghost" style="width: 100%; justify-content: center;">
+                        View Training Modules →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         TECHNICAL ACHIEVEMENTS
          ============================================ -->
     <section class="metrics">
         <div class="container">
             <div class="metrics__grid">
                 <div class="metric fade-in">
-                    <div class="metric__value">15-30%</div>
-                    <div class="metric__label">NPT Reduction on Pilot Wells</div>
+                    <div class="metric__value">900+</div>
+                    <div class="metric__label">Equipment Database Entries</div>
                     <div class="metric__bar">
-                        <div class="metric__bar-fill" style="width: 75%"></div>
+                        <div class="metric__bar-fill" style="width: 90%"></div>
                     </div>
                 </div>
 
                 <div class="metric fade-in">
-                    <div class="metric__value">2-3 hrs</div>
-                    <div class="metric__label">Daily Engineer Time Saved</div>
+                    <div class="metric__value">11</div>
+                    <div class="metric__label">Strategic Framework Pillars</div>
                     <div class="metric__bar">
-                        <div class="metric__bar-fill" style="width: 60%"></div>
+                        <div class="metric__bar-fill" style="width: 100%"></div>
                     </div>
                 </div>
 
                 <div class="metric fade-in">
-                    <div class="metric__value">40%</div>
-                    <div class="metric__label">Faster Planning Cycles</div>
+                    <div class="metric__value">Full-Stack</div>
+                    <div class="metric__label">Frontend + Backend + Database</div>
                     <div class="metric__bar">
-                        <div class="metric__bar-fill" style="width: 80%"></div>
+                        <div class="metric__bar-fill" style="width: 100%"></div>
                     </div>
                 </div>
 
                 <div class="metric fade-in">
-                    <div class="metric__value">24/7</div>
-                    <div class="metric__label">AI Availability</div>
+                    <div class="metric__value">25+ Years</div>
+                    <div class="metric__label">Domain Expertise Applied</div>
                     <div class="metric__bar">
                         <div class="metric__bar-fill" style="width: 100%"></div>
                     </div>
@@ -2061,52 +2179,6 @@
         </div>
     </section>
 
-    <!-- ============================================
-         CALCULATOR
-         ============================================ -->
-    <section class="section calculator" id="calculator">
-        <div class="container">
-            <div class="calculator__inner">
-                <div class="calculator__content fade-in">
-                    <span class="label">ROI Calculator</span>
-                    <h2 class="calculator__title">Calculate Your Savings</h2>
-                    <p class="calculator__text">
-                        See how much you could save by reducing NPT and reclaiming engineer time. 
-                        Adjust the inputs to match your operation.
-                    </p>
-                </div>
-
-                <div class="calculator__widget fade-in">
-                    <div class="calc-field">
-                        <label class="calc-field__label" for="wells">Wells per Year</label>
-                        <input type="number" id="wells" class="calc-field__input" value="20" min="1" max="500">
-                    </div>
-
-                    <div class="calc-field">
-                        <label class="calc-field__label" for="cost">Average Intervention Cost ($)</label>
-                        <input type="number" id="cost" class="calc-field__input" value="500000" min="10000" step="10000">
-                    </div>
-
-                    <div class="calc-field">
-                        <label class="calc-field__label" for="npt">Current NPT Estimate</label>
-                        <select id="npt" class="calc-field__input">
-                            <option value="0.10">10% (Industry best)</option>
-                            <option value="0.15">15% (Good performance)</option>
-                            <option value="0.20" selected>20% (Industry average)</option>
-                            <option value="0.25">25% (Below average)</option>
-                            <option value="0.30">30%+ (Significant issues)</option>
-                        </select>
-                    </div>
-
-                    <div class="calc-result">
-                        <div class="calc-result__label">Estimated Annual Savings</div>
-                        <div class="calc-result__value" id="savings">$400,000</div>
-                        <div class="calc-result__note">Based on 20% NPT reduction with Brahan Engine</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- ============================================
          TRUST / FOUNDER
@@ -2158,45 +2230,45 @@
     </section>
 
     <!-- ============================================
-         FUTURE CAPABILITIES
+         AI/CV PROTOTYPE
          ============================================ -->
     <section class="section future-cap">
         <div class="container">
             <div class="future-cap__inner">
                 <div class="future-cap__content fade-in">
-                    <span class="label" style="color: #8b5cf6;">Coming Soon</span>
+                    <span class="label" style="color: #8b5cf6;">Experimental Prototype</span>
                     <h2 style="margin-bottom: var(--space-sm);">Brahan Vertex Vision</h2>
                     <p style="color: var(--steel); font-size: 1.0625rem; margin-bottom: var(--space-md);">
-                        The next evolution: AI-powered forensic witnessing using Google Vertex Vision. 
-                        Zero-footprint verification of rig floor operations, subsea integrity, and equipment logistics.
+                        AI-powered computer vision prototype exploring automated verification of rig floor operations.
+                        Demonstrates integration of Google Vertex Vision AI for real-time visual analysis and quality assurance.
                     </p>
-                    
+
                     <div class="future-cap__features">
                         <div class="future-cap__feature">
                             <span class="future-cap__feature-icon">🎥</span>
                             <div>
-                                <strong>Rig Floor Witnessing</strong>
-                                <span>AI reads torque gauges and validates pressure tests in real-time</span>
+                                <strong>Visual Analysis</strong>
+                                <span>AI reads torque gauges and validates pressure tests from video feeds</span>
                             </div>
                         </div>
                         <div class="future-cap__feature">
                             <span class="future-cap__feature-icon">🤿</span>
                             <div>
-                                <strong>Subsea Integrity</strong>
-                                <span>ROV feed analysis for valve positions and corrosion grading</span>
+                                <strong>Object Detection</strong>
+                                <span>Automated analysis of valve positions and equipment condition</span>
                             </div>
                         </div>
                         <div class="future-cap__feature">
                             <span class="future-cap__feature-icon">📦</span>
                             <div>
-                                <strong>Visual Inventory</strong>
-                                <span>OCR manifest verification catches missing or extra equipment</span>
+                                <strong>OCR Integration</strong>
+                                <span>Text extraction and manifest verification capabilities</span>
                             </div>
                         </div>
                     </div>
-                    
+
                     <a href="brahan-vertex.html" class="btn btn--secondary" style="margin-top: var(--space-md);">
-                        Explore the Demo →
+                        View Prototype Demo →
                     </a>
                 </div>
                 
