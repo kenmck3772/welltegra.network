@@ -72,7 +72,6 @@ PORTFOLIO PROJECTS:
    - Enterprise-grade operations management platform for electrical contractors
    - Features: AI-powered voice logging with Gemini, Vision Link AR integration, real-time job tracking, material management with barcode scanning, business analytics
    - Technologies: React 19, TypeScript, Gemini AI, Vite, Vision API
-   - AI Studio: https://ai.google.dev/competition/projects/craik-electrical-ops-center
    - Demonstrates: Enterprise React/TypeScript development, cutting-edge AI integration (Gemini), AR/Vision capabilities, real-time data management, complex state handling
    - GitHub: https://github.com/kenmck3772/Craik-Electrical
 
