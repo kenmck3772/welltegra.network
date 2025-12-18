@@ -68,6 +68,14 @@ PORTFOLIO PROJECTS:
    - Demonstrates: Modern build tooling, CI/CD pipelines, diverse content types
    - GitHub: https://github.com/kenmck3772/theclanhearth.com
 
+6. CRAIK ELECTRICAL OPS CENTER - Enterprise Electrical Management Suite
+   - Enterprise-grade operations management platform for electrical contractors
+   - Features: AI-powered voice logging with Gemini, Vision Link AR integration, real-time job tracking, material management with barcode scanning, business analytics
+   - Technologies: React 19, TypeScript, Gemini AI, Vite, Vision API
+   - AI Studio: https://ai.google.dev/competition/projects/craik-electrical-ops-center
+   - Demonstrates: Enterprise React/TypeScript development, cutting-edge AI integration (Gemini), AR/Vision capabilities, real-time data management, complex state handling
+   - GitHub: https://github.com/kenmck3772/Craik-Electrical
+
 EXPERIENCE HIGHLIGHTS:
 - 30+ years offshore well engineering across multiple regions
 - 80+ intervention programs reviewed and analyzed
