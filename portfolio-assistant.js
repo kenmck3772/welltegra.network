@@ -195,6 +195,13 @@ When answering questions:
                 align-items: center;
                 justify-content: center;
                 font-size: 20px;
+                overflow: hidden;
+            }
+
+            .chat-header-icon img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
 
             .chat-header-text h3 {
@@ -247,6 +254,13 @@ When answering questions:
 
             .message-avatar.bot {
                 background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+                overflow: hidden;
+            }
+
+            .message-avatar.bot img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
 
             .message-avatar.user {
@@ -486,7 +500,9 @@ When answering questions:
 
             <div class="chat-window" id="chat-window">
                 <div class="chat-header">
-                    <div class="chat-header-icon">🤖</div>
+                    <div class="chat-header-icon">
+                        <img src="assets/images/kenmckenzie.jpg" alt="Ken McKenzie">
+                    </div>
                     <div class="chat-header-text">
                         <h3>Portfolio Assistant</h3>
                         <p>Ask me about Ken's experience</p>
@@ -649,7 +665,7 @@ When answering questions:
 
         messageDiv.innerHTML = `
             <div class="message-avatar ${type}">
-                ${type === 'bot' ? '🤖' : '👤'}
+                ${type === 'bot' ? '<img src="assets/images/kenmckenzie.jpg" alt="Ken McKenzie">' : '👤'}
             </div>
             <div class="message-content">
                 <div class="message-bubble ${type}">
@@ -681,7 +697,9 @@ When answering questions:
         typingDiv.className = 'chat-message bot';
         typingDiv.id = 'typing-indicator';
         typingDiv.innerHTML = `
-            <div class="message-avatar bot">🤖</div>
+            <div class="message-avatar bot">
+                <img src="assets/images/kenmckenzie.jpg" alt="Ken McKenzie">
+            </div>
             <div class="message-content">
                 <div class="typing-indicator">
                     <div class="typing-dot"></div>
