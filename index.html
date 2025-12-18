@@ -2666,28 +2666,31 @@
         const nptSelect = document.getElementById('npt');
         const savingsDisplay = document.getElementById('savings');
 
-        function calculateSavings() {
-            const wells = parseInt(wellsInput.value) || 20;
-            const cost = parseInt(costInput.value) || 500000;
-            const npt = parseFloat(nptSelect.value) || 0.20;
-            
-            // Calculate: wells × cost × current NPT × 20% reduction achieved
-            const currentNPTCost = wells * cost * npt;
-            const reduction = 0.20; // Brahan achieves 20% reduction of NPT
-            const savings = currentNPTCost * reduction;
-            
-            savingsDisplay.textContent = '$' + savings.toLocaleString('en-US', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            });
+        // Only initialize calculator if elements exist
+        if (wellsInput && costInput && nptSelect && savingsDisplay) {
+            function calculateSavings() {
+                const wells = parseInt(wellsInput.value) || 20;
+                const cost = parseInt(costInput.value) || 500000;
+                const npt = parseFloat(nptSelect.value) || 0.20;
+
+                // Calculate: wells × cost × current NPT × 20% reduction achieved
+                const currentNPTCost = wells * cost * npt;
+                const reduction = 0.20; // Brahan achieves 20% reduction of NPT
+                const savings = currentNPTCost * reduction;
+
+                savingsDisplay.textContent = '$' + savings.toLocaleString('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+            }
+
+            wellsInput.addEventListener('input', calculateSavings);
+            costInput.addEventListener('input', calculateSavings);
+            nptSelect.addEventListener('change', calculateSavings);
+
+            // Initial calculation
+            calculateSavings();
         }
-
-        wellsInput.addEventListener('input', calculateSavings);
-        costInput.addEventListener('input', calculateSavings);
-        nptSelect.addEventListener('change', calculateSavings);
-
-        // Initial calculation
-        calculateSavings();
     </script>
 
     <!-- Version Switcher Component -->
