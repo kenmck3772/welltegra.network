@@ -176,9 +176,33 @@
         .btn-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
         .btn-danger:disabled { opacity: 0.5; cursor: not-allowed; }
         .footer { border-top: 1px solid var(--border); padding: 2rem 1.5rem; text-align: center; color: var(--muted); font-size: 0.9rem; }
+
+        /* Portfolio Notice Banner */
+        .portfolio-notice {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.15), rgba(59, 130, 246, 0.15));
+            border-bottom: 2px solid rgba(20, 184, 166, 0.3);
+            padding: 0.75rem 1rem;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--fg);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .portfolio-notice span { color: var(--accent); font-weight: 700; }
+        @media (max-width: 768px) {
+            .portfolio-notice { font-size: 0.75rem; padding: 0.6rem 0.75rem; }
+        }
     </style>
 </head>
 <body>
+    <!-- Portfolio Notice -->
+    <div class="portfolio-notice">
+        📋 <span>PORTFOLIO PROJECT</span> | Case studies demonstrating well engineering analysis by Ken McKenzie | Educational purposes - anonymized data
+    </div>
+
     <header class="header">
         <div class="header-inner">
             <a href="index.html" class="logo">
@@ -222,7 +246,8 @@
     </main>
 
     <footer class="footer">
-        <p>© 2025 WellTegra · The Brahan Engine · See What Others Can't</p>
+        <p>© 2025 WellTegra Portfolio Project by Ken McKenzie | Educational case study demonstrations</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Not affiliated with any commercial operator • All well data is anonymized/sanitized</p>
     </footer>
 
     <script>

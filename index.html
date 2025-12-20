@@ -1556,9 +1556,51 @@
                 padding: var(--space-lg) 0;
             }
         }
+
+        /* ============================================
+           PORTFOLIO NOTICE BANNER
+           ============================================ */
+        .portfolio-notice {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(13, 148, 136, 0.15));
+            border-bottom: 2px solid rgba(249, 115, 22, 0.3);
+            padding: 0.75rem 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--mist);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+        }
+
+        .portfolio-notice__icon {
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        .portfolio-notice__text {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .portfolio-notice {
+                font-size: 0.8rem;
+                padding: 0.6rem 0.75rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Portfolio Notice Banner -->
+    <div class="portfolio-notice">
+        <span class="portfolio-notice__icon">📋</span>
+        <span class="portfolio-notice__text">PORTFOLIO PROJECT</span> |
+        Demonstrating well engineering expertise & web development by Ken McKenzie (30+ years North Sea experience) |
+        Educational demonstration - not a commercial product
+    </div>
+
     <!-- ============================================
          HEADER
          ============================================ -->
@@ -2401,8 +2443,8 @@
             </div>
 
             <div class="footer__bottom">
-                <p>© 2025 Well-Tegra. All rights reserved.</p>
-                <p>Built in Scotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿</p>
+                <p>© 2025 Well-Tegra Portfolio Project by Ken McKenzie | Educational demonstration of well engineering & intervention planning concepts</p>
+                <p>Not affiliated with any commercial operator • Case studies use anonymized/sanitized data • Built in Scotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿</p>
             </div>
         </div>
     </footer>
