@@ -3,7 +3,7 @@ const { test, expect } = require('@playwright/test');
 test.describe('P&A Course Video Learning Flow', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to course
-    await page.goto('https://welltegra.network/pa-course.html');
+    await page.goto('/pa-course.html');
     await page.waitForLoadState('networkidle');
 
     // Clear any existing progress
