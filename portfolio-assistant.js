@@ -1,3 +1,4 @@
+/**
  * Portfolio AI Assistant
  * AI-powered chatbot to help employers navigate Ken McKenzie's portfolio
  */
@@ -8,7 +9,7 @@ class PortfolioAssistant {
         this.isTyping = false;
 
         // Portfolio context for the AI
-        this.portfolioContext = `You are an AI assistant helping employers learn about Ken McKenzie's professional portfolio and qualifications.
+        this.portfolioContext = \`You are an AI assistant helping employers learn about Ken McKenzie's professional portfolio and qualifications.
 
 ABOUT KEN:
 Ken McKenzie is a Well Engineering Specialist with over 30 years of offshore experience across the North Sea, Middle East, Asia-Pacific, and West Africa. He witnessed the evolution from telex machines to computers on rig floors, and believes AI represents the next fundamental transformation.
@@ -90,7 +91,7 @@ When answering questions:
 3. When mentioning projects, include the link like this: "View project: [link]"
 4. If asked about experience not covered above, politely say you don't have that information but Ken can discuss it directly
 5. Encourage contacting Ken for detailed discussions or opportunities
-6. Keep responses concise but informative (2-4 paragraphs max)`;
+6. Keep responses concise but informative (2-4 paragraphs max)\`;
 
         this.init();
     }
@@ -102,7 +103,7 @@ When answering questions:
     }
 
     injectStyles() {
-        const styles = `
+        const styles = \`
             .portfolio-assistant-container {
                 position: fixed;
                 bottom: 24px;
@@ -478,7 +479,7 @@ When answering questions:
                     right: 16px;
                 }
             }
-        `;
+        \`;
 
         const styleSheet = document.createElement('style');
         styleSheet.textContent = styles;
@@ -488,7 +489,7 @@ When answering questions:
     createWidget() {
         const container = document.createElement('div');
         container.className = 'portfolio-assistant-container';
-        container.innerHTML = `
+        container.innerHTML = \`
             <button class="assistant-button" id="assistant-toggle" aria-label="Open AI Assistant">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -536,7 +537,7 @@ When answering questions:
                     </div>
                 </div>
             </div>
-        `;
+        \`;
 
         document.body.appendChild(container);
         this.addWelcomeMessage();
@@ -591,25 +592,25 @@ When answering questions:
 
     addWelcomeMessage() {
         setTimeout(() => {
-            this.addMessage('bot', `👋 Hi! I'm Ken McKenzie's AI assistant. I can help you learn about his 30+ years of well engineering experience, technical projects, and skills. What would you like to know?`);
+            this.addMessage('bot', \`👋 Hi! I'm Ken McKenzie's AI assistant. I can help you learn about his 30+ years of well engineering experience, technical projects, and skills. What would you like to know?\`);
         }, 500);
     }
 
     addMessage(type, content) {
         const messagesContainer = document.getElementById('chat-messages');
         const messageDiv = document.createElement('div');
-        messageDiv.className = `chat-message ${type}`;
+        messageDiv.className = \`chat-message \${type}\`;
 
-        messageDiv.innerHTML = `
-            <div class="message-avatar ${type}">
-                ${type === 'bot' ? '<img src="assets/images/kenmck.jpg" alt="Ken McKenzie">' : '👤'}
+        messageDiv.innerHTML = \`
+            <div class="message-avatar \${type}">
+                \${type === 'bot' ? '<img src="assets/images/kenmck.jpg" alt="Ken McKenzie">' : '👤'}
             </div>
             <div class="message-content">
-                <div class="message-bubble ${type}">
-                    ${this.formatMessage(content)}
+                <div class="message-bubble \${type}">
+                    \${this.formatMessage(content)}
                 </div>
             </div>
-        `;
+        \`;
 
         messagesContainer.appendChild(messageDiv);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -633,7 +634,7 @@ When answering questions:
         const typingDiv = document.createElement('div');
         typingDiv.className = 'chat-message bot';
         typingDiv.id = 'typing-indicator';
-        typingDiv.innerHTML = `
+        typingDiv.innerHTML = \`
             <div class="message-avatar bot">
                 <img src="assets/images/kenmck.jpg" alt="Ken McKenzie">
             </div>
@@ -644,7 +645,7 @@ When answering questions:
                     <div class="typing-dot"></div>
                 </div>
             </div>
-        `;
+        \`;
 
         messagesContainer.appendChild(typingDiv);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -749,4 +750,4 @@ if (document.readyState === 'loading') {
 
 function initAssistant() {
     new PortfolioAssistant({});
-}404: Not Found
+}
