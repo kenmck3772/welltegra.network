@@ -864,12 +864,15 @@
         // Load catalog data
         async function loadCatalogData() {
             try {
+                console.log('Loading equipment catalog...');
                 const response = await fetch('data/equipment.json');
                 catalogData = await response.json();
+                console.log('Catalog loaded:', catalogData.categories.length, 'categories');
                 renderPage();
             } catch (error) {
-                console.error('Failed to load equipment.json');
+                console.error('Failed to load equipment.json:', error);
                 catalogData = getEmbeddedData();
+                console.log('Using fallback data');
                 renderPage();
             }
         }
@@ -940,9 +943,11 @@
 
         // Render equipment
         function renderEquipment(searchTerm = '') {
+            console.log('renderEquipment called, activeTab:', activeTab, 'activeSubcategory:', activeSubcategory);
             const grid = document.getElementById('equipmentGrid');
             const search = searchTerm.toLowerCase();
             const allowedCategories = tabMapping[activeTab];
+            console.log('Allowed categories for', activeTab, ':', allowedCategories);
 
             let items = [];
 
@@ -972,6 +977,8 @@
                 );
             }
 
+            console.log('Total items found:', items.length);
+
             // Update title
             if (activeSubcategory === 'all') {
                 document.getElementById('contentTitle').textContent = `${tabTitles[activeTab]} (${items.length})`;
@@ -979,7 +986,7 @@
                 const cat = catalogData.categories.find(c => c.id === activeSubcategory);
                 document.getElementById('contentTitle').textContent = `${cat?.name || 'Equipment'} (${items.length})`;
             }
-            
+
             if (items.length === 0) {
                 grid.innerHTML = `
                     <div class="empty-state" style="grid-column: 1 / -1;">
