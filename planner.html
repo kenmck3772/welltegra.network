@@ -686,14 +686,25 @@
                 <!-- Toolstring Assembly -->
                 <div class="toolstring-section">
                     <div class="toolstring-header">
-                        <h3>Toolstring Assembly</h3>
+                        <h3>Equipment</h3>
                         <button class="btn btn-sm btn-secondary" onclick="clearToolstring()">Clear</button>
                     </div>
                     <div class="toolstring-list" id="toolstringList">
                         <div class="toolstring-empty">No tools added. Use Quick Add or open Equipment Catalog.</div>
                     </div>
                 </div>
-                
+
+                <!-- Personnel Section -->
+                <div class="toolstring-section" style="margin-top: 1rem;">
+                    <div class="toolstring-header">
+                        <h3>Personnel</h3>
+                        <button class="btn btn-sm btn-secondary" onclick="clearPersonnel()">Clear</button>
+                    </div>
+                    <div class="toolstring-list" id="personnelList">
+                        <div class="toolstring-empty">No personnel added.</div>
+                    </div>
+                </div>
+
                 <!-- Quick Add -->
                 <div class="quick-add">
                     <div class="quick-add-title">QUICK ADD</div>
@@ -1251,16 +1262,25 @@
         
         function clearToolstring() {
             toolstring = [];
-            personnel = [];
             updateToolstringUI();
             document.getElementById('clashAlert').classList.add('hidden');
         }
-        
+
+        function removePersonnel(id) {
+            personnel = personnel.filter(p => p.id !== id);
+            updateToolstringUI();
+        }
+
+        function clearPersonnel() {
+            personnel = [];
+            updateToolstringUI();
+        }
+
         function updateToolstringUI() {
-            const list = document.getElementById('toolstringList');
-            
-            if (toolstring.length === 0 && personnel.length === 0) {
-                list.innerHTML = '<div class="toolstring-empty">No tools added. Use Quick Add or open Equipment Catalog.</div>';
+            // Render equipment list
+            const equipmentList = document.getElementById('toolstringList');
+            if (toolstring.length === 0) {
+                equipmentList.innerHTML = '<div class="toolstring-empty">No tools added. Use Quick Add or open Equipment Catalog.</div>';
             } else {
                 const toolsHtml = toolstring.map(t => `
                     <div class="toolstring-item">
@@ -1271,17 +1291,24 @@
                         <button class="toolstring-item-remove" onclick="removeTool(${t.id})">✕</button>
                     </div>
                 `).join('');
-                
+                equipmentList.innerHTML = toolsHtml;
+            }
+
+            // Render personnel list
+            const personnelListEl = document.getElementById('personnelList');
+            if (personnel.length === 0) {
+                personnelListEl.innerHTML = '<div class="toolstring-empty">No personnel added.</div>';
+            } else {
                 const persHtml = personnel.map(p => `
                     <div class="toolstring-item" style="border-left: 3px solid var(--success);">
                         <div>
                             <div class="toolstring-item-name">${p.name}</div>
                             <div class="toolstring-item-specs">$${p.dailyRate}/day</div>
                         </div>
+                        <button class="toolstring-item-remove" onclick="removePersonnel(${p.id})">✕</button>
                     </div>
                 `).join('');
-                
-                list.innerHTML = toolsHtml + persHtml;
+                personnelListEl.innerHTML = persHtml;
             }
             
             updateMetrics();
