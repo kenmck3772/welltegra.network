@@ -486,6 +486,8 @@
             font-size: 0.85rem;
         }
     </style>
+    <!-- Chart.js for Risk Priority Matrix -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -543,7 +545,36 @@
             <ul class="safety-lock-reasons" id="lockReasons"></ul>
         </div>
     </div>
-    
+
+    <!-- Risk Priority Matrix -->
+    <section style="max-width: 1600px; margin: 1.5rem auto; padding: 0 1.5rem;">
+        <div class="panel" style="margin-bottom: 1.5rem;">
+            <div class="panel-header">
+                <h2>⚡ Risk Priority Matrix</h2>
+                <p>Click any well to load into planner — Red = Critical Risk | Cyan = Safe</p>
+            </div>
+            <div class="panel-body">
+                <div style="position: relative; height: 400px;">
+                    <canvas id="riskMatrixChart"></canvas>
+                </div>
+                <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; font-size: 0.85rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ef4444;"></div>
+                        <span>Critical Risk (Integrity &lt; 20%)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #f59e0b;"></div>
+                        <span>Medium Risk (20-50%)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 12px; height: 12px; border-radius: 50%; background: #14b8a6;"></div>
+                        <span>Safe (50%+)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Main Content -->
     <main class="main" id="mainContent">
         <!-- Left Panel: Wellbore Schematic -->
@@ -795,8 +826,9 @@
         async function init() {
             await loadWellData();
             populateWellSelector();
+            renderRiskMatrix();
             renderMocRequests();
-            
+
             // Check URL params for pre-selected well
             const params = new URLSearchParams(window.location.search);
             const wellId = params.get('well');
@@ -818,7 +850,7 @@
         function populateWellSelector() {
             const selector = document.getElementById('wellSelector');
             if (!wellData) return;
-            
+
             wellData.wells.forEach(well => {
                 const option = document.createElement('option');
                 option.value = well.id;
@@ -827,7 +859,143 @@
                 selector.appendChild(option);
             });
         }
-        
+
+        // ===== RISK PRIORITY MATRIX =====
+        let riskMatrixChart = null;
+
+        function renderRiskMatrix() {
+            if (!wellData) return;
+
+            const ctx = document.getElementById('riskMatrixChart');
+            if (!ctx) return;
+
+            // Prepare data points
+            const dataPoints = wellData.wells.map(well => {
+                // Calculate value score (simplified NPV proxy)
+                // Use probability of success if available, otherwise derive from production/economics
+                let valueScore = 0;
+                if (well.economics.probabilityOfSuccess) {
+                    valueScore = well.economics.probabilityOfSuccess;
+                } else {
+                    // Estimate value based on actual spent and production
+                    const spent = well.economics.actualSpent || 0;
+                    valueScore = Math.min(100, (spent / 1000000) * 0.5); // Simplified
+                }
+
+                // Determine color by risk level
+                let color;
+                if (well.integrityScore < 20) {
+                    color = '#ef4444'; // Critical - Red
+                } else if (well.integrityScore < 50) {
+                    color = '#f59e0b'; // Medium - Orange
+                } else {
+                    color = '#14b8a6'; // Safe - Cyan
+                }
+
+                return {
+                    x: well.integrityScore,
+                    y: valueScore,
+                    wellId: well.id,
+                    wellName: well.name,
+                    nickname: well.nickname,
+                    color: color
+                };
+            });
+
+            // Destroy existing chart if present
+            if (riskMatrixChart) {
+                riskMatrixChart.destroy();
+            }
+
+            // Create scatter chart
+            riskMatrixChart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Wells',
+                        data: dataPoints,
+                        backgroundColor: dataPoints.map(p => p.color),
+                        borderColor: dataPoints.map(p => p.color),
+                        borderWidth: 2,
+                        pointRadius: 8,
+                        pointHoverRadius: 12
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                            titleColor: '#e2e8f0',
+                            bodyColor: '#94a3b8',
+                            borderColor: '#334155',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                title: function(context) {
+                                    const point = context[0].raw;
+                                    return point.wellName + ' "' + point.nickname + '"';
+                                },
+                                label: function(context) {
+                                    const point = context.raw;
+                                    return [
+                                        'Integrity: ' + point.x + '%',
+                                        'Value Score: ' + point.y.toFixed(1),
+                                        '',
+                                        '💡 Click to load in planner'
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Integrity Score (%)',
+                                color: '#94a3b8',
+                                font: { weight: 'bold', size: 12 }
+                            },
+                            min: 0,
+                            max: 100,
+                            grid: { color: '#1e293b' },
+                            ticks: { color: '#64748b' }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Value/Success Score',
+                                color: '#94a3b8',
+                                font: { weight: 'bold', size: 12 }
+                            },
+                            min: 0,
+                            max: 100,
+                            grid: { color: '#1e293b' },
+                            ticks: { color: '#64748b' }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const wellId = dataPoints[index].wellId;
+
+                            // Update dropdown and select well
+                            document.getElementById('wellSelector').value = wellId;
+                            selectWell(wellId);
+
+                            // Scroll to main content
+                            document.getElementById('mainContent').scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                }
+            });
+        }
+
         // ===== WELL SELECTION =====
         function selectWell(wellId) {
             if (!wellId || !wellData) {
