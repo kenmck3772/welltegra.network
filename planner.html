@@ -485,11 +485,35 @@
             color: var(--muted);
             font-size: 0.85rem;
         }
+
+        /* Portfolio Notice Banner */
+        .portfolio-notice {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.15), rgba(59, 130, 246, 0.15));
+            border-bottom: 2px solid rgba(20, 184, 166, 0.3);
+            padding: 0.75rem 1rem;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--fg);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .portfolio-notice span { color: var(--accent); font-weight: 700; }
+        @media (max-width: 768px) {
+            .portfolio-notice { font-size: 0.75rem; padding: 0.6rem 0.75rem; }
+        }
     </style>
     <!-- Chart.js for Risk Priority Matrix -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
+    <!-- Portfolio Notice -->
+    <div class="portfolio-notice">
+        📋 <span>PORTFOLIO PROJECT</span> | Demonstrating well engineering & intervention planning expertise by Ken McKenzie | Educational demonstration - not a commercial product
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="header-inner">
@@ -767,7 +791,8 @@
     <div class="toast" id="toast">Plan saved successfully!</div>
     
     <footer class="footer">
-        <p>© 2025 WellTegra · The Brahan Engine · See What Others Can't</p>
+        <p>© 2025 WellTegra Portfolio Project by Ken McKenzie | Educational demonstration of well intervention planning</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Not affiliated with any commercial operator • Case studies use anonymized data</p>
     </footer>
 
     <script>
