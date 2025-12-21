@@ -67,6 +67,14 @@
             align-items: center;
             justify-content: center;
             transition: transform 0.2s;
+            overflow: hidden;
+            padding: 8px;
+        }
+        .chat-fab img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
         .chat-fab:hover { transform: scale(1.1); }
         .chat-fab.hidden { display: none; }
@@ -134,9 +142,16 @@
             align-items: center;
             justify-content: center;
             font-size: 18px;
+            overflow: hidden;
         }
         .message.bot .message-avatar {
             background: linear-gradient(135deg, #1e40af, #3b82f6);
+            padding: 0;
+        }
+        .message-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .message-content {
@@ -224,12 +239,17 @@
 
     // Create chat HTML
     const chatHTML = `
-        <button class="chat-fab" id="chatFab">💬</button>
+        <button class="chat-fab" id="chatFab">
+            <img src="assets/images/brahanbot.png" alt="WellTegra AI Assistant">
+        </button>
         <div class="chat-window" id="chatWindow">
             <div class="chat-header">
-                <div>
-                    <h3>🤖 WellTegra AI</h3>
-                    <div class="status">Ask me about Ken's portfolio!</div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="assets/images/brahanbot.png" alt="Bot" style="width: 32px; height: 32px; border-radius: 50%;">
+                    <div>
+                        <h3>WellTegra AI</h3>
+                        <div class="status">Ask me about Ken's portfolio!</div>
+                    </div>
                 </div>
                 <button class="close-btn" id="closeChat">×</button>
             </div>
@@ -297,7 +317,15 @@
 
         const avatar = document.createElement('div');
         avatar.className = 'message-avatar';
-        avatar.textContent = sender === 'bot' ? '🤖' : '👤';
+
+        if (sender === 'bot') {
+            const img = document.createElement('img');
+            img.src = 'assets/images/brahanbot.png';
+            img.alt = 'WellTegra AI Assistant';
+            avatar.appendChild(img);
+        } else {
+            avatar.textContent = '👤';
+        }
 
         const wrapper = document.createElement('div');
         const content = document.createElement('div');
