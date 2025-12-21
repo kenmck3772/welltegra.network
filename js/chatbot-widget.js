@@ -2,9 +2,17 @@
  * WellTegra AI Assistant - Full Interactive Chatbot
  *
  * A conversational chatbot widget with client-side intelligence
+ *
+ * Configuration: Set window.WELLTEGRA_CHATBOT_CONFIG before loading this script
+ * Example: window.WELLTEGRA_CHATBOT_CONFIG = { avatarImage: 'assets/images/ken.png' };
  */
 (function() {
     'use strict';
+
+    // Get configuration or use defaults
+    const config = window.WELLTEGRA_CHATBOT_CONFIG || {};
+    const avatarImage = config.avatarImage || 'assets/images/brahanbot.png';
+    const botName = config.botName || 'WellTegra AI';
 
     // Knowledge base - responses about Ken's portfolio
     const KNOWLEDGE_BASE = {
@@ -240,14 +248,14 @@
     // Create chat HTML
     const chatHTML = `
         <button class="chat-fab" id="chatFab">
-            <img src="assets/images/brahanbot.png" alt="WellTegra AI Assistant">
+            <img src="${avatarImage}" alt="WellTegra AI Assistant">
         </button>
         <div class="chat-window" id="chatWindow">
             <div class="chat-header">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="assets/images/brahanbot.png" alt="Bot" style="width: 32px; height: 32px; border-radius: 50%;">
+                    <img src="${avatarImage}" alt="Bot" style="width: 32px; height: 32px; border-radius: 50%;">
                     <div>
-                        <h3>WellTegra AI</h3>
+                        <h3>${botName}</h3>
                         <div class="status">Ask me about Ken's portfolio!</div>
                     </div>
                 </div>
@@ -320,8 +328,8 @@
 
         if (sender === 'bot') {
             const img = document.createElement('img');
-            img.src = 'assets/images/brahanbot.png';
-            img.alt = 'WellTegra AI Assistant';
+            img.src = avatarImage;
+            img.alt = botName;
             avatar.appendChild(img);
         } else {
             avatar.textContent = '👤';
