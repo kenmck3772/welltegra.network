@@ -35,11 +35,13 @@ test.describe('Accessibility Tests', () => {
 
     // Check main landmark exists
     const main = page.locator('main');
-    await expect(main).toHaveCount({ gte: 1 });
+    const mainCount = await main.count();
+    expect(mainCount).toBeGreaterThanOrEqual(1);
 
     // Check navigation exists
     const nav = page.locator('nav');
-    await expect(nav).toHaveCount({ gte: 1 });
+    const navCount = await nav.count();
+    expect(navCount).toBeGreaterThanOrEqual(1);
   });
 
   test('color contrast and readability', async ({ page }) => {
