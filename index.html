@@ -1591,9 +1591,26 @@
                 padding: 0.6rem 0.75rem;
             }
         }
+
+        /* Accessibility */
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        /* Ensure proper color contrast */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link" style="position: absolute; top: -40px; left: 6px; background: var(--accent); color: white; padding: 8px; text-decoration: none; z-index: 10000; border-radius: 4px;">Skip to main content</a>
+
     <!-- Portfolio Notice Banner -->
     <div class="portfolio-notice">
         <span class="portfolio-notice__icon">📋</span>
@@ -1612,7 +1629,7 @@
                 <span class="logo__text">Ken <span>McKenzie</span></span>
             </a>
 
-            <nav class="nav">
+            <nav class="nav" aria-label="Main navigation">
                 <ul class="nav__list">
                     <li><a href="index.html" class="nav__link">Home</a></li>
                     <li><a href="index.html#decisions" class="nav__link">Decisions</a></li>
@@ -1638,7 +1655,7 @@
 
     <!-- Mobile Navigation -->
     <div class="mobile-overlay" id="mobileOverlay"></div>
-    <nav class="mobile-nav" id="mobileNav">
+    <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
         <button class="mobile-nav__close" id="mobileClose" aria-label="Close menu">×</button>
         <ul class="mobile-nav__list">
             <li><a href="index.html" class="mobile-nav__link">Home</a></li>
@@ -1656,11 +1673,12 @@
     <!-- ============================================
          HERO
          ============================================ -->
-    <section class="hero">
+    <main id="main-content" role="main">
+    <section class="hero" aria-labelledby="hero-title">
         <div class="container hero__inner">
             <div class="hero__content">
                 <span class="hero__label">Decision Systems for Capital-Intensive Assets</span>
-                <h1 class="hero__title">Turning Subsurface Uncertainty into <em>Defensible Capital Decisions</em></h1>
+                <h1 class="hero__title" id="hero-title">Turning Subsurface Uncertainty into <em>Defensible Capital Decisions</em></h1>
                 <p class="hero__subtitle">
                     From raw data to investment-grade insight—WellTegra builds decision systems that reduce risk and accelerate capital allocation in oil & gas assets.
                 </p>
@@ -2801,6 +2819,7 @@
             </div>
         </div>
     </section>
+    </main>
 
     <!-- ============================================
          FOOTER

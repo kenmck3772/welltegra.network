@@ -1,192 +1,308 @@
-# WellTegra Portfolio Test Suite
+# WellTegra Network - Playwright Test Suite
 
-Comprehensive Playwright test suite covering all major portfolio features.
+Comprehensive end-to-end testing suite for the WellTegra Network website using Playwright.
 
-## Test Files
+## 📋 Table of Contents
 
-- **portfolio-comprehensive.spec.js** - Main test suite (31 tests covering all features)
-- **video-course-flow.spec.js** - P&A course video learning flow tests
-- **pa-course.spec.js** - P&A course specific tests
+- [Setup](#setup)
+- [Running Tests](#running-tests)
+- [Test Structure](#test-structure)
+- [Test Coverage](#test-coverage)
+- [CI/CD Integration](#cicd-integration)
+- [Troubleshooting](#troubleshooting)
 
-## Quick Start
+## 🚀 Setup
 
-### 1. Install Dependencies
+### Prerequisites
 
+- Node.js (v16 or higher)
+- NPM or Yarn
+- Python 3 (for local server)
+
+### Installation
+
+1. Install dependencies:
 ```bash
 npm install
-npx playwright install chromium
 ```
 
-### 2. Run Tests
-
-**Run all comprehensive tests:**
+2. Install Playwright browsers:
 ```bash
-npm test tests/portfolio-comprehensive.spec.js
+npx playwright install
 ```
 
-**Run with local server:**
+3. (Optional) Install system dependencies for browsers:
 ```bash
-# Terminal 1: Start local server
-python3 -m http.server 8000
-
-# Terminal 2: Run tests
-PLAYWRIGHT_BASE_URL=http://localhost:8000 npx playwright test tests/portfolio-comprehensive.spec.js
+npx playwright install-deps
 ```
 
-**Run specific test suites:**
+## 🏃 Running Tests
+
+### Local Testing
+
+Run all tests against local server:
 ```bash
-# Homepage tests only
-npx playwright test tests/portfolio-comprehensive.spec.js -g "Homepage"
-
-# Operations Planner tests only
-npx playwright test tests/portfolio-comprehensive.spec.js -g "Operations Planner"
-
-# Equipment Catalog tests only
-npx playwright test tests/portfolio-comprehensive.spec.js -g "Equipment Catalog"
+npm test
 ```
 
-**Run in headed mode (see browser):**
+Or use the test runner script:
 ```bash
-npx playwright test tests/portfolio-comprehensive.spec.js --headed
+./tests/run-tests.sh
 ```
 
-**Run with UI mode (interactive):**
+### Production Testing
+
+Run tests against production:
 ```bash
-npx playwright test tests/portfolio-comprehensive.spec.js --ui
+./tests/run-tests.sh --prod
 ```
 
-## Test Coverage
+### Different Test Modes
 
-### ✅ Homepage (3 tests)
-- Portfolio banner visibility
-- Navigation links functionality
-- Footer disclaimers
+- **UI Mode** (interactive test runner):
+  ```bash
+  ./tests/run-tests.sh --ui
+  ```
 
-### ✅ Operations Planner (5 tests)
-- Page loading and key sections
-- Risk Priority Matrix with Chart.js
-- Equipment/Personnel separation
-- Equipment catalog modal
-- Well data cards display
+- **Debug Mode** (step through tests):
+  ```bash
+  ./tests/run-tests.sh --debug
+  ```
 
-### ✅ Equipment Catalog (4 tests)
-- Page loading
-- Data loading from JSON
-- Category display
-- Search/filter functionality
+- **Headed Mode** (visible browser):
+  ```bash
+  ./tests/run-tests.sh --headed
+  ```
 
-### ✅ Historical Runs (4 tests)
-- Page loading
-- Historical data loading
-- Statistics dashboard
-- Run cards and detail modals
+- **Update Snapshots**:
+  ```bash
+  ./tests/run-tests.sh --update-snapshots
+  ```
 
-### ✅ Case Studies & P&A Course (3 tests)
-- Case studies page
-- P&A course with video player
-- Course modules structure
+### Individual Test Files
 
-### ✅ Data Integrity (3 tests)
-- Wells data validation
-- Equipment data validation
-- Historical JSON files
-
-### ✅ Responsive Design (3 tests)
-- Mobile navigation
-- Tablet layout
-- Desktop layout
-
-### ✅ Navigation & Cross-linking (2 tests)
-- Cross-page navigation
-- Consistent portfolio branding
-
-### ✅ Accessibility (2 tests)
-- Page titles
-- Console error monitoring
-
-### ✅ Performance (2 tests)
-- Homepage load time
-- Chart.js library loading
-
-## Test Results
-
-**Latest run:** 26/31 passing (84%)
-
-**Known Issues:**
-1. Chart.js CDN loading timeout (intermittent)
-2. YouTube iframe lazy loading on P&A course
-3. Mobile hamburger menu click interception
-4. Text matching on portfolio banner (too strict)
-
-## Screenshots
-
-Tests automatically generate screenshots in `screenshots/`:
-- homepage-loaded.png
-- planner-loaded.png
-- equipment-catalog.png
-- historical-runs.png
-- case-studies.png
-- mobile-navigation.png
-- tablet-planner.png
-- desktop-homepage.png
-
-## Debugging
-
-**View test reports:**
+Run specific test files:
 ```bash
-npx playwright show-report
+npx playwright test tests/site-wide.spec.js
+npx playwright test tests/accessibility.spec.js
+npx playwright test tests/performance.spec.js
 ```
 
-**Debug specific test:**
+### Running Tests by Tag
+
+Run tests for specific browsers:
 ```bash
-npx playwright test tests/portfolio-comprehensive.spec.js -g "should load homepage" --debug
+npx playwright test --project=chromium
+npx playwright test --project=firefox
+npx playwright test --project=webkit
 ```
 
-**Trace viewer:**
+Run mobile tests:
 ```bash
-npx playwright test tests/portfolio-comprehensive.spec.js --trace on
-npx playwright show-trace trace.zip
+npx playwright test --project="Mobile Chrome"
 ```
 
-## CI/CD Integration
+## 📁 Test Structure
 
-Tests are configured to run in GitHub Actions via `.github/workflows/`.
-
-**Run tests in CI mode:**
-```bash
-CI=true npx playwright test
+```
+tests/
+├── site-wide.spec.js      # Main site-wide functionality tests
+├── accessibility.spec.js  # Accessibility compliance tests
+├── performance.spec.js    # Performance and optimization tests
+├── global-setup.js        # Global test setup
+├── global-teardown.js     # Global test cleanup
+├── run-tests.sh          # Test runner script
+└── README.md             # This file
 ```
 
-## Configuration
+## 📊 Test Coverage
 
-Test configuration in `playwright.config.js`:
-- Base URL: `https://welltegra.network` (or use `PLAYWRIGHT_BASE_URL` env var)
-- Browser: Chromium
-- Timeout: 30 seconds per test
-- Screenshots: On failure
-- Video: On failure
+### Homepage (`index.html`)
+- ✅ Page load and title
+- ✅ Navigation menu functionality
+- ✅ Mobile navigation toggle
+- ✅ ROI Calculator calculations
+- ✅ Experience timeline display
+- ✅ Data sources section
+- ✅ API documentation section
+- ✅ Footer links and privacy notice
 
-## Tips
+### Operations Dashboard (`operations-dashboard.html`)
+- ✅ Initial state display
+- ✅ Risk analysis form submission
+- ✅ Chart rendering (risk breakdown, cost-benefit)
+- ✅ Dropdown behavior improvements
 
-1. **Run tests locally** before pushing to ensure compatibility
-2. **Use headed mode** for debugging test failures
-3. **Check screenshots** in test-results/ for visual debugging
-4. **Update selectors** if UI changes significantly
-5. **Run against local server** for faster iteration
+### Equipment Catalog (`equipment.html`)
+- ✅ Equipment loading and display
+- ✅ Tab switching (Drilling, Intervention, Completion, P&A)
+- ✅ Search functionality
+- ✅ Dynamic filtering (type, OD, manufacturer)
+- ✅ Equipment selection
+- ✅ Equipment detail modal
 
-## Common Issues
+### SOP Library (`sop-library.html`)
+- ✅ SOP loading and display
+- ✅ Search functionality
+- ✅ Quick filter buttons
+- ✅ Clear search
+- ✅ SOP detail view
 
-**Port 8000 already in use:**
-```bash
-lsof -ti:8000 | xargs kill
+### Planner Page (`planner.html`)
+- ✅ Planner interface loading
+- ✅ Form inputs
+- ✅ AI recommendations feature
+
+### Changelog Page (`changelog.html`)
+- ✅ Version history display
+- ✅ Version categories (New, Improved, Fixed)
+
+### Cross-Site Functionality
+- ✅ Navigation consistency
+- ✅ Responsive design (Desktop, Tablet, Mobile)
+- ✅ Error handling (404 pages)
+- ✅ Performance metrics
+- ✅ Broken link detection
+
+### Security Tests
+- ✅ No sensitive data in client-side code
+- ✅ HTTPS enforcement (production)
+- ✅ XSS protection
+
+### Accessibility Tests
+- ✅ Page titles and headings
+- ✅ Image alt text
+- ✅ Form labels
+- ✅ Keyboard navigation
+- ✅ Color contrast
+- ✅ Focus management
+- ✅ Screen reader compatibility
+
+### Performance Tests
+- ✅ Core Web Vitals
+- ✅ Bundle size analysis
+- ✅ Image optimization
+- ✅ API response times
+- ✅ Memory usage
+- ✅ Caching headers
+
+## 🔄 CI/CD Integration
+
+### GitHub Actions
+
+The tests are configured to run automatically on:
+
+1. **Pull Requests**: Run tests on changed files
+2. **Main Branch Push**: Run full test suite
+3. **Scheduled**: Daily performance tests
+
+### GitHub Actions Workflow
+
+```yaml
+name: Playwright Tests
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npx playwright test
+      - uses: actions/upload-artifact@v3
+        if: ${{ failure() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
 ```
 
-**Tests timing out:**
-- Increase timeout in playwright.config.js
-- Check network connectivity
-- Ensure local server is running
+## 🛠 Troubleshooting
 
-**Elements not found:**
-- Check if selectors changed in HTML
-- Wait for dynamic content to load
-- Verify page structure matches test expectations
+### Common Issues
+
+1. **Tests fail with "Page crashed"**
+   - Increase timeout in `playwright.config.js`
+   - Check for memory leaks in test code
+
+2. **Tests fail on CI but pass locally**
+   - Ensure all dependencies are installed
+   - Check for timing issues (add `await page.waitForTimeout()`)
+   - Use `process.env.CI` conditionals
+
+3. **Flaky tests**
+   - Add retries in config
+   - Use explicit waits instead of timeouts
+   - Check for race conditions
+
+4. **Browser not found**
+   - Run `npx playwright install`
+   - Check system dependencies
+
+### Debugging Tips
+
+1. **Use the VS Code extension**: Install Playwright extension for VS Code
+2. **Generate code**: Use `npx playwright codegen` to record actions
+3. **Trace viewer**: Run tests with trace enabled
+   ```bash
+   npx playwright test --trace on
+   npx playwright show-trace trace.zip
+   ```
+4. **Screenshots**: Failed tests automatically capture screenshots
+5. **Network**: Monitor network requests in test
+
+### Best Practices
+
+1. **Use locators**: Prefer Playwright locators over CSS selectors
+2. **Avoid waits**: Use built-in waiting mechanisms
+3. **Test isolation**: Each test should be independent
+4. **Descriptive tests**: Use clear test names and descriptions
+5. **Page Objects**: Consider using page object pattern for complex pages
+
+## 📈 Adding New Tests
+
+1. Create a new `.spec.js` file in the `tests/` directory
+2. Import necessary functions:
+   ```javascript
+   import { test, expect } from '@playwright/test';
+   ```
+3. Use the test structure:
+   ```javascript
+   test.describe('Feature Name', () => {
+     test('should do something', async ({ page }) => {
+       await page.goto('/page.html');
+       // Your test code here
+     });
+   });
+   ```
+4. Run the tests to verify they work
+
+## 📝 Notes
+
+- Tests run against local server by default on port 8080
+- Use `--prod` flag to test against production
+- All tests run in parallel by default (except on CI)
+- Videos and traces are captured on failure
+- HTML reports are generated automatically
+
+## 🤝 Contributing
+
+When adding new features, please add corresponding tests:
+
+1. Happy path tests
+2. Error handling tests
+3. Edge case tests
+4. Accessibility tests
+5. Mobile responsive tests
+
+Remember to update this README when adding new test files or coverage areas.

@@ -1,14 +1,21 @@
 {
-  "name": "welltegra-pa-course-tests",
-  "version": "1.0.0",
-  "description": "Visual tests for P&A Course interactive elements",
+  "name": "welltegra-network-tests",
+  "version": "2.4.0",
+  "description": "Comprehensive Playwright test suite for WellTegra Network website",
   "scripts": {
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:ui": "playwright test --ui",
-    "test:video": "playwright test tests/video-course-flow.spec.js --headed",
-    "test:interactive": "playwright test tests/pa-course.spec.js --headed"
+    "test:site-wide": "playwright test tests/site-wide.spec.js",
+    "test:accessibility": "playwright test tests/accessibility.spec.js",
+    "test:performance": "playwright test tests/performance.spec.js",
+    "test:mobile": "playwright test --project=\"Mobile Chrome\" --project=\"Mobile Safari\"",
+    "test:desktop": "playwright test --project=chromium --project=firefox --project=webkit",
+    "test:ci": "CI=true playwright test",
+    "test:prod": "PLAYWRIGHT_BASE_URL=https://welltegra.network playwright test",
+    "test:report": "playwright show-report",
+    "test:install": "playwright install --with-deps"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0"
