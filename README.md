@@ -1,34 +1,37 @@
-# Well-Tegra | The Well From Hell Case Study
+# WellTegra Network
 
-A comprehensive web-based application for well engineering analysis, real-time drilling data monitoring, and problem-solving in complex well operations.
+A comprehensive well engineering and AI portfolio platform for the oil and gas industry, featuring real-time operations monitoring, equipment management, and machine learning-powered analytics.
 
 ## Overview
 
-Well-Tegra is an interactive case study platform designed to demonstrate advanced well engineering concepts, decision-making processes, and best practices in drilling operations. This application provides hands-on experience with well planning, problem identification, and mitigation strategies based on real-world scenarios.
+WellTegra Network is an enterprise-grade platform that combines traditional well engineering expertise with modern AI capabilities. The system provides comprehensive tools for well planning, equipment catalog management, operations monitoring, and predictive analytics, all backed by a sophisticated ML API running on Google Cloud Platform.
 
 ## Features
 
 ### 🎯 Core Functionality
-- **Interactive Well Planning**: Create and manage comprehensive well plans with detailed procedures
-- **Real-Time Monitoring**: Live data visualization with dynamic gauges and charts
-- **Problem Detection**: Automated identification of drilling problems and hazards
-- **Asset Management**: Track equipment, inventory, and resources
-- **Schematic Visualization**: Interactive well bore schematics with depth markers
-- **Multi-Well Management**: Handle multiple wells simultaneously with detailed tracking
+- **Operations Intelligence Dashboard**: ML-powered analytics with real-time monitoring
+- **Equipment Catalog**: 119+ North Sea tools with clash detection and safety checks
+- **Interactive Well Planning**: Multi-well management with comprehensive procedure generation
+- **Survey Visualization Tool**: Interactive wellbore schematics with depth tracking
+- **Standard Operating Procedures**: Complete SOP library with 6-phase intervention planning
+- **ROI Calculator**: Financial analysis and cost optimization tools
+- **Well Locking System**: Safety-critical concurrent operation prevention
 
-### 📊 Data Visualization
-- Real-time hookload monitoring with alert thresholds
-- Depth tracking and progression charts
-- Cost and time savings analysis
-- Interactive gauges for critical parameters (WOB, ROP, SPP, etc.)
-- Dynamic well schematic generation
+### 📊 Data Visualization & Analytics
+- Real-time drilling parameters with configurable alert thresholds
+- Predictive analytics via Vertex AI integration
+- Interactive 3D wellbore visualizations
+- Cost optimization and ROI analysis
+- Historical performance tracking and trend analysis
+- Equipment failure prediction and maintenance scheduling
 
 ### 🎨 User Experience
-- Dark/Light theme toggle
-- Responsive design for all devices
-- Intuitive navigation and workflow
-- Modal-based detailed views
-- Print-ready reports
+- Dark/Light theme toggle with system preference detection
+- Mobile-first responsive design
+- Intuitive multi-page navigation with breadcrumbs
+- Progress tracking and bookmarking
+- Export capabilities (PDF, Excel, CSV)
+- Multi-language support framework
 
 ### 📚 Documentation & Knowledge Resources
 - **Comprehensive Intervention Planning Guide**: A complete 6-phase methodology covering the entire intervention lifecycle
@@ -44,21 +47,45 @@ Well-Tegra is an interactive case study platform designed to demonstrate advance
 
 ## Technology Stack
 
-- **Frontend**: HTML5, CSS3 (Tailwind CSS), JavaScript (Vanilla)
-- **Charts**: Chart.js
-- **Styling**: Tailwind CSS CDN
-- **Fonts**: Google Fonts (Inter, Roboto Mono)
+### Frontend
+- **Framework**: Vanilla HTML5/CSS3/JavaScript (Multi-page SPA)
+- **Styling**: Tailwind CSS (local build)
+- **Charts**: Chart.js, D3.js for advanced visualizations
+- **Testing**: Playwright E2E with visual regression
+- **Icons**: Lucide, custom SVG assets
+
+### Backend & ML
+- **ML API**: Python Flask on Google Cloud Functions
+- **Database**: Google BigQuery for analytics and training data
+- **ML Platform**: Vertex AI for predictive models
+- **Data Processing**: Python scripts for synthetic data generation
+- **Authentication**: Firebase Auth integration
+
+### Infrastructure
+- **Hosting**: GitHub Pages (frontend)
+- **Serverless**: Google Cloud Functions (ML API)
+- **CI/CD**: GitHub Actions for automated testing
+- **Monitoring**: Google Cloud Monitoring
 
 ## Project Structure
 
 ```
 welltegra.network/
-├── index.html          # Main application file
-├── assets/             # Images, icons, and media files
-├── css/               # Additional stylesheets (if separated)
-├── js/                # JavaScript modules (if separated)
-├── docs/              # Documentation and guides
-└── README.md          # Project documentation
+├── *.html             # 113 standalone HTML pages
+├── assets/            # Static assets (13MB)
+│   ├── css/          # Stylesheets
+│   ├── js/           # Shared JavaScript utilities
+│   ├── images/       # Company branding and diagrams
+│   └── video/        # Training videos
+├── data/             # Centralized data stores (3.2MB)
+│   ├── equipment*.json  # Equipment catalogs
+│   ├── wells*.json      # Well operations data
+│   ├── sops.json        # Standard procedures
+│   └── synthetic-data/  # ML training data
+├── scripts/          # Python data processing (88KB)
+├── tests/            # Playwright E2E tests (56KB)
+├── ml-api-setup/     # ML API deployment kit
+└── docs/             # Documentation and guides
 ```
 
 ## Getting Started
@@ -71,28 +98,60 @@ welltegra.network/
    cd welltegra.network
    ```
 
-2. **Open in browser**
-   Simply open `index.html` in your web browser. No build process required!
+2. **Install dependencies**
+   ```bash
+   # Frontend dependencies (for testing)
+   npm install
 
-3. **Make changes**
-   Edit the `index.html` file with your preferred text editor.
+   # Python environment (for data processing)
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+
+3. **Run tests**
+   ```bash
+   npm test                    # Run all E2E tests
+   npm run test:headed       # Run tests with visible browser
+   npm run test:debug        # Debug mode
+   ```
+
+4. **Start development**
+   - No build process required - open any HTML file directly in browser
+   - For ML API: `cd welltegra-ml-api && python main.py`
+   - For data generation: `cd scripts && python generate-synthetic-data.py`
 
 ### Deployment
 
-This project can be easily deployed using GitHub Pages:
+#### Frontend (GitHub Pages)
+Automatically deployed via GitHub Actions on push to main branch:
+- Live at: https://kenmck3772.github.io/welltegra.network/
 
-1. Go to repository Settings → Pages
-2. Select source: `main` branch
-3. Click Save
-4. Your site will be live at: `https://kenmck3772.github.io/welltegra.network/`
+#### ML API (Google Cloud Functions)
+```bash
+cd welltegra-ml-api
+gcloud functions deploy welltegra-ml-api \
+  --runtime python39 \
+  --trigger-http \
+  --allow-unauthenticated
+```
 
 ## Usage
 
+### Key Pages
+- **Home** (`index.html`): Main landing page with ROI calculator
+- **Operations Dashboard** (`operations-dashboard.html`): ML-powered analytics
+- **Equipment Catalog** (`equipment.html`): 119+ tools with clash detection
+- **Planner** (`planner.html`): Operations planning with AI recommendations
+- **Survey Tool** (`survey-tool.html`): Interactive wellbore visualization
+- **SOP Library** (`sop-library.html`): Standard operating procedures
+- **Well W-666** (`well-666.html`): Detailed disaster case study
+
 ### Navigation
-- Use the top navigation bar to switch between different sections
-- Toggle dark/light mode using the theme button
-- Access detailed views through the "View Details" buttons on each well card
-- **Access the Intervention Planning Guide** via the "Guide" link in the main navigation
+- Use the persistent navigation bar to access all sections
+- Toggle dark/light mode (respects system preference)
+- Breadcrumb trails for complex workflows
+- Contextual help links throughout
 
 ### Intervention Planning Guide
 The comprehensive planning guide is accessible in two formats:
@@ -134,20 +193,52 @@ The guide provides the theoretical foundation and best practices that inform the
 - **Cost Analysis**: Time and cost savings calculations
 - **Safety**: Hazard identification and mitigation strategies
 
+## Key Features Deep Dive
+
+### Equipment Clash Detection
+- Real-time compatibility checking between tools
+- Visual warnings for incompatible combinations
+- Safety-critical well locking mechanisms
+- 119+ North Sea tools with detailed specifications
+
+### ML-Powered Analytics
+- Predictive failure modeling using Vertex AI
+- Real-time anomaly detection
+- Performance optimization recommendations
+- Historical data from 2M+ toolstring runs
+
+### Safety Systems
+- Multi-factor well locking
+- Concurrent operation prevention
+- Automated safety checks
+- Emergency response procedures
+
 ## Version History
 
-- **v21**: Current version with enhanced UI, dark mode, and improved data visualization
-- Previous versions focused on core functionality and data structures
+- **v2.1**: Operations Intelligence Dashboard with authentic ML demonstration
+- **v2.0**: Multi-page SPA architecture with enhanced navigation
+- **v1.x**: Original single-page application prototype
 
 ## Contributing
 
-This is a case study project for educational and demonstration purposes. If you'd like to suggest improvements or report issues:
+We welcome contributions! Please follow these guidelines:
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/improvement`)
-3. Commit your changes (`git commit -am 'Add new feature'`)
-4. Push to the branch (`git push origin feature/improvement`)
-5. Create a Pull Request
+1. **Fork the repository**
+2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
+3. **Make your changes**
+   - Follow the existing code style
+   - Add tests for new features
+   - Update documentation as needed
+4. **Run tests** (`npm test`)
+5. **Commit your changes** (`git commit -m 'Add amazing feature'`)
+6. **Push to the branch** (`git push origin feature/amazing-feature`)
+7. **Create a Pull Request**
+
+### Development Guidelines
+- Use semantic commit messages
+- Test on multiple browsers
+- Ensure mobile responsiveness
+- Document new APIs or data structures
 
 ## About the Developer
 
@@ -158,7 +249,14 @@ This project represents real-world well engineering expertise translated into an
 
 ## License
 
-This project is provided as-is for educational and demonstration purposes.
+This project is provided as-is for educational and demonstration purposes. See LICENSE file for details.
+
+## Support
+
+For documentation, tutorials, and community support:
+- 📖 [Documentation](https://github.com/kenmck3772/welltegra.network/wiki)
+- 🐛 [Issue Tracker](https://github.com/kenmck3772/welltegra.network/issues)
+- 💬 [Discussions](https://github.com/kenmck3772/welltegra.network/discussions)
 
 ## Contact
 
@@ -168,6 +266,6 @@ For questions or feedback about this project:
 
 ---
 
-**Note**: This application uses the Tailwind CSS CDN for rapid development. For production deployment, consider installing Tailwind CSS as a PostCSS plugin for optimized performance.
-# welltegra-ml-api
-# welltegra-ml-api
+**Quick Start**: Open any HTML file in your browser - no build process required!
+
+**Note**: The frontend uses a local Tailwind CSS build for production optimization. The CDN is available for rapid prototyping.

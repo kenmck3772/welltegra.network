@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Methodology - WellTegra Decision Systems</title>
+    <meta name="description" content="The WellTegra Methodology: A systematic approach to transforming subsurface uncertainty into defensible capital decisions for oil & gas assets.">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           CSS VARIABLES & FOUNDATION
+           ============================================ */
+        :root {
+            /* Primary Palette - Industrial/Technical */
+            --ink: #0a1628;
+            --ink-light: #1a2d4a;
+            --slate: #334155;
+            --steel: #64748b;
+            --silver: #94a3b8;
+            --mist: #e2e8f0;
+            --cloud: #f1f5f9;
+            --white: #ffffff;
+
+            /* Accent - Safety Orange (NPT/Warning) */
+            --accent: #f97316;
+            --accent-dark: #ea580c;
+            --accent-glow: rgba(249, 115, 22, 0.15);
+
+            /* Success - Teal/Green */
+            --success: #0d9488;
+            --success-light: #14b8a6;
+            --success-glow: rgba(13, 148, 136, 0.12);
+
+            /* Typography */
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --space-2xl: 6rem;
+
+            /* Layout */
+            --max-width: 1200px;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(10, 22, 40, 0.08);
+            --shadow-md: 0 4px 12px rgba(10, 22, 40, 0.1);
+            --shadow-lg: 0 12px 40px rgba(10, 22, 40, 0.15);
+            --shadow-glow: 0 0 60px rgba(249, 115, 22, 0.2);
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--mist);
+            background: var(--ink);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--accent-dark);
+        }
+
+        /* ============================================
+           TYPOGRAPHY
+           ============================================ */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--white);
+        }
+
+        h1 { font-size: clamp(2rem, 5vw, 3rem); }
+        h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+        h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+        h4 { font-size: 1.25rem; }
+
+        p {
+            margin-bottom: var(--space-md);
+        }
+
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        .section {
+            padding: var(--space-2xl) 0;
+        }
+
+        .section--mist {
+            background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+        }
+
+        .grid {
+            display: grid;
+            gap: var(--space-lg);
+        }
+
+        /* ============================================
+           COMPONENTS
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav__inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) 0;
+        }
+
+        .nav__logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--white);
+        }
+
+        .nav__logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+        }
+
+        .nav__links {
+            display: flex;
+            gap: var(--space-lg);
+            list-style: none;
+        }
+
+        .nav__link {
+            color: var(--silver);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav__link:hover {
+            color: var(--white);
+        }
+
+        .hero {
+            padding: calc(100px + var(--space-2xl)) 0 var(--space-2xl);
+            text-align: center;
+        }
+
+        .hero__title {
+            margin-bottom: var(--space-md);
+        }
+
+        .hero__subtitle {
+            max-width: 800px;
+            margin: 0 auto var(--space-xl);
+            font-size: 1.125rem;
+            color: var(--silver);
+        }
+
+        .methodology-nav {
+            position: sticky;
+            top: 70px;
+            z-index: 100;
+            background: var(--ink-light);
+            border: 1px solid var(--slate);
+            border-radius: var(--radius-md);
+            padding: var(--space-sm);
+            margin: var(--space-lg) auto var(--space-xl);
+            max-width: 600px;
+        }
+
+        .methodology-nav__list {
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+        }
+
+        .methodology-nav__item {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .methodology-nav__link {
+            display: block;
+            padding: var(--space-xs) var(--space-sm);
+            color: var(--silver);
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+        }
+
+        .methodology-nav__link:hover,
+        .methodology-nav__link.active {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .phase {
+            background: var(--ink-light);
+            border: 1px solid var(--slate);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+        }
+
+        .phase__number {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            font-size: 4rem;
+            font-weight: 700;
+            opacity: 0.1;
+            color: var(--accent);
+        }
+
+        .phase__title {
+            color: var(--accent);
+            margin-bottom: var(--space-sm);
+            padding-right: 3rem;
+        }
+
+        .phase__subtitle {
+            color: var(--white);
+            font-size: 1.5rem;
+            margin-bottom: var(--space-md);
+            padding-right: 3rem;
+        }
+
+        .phase__content {
+            color: var(--silver);
+        }
+
+        .phase__outcomes {
+            margin-top: var(--space-lg);
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--slate);
+        }
+
+        .phase__outcomes-title {
+            color: var(--success-light);
+            font-family: var(--font-display);
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+
+        .phase__outcomes-list {
+            list-style: none;
+        }
+
+        .phase__outcomes-item {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .phase__outcomes-item::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success-light);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-sm) var(--space-lg);
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn--primary {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .btn--primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn--ghost {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--slate);
+        }
+
+        .btn--ghost:hover {
+            background: var(--slate);
+        }
+
+        .download-section {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(13, 148, 136, 0.15));
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            text-align: center;
+            margin-top: var(--space-2xl);
+        }
+
+        .download-section__title {
+            margin-bottom: var(--space-sm);
+        }
+
+        .download-section__description {
+            color: var(--silver);
+            margin-bottom: var(--space-lg);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .nav__links {
+                display: none;
+            }
+
+            .methodology-nav__list {
+                flex-direction: column;
+            }
+
+            .phase {
+                padding: var(--space-md);
+            }
+
+            .phase__number {
+                font-size: 3rem;
+            }
+        }
+
+        /* ============================================
+           UTILITIES
+           ============================================ */
+        .label {
+            display: inline-block;
+            margin-bottom: var(--space-sm);
+            padding: 0.5rem 1rem;
+            background: rgba(249, 115, 22, 0.15);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 100px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         NAVIGATION
+         ============================================ -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav__inner">
+                <a href="index.html" class="nav__logo">
+                    <img src="assets/images/logo.jpg" alt="WellTegra" class="nav__logo-icon">
+                    WellTegra
+                </a>
+                <ul class="nav__links">
+                    <li><a href="index.html" class="nav__link">Home</a></li>
+                    <li><a href="index.html#decisions" class="nav__link">Decisions</a></li>
+                    <li><a href="index.html#engagement" class="nav__link">Engage</a></li>
+                    <li><a href="methodology.html" class="nav__link">Methodology</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================================
+         HERO
+         ============================================ -->
+    <section class="hero">
+        <div class="container">
+            <span class="label">Our Playbook</span>
+            <h1 class="hero__title">The WellTegra Methodology</h1>
+            <p class="hero__subtitle">
+                A systematic approach to transforming subsurface uncertainty into defensible capital decisions.
+                Four phases that take you from data chaos to decision confidence.
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================================
+         METHODOLOGY NAVIGATION
+         ============================================ -->
+    <div class="container">
+        <nav class="methodology-nav">
+            <ul class="methodology-nav__list">
+                <li class="methodology-nav__item">
+                    <a href="#diagnose" class="methodology-nav__link active">01 Diagnose</a>
+                </li>
+                <li class="methodology-nav__item">
+                    <a href="#architect" class="methodology-nav__link">02 Architect</a>
+                </li>
+                <li class="methodology-nav__item">
+                    <a href="#execute" class="methodology-nav__link">03 Execute</a>
+                </li>
+                <li class="methodology-nav__item">
+                    <a href="#defend" class="methodology-nav__link">04 Defend</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- ============================================
+         PHASE 1: DIAGNOSE
+         ============================================ -->
+    <section class="section" id="diagnose">
+        <div class="container">
+            <div class="phase">
+                <div class="phase__number">1</div>
+                <h2 class="phase__title">Phase 1</h2>
+                <h3 class="phase__subtitle">Diagnose - Data, Governance & Uncertainty</h3>
+
+                <div class="phase__content">
+                    <p>We begin by understanding your decision context, data landscape, and organizational challenges. This phase establishes the foundation for defensible decisions.</p>
+
+                    <h4 style="color: var(--white); margin: var(--space-lg) 0 var(--space-md);">Key Activities:</h4>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 20px; position: relative; margin-bottom: var(--space-sm);">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Decision workflow mapping and bottleneck identification
+                        </li>
+                        <li style="padding-left: 20px; position: relative; margin-bottom: var(--space-sm);">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Data architecture audit and quality assessment
+                        </li>
+                        <li style="padding-left: 20px; position: relative; margin-bottom: var(--space-sm);">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Stakeholder alignment and incentive analysis
+                        </li>
+                        <li style="padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Uncertainty quantification and risk profiling
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="phase__outcomes">
+                    <h4 class="phase__outcomes-title">Phase Outcomes:</h4>
+                    <ul class="phase__outcomes-list">
+                        <li class="phase__outcomes-item">Clear decision roadmap with identified quick wins</li>
+                        <li class="phase__outcomes-item">Data quality scorecard and improvement plan</li>
+                        <li class="phase__outcomes-item">Stakeholder map with influence/interest matrix</li>
+                        <li class="phase__outcomes-item">Risk register with mitigation strategies</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         PHASE 2: ARCHITECT
+         ============================================ -->
+    <section class="section section--mist" id="architect">
+        <div class="container">
+            <div class="phase">
+                <div class="phase__number">2</div>
+                <h2 class="phase__title">Phase 2</h2>
+                <h3 class="phase__subtitle">Architect - Models, Workflows & Incentives</h3>
+
+                <div class="phase__content">
+                    <p>Design the decision architecture that transforms data into insight. This phase creates the models and workflows that support repeatable, transparent decisions.</p>
+
+                    <h4 style="color: var(--white); margin: var(--space-lg) 0 var(--space-md);">Key Activities:</h4>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 20px; position: relative; margin-bottom: var(--space-sm);">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Decision framework design with clear governance rules
+                        </li>
+                        <li style="padding-left: 20px; position: relative; margin-bottom: var(--space-sm);">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Analytical model selection and validation
+                        </li>
+                        <li style="padding-left: 20px; position: relative; margin-bottom: var(--space-sm);">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Workflow automation and tool integration
+                        </li>
+                        <li style="padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Incentive structure alignment and KPI definition
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="phase__outcomes">
+                    <h4 class="phase__outcomes-title">Phase Outcomes:</h4>
+                    <ul class="phase__outcomes-list">
+                        <li class="phase__outcomes-item">Decision governance framework with RACI matrix</li>
+                        <li class="phase__outcomes-item">Validated analytical models with uncertainty bounds</li>
+                        <li class="phase__outcomes-item">Automated workflow documentation and SOPs</li>
+                        <li class="phase__outcomes-item">Aligned incentive structure with balanced scorecard</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         PHASE 3: EXECUTE
+         ============================================ -->
+    <section class="section" id="execute">
+        <div class="container">
+            <div class="phase">
+                <div class="phase__number">3</div>
+                <h2 class="phase__title">Phase 3</h2>
+                <h3 class="phase__subtitle">Execute - Tools + Adoption</h3>
+
+                <div class="phase__content">
+                    <p>Deploy the decision architecture and drive adoption across the organization. This phase focuses on execution excellence and capability building.</p>
+
+                    <h4 style="color: var(--white); margin: var(--space-lg) 0 var(--space-md);">Key Activities:</h4>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 20px; position: relative; margin-bottom: var(--space-sm);">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Tool deployment and system integration
+                        </li>
+                        <li style="padding-left: 20px; position: relative; margin-bottom: var(--space-sm);">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Team training and certification program
+                        </li>
+                        <li style="padding-left: 20px; position: relative; margin-bottom: var(--space-sm);">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Pilot execution on live decision opportunities
+                        </li>
+                        <li style="padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Change management and communication plan
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="phase__outcomes">
+                    <h4 class="phase__outcomes-title">Phase Outcomes:</h4>
+                    <ul class="phase__outcomes-list">
+                        <li class="phase__outcomes-item">Fully integrated decision support environment</li>
+                        <li class="phase__outcomes-item">Certified team of decision champions</li>
+                        <li class="phase__outcomes-item">Proven pilot results with quantified ROI</li>
+                        <li class="phase__outcomes-item">Organization-wide change readiness assessment</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         PHASE 4: DEFEND
+         ============================================ -->
+    <section class="section section--mist" id="defend">
+        <div class="container">
+            <div class="phase">
+                <div class="phase__number">4</div>
+                <h2 class="phase__title">Phase 4</h2>
+                <h3 class="phase__subtitle">Defend - Auditability & Repeatability</h3>
+
+                <div class="phase__content">
+                    <p>Establish audit trails and continuous improvement mechanisms. This phase ensures decisions remain defensible and the system evolves with your needs.</p>
+
+                    <h4 style="color: var(--white); margin: var(--space-lg) 0 var(--space-md);">Key Activities:</h4>
+                    <ul style="list-style: none;">
+                        <li style="padding-left: 20px; position: relative; margin-bottom: var(--space-sm);">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Decision audit trail implementation
+                        </li>
+                        <li style="padding-left: 20px; position: relative; margin-bottom: var(--space-sm);">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Performance monitoring and KPI dashboards
+                        </li>
+                        <li style="padding-left: 20px; position: relative; margin-bottom: var(--space-sm);">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Lessons learned capture and best practice library
+                        </li>
+                        <li style="padding-left: 20px; position: relative;">
+                            <span style="position: absolute; left: 0; color: var(--accent);">→</span>
+                            Continuous improvement framework deployment
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="phase__outcomes">
+                    <h4 class="phase__outcomes-title">Phase Outcomes:</h4>
+                    <ul class="phase__outcomes-list">
+                        <li class="phase__outcomes-item">Complete auditability with decision lineage tracking</li>
+                        <li class="phase__outcomes-item">Real-time performance visibility and alerting</li>
+                        <li class="phase__outcomes-item">Living knowledge base with searchable insights</li>
+                        <li class="phase__outcomes-item">Self-sustaining improvement culture</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         DOWNLOAD SECTION
+         ============================================ -->
+    <section class="section">
+        <div class="container">
+            <div class="download-section">
+                <h2 class="download-section__title">Want to dive deeper?</h2>
+                <p class="download-section__description">
+                    Download our 2-page guide: "From Data to Decision: A Practical Guide to Capital-Grade Analytics"
+                </p>
+                <a href="#" class="btn btn--primary">Download PDF (Email Gated)</a>
+                <p style="color: var(--silver); font-size: 0.875rem; margin-top: var(--space-sm); font-style: italic;">
+                    No fluff. One framework. One case study. Ready to apply.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         NEXT STEPS
+         ============================================ -->
+    <section class="section section--mist">
+        <div class="container" style="text-align: center;">
+            <h2 style="margin-bottom: var(--space-md);">Ready to transform your decisions?</h2>
+            <p style="color: var(--silver); max-width: 600px; margin: 0 auto var(--space-lg);">
+                Let's discuss how this methodology applies to your specific challenges.
+                This is not a sales call—it's a decision architecture assessment.
+            </p>
+            <div style="display: flex; gap: var(--space-sm); justify-content: center; flex-wrap: wrap;">
+                <a href="mailto:ken@welltegra.com?subject=Decision%20Architecture%20Assessment" class="btn btn--primary">
+                    Schedule 30-min Assessment
+                </a>
+                <a href="index.html#engagement" class="btn btn--ghost">
+                    View Engagement Options
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scroll for methodology navigation
+        document.querySelectorAll('.methodology-nav__link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Remove active class from all links
+                document.querySelectorAll('.methodology-nav__link').forEach(l => l.classList.remove('active'));
+
+                // Add active class to clicked link
+                this.classList.add('active');
+
+                // Scroll to section
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    const navHeight = 70;
+                    const targetPosition = targetSection.offsetTop - navHeight;
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Update active nav link on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.phase');
+            const navLinks = document.querySelectorAll('.methodology-nav__link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

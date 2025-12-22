@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Notes - WellTegra Decision Systems</title>
+    <meta name="description" content="Sharp insights on subsurface decision-making, uncertainty management, and capital allocation in oil & gas.">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           CSS VARIABLES & FOUNDATION
+           ============================================ */
+        :root {
+            /* Primary Palette - Industrial/Technical */
+            --ink: #0a1628;
+            --ink-light: #1a2d4a;
+            --slate: #334155;
+            --steel: #64748b;
+            --silver: #94a3b8;
+            --mist: #e2e8f0;
+            --cloud: #f1f5f9;
+            --white: #ffffff;
+
+            /* Accent - Safety Orange (NPT/Warning) */
+            --accent: #f97316;
+            --accent-dark: #ea580c;
+            --accent-glow: rgba(249, 115, 22, 0.15);
+
+            /* Success - Teal/Green */
+            --success: #0d9488;
+            --success-light: #14b8a6;
+            --success-glow: rgba(13, 148, 136, 0.12);
+
+            /* Typography */
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --space-2xl: 6rem;
+
+            /* Layout */
+            --max-width: 1200px;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(10, 22, 40, 0.08);
+            --shadow-md: 0 4px 12px rgba(10, 22, 40, 0.1);
+            --shadow-lg: 0 12px 40px rgba(10, 22, 40, 0.15);
+            --shadow-glow: 0 0 60px rgba(249, 115, 22, 0.2);
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--mist);
+            background: var(--ink);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--accent-dark);
+        }
+
+        /* ============================================
+           TYPOGRAPHY
+           ============================================ */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--white);
+        }
+
+        h1 { font-size: clamp(2rem, 5vw, 3rem); }
+        h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+        h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+        h4 { font-size: 1.25rem; }
+
+        p {
+            margin-bottom: var(--space-md);
+        }
+
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        .section {
+            padding: var(--space-2xl) 0;
+        }
+
+        .section--mist {
+            background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+        }
+
+        .grid {
+            display: grid;
+            gap: var(--space-lg);
+        }
+
+        /* ============================================
+           COMPONENTS
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav__inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) 0;
+        }
+
+        .nav__logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--white);
+        }
+
+        .nav__logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+        }
+
+        .nav__links {
+            display: flex;
+            gap: var(--space-lg);
+            list-style: none;
+        }
+
+        .nav__link {
+            color: var(--silver);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav__link:hover {
+            color: var(--white);
+        }
+
+        .hero {
+            padding: calc(100px + var(--space-2xl)) 0 var(--space-xl);
+            text-align: center;
+        }
+
+        .hero__title {
+            margin-bottom: var(--space-md);
+        }
+
+        .hero__subtitle {
+            max-width: 800px;
+            margin: 0 auto var(--space-xl);
+            font-size: 1.125rem;
+            color: var(--silver);
+        }
+
+        .article-grid {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .article-card {
+            background: var(--ink-light);
+            border: 1px solid var(--slate);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .article__meta {
+            padding: var(--space-sm) var(--space-md);
+            background: rgba(249, 115, 22, 0.1);
+            border-bottom: 1px solid rgba(249, 115, 22, 0.2);
+            font-size: 0.875rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .article__content {
+            padding: var(--space-md);
+        }
+
+        .article__title {
+            margin-bottom: var(--space-sm);
+            color: var(--white);
+            font-size: 1.25rem;
+            line-height: 1.3;
+        }
+
+        .article__excerpt {
+            color: var(--silver);
+            margin-bottom: var(--space-md);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .article__read-more {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .article__read-more::after {
+            content: '→';
+            transition: transform 0.2s ease;
+        }
+
+        .article__read-more:hover::after {
+            transform: translateX(4px);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-sm) var(--space-lg);
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn--primary {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .btn--primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ============================================
+           UTILITIES
+           ============================================ */
+        .label {
+            display: inline-block;
+            margin-bottom: var(--space-sm);
+            padding: 0.5rem 1rem;
+            background: rgba(249, 115, 22, 0.15);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 100px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .nav__links {
+                display: none;
+            }
+
+            .article-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-lg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         NAVIGATION
+         ============================================ -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav__inner">
+                <a href="index.html" class="nav__logo">
+                    <img src="assets/images/logo.jpg" alt="WellTegra" class="nav__logo-icon">
+                    WellTegra
+                </a>
+                <ul class="nav__links">
+                    <li><a href="index.html" class="nav__link">Home</a></li>
+                    <li><a href="index.html#decisions" class="nav__link">Decisions</a></li>
+                    <li><a href="methodology.html" class="nav__link">Methodology</a></li>
+                    <li><a href="field-notes.html" class="nav__link">Field Notes</a></li>
+                    <li><a href="index.html#engagement" class="nav__link">Engage</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================================
+         HERO
+         ============================================ -->
+    <section class="hero">
+        <div class="container">
+            <span class="label">Field Notes</span>
+            <h1 class="hero__title">Sharp Insights on Subsurface Decisions</h1>
+            <p class="hero__subtitle">
+                No fluff. Just practical perspectives on turning uncertainty into action in oil & gas.
+                Short, sharp posts that help you make better capital decisions.
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================================
+         ARTICLES
+         ============================================ -->
+    <section class="section section--mist">
+        <div class="container">
+            <div class="article-grid">
+                <!-- Article 1 -->
+                <article class="article-card">
+                    <div class="article__meta">5 min read • Decision Quality</div>
+                    <div class="article__content">
+                        <h2 class="article__title">Why Most AI Fails in Subsurface</h2>
+                        <p class="article__excerpt">
+                            The problem isn't the algorithms. It's that we're optimizing for prediction accuracy
+                            when we should be optimizing for decision confidence. Here's why most subsurface AI projects
+                            miss the point...
+                        </p>
+                        <a href="#" class="article__read-more">Read Full Article</a>
+                    </div>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="article-card">
+                    <div class="article__meta">7 min read • Decision Frameworks</div>
+                    <div class="article__content">
+                        <h2 class="article__title">Uncertainty Isn't the Problem—Incentives Are</h2>
+                        <p class="article__excerpt">
+                            We spend millions quantifying subsurface uncertainty while ignoring the human incentives
+                            that actually drive decisions. The biggest leaks in value aren't in your reservoir models—
+                            they're in your organizational structure...
+                        </p>
+                        <a href="#" class="article__read-more">Read Full Article</a>
+                    </div>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="article-card">
+                    <div class="article__meta">4 min read • Risk Management</div>
+                    <div class="article__content">
+                        <h2 class="article__title">Auditability Is the New Accuracy</h2>
+                        <p class="article__excerpt">
+                            In an era of heightened scrutiny, being right isn't enough—you need to prove you were right.
+                            Auditability has become more valuable than predictive accuracy, yet most decision systems
+                            ignore this completely...
+                        </p>
+                        <a href="#" class="article__read-more">Read Full Article</a>
+                    </div>
+                </article>
+
+                <!-- Article 4 -->
+                <article class="article-card">
+                    <div class="article__meta">6 min read • Capital Allocation</div>
+                    <div class="article__content">
+                        <h2 class="article__title">The Hidden Cost of Perfect Information</h2>
+                        <p class="article__excerpt">
+                            We chase perfect data while good-enough decisions sit waiting. The marginal cost of reducing
+                            uncertainty often exceeds the marginal value of that reduction. Here's when to stop analyzing
+                            and start acting...
+                        </p>
+                        <a href="#" class="article__read-more">Read Full Article</a>
+                    </div>
+                </article>
+
+                <!-- Article 5 -->
+                <article class="article-card">
+                    <div class="article__meta">5 min read • JV Management</div>
+                    <div class="article__content">
+                        <h2 class="article__title">How to Align Misaligned Partners</h2>
+                        <p class="article__excerpt">
+                            Partner misalignment isn't a problem to solve—it's a constraint to manage. The most successful
+                            JVs don't try to achieve consensus. They build decision systems that work despite misalignment...
+                        </p>
+                        <a href="#" class="article__read-more">Read Full Article</a>
+                    </div>
+                </article>
+
+                <!-- Article 6 -->
+                <article class="article-card">
+                    <div class="article__meta">8 min read • Organizational Design</div>
+                    <div class="article__content">
+                        <h2 class="article__title">Decision Architects vs Day-Rate Contractors</h2>
+                        <p class="article__excerpt">
+                            The industry is trapped in a day-rate mindset that rewards activity over outcomes.
+                            Decision architects think differently—they're paid for the quality of decisions,
+                            not the hours they work. Here's how to make the shift...
+                        </p>
+                        <a href="#" class="article__read-more">Read Full Article</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CTA
+         ============================================ -->
+    <section class="section">
+        <div class="container text-center">
+            <h2 style="margin-bottom: var(--space-md);">These ideas resonate?</h2>
+            <p style="color: var(--silver); max-width: 600px; margin: 0 auto var(--space-lg);">
+                If you're facing these challenges in your organization, let's discuss how they apply
+                to your specific context. No sales pitch—just peer-level conversation.
+            </p>
+            <a href="mailto:ken@welltegra.com?subject=Field%20Notes%20Discussion" class="btn btn--primary">
+                Schedule 30-min Discussion
+            </a>
+        </div>
+    </section>
+
+    <script>
+        // Add smooth scroll behavior and any additional interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            // Placeholder for future dynamic content loading
+            console.log('Field Notes loaded');
+        });
+    </script>
+</body>
+</html>
