@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WellTegra Chatbot Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background: #f0f0f0;
+        }
+        h1 { color: #1e40af; }
+        .info {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+        }
+        .chat-fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+            cursor: pointer;
+            font-size: 28px;
+            z-index: 9999;
+            transition: transform 0.2s;
+        }
+        .chat-fab:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>🤖 WellTegra AI Assistant</h1>
+        <p><strong>Look for the blue chatbot button (💬) in the bottom-right corner!</strong></p>
+        <p>Click it to test the chatbot.</p>
+    </div>
+
+    <button class="chat-fab" onclick="alert('🤖 WellTegra AI Assistant\n\nHello! I can help you explore the portfolio.')">💬</button>
+</body>
+</html>
