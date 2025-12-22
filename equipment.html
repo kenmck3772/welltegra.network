@@ -864,16 +864,13 @@
         // Load catalog data
         async function loadCatalogData() {
             try {
-                console.log('Loading equipment catalog...');
-                const response = await fetch('data/equipment.json');
+                  const response = await fetch('data/equipment.json');
                 catalogData = await response.json();
-                console.log('Catalog loaded:', catalogData.categories.length, 'categories');
-                renderPage();
+                  renderPage();
             } catch (error) {
                 console.error('Failed to load equipment.json:', error);
                 catalogData = getEmbeddedData();
-                console.log('Using fallback data');
-                renderPage();
+                  renderPage();
             }
         }
 
