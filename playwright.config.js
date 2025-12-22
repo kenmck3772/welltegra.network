@@ -1,9 +1,9 @@
-import { defineConfig, devices } from '@playwright/test';
+const { defineConfig, devices } = require('@playwright/test');
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-export default defineConfig({
+module.exports = defineConfig({
   testDir: './tests',
 
   /* Run tests in files in parallel */

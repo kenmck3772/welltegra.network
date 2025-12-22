@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+const { test, expect } = require('@playwright/test');
 
 test.describe('Performance Tests', () => {
   const baseUrl = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:8080';

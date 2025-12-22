@@ -1,9 +1,8 @@
-import { chromium } from '@playwright/test';
-
 async function globalSetup(config) {
   console.log('🚀 Starting global setup...');
 
   // Optional: Set up test data or mock APIs
+  const { chromium } = require('@playwright/test');
   const browser = await chromium.launch();
   const context = await browser.newContext();
   const page = await context.newPage();
@@ -14,4 +13,4 @@ async function globalSetup(config) {
   await browser.close();
 }
 
-export default globalSetup;
+module.exports = globalSetup;

@@ -8,4 +8,4 @@ async function globalTeardown(config) {
   console.log('✅ Global teardown complete');
 }
 
-export default globalTeardown;
+module.exports = globalTeardown;
