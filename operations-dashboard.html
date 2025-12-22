@@ -632,6 +632,15 @@
         let riskChart = null;
         let costChart = null;
 
+        // Ensure Chart.js is loaded
+        function checkChartLoaded() {
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js not loaded');
+                return false;
+            }
+            return true;
+        }
+
         // Form submission handler
         document.getElementById('analysisForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -873,15 +882,24 @@
         }
 
         function updateCharts(riskScores, recommendations) {
+            // Check if Chart.js is loaded
+            if (!checkChartLoaded()) {
+                console.error('Cannot update charts: Chart.js not loaded');
+                return;
+            }
+
             // Risk Breakdown Chart
-            const riskCtx = document.getElementById('riskChart').getContext('2d');
+            const riskCanvas = document.getElementById('riskChart');
+            if (!riskCanvas) return;
+            const riskCtx = riskCanvas.getContext('2d');
 
             if (riskChart) {
                 riskChart.destroy();
             }
 
-            riskChart = new Chart(riskCtx, {
-                type: 'doughnut',
+            try {
+                riskChart = new Chart(riskCtx, {
+                    type: 'doughnut',
                 data: {
                     labels: Object.keys(riskScores.breakdown),
                     datasets: [{
@@ -920,16 +938,22 @@
                     }
                 }
             });
+            } catch (error) {
+                console.error('Error creating risk chart:', error);
+            }
 
             // Cost-Benefit Chart
-            const costCtx = document.getElementById('costChart').getContext('2d');
+            const costCanvas = document.getElementById('costChart');
+            if (!costCanvas) return;
+            const costCtx = costCanvas.getContext('2d');
 
             if (costChart) {
                 costChart.destroy();
             }
 
-            costChart = new Chart(costCtx, {
-                type: 'bar',
+            try {
+                costChart = new Chart(costCtx, {
+                    type: 'bar',
                 data: {
                     labels: ['Mitigation Cost', 'Potential Savings'],
                     datasets: [{
@@ -976,7 +1000,33 @@
                     }
                 }
             });
+            } catch (error) {
+                console.error('Error creating cost chart:', error);
+            }
         }
+
+        // Initialize dropdowns
+        document.addEventListener('DOMContentLoaded', function() {
+            // Remove placeholder options from dropdowns after they're filled
+            const selects = document.querySelectorAll('select');
+            selects.forEach(select => {
+                select.addEventListener('change', function() {
+                    // Hide placeholder option
+                    const placeholder = this.querySelector('option[value=""]');
+                    if (placeholder) {
+                        placeholder.style.display = 'none';
+                    }
+                });
+
+                // Show placeholder on reset
+                select.addEventListener('focus', function() {
+                    const placeholder = this.querySelector('option[value=""]');
+                    if (placeholder && !this.value) {
+                        placeholder.style.display = 'block';
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>

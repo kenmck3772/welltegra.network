@@ -279,6 +279,100 @@
             color: var(--accent);
         }
 
+        /* Filter Styles */
+        .filter-section {
+            margin-bottom: 1rem;
+        }
+
+        .filter-label {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--fg);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .filter-select:focus {
+            border-color: var(--accent);
+        }
+
+        .range-filter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .range-input {
+            width: 100%;
+            padding: 0.5rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--fg);
+            font-size: 0.875rem;
+            outline: none;
+        }
+
+        .range-input:focus {
+            border-color: var(--accent);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: var(--muted);
+        }
+
+        .filter-checkbox {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent);
+        }
+
+        .clear-filters-btn {
+            width: 100%;
+            padding: 0.625rem 1rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--muted);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .clear-filters-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Results count */
+        .results-count {
+            padding: 0.75rem 1rem;
+            background: rgba(20, 184, 166, 0.1);
+            border-left: 3px solid var(--accent);
+            border-radius: 6px;
+            color: var(--accent);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
         /* Stats */
         .stats-grid {
             display: grid;
@@ -733,6 +827,41 @@
             </div>
 
             <div class="sidebar-section">
+                <div class="sidebar-title">Quick Filters</div>
+                <div class="filter-section">
+                    <label class="filter-label">Equipment Type</label>
+                    <select id="equipmentTypeFilter" class="filter-select">
+                        <option value="all">All Types</option>
+                    </select>
+                </div>
+
+                <div class="filter-section">
+                    <label class="filter-label">OD Range (inches)</label>
+                    <div class="range-filter">
+                        <input type="number" id="odMin" placeholder="Min" class="range-input">
+                        <span>to</span>
+                        <input type="number" id="odMax" placeholder="Max" class="range-input">
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <label class="filter-label">Manufacturer</label>
+                    <select id="manufacturerFilter" class="filter-select">
+                        <option value="all">All Manufacturers</option>
+                    </select>
+                </div>
+
+                <div class="filter-section">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="onlyWithData" class="filter-checkbox">
+                        <span>Only show with complete data</span>
+                    </label>
+                </div>
+
+                <button id="clearFilters" class="clear-filters-btn">Clear All Filters</button>
+            </div>
+
+            <div class="sidebar-section">
                 <div class="sidebar-title">Catalog Stats</div>
                 <div class="stats-grid">
                     <div class="stat-mini">
@@ -899,6 +1028,7 @@
             renderStats();
             renderCategories();
             renderEquipment();
+            populateFilters();
             setupEventListeners();
         }
 
@@ -950,6 +1080,13 @@
             const allowedCategories = tabMapping[activeTab];
             console.log('Allowed categories for', activeTab, ':', allowedCategories);
 
+            // Get filter values
+            const typeFilter = document.getElementById('equipmentTypeFilter')?.value || 'all';
+            const odMin = parseFloat(document.getElementById('odMin')?.value) || 0;
+            const odMax = parseFloat(document.getElementById('odMax')?.value) || Infinity;
+            const manufacturerFilter = document.getElementById('manufacturerFilter')?.value || 'all';
+            const onlyWithData = document.getElementById('onlyWithData')?.checked || false;
+
             let items = [];
 
             if (activeSubcategory === 'all') {
@@ -969,24 +1106,47 @@
                 }
             }
 
-            // Filter by search
-            if (search) {
-                items = items.filter(eq =>
-                    eq.name.toLowerCase().includes(search) ||
-                    (eq.partNumber && eq.partNumber.toLowerCase().includes(search)) ||
-                    (eq.manufacturer && eq.manufacturer.toLowerCase().includes(search))
-                );
-            }
+            // Apply all filters
+            items = items.filter(eq => {
+                // Search filter
+                if (search && !eq.name.toLowerCase().includes(search) &&
+                    !eq.partNumber?.toLowerCase().includes(search) &&
+                    !eq.description?.toLowerCase().includes(search)) {
+                    return false;
+                }
 
-            console.log('Total items found:', items.length);
+                // Type filter
+                if (typeFilter !== 'all' && !eq.name.toLowerCase().includes(typeFilter.toLowerCase())) {
+                    return false;
+                }
 
-            // Update title
-            if (activeSubcategory === 'all') {
-                document.getElementById('contentTitle').textContent = `${tabTitles[activeTab]} (${items.length})`;
-            } else {
-                const cat = catalogData.categories.find(c => c.id === activeSubcategory);
-                document.getElementById('contentTitle').textContent = `${cat?.name || 'Equipment'} (${items.length})`;
-            }
+                // OD range filter
+                if (eq.od) {
+                    const od = parseFloat(eq.od);
+                    if (od < odMin || od > odMax) return false;
+                }
+
+                // Manufacturer filter
+                if (manufacturerFilter !== 'all' && eq.manufacturer !== manufacturerFilter) {
+                    return false;
+                }
+
+                // Only complete data filter
+                if (onlyWithData && (!eq.od || !eq.length || !eq.weight)) {
+                    return false;
+                }
+
+                return true;
+            });
+
+            // Show results count
+            const resultsCount = document.createElement('div');
+            resultsCount.className = 'results-count';
+            resultsCount.textContent = `Showing ${items.length} of ${catalogData.totalEquipment} tools`;
+            grid.parentElement.insertBefore(resultsCount, grid);
+
+            // Clear previous results
+            grid.innerHTML = '';
 
             if (items.length === 0) {
                 grid.innerHTML = `
@@ -998,7 +1158,15 @@
                 `;
                 return;
             }
-            
+
+            // Update title
+            if (activeSubcategory === 'all') {
+                document.getElementById('contentTitle').textContent = `${tabTitles[activeTab]} (${items.length})`;
+            } else {
+                const cat = catalogData.categories.find(c => c.id === activeSubcategory);
+                document.getElementById('contentTitle').textContent = `${cat?.name || 'Equipment'} (${items.length})`;
+            }
+
             grid.innerHTML = items.map(eq => renderEquipmentCard(eq)).join('');
         }
 
@@ -1038,6 +1206,56 @@
                     </div>
                 </div>
             `;
+        }
+
+        // Populate filter dropdowns based on current tab/category
+        function populateFilters() {
+            const allowedCategories = tabMapping[activeTab];
+            const allEquipment = [];
+
+            // Collect all equipment for current tab
+            catalogData.categories.forEach(cat => {
+                if (allowedCategories.includes(cat.id)) {
+                    cat.equipment.forEach(eq => {
+                        allEquipment.push(eq);
+                    });
+                }
+            });
+
+            // Get unique equipment types (from first word of name)
+            const types = new Set();
+            allEquipment.forEach(eq => {
+                const type = eq.name.split(' ')[0].toLowerCase();
+                types.add(type);
+            });
+
+            // Populate equipment type filter
+            const typeFilter = document.getElementById('equipmentTypeFilter');
+            typeFilter.innerHTML = '<option value="all">All Types</option>';
+            Array.from(types).sort().forEach(type => {
+                const option = document.createElement('option');
+                option.value = type;
+                option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+                typeFilter.appendChild(option);
+            });
+
+            // Get unique manufacturers
+            const manufacturers = new Set();
+            allEquipment.forEach(eq => {
+                if (eq.manufacturer && eq.manufacturer.trim()) {
+                    manufacturers.add(eq.manufacturer);
+                }
+            });
+
+            // Populate manufacturer filter
+            const manufacturerFilter = document.getElementById('manufacturerFilter');
+            manufacturerFilter.innerHTML = '<option value="all">All Manufacturers</option>';
+            Array.from(manufacturers).sort().forEach(manufacturer => {
+                const option = document.createElement('option');
+                option.value = manufacturer;
+                option.textContent = manufacturer;
+                manufacturerFilter.appendChild(option);
+            });
         }
 
         // Update toolstring panel
@@ -1157,6 +1375,7 @@
                     // Re-render
                     renderCategories();
                     renderEquipment(document.getElementById('searchInput').value);
+                    populateFilters();
                 });
             });
 
@@ -1167,12 +1386,30 @@
                     activeSubcategory = item.dataset.category;
                     renderCategories();
                     renderEquipment(document.getElementById('searchInput').value);
+                    populateFilters();
                 }
             });
-            
+
             // Search
             document.getElementById('searchInput').addEventListener('input', (e) => {
                 renderEquipment(e.target.value);
+            });
+
+            // Filter event listeners
+            document.getElementById('equipmentTypeFilter').addEventListener('change', () => renderEquipment());
+            document.getElementById('odMin').addEventListener('input', () => renderEquipment());
+            document.getElementById('odMax').addEventListener('input', () => renderEquipment());
+            document.getElementById('manufacturerFilter').addEventListener('change', () => renderEquipment());
+            document.getElementById('onlyWithData').addEventListener('change', () => renderEquipment());
+
+            // Clear filters
+            document.getElementById('clearFilters').addEventListener('click', () => {
+                document.getElementById('equipmentTypeFilter').value = 'all';
+                document.getElementById('odMin').value = '';
+                document.getElementById('odMax').value = '';
+                document.getElementById('manufacturerFilter').value = 'all';
+                document.getElementById('onlyWithData').checked = false;
+                renderEquipment();
             });
             
             // Equipment card clicks
@@ -1240,9 +1477,5 @@
     </script>
     <!-- WellTegra AI Assistant Chatbot -->
     <script src="js/chatbot-widget.js"></script>
-        <!-- WellTegra AI Assistant Chatbot -->
-    <script src="js/chatbot-widget.js"></script>
-</body>
-</html>
 </body>
 </html>

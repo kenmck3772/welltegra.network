@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changelog - WellTegra Decision Systems</title>
+    <meta name="description" content="Version history and updates for WellTegra Network platform">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           CSS VARIABLES & FOUNDATION
+           ============================================ */
+        :root {
+            /* Primary Palette - Industrial/Technical */
+            --ink: #0a1628;
+            --ink-light: #1a2d4a;
+            --slate: #334155;
+            --steel: #64748b;
+            --silver: #94a3b8;
+            --mist: #e2e8f0;
+            --cloud: #f1f5f9;
+            --white: #ffffff;
+
+            /* Accent - Safety Orange (NPT/Warning) */
+            --accent: #f97316;
+            --accent-dark: #ea580c;
+            --accent-glow: rgba(249, 115, 22, 0.15);
+
+            /* Success - Teal/Green */
+            --success: #0d9488;
+            --success-light: #14b8a6;
+            --success-glow: rgba(13, 148, 136, 0.12);
+
+            /* Typography */
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --space-2xl: 6rem;
+
+            /* Layout */
+            --max-width: 1200px;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(10, 22, 40, 0.08);
+            --shadow-md: 0 4px 12px rgba(10, 22, 40, 0.1);
+            --shadow-lg: 0 12px 40px rgba(10, 22, 40, 0.15);
+            --shadow-glow: 0 0 60px rgba(249, 115, 22, 0.2);
+        }
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--mist);
+            background: var(--ink);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--accent-dark);
+        }
+
+        /* ============================================
+           TYPOGRAPHY
+           ============================================ */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--white);
+        }
+
+        h1 { font-size: clamp(2rem, 5vw, 3rem); }
+        h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+        h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+        h4 { font-size: 1.25rem; }
+
+        p {
+            margin-bottom: var(--space-md);
+        }
+
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        .section {
+            padding: var(--space-2xl) 0;
+        }
+
+        .section--mist {
+            background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav__inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-sm) 0;
+        }
+
+        .nav__logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.125rem;
+            color: var(--white);
+        }
+
+        .nav__logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+        }
+
+        .nav__links {
+            display: flex;
+            gap: var(--space-lg);
+            list-style: none;
+        }
+
+        .nav__link {
+            color: var(--silver);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav__link:hover {
+            color: var(--white);
+        }
+
+        /* ============================================
+           HERO
+           ============================================ */
+        .hero {
+            padding: calc(100px + var(--space-2xl)) 0 var(--space-xl);
+            text-align: center;
+        }
+
+        .hero__title {
+            margin-bottom: var(--space-md);
+        }
+
+        .hero__subtitle {
+            max-width: 800px;
+            margin: 0 auto var(--space-xl);
+            font-size: 1.125rem;
+            color: var(--silver);
+        }
+
+        /* ============================================
+           CHANGELOG
+           ============================================ */
+        .changelog {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .changelog-item {
+            background: var(--ink-light);
+            border: 1px solid var(--slate);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .changelog-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+        }
+
+        .changelog-item--major::before {
+            background: var(--accent);
+        }
+
+        .changelog-item--minor::before {
+            background: var(--success-light);
+        }
+
+        .changelog-item--patch::before {
+            background: var(--silver);
+        }
+
+        .changelog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: var(--space-lg);
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+        }
+
+        .changelog-version {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+
+        .changelog-date {
+            color: var(--silver);
+            font-size: 0.95rem;
+        }
+
+        .changelog-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+        }
+
+        .changelog-category--new {
+            background: rgba(13, 148, 136, 0.2);
+            color: var(--success-light);
+        }
+
+        .changelog-category--improved {
+            background: rgba(249, 115, 22, 0.2);
+            color: var(--accent);
+        }
+
+        .changelog-category--fixed {
+            background: rgba(148, 163, 184, 0.2);
+            color: var(--silver);
+        }
+
+        .changelog-category--removed {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .changelog-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .changelog-list li {
+            padding: 0.5rem 0;
+            color: var(--silver);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .changelog-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .changelog-list li a {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* ============================================
+           UTILITIES
+           ============================================ */
+        .label {
+            display: inline-block;
+            margin-bottom: var(--space-sm);
+            padding: 0.5rem 1rem;
+            background: rgba(249, 115, 22, 0.15);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 100px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .nav__links {
+                display: none;
+            }
+
+            .changelog-header {
+                flex-direction: column;
+                align-items: start;
+            }
+
+            .changelog-item {
+                padding: var(--space-lg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         NAVIGATION
+         ============================================ -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav__inner">
+                <a href="index.html" class="nav__logo">
+                    <img src="assets/images/logo.jpg" alt="WellTegra" class="nav__logo-icon">
+                    WellTegra
+                </a>
+                <ul class="nav__links">
+                    <li><a href="index.html" class="nav__link">Home</a></li>
+                    <li><a href="index.html#decisions" class="nav__link">Decisions</a></li>
+                    <li><a href="methodology.html" class="nav__link">Methodology</a></li>
+                    <li><a href="operations-dashboard.html" class="nav__link">Dashboard</a></li>
+                    <li><a href="changelog.html" class="nav__link">Changelog</a></li>
+                    <li><a href="index.html#engagement" class="nav__link">Engage</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================================
+         HERO
+         ============================================ -->
+    <section class="hero">
+        <div class="container">
+            <span class="label">Version History</span>
+            <h1 class="hero__title">Platform Changelog</h1>
+            <p class="hero__subtitle">
+                Track our evolution and see how we're continuously improving the WellTegra Network platform
+                based on user feedback and technological advances.
+            </p>
+        </div>
+    </section>
+
+    <!-- ============================================
+         CHANGELOG
+         ============================================ -->
+    <section class="section section--mist">
+        <div class="container">
+            <div class="changelog">
+                <!-- Version 2.4.0 -->
+                <div class="changelog-item changelog-item--major">
+                    <div class="changelog-header">
+                        <div>
+                            <h3 class="changelog-version">Version 2.4.0</h3>
+                            <p class="changelog-date">Released December 22, 2024</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <span class="changelog-category changelog-category--new">New</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>Added real-time equipment catalog filtering with type, OD range, and manufacturer filters</li>
+                        <li>Implemented comprehensive API documentation section with endpoint references</li>
+                        <li>Added professional experience timeline showing 30+ years of industry expertise</li>
+                        <li>Created working search functionality for SOP library with quick filters</li>
+                        <li>Added data sources & methodology transparency section to homepage</li>
+                        <li>Implemented version changelog page for tracking platform updates</li>
+                        <li>Added equipment clash detection with minimum restriction validation</li>
+                        <li>Created interactive equipment selection with toolstring panel</li>
+                    </ul>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <span class="changelog-category changelog-category--improved">Improved</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>Enhanced navigation with API documentation link</li>
+                        <li>Optimized mobile responsiveness across all pages</li>
+                        <li>Improved page loading performance with optimized JavaScript</li>
+                        <li>Enhanced accessibility with better ARIA labels and keyboard navigation</li>
+                    </ul>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <span class="changelog-category changelog-category--fixed">Fixed</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>Fixed duplicate script loading on equipment.html</li>
+                        <li>Resolved issue with equipment filter population on tab switch</li>
+                        <li>Fixed navigation mobile menu toggle functionality</li>
+                        <li>Corrected centering issues on dashboard components</li>
+                    </ul>
+                </div>
+
+                <!-- Version 2.3.0 -->
+                <div class="changelog-item changelog-item--major">
+                    <div class="changelog-header">
+                        <div>
+                            <h3 class="changelog-version">Version 2.3.0</h3>
+                            <p class="changelog-date">Released December 20, 2024</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <span class="changelog-category changelog-category--new">New</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>Added Operations Intelligence Dashboard with authentic ML demonstrations</li>
+                        <li>Implemented well locking mechanism for simultaneous operation safety</li>
+                        <li>Created comprehensive disaster case study (W-666) with React component</li>
+                        <li>Added Phase-based intervention planning with risk assessment</li>
+                        <li>Implemented equipment conflict detection with visual alerts</li>
+                        <li>Added financial impact analysis for operational decisions</li>
+                        <li>Created data visualization with performance trend analytics</li>
+                    </ul>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <span class="changelog-category changelog-category--improved">Improved</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>Enhanced equipment directory with 119+ North Sea tools</li>
+                        <li>Improved search functionality with fuzzy matching</li>
+                        <li>Updated ROI calculator with more accurate cost models</li>
+                        <li>Enhanced data pipeline architecture for better performance</li>
+                    </ul>
+                </div>
+
+                <!-- Version 2.2.1 -->
+                <div class="changelog-item changelog-item--patch">
+                    <div class="changelog-header">
+                        <div>
+                            <h3 class="changelog-version">Version 2.2.1</h3>
+                            <p class="changelog-date">Released December 18, 2024</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <span class="changelog-category changelog-category--fixed">Fixed</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>Fixed critical bug in toolstring assembly where duplicate equipment could be selected</li>
+                        <li>Resolved display issue with equipment specifications on mobile devices</li>
+                        <li>Fixed navigation link to methodology page</li>
+                        <li>Corrected calculation errors in ROI calculator</li>
+                    </ul>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <span class="changelog-category changelog-category--improved">Improved</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>Optimized image loading for better performance</li>
+                        <li>Enhanced error handling in data loading functions</li>
+                        <li>Improved visual feedback for user interactions</li>
+                    </ul>
+                </div>
+
+                <!-- Version 2.2.0 -->
+                <div class="changelog-item changelog-item--minor">
+                    <div class="changelog-header">
+                        <div>
+                            <h3 class="changelog-version">Version 2.2.0</h3>
+                            <p class="changelog-date">Released December 15, 2024</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <span class="changelog-category changelog-category--new">New</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>Added comprehensive equipment directory with clash detection</li>
+                        <li>Implemented toolstring assembly with real-time validation</li>
+                        <li>Created interactive wellbore survey visualization</li>
+                        <li>Added standard operating procedures library</li>
+                        <li>Implemented equipment search by specifications</li>
+                        <li>Added export functionality for toolstring configurations</li>
+                    </ul>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <span class="changelog-category changelog-category--improved">Improved</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>Enhanced ROI calculator with more detailed inputs</li>
+                        <li>Improved mobile navigation experience</li>
+                        <li>Added keyboard shortcuts for power users</li>
+                        <li>Enhanced data validation across all forms</li>
+                    </ul>
+                </div>
+
+                <!-- Version 2.1.0 -->
+                <div class="changelog-item changelog-item--minor">
+                    <div class="changelog-header">
+                        <div>
+                            <h3 class="changelog-version">Version 2.1.0</h3>
+                            <p class="changelog-date">Released December 10, 2024</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <span class="changelog-category changelog-category--new">New</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>Added operations planning calendar with Gantt chart view</li>
+                        <li>Implemented risk assessment matrix with probability scoring</li>
+                        <li>Created decision audit trail for compliance tracking</li>
+                        <li>Added multi-well comparison dashboard</li>
+                        <li>Implemented what-if scenario modeling</li>
+                        <li>Added equipment rental cost optimization</li>
+                    </ul>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <span class="changelog-category changelog-category--improved">Improved</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>Enhanced data export options (CSV, JSON, PDF)</li>
+                        <li>Improved offline functionality with service workers</li>
+                        <li>Added dark/light theme toggle (removed in v2.3 for industrial focus)</li>
+                        <li>Enhanced search with filters and sorting</li>
+                    </ul>
+                </div>
+
+                <!-- Version 2.0.0 -->
+                <div class="changelog-item changelog-item--major">
+                    <div class="changelog-header">
+                        <div>
+                            <h3 class="changelog-version">Version 2.0.0</h3>
+                            <p class="changelog-date">Released December 1, 2024</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <span class="changelog-category changelog-category--new">New</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>Complete platform redesign with industrial focus</li>
+                        <li>Implemented ML-driven decision support system</li>
+                        <li>Added real-time equipment failure predictions</li>
+                        <li>Created interactive well operations dashboard</li>
+                        <li>Implemented portfolio-wide risk analysis</li>
+                        <li>Added API endpoints for external integrations</li>
+                        <li>Created comprehensive well documentation system</li>
+                    </ul>
+
+                    <div style="margin-bottom: var(--space-lg);">
+                        <span class="changelog-category changelog-category--removed">Removed</span>
+                    </div>
+                    <ul class="changelog-list">
+                        <li>Dropped support for Internet Explorer</li>
+                        <li>Removed legacy Well Planning module (replaced by new Planner)</li>
+                        <li>Deprecated old API endpoints in favor of unified v2 API</li>
+                    </ul>
+                </div>
+
+                <!-- Version 1.x.x (Legacy) -->
+                <div class="changelog-item changelog-item--patch" style="opacity: 0.7;">
+                    <div class="changelog-header">
+                        <div>
+                            <h3 class="changelog-version">Version 1.x Series</h3>
+                            <p class="changelog-date">September - November 2024</p>
+                        </div>
+                    </div>
+
+                    <p style="color: var(--silver); font-style: italic; margin-bottom: 0;">
+                        Initial development phase featuring basic well planning tools, equipment database, and ROI calculator.
+                        Features were added incrementally based on early user feedback and industry requirements.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer class="section" style="background: var(--ink); border-top: 1px solid var(--slate);">
+        <div class="container">
+            <div style="text-align: center; color: var(--silver);">
+                <p style="margin-bottom: var(--space-sm);">© 2024 WellTegra Decision Systems. All rights reserved.</p>
+                <p style="font-size: 0.9rem; opacity: 0.8;">
+                    Platform version 2.4.0 • Last updated: December 22, 2024
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

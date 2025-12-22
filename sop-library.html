@@ -98,6 +98,118 @@
         .hero p {
             color: var(--muted);
             max-width: 700px;
+            margin-bottom: 2rem;
+        }
+
+        /* Search */
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1rem;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--fg);
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+        }
+
+        .search-results {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-result-item:hover {
+            background: var(--panel);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .search-result-category {
+            font-size: 0.875rem;
+            color: var(--muted);
+        }
+
+        .search-highlight {
+            background: rgba(249, 115, 22, 0.3);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tag {
+            padding: 0.5rem 1rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-tag:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .filter-tag.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg);
+        }
         }
 
         /* Main */
@@ -644,11 +756,40 @@
         <div class="hero-inner">
             <h1>SOP Library</h1>
             <p>Standard Operating Procedures for well intervention operations. Each procedure includes step-by-step sequences, equipment requirements, decision points, and lessons learned from field experience.</p>
+
+            <!-- Search -->
+            <div class="search-container">
+                <input
+                    type="text"
+                    class="search-input"
+                    id="searchInput"
+                    placeholder="Search procedures, equipment, hazards..."
+                    autocomplete="off"
+                >
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+
+            <!-- Quick Filters -->
+            <div class="filters" id="quickFilters">
+                <button class="filter-tag" data-category="slickline">Slickline</button>
+                <button class="filter-tag" data-category="coiled-tubing">Coiled Tubing</button>
+                <button class="filter-tag" data-category="well-integrity">Integrity</button>
+                <button class="filter-tag" data-category="subsea">Subsea</button>
+                <button class="filter-tag" data-category="pna">P&A</button>
+                <button class="filter-tag active" data-category="all">All</button>
+            </div>
         </div>
     </section>
 
     <!-- Main -->
     <main class="main">
+        <!-- Results count -->
+        <div id="resultsInfo" style="max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; color: var(--muted); font-size: 0.875rem;"></div>
+
         <!-- Filter bar -->
         <div class="filter-bar" id="filterBar">
             <button class="filter-btn active" data-filter="all">All Procedures</button>
@@ -933,7 +1074,97 @@
             `;
         }
 
+        // Search functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            let searchTimeout;
+
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                const query = e.target.value.toLowerCase().trim();
+
+                if (query.length < 2) {
+                    searchResults.classList.remove('active');
+                    renderSOPs();
+                    return;
+                }
+
+                searchTimeout = setTimeout(() => {
+                    performSearch(query);
+                }, 300);
+            });
+
+            // Close search results when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) {
+                    searchResults.classList.remove('active');
+                }
+            });
+        }
+
+        function performSearch(query) {
+            const searchResults = document.getElementById('searchResults');
+            const results = sopData.filter(sop => {
+                const searchText = `${sop.title} ${sop.description} ${sop.category} ${sop.steps.join(' ')} ${sop.equipment?.join(' ') || ''}`.toLowerCase();
+                return searchText.includes(query);
+            });
+
+            if (results.length === 0) {
+                searchResults.innerHTML = '<div class="search-result-item">No procedures found</div>';
+            } else {
+                searchResults.innerHTML = results.slice(0, 5).map(sop => `
+                    <div class="search-result-item" onclick="showSOPDetail('${sop.id}')">
+                        <div class="search-result-title">${highlightMatch(sop.title, query)}</div>
+                        <div class="search-result-category">${sop.category} • ${sop.phases?.join(', ') || ''}</div>
+                    </div>
+                `).join('');
+            }
+
+            searchResults.classList.add('active');
+            renderSOPs(results);
+        }
+
+        function highlightMatch(text, query) {
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<span class="search-highlight">$1</span>');
+        }
+
+        // Quick category filters
+        function setupQuickFilters() {
+            const quickFilters = document.getElementById('quickFilters');
+            quickFilters.addEventListener('click', (e) => {
+                const tag = e.target.closest('.filter-tag');
+                if (!tag) return;
+
+                document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+                tag.classList.add('active');
+
+                const category = tag.dataset.category;
+                if (category === 'all') {
+                    renderSOPs();
+                    updateResultsInfo(sopData.length);
+                } else {
+                    const filtered = sopData.filter(sop => sop.category.toLowerCase().includes(category));
+                    renderSOPs(filtered);
+                    updateResultsInfo(filtered.length, category);
+                }
+            });
+        }
+
+        function updateResultsInfo(count, filter = 'all') {
+            const resultsInfo = document.getElementById('resultsInfo');
+            const filterText = filter === 'all' ? 'procedures' : filter;
+            resultsInfo.textContent = `Showing ${count} ${filterText}`;
+        }
+
         function setupEventListeners() {
+            // Search
+            setupSearch();
+
+            // Quick filters
+            setupQuickFilters();
+
             // Filter buttons
             document.getElementById('filterBar').addEventListener('click', (e) => {
                 const btn = e.target.closest('.filter-btn');
@@ -944,7 +1175,7 @@
                     renderSOPs();
                 }
             });
-            
+
             // SOP card clicks
             document.getElementById('sopGrid').addEventListener('click', (e) => {
                 const card = e.target.closest('.sop-card');
@@ -952,12 +1183,12 @@
                     showSOPDetail(card.dataset.sopId);
                 }
             });
-            
+
             // Modal close
             document.getElementById('modalClose').addEventListener('click', () => {
                 document.getElementById('modalOverlay').classList.remove('visible');
             });
-            
+
             document.getElementById('modalOverlay').addEventListener('click', (e) => {
                 if (e.target === e.currentTarget) {
                     document.getElementById('modalOverlay').classList.remove('visible');
