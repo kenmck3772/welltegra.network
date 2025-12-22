@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operations Intelligence Dashboard | Well-Tegra</title>
+    <meta name="description" content="Data-driven operations analysis tool for well intervention planning and risk assessment. Built on 30+ years industry experience.">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg-primary: #0a1628;
+            --bg-secondary: #1a2d4a;
+            --bg-card: rgba(30, 41, 59, 0.8);
+            --border: rgba(148, 163, 184, 0.1);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+        }
+
+        .logo-text h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .logo-text p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: var(--accent-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .card-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--accent-green);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Input Forms */
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: #1e293b;
+        }
+
+        /* Results Section */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .result-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .result-card.success .result-value {
+            color: var(--accent-green);
+        }
+
+        .result-card.warning .result-value {
+            color: var(--accent-amber);
+        }
+
+        .result-card.danger .result-value {
+            color: var(--accent-red);
+        }
+
+        /* Charts */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 1rem;
+        }
+
+        /* Risk Levels */
+        .risk-indicator {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .risk-level {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .risk-low { background: var(--accent-green); }
+        .risk-medium { background: var(--accent-amber); }
+        .risk-high { background: var(--accent-red); }
+
+        /* Recommendations */
+        .recommendations {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .recommendations h4 {
+            color: var(--accent-blue);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recommendations li {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            padding: 0.25rem 0;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .recommendations li:before {
+            content: "•";
+            color: var(--accent-blue);
+            position: absolute;
+            left: 0;
+        }
+
+        /* Navigation Footer */
+        .nav-footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+        }
+
+        .nav-footer p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .nav {
+                display: none;
+            }
+        }
+
+        /* Loading State */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            border: 2px solid var(--border);
+            border-top: 2px solid var(--accent-blue);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo-section">
+                <img src="assets/images/logo.jpg" alt="Well-Tegra Logo" class="logo">
+                <div class="logo-text">
+                    <h1>Operations Intelligence</h1>
+                    <p>Data-Driven Planning Assistant</p>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="index.html">← Home</a>
+                <a href="https://v1.welltegra.network" target="_blank">Version 1</a>
+                <a href="courses.html">Version 2</a>
+                <a href="planner.html">Planner</a>
+                <a href="equipment.html">Equipment</a>
+                <a href="sop-library.html">SOPs</a>
+                <a href="data-ingestion.html">Data Simulator</a>
+                <a href="index.html#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-badge">Portfolio Demonstration</div>
+            <h1>Operations Intelligence Dashboard</h1>
+            <p>Data analysis tool for well intervention planning. Uses historical pattern analysis to provide operational insights and risk assessment based on 30+ years industry experience.</p>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Input Parameters -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2 class="card-title">Operation Parameters</h2>
+                    <div class="card-status">
+                        <span>● Ready</span>
+                    </div>
+                </div>
+
+                <form id="analysisForm">
+                    <div class="input-group">
+                        <label>Well Type</label>
+                        <select id="wellType" required>
+                            <option value="">Select well type...</option>
+                            <option value="intervention">Intervention</option>
+                            <option value="completion">Completion</option>
+                            <option value="workover">Workover</option>
+                            <option value="plug_abandon">Plug & Abandon</option>
+                        </select>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Depth (ft)</label>
+                            <input type="number" id="depth" min="1000" max="25000" value="8000" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Max Deviation (°)</label>
+                            <input type="number" id="deviation" min="0" max="90" value="35" required>
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Pressure (psi)</label>
+                            <input type="number" id="pressure" min="100" max="20000" value="3000" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Temperature (°F)</label>
+                            <input type="number" id="temperature" min="50" max="400" value="180" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Primary Risk Factor</label>
+                        <select id="riskFactor" required>
+                            <option value="">Select primary risk...</option>
+                            <option value="equipment_stuck">Equipment Stuck</option>
+                            <option value="well_control">Well Control Issues</option>
+                            <option value="equipment_failure">Equipment Failure</option>
+                            <option value="weather">Weather Related</option>
+                            <option value="human_error">Human Error</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Crew Experience Level</label>
+                        <select id="crewExperience" required>
+                            <option value="">Select experience level...</option>
+                            <option value="novice">Novice (0-2 years)</option>
+                            <option value="intermediate">Intermediate (2-5 years)</option>
+                            <option value="experienced">Experienced (5-10 years)</option>
+                            <option value="expert">Expert (10+ years)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%;">Generate Analysis</button>
+                </form>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing operational parameters...</p>
+                </div>
+            </div>
+
+            <!-- Risk Analysis -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2 class="card-title">Risk Assessment</h2>
+                    <div class="card-status" id="riskStatus" style="display: none;">
+                        <span>● Analyzed</span>
+                    </div>
+                </div>
+
+                <div id="riskResults" style="display: none;">
+                    <!-- Overall Risk Level -->
+                    <div class="risk-indicator">
+                        <div class="risk-level" id="riskIndicator"></div>
+                        <div>
+                            <strong>Overall Risk Level:</strong>
+                            <span id="riskLevelText">--</span>
+                        </div>
+                    </div>
+
+                    <!-- Risk Scores -->
+                    <div class="results-grid">
+                        <div class="result-card" id="nptCard">
+                            <div class="result-value" id="nptRisk">--</div>
+                            <div class="result-label">NPT Risk (%)</div>
+                        </div>
+                        <div class="result-card" id="costCard">
+                            <div class="result-value" id="costRisk">--</div>
+                            <div class="result-label">Cost Risk ($K)</div>
+                        </div>
+                        <div class="result-card" id="successCard">
+                            <div class="result-value" id="successRate">--</div>
+                            <div class="result-label">Success Rate (%)</div>
+                        </div>
+                    </div>
+
+                    <!-- Risk Breakdown Chart -->
+                    <div class="chart-container">
+                        <canvas id="riskChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Default State -->
+                <div id="riskPlaceholder" style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                    <p>Enter operational parameters and click "Generate Analysis" to see risk assessment.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations Section -->
+        <div class="dashboard-card" id="recommendationsCard" style="display: none;">
+            <div class="card-header">
+                <h2 class="card-title">Operational Recommendations</h2>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                <!-- Recommendations -->
+                <div class="recommendations">
+                    <h4>Key Mitigation Strategies</h4>
+                    <ul id="recommendationsList">
+                        <!-- Dynamically populated -->
+                    </ul>
+                </div>
+
+                <!-- Cost-Benefit Analysis -->
+                <div>
+                    <h4 style="color: var(--text-primary); font-size: 1rem; margin-bottom: 1rem;">Cost Impact Analysis</h4>
+                    <div class="chart-container" style="height: 200px;">
+                        <canvas id="costChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Footer -->
+        <div class="nav-footer">
+            <p>Explore more demonstrations of well engineering expertise and technical capabilities</p>
+            <div class="nav-links">
+                <a href="index.html">← Home</a>
+                <span style="color: var(--text-secondary);">•</span>
+                <a href="https://v1.welltegra.network" target="_blank">Version 1</a>
+                <span style="color: var(--text-secondary);">•</span>
+                <a href="courses.html">Version 2</a>
+                <span style="color: var(--text-secondary);">•</span>
+                <a href="planner.html">Planner</a>
+                <span style="color: var(--text-secondary);">•</span>
+                <a href="equipment.html">Equipment</a>
+                <span style="color: var(--text-secondary);">•</span>
+                <a href="sop-library.html">SOPs</a>
+                <span style="color: var(--text-secondary);">•</span>
+                <a href="index.html#contact">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart instances
+        let riskChart = null;
+        let costChart = null;
+
+        // Form submission handler
+        document.getElementById('analysisForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Show loading state
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('riskResults').style.display = 'none';
+            document.getElementById('recommendationsCard').style.display = 'none';
+            document.getElementById('riskPlaceholder').style.display = 'none';
+
+            // Get form values
+            const parameters = {
+                wellType: document.getElementById('wellType').value,
+                depth: parseInt(document.getElementById('depth').value),
+                deviation: parseInt(document.getElementById('deviation').value),
+                pressure: parseInt(document.getElementById('pressure').value),
+                temperature: parseInt(document.getElementById('temperature').value),
+                riskFactor: document.getElementById('riskFactor').value,
+                crewExperience: document.getElementById('crewExperience').value
+            };
+
+            // Simulate analysis processing
+            setTimeout(() => {
+                performAnalysis(parameters);
+                document.getElementById('loading').style.display = 'none';
+            }, 1500);
+        });
+
+        function performAnalysis(params) {
+            // Risk calculation models based on operational experience
+            const baseRisk = calculateBaseRisk(params);
+            const riskScores = calculateRiskScores(params, baseRisk);
+            const recommendations = generateRecommendations(params, riskScores);
+
+            // Update UI with results
+            displayRiskResults(riskScores);
+            displayRecommendations(recommendations);
+            updateCharts(riskScores, recommendations);
+
+            // Show results
+            document.getElementById('riskResults').style.display = 'block';
+            document.getElementById('riskStatus').style.display = 'flex';
+            document.getElementById('recommendationsCard').style.display = 'block';
+        }
+
+        function calculateBaseRisk(params) {
+            // Base risk calculation using industry experience patterns
+            let risk = 0.15; // 15% base risk for any operation
+
+            // Depth factor
+            if (params.depth > 15000) risk += 0.10;
+            else if (params.depth > 10000) risk += 0.05;
+
+            // Deviation factor
+            if (params.deviation > 60) risk += 0.15;
+            else if (params.deviation > 45) risk += 0.08;
+            else if (params.deviation > 30) risk += 0.04;
+
+            // Pressure factor
+            if (params.pressure > 10000) risk += 0.12;
+            else if (params.pressure > 5000) risk += 0.06;
+
+            // Temperature factor
+            if (params.temperature > 300) risk += 0.08;
+            else if (params.temperature > 250) risk += 0.04;
+
+            // Well type factor
+            const wellTypeRisk = {
+                'intervention': 0.05,
+                'completion': 0.03,
+                'workover': 0.08,
+                'plug_abandon': 0.12
+            };
+            risk += wellTypeRisk[params.wellType] || 0;
+
+            // Crew experience factor
+            const crewRiskReduction = {
+                'novice': 0,
+                'intermediate': -0.03,
+                'experienced': -0.06,
+                'expert': -0.10
+            };
+            risk += crewRiskReduction[params.crewExperience] || 0;
+
+            return Math.max(0.05, Math.min(0.80, risk)); // Clamp between 5% and 80%
+        }
+
+        function calculateRiskScores(params, baseRisk) {
+            // Specific risk category calculations
+            const nptRisk = Math.round(baseRisk * 100);
+            const dailyRate = 150000; // $150K/day typical offshore rate
+            const estimatedDays = 7; // Average operation duration
+            const costRisk = Math.round((baseRisk * dailyRate * estimatedDays) / 1000);
+            const successRate = Math.round((1 - baseRisk) * 100);
+
+            // Risk category breakdown
+            const riskBreakdown = {
+                'Equipment Related': baseRisk * 0.35,
+                'Well Control': baseRisk * 0.25,
+                'Operational': baseRisk * 0.20,
+                'Environmental': baseRisk * 0.15,
+                'Human Factors': baseRisk * 0.05
+            };
+
+            // Apply risk factor weighting
+            if (params.riskFactor === 'equipment_stuck') {
+                riskBreakdown['Equipment Related'] *= 1.5;
+                riskBreakdown['Operational'] *= 1.2;
+            } else if (params.riskFactor === 'well_control') {
+                riskBreakdown['Well Control'] *= 2.0;
+            } else if (params.riskFactor === 'equipment_failure') {
+                riskBreakdown['Equipment Related'] *= 1.8;
+            } else if (params.riskFactor === 'weather') {
+                riskBreakdown['Environmental'] *= 2.5;
+            } else if (params.riskFactor === 'human_error') {
+                riskBreakdown['Human Factors'] *= 3.0;
+            }
+
+            return {
+                overall: baseRisk,
+                nptRisk: nptRisk,
+                costRisk: costRisk,
+                successRate: successRate,
+                breakdown: riskBreakdown
+            };
+        }
+
+        function generateRecommendations(params, riskScores) {
+            const recommendations = [];
+
+            // Base recommendations
+            recommendations.push("Conduct pre-job safety briefing with all crew members");
+            recommendations.push("Verify all equipment certifications and pressure test ratings");
+
+            // Risk-specific recommendations
+            if (params.deviation > 45) {
+                recommendations.push("Consider specialized equipment for high-angle wells");
+                recommendations.push("Review torque and drag calculations before running in hole");
+            }
+
+            if (params.depth > 12000) {
+                recommendations.push("Plan for additional contingency equipment at depth");
+                recommendations.push("Consider fatigue analysis for critical components");
+            }
+
+            if (params.pressure > 7500) {
+                recommendations.push("Review well control procedures and equipment ratings");
+                recommendations.push("Ensure crew is trained for high-pressure operations");
+            }
+
+            if (params.crewExperience === 'novice') {
+                recommendations.push("Increase supervision and oversight during critical operations");
+                recommendations.push("Consider additional pre-job planning sessions");
+            }
+
+            // Risk factor specific
+            const riskFactorRecs = {
+                'equipment_stuck': [
+                    "Review hole cleaning procedures and circulation rates",
+                    "Include jarring capability in contingency planning"
+                ],
+                'well_control': [
+                    "Test all well control equipment before operation",
+                    "Verify kill fluid calculations and volume requirements"
+                ],
+                'equipment_failure': [
+                    "Include backup critical equipment in job plan",
+                    "Review maintenance records for all equipment"
+                ],
+                'weather': [
+                    "Monitor weather forecasts closely",
+                    "Plan for secure weather windows in operation timeline"
+                ],
+                'human_error': [
+                    "Implement detailed step-by-step procedures",
+                    "Consider additional crew training for specific operation"
+                ]
+            };
+
+            if (riskFactorRecs[params.riskFactor]) {
+                recommendations.push(...riskFactorRecs[params.riskFactor]);
+            }
+
+            // Calculate cost impact
+            const mitigationCost = recommendations.length * 25000; // $25K per recommendation
+            const potentialSavings = riskScores.costRisk * 0.6; // Assume 60% of risk can be mitigated
+
+            return {
+                list: recommendations.slice(0, 8), // Limit to top 8 recommendations
+                mitigationCost: mitigationCost,
+                potentialSavings: potentialSavings
+            };
+        }
+
+        function displayRiskResults(riskScores) {
+            // Update risk level indicator
+            let riskLevel, riskClass, indicatorClass;
+            if (riskScores.overall < 0.25) {
+                riskLevel = "Low Risk";
+                riskClass = "success";
+                indicatorClass = "risk-low";
+            } else if (riskScores.overall < 0.45) {
+                riskLevel = "Medium Risk";
+                riskClass = "warning";
+                indicatorClass = "risk-medium";
+            } else {
+                riskLevel = "High Risk";
+                riskClass = "danger";
+                indicatorClass = "risk-high";
+            }
+
+            document.getElementById('riskLevelText').textContent = riskLevel;
+            document.getElementById('riskIndicator').className = `risk-level ${indicatorClass}`;
+
+            // Update result cards
+            const nptCard = document.getElementById('nptCard');
+            const costCard = document.getElementById('costCard');
+            const successCard = document.getElementById('successCard');
+
+            document.getElementById('nptRisk').textContent = riskScores.nptRisk;
+            document.getElementById('costRisk').textContent = riskScores.costRisk;
+            document.getElementById('successRate').textContent = riskScores.successRate;
+
+            // Apply risk level styling
+            nptCard.className = `result-card ${riskClass}`;
+            costCard.className = `result-card ${riskClass}`;
+            successCard.className = `result-card ${riskClass === 'danger' ? 'warning' : 'success'}`;
+        }
+
+        function displayRecommendations(recommendations) {
+            const list = document.getElementById('recommendationsList');
+            list.innerHTML = '';
+
+            recommendations.list.forEach(rec => {
+                const li = document.createElement('li');
+                li.textContent = rec;
+                list.appendChild(li);
+            });
+        }
+
+        function updateCharts(riskScores, recommendations) {
+            // Risk Breakdown Chart
+            const riskCtx = document.getElementById('riskChart').getContext('2d');
+
+            if (riskChart) {
+                riskChart.destroy();
+            }
+
+            riskChart = new Chart(riskCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(riskScores.breakdown),
+                    datasets: [{
+                        data: Object.values(riskScores.breakdown).map(v => Math.round(v * 100)),
+                        backgroundColor: [
+                            '#3b82f6',  // Blue
+                            '#10b981',  // Green
+                            '#f59e0b',  // Amber
+                            '#ef4444',  // Red
+                            '#8b5cf6'   // Purple
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#94a3b8',
+                                padding: 15,
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Cost-Benefit Chart
+            const costCtx = document.getElementById('costChart').getContext('2d');
+
+            if (costChart) {
+                costChart.destroy();
+            }
+
+            costChart = new Chart(costCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mitigation Cost', 'Potential Savings'],
+                    datasets: [{
+                        data: [recommendations.mitigationCost, recommendations.potentialSavings],
+                        backgroundColor: ['#f59e0b', '#10b981']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return '$' + context.parsed.y.toLocaleString() + 'K';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#94a3b8',
+                                callback: function(value) {
+                                    return '$' + value + 'K';
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#94a3b8'
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
