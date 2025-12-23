@@ -471,10 +471,21 @@
                 <div class="input-title">Submit Document for Audit</div>
                 <div class="options">
                     <label class="toggle">
+                        <input type="checkbox" id="useApi">
+                        Use Backend API
+                    </label>
+                    <label class="toggle">
                         <input type="checkbox" id="webSearch">
                         Enable FCA/ESMA Web Search
                     </label>
                 </div>
+            </div>
+            <div id="uploadSection" style="display:none; margin-bottom: 1rem;">
+                <label class="btn btn-secondary" style="display: inline-block; cursor: pointer;">
+                    📎 Upload PDF/TXT
+                    <input type="file" id="fileInput" accept=".txt,.pdf" style="display: none;" onchange="handleFileUpload(event)">
+                </label>
+                <span id="fileName" style="margin-left: 1rem; color: var(--text-secondary);"></span>
             </div>
             <textarea id="documentInput" placeholder="Paste your project document here...
 
@@ -542,6 +553,9 @@ Example areas the Triad will analyze:
     </div>
 
     <script>
+        // Configuration
+        const API_BASE_URL = 'http://localhost:8001';
+
         // Sample documents
         const samples = {
             w666: `# Well W-666 Project Proposal
@@ -630,6 +644,12 @@ Lawful basis: Legitimate interest (documented in DPIA v1.2). Data minimization: 
         };
 
         let currentResults = null;
+        let uploadedFile = null;
+
+        // Toggle API mode
+        document.getElementById('useApi').addEventListener('change', function() {
+            document.getElementById('uploadSection').style.display = this.checked ? 'block' : 'none';
+        });
 
         function loadSample(name) {
             document.getElementById('documentInput').value = samples[name];
@@ -637,6 +657,27 @@ Lawful basis: Legitimate interest (documented in DPIA v1.2). Data minimization: 
 
         function clearInput() {
             document.getElementById('documentInput').value = '';
+            uploadedFile = null;
+            document.getElementById('fileName').textContent = '';
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                uploadedFile = file;
+                document.getElementById('fileName').textContent = file.name;
+
+                // For text files, read content
+                if (file.name.endsWith('.txt')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('documentInput').value = e.target.result;
+                    };
+                    reader.readAsText(file);
+                } else {
+                    document.getElementById('documentInput').value = `[PDF file: ${file.name}]\n\nContent will be processed by the backend API.`;
+                }
+            }
         }
 
         function analyzeDocument(text) {
@@ -828,11 +869,13 @@ Lawful basis: Legitimate interest (documented in DPIA v1.2). Data minimization: 
             };
         }
 
-        function runAudit() {
+        async function runAudit() {
             const text = document.getElementById('documentInput').value.trim();
+            const useApi = document.getElementById('useApi').checked;
+            const enableWebSearch = document.getElementById('webSearch').checked;
 
-            if (!text) {
-                alert('Please enter a document to audit');
+            if (!text && !uploadedFile) {
+                alert('Please enter a document or upload a file to audit');
                 return;
             }
 
@@ -841,16 +884,108 @@ Lawful basis: Legitimate interest (documented in DPIA v1.2). Data minimization: 
             document.getElementById('results').classList.remove('active');
             document.getElementById('auditBtn').disabled = true;
 
-            // Simulate processing delay
-            setTimeout(() => {
-                currentResults = analyzeDocument(text);
-                displayResults(currentResults);
+            try {
+                if (useApi) {
+                    // Use backend API
+                    if (uploadedFile && uploadedFile.name.endsWith('.pdf')) {
+                        // Upload file for processing
+                        const formData = new FormData();
+                        formData.append('file', uploadedFile);
+                        formData.append('enable_web_search', enableWebSearch);
+
+                        const response = await fetch(`${API_BASE_URL}/api/audit/file`, {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        if (!response.ok) throw new Error('API request failed');
+                        currentResults = await response.json();
+
+                    } else {
+                        // Send text to API
+                        const response = await fetch(`${API_BASE_URL}/api/audit`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                document: text,
+                                enable_web_search: enableWebSearch
+                            })
+                        });
+
+                        if (!response.ok) throw new Error('API request failed');
+                        currentResults = await response.json();
+                    }
+
+                    displayAPIResults(currentResults);
+
+                } else {
+                    // Client-side analysis
+                    await new Promise(r => setTimeout(r, 1500));
+                    currentResults = analyzeDocument(text);
+                    displayResults(currentResults);
+                }
 
                 document.getElementById('loading').classList.remove('active');
                 document.getElementById('results').classList.add('active');
                 document.getElementById('auditBtn').disabled = false;
                 document.getElementById('exportBtn').style.display = 'inline-block';
-            }, 2000);
+
+            } catch (error) {
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('auditBtn').disabled = false;
+                alert('Error: ' + error.message + '\n\nMake sure the API server is running on port 8001');
+            }
+        }
+
+        function displayAPIResults(data) {
+            // Display Alpha results from API
+            const alphaRisks = data.alpha.paths.map(p =>
+                `PATH: ${p.path}
+SEVERITY: ${p.severity}
+COUPLING_SCORE: ${p.score}/100
+${p.description}`
+            ).join('\n\n');
+            document.getElementById('alphaResult').textContent = alphaRisks;
+            document.getElementById('alphaScore').style.width = data.alpha.max_coupling + '%';
+
+            // Display Beta results from API
+            const betaText = `MASKING ADVERBS DETECTED:
+${data.beta.adverbs.length > 0 ? data.beta.adverbs.map(a => '• ' + a.toUpperCase()).join('\n') : 'None detected'}
+
+REALITY COEFFICIENT CALCULATION:
+Timeline Plausibility:    ${data.beta.scores.timeline}/25
+Resource Realism:        ${data.beta.scores.resource}/25
+Dependency Acknowledgment: ${data.beta.scores.dependency}/25
+Contingency Presence:    ${data.beta.scores.contingency}/25
+─────────────────────────────────────
+TOTAL: ${data.beta.total}/100
+VERDICT: ${data.beta.verdict}`;
+            document.getElementById('betaResult').textContent = betaText;
+            document.getElementById('betaScore').style.width = data.beta.total + '%';
+            document.getElementById('betaScore').textContent = data.beta.verdict;
+            document.getElementById('betaScore').className = 'status-badge ' + data.beta.badge;
+
+            // Display Gamma results from API
+            const gammaText = `DORA STATUS: ${data.gamma.verdict}
+${data.gamma.issues.filter(i => i.category === 'DORA').map(i => '• ' + i.issue).join('\n') || '• ICT risk management: OK\n• Incident response timing: OK'}
+
+GDPR STATUS: ${data.gamma.verdict}
+${data.gamma.issues.filter(i => i.category === 'GDPR').map(i => '• ' + i.issue).join('\n') || '• Lawful basis documented\n• Data retention policy defined'}
+
+BOARD LIABILITY: ${data.gamma.liability}
+
+FINANCIAL EXPOSURE:
+Maximum DORA Fine: ${data.gamma.financial_exposure.dora_max}
+Maximum GDPR Fine: ${data.gamma.financial_exposure.gdpr_max}
+${data.gamma.financial_exposure.personal_director_risk ? '\nLIABILITY CONFIRMED: Personal director risk' : ''}`;
+            document.getElementById('gammaResult').textContent = gammaText;
+            document.getElementById('gammaStatus').textContent = data.gamma.verdict;
+            document.getElementById('gammaStatus').className = 'status-badge ' + (data.gamma.verdict === 'VETO' ? 'veto' : data.gamma.verdict === 'PARTIAL' ? 'partial' : 'compliant');
+
+            // Final verdict
+            const banner = document.getElementById('verdictBanner');
+            banner.textContent = `FINAL VERDICT: ${data.verdict}`;
+            banner.className = 'verdict-banner ' + data.verdict.toLowerCase();
         }
 
         function displayResults(results) {

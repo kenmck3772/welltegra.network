@@ -8,6 +8,19 @@ dependencies = [
     "anthropic[vertex]>=0.40.0",
     "claude-agent-sdk>=0.1.0",
     "python-dotenv>=1.0.0",
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "python-multipart>=0.0.6",
+    "PyPDF2>=3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
 ]
 
 [build-system]
@@ -20,3 +33,14 @@ packages = ["src/my_agent"]
 [project.scripts]
 w666-audit = "my_agent.agent:main"
 dark-kenneth = "my_agent.agent:main"
+w666-api = "my_agent.api:main"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
