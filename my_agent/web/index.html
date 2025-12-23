@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Kenneth Triad - W666 Audit System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --alpha-color: #8b5cf6;
+            --beta-color: #3b82f6;
+            --gamma-color: #ef4444;
+            --orchestrator-color: #f59e0b;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--alpha-color), var(--gamma-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .triad-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .agent-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .agent-card.alpha { border-top: 3px solid var(--alpha-color); }
+        .agent-card.beta { border-top: 3px solid var(--beta-color); }
+        .agent-card.gamma { border-top: 3px solid var(--gamma-color); }
+
+        .agent-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .agent-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .alpha .agent-icon { background: var(--alpha-color); }
+        .beta .agent-icon { background: var(--beta-color); }
+        .gamma .agent-icon { background: var(--gamma-color); }
+
+        .agent-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .agent-title {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .agent-worldview {
+            font-size: 0.75rem;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            color: var(--text-secondary);
+        }
+
+        .input-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .input-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .options {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .toggle input {
+            accent-color: var(--orchestrator-color);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            resize: vertical;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--orchestrator-color);
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--alpha-color), var(--gamma-color));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .verdict-banner {
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .verdict-banner.proceed {
+            background: rgba(16, 185, 129, 0.2);
+            border: 2px solid var(--success);
+            color: var(--success);
+        }
+
+        .verdict-banner.caution {
+            background: rgba(245, 158, 11, 0.2);
+            border: 2px solid var(--warning);
+            color: var(--warning);
+        }
+
+        .verdict-banner.veto {
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .agent-result {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .agent-result.alpha { border-left: 4px solid var(--alpha-color); }
+        .agent-result.beta { border-left: 4px solid var(--beta-color); }
+        .agent-result.gamma { border-left: 4px solid var(--gamma-color); }
+
+        .agent-result-header {
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .agent-result-body {
+            padding: 1.5rem;
+            white-space: pre-wrap;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border);
+            border-top-color: var(--orchestrator-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--text-secondary);
+        }
+
+        .sample-docs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .sample-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sample-btn:hover {
+            border-color: var(--orchestrator-color);
+            color: var(--text-primary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-badge.compliant {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .status-badge.partial {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        .status-badge.veto {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .score-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .score-bar {
+            width: 100px;
+            height: 8px;
+            background: var(--bg-dark);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .score-fill.high { background: var(--danger); }
+        .score-fill.medium { background: var(--warning); }
+        .score-fill.low { background: var(--success); }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .triad-display {
+                grid-template-columns: 1fr;
+            }
+
+            .options {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>╔═ DARK KENNETH TRIAD ═╗</h1>
+            <p class="subtitle">W666 Structural Sanity Audit System</p>
+        </header>
+
+        <section class="triad-display">
+            <div class="agent-card alpha">
+                <div class="agent-header">
+                    <div class="agent-icon">α</div>
+                    <div>
+                        <div class="agent-name">The Contagion Hunter</div>
+                        <div class="agent-title">Technical & Structural</div>
+                    </div>
+                </div>
+                <div class="agent-worldview">
+                    <strong>Worldview:</strong> Brutal Realism
+                    <br>
+                    <strong>Mission:</strong> Identify tight coupling & contagion paths
+                </div>
+            </div>
+
+            <div class="agent-card beta">
+                <div class="agent-header">
+                    <div class="agent-icon">β</div>
+                    <div>
+                        <div class="agent-name">The Narrative Auditor</div>
+                        <div class="agent-title">Timeline & Claim Analysis</div>
+                    </div>
+                </div>
+                <div class="agent-worldview">
+                    <strong>Worldview:</strong> Forensic Skepticism
+                    <br>
+                    <strong>Mission:</strong> Detect optimism bias & calculate reality
+                </div>
+            </div>
+
+            <div class="agent-card gamma">
+                <div class="agent-header">
+                    <div class="agent-icon">γ</div>
+                    <div>
+                        <div class="agent-name">The Regulator's Ghost</div>
+                        <div class="agent-title">DORA/GDPR Compliance</div>
+                    </div>
+                </div>
+                <div class="agent-worldview">
+                    <strong>Worldview:</strong> Severe Compliance
+                    <br>
+                    <strong>Mission:</strong> Issue VETO on non-compliance
+                </div>
+            </div>
+        </section>
+
+        <section class="input-section">
+            <div class="input-header">
+                <div class="input-title">Submit Document for Audit</div>
+                <div class="options">
+                    <label class="toggle">
+                        <input type="checkbox" id="webSearch">
+                        Enable FCA/ESMA Web Search
+                    </label>
+                </div>
+            </div>
+            <textarea id="documentInput" placeholder="Paste your project document here...
+
+Example areas the Triad will analyze:
+• Technical architecture & dependencies
+• Timeline & resource claims
+• Data handling & compliance statements
+• Risk assessments & mitigations"></textarea>
+            <div class="sample-docs">
+                <button class="sample-btn" onclick="loadSample('w666')">Load W-666 Sample</button>
+                <button class="sample-btn" onclick="loadSample('realistic')">Load Realistic Sample</button>
+                <button class="sample-btn" onclick="clearInput()">Clear</button>
+            </div>
+            <div class="actions">
+                <button class="btn btn-primary" onclick="runAudit()" id="auditBtn">Run Audit</button>
+                <button class="btn btn-secondary" onclick="exportResults()" id="exportBtn" style="display:none;">Export Report</button>
+            </div>
+        </section>
+
+        <section class="loading" id="loading">
+            <div class="spinner"></div>
+            <div class="loading-text">The Triad is analyzing your document...</div>
+            <div class="loading-text" style="font-size: 0.85rem; margin-top: 0.5rem;">Alpha is mapping contagion paths...</div>
+        </section>
+
+        <section class="results-section" id="results">
+            <div class="verdict-banner" id="verdictBanner">
+                AWAITING AUDIT
+            </div>
+
+            <div class="agent-result alpha">
+                <div class="agent-result-header">
+                    <span>α CONTAGION ANALYSIS</span>
+                    <div class="score-display">
+                        <div class="score-bar"><div class="score-fill high" id="alphaScore" style="width: 0%"></div></div>
+                    </div>
+                </div>
+                <div class="agent-result-body" id="alphaResult"></div>
+            </div>
+
+            <div class="agent-result beta">
+                <div class="agent-result-header">
+                    <span>β REALITY COEFFICIENT</span>
+                    <div class="score-display">
+                        <div class="score-bar"><div class="score-fill high" id="betaScore" style="width: 0%"></div></div>
+                        <span id="betaScoreText" class="status-badge">--</span>
+                    </div>
+                </div>
+                <div class="agent-result-body" id="betaResult"></div>
+            </div>
+
+            <div class="agent-result gamma">
+                <div class="agent-result-header">
+                    <span>γ REGULATORY VERDICT</span>
+                    <span class="status-badge" id="gammaStatus">--</span>
+                </div>
+                <div class="agent-result-body" id="gammaResult"></div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Dark Kenneth Triad v0.1.0 | Google Cloud Vertex AI Integration</p>
+            <p style="margin-top: 0.5rem;">Claude Agent SDK | WellTegra Network</p>
+        </footer>
+    </div>
+
+    <script>
+        // Sample documents
+        const samples = {
+            w666: `# Well W-666 Project Proposal
+
+## Project Overview
+Well W-666 represents a transformative opportunity in the North Sea. We will seamlessly integrate our AI-driven predictive maintenance system with existing offshore infrastructure. The project will rapidly deliver value through minimal disruption to operations.
+
+## Technical Architecture
+
+### System Integration
+The new WellTegra AI Core will connect directly to the existing SCADA system at the Aberdeen control center. The authentication layer will be shared with the existing Active Directory to simplify user management.
+
+### Dependencies
+- SCADA System (legacy, no API documentation available)
+- WellTegra AI Core (new development)
+- Shared Authentication Provider
+- Third-party data visualization module (vendor TBD)
+
+### Timeline
+| Milestone | Target Date |
+|-----------|-------------|
+| Requirements Complete | Week 2 |
+| Development Complete | Week 12 |
+| Go-Live | Week 16 |
+
+## Data Handling
+
+### Personal Data
+The system will process operator names and shift schedules for workforce optimization.
+
+### Data Retention
+All system logs will be retained for 7 years for audit purposes. We'll figure out the exact deletion policy during Phase 2.
+
+## Risk Management
+
+### Identified Risks
+1. API integration complexity - LOW: Our team has done similar integrations before
+2. Data migration effort - LOW: The data transfer will be straightforward
+
+## Compliance Statement
+
+We are committed to maintaining high standards of operational resilience. Our incident response team can be mobilized within 24 hours of any critical issue being identified.`,
+
+            realistic: `# Project Phoenix - Realistic Proposal
+
+## Project Overview
+A phased migration to modern infrastructure with clear boundaries and contingency planning.
+
+## Technical Architecture
+
+### System Integration
+New microservices architecture with async message queues (RabbitMQ) for decoupling. Circuit breakers between services. Authentication via dedicated OAuth2 service with fallback.
+
+### Dependencies
+- New microservices (independent deployment)
+- Async message queue (existing, documented)
+- OAuth2 service (new, with documented API)
+- Read-only replicas for reporting
+
+### Timeline
+| Milestone | Target Date | Contingency |
+|-----------|-------------|-------------|
+| Phase 1 - Read Replica | Month 2 | If delayed, extend by 2 weeks |
+| Phase 2 - Async Layer | Month 4 | Rollback mechanism documented |
+| Phase 3 - Cutover | Month 8 | Full rollback available |
+
+## Data Handling
+
+### Personal Data
+Lawful basis: Legitimate interest (documented in DPIA v1.2). Data minimization: only roles, no names.
+
+### Data Retention
+12 months, per documented retention schedule (Ref: DATA-RET-001). Automated deletion job scheduled.
+
+## Risk Management
+
+### Identified Risks
+1. Message queue latency - MEDIUM: Mitigation: Buffer sizing, monitoring alerts
+2. OAuth2 availability - HIGH: Mitigation: Local cache fallback, 24hr token expiry
+
+## Compliance Statement
+
+- ICT Risk Framework: ISO 27001 aligned
+- Incident Response: 1-hour serious incident notification
+- Third-party risk: Vendor assessment completed (TPRM-2025-042)`
+        };
+
+        let currentResults = null;
+
+        function loadSample(name) {
+            document.getElementById('documentInput').value = samples[name];
+        }
+
+        function clearInput() {
+            document.getElementById('documentInput').value = '';
+        }
+
+        function analyzeDocument(text) {
+            // Alpha: Contagion Analysis
+            const alpha = analyzeAlpha(text);
+
+            // Beta: Reality Coefficient
+            const beta = analyzeBeta(text);
+
+            // Gamma: Regulatory
+            const gamma = analyzeGamma(text);
+
+            return { alpha, beta, gamma };
+        }
+
+        function analyzeAlpha(text) {
+            const risks = [];
+            let maxCoupling = 0;
+
+            // Check for tight coupling indicators
+            if (text.toLowerCase().includes('shared') && text.toLowerCase().includes('authentication')) {
+                risks.push({
+                    path: 'Shared Active Directory → All Systems',
+                    severity: 'CATASTROPHIC',
+                    score: 100,
+                    desc: 'Authentication is a single point of failure. If AD is compromised, entire operational surface is exposed.'
+                });
+                maxCoupling = 100;
+            }
+
+            if (text.toLowerCase().includes('direct') && text.toLowerCase().includes('connect')) {
+                risks.push({
+                    path: 'Direct SCADA Connection → AI Core',
+                    severity: 'CATASTROPHIC',
+                    score: 95,
+                    desc: 'If SCADA fails, AI Core cannot function. No isolation boundary detected.'
+                });
+                maxCoupling = Math.max(maxCoupling, 95);
+            }
+
+            if (text.toLowerCase().includes('no api documentation') || text.toLowerCase().includes('undocumented')) {
+                risks.push({
+                    path: 'Legacy Undocumented System → Integration Risk',
+                    severity: 'CRITICAL',
+                    score: 85,
+                    desc: 'Dependency on undocumented system creates undefined failure modes.'
+                });
+                maxCoupling = Math.max(maxCoupling, 85);
+            }
+
+            if (text.toLowerCase().includes('async') || text.toLowerCase().includes('circuit breaker')) {
+                // Good patterns detected
+                maxCoupling = Math.max(maxCoupling, 30);
+            }
+
+            if (risks.length === 0) {
+                risks.push({
+                    path: 'No critical contagion paths detected',
+                    severity: 'LOW',
+                    score: 20,
+                    desc: 'System shows good isolation patterns.'
+                });
+            }
+
+            return {
+                risks,
+                maxCoupling,
+                verdict: maxCoupling >= 85 ? 'VETO' : maxCoupling >= 50 ? 'CAUTION' : 'PROCEED'
+            };
+        }
+
+        function analyzeBeta(text) {
+            const maskingAdverbs = ['seamlessly', 'rapidly', 'easily', 'simply', 'just', 'merely', 'straightforward'];
+            const textLower = text.toLowerCase();
+
+            const foundAdverbs = maskingAdverbs.filter(a => textLower.includes(a));
+
+            // Timeline plausibility
+            let timelineScore = 25;
+            if (textLower.includes('week')) {
+                const weekMatch = text.match(/week\s*(\d+)/i);
+                if (weekMatch && parseInt(weekMatch[1]) < 4) {
+                    timelineScore = 5;
+                } else if (textLower.includes('16 week') || textLower.includes('12 week')) {
+                    timelineScore = 10;
+                }
+            }
+            if (textLower.includes('month') && textLower.includes('phased')) {
+                timelineScore = 20;
+            }
+
+            // Resource realism
+            let resourceScore = 25;
+            if (textLower.includes('team has done similar') && !textLower.includes('team size')) {
+                resourceScore = 5;
+            }
+            if (textLower.includes('vendor tbd')) {
+                resourceScore = Math.min(resourceScore, 10);
+            }
+
+            // Dependency acknowledgment
+            let depScore = 25;
+            if (textLower.includes('vendor tbd')) {
+                depScore = 5;
+            }
+            if (textLower.includes('no api documentation')) {
+                depScore = 2;
+            }
+
+            // Contingency presence
+            let contingencyScore = 25;
+            if (textLower.includes('contingenc')) {
+                contingencyScore = 25;
+            }
+            if (textLower.includes('rollback') || textLower.includes('fallback')) {
+                contingencyScore = 25;
+            }
+            if (textLower.includes('automatic failover') && !textLower.includes('architecture')) {
+                contingencyScore = 0;
+            }
+
+            const total = timelineScore + resourceScore + depScore + contingencyScore;
+
+            let verdict;
+            if (total < 40) verdict = 'FANTASY';
+            else if (total < 70) verdict = 'OPTIMISTIC';
+            else if (total < 90) verdict = 'GROUNDED';
+            else verdict = 'REALISTIC';
+
+            return {
+                adverbs: foundAdverbs,
+                scores: { timeline: timelineScore, resource: resourceScore, dep: depScore, contingency: contingencyScore },
+                total,
+                verdict,
+                badge: total < 40 ? 'veto' : total < 70 ? 'partial' : 'compliant'
+            };
+        }
+
+        function analyzeGamma(text) {
+            const textLower = text.toLowerCase();
+
+            // DORA checks
+            let doraStatus = 'COMPLIANT';
+            const doraIssues = [];
+
+            if (textLower.includes('24 hour') || textLower.includes('24 hour') || textLower.includes('48 hour')) {
+                doraStatus = 'VETO';
+                doraIssues.push('Incident response exceeds DORA 1-hour requirement');
+            }
+            if (textLower.includes('1 hour') || textLower.includes('30 minute')) {
+                doraStatus = doraStatus === 'VETO' ? 'VETO' : 'COMPLIANT';
+            }
+            if (!textLower.includes('ict risk') && !textLower.includes('risk management framework')) {
+                doraStatus = 'VETO';
+                doraIssues.push('No ICT risk management framework mentioned');
+            }
+
+            // GDPR checks
+            let gdprStatus = 'COMPLIANT';
+            const gdprIssues = [];
+
+            if (textLower.includes('operator name') && !textLower.includes('lawful basis') && !textLower.includes('dpia')) {
+                gdprStatus = 'VETO';
+                gdprIssues.push('Processing personal data without documented lawful basis');
+            }
+            if (textLower.includes('will figure out') || textLower.includes('phase 2') && textLower.includes('deletion')) {
+                gdprStatus = 'VETO';
+                gdprIssues.push('NON-COMPLIANCE: Undefined data retention policy');
+            }
+            if (textLower.includes('dpia') || (textLower.includes('lawful basis') && textLower.includes('legitimate'))) {
+                gdprStatus = gdprStatus === 'VETO' ? 'VETO' : 'COMPLIANT';
+            }
+
+            // Board liability
+            let liability = 'ACCEPTABLE';
+            if (doraStatus === 'VETO' || gdprStatus === 'VETO') {
+                liability = 'SEVERE';
+            }
+
+            const verdict = doraStatus === 'VETO' || gdprStatus === 'VETO' ? 'VETO' :
+                           doraStatus === 'PARTIAL' || gdprStatus === 'PARTIAL' ? 'PARTIAL' : 'COMPLIANT';
+
+            return {
+                dora: { status: doraStatus, issues: doraIssues },
+                gdpr: { status: gdprStatus, issues: gdprIssues },
+                liability,
+                verdict,
+                badge: verdict === 'VETO' ? 'veto' : verdict === 'PARTIAL' ? 'partial' : 'compliant'
+            };
+        }
+
+        function runAudit() {
+            const text = document.getElementById('documentInput').value.trim();
+
+            if (!text) {
+                alert('Please enter a document to audit');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('auditBtn').disabled = true;
+
+            // Simulate processing delay
+            setTimeout(() => {
+                currentResults = analyzeDocument(text);
+                displayResults(currentResults);
+
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('results').classList.add('active');
+                document.getElementById('auditBtn').disabled = false;
+                document.getElementById('exportBtn').style.display = 'inline-block';
+            }, 2000);
+        }
+
+        function displayResults(results) {
+            // Display Alpha results
+            const alphaRisks = results.alpha.risks.map(r =>
+                `PATH: ${r.path}
+SEVERITY: ${r.severity}
+COUPLING_SCORE: ${r.score}/100
+${r.desc}`
+            ).join('\n\n');
+            document.getElementById('alphaResult').textContent = alphaRisks;
+            document.getElementById('alphaScore').style.width = results.alpha.maxCoupling + '%';
+
+            // Display Beta results
+            const betaText = `MASKING ADVERBS DETECTED:
+${results.beta.adverbs.length > 0 ? results.beta.adverbs.map(a => '• ' + a.toUpperCase()).join('\n') : 'None detected'}
+
+REALITY COEFFICIENT CALCULATION:
+Timeline Plausibility:    ${results.beta.scores.timeline}/25
+Resource Realism:        ${results.beta.scores.resource}/25
+Dependency Acknowledgment: ${results.beta.scores.dep}/25
+Contingency Presence:    ${results.beta.scores.contingency}/25
+─────────────────────────────────────
+TOTAL: ${results.beta.total}/100
+VERDICT: ${results.beta.verdict}`;
+            document.getElementById('betaResult').textContent = betaText;
+            document.getElementById('betaScore').style.width = results.beta.total + '%';
+            document.getElementById('betaScore').textContent = results.beta.verdict;
+            document.getElementById('betaScore').className = 'status-badge ' + results.beta.badge;
+
+            // Display Gamma results
+            const gammaText = `DORA STATUS: ${results.gamma.dora.status}
+${results.gamma.dora.issues.length > 0 ? results.gamma.dora.issues.map(i => '• ' + i).join('\n') : '• ICT risk management: OK\n• Incident response timing: OK'}
+
+GDPR STATUS: ${results.gamma.gdpr.status}
+${results.gamma.gdpr.issues.length > 0 ? results.gamma.gdpr.issues.map(i => '• ' + i).join('\n') : '• Lawful basis documented\n• Data retention policy defined'}
+
+BOARD LIABILITY: ${results.gamma.liability}
+
+FINANCIAL EXPOSURE:
+Maximum DORA Fine: 2% of global turnover
+Maximum GDPR Fine: €20M or 4% of turnover
+${results.gamma.liability === 'SEVERE' ? '\nLIABILITY CONFIRMED: Personal director risk' : ''}`;
+            document.getElementById('gammaResult').textContent = gammaText;
+            document.getElementById('gammaStatus').textContent = results.gamma.verdict;
+            document.getElementById('gammaStatus').className = 'status-badge ' + results.gamma.badge;
+
+            // Final verdict
+            const finalVerdict = results.alpha.verdict === 'VETO' || results.beta.verdict === 'FANTASY' || results.gamma.verdict === 'VETO' ? 'VETO' :
+                               results.alpha.verdict === 'CAUTION' || results.beta.verdict === 'OPTIMISTIC' || results.gamma.verdict === 'PARTIAL' ? 'CAUTION' : 'PROCEED';
+
+            const banner = document.getElementById('verdictBanner');
+            banner.textContent = `FINAL VERDICT: ${finalVerdict}`;
+            banner.className = 'verdict-banner ' + finalVerdict.toLowerCase();
+        }
+
+        function exportResults() {
+            if (!currentResults) return;
+
+            const report = `
+╔════════════════════════════════════════════════════════════╗
+║           W666 STRUCTURAL SANITY AUDIT REPORT              ║
+╚════════════════════════════════════════════════════════════╝
+
+[ALPHA] CONTAGION ANALYSIS
+${currentResults.alpha.risks.map(r => `PATH: ${r.path}
+SEVERITY: ${r.severity}
+COUPLING_SCORE: ${r.score}/100`).join('\n\n')}
+
+[BETA] REALITY COEFFICIENT
+Timeline Plausibility: ${currentResults.beta.scores.timeline}/25
+Resource Realism: ${currentResults.beta.scores.resource}/25
+Dependency Acknowledgment: ${currentResults.beta.scores.dep}/25
+Contingency Presence: ${currentResults.beta.scores.contingency}/25
+─────────────────────────────────────
+TOTAL: ${currentResults.beta.total}/100 - ${currentResults.beta.verdict}
+
+[GAMMA] REGULATORY VERDICT
+DORA STATUS: ${currentResults.gamma.dora.status}
+GDPR STATUS: ${currentResults.gamma.gdpr.status}
+BOARD LIABILITY: ${currentResults.gamma.liability}
+
+═══════════════════════════════════════════════════════════
+Generated by Dark Kenneth Triad v0.1.0
+═══════════════════════════════════════════════════════════
+`;
+
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'w666-audit-report.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
