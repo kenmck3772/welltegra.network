@@ -4,6 +4,13 @@
 (function() {
     'use strict';
 
+    // Prevent double loading
+    if (window.__chatbotWidgetLoaded) {
+        console.log('ℹ️ WellTegra AI Assistant already loaded, skipping...');
+        return;
+    }
+    window.__chatbotWidgetLoaded = true;
+
     // Inject styles
     const styles = document.createElement('style');
     styles.textContent = `
@@ -24,6 +31,7 @@
             justify-content: center;
             z-index: 9999;
             font-size: 28px;
+            transition: transform 0.2s ease;
         }
         .chat-fab:hover {
             transform: scale(1.1);
