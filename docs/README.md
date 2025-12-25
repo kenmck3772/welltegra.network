@@ -13,6 +13,7 @@
 |----------|-------------|------|--------|
 | **[Operations Dashboard API](./OPERATIONS_DASHBOARD_API.md)** | Risk analysis functions, NPT calculation, safety recommendations | 17 KB | ✅ Complete |
 | **[Well Operations Planner API](./WELL_OPERATIONS_PLANNER_API.md)** | Toolstring assembly, clash detection, MOC workflow, Chart.js risk matrix | 45 KB | ✅ Complete |
+| **[Crisis Command Center API](./CRISIS_COMMAND_API.md)** | Crisis management simulator, multi-lens cognitive filtering, real-time physics | 32 KB | ✅ Complete |
 | **[Data Pipeline API](./DATA_PIPELINE_API.md)** | Python ETL scripts, BigQuery upload, Vertex AI training | 41 KB | ✅ Complete |
 | **[Equipment Catalog API](./EQUIPMENT_CATALOG_API.md)** | 122 tools, clash detection, compatibility matrices | 28 KB | ✅ Complete |
 
@@ -40,9 +41,10 @@
 Start here to integrate with WellTegra:
 
 1. **[Well Operations Planner API](./WELL_OPERATIONS_PLANNER_API.md)** - Interactive toolstring builder with Chart.js and Canvas
-2. **[Operations Dashboard API](./OPERATIONS_DASHBOARD_API.md)** - Understand risk calculation functions
-3. **[Equipment Catalog API](./EQUIPMENT_CATALOG_API.md)** - Access the 122-tool database
-4. **[Data Pipeline API](./DATA_PIPELINE_API.md)** - Run the Python ETL workflow
+2. **[Crisis Command Center API](./CRISIS_COMMAND_API.md)** - Real-time simulation with branching decision trees
+3. **[Operations Dashboard API](./OPERATIONS_DASHBOARD_API.md)** - Understand risk calculation functions
+4. **[Equipment Catalog API](./EQUIPMENT_CATALOG_API.md)** - Access the 122-tool database
+5. **[Data Pipeline API](./DATA_PIPELINE_API.md)** - Run the Python ETL workflow
 
 ### For **Data Engineers**
 Build on our infrastructure:
@@ -63,8 +65,9 @@ See technical depth:
 
 1. **[Main README](../README.md)** - Portfolio overview with architecture
 2. **[Well Operations Planner API](./WELL_OPERATIONS_PLANNER_API.md)** - 27 functions, Chart.js + Canvas visualization
-3. **[Operations Dashboard API](./OPERATIONS_DASHBOARD_API.md)** - Production JavaScript code
-4. **[Data Pipeline API](./DATA_PIPELINE_API.md)** - Production Python code
+3. **[Crisis Command Center API](./CRISIS_COMMAND_API.md)** - Educational software development, cognitive scaffolding
+4. **[Operations Dashboard API](./OPERATIONS_DASHBOARD_API.md)** - Production JavaScript code
+5. **[Data Pipeline API](./DATA_PIPELINE_API.md)** - Production Python code
 
 ---
 
@@ -90,7 +93,16 @@ See technical depth:
 ```
 1. Operations Dashboard API → Risk calculation functions
 2. Brahan Engine Troubleshooting → Control room UI patterns
-3. WellView Mapper Spec → Wellbore visualization
+3. Crisis Command Center API → Real-time Chart.js visualization
+4. WellView Mapper Spec → Wellbore visualization
+```
+
+### **Building Training Simulations**
+```
+1. Crisis Command Center API → Multi-lens cognitive filtering system
+2. Crisis Command Center API → Real-time physics simulation (kick detection)
+3. Crisis Command Center API → Branching decision trees
+4. Operations Dashboard API → Risk scenarios and consequences
 ```
 
 ### **Integrating WITSML**
@@ -246,14 +258,14 @@ Ideas for better documentation?
 
 | Metric | Value |
 |--------|-------|
-| **Total Documents** | 9 |
-| **Total Size** | 195 KB |
-| **API References** | 3 |
+| **Total Documents** | 10 |
+| **Total Size** | 227 KB |
+| **API References** | 5 |
 | **Architecture Guides** | 3 |
 | **Component Specs** | 3 |
 | **Code Examples** | 50+ |
-| **Functions Documented** | 30+ |
-| **Last Updated** | December 24, 2024 |
+| **Functions Documented** | 40+ |
+| **Last Updated** | December 25, 2025 |
 
 ---
 
