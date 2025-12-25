@@ -12,6 +12,7 @@
 | Document | Description | Size | Status |
 |----------|-------------|------|--------|
 | **[Operations Dashboard API](./OPERATIONS_DASHBOARD_API.md)** | Risk analysis functions, NPT calculation, safety recommendations | 17 KB | ✅ Complete |
+| **[Well Operations Planner API](./WELL_OPERATIONS_PLANNER_API.md)** | Toolstring assembly, clash detection, MOC workflow, Chart.js risk matrix | 45 KB | ✅ Complete |
 | **[Data Pipeline API](./DATA_PIPELINE_API.md)** | Python ETL scripts, BigQuery upload, Vertex AI training | 41 KB | ✅ Complete |
 | **[Equipment Catalog API](./EQUIPMENT_CATALOG_API.md)** | 122 tools, clash detection, compatibility matrices | 28 KB | ✅ Complete |
 
@@ -38,9 +39,10 @@
 ### For **Developers**
 Start here to integrate with WellTegra:
 
-1. **[Operations Dashboard API](./OPERATIONS_DASHBOARD_API.md)** - Understand risk calculation functions
-2. **[Equipment Catalog API](./EQUIPMENT_CATALOG_API.md)** - Access the 122-tool database
-3. **[Data Pipeline API](./DATA_PIPELINE_API.md)** - Run the Python ETL workflow
+1. **[Well Operations Planner API](./WELL_OPERATIONS_PLANNER_API.md)** - Interactive toolstring builder with Chart.js and Canvas
+2. **[Operations Dashboard API](./OPERATIONS_DASHBOARD_API.md)** - Understand risk calculation functions
+3. **[Equipment Catalog API](./EQUIPMENT_CATALOG_API.md)** - Access the 122-tool database
+4. **[Data Pipeline API](./DATA_PIPELINE_API.md)** - Run the Python ETL workflow
 
 ### For **Data Engineers**
 Build on our infrastructure:
@@ -60,8 +62,9 @@ Understand the design system:
 See technical depth:
 
 1. **[Main README](../README.md)** - Portfolio overview with architecture
-2. **[Operations Dashboard API](./OPERATIONS_DASHBOARD_API.md)** - Production JavaScript code
-3. **[Data Pipeline API](./DATA_PIPELINE_API.md)** - Production Python code
+2. **[Well Operations Planner API](./WELL_OPERATIONS_PLANNER_API.md)** - 27 functions, Chart.js + Canvas visualization
+3. **[Operations Dashboard API](./OPERATIONS_DASHBOARD_API.md)** - Production JavaScript code
+4. **[Data Pipeline API](./DATA_PIPELINE_API.md)** - Production Python code
 
 ---
 
@@ -69,9 +72,10 @@ See technical depth:
 
 ### **Building a Toolstring**
 ```
-1. Equipment Catalog API → Browse 122 tools
-2. Equipment Catalog API → Clash detection algorithm
-3. Operations Dashboard API → Risk analysis for configuration
+1. Well Operations Planner API → Interactive toolstring assembly
+2. Equipment Catalog API → Browse 122 tools
+3. Well Operations Planner API → Real-time clash detection
+4. Operations Dashboard API → Risk analysis for configuration
 ```
 
 ### **Processing Well Data**

@@ -859,6 +859,14 @@
         ];
         
         // ===== INITIALIZATION =====
+        /**
+         * Application bootstrap and initial data load
+         * @async
+         * @function init
+         * @description Loads well data, populates UI, and handles URL parameter deep linking
+         * @returns {Promise<void>}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#init}
+         */
         async function init() {
             await loadWellData();
             populateWellSelector();
@@ -873,7 +881,16 @@
                 selectWell(wellId);
             }
         }
-        
+
+        /**
+         * Fetch well data from JSON file
+         * @async
+         * @function loadWellData
+         * @description Loads wells.json and populates global wellData variable
+         * @returns {Promise<void>}
+         * @throws {Error} Logs error but continues execution (graceful degradation)
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#loadWellData}
+         */
         async function loadWellData() {
             try {
                 const response = await fetch('data/wells.json');
@@ -882,7 +899,16 @@
                 console.error('Failed to load well data:', e);
             }
         }
-        
+
+        /**
+         * Populate well dropdown with available wells
+         * @function populateWellSelector
+         * @description Creates option elements for each well with name, nickname, status, and lock indicator
+         * @returns {void}
+         * @example
+         * // Output format: "GNS-042 "Black Pearl" - INTERVENTION 🔒"
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#populateWellSelector}
+         */
         function populateWellSelector() {
             const selector = document.getElementById('wellSelector');
             if (!wellData) return;
@@ -899,6 +925,14 @@
         // ===== RISK PRIORITY MATRIX =====
         let riskMatrixChart = null;
 
+        /**
+         * Create Chart.js scatter plot visualizing well risk vs value
+         * @function renderRiskMatrix
+         * @description Renders interactive scatter plot with X=Integrity Score, Y=Value Score, color-coded by risk level
+         * @returns {void}
+         * @fires Chart#onClick - Handles well selection on point click
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#renderRiskMatrix}
+         */
         function renderRiskMatrix() {
             if (!wellData) return;
 
@@ -1033,6 +1067,14 @@
         }
 
         // ===== WELL SELECTION =====
+        /**
+         * Handle well selection from dropdown or matrix click
+         * @function selectWell
+         * @param {string} wellId - Well identifier (e.g., "GNS-042")
+         * @returns {void}
+         * @description Updates selectedWell global, triggers UI refresh and wellbore rendering
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#selectWell}
+         */
         function selectWell(wellId) {
             if (!wellId || !wellData) {
                 selectedWell = null;
@@ -1045,6 +1087,13 @@
             drawWellbore();
         }
         
+        /**
+         * Synchronize all UI elements with selected well state
+         * @function updateUI
+         * @description Updates status badge, integrity display, safety banner, well details, procedure steps, and AI recommendations
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#updateUI}
+         */
         function updateUI() {
             const statusBadge = document.getElementById('wellStatusBadge');
             const integrityEl = document.getElementById('wellIntegrity');
@@ -1110,6 +1159,13 @@
             `;
         }
         
+        /**
+         * Render AI-recommended intervention procedure steps
+         * @function renderProcedureSteps
+         * @description Creates clickable procedure step cards with duration estimates
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#renderProcedureSteps}
+         */
         function renderProcedureSteps() {
             const container = document.getElementById('procedureSteps');
             if (!selectedWell?.aiRecommendation?.procedureSteps) {
@@ -1126,6 +1182,14 @@
             `).join('');
         }
         
+        /**
+         * Toggle active state for procedure step
+         * @function selectStep
+         * @param {number} index - Zero-based step index
+         * @returns {void}
+         * @description Updates visual active state for step selection
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#selectStep}
+         */
         function selectStep(index) {
             document.querySelectorAll('.procedure-step').forEach((el, i) => {
                 el.classList.toggle('active', i === index);
@@ -1133,6 +1197,14 @@
         }
         
         // ===== WELLBORE DRAWING =====
+        /**
+         * Render wellbore schematic using HTML5 Canvas
+         * @function drawWellbore
+         * @description Draws casing, tubing, SCSSV, packer, and integrity indicator with color coding
+         * @returns {void}
+         * @canvas #wellbore-canvas - Renders to canvas element
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#drawWellbore}
+         */
         function drawWellbore() {
             const canvas = document.getElementById('wellbore-canvas');
             const ctx = canvas.getContext('2d');
@@ -1227,6 +1299,14 @@
         }
         
         // ===== TOOLSTRING MANAGEMENT =====
+        /**
+         * Add equipment to toolstring from quick-add buttons
+         * @function addTool
+         * @param {string} toolKey - Tool identifier key from quickTools dictionary
+         * @returns {void}
+         * @throws {void} Shows error toast if well is safety-locked
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#addTool}
+         */
         function addTool(toolKey) {
             if (selectedWell?.safetyLocked) {
                 showToast('Cannot modify toolstring - well is safety locked', true);
@@ -1241,6 +1321,14 @@
             }
         }
         
+        /**
+         * Add personnel to intervention plan
+         * @function addPersonnel
+         * @param {string} key - Personnel identifier key from quickPersonnel dictionary
+         * @returns {void}
+         * @throws {void} Shows error toast if well is safety-locked
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#addPersonnel}
+         */
         function addPersonnel(key) {
             if (selectedWell?.safetyLocked) {
                 showToast('Cannot modify plan - well is safety locked', true);
@@ -1254,28 +1342,63 @@
             }
         }
         
+        /**
+         * Remove individual tool from toolstring
+         * @function removeTool
+         * @param {number} id - Unique tool ID (timestamp-based)
+         * @returns {void}
+         * @description Filters toolstring array and re-runs clash detection
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#removeTool}
+         */
         function removeTool(id) {
             toolstring = toolstring.filter(t => t.id !== id);
             updateToolstringUI();
             checkClash();
         }
-        
+
+        /**
+         * Clear all tools from toolstring
+         * @function clearToolstring
+         * @returns {void}
+         * @description Resets toolstring array and hides clash alert
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#clearToolstring}
+         */
         function clearToolstring() {
             toolstring = [];
             updateToolstringUI();
             document.getElementById('clashAlert').classList.add('hidden');
         }
 
+        /**
+         * Remove individual personnel from plan
+         * @function removePersonnel
+         * @param {number} id - Unique personnel ID (timestamp-based)
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#removePersonnel}
+         */
         function removePersonnel(id) {
             personnel = personnel.filter(p => p.id !== id);
             updateToolstringUI();
         }
 
+        /**
+         * Clear all personnel from plan
+         * @function clearPersonnel
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#clearPersonnel}
+         */
         function clearPersonnel() {
             personnel = [];
             updateToolstringUI();
         }
 
+        /**
+         * Render equipment and personnel lists with live metrics
+         * @function updateToolstringUI
+         * @description Updates DOM with toolstring items, personnel, calculates metrics, and manages save button state
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#updateToolstringUI}
+         */
         function updateToolstringUI() {
             // Render equipment list
             const equipmentList = document.getElementById('toolstringList');
@@ -1318,6 +1441,13 @@
             savePlanBtn.disabled = selectedWell?.safetyLocked || toolstring.length === 0;
         }
         
+        /**
+         * Calculate and display real-time cost/size metrics
+         * @function updateMetrics
+         * @description Aggregates total length, max OD, equipment cost, personnel cost, and total daily rate
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#updateMetrics}
+         */
         function updateMetrics() {
             const totalLength = toolstring.reduce((sum, t) => sum + t.length, 0);
             const maxOD = toolstring.length > 0 ? Math.max(...toolstring.map(t => t.od)) : 0;
@@ -1331,6 +1461,13 @@
             document.getElementById('metricTotalCost').textContent = '$' + (equipCost + persCost).toLocaleString();
         }
         
+        /**
+         * Real-time clash detection for OD vs tubing ID
+         * @function checkClash
+         * @description Validates max tool OD against tubing ID restriction and displays alert banner if clash detected
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#checkClash}
+         */
         function checkClash() {
             const maxOD = toolstring.length > 0 ? Math.max(...toolstring.map(t => t.od)) : 0;
             const clashAlert = document.getElementById('clashAlert');
@@ -1349,15 +1486,35 @@
         }
         
         // ===== EQUIPMENT MODAL =====
+        /**
+         * Open equipment catalog modal
+         * @function openEquipmentModal
+         * @description Opens modal and loads default "fishing" category
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#openEquipmentModal}
+         */
         function openEquipmentModal() {
             document.getElementById('equipmentModal').classList.add('show');
             loadEquipmentCategory('fishing');
         }
-        
+
+        /**
+         * Close equipment catalog modal
+         * @function closeEquipmentModal
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#closeEquipmentModal}
+         */
         function closeEquipmentModal() {
             document.getElementById('equipmentModal').classList.remove('show');
         }
-        
+
+        /**
+         * Switch between equipment categories in modal
+         * @function switchEquipmentTab
+         * @param {string} category - Category identifier (fishing|running|wireline|completion|gaslift)
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#switchEquipmentTab}
+         */
         function switchEquipmentTab(category) {
             document.querySelectorAll('.equipment-tab').forEach(tab => {
                 tab.classList.toggle('active', tab.textContent.toLowerCase().includes(category));
@@ -1365,6 +1522,15 @@
             loadEquipmentCategory(category);
         }
         
+        /**
+         * Fetch and render equipment from JSON catalog
+         * @async
+         * @function loadEquipmentCategory
+         * @param {string} category - Category identifier to load
+         * @returns {Promise<void>}
+         * @description Loads equipment.json and renders equipment cards for selected category
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#loadEquipmentCategory}
+         */
         async function loadEquipmentCategory(category) {
             const container = document.getElementById('equipmentContent');
             
@@ -1399,6 +1565,16 @@
             }
         }
         
+        /**
+         * Add equipment from catalog modal to toolstring
+         * @function addEquipmentFromCatalog
+         * @param {string} name - Equipment name
+         * @param {number} od - Outer diameter in inches
+         * @param {number} length - Length in feet
+         * @param {number} dailyRate - Daily rental rate in USD
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#addEquipmentFromCatalog}
+         */
         function addEquipmentFromCatalog(name, od, length, dailyRate) {
             if (selectedWell?.safetyLocked) {
                 showToast('Cannot modify toolstring - well is safety locked', true);
@@ -1412,14 +1588,34 @@
         }
         
         // ===== MOBILE COMMUNICATOR =====
+        /**
+         * Open Mobile Communicator modal for MOC approvals
+         * @function openCommunicator
+         * @description Opens modal for reviewing and approving Management of Change requests
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#openCommunicator}
+         */
         function openCommunicator() {
             document.getElementById('communicatorModal').classList.add('show');
         }
-        
+
+        /**
+         * Close Mobile Communicator modal
+         * @function closeCommunicator
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#closeCommunicator}
+         */
         function closeCommunicator() {
             document.getElementById('communicatorModal').classList.remove('show');
         }
-        
+
+        /**
+         * Render MOC request cards in sidebar
+         * @function renderMocRequests
+         * @description Creates clickable request cards with status color coding
+         * @returns {void}
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#renderMocRequests}
+         */
         function renderMocRequests() {
             const list = document.getElementById('requestList');
             list.innerHTML = mocRequests.map(req => `
@@ -1433,6 +1629,14 @@
             `).join('');
         }
         
+        /**
+         * Display MOC request details with impact analysis
+         * @function showRequestDetail
+         * @param {string} id - MOC request ID (e.g., "MOC-001")
+         * @returns {void}
+         * @description Shows full request details, impact metrics, and approve/reject buttons
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#showRequestDetail}
+         */
         function showRequestDetail(id) {
             const req = mocRequests.find(r => r.id === id);
             if (!req) return;
@@ -1478,6 +1682,15 @@
             `;
         }
         
+        /**
+         * Approve or reject MOC request
+         * @function handleMocDecision
+         * @param {string} id - MOC request ID
+         * @param {string} decision - Decision action ("approve"|"reject")
+         * @returns {void}
+         * @description Updates request status, refreshes UI, updates pending count badge
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#handleMocDecision}
+         */
         function handleMocDecision(id, decision) {
             const req = mocRequests.find(r => r.id === id);
             if (req) {
@@ -1493,6 +1706,14 @@
         }
         
         // ===== SAVE PLAN =====
+        /**
+         * Save intervention plan to localStorage
+         * @function savePlan
+         * @description Persists plan with toolstring, personnel, costs, and timestamp to localStorage
+         * @returns {void}
+         * @throws {void} Shows error toast if well not selected, safety-locked, or toolstring empty
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#savePlan}
+         */
         function savePlan() {
             if (!selectedWell || selectedWell.safetyLocked || toolstring.length === 0) {
                 showToast('Cannot save plan - verify well selection and toolstring', true);
@@ -1514,6 +1735,15 @@
         }
         
         // ===== TOAST =====
+        /**
+         * Display temporary toast notification
+         * @function showToast
+         * @param {string} message - Message text to display
+         * @param {boolean} [isError=false] - If true, shows error (red) toast; otherwise success (green)
+         * @returns {void}
+         * @description Shows toast for 3 seconds with slide-up animation
+         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#showToast}
+         */
         function showToast(message, isError = false) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
