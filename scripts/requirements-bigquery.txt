@@ -1,11 +1,13 @@
 # Google Cloud BigQuery dependencies
-google-cloud-bigquery>=3.14.0
+# Updated 2025-12-25 for security compliance
+google-cloud-bigquery>=3.25.0
 google-cloud-core>=2.4.1
-google-auth>=2.25.0
+google-auth>=2.35.0
 
 # Data processing
-pandas>=2.1.0
-numpy>=1.24.0
+# numpy>=2.0.0 addresses CVE-2021-41496 and CVE-2021-34141
+pandas>=2.2.0
+numpy>=2.0.0
 
 # Utilities
-python-dateutil>=2.8.2
+python-dateutil>=2.9.0
