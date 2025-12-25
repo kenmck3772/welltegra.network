@@ -380,6 +380,14 @@
         let stressLevel = 10;
 
         // --- NAVIGATION & UI ---
+        /**
+         * Handle view switching in single-page application
+         * @function navigate
+         * @param {string} viewId - View section ID (e.g., "mod_crm")
+         * @returns {void}
+         * @description Activates target view and initializes Chart.js for CRM module
+         * @see {@link docs/CRISIS_COMMAND_API.md#navigate}
+         */
         function navigate(viewId) {
             // For this standalone page, just reset to main simulation view
             const target = document.getElementById(`view-${viewId}`);
@@ -393,6 +401,14 @@
             }
         }
 
+        /**
+         * Switch cognitive filtering lens for scenario presentation
+         * @function setLens
+         * @param {string} lens - Lens identifier ("mechanic" | "gamer" | "athlete")
+         * @returns {void}
+         * @description Updates hint text and button states with 200ms fade transition
+         * @see {@link docs/CRISIS_COMMAND_API.md#setLens}
+         */
         function setLens(lens) {
             currentLens = lens;
             const data = Lenses[lens];
@@ -416,6 +432,13 @@
         }
 
         // --- CHARTING ---
+        /**
+         * Initialize Chart.js pit volume visualization with gradient fill
+         * @function initChart
+         * @returns {void}
+         * @description Creates real-time line chart with 98-110 bbl range and rolling 30-point window
+         * @see {@link docs/CRISIS_COMMAND_API.md#initChart}
+         */
         function initChart() {
             if(chart) return;
             const ctx = document.getElementById('pitChart').getContext('2d');
@@ -459,6 +482,13 @@
         }
 
         // --- SIMULATION LOGIC ---
+        /**
+         * Initialize/restart simulation scenario
+         * @function startGame
+         * @returns {void}
+         * @description Resets all variables, clears UI, and starts 500ms tick interval
+         * @see {@link docs/CRISIS_COMMAND_API.md#startGame}
+         */
         function startGame() {
             // Reset UI
             document.getElementById('chat-feed').innerHTML = "";
@@ -487,10 +517,25 @@
             simInterval = setInterval(tick, 500);
         }
 
+        /**
+         * Halt simulation loop
+         * @function stopSim
+         * @returns {void}
+         * @description Clears setInterval to stop tick() execution
+         * @see {@link docs/CRISIS_COMMAND_API.md#stopSim}
+         */
         function stopSim() {
             if(simInterval) clearInterval(simInterval);
         }
 
+        /**
+         * Main simulation loop - executes every 500ms
+         * @function tick
+         * @returns {void}
+         * @description Orchestrates scenario script, physics engine, and DOM updates
+         * @fires setInterval - Called every 500ms during active simulation
+         * @see {@link docs/CRISIS_COMMAND_API.md#tick}
+         */
         function tick() {
             timeStep++;
 
@@ -567,6 +612,13 @@
             chart.update();
         }
 
+        /**
+         * Trigger visual crisis escalation when pit volume exceeds 103 bbl threshold
+         * @function activateCrisisMode
+         * @returns {void}
+         * @description Changes branding to red, updates status indicators, modifies chart colors, enables BOP glow
+         * @see {@link docs/CRISIS_COMMAND_API.md#activateCrisisMode}
+         */
         function activateCrisisMode() {
             document.body.classList.add('theme-crisis');
 
@@ -591,6 +643,16 @@
         }
 
         // --- INTERACTION ---
+        /**
+         * Add message to chat feed with role label
+         * @function addMsg
+         * @param {string} role - Sender identifier (PUSHER | LOGGER | YOU | SYSTEM | ALARM)
+         * @param {string} text - Message content
+         * @param {string} [cssClass="msg-user"] - CSS class for styling (msg-pusher | msg-mud | msg-user | msg-alarm)
+         * @returns {void}
+         * @description Creates message bubble, appends to feed, and auto-scrolls to bottom
+         * @see {@link docs/CRISIS_COMMAND_API.md#addMsg}
+         */
         function addMsg(role, text, cssClass="msg-user") {
             const feed = document.getElementById('chat-feed');
             const div = document.createElement('div');
@@ -600,6 +662,16 @@
             feed.scrollTop = feed.scrollHeight;
         }
 
+        /**
+         * Display decision buttons in response area
+         * @function setChoices
+         * @param {Array<Object>} opts - Array of choice objects with {txt, sub, act, icon, danger} properties
+         * @returns {void}
+         * @description Creates interactive decision buttons with hover effects
+         * @example
+         * setChoices([{txt: "Flow Check", sub: "Trust data", act: "flowcheck", icon: "eye", danger: false}])
+         * @see {@link docs/CRISIS_COMMAND_API.md#setChoices}
+         */
         function setChoices(opts) {
             const area = document.getElementById('response-area');
             area.innerHTML = "";
@@ -620,6 +692,14 @@
             });
         }
 
+        /**
+         * Handle player decision and branch scenario logic
+         * @function makeDecision
+         * @param {string} act - Action identifier ("drill" | "flowcheck" | "shutin")
+         * @returns {void}
+         * @description Branches to success/failure paths with 2-second delays for tension
+         * @see {@link docs/CRISIS_COMMAND_API.md#makeDecision}
+         */
         function makeDecision(act) {
             document.getElementById('response-area').innerHTML = "<span class='text-xs text-slate-500 animate-pulse'>Transmitting Command...</span>";
 
@@ -666,6 +746,14 @@
             }
         }
 
+        /**
+         * Handle scenario failure state
+         * @function failScenario
+         * @param {string} reason - Failure explanation message
+         * @returns {void}
+         * @description Stops simulation, sets stress to 100%, displays failure alert
+         * @see {@link docs/CRISIS_COMMAND_API.md#failScenario}
+         */
         function failScenario(reason) {
             stopSim();
             document.getElementById('stress-bar').style.width = "100%";
@@ -675,6 +763,13 @@
             }, 500);
         }
 
+        /**
+         * Handle scenario success state
+         * @function winScenario
+         * @returns {void}
+         * @description Resets stress to 0%, displays success message with learning reinforcement
+         * @see {@link docs/CRISIS_COMMAND_API.md#winScenario}
+         */
         function winScenario() {
             document.getElementById('stress-bar').style.width = "0%";
             document.getElementById('response-area').innerHTML = `
@@ -689,6 +784,13 @@
             `;
         }
 
+        /**
+         * Update stress meter visual width
+         * @function updateStress
+         * @returns {void}
+         * @description Sets progress bar width to stressLevel percentage (0-100)
+         * @see {@link docs/CRISIS_COMMAND_API.md#updateStress}
+         */
         function updateStress() {
             const bar = document.getElementById('stress-bar');
             bar.style.width = stressLevel + "%";
