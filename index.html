@@ -2697,51 +2697,6 @@
     </section>
 
     <!-- ============================================
-         SOCIAL PROOF - RESULTS
-         ============================================ -->
-    <section class="section" style="background: var(--ink-light); padding: var(--space-xl) 0;">
-        <div class="container">
-            <div style="text-align: center; max-width: 800px; margin: 0 auto var(--space-xl);">
-                <span class="label">Proven Impact</span>
-                <h2 style="color: var(--white); margin-bottom: var(--space-md);">Where We've Been Used</h2>
-                <p style="color: var(--silver);">Anonymized results from actual engagements</p>
-            </div>
-
-            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-lg);">
-                <!-- North Sea Asset -->
-                <div class="card" style="background: var(--ink); border: 1px solid var(--slate); padding: var(--space-lg);">
-                    <h3 style="color: var(--success-light); margin-bottom: var(--space-sm); font-size: 1.1rem;">North Sea Mature Asset</h3>
-                    <p style="color: var(--silver); margin-bottom: var(--space-md); font-size: 0.95rem;">15-well abandonment campaign optimization</p>
-                    <div style="margin-top: var(--space-md);">
-                        <div style="color: var(--accent); font-weight: 700; font-size: 1.5rem; margin-bottom: var(--space-sm);">40% reduction</div>
-                        <p style="color: var(--silver); font-size: 0.9rem;">in decision cycle time through unified decision framework</p>
-                    </div>
-                </div>
-
-                <!-- Frontier Basin -->
-                <div class="card" style="background: var(--ink); border: 1px solid var(--slate); padding: var(--space-lg);">
-                    <h3 style="color: var(--success-light); margin-bottom: var(--space-sm); font-size: 1.1rem;">Frontier Basin Appraisal</h3>
-                    <p style="color: var(--silver); margin-bottom: var(--space-md); font-size: 0.95rem;">High-pressure exploration well planning</p>
-                    <div style="margin-top: var(--space-md);">
-                        <div style="color: var(--accent); font-weight: 700; font-size: 1.5rem; margin-bottom: var(--space-sm);">$23M saved</div>
-                        <p style="color: var(--silver); font-size: 0.9rem;">by identifying failure modes before operations</p>
-                    </div>
-                </div>
-
-                <!-- JV Asset -->
-                <div class="card" style="background: var(--ink); border: 1px solid var(--slate); padding: var(--space-lg);">
-                    <h3 style="color: var(--success-light); margin-bottom: var(--space-sm); font-size: 1.1rem;">JV Asset with Misaligned Partners</h3>
-                    <p style="color: var(--silver); margin-bottom: var(--space-md); font-size: 0.95rem;">Development well intervention strategy</p>
-                    <div style="margin-top: var(--space-md);">
-                        <div style="color: var(--accent); font-weight: 700; font-size: 1.5rem; margin-bottom: var(--space-sm);">Single review</div>
-                        <p style="color: var(--silver); font-size: 0.9rem;">achieved board-level sign-off for all partners</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================
          HOW WE ENGAGE
          ============================================ -->
     <section class="section section--mist" id="engagement">
@@ -2890,7 +2845,7 @@
 
             <div class="footer__bottom">
                 <p>© 2025 Well-Tegra Portfolio Project by Ken McKenzie | Educational demonstration of well engineering & intervention planning concepts</p>
-                <p>Not affiliated with any commercial operator • Case studies use anonymized/sanitized data • Built in Scotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿</p>
+                <p>Not affiliated with any commercial operator • Portfolio demonstration project (not actual client work) • Built in Scotland 🏴󠁧󠁢󠁳󠁣󠁴󠁿</p>
                 <p style="margin-top: 0.5rem; font-size: 0.75rem; opacity: 0.6;">
                     <a href="#" onclick="alert('Privacy Notice: We use essential cookies only for site functionality. No tracking, analytics, or personal data collection. All data remains on your device.'); return false;" style="color: inherit;">Privacy Notice</a> •
                     <a href="changelog.html" style="color: inherit;">v2.4.0</a>
@@ -2995,9 +2950,9 @@
                 const cost = parseInt(costInput.value) || 500000;
                 const npt = parseFloat(nptSelect.value) || 0.20;
 
-                // Calculate: wells × cost × current NPT × 20% reduction achieved
+                // Calculate hypothetical savings (no proven reduction data)
                 const currentNPTCost = wells * cost * npt;
-                const reduction = 0.20; // Brahan achieves 20% reduction of NPT
+                const reduction = 0.20; // Hypothetical 20% NPT reduction target
                 const savings = currentNPTCost * reduction;
 
                 savingsDisplay.textContent = '$' + savings.toLocaleString('en-US', {
