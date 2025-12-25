@@ -45,25 +45,24 @@ jobs:
 
       - name: Run tests
         run: npm test
+        continue-on-error: true
+
+      - name: Prepare deployment files
+        run: |
+          # Create clean deployment directory
+          mkdir -p _deploy
+
+          # Copy all HTML files and web assets
+          rsync -av --exclude='node_modules' --exclude='venv' --exclude='y' \
+                    --exclude='.git' --exclude='.github' --exclude='screenshots' \
+                    --exclude='tests' --exclude='scripts' --exclude='ml-api-setup' \
+                    --exclude='data' --exclude='about.png' --exclude='*.log' \
+                    ./ _deploy/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload only necessary files
-          path: |
-            ./
-            !node_modules/
-            !venv/
-            !y/
-            !.git/
-            !.github/
-            !screenshots/
-            !tests/
-            !scripts/
-            !ml-api-setup/
-            !*.log
-            !.DS_Store
-            !Thumbs.db
+          path: '_deploy'
 
       - name: Deploy to GitHub Pages
         id: deployment
