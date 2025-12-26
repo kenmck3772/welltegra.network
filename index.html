@@ -1479,29 +1479,79 @@
         @media (max-width: 768px) {
             /* Responsive typography */
             html {
-                font-size: 14px;
+                font-size: 15px;
             }
 
             .container {
-                padding: 0 var(--space-sm);
+                padding: 0 1.25rem;
             }
 
             .section {
-                padding: var(--space-xl) 0;
+                padding: 3rem 0;
             }
 
             /* Hero adjustments */
             .hero {
-                min-height: 90vh;
-                padding-top: 80px;
+                min-height: auto;
+                padding-top: 100px;
+                padding-bottom: 3rem;
+            }
+
+            .hero__inner {
+                gap: var(--space-lg);
+            }
+
+            .hero__label {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.875rem;
             }
 
             .hero__title {
-                font-size: 2rem;
+                font-size: 1.875rem;
+                line-height: 1.2;
+                margin-bottom: 1rem;
             }
 
             .hero__subtitle {
+                font-size: 1.0625rem;
+                line-height: 1.6;
+                margin-bottom: 1.5rem;
+            }
+
+            /* Stats layout - stack vertically */
+            .hero__stats {
+                flex-direction: column;
+                gap: 1rem;
+                margin-bottom: 1.75rem;
+            }
+
+            .hero__stat {
+                width: 100%;
+                padding: 0.75rem;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 8px;
+            }
+
+            .hero__stat-icon {
+                font-size: 1.75rem;
+            }
+
+            /* CTAs - stack vertically with full width */
+            .hero__ctas {
+                flex-direction: column;
+                gap: 0.875rem;
+            }
+
+            .hero__ctas .btn {
+                width: 100%;
+                padding: 1.125rem 1.5rem;
                 font-size: 1rem;
+                justify-content: center;
+            }
+
+            /* Hide hero visual on mobile to reduce clutter */
+            .hero__visual {
+                display: none;
             }
 
             /* Grid responsive */
@@ -1509,7 +1559,7 @@
             .grid--3,
             .grid--4 {
                 grid-template-columns: 1fr;
-                gap: var(--space-sm);
+                gap: 1rem;
             }
 
             /* KPI cards stack on mobile */
@@ -1518,44 +1568,89 @@
                 margin-bottom: var(--space-sm);
             }
 
-            /* Tax cards */
+            /* Cards */
+            .card {
+                padding: 1.25rem;
+            }
+
             .tax-card {
-                padding: var(--space-md);
+                padding: 1.25rem;
             }
 
             /* Workflow steps */
             .workflow__step {
-                padding: var(--space-md);
+                padding: 1.25rem;
             }
 
-            /* Better touch targets */
+            /* Better touch targets for all buttons */
             .btn {
+                min-height: 48px;
                 padding: 1rem 1.5rem;
                 font-size: 1rem;
             }
 
             /* Nav links larger touch targets */
             .mobile-nav__link {
-                padding: var(--space-md) 0;
-                font-size: 1.25rem;
+                padding: 1.125rem 0;
+                font-size: 1.125rem;
+            }
+
+            /* Portfolio notice - better mobile readability */
+            .portfolio-notice {
+                font-size: 0.8125rem;
+                padding: 0.75rem 1rem;
+                line-height: 1.5;
+            }
+
+            /* Header adjustments */
+            .header__cta {
+                padding: 0.75rem 1.25rem;
+                font-size: 0.875rem;
             }
         }
 
         @media (max-width: 480px) {
+            html {
+                font-size: 14px;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
             .hero {
-                min-height: 80vh;
+                padding-top: 90px;
+                padding-bottom: 2.5rem;
             }
 
             .hero__title {
-                font-size: 1.75rem;
+                font-size: 1.625rem;
+            }
+
+            .hero__subtitle {
+                font-size: 1rem;
             }
 
             h2 {
                 font-size: 1.5rem;
             }
 
+            h3 {
+                font-size: 1.125rem;
+            }
+
             .section {
-                padding: var(--space-lg) 0;
+                padding: 2.5rem 0;
+            }
+
+            .hero__ctas .btn {
+                padding: 1rem 1.25rem;
+                font-size: 0.9375rem;
+            }
+
+            .portfolio-notice {
+                font-size: 0.75rem;
+                padding: 0.625rem 0.875rem;
             }
         }
 
