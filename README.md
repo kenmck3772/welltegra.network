@@ -13,8 +13,78 @@
 
 ---
 
+## 🎯 For Recruiters & Hiring Managers
+
+**TL;DR - What you'll find here:**
+
+✅ **Full-Stack React Application** - Modern component architecture, hooks, Framer Motion animations
+✅ **Production Cloud Infrastructure** - GCP, BigQuery, Vertex AI, 99.97% uptime
+✅ **Unique Domain Expertise** - 30+ years offshore + digital transformation
+✅ **Comprehensive Documentation** - 227 KB across 10 technical documents
+✅ **Mobile-First Design** - Responsive, accessible, WCAG 2.1 compliant
+
+**Key Differentiators:**
+- Not a bootcamp portfolio - real production infrastructure
+- Combines deep technical skills with rare industry domain knowledge
+- Self-funded at $47/month (cost optimization mindset)
+- Portfolio demonstrates problem-solving in capital-intensive environments
+
+⏱️ **Quick Tour (5 minutes):**
+1. [Live Demo](https://kenmck3772.github.io/welltegra.network/) - See the homepage
+2. [Forensic Team Grid](#-featured-forensic-engineering-team-grid) - React showcase (scroll down)
+3. [Tech Stack](#-tech-stack) - Technologies used
+4. [Documentation](./docs/) - Technical writing samples
+
+---
+
+## ⭐ Featured: Forensic Engineering Team Grid
+
+**[🔗 View Live](https://kenmck3772.github.io/welltegra.network/forensic-team.html)**
+
+Interactive React component showcasing 11 forensic specialists with detailed profiles, filtering, and smooth animations.
+
+### Screenshot
+> 📸 **TODO:** Add screenshot here - `assets/images/screenshots/forensic-team-grid.png`
+>
+> **How to capture:**
+> 1. Visit https://kenmck3772.github.io/welltegra.network/forensic-team.html
+> 2. Take full-page screenshot (desktop view)
+> 3. Save as `assets/images/screenshots/forensic-team-grid.png`
+> 4. Update this section: `![Forensic Team Grid](assets/images/screenshots/forensic-team-grid.png)`
+
+### Technical Highlights
+
+**Stack:**
+- React 18 (functional components, hooks)
+- Framer Motion (staggered animations, smooth transitions)
+- Tailwind CSS (industrial/forensic aesthetic)
+- Lucide React icons
+- Responsive 3-column grid
+
+**Features:**
+- ✅ Interactive filtering by discipline (Digital, Intervention, Risk, Logistics)
+- ✅ 3-state card design (default → hover → expanded)
+- ✅ Staggered entry animations (50ms delay per card)
+- ✅ Detailed forensic profiles with credentials, tools, success metrics
+- ✅ Mobile-first responsive design
+
+**Domain Expertise Showcased:**
+- Physics-Informed Neural Networks (PINNs) validation
+- OSCR Safety Case compliance (UK offshore regulations)
+- Annular Forensics (CBL/VDL log interpretation)
+- ROCS (Remotely Operated Control Systems)
+- Reinforcement Learning for closed-loop drilling
+- Terraform IaC & AWS Greengrass edge computing
+
+**Why This Matters:**
+This component demonstrates both modern React skills AND deep offshore domain knowledge - a unique combination that differentiates this portfolio from generic full-stack developers.
+
+---
+
 ## 📋 Table of Contents
 
+- [For Recruiters & Hiring Managers](#-for-recruiters--hiring-managers)
+- [Featured: Forensic Engineering Team Grid](#-featured-forensic-engineering-team-grid)
 - [Overview](#-overview)
 - [Architecture](#-architecture)
 - [Key Features](#-key-features)
@@ -27,6 +97,7 @@
 - [Cost Breakdown](#-cost-breakdown)
 - [Deployment](#-deployment)
 - [What Makes This Different](#-what-makes-this-different)
+- [Screenshots & Visual Guide](#-screenshots--visual-guide)
 - [Contact](#-contact)
 
 ---
@@ -595,6 +666,127 @@ pytest --cov=scripts tests/
 - [ ] Blockchain audit trails (immutable records)
 - [ ] AR visualization (HoloLens well schematics)
 - [ ] Multi-language support (Norwegian, Arabic)
+
+---
+
+## 📸 Screenshots & Visual Guide
+
+Visual proof of features - complete this section for maximum impact with recruiters!
+
+### 1. Forensic Engineering Team Grid
+
+**Status:** 📸 TODO - Add screenshot
+
+**Capture:**
+```bash
+URL: https://kenmck3772.github.io/welltegra.network/forensic-team.html
+Desktop View (1920x1080 or wider)
+Save as: assets/images/screenshots/forensic-team-grid.png
+```
+
+**What to show:**
+- Full grid with all 11 team members visible
+- Click on one card to show expanded state
+- Capture the filtering buttons at top
+
+**Add to README:**
+```markdown
+![Forensic Team Grid - Interactive React Component](assets/images/screenshots/forensic-team-grid.png)
+*11-person forensic engineering team with interactive filtering and smooth animations*
+```
+
+---
+
+### 2. Homepage - Mobile View
+
+**Status:** 📸 TODO - Add screenshot
+
+**Capture:**
+```bash
+URL: https://kenmck3772.github.io/welltegra.network/
+Mobile View (iPhone 14 Pro - 390x844)
+Save as: assets/images/screenshots/homepage-mobile.png
+```
+
+**What to show:**
+- Hero section with full-width CTAs
+- Stacked stats cards
+- "View Team" button in Brahan Engine section
+
+**Add to README:**
+```markdown
+![Mobile-Optimized Homepage](assets/images/screenshots/homepage-mobile.png)
+*Fully responsive design with touch-friendly 48px minimum targets*
+```
+
+---
+
+### 3. Operations Dashboard
+
+**Status:** 📸 TODO - Add screenshot
+
+**Capture:**
+```bash
+URL: https://kenmck3772.github.io/welltegra.network/operations-dashboard.html
+Desktop View
+Save as: assets/images/screenshots/operations-dashboard.png
+```
+
+**What to show:**
+- Risk matrix visualization
+- NPT calculations
+- Safety recommendations
+
+---
+
+### 4. Well Operations Planner
+
+**Status:** 📸 TODO - Add screenshot
+
+**Capture:**
+```bash
+URL: https://kenmck3772.github.io/welltegra.network/planner.html
+Desktop View
+Save as: assets/images/screenshots/planner.png
+```
+
+**What to show:**
+- Interactive toolstring builder
+- Clash detection visualization
+- Real-time Chart.js graphs
+
+---
+
+### How to Take Screenshots
+
+**Desktop (Chrome/Edge):**
+1. Press F12 (Developer Tools)
+2. Click device toolbar icon (or Ctrl+Shift+M)
+3. Select responsive/device size
+4. Right-click page → "Capture screenshot" or "Capture full size screenshot"
+
+**Mobile (iPhone/Android):**
+1. Visit the page
+2. Take screenshot (Power + Volume Down on most devices)
+3. Use AirDrop/email to transfer to computer
+
+**Recommended Tools:**
+- [Awesome Screenshot](https://www.awesomescreenshot.com/) - Chrome extension
+- [ShareX](https://getsharex.com/) - Windows (free)
+- [CleanShot X](https://cleanshot.com/) - Mac (paid, best quality)
+
+---
+
+### Screenshot Checklist
+
+- [ ] Forensic Team Grid (desktop, expanded card visible)
+- [ ] Forensic Team Grid (mobile view)
+- [ ] Homepage (desktop)
+- [ ] Homepage (mobile)
+- [ ] Operations Dashboard
+- [ ] Well Operations Planner
+- [ ] Crisis Command Center
+- [ ] Documentation hub (docs/README.md)
 
 ---
 
