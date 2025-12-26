@@ -18,7 +18,7 @@ Filename: assets/images/screenshots/forensic-team-grid-desktop.png
 **Steps:**
 1. Visit the URL
 2. Let all 11 cards load (check for staggered animation)
-3. Click on "Dr. Ken McKenzie" card to expand it (shows full forensic profile)
+3. Click on "Ken McKenzie" card to expand it (shows full forensic profile)
 4. Take full-page screenshot showing:
    - Header with "The Brahan Engine" branding
    - All 4 discipline filter buttons
@@ -166,7 +166,7 @@ Cmd+Shift+5 - Screen recording
 
 ### Forensic Team Grid ⭐
 - [ ] Full grid view (desktop, all 11 cards)
-- [ ] Expanded card view (Dr. Ken McKenzie card open)
+- [ ] Expanded card view (Ken McKenzie card open)
 - [ ] Filtered view (click "Digital & AI" filter)
 - [ ] Mobile grid (stacked cards)
 - [ ] Mobile expanded card
