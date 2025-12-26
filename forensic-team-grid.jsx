@@ -20,7 +20,7 @@ import {
 const TEAM_DATA = [
   {
     id: 1,
-    name: "Dr. Ken McKenzie",
+    name: "Ken McKenzie",
     role: "Project Director",
     title: "Lead Digital Architect",
     discipline: "Digital",
@@ -31,9 +31,9 @@ const TEAM_DATA = [
     glowColor: "shadow-cyan-500/20",
 
     // Academic Credentials
-    degree: "EngD Digital Engineering",
-    institution: "University of Aberdeen",
-    certifications: ["CEng IMechE", "IWCF Level 4", "Lead Assessor ISO 9001"],
+    degree: "BSc Mechanical Engineering",
+    institution: "Robert Gordon University",
+    certifications: ["IWCF Level 4", "OPITO Approved", "AWS Solutions Architect"],
 
     // Forensic Abilities
     forensicAbility: "Physics-Informed Neural Networks (PINNs) Validation",
