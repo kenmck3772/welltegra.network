@@ -1,0 +1,731 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Brain,
+  Wrench,
+  Shield,
+  Anchor,
+  BarChart3,
+  AlertTriangle,
+  Truck,
+  Cloud,
+  Cable,
+  Drill,
+  Zap
+} from 'lucide-react';
+
+// ============================================
+// TEAM DATA - 11 Forensic Specialists
+// ============================================
+const TEAM_DATA = [
+  {
+    id: 1,
+    name: "Dr. Ken McKenzie",
+    role: "Project Director",
+    title: "Lead Digital Architect",
+    discipline: "Digital",
+    icon: Brain,
+    yearsExperience: "30+",
+    iconColor: "text-cyan-400",
+    borderColor: "border-cyan-500/30",
+    glowColor: "shadow-cyan-500/20",
+
+    // Academic Credentials
+    degree: "EngD Digital Engineering",
+    institution: "University of Aberdeen",
+    certifications: ["CEng IMechE", "IWCF Level 4", "Lead Assessor ISO 9001"],
+
+    // Forensic Abilities
+    forensicAbility: "Physics-Informed Neural Networks (PINNs) Validation",
+    forensicDetails: [
+      "Validates AI predictions against Buckley-Leverett equation",
+      "Ensures thermodynamic constraints in reservoir models",
+      "Cross-validates ML outputs with first-principles physics"
+    ],
+
+    // Success Metrics
+    successMetric: "100% AI model validation against physical constraints",
+    keyTools: ["PyTorch", "TensorFlow", "COMSOL Multiphysics", "WITSML"],
+
+    // Domain Expertise
+    expertise: [
+      "25+ years North Sea operations",
+      "Digital twin development for drilling rigs",
+      "Real-time data integration (WITSML/PRODML)",
+      "Systems thinking for complex well interventions"
+    ]
+  },
+
+  {
+    id: 2,
+    name: "James Morrison",
+    role: "Lead Drilling Engineer",
+    title: "ROP Optimization Specialist",
+    discipline: "Intervention",
+    icon: Drill,
+    yearsExperience: "20+",
+    iconColor: "text-orange-400",
+    borderColor: "border-orange-500/30",
+    glowColor: "shadow-orange-500/20",
+
+    degree: "MSc Petroleum Engineering",
+    institution: "Heriot-Watt University",
+    certifications: ["SPE Member", "IADC WellSharp", "IWCF Level 4"],
+
+    forensicAbility: "Torque & Drag Real-Time Modeling",
+    forensicDetails: [
+      "Real-time WITSML data integration for ROP optimization",
+      "Soft-string vs stiff-string torque analysis",
+      "Buckling prediction in extended-reach wells"
+    ],
+
+    successMetric: "15% average ROP improvement via real-time T&D analysis",
+    keyTools: ["Landmark COMPASS", "Halliburton DrillSIGHT", "WITSML Servers"],
+
+    expertise: [
+      "Extended-reach drilling (ERD) specialist",
+      "Stuck pipe mitigation strategies",
+      "Directional drilling planning",
+      "Drill string design optimization"
+    ]
+  },
+
+  {
+    id: 3,
+    name: "Sarah Williams",
+    role: "Well Integrity Specialist",
+    title: "Annular Forensics Lead",
+    discipline: "Risk Management",
+    icon: Shield,
+    yearsExperience: "18+",
+    iconColor: "text-amber-400",
+    borderColor: "border-amber-500/30",
+    glowColor: "shadow-amber-500/20",
+
+    degree: "MSc Subsea Engineering",
+    institution: "Robert Gordon University (RGU)",
+    certifications: ["CEng IChemE", "NACE Corrosion Specialist", "BSEE Well Control"],
+
+    forensicAbility: "CBL/VDL Log Interpretation & Annular Pressure Forensics",
+    forensicDetails: [
+      "Electromagnetic Defectoscope (EMD) analysis for casing wear",
+      "Multifinger Caliper interpretation for internal geometry",
+      "Annular B pressure buildup root cause analysis"
+    ],
+
+    successMetric: "Zero safety incidents across 45 P&A campaigns",
+    keyTools: ["Schlumberger ELAN", "Halliburton CemCADE", "EMD Sensors"],
+
+    expertise: [
+      "OSCR Safety Case compliance",
+      "Barrier envelope verification (NORSOK D-010)",
+      "Sustained casing pressure (SCP) diagnostics",
+      "Cement sheath integrity assessment"
+    ]
+  },
+
+  {
+    id: 4,
+    name: "Angus Campbell",
+    role: "Subsea Workover Specialist",
+    title: "ROCS & Intervention Systems",
+    discipline: "Intervention",
+    icon: Anchor,
+    yearsExperience: "22+",
+    iconColor: "text-blue-400",
+    borderColor: "border-blue-500/30",
+    glowColor: "shadow-blue-500/20",
+
+    degree: "BEng Mechanical Engineering",
+    institution: "University of Strathclyde",
+    certifications: ["IWCF Level 4", "IMCA D 023 ROV Pilot", "Subsea 7 Certified"],
+
+    forensicAbility: "Umbilical-less Intervention Logic (ROCS)",
+    forensicDetails: [
+      "Remotely Operated Control Systems (ROCS) programming",
+      "Hydraulic workover unit (HWU) sequence design",
+      "E-line/slickline deployment in subsea trees"
+    ],
+
+    successMetric: "98% first-time success rate on ROCS interventions",
+    keyTools: ["OneSubsea ROCS", "FMC TechnipFMC Control Systems", "Aker Solutions"],
+
+    expertise: [
+      "Subsea Christmas tree intervention protocols",
+      "Hydraulic connector makeup/breakout",
+      "Emergency disconnect sequence (EDS) validation",
+      "Through-tubing fishing operations"
+    ]
+  },
+
+  {
+    id: 5,
+    name: "AI Fraser",
+    role: "Data Scientist",
+    title: "ML & Automation Engineer",
+    discipline: "Digital",
+    icon: BarChart3,
+    yearsExperience: "12+",
+    iconColor: "text-cyan-400",
+    borderColor: "border-cyan-500/30",
+    glowColor: "shadow-cyan-500/20",
+
+    degree: "PhD Machine Learning",
+    institution: "University of Edinburgh",
+    certifications: ["Google Cloud Professional ML Engineer", "AWS Certified ML", "TensorFlow Developer"],
+
+    forensicAbility: "Reinforcement Learning (RL) for Closed-Loop Drilling",
+    forensicDetails: [
+      "BigQuery SQL engineering for petabyte-scale datasets",
+      "Q-learning controllers for automated weight-on-bit (WOB) optimization",
+      "Transfer learning from synthetic to real-world drilling data"
+    ],
+
+    successMetric: "30% reduction in NPT via predictive maintenance ML models",
+    keyTools: ["BigQuery", "Vertex AI", "PyTorch", "Apache Beam"],
+
+    expertise: [
+      "Time-series forecasting for kick detection",
+      "Anomaly detection in drilling parameters",
+      "Natural language processing for daily drilling reports",
+      "Edge ML deployment on offshore rigs"
+    ]
+  },
+
+  {
+    id: 6,
+    name: "Robert MacLeod",
+    role: "HSE & Operational Risk Lead",
+    title: "OSCR Safety Case Specialist",
+    discipline: "Risk Management",
+    icon: AlertTriangle,
+    yearsExperience: "25+",
+    iconColor: "text-amber-400",
+    borderColor: "border-amber-500/30",
+    glowColor: "shadow-amber-500/20",
+
+    degree: "MSc Safety & Reliability Engineering",
+    institution: "University of Aberdeen",
+    certifications: ["NEBOSH Diploma", "IOSH Managing Safely", "Lead Auditor ISO 45001"],
+
+    forensicAbility: "Systems Thinking for Major Accident Hazards (MAH)",
+    forensicDetails: [
+      "OSCR (Offshore Installations Safety Case Regulations) compliance",
+      "Bow-tie analysis for blowout scenarios",
+      "Performance Standards for well control barriers"
+    ],
+
+    successMetric: "Zero RIDDOR incidents over 5 years (2019-2024)",
+    keyTools: ["BowTieXP", "DNV Safeti", "HAZOP Facilitation"],
+
+    expertise: [
+      "ALARP (As Low As Reasonably Practicable) demonstration",
+      "SECE (Safety & Environmentally Critical Elements) verification",
+      "Emergency response & recovery planning",
+      "Human factors in well control incidents"
+    ]
+  },
+
+  {
+    id: 7,
+    name: "Fiona Stewart",
+    role: "Logistics Specialist",
+    title: "Supply Chain & Vessel Mobilization",
+    discipline: "Logistics",
+    icon: Truck,
+    yearsExperience: "15+",
+    iconColor: "text-purple-400",
+    borderColor: "border-purple-500/30",
+    glowColor: "shadow-purple-500/20",
+
+    degree: "MSc Supply Chain Management",
+    institution: "Cranfield University",
+    certifications: ["APICS CSCP", "SAP APO Certified", "IOSH Managing Safely"],
+
+    forensicAbility: "Lead-Time Modeling & Weather Window Optimization",
+    forensicDetails: [
+      "SAP APO (Advanced Planning & Optimization) for critical path analysis",
+      "Vessel motion dynamics for weather-window mobilization",
+      "Just-in-time (JIT) logistics for 24/7 drilling operations"
+    ],
+
+    successMetric: "98% on-time delivery across 120+ offshore campaigns",
+    keyTools: ["SAP APO", "Oracle Transportation Management", "Marine Traffic API"],
+
+    expertise: [
+      "UKCS helicopter logistics (CHC/Bristow)",
+      "Critical spares inventory optimization",
+      "3rd party vessel chartering negotiations",
+      "Customs clearance for international equipment"
+    ]
+  },
+
+  {
+    id: 8,
+    name: "Gus Campbell",
+    role: "Cloud Infrastructure Lead",
+    title: "IoT & Edge Computing Architect",
+    discipline: "Digital",
+    icon: Cloud,
+    yearsExperience: "10+",
+    iconColor: "text-cyan-400",
+    borderColor: "border-cyan-500/30",
+    glowColor: "shadow-cyan-500/20",
+
+    degree: "MSc Computer Science",
+    institution: "University of Glasgow",
+    certifications: ["AWS Solutions Architect Professional", "Terraform Certified", "Kubernetes CKA"],
+
+    forensicAbility: "Terraform IaC & AWS Greengrass Edge Deployment",
+    forensicDetails: [
+      "Infrastructure as Code (IaC) for repeatable rig deployments",
+      "AWS Greengrass for edge ML inference on offshore platforms",
+      "Multi-region disaster recovery for critical drilling data"
+    ],
+
+    successMetric: "99.97% uptime for real-time drilling dashboards",
+    keyTools: ["Terraform", "AWS Greengrass", "Docker", "Prometheus"],
+
+    expertise: [
+      "Satellite/4G failover for remote rigs",
+      "MQTT/OPC-UA protocols for SCADA integration",
+      "TimescaleDB for time-series drilling data",
+      "GitOps workflows with ArgoCD"
+    ]
+  },
+
+  {
+    id: 9,
+    name: "Craig Henderson",
+    role: "Slickline Specialist",
+    title: "Wireline Tactical Operations",
+    discipline: "Intervention",
+    icon: Cable,
+    yearsExperience: "16+",
+    iconColor: "text-orange-400",
+    borderColor: "border-orange-500/30",
+    glowColor: "shadow-orange-500/20",
+
+    degree: "HND Mechanical Engineering",
+    institution: "North East Scotland College",
+    certifications: ["IWCF Level 3", "Schlumberger Wireline Certified", "OPITO Approved"],
+
+    forensicAbility: "Pressure Control Equipment (PCE) Acceptance Criteria",
+    forensicDetails: [
+      "Lubricator stack-up calculations for high-pressure wells",
+      "Wireline BOP function testing (API 6A)",
+      "Gauge-carrier deployments in deviated wells"
+    ],
+
+    successMetric: "100% barrier passes on 200+ wireline interventions",
+    keyTools: ["Schlumberger EXCEL Wireline", "Halliburton Stratagem", "API 6A Test Pumps"],
+
+    expertise: [
+      "Through-tubing perforating (TCP)",
+      "Memory gauge deployments (temperature/pressure)",
+      "Plug & abandonment (P&A) wireline cuts",
+      "Cased-hole formation evaluation"
+    ]
+  },
+
+  {
+    id: 10,
+    name: "Liam Murray",
+    role: "Coiled Tubing Specialist",
+    title: "CT Clean-Out & Stimulation",
+    discipline: "Intervention",
+    icon: Zap,
+    yearsExperience: "14+",
+    iconColor: "text-orange-400",
+    borderColor: "border-orange-500/30",
+    glowColor: "shadow-orange-500/20",
+
+    degree: "HNC Petroleum Engineering",
+    institution: "Aberdeen College",
+    certifications: ["IWCF Level 4", "Weatherford CT Certified", "NOV Grant Prideco Certified"],
+
+    forensicAbility: "Real-Time Coiled Tubing Forces Modeling",
+    forensicDetails: [
+      "Helical buckling prediction in horizontal wells",
+      "CT fatigue life monitoring (API RP 5ST)",
+      "Real-time stuck pipe risk during clean-out operations"
+    ],
+
+    successMetric: "25% average clean-out time reduction via live force modeling",
+    keyTools: ["Weatherford FORSA", "NOV eCOIL", "Schlumberger CoilCADE"],
+
+    expertise: [
+      "Sand cleanout in horizontal producers",
+      "Acid stimulation via CT (HCl, HF)",
+      "Through-tubing drilling (TTD)",
+      "N₂ lifting for well unloading"
+    ]
+  },
+
+  {
+    id: 11,
+    name: "Ewan Ross",
+    role: "E-Line Specialist",
+    title: "Electric Wireline Logging",
+    discipline: "Intervention",
+    icon: Cable,
+    yearsExperience: "18+",
+    iconColor: "text-orange-400",
+    borderColor: "border-orange-500/30",
+    glowColor: "shadow-orange-500/20",
+
+    degree: "BSc Geophysics",
+    institution: "University of Edinburgh",
+    certifications: ["IWCF Level 3", "Schlumberger Formation Evaluation", "Baker Hughes Certified"],
+
+    forensicAbility: "Real-Time Cased-Hole Log Interpretation",
+    forensicDetails: [
+      "Pulsed Neutron (PN) logging for saturation monitoring",
+      "Production Logging Tool (PLT) for flow profiling",
+      "Electromagnetic (EM) corrosion detection"
+    ],
+
+    successMetric: "95% first-run success on complex logging programs",
+    keyTools: ["Schlumberger RST", "Halliburton Xaminer", "Baker Hughes AIT"],
+
+    expertise: [
+      "Through-casing resistivity for bypassed pay",
+      "High-pressure/high-temperature (HPHT) logging",
+      "Cement bond log (CBL) quality control",
+      "Radioactive source handling (NORM trained)"
+    ]
+  }
+];
+
+// Discipline filter options
+const DISCIPLINES = [
+  { id: 'all', label: 'All Specialists', color: 'text-slate-300' },
+  { id: 'Digital', label: 'Digital & AI', color: 'text-cyan-400' },
+  { id: 'Intervention', label: 'Intervention', color: 'text-orange-400' },
+  { id: 'Risk Management', label: 'Risk & HSE', color: 'text-amber-400' },
+  { id: 'Logistics', label: 'Logistics', color: 'text-purple-400' }
+];
+
+// ============================================
+// TEAM MEMBER CARD COMPONENT
+// ============================================
+const TeamMemberCard = ({ member, index }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const Icon = member.icon;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+      layout
+      className="group relative"
+    >
+      <motion.div
+        className={`
+          relative bg-slate-900 rounded-lg border ${member.borderColor}
+          overflow-hidden cursor-pointer transition-all duration-300
+          hover:shadow-xl hover:${member.glowColor}
+          ${isExpanded ? 'ring-2 ring-cyan-400/50' : ''}
+        `}
+        whileHover={{ y: -4 }}
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        {/* Forensic Ability Badge - Top Right */}
+        <div className="absolute top-3 right-3 z-10">
+          <span className={`
+            px-2 py-1 rounded text-[10px] font-mono font-bold uppercase
+            bg-slate-950/80 ${member.iconColor} border border-slate-700
+          `}>
+            {member.discipline}
+          </span>
+        </div>
+
+        {/* Card Header */}
+        <div className="p-6 pb-4">
+          <div className="flex items-start gap-4 mb-4">
+            {/* Icon */}
+            <div className={`
+              p-3 rounded-lg bg-slate-950/50 border ${member.borderColor}
+              ${member.iconColor}
+            `}>
+              <Icon className="w-6 h-6" />
+            </div>
+
+            {/* Name & Role */}
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg font-bold text-white mb-1 font-mono">
+                {member.name}
+              </h3>
+              <p className="text-sm text-slate-400 mb-1">
+                {member.role}
+              </p>
+              <p className={`text-xs font-semibold ${member.iconColor}`}>
+                {member.title}
+              </p>
+            </div>
+          </div>
+
+          {/* Default State: Forensic Ability */}
+          <AnimatePresence mode="wait">
+            {!isExpanded && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="mt-4 p-3 bg-slate-950/50 rounded border border-slate-700/50"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse" />
+                  <span className="text-xs font-mono text-slate-400 uppercase">
+                    Forensic Ability
+                  </span>
+                </div>
+                <p className="text-sm text-slate-200 font-medium leading-tight">
+                  {member.forensicAbility}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Hover State: Academic Credentials */}
+        <motion.div
+          className="px-6 pb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          initial={false}
+        >
+          <div className="space-y-2 text-xs">
+            <div className="flex items-center gap-2">
+              <span className="text-slate-500 font-mono">DEGREE:</span>
+              <span className="text-slate-300">{member.degree}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-slate-500 font-mono">INSTITUTION:</span>
+              <span className="text-slate-300">{member.institution}</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="text-slate-500 font-mono whitespace-nowrap">CERTS:</span>
+              <div className="flex flex-wrap gap-1">
+                {member.certifications.map((cert, i) => (
+                  <span
+                    key={i}
+                    className="px-1.5 py-0.5 bg-slate-800 text-slate-300 rounded text-[10px] font-mono"
+                  >
+                    {cert}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Expanded State: Full Forensic Profile */}
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="border-t border-slate-700/50 overflow-hidden"
+            >
+              <div className="p-6 space-y-4 bg-slate-950/30">
+                {/* Forensic Details */}
+                <div>
+                  <h4 className="text-xs font-mono text-cyan-400 uppercase mb-2 flex items-center gap-2">
+                    <div className="w-1 h-1 bg-cyan-400 rounded-full" />
+                    Forensic Capabilities
+                  </h4>
+                  <ul className="space-y-1.5">
+                    {member.forensicDetails.map((detail, i) => (
+                      <li key={i} className="text-xs text-slate-300 flex items-start gap-2">
+                        <span className="text-cyan-400 mt-1">▸</span>
+                        <span className="flex-1">{detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Success Metric */}
+                <div className="p-3 bg-cyan-950/20 border border-cyan-500/30 rounded">
+                  <div className="text-[10px] font-mono text-cyan-400 uppercase mb-1">
+                    Success Metric
+                  </div>
+                  <div className="text-sm font-bold text-white">
+                    {member.successMetric}
+                  </div>
+                </div>
+
+                {/* Key Tools */}
+                <div>
+                  <h4 className="text-xs font-mono text-slate-400 uppercase mb-2">
+                    Key Tools
+                  </h4>
+                  <div className="flex flex-wrap gap-1.5">
+                    {member.keyTools.map((tool, i) => (
+                      <span
+                        key={i}
+                        className="px-2 py-1 bg-slate-800 text-slate-300 rounded text-[10px] font-mono"
+                      >
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Domain Expertise */}
+                <div>
+                  <h4 className="text-xs font-mono text-slate-400 uppercase mb-2">
+                    Domain Expertise
+                  </h4>
+                  <ul className="space-y-1">
+                    {member.expertise.map((exp, i) => (
+                      <li key={i} className="text-xs text-slate-400 flex items-start gap-2">
+                        <span className="text-slate-600">•</span>
+                        <span className="flex-1">{exp}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Experience Badge */}
+                <div className="flex items-center gap-2 pt-2 border-t border-slate-700/50">
+                  <span className="text-xs font-mono text-slate-500">EXPERIENCE:</span>
+                  <span className={`text-sm font-bold ${member.iconColor}`}>
+                    {member.yearsExperience} Years
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Click to Expand Indicator */}
+        <div className="absolute bottom-3 right-3">
+          <motion.div
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+            className="text-slate-600 group-hover:text-cyan-400 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </motion.div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+// ============================================
+// MAIN FORENSIC TEAM GRID COMPONENT
+// ============================================
+const ForensicTeamGrid = () => {
+  const [selectedDiscipline, setSelectedDiscipline] = useState('all');
+
+  // Filter team members by discipline
+  const filteredMembers = selectedDiscipline === 'all'
+    ? TEAM_DATA
+    : TEAM_DATA.filter(member => member.discipline === selectedDiscipline);
+
+  return (
+    <div className="min-h-screen bg-slate-950 py-16 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <div className="inline-block mb-4 px-4 py-2 bg-cyan-950/30 border border-cyan-500/30 rounded-full">
+            <span className="text-sm font-mono text-cyan-400 uppercase tracking-wider">
+              The Brahan Engine
+            </span>
+          </div>
+
+          <h1 className="text-5xl font-bold text-white mb-4 font-mono">
+            Forensic Engineering Team
+          </h1>
+
+          <p className="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed">
+            11 multi-disciplinary specialists combining <span className="text-cyan-400 font-semibold">30+ years offshore experience</span> with
+            <span className="text-cyan-400 font-semibold"> cutting-edge digital forensics</span>. From OSCR Safety Cases to
+            Physics-Informed Neural Networks.
+          </p>
+        </motion.div>
+
+        {/* Discipline Filter */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="flex flex-wrap justify-center gap-3 mb-12"
+        >
+          {DISCIPLINES.map(discipline => (
+            <button
+              key={discipline.id}
+              onClick={() => setSelectedDiscipline(discipline.id)}
+              className={`
+                px-6 py-3 rounded-lg font-mono text-sm font-semibold
+                transition-all duration-300
+                ${selectedDiscipline === discipline.id
+                  ? 'bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/50'
+                  : 'bg-slate-900 text-slate-400 border border-slate-700 hover:border-cyan-500/50'
+                }
+              `}
+            >
+              {discipline.label}
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Team Grid */}
+        <motion.div
+          layout
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredMembers.map((member, index) => (
+              <TeamMemberCard
+                key={member.id}
+                member={member}
+                index={index}
+              />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* Team Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6"
+        >
+          {[
+            { label: 'Team Members', value: '11', color: 'text-cyan-400' },
+            { label: 'Combined Experience', value: '200+', suffix: 'Years', color: 'text-cyan-400' },
+            { label: 'Disciplines', value: '4', color: 'text-orange-400' },
+            { label: 'Success Rate', value: '98%', color: 'text-amber-400' }
+          ].map((stat, i) => (
+            <div
+              key={i}
+              className="p-6 bg-slate-900 border border-slate-700 rounded-lg text-center"
+            >
+              <div className={`text-4xl font-bold font-mono mb-2 ${stat.color}`}>
+                {stat.value}
+                {stat.suffix && <span className="text-lg ml-1">{stat.suffix}</span>}
+              </div>
+              <div className="text-sm text-slate-400 uppercase font-mono">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+export default ForensicTeamGrid;
