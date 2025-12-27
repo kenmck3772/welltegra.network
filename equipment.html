@@ -997,7 +997,7 @@
         // Load catalog data
         async function loadCatalogData() {
             try {
-                  const response = await fetch('data/equipment.json');
+                  const response = await fetch('/data/equipment.json');
                 catalogData = await response.json();
                   renderPage();
             } catch (error) {
