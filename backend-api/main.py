@@ -8,19 +8,34 @@ Provides REST API endpoints for:
 - Conflict management
 - Team status tracking
 - System alerts
+- WI Planning and constraint validation
 """
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from typing import List, Optional, Literal
+from typing import List, Optional, Literal, Dict, Any
 from datetime import datetime, timedelta
 import random
 import os
+import json
+from pathlib import Path
 
 # Google Cloud SDK imports
 from google.cloud import firestore
 from google.cloud import pubsub_v1
+
+# WI Planning Engine imports
+from wi_planner import (
+    ConstraintSolver,
+    BarrierVerifier,
+    WIPlanGenerator,
+    Equipment,
+    WellboreSection,
+    BarrierElement,
+    ConstraintType,
+    Severity
+)
 
 # Initialize FastAPI
 app = FastAPI(
@@ -62,6 +77,50 @@ try:
 except Exception as e:
     print(f"⚠️  Pub/Sub initialization failed: {e}")
     publisher = None
+
+# Initialize WI Planning Engine
+equipment_catalog = []
+wi_planner = None
+try:
+    # Load equipment catalog from JSON
+    equipment_path = Path(__file__).parent.parent / "data" / "equipment.json"
+    if equipment_path.exists():
+        with open(equipment_path, 'r') as f:
+            equipment_data = json.load(f)
+            # Extract all equipment from all categories
+            for category in equipment_data.get('categories', []):
+                for eq_data in category.get('equipment', []):
+                    # Parse id_bore if present (for hollow tools like packers, valves)
+                    id_bore = None
+                    if 'id_bore' in eq_data and eq_data['id_bore']:
+                        id_bore = float(eq_data['id_bore'])
+                    elif 'id' in eq_data and isinstance(eq_data['id'], (int, float)):
+                        id_bore = float(eq_data['id'])
+
+                    equipment_catalog.append(Equipment(
+                        id=eq_data.get('id', ''),
+                        name=eq_data.get('name', ''),
+                        category=category.get('id', ''),
+                        od=float(eq_data.get('od', 0)),
+                        id_bore=id_bore,
+                        length=float(eq_data.get('length', 0)),
+                        weight=float(eq_data.get('weight', 0)),
+                        max_pressure=float(eq_data['pressureRating']) if eq_data.get('pressureRating') else None,
+                        max_temperature=float(eq_data['tempRating']) if eq_data.get('tempRating') else None
+                    ))
+
+        # Initialize planner components
+        solver = ConstraintSolver(equipment_catalog)
+        verifier = BarrierVerifier()
+        wi_planner = WIPlanGenerator(solver, verifier)
+
+        print(f"✓ WI Planning Engine initialized with {len(equipment_catalog)} equipment items")
+    else:
+        print(f"⚠️  Equipment catalog not found at {equipment_path}")
+except Exception as e:
+    print(f"⚠️  WI Planning Engine initialization failed: {e}")
+    import traceback
+    traceback.print_exc()
 
 # ============================================
 # PYDANTIC MODELS (Request/Response Schemas)
@@ -117,6 +176,52 @@ class SystemAlert(BaseModel):
     type: Literal["critical", "warning", "success"]
     message: str
     timestamp: datetime = Field(default_factory=datetime.utcnow)
+
+class WellboreSectionModel(BaseModel):
+    """Wellbore geometry section for API"""
+    name: str
+    top_depth: float = Field(..., description="Top depth in ft MD")
+    bottom_depth: float = Field(..., description="Bottom depth in ft MD")
+    casing_id: float = Field(..., description="Casing inner diameter in inches")
+    tubing_id: Optional[float] = Field(None, description="Tubing inner diameter in inches")
+    max_dls: Optional[float] = Field(None, description="Maximum dogleg severity in deg/100ft")
+
+class BarrierElementModel(BaseModel):
+    """Well barrier element for API"""
+    name: str
+    depth: float = Field(..., description="Depth in ft MD")
+    barrier_type: Literal["primary", "secondary"]
+    status: Literal["verified", "unverified", "compromised"]
+    verification_method: str
+    required: bool = True
+
+class ValidateToolstringRequest(BaseModel):
+    """Request to validate a tool string assembly"""
+    tool_string: List[str] = Field(..., description="List of equipment IDs in order")
+    wellbore: List[WellboreSectionModel]
+    max_weight: float = Field(50000.0, description="Maximum weight limit in lbs")
+
+class VerifyBarriersRequest(BaseModel):
+    """Request to verify well barriers"""
+    barriers: List[BarrierElementModel]
+    intervention_type: str = Field(..., description="Type of intervention (slickline, e-line, CT)")
+
+class GenerateWIPlanRequest(BaseModel):
+    """Request to generate complete WI plan"""
+    tool_string: List[str] = Field(..., description="List of equipment IDs in order")
+    wellbore: List[WellboreSectionModel]
+    barriers: List[BarrierElementModel]
+    intervention_type: str = Field(..., description="Type of intervention")
+    max_weight: float = Field(50000.0, description="Maximum weight limit in lbs")
+
+class WIPlanResponse(BaseModel):
+    """Response with WI plan and validation results"""
+    status: Literal["approved", "flagged", "rejected"]
+    constraint_violations: List[Dict[str, Any]]
+    barrier_violations: List[Dict[str, Any]]
+    plan_steps: List[Dict[str, Any]]
+    assumptions: List[str]
+    audit_trail: Dict[str, Any]
 
 # ============================================
 # HELPER FUNCTIONS
@@ -455,6 +560,188 @@ async def create_alert(alert: SystemAlert):
 
     alert.id = doc_ref.id
     return alert
+
+# ============================================
+# WI PLANNING ENDPOINTS
+# ============================================
+
+@app.get("/api/wi/equipment")
+async def get_equipment_catalog(category: Optional[str] = None):
+    """
+    Get equipment catalog with optional category filter
+
+    Categories: toolstring, fishing, jarring, cutting, milling, etc.
+    """
+    if not equipment_catalog:
+        raise HTTPException(status_code=503, detail="Equipment catalog not loaded")
+
+    if category:
+        filtered = [eq for eq in equipment_catalog if eq.category == category]
+        return {
+            "count": len(filtered),
+            "category": category,
+            "equipment": [
+                {
+                    "id": eq.id,
+                    "name": eq.name,
+                    "category": eq.category,
+                    "od": eq.od,
+                    "id_bore": eq.id_bore,
+                    "length": eq.length,
+                    "weight": eq.weight,
+                    "max_pressure": eq.max_pressure,
+                    "max_temperature": eq.max_temperature
+                }
+                for eq in filtered
+            ]
+        }
+
+    return {
+        "count": len(equipment_catalog),
+        "equipment": [
+            {
+                "id": eq.id,
+                "name": eq.name,
+                "category": eq.category,
+                "od": eq.od,
+                "id_bore": eq.id_bore,
+                "length": eq.length,
+                "weight": eq.weight,
+                "max_pressure": eq.max_pressure,
+                "max_temperature": eq.max_temperature
+            }
+            for eq in equipment_catalog
+        ]
+    }
+
+@app.post("/api/wi/validate-toolstring")
+async def validate_toolstring(request: ValidateToolstringRequest):
+    """
+    Validate a tool string assembly against wellbore constraints
+
+    Returns list of constraint violations with full audit trail
+    """
+    if not wi_planner:
+        raise HTTPException(status_code=503, detail="WI Planning Engine not initialized")
+
+    # Convert API models to internal models
+    wellbore = [
+        WellboreSection(
+            name=wb.name,
+            top_depth=wb.top_depth,
+            bottom_depth=wb.bottom_depth,
+            casing_id=wb.casing_id,
+            tubing_id=wb.tubing_id,
+            max_dls=wb.max_dls
+        )
+        for wb in request.wellbore
+    ]
+
+    # Run constraint checks
+    violations = wi_planner.constraint_solver.check_toolstring_assembly(
+        request.tool_string,
+        wellbore,
+        request.max_weight
+    )
+
+    return {
+        "status": "valid" if not violations else "invalid",
+        "violations": [v.to_dict() for v in violations],
+        "critical_violations": len([v for v in violations if v.severity == Severity.CRITICAL]),
+        "tool_string": request.tool_string,
+        "timestamp": datetime.utcnow().isoformat()
+    }
+
+@app.post("/api/wi/verify-barriers")
+async def verify_barriers(request: VerifyBarriersRequest):
+    """
+    Verify well barriers meet NORSOK D-010 requirements
+
+    Returns list of barrier violations
+    """
+    if not wi_planner:
+        raise HTTPException(status_code=503, detail="WI Planning Engine not initialized")
+
+    # Convert API models to internal models
+    barriers = [
+        BarrierElement(
+            name=b.name,
+            depth=b.depth,
+            barrier_type=b.barrier_type,
+            status=b.status,
+            verification_method=b.verification_method,
+            required=b.required
+        )
+        for b in request.barriers
+    ]
+
+    # Run barrier verification
+    violations = wi_planner.barrier_verifier.verify_well_barriers(
+        barriers,
+        request.intervention_type
+    )
+
+    return {
+        "status": "compliant" if not violations else "non_compliant",
+        "violations": [v.to_dict() for v in violations],
+        "barriers_verified": len([b for b in barriers if b.status == "verified"]),
+        "barriers_total": len(barriers),
+        "timestamp": datetime.utcnow().isoformat()
+    }
+
+@app.post("/api/wi/generate-plan", response_model=WIPlanResponse)
+async def generate_wi_plan(request: GenerateWIPlanRequest):
+    """
+    Generate complete WI plan with full validation and reasoning
+
+    This endpoint:
+    1. Validates tool string assembly
+    2. Verifies well barriers
+    3. Generates procedural steps
+    4. Provides explainable reasoning for all decisions
+
+    Returns:
+    - status: "approved" (no critical violations)
+    - status: "flagged" (has warnings but workable)
+    - status: "rejected" (has critical violations)
+    """
+    if not wi_planner:
+        raise HTTPException(status_code=503, detail="WI Planning Engine not initialized")
+
+    # Convert API models to internal models
+    wellbore = [
+        WellboreSection(
+            name=wb.name,
+            top_depth=wb.top_depth,
+            bottom_depth=wb.bottom_depth,
+            casing_id=wb.casing_id,
+            tubing_id=wb.tubing_id,
+            max_dls=wb.max_dls
+        )
+        for wb in request.wellbore
+    ]
+
+    barriers = [
+        BarrierElement(
+            name=b.name,
+            depth=b.depth,
+            barrier_type=b.barrier_type,
+            status=b.status,
+            verification_method=b.verification_method,
+            required=b.required
+        )
+        for b in request.barriers
+    ]
+
+    # Generate plan
+    plan = wi_planner.generate_plan(
+        tool_string=request.tool_string,
+        wellbore=wellbore,
+        barriers=barriers,
+        intervention_type=request.intervention_type
+    )
+
+    return WIPlanResponse(**plan)
 
 # ============================================
 # INITIALIZATION ENDPOINT
