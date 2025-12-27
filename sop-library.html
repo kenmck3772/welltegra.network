@@ -826,7 +826,7 @@
 
         async function loadSOPData() {
             try {
-                const response = await fetch('data/sops.json');
+                const response = await fetch('/data/sops.json');
                 sopData = await response.json();
                 renderPage();
             } catch (error) {
