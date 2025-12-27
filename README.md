@@ -1,272 +1,301 @@
-# WellTegra Network
+# The Brahan Engine
+## AI-Augmented Governance for Offshore Operations
 
-> **Mission-critical decision support platform for well engineering operations**
-> Transforming 30 years of North Sea experience into production-grade cloud infrastructure
+[![Live Demo](https://img.shields.io/badge/demo-live-success?style=for-the-badge)](https://kenmck3772.github.io/welltegra.network/governance-dashboard.html)
+[![Backend API](https://img.shields.io/badge/API-Cloud%20Run-blue?style=for-the-badge)](https://brahan-engine-api-ikldvpsusa-nw.a.run.app/health)
+[![Status](https://img.shields.io/badge/status-MVP-orange?style=for-the-badge)](https://github.com/kenmck3772/welltegra.network)
 
-[![Live Demo](https://img.shields.io/badge/demo-live-success?style=for-the-badge)](https://kenmck3772.github.io/welltegra.network/)
-[![Documentation](https://img.shields.io/badge/docs-comprehensive-blue?style=for-the-badge)](./docs/)
-[![License](https://img.shields.io/badge/license-portfolio-orange?style=for-the-badge)](LICENSE)
-
-**Built by:** Ken McKenzie | **Experience:** 30+ years (North Sea, Middle East, Asia-Pacific)
-**Purpose:** Portfolio demonstration of full-stack engineering + deep domain expertise
-**Status:** 🟢 Operational | **Cost:** $47/month | **Uptime:** 99.97%
+**Built by:** Ken McKenzie | **Experience:** 30+ years offshore (North Sea, Middle East, Asia-Pacific, West Africa)
+**Status:** 🟡 Working MVP - Seeking Pilot Customers
+**Tech:** React, FastAPI, Google Cloud (Cloud Run, Firestore, BigQuery)
 
 ---
 
-## 📋 Table of Contents
+## 📋 Quick Links
 
-- [Overview](#-overview)
-- [Architecture](#-architecture)
-- [Key Features](#-key-features)
-- [Tech Stack](#-tech-stack)
-- [Quick Start](#-quick-start)
-- [Project Structure](#-project-structure)
-- [Documentation](#-documentation)
-- [Dashboards & Interfaces](#-dashboards--interfaces)
-- [Data Pipeline](#-data-pipeline)
-- [Cost Breakdown](#-cost-breakdown)
-- [Deployment](#-deployment)
-- [What Makes This Different](#-what-makes-this-different)
-- [Contact](#-contact)
+- [🎛️ Live Dashboard](https://kenmck3772.github.io/welltegra.network/governance-dashboard.html) - Governance & Mission Control
+- [👥 Forensic Team](https://kenmck3772.github.io/welltegra.network/forensic-team.html) - 11-Person Engineering Team
+- [🚀 Backend API](https://brahan-engine-api-ikldvpsusa-nw.a.run.app/) - Cloud Run Service
+- [📚 API Docs](backend-api/README.md) - Deployment Guide
 
 ---
 
-## 🎯 Overview
+## 🎯 What This Is
 
-**WellTegra Network** is a real-time operations intelligence platform for oil & gas well engineering. It demonstrates how decades of field experience combines with modern cloud architecture to solve mission-critical problems.
+**An honest working prototype** that demonstrates AI-augmented decision-making for offshore operations.
 
-**This is NOT:**
-- A toy project or tutorial follow-along
-- A landing page template with stock photos
-- A theoretical "what if" concept
+After 30 years in well engineering, I learned to code to see if I could build something better than the PowerPoints I kept seeing from vendors. This is the result.
 
-**This IS:**
-- Production infrastructure running on Google Cloud Platform
-- Real BigQuery SQL queries processing 2.1M+ rows
-- Trained ML models (94.2% accuracy on stuck-pipe prediction)
-- Actual cost optimization ($47/mo for enterprise-grade features)
-- A working control room interface built by someone who's been stuck in hole at 3 AM
+### ✅ What's Actually Built
 
-### The Problem
+**Frontend (React):**
+- Governance & Mission Control dashboard with live API integration
+- Real-time DCI (Data Confidence Index) monitoring
+- Multi-specialist conflict resolution interface
+- HSE veto authority controls
+- 11-person forensic team grid
 
-Well intervention operations cost **$150,000/day** offshore. A single bad decision—wrong tool diameter, undetected barrier failure, inadequate torque capacity—can cost millions in Non-Productive Time (NPT).
+**Backend (FastAPI on Cloud Run):**
+- REST API deployed to Google Cloud Run (serverless)
+- Firestore database for real-time data
+- BigQuery tables ready for analytics
+- Pub/Sub topics for event streaming
+- DCI calculation engine
 
-### The Solution
+**Infrastructure (Google Cloud Platform):**
+- Cloud Run: Auto-scaling serverless backend
+- Firestore: Real-time database (11 team members, conflicts, alerts)
+- BigQuery: Analytics-ready dataset
+- Cloud Storage: Data ingestion buckets
+- Cost: ~$50-75/month
 
-WellTegra ingests real-time drilling parameters (ROP, torque, WOB, pressure) and provides:
-- **Clash detection** for toolstring assemblies
-- **Risk analysis** based on 30 years of failure data
-- **Efficiency optimization** (η = ROP / Torque)
-- **Predictive alerts** for stuck-pipe, equipment failure, well control events
+### 🔨 What's NOT Built Yet
+
+**Be clear about what's missing:**
+- ❌ Not connected to real WITSML data (simulated telemetry for now)
+- ❌ No authentication/multi-tenancy (open demo)
+- ❌ DCI algorithm is simplified (not production-grade physics validation)
+- ❌ No trained ML models deployed yet
+- ❌ Conflict detection is manual trigger, not automated
+- ❌ No unit/integration tests
+
+**This is an MVP, not a product.** But it's real code running on real infrastructure that you can click and test.
+
+---
+
+## 🤔 The Problem I'm Exploring
+
+Oil & gas loses significant revenue to Non-Productive Time (NPT). When you're mid-intervention and specialists disagree (drilling wants speed, HSE wants safety, CT specialist flags risk), decision-making can take hours.
+
+What if there was a system that:
+- Scored data quality in real-time (can we trust the AI?)
+- Presented conflicting specialist opinions side-by-side with risk analysis
+- Enforced safety-first governance (HSE veto blocks execution)
+- Logged every decision for compliance
+
+That's what this prototype demonstrates.
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                         DATA SOURCES                             │
-├─────────────────────────────────────────────────────────────────┤
-│  WITSML Feeds  │  CSV Uploads  │  Manual Entry  │  API Calls    │
-└────────┬────────────────┬──────────────┬────────────────┬────────┘
-         │                │              │                │
-         └────────────────┴──────────────┴────────────────┘
-                                  │
-                    ┌─────────────▼──────────────┐
-                    │   GOOGLE CLOUD STORAGE     │
-                    │      Bucket: gus001        │
-                    │   Region: eu-multi-region  │
-                    │   Storage: 847 MB          │
-                    │   Objects: 2,184 files     │
-                    └─────────────┬──────────────┘
-                                  │
-                    ┌─────────────▼──────────────┐
-                    │       BIGQUERY ETL         │
-                    │  Dataset: well_ops_london  │
-                    │   Region: EU (London)      │
-                    │   Rows: 2,134,847          │
-                    │   Tables: 7                │
-                    └─────────────┬──────────────┘
-                                  │
-         ┌────────────────────────┼────────────────────────┐
-         │                        │                        │
-         ▼                        ▼                        ▼
-┌────────────────┐      ┌─────────────────┐     ┌──────────────────┐
-│  VERTEX AI ML  │      │  LOOKER STUDIO  │     │  CLOUD FUNCTIONS │
-│  (Training)    │      │  (Dashboards)   │     │      (API)       │
-├────────────────┤      ├─────────────────┤     ├──────────────────┤
-│ Stuck-pipe     │      │ ROP vs Depth    │     │ /predict-risk    │
-│ NPT forecasting│      │ Torque analytics│     │ /validate-tool   │
-│ Anomaly detect │      │ Cost tracking   │     │ /plan-intervention│
-│ Accuracy: 94.2%│      │ Real-time feed  │     │ Latency: 24ms    │
-└────────────────┘      └─────────────────┘     └──────────────────┘
-         │                        │                        │
-         └────────────────────────┴────────────────────────┘
-                                  │
-                    ┌─────────────▼──────────────┐
-                    │     WEB INTERFACES         │
-                    ├────────────────────────────┤
-                    │ • Brahan Engine (Control)  │
-                    │ • Operations Dashboard     │
-                    │ • Equipment Catalog        │
-                    │ • SOP Library              │
-                    │ • Intervention Planner     │
-                    └────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│           React Dashboard (GitHub Pages)                │
+│  • Governance & Mission Control                         │
+│  • Real-time DCI monitoring                             │
+│  • Conflict resolution UI                               │
+│  • 11-person team grid                                  │
+└──────────────────┬──────────────────────────────────────┘
+                   │ HTTPS REST API
+                   ▼
+┌─────────────────────────────────────────────────────────┐
+│         FastAPI Backend (Cloud Run)                     │
+│  • Telemetry ingestion                                  │
+│  • DCI calculation                                      │
+│  • Conflict management                                  │
+│  • Team status tracking                                 │
+│  Region: europe-west2 (London)                          │
+│  Cost: ~$10/month (serverless)                          │
+└──────┬──────────────┬──────────────┬───────────────────┘
+       │              │              │
+       ▼              ▼              ▼
+┌──────────┐  ┌──────────────┐  ┌─────────────┐
+│Firestore │  │  BigQuery    │  │  Pub/Sub    │
+│(Real-time│  │ (Analytics)  │  │ (Events)    │
+│ database)│  │              │  │             │
+│~$20/mo   │  │  ~$10/mo     │  │  ~$5/mo     │
+└──────────┘  └──────────────┘  └─────────────┘
 ```
 
 ---
 
-## ✨ Key Features
+## ✨ Key Features (What You Can Actually Test)
 
-### 🎛️ **Brahan Engine - Control Room Interface**
-- Real-time system health monitoring (GCS, BigQuery, API endpoints)
-- Live Looker Studio dashboard integration
-- Inverted Y-axis well logs (industry standard depth visualization)
-- BigQuery SQL query display with syntax highlighting
-- Data pipeline architecture visualization
-- Cost transparency dashboard
+### 1️⃣ **Governance Dashboard** - [Live Demo](https://kenmck3772.github.io/welltegra.network/governance-dashboard.html)
 
-**[View Live Demo](brahen-engine-homepage.html)** | **[Technical Docs](docs/BRAHAN_ENGINE_TROUBLESHOOTING.md)**
+**Data Confidence Index (DCI) Monitor:**
+- Real-time score (0-100) determining operational mode
+- <60: Manual Override Required
+- 60-79: Manual Override Advised
+- 80+: AI-Driven Operations
 
-### 📊 **Operations Dashboard - Risk Analysis**
-- NPT probability calculation (5-80% range)
-- Cost impact assessment ($K potential losses)
-- Success rate prediction (20-95%)
-- Risk breakdown by category (Equipment, Well Control, Operational, Environmental, Human Factors)
-- Safety recommendations with ROI analysis
+**Telemetry Heartbeat:**
+- Latency monitoring (currently simulated)
+- Auto-failover to LOCAL MODE if >1500ms
+- Real-time sync indicator
 
-**[View Dashboard](operations-dashboard.html)** | **[API Documentation](docs/OPERATIONS_DASHBOARD_API.md)**
+**HSE Golden Red Switch:**
+- Veto authority button
+- When locked: All operations blocked
+- Creates system alerts
 
-### 🔧 **Equipment Catalog**
-- 119+ North Sea intervention tools
-- Full specifications (OD, ID, length, weight, pressure rating)
-- Clash detection algorithms
-- Compatibility matrices
+**Conflict Resolution Module:**
+- AI recommendation vs. Safety override side-by-side
+- Risk scoring (0-10)
+- Performance impact calculation
+- "Trigger Demo Conflict" button creates real conflicts in Firestore
 
-### 📈 **Data Analytics**
-- **Efficiency Index:** η = ROP / Torque
-- **Mechanical Specific Energy (MSE)** calculations
-- **P90 performance benchmarking**
-- **Drilling optimization recommendations**
+**Execution Authorization:**
+- Gated by 4 safety checks:
+  1. DCI ≥ 60%
+  2. Latency < 1500ms
+  3. HSE veto unlocked
+  4. No unresolved conflicts
 
-### 🤖 **Machine Learning Models**
-- **Stuck-pipe prediction:** 94.2% accuracy, 0.97 AUC-ROC
-- **NPT forecasting:** Time series analysis
-- **Anomaly detection:** Real-time alerts
-- **Training data:** 2.1M synthetic toolstring runs
+### 2️⃣ **Forensic Team Grid** - [Live Demo](https://kenmck3772.github.io/welltegra.network/forensic-team.html)
+
+11-person multi-discipline team with detailed forensic profiles:
+- Project Director (Digital)
+- Subsea Engineer
+- HSE Lead
+- Petroleum Engineer
+- Drilling Supervisor
+- Coiled Tubing Specialist
+- Well Integrity Lead
+- Data Scientist (AI/ML)
+- Rig Superintendent
+- Geologist
+- Completions Engineer
+
+**Features:**
+- 3-state card design (default → hover → expanded)
+- Discipline filtering
+- Staggered animations (Framer Motion)
+- Mobile-responsive (48px touch targets)
+
+### 3️⃣ **Backend API** - [Health Check](https://brahan-engine-api-ikldvpsusa-nw.a.run.app/health)
+
+**Live Endpoints:**
+```bash
+# Health check
+GET https://brahan-engine-api-ikldvpsusa-nw.a.run.app/health
+
+# Current telemetry
+GET https://brahan-engine-api-ikldvpsusa-nw.a.run.app/api/telemetry/current
+
+# Team status
+GET https://brahan-engine-api-ikldvpsusa-nw.a.run.app/api/team/status
+
+# Active conflicts
+GET https://brahan-engine-api-ikldvpsusa-nw.a.run.app/api/conflicts
+
+# System alerts
+GET https://brahan-engine-api-ikldvpsusa-nw.a.run.app/api/alerts
+```
+
+**Try it yourself:**
+```bash
+curl https://brahan-engine-api-ikldvpsusa-nw.a.run.app/health
+```
 
 ---
 
 ## 🛠️ Tech Stack
 
-### **Cloud Infrastructure (Google Cloud Platform)**
-```yaml
-Storage:
-  - Cloud Storage (GCS): eu-multi-region, lifecycle policies
-  - BigQuery: Partitioned tables, EU data residency
+**Frontend:**
+- React 18 (functional components, hooks)
+- Tailwind CSS (industrial/cyberpunk aesthetic)
+- Framer Motion (staggered animations)
+- Lucide React icons
+- GitHub Pages deployment
 
-Compute:
-  - Cloud Functions: Serverless Python Flask APIs
-  - Cloud Run: Containerized services (future)
+**Backend:**
+- Python 3.11
+- FastAPI (async, type-safe)
+- Pydantic (request/response validation)
+- Google Cloud SDK
 
-AI/ML:
-  - Vertex AI: AutoML, custom training pipelines
-  - BigQuery ML: In-database predictions
+**Infrastructure:**
+- Cloud Run (serverless containers, 0-10 instances)
+- Firestore Native (real-time database, EU region)
+- BigQuery (analytics, EU London)
+- Cloud Storage (3 buckets: raw-ingestion, canonical-lake, ml-models)
+- Pub/Sub (5 topics: telemetry-raw, telemetry-canonical, alerts-critical, alerts-warning, events-audit)
 
-Analytics:
-  - Looker Studio: Real-time dashboards
-  - Data Studio: Historical reporting
-
-Security:
-  - Service Account authentication
-  - VPC peering for data isolation
-  - Cloud Logging for audit trails
-```
-
-### **Languages & Frameworks**
-```yaml
-Backend:
-  - Python 3.11: Data processing, ML pipelines, API endpoints
-  - SQL (BigQuery): Complex queries, window functions, CTEs
-
-Frontend:
-  - HTML5/CSS3: Semantic markup, responsive design
-  - JavaScript: Chart.js, vanilla JS (no framework bloat)
-  - Tailwind CSS: Utility-first styling (where used)
-
-Data Science:
-  - Pandas, NumPy: Data manipulation
-  - Scikit-learn: ML modeling
-  - Matplotlib, Seaborn: Visualization
-```
-
-### **Key Libraries**
-- `google-cloud-bigquery`: BigQuery Python client
-- `google-cloud-storage`: GCS integration
-- `flask`: Lightweight API framework
-- `chart.js`: Interactive charts
-- `pytest`: Testing framework
+**DevOps:**
+- Cloud Build (CI/CD)
+- GitHub Actions (static site deployment)
+- Docker (containerization)
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### View Live Demo
+Just click: [Governance Dashboard](https://kenmck3772.github.io/welltegra.network/governance-dashboard.html)
+
+### Run Locally
 ```bash
-# Python 3.11+
-python --version
+# Clone repo
+git clone https://github.com/kenmck3772/welltegra.network.git
+cd welltegra.network
 
-# Google Cloud SDK (for deployment)
-gcloud --version
+# View dashboard (no setup needed)
+open governance-dashboard.html
 
-# Git
-git --version
+# Or run backend locally
+cd backend-api
+pip install -r requirements.txt
+python main.py
+# Visit http://localhost:8080
 ```
 
-### Local Development
+### Deploy Your Own
+```bash
+# Setup GCP infrastructure
+cd backend-api
+./setup-infrastructure.sh  # Creates Firestore, BigQuery, etc.
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/kenmck3772/welltegra.network.git
-   cd welltegra.network
-   ```
+# Deploy to Cloud Run
+./deploy.sh  # Builds & deploys in 5-8 minutes
+```
 
-2. **Set up Python virtual environment:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
+Full deployment guide: [backend-api/README.md](backend-api/README.md)
 
-3. **Configure GCP credentials:**
-   ```bash
-   # Set up service account
-   export GOOGLE_APPLICATION_CREDENTIALS="path/to/service-account-key.json"
+---
 
-   # Or use gcloud auth
-   gcloud auth application-default login
-   ```
+## 📊 What Makes This Different
 
-4. **Run local development server:**
-   ```bash
-   # For static HTML pages
-   python -m http.server 8000
+### ❌ What This Is NOT:
+- A bootcamp todo list with fancy CSS
+- A cloned template with my name on it
+- A consultant's PowerPoint mockup
+- Vaporware with no code
 
-   # Navigate to http://localhost:8000
-   ```
+### ✅ What This IS:
+- **Real infrastructure** you can curl right now
+- **Honest about limitations** (MVP, not production)
+- **Domain expertise + code skills** (30 years offshore → learned FastAPI)
+- **Actually deployed** (not localhost screenshots)
 
-5. **Test BigQuery connection:**
-   ```bash
-   python scripts/test-bigquery-connection.py
-   ```
+**The combination is rare:**
+- Most offshore engineers don't code
+- Most developers don't understand NPT
+- Most "AI for oil & gas" is slide decks
 
-### View Dashboards Locally
+I can do all three.
 
-Open in browser:
-- **Brahan Engine:** `http://localhost:8000/brahen-engine-homepage.html`
-- **Operations Dashboard:** `http://localhost:8000/operations-dashboard.html`
-- **Equipment Catalog:** `http://localhost:8000/equipment.html`
-- **Main Portal:** `http://localhost:8000/index.html`
+---
+
+## 💰 Cost Breakdown
+
+**Current monthly cost: ~$50-75**
+
+| Service | Purpose | Cost |
+|---------|---------|------|
+| Cloud Run | API backend (serverless) | ~$10 |
+| Firestore | Real-time database | ~$20 |
+| BigQuery | Analytics queries | ~$10 |
+| Pub/Sub | Event streaming | ~$5 |
+| Cloud Storage | Data lake | ~$5 |
+| Container Registry | Docker images | ~$5 |
+
+**Why this matters:**
+- Equivalent VM-based setup: $500-1000/month
+- Scales to zero when idle (no wasted $)
+- No Kubernetes complexity
+- Production-grade services at startup prices
 
 ---
 
@@ -274,389 +303,114 @@ Open in browser:
 
 ```
 welltegra.network/
-├── brahen-engine-homepage.html      # Control room interface (NEW)
-├── operations-dashboard.html         # Risk analysis dashboard
-├── equipment.html                    # 119+ tool catalog
-├── index.html                        # Main landing page
-├── methodology.html                  # Technical methodology
-├── planner.html                      # Intervention planner
-├── sop-library.html                  # Standard Operating Procedures
-│
-├── assets/
-│   ├── images/                       # Logos, diagrams, screenshots
-│   ├── js/
-│   │   └── main.js                   # Shared JavaScript utilities
-│   └── css/                          # (Inline CSS in HTML for performance)
-│
-├── scripts/                          # Python data processing
-│   ├── generate-synthetic-data.py    # 2.1M row synthetic dataset
-│   ├── upload-to-bigquery.py         # GCS → BigQuery ETL
-│   ├── train-vertex-ai-model.py      # ML model training
-│   └── parse-historical-toolstrings.py
-│
-├── docs/                             # Technical documentation
-│   ├── OPERATIONS_DASHBOARD_API.md   # Dashboard API docs (17 KB)
-│   ├── BRAHAN_ENGINE_TROUBLESHOOTING.md  # UI/UX guide (14 KB)
-│   ├── README.md                     # Brahan Engine architecture
-│   ├── data-ingestion-architecture.md
-│   ├── witsml-integration-spec.md
-│   └── wellview-mapper-spec.md
-│
-├── brahan-engine/                    # Strategic specs
-│   └── docs/                         # Data ingestion documentation
-│
-├── tests/                            # Unit & integration tests
-│   └── test_risk_calculations.py
-│
-├── requirements.txt                  # Python dependencies
-├── .gitignore
-├── LICENSE
-└── README.md                         # This file
+├── governance-dashboard.html      # Main dashboard (768 lines)
+├── governance-dashboard.jsx       # React component version
+├── forensic-team.html            # Team grid (810 lines)
+├── forensic-team-grid.jsx        # Team grid component
+├── backend-api/                  # FastAPI service
+│   ├── main.py                   # API endpoints (634 lines)
+│   ├── requirements.txt          # Python dependencies
+│   ├── Dockerfile               # Container config
+│   ├── cloudbuild.yaml          # CI/CD pipeline
+│   ├── setup-infrastructure.sh  # GCP setup automation
+│   ├── deploy.sh                # Deployment script
+│   └── README.md                # Deployment guide
+├── assets/                       # Images, CSS
+└── docs/                        # Documentation
+
+Total: ~3,500 lines of production code
 ```
 
 ---
 
 ## 📚 Documentation
 
-### Core Documentation
-| Document | Description | Size |
-|----------|-------------|------|
-| **[Operations Dashboard API](docs/OPERATIONS_DASHBOARD_API.md)** | Complete API reference for risk analysis functions | 17 KB |
-| **[Brahan Engine Troubleshooting](docs/BRAHAN_ENGINE_TROUBLESHOOTING.md)** | UI/UX design system & debugging guide | 14 KB |
-| **[Data Ingestion Architecture](docs/data-ingestion-architecture.md)** | Pipeline design & ETL processes | - |
-| **[WITSML Integration Spec](docs/witsml-integration-spec.md)** | Real-time data feed integration | - |
-
-### API Endpoints
-
-**Base URL:** `https://europe-west2-welltegra-network.cloudfunctions.net/welltegra-ml-api`
-
-| Endpoint | Method | Description | Response Time |
-|----------|--------|-------------|---------------|
-| `/predict-risk` | POST | Predict NPT probability | ~24ms |
-| `/validate-toolstring` | POST | Check clash detection | ~18ms |
-| `/calculate-efficiency` | GET | Compute ROP/Torque index | ~12ms |
-
-**Authentication:** Service Account (OAuth 2.0)
-**Rate Limit:** 1000 requests/hour (demo)
-**Region:** europe-west2 (London)
+- **[Backend API Guide](backend-api/README.md)** - Deployment, endpoints, testing
+- **[Governance Dashboard](governance-dashboard.html)** - Live demo
+- **[Forensic Team Grid](forensic-team.html)** - Team showcase
 
 ---
 
-## 🎨 Dashboards & Interfaces
+## 🎯 What's Next (Seeking Pilot Customer)
 
-### 1. **Brahan Engine Control Room**
-![Control Room](assets/images/brahanbot.png)
+**Phase 2 - Make It Real:**
+1. **WITSML Integration** - Connect to actual drilling data
+2. **Physics-Informed DCI** - Real data quality validation (not simplified algorithm)
+3. **ML Conflict Detection** - Automatic anomaly flagging
+4. **Authentication** - Multi-tenant with Firebase Auth
+5. **NPT Prediction** - Vertex AI model training
 
-**Features:**
-- Live system health indicators
-- Real-time BigQuery metrics
-- Inverted Y-axis well logs
-- SQL query visualization
-- Cost dashboard ($47/mo breakdown)
+**I'm looking for a pilot partner willing to:**
+- Provide anonymized WITSML test data
+- Stress-test the DCI algorithm with real edge cases
+- Validate conflict resolution logic against actual operations
+- Give honest feedback (especially if I'm wrong)
 
-**Tech:** HTML5, CSS3 (Control Room design system), Chart.js, Vanilla JS
-
----
-
-### 2. **Operations Dashboard**
-Risk analysis interface with:
-- NPT probability (5-80%)
-- Cost impact ($K estimates)
-- Risk breakdown by category
-- Safety recommendations with ROI
-
-**Documented:** [API Reference](docs/OPERATIONS_DASHBOARD_API.md)
+**What you'd get:**
+- Free access during pilot (no cost)
+- Direct input on feature priority
+- Working prototype customized to your operations
+- No sales pitch - I want to learn if this actually helps
 
 ---
 
-### 3. **Equipment Catalog**
-119+ North Sea intervention tools:
-- Drill pipe, tubing, packers, valves
-- Full specifications (OD/ID/length/weight/pressure)
-- Clash detection matrices
-- Compatibility checks
+## 🤝 Why Trust This?
 
----
+**I'm not a vendor.** I'm an engineer who worked the problem for 30 years and learned to code to try solving it.
 
-## 🔄 Data Pipeline
+**Red flags I avoid:**
+- ❌ No fake testimonials ("Reduced NPT by 40%!")
+- ❌ No stock photos of people in hard hats
+- ❌ No "AI-powered" without showing the actual algorithm
+- ❌ No "production-ready" when it's clearly an MVP
 
-### Ingestion → Storage → Processing → Visualization
-
-```sql
--- Example: Efficiency Index Calculation (BigQuery)
-WITH drilling_performance AS (
-  SELECT
-    well_id,
-    depth_ft,
-    rop_ft_hr,
-    surface_torque_ftlbs,
-    -- Core efficiency metric
-    SAFE_DIVIDE(rop_ft_hr, NULLIF(surface_torque_ftlbs, 0)) AS efficiency_index
-  FROM `portfolio-project-481815.well_ops_london.drilling_parameters`
-  WHERE depth_ft BETWEEN 1000 AND 15000
-    AND rop_ft_hr > 0
-)
-SELECT
-  well_id,
-  AVG(efficiency_index) AS avg_efficiency,
-  PERCENTILE_CONT(efficiency_index, 0.9) OVER () AS p90_efficiency
-FROM drilling_performance
-WHERE efficiency_index IS NOT NULL
-GROUP BY well_id
-ORDER BY avg_efficiency DESC;
-```
-
-### Data Flow
-1. **Source:** WITSML feeds, CSV uploads, manual entry
-2. **Landing:** GCS bucket `gus001` (eu-multi-region)
-3. **Transform:** Python scripts → Pandas/NumPy processing
-4. **Load:** BigQuery `well_ops_london` dataset (7 tables, 2.1M rows)
-5. **Analyze:** SQL queries, BigQuery ML models
-6. **Visualize:** Looker Studio dashboards, Chart.js charts
-7. **Serve:** Cloud Functions APIs (Flask endpoints)
-
----
-
-## 💰 Cost Breakdown
-
-### Monthly Infrastructure Costs: **$47.42**
-
-| Service | Usage | Cost |
-|---------|-------|------|
-| **BigQuery Storage** | 2.1M rows, 847 MB active | $12.00 |
-| **BigQuery Queries** | ~1,200/day, avg 1.2s | $8.00 |
-| **Cloud Storage** | 2,184 objects, 5 GB allocated | $5.00 |
-| **Cloud Functions** | ~36K invocations/month | $18.00 |
-| **Cloud Logging** | Audit trails, monitoring | $4.00 |
-| **Vertex AI Training** | Monthly model retraining | $0.42 |
-
-### Cost Optimization Strategies
-- ✅ **Partitioned tables** by `well_id` and `depth` (reduces query costs by 70%)
-- ✅ **Lifecycle policies** on GCS (archive after 90 days)
-- ✅ **Serverless architecture** (no idle compute costs)
-- ✅ **EU region** (GDPR compliance + lower egress)
-- ✅ **Cached queries** in Looker Studio
-
-**Production Scaling:** For live rig data (15-second refresh), estimate **$280/mo** for 5 active wells.
-
----
-
-## 🚢 Deployment
-
-### GitHub Pages (Static Pages)
-```bash
-# Already deployed at:
-https://kenmck3772.github.io/welltegra.network/
-
-# Auto-deploys from main branch
-```
-
-### Cloud Functions (API Endpoints)
-```bash
-# Deploy to GCP
-gcloud functions deploy welltegra-ml-api \
-  --runtime python311 \
-  --trigger-http \
-  --allow-unauthenticated \
-  --region europe-west2 \
-  --memory 512MB \
-  --timeout 60s
-
-# Deployed at:
-https://europe-west2-welltegra-network.cloudfunctions.net/welltegra-ml-api
-```
-
-### BigQuery Tables (Data Warehouse)
-```bash
-# Upload CSV to GCS
-gsutil cp data/*.csv gs://gus001/raw/
-
-# Run ETL script
-python scripts/upload-to-bigquery.py
-
-# Verify
-bq query --use_legacy_sql=false \
-  'SELECT COUNT(*) FROM `well_ops_london.drilling_parameters`'
-```
-
----
-
-## 🌟 What Makes This Different
-
-### **Not a Tutorial Project**
-Most portfolios show:
-- "I followed a React tutorial"
-- "I deployed a to-do app"
-- "I used a template with stock photos"
-
-**This portfolio shows:**
-- ✅ Real production infrastructure ($47/mo actual costs)
-- ✅ Domain expertise (30 years North Sea operations)
-- ✅ Full-stack capability (Python, SQL, JavaScript, GCP)
-- ✅ Data science competency (2.1M row datasets, ML models)
-- ✅ DevOps thinking (cost optimization, monitoring, security)
-
-### **The "Why" Behind Every Decision**
-
-**Q:** Why BigQuery instead of PostgreSQL?
-**A:** Petabyte-scale capability, built-in ML, serverless (no DB admin overhead).
-
-**Q:** Why EU region?
-**A:** GDPR compliance for North Sea operators, lower latency to UK clients.
-
-**Q:** Why synthetic data?
-**A:** Real drilling data is proprietary. Generated 2.1M statistically valid runs using domain knowledge.
-
-**Q:** Why $47/mo instead of free tier?
-**A:** Shows I understand TCO, not just "will it run." Free tier doesn't scale to production.
-
-**Q:** Why inverted Y-axis on well logs?
-**A:** Industry standard. Geologists/engineers read depth top-to-bottom. Shows domain fluency.
-
-### **Built by Someone Who's Been There**
-
-This isn't theoretical. Every metric, every threshold, every failure mode comes from:
-- Stuck downhole with $150K/day rig rate
-- Watching a $2M BOP fail at 3 AM in the North Sea
-- Running 47-stand strings through 8,000 ft of doglegs
-- Calculating if you have enough margin for one more joint
-
-**The difference:** This portfolio doesn't show "I learned to code." It shows "I solved real problems with code."
-
----
-
-## 📊 Performance Metrics
-
-### System Health (30-Day Average)
-- **Uptime:** 99.97% (12 minutes downtime - planned maintenance)
-- **API Latency:** p50: 24ms | p95: 89ms | p99: 142ms
-- **Query Performance:** Avg 1.2s | p95: 3.4s
-- **Error Rate:** 0.03% (transient network issues)
-
-### Data Quality
-- **Completeness:** 99.8% (missing values handled)
-- **Accuracy:** Validated against historical North Sea data
-- **Freshness:** Demo mode (static). Production: 15-second refresh
-
----
-
-## 🔐 Security & Compliance
-
-### Data Protection
-- ✅ **GDPR-compliant:** EU data residency
-- ✅ **Encrypted at rest:** AES-256 (GCS, BigQuery)
-- ✅ **Encrypted in transit:** TLS 1.3
-- ✅ **Access control:** Service account authentication
-- ✅ **Audit logging:** Cloud Logging enabled
-
-### Authentication
-- Service Account (OAuth 2.0)
-- VPC peering for internal services
-- No public IP exposure for BigQuery
-
----
-
-## 🧪 Testing
-
-```bash
-# Run unit tests
-pytest tests/ -v
-
-# Run specific test
-pytest tests/test_risk_calculations.py::test_base_risk_calculation
-
-# Coverage report
-pytest --cov=scripts tests/
-```
-
-**Current Coverage:** 78% (goal: 90%)
-
----
-
-## 🗺️ Roadmap
-
-### ✅ **Completed**
-- [x] BigQuery data warehouse (2.1M rows)
-- [x] ML model training (94.2% accuracy)
-- [x] Operations Dashboard with risk analysis
-- [x] Brahan Engine control room interface
-- [x] Equipment catalog (119 tools)
-- [x] Comprehensive API documentation
-- [x] Cost-optimized infrastructure ($47/mo)
-
-### 🚧 **In Progress**
-- [ ] Real-time WITSML integration (demo mode currently)
-- [ ] Export functionality (PDF reports, CSV downloads)
-- [ ] User authentication (multi-user support)
-- [ ] Mobile app (React Native)
-
-### 🔮 **Future**
-- [ ] Edge computing (on-rig processing)
-- [ ] Blockchain audit trails (immutable records)
-- [ ] AR visualization (HoloLens well schematics)
-- [ ] Multi-language support (Norwegian, Arabic)
+**Green flags:**
+- ✅ Open source (you can read every line)
+- ✅ Live demo you can break
+- ✅ Honest about what doesn't work
+- ✅ Real infrastructure you can curl
+- ✅ Built by someone who's been stuck in hole at 3 AM
 
 ---
 
 ## 📞 Contact
 
 **Ken McKenzie**
-Senior Well Engineer & AI/ML Specialist
+- **LinkedIn:** [linkedin.com/in/kenmckenzie](https://www.linkedin.com/in/kenmckenzie)
+- **GitHub:** [github.com/kenmck3772](https://github.com/kenmck3772)
+- **Email:** [Contact for pilot program]
 
-- **GitHub:** [@kenmck3772](https://github.com/kenmck3772)
-- **LinkedIn:** [Ken McKenzie](https://linkedin.com/in/kenmckenzie)
-- **Email:** welltegra@gmail.com
-- **Location:** Remote (Open to opportunities globally)
+**Questions welcome. Skeptics especially.**
 
-### Looking For
-- **Full-stack Engineering** roles with AI/ML focus
-- **Data Engineering** in energy, manufacturing, or capital-intensive industries
-- **Technical Leadership** positions where domain expertise + software engineering = competitive advantage
-
-### Why Hire Me?
-1. **Rare combination:** 30 years offshore + modern software engineering
-2. **Production-ready code:** Not tutorials, not templates—actual deployed systems
-3. **Cost-conscious:** Built enterprise features for $47/mo
-4. **Self-directed:** Architected, built, documented, and deployed solo
-5. **Domain fluency:** Can talk to engineers AND executives
+If you think I'm solving the wrong problem, I want to know. If you've tried this before and failed, I want to learn why. If you're building something similar, let's compare notes.
 
 ---
 
-## 📄 License
+## 📄 Disclaimer
 
-This project is a **portfolio demonstration** and is not licensed for commercial use.
+This is a personal project/MVP built to demonstrate feasibility. It is:
+- ✅ Real code running on real infrastructure
+- ✅ Suitable for evaluation and testing
+- ❌ **NOT** a replacement for existing safety systems
+- ❌ **NOT** validated for production use
+- ❌ **NOT** connected to real WITSML data (yet)
 
-**Educational/Reference Use:** ✅ Allowed
-**Code Snippets:** ✅ Allowed with attribution
-**Commercial Deployment:** ❌ Prohibited without permission
-**Data/Models:** ❌ Proprietary (synthetic data based on real experience)
-
----
-
-## 🙏 Acknowledgments
-
-- **North Sea Operators:** 30 years of lessons learned (anonymized)
-- **Google Cloud Platform:** Infrastructure that made this possible
-- **Open Source Community:** Chart.js, Python ecosystem, countless libraries
+Use at your own risk. Feedback welcome.
 
 ---
 
-## 📈 Stats
+## 📈 Project Stats
 
-![GitHub Stars](https://img.shields.io/github/stars/kenmck3772/welltegra.network?style=social)
-![GitHub Forks](https://img.shields.io/github/forks/kenmck3772/welltegra.network?style=social)
-![GitHub Issues](https://img.shields.io/github/issues/kenmck3772/welltegra.network)
-![Code Size](https://img.shields.io/github/languages/code-size/kenmck3772/welltegra.network)
-![Last Commit](https://img.shields.io/github/last-commit/kenmck3772/welltegra.network)
+- **Lines of Code:** ~3,500 (excluding dependencies)
+- **Deployment Time:** ~10 minutes (automated)
+- **API Latency:** <200ms p95
+- **Monthly Cost:** $50-75
+- **Uptime:** 99.9%+ (Cloud Run SLA)
+- **Build Time:** 2 years learning + 6 months building
+
+**Last Updated:** December 27, 2024
 
 ---
 
-<div align="center">
-
-**Built with 30 years of North Sea experience and modern cloud architecture**
-
-[Live Demo](https://kenmck3772.github.io/welltegra.network/) • [Documentation](./docs/) • [Contact](mailto:welltegra@gmail.com)
-
-⭐ **Star this repo if you find it useful!**
-
-</div>
+**Built with 30 years of offshore experience and 2 years of learning to code.**
+**Not perfect. But it's real.**
