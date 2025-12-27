@@ -2064,6 +2064,161 @@
     </section>
 
     <!-- ============================================
+         MULTI-DISCIPLINARY DATA FLOW
+         ============================================ -->
+    <section class="section section--mist" style="background: var(--ink);">
+        <div class="container">
+            <div style="text-align: center; max-width: 900px; margin: 0 auto var(--space-xl);">
+                <span class="label">Multi-Disciplinary Analysis</span>
+                <h2 style="color: var(--white); margin-bottom: var(--space-md); font-size: 2.5rem;">How Data Flows Through Expert Personas</h2>
+                <p style="color: var(--mist); font-size: 1.125rem;">
+                    Every intervention decision passes through 11 forensic specialists—each applying domain expertise to validate, enrich, and challenge the data before it reaches the final decision surface.
+                </p>
+            </div>
+
+            <!-- Data Flow Visualization -->
+            <div style="max-width: 1100px; margin: 0 auto;">
+
+                <!-- Stage 1: Raw Data Ingestion -->
+                <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 12px; padding: 32px; margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                            📥
+                        </div>
+                        <div>
+                            <h3 style="color: var(--white); font-size: 1.25rem; margin: 0;">Stage 1: Raw Data Ingestion</h3>
+                            <p style="color: var(--steel); margin: 4px 0 0 0; font-size: 0.875rem;">WITSML, PRODML, Sensor Feeds, Daily Reports</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                        <div style="background: rgba(14, 165, 233, 0.1); padding: 12px; border-radius: 6px;">
+                            <strong style="color: #0ea5e9; font-size: 0.875rem;">Data Scientist (AI Fraser)</strong>
+                            <p style="color: var(--silver); font-size: 0.75rem; margin: 4px 0 0 0;">Validates data quality, fills gaps, flags anomalies</p>
+                        </div>
+                        <div style="background: rgba(14, 165, 233, 0.1); padding: 12px; border-radius: 6px;">
+                            <strong style="color: #0ea5e9; font-size: 0.875rem;">Digital Architect (Ken McKenzie)</strong>
+                            <p style="color: var(--silver); font-size: 0.75rem; margin: 4px 0 0 0;">Ensures physics constraints, WITSML schema compliance</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrow -->
+                <div style="text-align: center; margin: -12px 0; position: relative; z-index: 1;">
+                    <div style="display: inline-block; color: #0ea5e9; font-size: 32px;">↓</div>
+                </div>
+
+                <!-- Stage 2: Domain Expert Analysis -->
+                <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 12px; padding: 32px; margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                            🔬
+                        </div>
+                        <div>
+                            <h3 style="color: var(--white); font-size: 1.25rem; margin: 0;">Stage 2: Parallel Domain Expert Analysis</h3>
+                            <p style="color: var(--steel); margin: 4px 0 0 0; font-size: 0.875rem;">Each specialist applies forensic analysis to their domain</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px;">
+                        <div style="background: rgba(249, 115, 22, 0.1); padding: 12px; border-radius: 6px; border-left: 3px solid #f97316;">
+                            <strong style="color: #f97316; font-size: 0.875rem;">🛢️ Drilling Engineer (James Morrison)</strong>
+                            <p style="color: var(--silver); font-size: 0.75rem; margin: 4px 0 0 0;">Torque & drag modeling, ROP optimization, stuck pipe risk</p>
+                        </div>
+                        <div style="background: rgba(249, 115, 22, 0.1); padding: 12px; border-radius: 6px; border-left: 3px solid #f97316;">
+                            <strong style="color: #f97316; font-size: 0.875rem;">🛡️ Well Integrity (Sarah Williams)</strong>
+                            <p style="color: var(--silver); font-size: 0.75rem; margin: 4px 0 0 0;">CBL/VDL log analysis, annular pressure forensics, barrier verification</p>
+                        </div>
+                        <div style="background: rgba(249, 115, 22, 0.1); padding: 12px; border-radius: 6px; border-left: 3px solid #f97316;">
+                            <strong style="color: #f97316; font-size: 0.875rem;">⚓ Subsea Specialist (Angus Campbell)</strong>
+                            <p style="color: var(--silver); font-size: 0.75rem; margin: 4px 0 0 0;">ROCS intervention logic, hydraulic workover sequencing</p>
+                        </div>
+                        <div style="background: rgba(249, 115, 22, 0.1); padding: 12px; border-radius: 6px; border-left: 3px solid #f97316;">
+                            <strong style="color: #f97316; font-size: 0.875rem;">⚠️ HSE Lead (Robert MacLeod)</strong>
+                            <p style="color: var(--silver); font-size: 0.75rem; margin: 4px 0 0 0;">OSCR compliance, bow-tie analysis, major accident hazard assessment</p>
+                        </div>
+                        <div style="background: rgba(249, 115, 22, 0.1); padding: 12px; border-radius: 6px; border-left: 3px solid #f97316;">
+                            <strong style="color: #f97316; font-size: 0.875rem;">🪨 Reservoir Engineer</strong>
+                            <p style="color: var(--silver); font-size: 0.75rem; margin: 4px 0 0 0;">Pressure depletion analysis, production forecasting, connectivity</p>
+                        </div>
+                        <div style="background: rgba(249, 115, 22, 0.1); padding: 12px; border-radius: 6px; border-left: 3px solid #f97316;">
+                            <strong style="color: #f97316; font-size: 0.875rem;">💰 Commercial Analyst</strong>
+                            <p style="color: var(--silver); font-size: 0.75rem; margin: 4px 0 0 0;">NPT cost impact, AFE variance, ROI optimization</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrow -->
+                <div style="text-align: center; margin: -12px 0; position: relative; z-index: 1;">
+                    <div style="display: inline-block; color: #f97316; font-size: 32px;">↓</div>
+                </div>
+
+                <!-- Stage 3: Conflict Detection -->
+                <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 12px; padding: 32px; margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                            ⚡
+                        </div>
+                        <div>
+                            <h3 style="color: var(--white); font-size: 1.25rem; margin: 0;">Stage 3: Cross-Discipline Conflict Detection</h3>
+                            <p style="color: var(--steel); margin: 4px 0 0 0; font-size: 0.875rem;">AI flags contradictions between expert analyses</p>
+                        </div>
+                    </div>
+                    <div style="background: rgba(234, 179, 8, 0.1); padding: 16px; border-radius: 6px; border-left: 3px solid #eab308;">
+                        <p style="color: var(--silver); font-size: 0.875rem; margin: 0;">
+                            <strong style="color: #eab308;">Example Conflict:</strong> Drilling Engineer recommends increasing ROP, but Well Integrity Specialist flags high annular pressure risk. HSE Lead identifies OSCR barrier violation. System escalates to human review.
+                        </p>
+                    </div>
+                    <div style="margin-top: 16px; padding: 16px; background: rgba(59, 130, 246, 0.1); border-radius: 6px; border-left: 3px solid #3b82f6;">
+                        <p style="color: var(--silver); font-size: 0.875rem; margin: 0;">
+                            <strong style="color: #3b82f6;">Governance Layer:</strong> No decision proceeds if 2+ experts disagree on safety-critical parameters. Conflicts trigger Crisis Command mode with full forensic review.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Arrow -->
+                <div style="text-align: center; margin: -12px 0; position: relative; z-index: 1;">
+                    <div style="display: inline-block; color: #eab308; font-size: 32px;">↓</div>
+                </div>
+
+                <!-- Stage 4: Decision Surface -->
+                <div style="background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 12px; padding: 32px;">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                            ✅
+                        </div>
+                        <div>
+                            <h3 style="color: var(--white); font-size: 1.25rem; margin: 0;">Stage 4: Final Decision Surface</h3>
+                            <p style="color: var(--steel); margin: 4px 0 0 0; font-size: 0.875rem;">Synthesized recommendation with confidence intervals</p>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                        <div style="background: rgba(34, 197, 94, 0.1); padding: 12px; border-radius: 6px;">
+                            <strong style="color: #22c55e; font-size: 0.875rem;">Risk-Adjusted Recommendation</strong>
+                            <p style="color: var(--silver); font-size: 0.75rem; margin: 4px 0 0 0;">Go/No-Go with probability of success</p>
+                        </div>
+                        <div style="background: rgba(34, 197, 94, 0.1); padding: 12px; border-radius: 6px;">
+                            <strong style="color: #22c55e; font-size: 0.875rem;">Cost Envelope</strong>
+                            <p style="color: var(--silver); font-size: 0.75rem; margin: 4px 0 0 0;">P10/P50/P90 cost scenarios</p>
+                        </div>
+                        <div style="background: rgba(34, 197, 94, 0.1); padding: 12px; border-radius: 6px;">
+                            <strong style="color: #22c55e; font-size: 0.875rem;">Audit Trail</strong>
+                            <p style="color: var(--silver); font-size: 0.75rem; margin: 4px 0 0 0;">Full provenance of every data point</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Link to Forensic Team -->
+            <div style="text-align: center; margin-top: var(--space-xl);">
+                <a href="forensic-team.html" class="btn btn--primary" style="display: inline-flex; align-items: center; gap: 8px;">
+                    Meet the 11-Person Forensic Team
+                    <span style="font-size: 1.2em;">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
          API DOCUMENTATION SECTION
          ============================================ -->
     <section class="section" id="api-docs" style="background: var(--ink);">
