@@ -56,7 +56,7 @@ jobs:
           rsync -av --exclude='node_modules' --exclude='venv' --exclude='y' \
                     --exclude='.git' --exclude='.github' --exclude='screenshots' \
                     --exclude='tests' --exclude='scripts' --exclude='ml-api-setup' \
-                    --exclude='data' --exclude='about.png' --exclude='*.log' \
+                    --exclude='google-cloud-sdk' --exclude='about.png' --exclude='*.log' \
                     ./ _deploy/
 
       - name: Upload artifact
