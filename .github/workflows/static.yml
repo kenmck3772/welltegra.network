@@ -49,15 +49,31 @@ jobs:
 
       - name: Prepare deployment files
         run: |
-          # Copy everything first
-          cp -r . _deploy
+          # Create deployment directory
+          mkdir -p _deploy
 
-          # Remove excluded directories
-          cd _deploy
-          rm -rf node_modules venv y .git .github screenshots tests scripts ml-api-setup google-cloud-sdk *.log about.png backend-api my_agent playwright-report test-results .env
+          # Copy all files and directories, excluding specific paths
+          find . -maxdepth 1 -mindepth 1 \
+            ! -name '_deploy' \
+            ! -name 'node_modules' \
+            ! -name 'venv' \
+            ! -name 'y' \
+            ! -name '.git' \
+            ! -name '.github' \
+            ! -name 'screenshots' \
+            ! -name 'tests' \
+            ! -name 'scripts' \
+            ! -name 'ml-api-setup' \
+            ! -name 'google-cloud-sdk' \
+            ! -name 'backend-api' \
+            ! -name 'my_agent' \
+            ! -name 'playwright-report' \
+            ! -name 'test-results' \
+            ! -name '.env' \
+            -exec cp -r {} _deploy/ \;
 
           # Verify data directory is present
-          ls -la data/
+          ls -la _deploy/data/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
