@@ -1435,7 +1435,12 @@
             }
             
             updateMetrics();
-            
+
+            // Get ML prediction for current toolstring
+            if (toolstring.length > 0) {
+                getPrediction();
+            }
+
             // Enable/disable save button
             const savePlanBtn = document.getElementById('savePlanBtn');
             savePlanBtn.disabled = selectedWell?.safetyLocked || toolstring.length === 0;
@@ -1471,12 +1476,12 @@
         function checkClash() {
             const maxOD = toolstring.length > 0 ? Math.max(...toolstring.map(t => t.od)) : 0;
             const clashAlert = document.getElementById('clashAlert');
-            
+
             // Simple clash detection based on tubing restriction
             const tubingID = 2.75; // Assumed restriction
             if (maxOD > tubingID) {
                 clashAlert.classList.remove('hidden');
-                document.getElementById('clashText').textContent = 
+                document.getElementById('clashText').textContent =
                     `Max tool OD (${maxOD}") exceeds tubing ID (${tubingID}") - will not pass restriction`;
                 document.getElementById('metricOD').classList.add('danger');
             } else {
@@ -1484,7 +1489,105 @@
                 document.getElementById('metricOD').classList.remove('danger');
             }
         }
-        
+
+        // ===== ML PREDICTION =====
+        async function getPrediction() {
+            if (!selectedWell || toolstring.length === 0) {
+                return;
+            }
+
+            // Convert toolstring to API format (feet to meters)
+            const toolstringAPI = toolstring.map(t => ({
+                name: t.name,
+                od: t.od,
+                length: t.length * 0.3048,  // Convert feet to meters
+                category: inferCategory(t.name)
+            }));
+
+            // Extract well conditions from selected well data
+            const wellConditions = {
+                depth: parseInt(selectedWell.identity?.totalDepth?.replace(/[^\d]/g, '') || 3000),
+                deviation: 30,  // Default, ideally from well data
+                casing_id: 8.535  // Default 9-5/8" casing ID
+            };
+
+            const requestData = {
+                toolstring: toolstringAPI,
+                well_conditions: wellConditions,
+                operation_type: 'fishing'  // Could be inferred from toolstring
+            };
+
+            try {
+                // TODO: Replace with your deployed ML API URL
+                const ML_API_URL = 'https://YOUR-CLOUD-FUNCTION-URL/api/v1/predict';
+
+                const response = await fetch(ML_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API returned ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    updatePredictionDisplay(result.data);
+                }
+            } catch (error) {
+                console.log('ML API not available, using static recommendations:', error.message);
+                // Fallback to static data from wells.json
+            }
+        }
+
+        function inferCategory(toolName) {
+            const name = toolName.toLowerCase();
+            if (name.includes('jar') || name.includes('grab') || name.includes('socket') || name.includes('spear')) {
+                return 'fishing';
+            } else if (name.includes('packer') || name.includes('nipple')) {
+                return 'completion';
+            } else if (name.includes('collar') || name.includes('sub')) {
+                return 'drillstring';
+            }
+            return 'fishing';  // Default
+        }
+
+        function updatePredictionDisplay(prediction) {
+            const aiRecEl = document.getElementById('aiRecommendation');
+
+            const riskColor = {
+                'low': 'var(--success)',
+                'medium': 'var(--warning)',
+                'high': 'var(--error)',
+                'critical': 'var(--error)'
+            }[prediction.risk_level] || 'var(--warning)';
+
+            const successProb = Math.round((1 - prediction.stuck_probability) * 100);
+
+            let html = `
+                <strong style="color: ${riskColor};">Live ML Prediction</strong><br>
+                <span style="font-size: 0.8rem;">Stuck Probability: <strong>${(prediction.stuck_probability * 100).toFixed(1)}%</strong></span><br>
+                <span style="font-size: 0.8rem;">Success Probability: <strong style="color: ${successProb > 70 ? 'var(--success)' : 'var(--warning)'};">${successProb}%</strong></span><br>
+                <span style="font-size: 0.8rem;">Risk Level: <strong style="color: ${riskColor};">${prediction.risk_level.toUpperCase()}</strong></span>
+            `;
+
+            if (prediction.recommendations && prediction.recommendations.length > 0) {
+                html += '<br><br><strong>Recommendations:</strong><ul style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.8rem;">';
+                prediction.recommendations.slice(0, 3).forEach(rec => {
+                    html += `<li style="margin-bottom: 0.3rem;">${rec.message}</li>`;
+                });
+                html += '</ul>';
+            }
+
+            html += `<br><span style="font-size: 0.7rem; color: var(--muted);">Model: ${prediction.model_type} v${prediction.model_version}</span>`;
+
+            aiRecEl.innerHTML = html;
+        }
+
         // ===== EQUIPMENT MODAL =====
         /**
          * Open equipment catalog modal
