@@ -31,10 +31,35 @@
             justify-content: center;
             z-index: 9999;
             font-size: 28px;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, opacity 0.3s ease;
         }
         .chat-fab:hover {
             transform: scale(1.1);
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .chat-fab {
+                width: 50px;
+                height: 50px;
+                bottom: 16px;
+                right: 16px;
+                font-size: 22px;
+                opacity: 0.85;
+            }
+        }
+
+        /* Extra small screens - make it even smaller */
+        @media (max-width: 480px) {
+            .chat-fab {
+                width: 45px;
+                height: 45px;
+                bottom: 12px;
+                right: 12px;
+                font-size: 20px;
+                opacity: 0.75;
+                box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            }
         }
     `;
     document.head.appendChild(styles);
