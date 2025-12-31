@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Statistics - Welltegra Network</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background: #f8fafc;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .stat-card h3 {
+            font-size: 1em;
+            color: #64748b;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .subtext {
+            font-size: 0.9em;
+            color: #94a3b8;
+        }
+
+        .chart-section {
+            padding: 40px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .chart-container h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #1e293b;
+            border-left: 5px solid #3b82f6;
+            padding-left: 15px;
+        }
+
+        canvas {
+            max-height: 400px;
+        }
+
+        .language-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .language-table th {
+            background: #f1f5f9;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #475569;
+            border-bottom: 2px solid #cbd5e1;
+        }
+
+        .language-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .language-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .language-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .badge-python { background: #3776ab; color: white; }
+        .badge-javascript { background: #f7df1e; color: black; }
+        .badge-html { background: #e34c26; color: white; }
+        .badge-json { background: #000000; color: white; }
+        .badge-yaml { background: #cb171e; color: white; }
+        .badge-css { background: #264de4; color: white; }
+        .badge-shell { background: #89e051; color: black; }
+        .badge-markdown { background: #083fa1; color: white; }
+        .badge-other { background: #6b7280; color: white; }
+
+        .timestamp {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+            font-size: 0.9em;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            font-size: 1.5em;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .chart-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Welltegra Network</h1>
+            <p>Project Code Statistics & Metrics</p>
+        </header>
+
+        <div id="content">
+            <div class="loading">Loading statistics...</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        async function loadStats() {
+            try {
+                const response = await fetch('sloc-report.json');
+                const data = await response.json();
+                renderStats(data);
+            } catch (error) {
+                document.getElementById('content').innerHTML =
+                    '<div class="loading">Error loading statistics. Please run the SLOC analysis script first.</div>';
+            }
+        }
+
+        function formatNumber(num) {
+            return num.toLocaleString();
+        }
+
+        function getLanguageBadgeClass(language) {
+            const lowerLang = language.toLowerCase();
+            if (lowerLang.includes('python')) return 'badge-python';
+            if (lowerLang.includes('javascript')) return 'badge-javascript';
+            if (lowerLang.includes('html')) return 'badge-html';
+            if (lowerLang.includes('json')) return 'badge-json';
+            if (lowerLang.includes('yaml')) return 'badge-yaml';
+            if (lowerLang.includes('css')) return 'badge-css';
+            if (lowerLang.includes('shell')) return 'badge-shell';
+            if (lowerLang.includes('markdown')) return 'badge-markdown';
+            return 'badge-other';
+        }
+
+        function renderStats(data) {
+            const total = data.total;
+            const commentRatio = ((total.comments / total.code) * 100).toFixed(1);
+
+            const html = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="icon">📁</div>
+                        <h3>Total Files</h3>
+                        <div class="value">${formatNumber(total.files)}</div>
+                        <div class="subtext">Source files analyzed</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">💻</div>
+                        <h3>Code Lines</h3>
+                        <div class="value">${formatNumber(total.code)}</div>
+                        <div class="subtext">Lines of executable code</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">💬</div>
+                        <h3>Comments</h3>
+                        <div class="value">${formatNumber(total.comments)}</div>
+                        <div class="subtext">${commentRatio}% comment ratio</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">📝</div>
+                        <h3>Total Lines</h3>
+                        <div class="value">${formatNumber(total.total)}</div>
+                        <div class="subtext">Including blanks</div>
+                    </div>
+                </div>
+
+                <div class="chart-section">
+                    <div class="chart-container">
+                        <h2>Code Distribution by Language</h2>
+                        <canvas id="languageChart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <h2>Code vs Comments vs Blank Lines</h2>
+                        <canvas id="compositionChart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <h2>Language Breakdown</h2>
+                        <table class="language-table">
+                            <thead>
+                                <tr>
+                                    <th>Language</th>
+                                    <th style="text-align: right;">Files</th>
+                                    <th style="text-align: right;">Code Lines</th>
+                                    <th style="text-align: right;">Comments</th>
+                                    <th style="text-align: right;">Total Lines</th>
+                                    <th style="text-align: right;">% of Code</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${generateLanguageTable(data.by_language, total.code)}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="chart-container">
+                        <h2>Top Files by Code Lines</h2>
+                        <canvas id="topFilesChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="timestamp">
+                    Last updated: ${new Date(data.timestamp).toLocaleString()}
+                </div>
+            `;
+
+            document.getElementById('content').innerHTML = html;
+
+            // Create charts
+            createLanguageChart(data.by_language);
+            createCompositionChart(total);
+            createTopFilesChart(data.files);
+        }
+
+        function generateLanguageTable(languages, totalCode) {
+            const sorted = Object.entries(languages).sort((a, b) => b[1].code - a[1].code);
+
+            return sorted.map(([lang, stats]) => {
+                const percentage = ((stats.code / totalCode) * 100).toFixed(2);
+                const badgeClass = getLanguageBadgeClass(lang);
+
+                return `
+                    <tr>
+                        <td><span class="language-badge ${badgeClass}">${lang}</span></td>
+                        <td style="text-align: right;">${formatNumber(stats.files)}</td>
+                        <td style="text-align: right;">${formatNumber(stats.code)}</td>
+                        <td style="text-align: right;">${formatNumber(stats.comments)}</td>
+                        <td style="text-align: right;">${formatNumber(stats.total)}</td>
+                        <td style="text-align: right;">${percentage}%</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function createLanguageChart(languages) {
+            const sorted = Object.entries(languages).sort((a, b) => b[1].code - a[1].code);
+            const topLanguages = sorted.slice(0, 10);
+
+            const ctx = document.getElementById('languageChart');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: topLanguages.map(([lang]) => lang),
+                    datasets: [{
+                        data: topLanguages.map(([, stats]) => stats.code),
+                        backgroundColor: [
+                            '#3776ab', '#f7df1e', '#e34c26', '#000000', '#cb171e',
+                            '#264de4', '#89e051', '#083fa1', '#6b7280', '#8b5cf6'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = formatNumber(context.parsed);
+                                    return `${label}: ${value} lines`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createCompositionChart(total) {
+            const ctx = document.getElementById('compositionChart');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Project Composition'],
+                    datasets: [
+                        {
+                            label: 'Code',
+                            data: [total.code],
+                            backgroundColor: '#3b82f6'
+                        },
+                        {
+                            label: 'Comments',
+                            data: [total.comments],
+                            backgroundColor: '#10b981'
+                        },
+                        {
+                            label: 'Blank Lines',
+                            data: [total.blank],
+                            backgroundColor: '#6b7280'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatNumber(value);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${formatNumber(context.parsed.y)} lines`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createTopFilesChart(files) {
+            const topFiles = files.slice(0, 15);
+
+            const ctx = document.getElementById('topFilesChart');
+            new Chart(ctx, {
+                type: 'horizontalBar',
+                data: {
+                    labels: topFiles.map(f => {
+                        const path = f.path;
+                        return path.length > 50 ? '...' + path.slice(-47) : path;
+                    }),
+                    datasets: [{
+                        label: 'Code Lines',
+                        data: topFiles.map(f => f.code),
+                        backgroundColor: '#8b5cf6'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${formatNumber(context.parsed.x)} lines`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                callback: function(value) {
+                                    return formatNumber(value);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Load stats when page loads
+        loadStats();
+    </script>
+</body>
+</html>
