@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - WellTegra Network & The Brahan Engine</title>
+    <meta name="description" content="Learn about Ken McKenzie's 30+ years offshore experience and the journey behind building the Brahan Engine AI governance system.">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ink: #0a1628;
+            --ink-light: #1a2d4a;
+            --slate: #334155;
+            --steel: #64748b;
+            --silver: #94a3b8;
+            --mist: #e2e8f0;
+            --cloud: #f1f5f9;
+            --white: #ffffff;
+            --accent: #f97316;
+            --accent-dark: #ea580c;
+            --success: #0d9488;
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --max-width: 1200px;
+            --radius-md: 12px;
+            --shadow-md: 0 4px 12px rgba(10, 22, 40, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--mist);
+            background: var(--ink);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-sm);
+        }
+
+        /* Header */
+        .header {
+            background: var(--ink-light);
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .nav-link {
+            color: var(--silver);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+            background: rgba(249, 115, 22, 0.1);
+        }
+
+        /* Hero */
+        .hero {
+            padding: var(--space-xl) 0 var(--space-lg);
+            text-align: center;
+            background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: var(--space-sm);
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--silver);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Content Sections */
+        .section {
+            padding: var(--space-xl) 0;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: var(--space-md);
+        }
+
+        .content-card {
+            background: var(--ink-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+        }
+
+        .content-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--white);
+            margin-bottom: var(--space-sm);
+        }
+
+        .content-card p {
+            color: var(--silver);
+            margin-bottom: var(--space-sm);
+        }
+
+        .highlight-box {
+            background: rgba(249, 115, 22, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: var(--space-md);
+            border-radius: 6px;
+            margin: var(--space-md) 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+            margin: var(--space-lg) 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: var(--space-md);
+            background: var(--ink-light);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--silver);
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.875rem 2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 2px solid var(--silver);
+            color: var(--silver);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        ul {
+            list-style-position: inside;
+            color: var(--silver);
+            margin-left: var(--space-sm);
+        }
+
+        ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--ink-light) 0%, rgba(249, 115, 22, 0.1) 100%);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            text-align: center;
+            margin: var(--space-xl) 0;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">WellTegra Network</div>
+                <a href="index.html" class="nav-link">← Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>About WellTegra & The Brahan Engine</h1>
+            <p>Transforming 30+ years of offshore experience into AI-augmented decision systems</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">The Journey</h2>
+
+                <div class="content-card">
+                    <h3>After 30 years, I learned to code to see if I could build something better</h3>
+                    <p>After three decades working offshore in the North Sea, Middle East, Asia-Pacific, and West Africa, I kept seeing the same problems: brilliant engineers making critical decisions with incomplete data, multi-specialist conflicts causing costly delays, and vendors pitching PowerPoint solutions that never quite worked in the field.</p>
+                    <p>So I taught myself to code and built the Brahan Engine - not as a theoretical exercise, but as an honest working prototype that demonstrates what AI-augmented governance could look like for offshore operations.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>This is not a bootcamp portfolio.</strong> This is production infrastructure ($47/month, 99.97% uptime) that combines deep domain expertise with modern full-stack engineering.
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value">30+</span>
+                        <span class="stat-label">Years Offshore</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">4</span>
+                        <span class="stat-label">Continents</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">7.3M</span>
+                        <span class="stat-label">Lines of Code</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">99.97%</span>
+                        <span class="stat-label">Uptime</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" style="background: rgba(255, 255, 255, 0.02);">
+            <div class="container">
+                <h2 class="section-title">What I Built</h2>
+
+                <div class="content-card">
+                    <h3>The Brahan Engine</h3>
+                    <p><strong>An AI-augmented governance system for offshore operations</strong> that addresses the biggest cause of Non-Productive Time (NPT): multi-specialist conflict resolution under uncertainty.</p>
+
+                    <p style="margin-top: var(--space-md);"><strong>Technical Stack:</strong></p>
+                    <ul>
+                        <li>React 18 frontend with modern hooks and Framer Motion</li>
+                        <li>FastAPI backend on Google Cloud Run (serverless)</li>
+                        <li>Firestore for real-time data, BigQuery for analytics</li>
+                        <li>30+ Playwright E2E tests for comprehensive coverage</li>
+                        <li>Data Confidence Index (DCI) scoring engine</li>
+                        <li>HSE safety veto controls and mission-critical logging</li>
+                    </ul>
+
+                    <p style="margin-top: var(--space-md);"><strong>What makes it different:</strong></p>
+                    <ul>
+                        <li>Real production infrastructure, not a demo</li>
+                        <li>Built by someone who's lived the problems for 30 years</li>
+                        <li>Combines rare domain knowledge with modern engineering</li>
+                        <li>Self-funded at $47/month (cost optimization mindset)</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>The Evidence</h3>
+                    <p><strong>This portfolio demonstrates:</strong></p>
+                    <ul>
+                        <li>25,072 source files across 16 programming languages</li>
+                        <li>Full-stack React application with interactive dashboards</li>
+                        <li>Production Google Cloud Platform deployment</li>
+                        <li>Comprehensive API documentation (227 KB across 10 files)</li>
+                        <li>Mobile-first responsive design, WCAG 2.1 accessible</li>
+                        <li>Real-world problem solving in capital-intensive environments</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">My Background</h2>
+
+                <div class="content-card">
+                    <h3>Ken McKenzie</h3>
+                    <p><strong>Well Engineering & Digital Transformation</strong></p>
+
+                    <p style="margin-top: var(--space-md);"><strong>Offshore Experience (30+ years):</strong></p>
+                    <ul>
+                        <li><strong>North Sea:</strong> Mature fields, harsh environment operations</li>
+                        <li><strong>Middle East:</strong> High-pressure/high-temperature wells</li>
+                        <li><strong>Asia-Pacific:</strong> Deepwater drilling campaigns</li>
+                        <li><strong>West Africa:</strong> Complex subsea interventions</li>
+                    </ul>
+
+                    <p style="margin-top: var(--space-md);"><strong>Technical Expertise:</strong></p>
+                    <ul>
+                        <li>Well integrity and barrier management</li>
+                        <li>P&A (Plug & Abandonment) operations</li>
+                        <li>Crisis management and forensic analysis</li>
+                        <li>Multi-disciplinary team coordination</li>
+                        <li>Data confidence assessment under uncertainty</li>
+                    </ul>
+
+                    <p style="margin-top: var(--space-md);"><strong>Engineering Skills:</strong></p>
+                    <ul>
+                        <li>Full-stack development (React, Python, FastAPI)</li>
+                        <li>Cloud infrastructure (GCP, serverless architecture)</li>
+                        <li>Machine learning pipelines (Vertex AI, BigQuery ML)</li>
+                        <li>Test automation (Playwright, pytest)</li>
+                        <li>Technical documentation and knowledge transfer</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Why I Built This</h3>
+                    <p>Three decades offshore taught me that the hardest problems aren't technical - they're about making defensible decisions when you have incomplete information and multiple specialists disagreeing.</p>
+                    <p>I built the Brahan Engine to demonstrate that AI can augment (not replace) human decision-making by:</p>
+                    <ul>
+                        <li>Quantifying data confidence in real-time</li>
+                        <li>Surfacing multi-specialist conflicts before they cause delays</li>
+                        <li>Maintaining an immutable audit trail for forensic analysis</li>
+                        <li>Enforcing safety vetoes while preserving operational momentum</li>
+                    </ul>
+                    <p style="margin-top: var(--space-md);">This portfolio proves I can not only understand complex problems from 30 years of field experience, but also build production-quality software to solve them.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="section">
+            <div class="container">
+                <div class="cta-section">
+                    <h2 class="section-title" style="margin-bottom: var(--space-md);">Let's Connect</h2>
+                    <p style="max-width: 700px; margin: 0 auto var(--space-lg); color: var(--silver);">
+                        Whether you're evaluating candidates for engineering roles, looking for offshore domain expertise, or interested in discussing decision systems architecture - I'd welcome the conversation.
+                    </p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <a href="https://www.linkedin.com/in/ken-mckenzie-b8901658" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Connect on LinkedIn</a>
+                        <a href="https://calendly.com/welltegra/decision-review" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">Schedule a Call</a>
+                        <a href="mailto:contact@welltegra.network" class="btn btn-ghost">Email Me</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: var(--ink-light); padding: var(--space-lg) 0; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center;">
+        <div class="container">
+            <p style="color: var(--steel); margin-bottom: var(--space-sm);">&copy; 2024 WellTegra Network. Built by Ken McKenzie.</p>
+            <p style="color: var(--steel); font-size: 0.875rem;">
+                <a href="index.html" style="color: var(--silver); margin: 0 1rem;">Home</a>
+                <a href="about.html" style="color: var(--accent); margin: 0 1rem;">About</a>
+                <a href="security.html" style="color: var(--silver); margin: 0 1rem;">Security</a>
+                <a href="mailto:contact@welltegra.network" style="color: var(--silver); margin: 0 1rem;">Contact</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
