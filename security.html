@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security & Privacy - WellTegra Network</title>
+    <meta name="description" content="Security practices, privacy policy, and data handling for WellTegra Network and the Brahan Engine.">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ink: #0a1628;
+            --ink-light: #1a2d4a;
+            --slate: #334155;
+            --steel: #64748b;
+            --silver: #94a3b8;
+            --mist: #e2e8f0;
+            --cloud: #f1f5f9;
+            --white: #ffffff;
+            --accent: #f97316;
+            --accent-dark: #ea580c;
+            --success: #0d9488;
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --max-width: 1200px;
+            --radius-md: 12px;
+            --shadow-md: 0 4px 12px rgba(10, 22, 40, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--mist);
+            background: var(--ink);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-sm);
+        }
+
+        /* Header */
+        .header {
+            background: var(--ink-light);
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .nav-link {
+            color: var(--silver);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+            background: rgba(249, 115, 22, 0.1);
+        }
+
+        /* Hero */
+        .hero {
+            padding: var(--space-xl) 0 var(--space-lg);
+            text-align: center;
+            background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: var(--space-sm);
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--silver);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Content Sections */
+        .section {
+            padding: var(--space-xl) 0;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: var(--space-md);
+        }
+
+        .section-subtitle {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--white);
+            margin-top: var(--space-lg);
+            margin-bottom: var(--space-sm);
+        }
+
+        .content-card {
+            background: var(--ink-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+        }
+
+        .content-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--white);
+            margin-bottom: var(--space-sm);
+        }
+
+        .content-card p {
+            color: var(--silver);
+            margin-bottom: var(--space-sm);
+        }
+
+        .highlight-box {
+            background: rgba(13, 148, 136, 0.1);
+            border-left: 4px solid var(--success);
+            padding: var(--space-md);
+            border-radius: 6px;
+            margin: var(--space-md) 0;
+        }
+
+        .warning-box {
+            background: rgba(249, 115, 22, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: var(--space-md);
+            border-radius: 6px;
+            margin: var(--space-md) 0;
+        }
+
+        ul {
+            list-style-position: inside;
+            color: var(--silver);
+            margin-left: var(--space-sm);
+        }
+
+        ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--white);
+        }
+
+        .last-updated {
+            font-size: 0.9rem;
+            color: var(--steel);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">WellTegra Network</div>
+                <a href="index.html" class="nav-link">← Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Security & Privacy</h1>
+            <p>Transparent practices for data handling, privacy, and security</p>
+            <p class="last-updated" style="margin-top: 1rem;">Last Updated: December 31, 2024</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Privacy Policy</h2>
+
+                <div class="content-card">
+                    <h3>Portfolio & Demonstration Site</h3>
+                    <p><strong>WellTegra Network and the Brahan Engine are portfolio demonstration projects.</strong> This is not a commercial product collecting user data at scale. This site exists to showcase technical capabilities and domain expertise.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>Key Principle:</strong> We don't collect, store, or process any personal information unless you explicitly contact us via email or schedule a call through Calendly.
+                </div>
+
+                <h3 class="section-subtitle">What We Don't Collect</h3>
+                <div class="content-card">
+                    <p>This site does NOT use:</p>
+                    <ul>
+                        <li>Cookies (except those required by external services like Calendly)</li>
+                        <li>Analytics tracking (no Google Analytics, no user behavior tracking)</li>
+                        <li>User accounts or login systems</li>
+                        <li>Forms that collect personal information (except demo request buttons)</li>
+                        <li>Third-party advertising or tracking pixels</li>
+                    </ul>
+                </div>
+
+                <h3 class="section-subtitle">What Happens When You Contact Us</h3>
+                <div class="content-card">
+                    <p>If you choose to contact us via:</p>
+                    <ul>
+                        <li><strong>Email (contact@welltegra.network):</strong> Your email address and message content are stored in standard email systems (Gmail). This information is used solely to respond to your inquiry and is not shared with third parties.</li>
+                        <li><strong>Calendly scheduling:</strong> Calendly may collect your name and email to facilitate scheduling. Review <a href="https://calendly.com/privacy" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">Calendly's Privacy Policy</a> for details.</li>
+                        <li><strong>LinkedIn:</strong> Any connections or messages via LinkedIn are governed by <a href="https://www.linkedin.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">LinkedIn's Privacy Policy</a>.</li>
+                    </ul>
+                </div>
+
+                <h3 class="section-subtitle">External Links</h3>
+                <div class="content-card">
+                    <p>This site contains links to external services (GitHub, LinkedIn, YouTube, Calendly). When you click these links, you leave WellTegra Network and are subject to the privacy policies of those platforms.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" style="background: rgba(255, 255, 255, 0.02);">
+            <div class="container">
+                <h2 class="section-title">Security Practices</h2>
+
+                <div class="content-card">
+                    <h3>Infrastructure Security</h3>
+                    <p>The Brahan Engine backend is deployed on Google Cloud Platform with enterprise-grade security:</p>
+                    <ul>
+                        <li><strong>Google Cloud Run:</strong> Serverless containers with automatic HTTPS/TLS encryption</li>
+                        <li><strong>Firestore:</strong> Managed NoSQL database with encryption at rest and in transit</li>
+                        <li><strong>BigQuery:</strong> Analytics warehouse with Google-managed encryption keys</li>
+                        <li><strong>IAM Controls:</strong> Principle of least privilege for service accounts</li>
+                        <li><strong>Secret Manager:</strong> API keys and credentials stored in Google Secret Manager (never in code)</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Development Security</h3>
+                    <ul>
+                        <li><strong>Version Control:</strong> Public GitHub repository with transparent code review</li>
+                        <li><strong>Dependency Management:</strong> Regular updates and security scanning via Dependabot</li>
+                        <li><strong>No Hardcoded Secrets:</strong> All sensitive credentials use environment variables or Secret Manager</li>
+                        <li><strong>HTTPS Enforcement:</strong> All site traffic uses HTTPS (GitHub Pages enforces this)</li>
+                    </ul>
+                </div>
+
+                <div class="content-card">
+                    <h3>Demonstration Data</h3>
+                    <p><strong>All well data, toolstring runs, and operational scenarios are synthetic or publicly available examples.</strong></p>
+                    <ul>
+                        <li>No proprietary or confidential industry data is used</li>
+                        <li>Well names (e.g., "Well-666") are fictional</li>
+                        <li>Equipment catalogs use generic manufacturer specifications</li>
+                        <li>Team member profiles are fictional composites for demonstration purposes</li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Important:</strong> This is a portfolio project, not a production system for live operations. Do not submit confidential well data or proprietary information through demo forms or contact mechanisms.
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Responsible Disclosure</h2>
+
+                <div class="content-card">
+                    <h3>Security Vulnerabilities</h3>
+                    <p>If you discover a security vulnerability in the WellTegra Network site or the Brahan Engine, please report it responsibly:</p>
+                    <ul>
+                        <li><strong>Email:</strong> contact@welltegra.network with subject line "Security Issue"</li>
+                        <li><strong>Include:</strong> Description of the vulnerability, steps to reproduce, and potential impact</li>
+                        <li><strong>Do not:</strong> Publicly disclose the issue before allowing time for remediation</li>
+                    </ul>
+                    <p style="margin-top: var(--space-sm);">We will respond to security reports within 48 hours and work to address valid issues promptly.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" style="background: rgba(255, 255, 255, 0.02);">
+            <div class="container">
+                <h2 class="section-title">Your Rights</h2>
+
+                <div class="content-card">
+                    <h3>Data Access & Deletion</h3>
+                    <p>If you have contacted us via email or Calendly and wish to:</p>
+                    <ul>
+                        <li><strong>Access your data:</strong> We can provide copies of email correspondence upon request</li>
+                        <li><strong>Delete your data:</strong> Email contact@welltegra.network and we will remove your information from our records</li>
+                        <li><strong>Correct information:</strong> Email us with corrections to any information we hold</li>
+                    </ul>
+                    <p style="margin-top: var(--space-sm);">Since we don't actively collect user data through the site itself, there is minimal information to access or delete unless you've contacted us directly.</p>
+                </div>
+
+                <div class="content-card">
+                    <h3>International Users</h3>
+                    <p>This site is hosted on GitHub Pages (US-based servers) and uses Google Cloud Platform (multi-region). If you are accessing from the European Union or other jurisdictions with specific data protection laws:</p>
+                    <ul>
+                        <li>By contacting us, you consent to data transfer to the United States</li>
+                        <li>We respect GDPR principles even though this is a portfolio site, not a commercial service</li>
+                        <li>You have rights under GDPR to access, correct, or delete your personal information</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Changes to This Policy</h2>
+
+                <div class="content-card">
+                    <p>This Security & Privacy page may be updated periodically to reflect changes in practices or legal requirements. The "Last Updated" date at the top of this page indicates the most recent revision.</p>
+                    <p style="margin-top: var(--space-sm);">Significant changes will be noted on this page. As this is a portfolio site with minimal data collection, changes are expected to be rare.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" style="background: rgba(255, 255, 255, 0.02);">
+            <div class="container">
+                <h2 class="section-title">Contact</h2>
+
+                <div class="content-card">
+                    <h3>Questions About Privacy or Security?</h3>
+                    <p>If you have questions about these policies or security practices:</p>
+                    <ul>
+                        <li><strong>Email:</strong> <a href="mailto:contact@welltegra.network" style="color: var(--accent);">contact@welltegra.network</a></li>
+                        <li><strong>GitHub:</strong> <a href="https://github.com/kenmck3772/welltegra.network" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">View the public repository</a></li>
+                        <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/ken-mckenzie-b8901658" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">Connect with Ken McKenzie</a></li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>Transparency Commitment:</strong> As a portfolio project, all code is open source and available on GitHub. You can review exactly how the site and backend API work - no hidden data collection, no tracking scripts, no third-party integrations beyond what's explicitly documented.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: var(--ink-light); padding: var(--space-lg) 0; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center;">
+        <div class="container">
+            <p style="color: var(--steel); margin-bottom: var(--space-sm);">&copy; 2024 WellTegra Network. Built by Ken McKenzie.</p>
+            <p style="color: var(--steel); font-size: 0.875rem;">
+                <a href="index.html" style="color: var(--silver); margin: 0 1rem;">Home</a>
+                <a href="about.html" style="color: var(--silver); margin: 0 1rem;">About</a>
+                <a href="security.html" style="color: var(--accent); margin: 0 1rem;">Security</a>
+                <a href="mailto:contact@welltegra.network" style="color: var(--silver); margin: 0 1rem;">Contact</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
