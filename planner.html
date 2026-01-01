@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Well Intervention Decision Framework Demo | WellTegra Portfolio</title>
-    <meta name="description" content="Educational demonstration of well intervention planning concepts - showcasing decision support interface design and well engineering expertise.">
+    <title>Well Data Visualization Platform | WellTegra Portfolio</title>
+    <meta name="description" content="Educational demonstration of well data interpretation and visualization - showcasing ability to read, consolidate, and analyze well schematics, deviation surveys, logs, and historical data.">
     <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -144,7 +144,7 @@
             margin: 0 auto;
             padding: 1.5rem;
             display: grid;
-            grid-template-columns: 320px 1fr 380px;
+            grid-template-columns: 400px 1fr;
             gap: 1.5rem;
             min-height: calc(100vh - 140px);
         }
@@ -511,7 +511,7 @@
 <body>
     <!-- Portfolio Notice -->
     <div class="portfolio-notice">
-        📋 <span>PORTFOLIO PROJECT</span> | Demonstrating well engineering & intervention planning expertise by Ken McKenzie | Educational demonstration - not a commercial product
+        📊 <span>DATA VISUALIZATION PLATFORM</span> | Demonstrating well data interpretation & consolidation expertise by Ken McKenzie | Educational demonstration - not a commercial product
     </div>
 
     <!-- Header -->
@@ -558,11 +558,11 @@
     <!-- Educational Demo Notice -->
     <div style="background: rgba(20, 184, 166, 0.1); border: 1px solid var(--accent); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin: 0 auto; max-width: 1600px;">
         <div style="max-width: 1600px; margin: 0 auto; padding: 0 1.5rem;">
-            <strong style="color: var(--accent);">📚 Portfolio Demonstration</strong>
+            <strong style="color: var(--accent);">📊 Data Visualization & Interpretation Platform</strong>
             <p style="margin: 0.5rem 0 0; color: var(--muted); font-size: 0.9rem;">
-                This interface was built for educational purposes to demonstrate well intervention decision support concepts and offshore operations expertise.
-                In a production environment, the <strong>Brahan Engine</strong> would generate actual planning outputs (PDF work programs, AFE documents, risk assessments).
-                This demo showcases the decision framework and UI design skills.
+                This interface demonstrates the ability to <strong>consolidate, interpret, and visualize</strong> existing well data that is often lying siloed and unused.
+                Skills showcased: Reading well schematics, deviation surveys, 3D wellbore data, toolstring configurations, historical intervention records, log files, and data formats.
+                <strong>Not a planning tool</strong> — this is about understanding and presenting existing real-world well data.
             </p>
         </div>
     </div>
@@ -636,133 +636,28 @@
             </div>
         </div>
         
-        <!-- Center Panel: Operational Procedure -->
+        <!-- Center Panel: Historical Data & Analysis -->
         <div class="panel">
             <div class="panel-header">
-                <h2>Operational Procedure</h2>
-                <p id="procedureTitle">Select a well to load recommended procedure</p>
+                <h2>Well History & Intervention Analysis</h2>
+                <p id="procedureTitle">Select a well to view historical intervention data</p>
             </div>
             <div class="panel-body">
                 <div id="procedureSteps">
-                    <div class="toolstring-empty">Select a well from the dropdown above to load the AI-recommended intervention procedure.</div>
+                    <div class="toolstring-empty">Select a well from the dropdown above to view historical intervention procedures and existing well data.</div>
                 </div>
-                
+
                 <div style="margin-top: 1.5rem;">
-                    <h3 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">AI Recommendation</h3>
+                    <h3 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem;">AI Data Analysis</h3>
                     <div class="metric-card" style="text-align: left; background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), transparent); border: 1px solid var(--accent);">
                         <div id="aiRecommendation" style="font-size: 0.85rem; color: var(--fg);">
-                            Select a well to view AI-powered intervention recommendation.
+                            Select a well to view AI-powered analysis of existing well data, historical interventions, and integrity assessment.
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Right Panel: Job Planner -->
-        <div class="panel">
-            <div class="panel-header">
-                <h2>Job Planner</h2>
-                <p>Build toolstring and estimate costs</p>
-            </div>
-            <div class="panel-body">
-                <!-- Metrics -->
-                <div class="metrics-grid">
-                    <div class="metric-card">
-                        <div class="metric-value" id="metricLength">0.00 ft</div>
-                        <div class="metric-label">Total Length</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value" id="metricOD">0.00 in</div>
-                        <div class="metric-label">Max OD</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value" id="metricEquipCost">$0</div>
-                        <div class="metric-label">Equipment Daily</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value" id="metricPersCost">$0</div>
-                        <div class="metric-label">Personnel Daily</div>
-                    </div>
-                    <div class="metric-card total">
-                        <div class="metric-value" id="metricTotalCost">$0</div>
-                        <div class="metric-label">Total Daily Rate</div>
-                    </div>
-                </div>
-                
-                <!-- Clash Alert -->
-                <div class="clash-alert hidden" id="clashAlert">
-                    <div class="clash-alert-title">⚠️ OD Clash Detected</div>
-                    <div class="clash-alert-text" id="clashText">Tool exceeds restriction at 4,500m MD</div>
-                </div>
-                
-                <!-- Toolstring Assembly -->
-                <div class="toolstring-section">
-                    <div class="toolstring-header">
-                        <h3>Equipment</h3>
-                        <button class="btn btn-sm btn-secondary" onclick="clearToolstring()">Clear</button>
-                    </div>
-                    <div class="toolstring-list" id="toolstringList">
-                        <div class="toolstring-empty">No tools added. Use Quick Add or open Equipment Catalog.</div>
-                    </div>
-                </div>
-
-                <!-- Personnel Section -->
-                <div class="toolstring-section" style="margin-top: 1rem;">
-                    <div class="toolstring-header">
-                        <h3>Personnel</h3>
-                        <button class="btn btn-sm btn-secondary" onclick="clearPersonnel()">Clear</button>
-                    </div>
-                    <div class="toolstring-list" id="personnelList">
-                        <div class="toolstring-empty">No personnel added.</div>
-                    </div>
-                </div>
-
-                <!-- Quick Add -->
-                <div class="quick-add">
-                    <div class="quick-add-title">QUICK ADD</div>
-                    <div class="quick-add-buttons">
-                        <button class="quick-add-btn tool" onclick="addTool('rope-socket')">Rope Socket</button>
-                        <button class="quick-add-btn tool" onclick="addTool('stem')">Stem</button>
-                        <button class="quick-add-btn tool" onclick="addTool('jar')">Spang Jar</button>
-                        <button class="quick-add-btn tool" onclick="addTool('grab')">2-Prong Grab</button>
-                        <button class="quick-add-btn personnel" onclick="addPersonnel('engineer')">Engineer</button>
-                        <button class="quick-add-btn personnel" onclick="addPersonnel('operator')">Operator</button>
-                    </div>
-                </div>
-                
-                <!-- Actions -->
-                <button class="btn btn-secondary" onclick="openEquipmentModal()" style="margin-bottom: 0.75rem;">
-                    🛠️ Open Equipment Catalog
-                </button>
-                <button class="btn btn-primary" id="savePlanBtn" onclick="savePlan()" disabled>
-                    💾 Save Demo State
-                </button>
-            </div>
-        </div>
     </main>
-    
-    <!-- Equipment Modal -->
-    <div class="modal-overlay" id="equipmentModal">
-        <div class="modal">
-            <div class="modal-header">
-                <div>
-                    <h2>🛠️ Equipment Catalog</h2>
-                    <p>Select tools to add to your toolstring assembly</p>
-                </div>
-                <button class="modal-close" onclick="closeEquipmentModal()">✕</button>
-            </div>
-            <div class="modal-body">
-                <div class="equipment-tabs">
-                    <button class="equipment-tab active" onclick="switchEquipmentTab('fishing')">Fishing Tools</button>
-                    <button class="equipment-tab" onclick="switchEquipmentTab('running')">Running Tools</button>
-                    <button class="equipment-tab" onclick="switchEquipmentTab('wireline')">Wireline</button>
-                    <button class="equipment-tab" onclick="switchEquipmentTab('completion')">Completion</button>
-                    <button class="equipment-tab" onclick="switchEquipmentTab('gaslift')">Gas Lift</button>
-                </div>
-                <div id="equipmentContent" class="equipment-grid"></div>
-            </div>
-        </div>
-    </div>
     
     <!-- Communicator Modal -->
     <div class="modal-overlay" id="communicatorModal">
@@ -815,28 +710,14 @@
 
     <footer class="footer">
         <p>© 2025 WellTegra Portfolio Project by Ken McKenzie | Educational demonstration built for learning and skill development</p>
-        <p style="margin-top: 0.5rem; font-size: 0.8rem;">This is a portfolio demonstration showcasing well engineering decision support concepts. Production planning functionality would be provided by the Brahan Engine in a real implementation. Not affiliated with any commercial operator.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">This is a portfolio demonstration showcasing well data interpretation and visualization skills. Demonstrates ability to consolidate siloed well data (schematics, deviation surveys, logs, historical interventions) into actionable insights. Not affiliated with any commercial operator.</p>
     </footer>
 
     <script>
         // ===== DATA =====
         let wellData = null;
         let selectedWell = null;
-        let toolstring = [];
-        let personnel = [];
-        
-        const quickTools = {
-            'rope-socket': { name: 'Rope Socket', od: 1.5, length: 2.5, dailyRate: 150 },
-            'stem': { name: '3ft Stem', od: 1.25, length: 3, dailyRate: 100 },
-            'jar': { name: 'Spang Jar', od: 1.75, length: 4, dailyRate: 350 },
-            'grab': { name: '2-Prong Grab', od: 2.0, length: 1.5, dailyRate: 200 }
-        };
-        
-        const quickPersonnel = {
-            'engineer': { name: 'Wellsite Engineer', dailyRate: 1200 },
-            'operator': { name: 'Wireline Operator', dailyRate: 800 }
-        };
-        
+
         const mocRequests = [
             {
                 id: 'MOC-001',
@@ -1110,61 +991,57 @@
             const statusBadge = document.getElementById('wellStatusBadge');
             const integrityEl = document.getElementById('wellIntegrity');
             const lockBanner = document.getElementById('safetyLockBanner');
-            const savePlanBtn = document.getElementById('savePlanBtn');
-            
+
             if (!selectedWell) {
                 statusBadge.style.display = 'none';
                 integrityEl.style.display = 'none';
                 lockBanner.classList.add('hidden');
-                savePlanBtn.disabled = true;
                 document.getElementById('schematicWellName').textContent = 'Select a well to view';
-                document.getElementById('procedureTitle').textContent = 'Select a well to load recommended procedure';
-                document.getElementById('aiRecommendation').textContent = 'Select a well to view AI-powered intervention recommendation.';
-                document.getElementById('procedureSteps').innerHTML = '<div class="toolstring-empty">Select a well from the dropdown above to load the AI-recommended intervention procedure.</div>';
+                document.getElementById('procedureTitle').textContent = 'Select a well to view historical intervention data';
+                document.getElementById('aiRecommendation').textContent = 'Select a well to view AI-powered analysis of existing well data, historical interventions, and integrity assessment.';
+                document.getElementById('procedureSteps').innerHTML = '<div class="toolstring-empty">Select a well from the dropdown above to view historical intervention procedures and existing well data.</div>';
                 return;
             }
-            
+
             // Status badge
             statusBadge.style.display = 'inline-block';
             statusBadge.className = 'well-status-badge ' + (selectedWell.safetyLocked ? 'locked' : 'unlocked');
             statusBadge.textContent = selectedWell.safetyLocked ? '🔒 SAFETY LOCKED' : '✓ UNLOCKED';
-            
+
             // Integrity
             integrityEl.style.display = 'inline-block';
             const intVal = document.getElementById('integrityValue');
             intVal.textContent = selectedWell.integrityScore + '%';
-            intVal.style.color = selectedWell.integrityScore < 20 ? 'var(--danger)' : 
+            intVal.style.color = selectedWell.integrityScore < 20 ? 'var(--danger)' :
                                  selectedWell.integrityScore < 50 ? 'var(--warning)' : 'var(--success)';
-            
+
             // Safety lock banner
             if (selectedWell.safetyLocked) {
                 lockBanner.classList.remove('hidden');
                 const reasons = document.getElementById('lockReasons');
                 reasons.innerHTML = selectedWell.safetyLockReasons?.map(r => `<li>${r}</li>`).join('') || '<li>Critical barriers unverified</li>';
-                savePlanBtn.disabled = true;
             } else {
                 lockBanner.classList.add('hidden');
-                savePlanBtn.disabled = toolstring.length === 0;
             }
-            
+
             // Schematic title
             document.getElementById('schematicWellName').textContent = `${selectedWell.name} "${selectedWell.nickname}"`;
-            
+
             // Well details
             document.getElementById('detailTD').textContent = selectedWell.construction?.totalDepth || '--';
             document.getElementById('detailTubing').textContent = selectedWell.construction?.tubingSize || '--';
             document.getElementById('detailWater').textContent = selectedWell.construction?.waterDepth || '--';
-            
-            // Procedure
-            document.getElementById('procedureTitle').textContent = selectedWell.aiRecommendation?.method || 'Recommended Intervention';
+
+            // Procedure - now showing historical data
+            document.getElementById('procedureTitle').textContent = `Historical Intervention: ${selectedWell.aiRecommendation?.method || 'Unknown'}`;
             renderProcedureSteps();
-            
-            // AI Recommendation
+
+            // AI Data Analysis (not recommendations for planning, but analysis of existing data)
             document.getElementById('aiRecommendation').innerHTML = `
-                <strong style="color: var(--accent);">${selectedWell.aiRecommendation?.method || 'Analysis Required'}</strong><br>
-                ${selectedWell.aiRecommendation?.summary || 'Complete safety verification to unlock AI recommendations.'}
+                <strong style="color: var(--accent);">Existing Intervention Method:</strong> ${selectedWell.aiRecommendation?.method || 'Analysis Required'}<br>
+                <strong>Analysis:</strong> ${selectedWell.aiRecommendation?.summary || 'Complete well data consolidation to view full analysis.'}
                 <br><br>
-                <span style="color: var(--muted);">Success Probability: </span>
+                <span style="color: var(--muted);">Historical Success Rate: </span>
                 <strong style="color: ${selectedWell.aiRecommendation?.successProbability > 80 ? 'var(--success)' : 'var(--warning)'};">
                     ${selectedWell.aiRecommendation?.successProbability || '--'}%
                 </strong>
@@ -1310,398 +1187,6 @@
             ctx.fillText(selectedWell.integrityScore + '%', centerX, bottomY - 17);
         }
         
-        // ===== TOOLSTRING MANAGEMENT =====
-        /**
-         * Add equipment to toolstring from quick-add buttons
-         * @function addTool
-         * @param {string} toolKey - Tool identifier key from quickTools dictionary
-         * @returns {void}
-         * @throws {void} Shows error toast if well is safety-locked
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#addTool}
-         */
-        function addTool(toolKey) {
-            if (selectedWell?.safetyLocked) {
-                showToast('Cannot modify toolstring - well is safety locked', true);
-                return;
-            }
-            
-            const tool = quickTools[toolKey];
-            if (tool) {
-                toolstring.push({...tool, id: Date.now()});
-                updateToolstringUI();
-                checkClash();
-            }
-        }
-        
-        /**
-         * Add personnel to intervention plan
-         * @function addPersonnel
-         * @param {string} key - Personnel identifier key from quickPersonnel dictionary
-         * @returns {void}
-         * @throws {void} Shows error toast if well is safety-locked
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#addPersonnel}
-         */
-        function addPersonnel(key) {
-            if (selectedWell?.safetyLocked) {
-                showToast('Cannot modify plan - well is safety locked', true);
-                return;
-            }
-            
-            const person = quickPersonnel[key];
-            if (person) {
-                personnel.push({...person, id: Date.now()});
-                updateToolstringUI();
-            }
-        }
-        
-        /**
-         * Remove individual tool from toolstring
-         * @function removeTool
-         * @param {number} id - Unique tool ID (timestamp-based)
-         * @returns {void}
-         * @description Filters toolstring array and re-runs clash detection
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#removeTool}
-         */
-        function removeTool(id) {
-            toolstring = toolstring.filter(t => t.id !== id);
-            updateToolstringUI();
-            checkClash();
-        }
-
-        /**
-         * Clear all tools from toolstring
-         * @function clearToolstring
-         * @returns {void}
-         * @description Resets toolstring array and hides clash alert
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#clearToolstring}
-         */
-        function clearToolstring() {
-            toolstring = [];
-            updateToolstringUI();
-            document.getElementById('clashAlert').classList.add('hidden');
-        }
-
-        /**
-         * Remove individual personnel from plan
-         * @function removePersonnel
-         * @param {number} id - Unique personnel ID (timestamp-based)
-         * @returns {void}
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#removePersonnel}
-         */
-        function removePersonnel(id) {
-            personnel = personnel.filter(p => p.id !== id);
-            updateToolstringUI();
-        }
-
-        /**
-         * Clear all personnel from plan
-         * @function clearPersonnel
-         * @returns {void}
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#clearPersonnel}
-         */
-        function clearPersonnel() {
-            personnel = [];
-            updateToolstringUI();
-        }
-
-        /**
-         * Render equipment and personnel lists with live metrics
-         * @function updateToolstringUI
-         * @description Updates DOM with toolstring items, personnel, calculates metrics, and manages save button state
-         * @returns {void}
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#updateToolstringUI}
-         */
-        function updateToolstringUI() {
-            // Render equipment list
-            const equipmentList = document.getElementById('toolstringList');
-            if (toolstring.length === 0) {
-                equipmentList.innerHTML = '<div class="toolstring-empty">No tools added. Use Quick Add or open Equipment Catalog.</div>';
-            } else {
-                const toolsHtml = toolstring.map(t => `
-                    <div class="toolstring-item">
-                        <div>
-                            <div class="toolstring-item-name">${t.name}</div>
-                            <div class="toolstring-item-specs">OD: ${t.od}" | Length: ${t.length}ft | $${t.dailyRate}/day</div>
-                        </div>
-                        <button class="toolstring-item-remove" onclick="removeTool(${t.id})">✕</button>
-                    </div>
-                `).join('');
-                equipmentList.innerHTML = toolsHtml;
-            }
-
-            // Render personnel list
-            const personnelListEl = document.getElementById('personnelList');
-            if (personnel.length === 0) {
-                personnelListEl.innerHTML = '<div class="toolstring-empty">No personnel added.</div>';
-            } else {
-                const persHtml = personnel.map(p => `
-                    <div class="toolstring-item" style="border-left: 3px solid var(--success);">
-                        <div>
-                            <div class="toolstring-item-name">${p.name}</div>
-                            <div class="toolstring-item-specs">$${p.dailyRate}/day</div>
-                        </div>
-                        <button class="toolstring-item-remove" onclick="removePersonnel(${p.id})">✕</button>
-                    </div>
-                `).join('');
-                personnelListEl.innerHTML = persHtml;
-            }
-            
-            updateMetrics();
-
-            // Get ML prediction for current toolstring
-            if (toolstring.length > 0) {
-                getPrediction();
-            }
-
-            // Enable/disable save button
-            const savePlanBtn = document.getElementById('savePlanBtn');
-            savePlanBtn.disabled = selectedWell?.safetyLocked || toolstring.length === 0;
-        }
-        
-        /**
-         * Calculate and display real-time cost/size metrics
-         * @function updateMetrics
-         * @description Aggregates total length, max OD, equipment cost, personnel cost, and total daily rate
-         * @returns {void}
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#updateMetrics}
-         */
-        function updateMetrics() {
-            const totalLength = toolstring.reduce((sum, t) => sum + t.length, 0);
-            const maxOD = toolstring.length > 0 ? Math.max(...toolstring.map(t => t.od)) : 0;
-            const equipCost = toolstring.reduce((sum, t) => sum + t.dailyRate, 0);
-            const persCost = personnel.reduce((sum, p) => sum + p.dailyRate, 0);
-            
-            document.getElementById('metricLength').textContent = totalLength.toFixed(2) + ' ft';
-            document.getElementById('metricOD').textContent = maxOD.toFixed(2) + ' in';
-            document.getElementById('metricEquipCost').textContent = '$' + equipCost.toLocaleString();
-            document.getElementById('metricPersCost').textContent = '$' + persCost.toLocaleString();
-            document.getElementById('metricTotalCost').textContent = '$' + (equipCost + persCost).toLocaleString();
-        }
-        
-        /**
-         * Real-time clash detection for OD vs tubing ID
-         * @function checkClash
-         * @description Validates max tool OD against tubing ID restriction and displays alert banner if clash detected
-         * @returns {void}
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#checkClash}
-         */
-        function checkClash() {
-            const maxOD = toolstring.length > 0 ? Math.max(...toolstring.map(t => t.od)) : 0;
-            const clashAlert = document.getElementById('clashAlert');
-
-            // Simple clash detection based on tubing restriction
-            const tubingID = 2.75; // Assumed restriction
-            if (maxOD > tubingID) {
-                clashAlert.classList.remove('hidden');
-                document.getElementById('clashText').textContent =
-                    `Max tool OD (${maxOD}") exceeds tubing ID (${tubingID}") - will not pass restriction`;
-                document.getElementById('metricOD').classList.add('danger');
-            } else {
-                clashAlert.classList.add('hidden');
-                document.getElementById('metricOD').classList.remove('danger');
-            }
-        }
-
-        // ===== ML PREDICTION =====
-        async function getPrediction() {
-            if (!selectedWell || toolstring.length === 0) {
-                return;
-            }
-
-            // Convert toolstring to API format (feet to meters)
-            const toolstringAPI = toolstring.map(t => ({
-                name: t.name,
-                od: t.od,
-                length: t.length * 0.3048,  // Convert feet to meters
-                category: inferCategory(t.name)
-            }));
-
-            // Extract well conditions from selected well data
-            const wellConditions = {
-                depth: parseInt(selectedWell.identity?.totalDepth?.replace(/[^\d]/g, '') || 3000),
-                deviation: 30,  // Default, ideally from well data
-                casing_id: 8.535  // Default 9-5/8" casing ID
-            };
-
-            const requestData = {
-                toolstring: toolstringAPI,
-                well_conditions: wellConditions,
-                operation_type: 'fishing'  // Could be inferred from toolstring
-            };
-
-            try {
-                // TODO: Replace with your deployed ML API URL
-                const ML_API_URL = 'https://YOUR-CLOUD-FUNCTION-URL/api/v1/predict';
-
-                const response = await fetch(ML_API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestData)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`API returned ${response.status}`);
-                }
-
-                const result = await response.json();
-
-                if (result.status === 'success') {
-                    updatePredictionDisplay(result.data);
-                }
-            } catch (error) {
-                console.log('ML API not available, using static recommendations:', error.message);
-                // Fallback to static data from wells.json
-            }
-        }
-
-        function inferCategory(toolName) {
-            const name = toolName.toLowerCase();
-            if (name.includes('jar') || name.includes('grab') || name.includes('socket') || name.includes('spear')) {
-                return 'fishing';
-            } else if (name.includes('packer') || name.includes('nipple')) {
-                return 'completion';
-            } else if (name.includes('collar') || name.includes('sub')) {
-                return 'drillstring';
-            }
-            return 'fishing';  // Default
-        }
-
-        function updatePredictionDisplay(prediction) {
-            const aiRecEl = document.getElementById('aiRecommendation');
-
-            const riskColor = {
-                'low': 'var(--success)',
-                'medium': 'var(--warning)',
-                'high': 'var(--error)',
-                'critical': 'var(--error)'
-            }[prediction.risk_level] || 'var(--warning)';
-
-            const successProb = Math.round((1 - prediction.stuck_probability) * 100);
-
-            let html = `
-                <strong style="color: ${riskColor};">Live ML Prediction</strong><br>
-                <span style="font-size: 0.8rem;">Stuck Probability: <strong>${(prediction.stuck_probability * 100).toFixed(1)}%</strong></span><br>
-                <span style="font-size: 0.8rem;">Success Probability: <strong style="color: ${successProb > 70 ? 'var(--success)' : 'var(--warning)'};">${successProb}%</strong></span><br>
-                <span style="font-size: 0.8rem;">Risk Level: <strong style="color: ${riskColor};">${prediction.risk_level.toUpperCase()}</strong></span>
-            `;
-
-            if (prediction.recommendations && prediction.recommendations.length > 0) {
-                html += '<br><br><strong>Recommendations:</strong><ul style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.8rem;">';
-                prediction.recommendations.slice(0, 3).forEach(rec => {
-                    html += `<li style="margin-bottom: 0.3rem;">${rec.message}</li>`;
-                });
-                html += '</ul>';
-            }
-
-            html += `<br><span style="font-size: 0.7rem; color: var(--muted);">Model: ${prediction.model_type} v${prediction.model_version}</span>`;
-
-            aiRecEl.innerHTML = html;
-        }
-
-        // ===== EQUIPMENT MODAL =====
-        /**
-         * Open equipment catalog modal
-         * @function openEquipmentModal
-         * @description Opens modal and loads default "fishing" category
-         * @returns {void}
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#openEquipmentModal}
-         */
-        function openEquipmentModal() {
-            document.getElementById('equipmentModal').classList.add('show');
-            loadEquipmentCategory('fishing');
-        }
-
-        /**
-         * Close equipment catalog modal
-         * @function closeEquipmentModal
-         * @returns {void}
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#closeEquipmentModal}
-         */
-        function closeEquipmentModal() {
-            document.getElementById('equipmentModal').classList.remove('show');
-        }
-
-        /**
-         * Switch between equipment categories in modal
-         * @function switchEquipmentTab
-         * @param {string} category - Category identifier (fishing|running|wireline|completion|gaslift)
-         * @returns {void}
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#switchEquipmentTab}
-         */
-        function switchEquipmentTab(category) {
-            document.querySelectorAll('.equipment-tab').forEach(tab => {
-                tab.classList.toggle('active', tab.textContent.toLowerCase().includes(category));
-            });
-            loadEquipmentCategory(category);
-        }
-        
-        /**
-         * Fetch and render equipment from JSON catalog
-         * @async
-         * @function loadEquipmentCategory
-         * @param {string} category - Category identifier to load
-         * @returns {Promise<void>}
-         * @description Loads equipment.json and renders equipment cards for selected category
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#loadEquipmentCategory}
-         */
-        async function loadEquipmentCategory(category) {
-            const container = document.getElementById('equipmentContent');
-            
-            try {
-                const response = await fetch('data/equipment.json');
-                const data = await response.json();
-                
-                const categoryData = data.categories?.find(c => 
-                    c.name.toLowerCase().includes(category) || c.id === category
-                );
-                
-                if (categoryData?.equipment) {
-                    container.innerHTML = categoryData.equipment.map(item => `
-                        <div class="equipment-card">
-                            <div class="equipment-card-header">
-                                <div class="equipment-card-name">${item.name}</div>
-                                ${item.manufacturer ? `<span class="equipment-card-mfr">${item.manufacturer}</span>` : ''}
-                            </div>
-                            <div class="equipment-card-specs">
-                                OD: ${item.od || 'N/A'} | Length: ${item.length || 'N/A'}
-                            </div>
-                            <button class="equipment-card-add" onclick="addEquipmentFromCatalog('${item.name}', ${item.od || 1.5}, ${item.length || 2}, ${item.dailyRate || 200})">
-                                Add to Toolstring
-                            </button>
-                        </div>
-                    `).join('');
-                } else {
-                    container.innerHTML = '<p style="color: var(--muted); text-align: center;">No equipment found in this category.</p>';
-                }
-            } catch (e) {
-                container.innerHTML = '<p style="color: var(--danger);">Failed to load equipment catalog.</p>';
-            }
-        }
-        
-        /**
-         * Add equipment from catalog modal to toolstring
-         * @function addEquipmentFromCatalog
-         * @param {string} name - Equipment name
-         * @param {number} od - Outer diameter in inches
-         * @param {number} length - Length in feet
-         * @param {number} dailyRate - Daily rental rate in USD
-         * @returns {void}
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#addEquipmentFromCatalog}
-         */
-        function addEquipmentFromCatalog(name, od, length, dailyRate) {
-            if (selectedWell?.safetyLocked) {
-                showToast('Cannot modify toolstring - well is safety locked', true);
-                return;
-            }
-            
-            toolstring.push({ name, od, length, dailyRate, id: Date.now() });
-            updateToolstringUI();
-            checkClash();
-            showToast(`Added ${name} to toolstring`);
-        }
-        
         // ===== MOBILE COMMUNICATOR =====
         /**
          * Open Mobile Communicator modal for MOC approvals
@@ -1818,35 +1303,6 @@
                 
                 showToast(`Request ${decision === 'approve' ? 'approved' : 'rejected'} successfully`);
             }
-        }
-        
-        // ===== SAVE PLAN =====
-        /**
-         * Save intervention plan to localStorage
-         * @function savePlan
-         * @description Persists plan with toolstring, personnel, costs, and timestamp to localStorage
-         * @returns {void}
-         * @throws {void} Shows error toast if well not selected, safety-locked, or toolstring empty
-         * @see {@link docs/WELL_OPERATIONS_PLANNER_API.md#savePlan}
-         */
-        function savePlan() {
-            if (!selectedWell || selectedWell.safetyLocked || toolstring.length === 0) {
-                showToast('Cannot save - verify well selection and toolstring', true);
-                return;
-            }
-
-            const plan = {
-                well: selectedWell.name,
-                wellId: selectedWell.id,
-                toolstring: [...toolstring],
-                personnel: [...personnel],
-                totalDailyRate: toolstring.reduce((s, t) => s + t.dailyRate, 0) + personnel.reduce((s, p) => s + p.dailyRate, 0),
-                savedAt: new Date().toISOString()
-            };
-
-            // Save to localStorage (demo only - production system would export to PDF/Excel)
-            localStorage.setItem('welltegra_currentPlan', JSON.stringify(plan));
-            showToast('Demo state saved to browser storage');
         }
         
         // ===== TOAST =====
