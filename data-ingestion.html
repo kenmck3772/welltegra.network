@@ -20,12 +20,28 @@
 <body>
     <div id="root"></div>
 
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <script type="text/babel">
-        import React, { useState, useEffect } from 'react';
-        import {
-          Database, FileText, Activity, ShieldCheck, Zap, ArrowRight, FileJson,
-          Search, CheckCircle2, AlertCircle, BarChart3, ScanLine, Layers, LineChart, Eye
-        } from 'https://unpkg.com/lucide@latest/dist/umd/lucide.js';
+        const { useState, useEffect } = React;
+
+        // Icon components (Lucide icons will be used via createElement)
+        const Database = (props) => React.createElement('i', { 'data-lucide': 'database', ...props });
+        const FileText = (props) => React.createElement('i', { 'data-lucide': 'file-text', ...props });
+        const Activity = (props) => React.createElement('i', { 'data-lucide': 'activity', ...props });
+        const ShieldCheck = (props) => React.createElement('i', { 'data-lucide': 'shield-check', ...props });
+        const Zap = (props) => React.createElement('i', { 'data-lucide': 'zap', ...props });
+        const ArrowRight = (props) => React.createElement('i', { 'data-lucide': 'arrow-right', ...props });
+        const FileJson = (props) => React.createElement('i', { 'data-lucide': 'file-json', ...props });
+        const Search = (props) => React.createElement('i', { 'data-lucide': 'search', ...props });
+        const CheckCircle2 = (props) => React.createElement('i', { 'data-lucide': 'check-circle-2', ...props });
+        const AlertCircle = (props) => React.createElement('i', { 'data-lucide': 'alert-circle', ...props });
+        const BarChart3 = (props) => React.createElement('i', { 'data-lucide': 'bar-chart-3', ...props });
+        const ScanLine = (props) => React.createElement('i', { 'data-lucide': 'scan-line', ...props });
+        const Layers = (props) => React.createElement('i', { 'data-lucide': 'layers', ...props });
+        const LineChart = (props) => React.createElement('i', { 'data-lucide': 'line-chart', ...props });
+        const Eye = (props) => React.createElement('i', { 'data-lucide': 'eye', ...props });
 
         const App = () => {
           const [activeStep, setActiveStep] = useState(0);
@@ -496,14 +512,15 @@
           );
         };
 
-        // Create a simple Icon component since we can't import Lucide
-        const Zap = ({ size, className }) => (
-          <svg width={size} height={size} className={className} fill="currentColor" viewBox="0 0 24 24">
-            <path d="M13 2L3 14h9l-1 8 10-10V2z"/>
-          </svg>
-        );
-
+        // Render the app
         ReactDOM.render(<App />, document.getElementById('root'));
+
+        // Initialize Lucide icons after React renders
+        setTimeout(() => {
+          if (window.lucide) {
+            window.lucide.createIcons();
+          }
+        }, 100);
     </script>
 </body>
 </html>
