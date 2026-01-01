@@ -4,9 +4,6 @@
 [![Live Demo](https://img.shields.io/badge/demo-live-success?style=for-the-badge)](https://kenmck3772.github.io/welltegra.network/governance-dashboard.html)
 [![Backend API](https://img.shields.io/badge/API-Cloud%20Run-blue?style=for-the-badge)](https://brahan-engine-api-ikldvpsusa-nw.a.run.app/health)
 [![Status](https://img.shields.io/badge/status-MVP-orange?style=for-the-badge)](https://github.com/kenmck3772/welltegra.network)
-[![Code Lines](https://img.shields.io/badge/code-7.3M%20lines-blueviolet?style=for-the-badge)](https://kenmck3772.github.io/welltegra.network/project-stats.html)
-[![Languages](https://img.shields.io/badge/languages-16-brightgreen?style=for-the-badge)](https://kenmck3772.github.io/welltegra.network/project-stats.html)
-[![Project Stats](https://img.shields.io/badge/stats-view%20dashboard-ff69b4?style=for-the-badge)](https://kenmck3772.github.io/welltegra.network/project-stats.html)
 
 **Built by:** Ken McKenzie | **Experience:** 30+ years offshore (North Sea, Middle East, Asia-Pacific, West Africa)
 **Status:** 🟡 Working MVP - Seeking Pilot Customers
@@ -42,37 +39,6 @@
 2. [Forensic Team Grid](#-featured-forensic-engineering-team-grid) - React showcase (scroll down)
 3. [Tech Stack](#-tech-stack) - Technologies used
 4. [Documentation](./docs/) - Technical writing samples
-
----
-
-## 📊 Project Statistics
-
-**[🔗 View Interactive Dashboard](https://kenmck3772.github.io/welltegra.network/project-stats.html)**
-
-This portfolio project represents a substantial codebase with production-quality infrastructure:
-
-| Metric | Count |
-|--------|------:|
-| **Total Files** | 25,072 |
-| **Code Lines** | 7,325,559 |
-| **Comments** | 671,153 |
-| **Languages** | 16 |
-| **Comment Ratio** | 9.2% |
-
-**Primary Languages:**
-- **Python** (4.7M lines) - Backend API, ML pipelines, data processing
-- **JSON** (2.2M lines) - Configuration, data files, API schemas
-- **YAML** (222K lines) - Infrastructure as Code, CI/CD configs
-- **HTML** (70K lines) - Frontend interfaces, dashboards
-- **JavaScript/JSX** (5K lines) - Interactive components
-
-**Key Components:**
-- FastAPI backend with 1,389 lines across main modules
-- 30+ Playwright E2E tests for comprehensive coverage
-- Google Cloud SDK integration for enterprise-grade infrastructure
-- Comprehensive documentation (227 KB)
-
-> View detailed breakdown with interactive charts at [project-stats.html](https://kenmck3772.github.io/welltegra.network/project-stats.html)
 
 ---
 
