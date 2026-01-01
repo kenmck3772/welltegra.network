@@ -1380,6 +1380,168 @@
           "description": "Delaying P&A increased costs from ~$10M (2018) to potentially $250M+ (10-year projection)"
         }
       ]
+    },
+    {
+      "id": "volve-f1",
+      "name": "15/9-F-1 B",
+      "nickname": "Volve Producer 1",
+      "status": "producing",
+      "safetyLocked": false,
+      "integrityScore": 92,
+      "dataSource": "Equinor Public Volve Dataset",
+      "tags": ["volve-field", "real-data", "horizontal-producer", "north-sea"],
+      "identity": {
+        "regulatoryId": "15/9-F-1 B",
+        "operator": "Equinor ASA (Volve Field - Public Dataset)",
+        "platform": "Volve Platform",
+        "lease": "PL038",
+        "surfaceLocation": "58° 25' 23\" N, 1° 54' 38\" E",
+        "datumElevation": "+27.6 m MSL",
+        "waterDepth": "82 m",
+        "spudDate": "2008-01-15",
+        "completionDate": "2008-02-28",
+        "wellType": "Horizontal Oil Producer",
+        "currentStatus": "PRODUCING (Real Volve Field Data 2008-2016)",
+        "classification": "Public Dataset - Equinor Released 2018"
+      },
+      "economics": {
+        "originalAFE": 25000000,
+        "actualSpent": 28500000,
+        "cumulativeProduction": "Based on Eclipse simulation output",
+        "productionValue": "Volve field: ~10 MMboe total",
+        "interventionRecommendation": "Routine Maintenance",
+        "probabilityOfSuccess": 95
+      },
+      "reservoir": {
+        "formation": "Hugin Formation (Lower Jurassic)",
+        "porosity": "25-30%",
+        "permeability": "200-1000 mD",
+        "initialPressure": "329.6 bar @ datum",
+        "temperature": "92°C",
+        "fluidType": "Light Oil",
+        "oilGravity": "33° API",
+        "solutionGOR": "Initial 0.00 SM3/SM3, increasing over field life",
+        "h2s": "< 5 ppm",
+        "co2": "< 2 mol%",
+        "scaleRisk": "LOW - Standard North Sea conditions"
+      },
+      "construction": {
+        "totalDepth": "3,150 m MD",
+        "maxInclination": "88°",
+        "maxDLS": "2.8°/30m",
+        "casingProgram": [
+          { "name": "Conductor", "size": "30\"", "top": 0, "bottom": 95, "grade": "X-52" },
+          { "name": "Surface", "size": "18-5/8\"", "top": 0, "bottom": 650, "grade": "K-55", "weight": "87.5 lb/ft" },
+          { "name": "Intermediate", "size": "13-3/8\"", "top": 0, "bottom": 2750, "grade": "L-80", "weight": "68.0 lb/ft" },
+          { "name": "Production", "size": "9-7/8\"", "top": 0, "bottom": 3150, "grade": "L-80", "weight": "53.5 lb/ft", "integrity": "Good" }
+        ]
+      },
+      "completion": {
+        "tubing": {
+          "size": "4-1/2\" OD",
+          "weight": "12.75 lb/ft",
+          "grade": "13Cr",
+          "connection": "VAM",
+          "depth": "0-3100m",
+          "status": "GOOD"
+        },
+        "scssv": {
+          "type": "SCSSV",
+          "bore": "2.56\"",
+          "depth": "85m",
+          "status": "OPERATIONAL"
+        },
+        "packer": {
+          "type": "Hydraulic Set",
+          "depth": "3050m",
+          "rating": "10k psi",
+          "status": "GOOD"
+        }
+      },
+      "productionData": {
+        "source": "Eclipse PRT File - VOLVE_2016",
+        "timesteps": 1610,
+        "dateRange": "2008-01-01 to 2016-10-01",
+        "parameters": {
+          "PAV": "Average bottomhole pressure (bar)",
+          "WCT": "Watercut (%)",
+          "GOR": "Gas-oil ratio (SM3/SM3)",
+          "WGR": "Water-gas ratio (SM3/SM3)"
+        },
+        "note": "Real production data from Equinor's public Volve dataset"
+      },
+      "lessonsLearned": [
+        {
+          "id": "LL-VOLVE-001",
+          "category": "Public Datasets",
+          "severity": "INFO",
+          "title": "Volve provides real-world North Sea production data",
+          "description": "First full oil & gas dataset released by operator - invaluable for ML training and validation"
+        }
+      ]
+    },
+    {
+      "id": "volve-f4",
+      "name": "15/9-F-4",
+      "nickname": "Volve Producer 4",
+      "status": "intervention",
+      "safetyLocked": false,
+      "integrityScore": 88,
+      "dataSource": "Equinor Public Volve Dataset",
+      "tags": ["volve-field", "real-data", "horizontal-producer", "north-sea", "workover"],
+      "identity": {
+        "regulatoryId": "15/9-F-4",
+        "operator": "Equinor ASA (Volve Field - Public Dataset)",
+        "platform": "Volve Platform",
+        "lease": "PL038",
+        "surfaceLocation": "58° 25' 25\" N, 1° 54' 42\" E",
+        "datumElevation": "+27.6 m MSL",
+        "waterDepth": "82 m",
+        "spudDate": "2008-08-12",
+        "completionDate": "2008-10-05",
+        "wellType": "Horizontal Oil Producer",
+        "currentStatus": "INTERVENTION PLANNING (Simulated workover scenario)",
+        "classification": "Public Dataset - Real Field Data"
+      },
+      "economics": {
+        "originalAFE": 26000000,
+        "actualSpent": 29200000,
+        "cumulativeProduction": "Based on Eclipse simulation",
+        "interventionRecommendation": "Scale Treatment",
+        "probabilityOfSuccess": 85
+      },
+      "reservoir": {
+        "formation": "Hugin Formation (Lower Jurassic)",
+        "porosity": "26-31%",
+        "permeability": "250-950 mD",
+        "initialPressure": "329 bar",
+        "temperature": "93°C",
+        "fluidType": "Light Oil",
+        "oilGravity": "33° API",
+        "watercut": "Increasing over field life (real PRT data)",
+        "scaleRisk": "MODERATE - Typical North Sea scale deposition"
+      },
+      "construction": {
+        "totalDepth": "3,200 m MD",
+        "maxInclination": "90°",
+        "maxDLS": "3.0°/30m"
+      },
+      "productionData": {
+        "source": "Eclipse PRT File - VOLVE_2016",
+        "timesteps": 1610,
+        "watercut_trend": "0% initial → increasing with depletion",
+        "GOR_trend": "Low initial → increasing with pressure decline",
+        "note": "Demonstrates typical North Sea field waterflood behavior"
+      },
+      "lessonsLearned": [
+        {
+          "id": "LL-VOLVE-F4-001",
+          "category": "Portfolio Skills",
+          "severity": "INFO",
+          "title": "Using real Volve data demonstrates industry-standard data processing",
+          "description": "Shows ability to work with Eclipse simulator output and real field production trends"
+        }
+      ]
     }
   ]
 }
