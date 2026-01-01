@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Well Operations Planner | WellTegra</title>
-    <meta name="description" content="Plan well interventions with AI-powered recommendations, toolstring builder, and real-time clash detection.">
+    <title>Well Intervention Decision Framework Demo | WellTegra Portfolio</title>
+    <meta name="description" content="Educational demonstration of well intervention planning concepts - showcasing decision support interface design and well engineering expertise.">
     <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -555,6 +555,18 @@
         </div>
     </div>
     
+    <!-- Educational Demo Notice -->
+    <div style="background: rgba(20, 184, 166, 0.1); border: 1px solid var(--accent); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin: 0 auto; max-width: 1600px;">
+        <div style="max-width: 1600px; margin: 0 auto; padding: 0 1.5rem;">
+            <strong style="color: var(--accent);">📚 Portfolio Demonstration</strong>
+            <p style="margin: 0.5rem 0 0; color: var(--muted); font-size: 0.9rem;">
+                This interface was built for educational purposes to demonstrate well intervention decision support concepts and offshore operations expertise.
+                In a production environment, the <strong>Brahan Engine</strong> would generate actual planning outputs (PDF work programs, AFE documents, risk assessments).
+                This demo showcases the decision framework and UI design skills.
+            </p>
+        </div>
+    </div>
+
     <!-- Safety Lock Banner -->
     <div class="safety-lock-banner hidden" id="safetyLockBanner">
         <div class="safety-lock-icon">
@@ -723,7 +735,7 @@
                     🛠️ Open Equipment Catalog
                 </button>
                 <button class="btn btn-primary" id="savePlanBtn" onclick="savePlan()" disabled>
-                    💾 Save Plan
+                    💾 Save Demo State
                 </button>
             </div>
         </div>
@@ -797,13 +809,13 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Toast -->
     <div class="toast" id="toast">Plan saved successfully!</div>
-    
+
     <footer class="footer">
-        <p>© 2025 WellTegra Portfolio Project by Ken McKenzie | Educational demonstration of well intervention planning</p>
-        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Not affiliated with any commercial operator • Case studies use anonymized data</p>
+        <p>© 2025 WellTegra Portfolio Project by Ken McKenzie | Educational demonstration built for learning and skill development</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">This is a portfolio demonstration showcasing well engineering decision support concepts. Production planning functionality would be provided by the Brahan Engine in a real implementation. Not affiliated with any commercial operator.</p>
     </footer>
 
     <script>
@@ -1819,10 +1831,10 @@
          */
         function savePlan() {
             if (!selectedWell || selectedWell.safetyLocked || toolstring.length === 0) {
-                showToast('Cannot save plan - verify well selection and toolstring', true);
+                showToast('Cannot save - verify well selection and toolstring', true);
                 return;
             }
-            
+
             const plan = {
                 well: selectedWell.name,
                 wellId: selectedWell.id,
@@ -1831,10 +1843,10 @@
                 totalDailyRate: toolstring.reduce((s, t) => s + t.dailyRate, 0) + personnel.reduce((s, p) => s + p.dailyRate, 0),
                 savedAt: new Date().toISOString()
             };
-            
-            // Save to localStorage
+
+            // Save to localStorage (demo only - production system would export to PDF/Excel)
             localStorage.setItem('welltegra_currentPlan', JSON.stringify(plan));
-            showToast('Plan saved successfully!');
+            showToast('Demo state saved to browser storage');
         }
         
         // ===== TOAST =====
