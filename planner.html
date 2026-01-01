@@ -1645,8 +1645,8 @@
                     c.name.toLowerCase().includes(category) || c.id === category
                 );
                 
-                if (categoryData?.items) {
-                    container.innerHTML = categoryData.items.map(item => `
+                if (categoryData?.equipment) {
+                    container.innerHTML = categoryData.equipment.map(item => `
                         <div class="equipment-card">
                             <div class="equipment-card-header">
                                 <div class="equipment-card-name">${item.name}</div>
