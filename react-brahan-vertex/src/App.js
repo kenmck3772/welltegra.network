@@ -9,6 +9,7 @@ import {
 import SplashScreen from './components/SplashScreen';
 import TrainingView from './components/TrainingView';
 import Wellbore3D from './components/Wellbore3D';
+import VoiceCommandInterface from './components/VoiceCommandInterface';
 
 // ============================================
 // MASTER WELLS DATA
@@ -159,6 +160,60 @@ function App() {
   };
 
   // ============================================
+  // VOICE COMMAND HANDLER
+  // ============================================
+  const handleVoiceCommand = (command) => {
+    console.log("Voice Command Received:", command);
+    addSystemAlert('success', `Voice Command: ${command}`);
+
+    switch (command) {
+      case 'NAVIGATE_PLANNER':
+        setCurrentTab('planner');
+        setShowTraining(false);
+        break;
+      case 'NAVIGATE_EXECUTIVE':
+        setCurrentTab('executive');
+        setShowTraining(false);
+        break;
+      case 'NAVIGATE_SCHEDULER':
+        setCurrentTab('scheduler');
+        setShowTraining(false);
+        break;
+      case 'NAVIGATE_EXECUTION':
+        setCurrentTab('execution');
+        setShowTraining(false);
+        break;
+      case 'NAVIGATE_COMPETENCY':
+        setCurrentTab('competency');
+        setShowTraining(true);
+        break;
+      case 'PHYSICS_MODE_ON':
+        setPhysicsMode(true);
+        addSystemAlert('critical', 'VOICE CMD: Physics mode enabled - Node-02 flagged CRITICAL');
+        break;
+      case 'PHYSICS_MODE_OFF':
+        setPhysicsMode(false);
+        addSystemAlert('success', 'VOICE CMD: Physics mode disabled - Node-02 restored to ML baseline');
+        break;
+      case 'SHOW_STATUS':
+        // Generate status report
+        const statusMessage = `SYSTEM STATUS: ${wells.filter(w => w.safetyLocked).length} wells locked, Physics Mode ${physicsMode ? 'ACTIVE' : 'INACTIVE'}`;
+        addSystemAlert('success', statusMessage);
+        alert(statusMessage);
+        break;
+      case 'EMERGENCY_STOP':
+        // Trigger emergency stop: enable physics mode and lock execution
+        setPhysicsMode(true);
+        setCurrentTab('execution');
+        addSystemAlert('critical', '⚠ EMERGENCY STOP TRIGGERED VIA VOICE COMMAND');
+        break;
+      default:
+        addSystemAlert('critical', `Unknown voice command: ${command}`);
+        break;
+    }
+  };
+
+  // ============================================
   // RENDER TABS
   // ============================================
   const renderContent = () => {
@@ -262,6 +317,9 @@ function App() {
       <main className="flex-1 overflow-y-auto">
         {renderContent()}
       </main>
+
+      {/* Voice Command Interface */}
+      <VoiceCommandInterface onCommand={handleVoiceCommand} />
     </div>
   );
 }
