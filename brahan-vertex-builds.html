@@ -403,6 +403,109 @@
             </div>
         </div>
 
+        <!-- Voice Command Interface -->
+        <div class="section">
+            <h2>🎙️ Hands-Free Voice Interface (Industrial UX)</h2>
+
+            <div class="quote">
+                "Offshore technicians often work in 'Gloves-On' environments where typing on a keyboard or tapping a tablet screen is impossible due to grease, mud, or PPE constraints. I built a voice-to-action layer that mimics the workflow of next-gen hardware like RealWear and Microsoft HoloLens."
+            </div>
+
+            <h3>The Problem: Industrial Environments Aren't Designed for Keyboards</h3>
+            <p style="color: var(--muted); line-height: 1.8; margin: 1.5rem 0;">
+                In 30 years offshore, I've seen countless situations where operators needed critical data but couldn't access it because:
+            </p>
+            <ul style="color: var(--muted); line-height: 1.8; margin-left: 2rem;">
+                <li>They were wearing heavy-duty gloves that made touchscreens unusable</li>
+                <li>Hands were covered in oil, grease, or drilling mud</li>
+                <li>Emergency situations required eyes on the equipment, not on a screen</li>
+                <li>Safety protocols required both hands on physical controls</li>
+            </ul>
+
+            <h3>The Solution: Push-to-Talk Voice Commands</h3>
+            <div class="feature-grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="feature-card">
+                    <h4>🎯 Supported Commands</h4>
+                    <ul>
+                        <li>"Open Planner" → Navigate to intervention planning</li>
+                        <li>"Show Dashboard" → Return to executive view</li>
+                        <li>"Physics Mode On" → Enable constraint checking</li>
+                        <li>"Emergency Stop" → Trigger safety lockout</li>
+                        <li>"Status Report" → Generate system summary</li>
+                    </ul>
+                </div>
+                <div class="feature-card" style="background: rgba(20, 184, 166, 0.05); border-color: var(--accent);">
+                    <h4 style="color: var(--accent);">⚙️ Technical Implementation</h4>
+                    <ul>
+                        <li><strong>Web Speech API</strong> (no external services needed)</li>
+                        <li><strong>Natural Language Mapping</strong> (phrase variations)</li>
+                        <li><strong>Real-time State Updates</strong> (React hooks)</li>
+                        <li><strong>HUD-Style Interface</strong> (industrial sci-fi aesthetic)</li>
+                        <li><strong>Hands-free Operation</strong> (PTT button)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>React Implementation</h3>
+            <div class="code-block">
+<code>const processCommand = (text) => {
+  if (text.includes('physics mode on')) {
+    onCommand('PHYSICS_MODE_ON');
+    setFeedback('CMD: PHYSICS_MODE_ENABLED');
+  }
+  else if (text.includes('emergency') || text.includes('stop')) {
+    onCommand('EMERGENCY_STOP');
+    setFeedback('⚠ ALARM: EMERGENCY_STOP_TRIGGERED');
+  }
+  // ... 9 total command patterns mapped
+};
+
+// Voice triggers state updates in main App
+const handleVoiceCommand = (command) => {
+  switch (command) {
+    case 'PHYSICS_MODE_ON':
+      setPhysicsMode(true);
+      addSystemAlert('VOICE CMD: Physics mode enabled');
+      break;
+    case 'EMERGENCY_STOP':
+      setPhysicsMode(true);
+      setCurrentTab('execution');
+      addSystemAlert('⚠ EMERGENCY STOP VIA VOICE');
+      break;
+    // ... full command routing
+  }
+};</code>
+            </div>
+
+            <h3>Industrial Design Thinking</h3>
+            <div class="success-box">
+                <p style="margin: 0;"><strong>Why This Matters:</strong> This isn't a gimmick feature. It demonstrates understanding of real operational constraints and future-proofs the application for emerging industrial hardware platforms like RealWear HMT-1, HoloLens 2, and ruggedized AR headsets being deployed in oil & gas facilities today.</p>
+            </div>
+
+            <div class="feature-grid" style="margin-top: 2rem;">
+                <div class="feature-card">
+                    <h4>🏗️ Hardware Awareness</h4>
+                    <p style="color: var(--muted);">Designed with compatibility for:</p>
+                    <ul>
+                        <li>RealWear HMT-1 (head-mounted display)</li>
+                        <li>Microsoft HoloLens 2</li>
+                        <li>Rugged tablets with voice kits</li>
+                        <li>Standard browsers (Chrome, Edge)</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h4>♿ Accessibility Benefits</h4>
+                    <p style="color: var(--muted);">Beyond industrial use, voice commands provide:</p>
+                    <ul>
+                        <li>Accessibility for motor impairments</li>
+                        <li>Faster navigation for power users</li>
+                        <li>Reduced eye strain (less screen time)</li>
+                        <li>Improved safety (eyes on environment)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <!-- Production DevOps -->
         <div class="section">
             <h2>🚀 Production DevOps (CI/CD)</h2>
@@ -531,6 +634,10 @@
                 <div class="feature-card">
                     <h4>✅ 3D Interactive Visualization</h4>
                     <p style="color: var(--muted);">WebGL-powered 3D wellbore rendering that reacts in real-time to integrity score changes.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>✅ Voice Command Interface</h4>
+                    <p style="color: var(--muted);">Hands-free operation designed for industrial "gloves-on" environments. Future-proof for RealWear/HoloLens deployment.</p>
                 </div>
             </div>
         </div>
