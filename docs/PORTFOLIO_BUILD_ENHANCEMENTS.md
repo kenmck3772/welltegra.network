@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-Current site analysis reveals it presents as a **Product Brochure** rather than a **Cloud Engineer Portfolio**. To secure senior-level Cloud ML Engineer roles, you must expose the "engineering plumbing" behind the sleek UI.
+Current site analysis reveals it presents as a **Product Brochure** rather than a **Cloud Engineer Portfolio**. To secure Cloud ML Engineer roles, you must expose the "engineering plumbing" behind the sleek UI.
 
 ---
 
