@@ -1,10 +1,28 @@
 import React, { useState } from 'react';
-import { AlertTriangle, CheckCircle, XCircle, Brain } from 'lucide-react';
+import { AlertTriangle, CheckCircle, XCircle, Brain, PlayCircle } from 'lucide-react';
 
 const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
   const [currentModule, setCurrentModule] = useState(0);
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(null);
+  const [videoCompleted, setVideoCompleted] = useState({});
+  const [currentVideoModule, setCurrentVideoModule] = useState(0);
+
+  // YouTube video modules
+  const videoModules = [
+    {
+      id: 1,
+      title: 'Micro-Annulus Diagnostics',
+      videoId: '7eWPe5Y8ve4',
+      description: 'Learn to identify micro-annulus conditions and their impact on well integrity.'
+    },
+    {
+      id: 2,
+      title: 'P&A Barrier Verification',
+      videoId: 'tbVD-J995yM',
+      description: 'Master barrier verification techniques for plug and abandonment operations.'
+    }
+  ];
 
   const modules = [
     {
@@ -65,7 +83,25 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
     setCurrentModule(0);
     setAnswers({});
     setScore(null);
+    setVideoCompleted({});
+    setCurrentVideoModule(0);
   };
+
+  const handleVideoComplete = (videoId) => {
+    setVideoCompleted({
+      ...videoCompleted,
+      [videoId]: true
+    });
+  };
+
+  // Simulate video completion after 10 seconds (for dev/demo purposes)
+  const simulateVideoWatch = (videoId) => {
+    setTimeout(() => {
+      handleVideoComplete(videoId);
+    }, 10000); // 10 seconds
+  };
+
+  const allVideosCompleted = videoModules.every(vid => videoCompleted[vid.id]);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 p-6">
@@ -94,8 +130,71 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
           </p>
         </div>
 
-        {score === null ? (
+        {/* Video Training Modules */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-white mb-6">Step 1: Video Training</h2>
+          <div className="grid gap-6">
+            {videoModules.map((video) => (
+              <div key={video.id} className="bg-slate-900 border border-slate-800 rounded-lg p-6">
+                <div className="mb-4">
+                  <h3 className="text-xl font-bold text-white mb-2">{video.title}</h3>
+                  <p className="text-slate-400 text-sm">{video.description}</p>
+                </div>
+
+                {/* YouTube Embed */}
+                <div className="aspect-video bg-slate-950 rounded-lg overflow-hidden mb-4">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${video.videoId}`}
+                    title={video.title}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    onLoad={() => simulateVideoWatch(video.id)}
+                  ></iframe>
+                </div>
+
+                {/* Verify Competency Button */}
+                <button
+                  onClick={() => handleVideoComplete(video.id)}
+                  disabled={!videoCompleted[video.id]}
+                  className={`w-full px-6 py-3 rounded-lg font-bold transition-all ${
+                    videoCompleted[video.id]
+                      ? 'bg-green-600 text-white'
+                      : 'bg-slate-800 text-slate-600 cursor-not-allowed'
+                  }`}
+                >
+                  {videoCompleted[video.id] ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <CheckCircle className="w-5 h-5" />
+                      Competency Verified
+                    </span>
+                  ) : (
+                    <span className="flex items-center justify-center gap-2">
+                      <PlayCircle className="w-5 h-5" />
+                      Watch video to verify (simulated: 10s timer)
+                    </span>
+                  )}
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Proceed to Quiz Gate */}
+          {!allVideosCompleted && (
+            <div className="mt-6 p-4 bg-yellow-950/30 border border-yellow-500 rounded-lg">
+              <p className="text-yellow-400 text-center">
+                ⏳ Complete all video modules before proceeding to the quiz
+              </p>
+            </div>
+          )}
+        </div>
+
+        {score === null && allVideosCompleted ? (
           <>
+            <h2 className="text-2xl font-bold text-white mb-6">Step 2: Knowledge Assessment</h2>
+
             {/* Progress Bar */}
             <div className="mb-6 bg-slate-900 rounded-lg p-4">
               <div className="flex justify-between text-sm text-slate-400 mb-2">
@@ -176,6 +275,9 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
               </button>
             </div>
           </>
+        ) : score === null ? (
+          /* Waiting for videos to complete */
+          null
         ) : (
           /* Results Screen */
           <div className="bg-slate-900 border border-slate-800 rounded-lg p-8 text-center">
