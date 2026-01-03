@@ -47,6 +47,13 @@ jobs:
         run: npm test
         continue-on-error: true
 
+      - name: Build React Brahan Vertex App
+        run: |
+          cd react-brahan-vertex
+          npm ci
+          npm run build
+          cd ..
+
       - name: Prepare deployment files
         run: |
           # Create deployment directory
@@ -72,8 +79,14 @@ jobs:
             ! -name '.env' \
             -exec cp -r {} _deploy/ \;
 
-          # Verify data directory is present
+          # Copy React app build to deployment directory
+          mkdir -p _deploy/app
+          cp -r react-brahan-vertex/build/* _deploy/app/
+
+          # Verify data directory and React app are present
           ls -la _deploy/data/
+          ls -la _deploy/app/
+          echo "✅ React app built and copied to _deploy/app/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
