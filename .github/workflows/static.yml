@@ -47,15 +47,13 @@ jobs:
         run: npm test
         continue-on-error: true
 
-      # REACT APP BUILD DISABLED - Dependency conflicts prevent compilation
-      # See BRUTAL_HONEST_AUDIT.md for details
-      # TODO: Fix three.js/React compatibility before re-enabling
-      # - name: Build React Brahan Vertex App
-      #   run: |
-      #     cd react-brahan-vertex
-      #     npm ci
-      #     npm run build
-      #     cd ..
+      # REACT APP BUILD RE-ENABLED - Three.js removed, build now succeeds
+      - name: Build React Brahan Vertex App
+        run: |
+          cd react-brahan-vertex
+          npm ci
+          npm run build
+          cd ..
 
       - name: Prepare deployment files
         run: |
@@ -83,13 +81,14 @@ jobs:
             ! -name 'react-brahan-vertex' \
             -exec cp -r {} _deploy/ \;
 
-          # React app build commented out until dependencies are fixed
-          # mkdir -p _deploy/app
-          # cp -r react-brahan-vertex/build/* _deploy/app/
+          # Copy React app build to /app/
+          mkdir -p _deploy/app
+          cp -r react-brahan-vertex/build/* _deploy/app/
 
-          # Verify data directory is present
+          # Verify deployment structure
           ls -la _deploy/data/
-          echo "✅ Deployment files prepared (React app disabled until dependencies fixed)"
+          ls -la _deploy/app/
+          echo "✅ Deployment files prepared - React app ENABLED at /app/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

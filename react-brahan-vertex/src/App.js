@@ -8,7 +8,7 @@ import {
 // Import components
 import SplashScreen from './components/SplashScreen';
 import TrainingView from './components/TrainingView';
-import Wellbore3D from './components/Wellbore3D';
+// import Wellbore3D from './components/Wellbore3D'; // DISABLED: Three.js dependency conflicts
 import VoiceCommandInterface from './components/VoiceCommandInterface';
 
 // ============================================
@@ -453,12 +453,26 @@ function PlannerView({ selectedWell }) {
             </div>
           </div>
 
-          {/* 3D Visualization */}
-          <div className="h-96 relative">
-            <Wellbore3D
-              integrityScore={selectedWell.integrityScore}
-              wellName={selectedWell.name}
-            />
+          {/* 3D Visualization - TEMPORARILY DISABLED */}
+          <div className="h-96 relative bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center">
+            <div className="text-center p-8">
+              <Gauge className="w-16 h-16 mx-auto mb-4 text-slate-600" />
+              <h3 className="text-lg font-bold text-slate-400 mb-2">Wellbore Visualization</h3>
+              <div className="text-sm text-slate-500 mb-4">
+                {selectedWell.name} - Integrity: {selectedWell.integrityScore}%
+              </div>
+              <div className={`inline-block px-4 py-2 rounded-lg ${
+                selectedWell.integrityScore >= 80 ? 'bg-green-900/30 text-green-400 border border-green-800' :
+                selectedWell.integrityScore >= 50 ? 'bg-amber-900/30 text-amber-400 border border-amber-800' :
+                selectedWell.integrityScore >= 20 ? 'bg-red-900/30 text-red-400 border border-red-800' :
+                'bg-red-950/50 text-red-300 border border-red-900'
+              }`}>
+                {selectedWell.integrityScore >= 80 ? '✓ GREEN - APPROVED' :
+                 selectedWell.integrityScore >= 50 ? '⚠ AMBER - CAUTION' :
+                 selectedWell.integrityScore >= 20 ? '⚠ RED - WARNING' :
+                 '⛔ CRITICAL - LOCKED'}
+              </div>
+            </div>
           </div>
         </div>
       ) : (
