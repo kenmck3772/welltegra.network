@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Activity, AlertTriangle, CheckCircle2, Lock, Unlock,
-  Radio, TrendingDown, TrendingUp, Users, Zap, Shield,
-  Terminal, Gauge, Clock, Eye, XCircle, AlertOctagon, Brain
+  Activity, AlertTriangle, CheckCircle2, Lock,
+  Zap, Shield,
+  Terminal, Gauge, Clock, XCircle, Brain
 } from 'lucide-react';
 
 // Import components
@@ -73,8 +73,12 @@ function App() {
 
   // DCI and telemetry (for governance)
   const [dciScore, setDciScore] = useState(82);
+  // Reserved for telemetry monitoring feature
+  // eslint-disable-next-line no-unused-vars
   const [telemetryLatency, setTelemetryLatency] = useState(420);
   const [hseVetoLocked, setHseVetoLocked] = useState(false);
+  // Reserved for alert history feature
+  // eslint-disable-next-line no-unused-vars
   const [systemAlerts, setSystemAlerts] = useState([]);
 
   // ============================================
