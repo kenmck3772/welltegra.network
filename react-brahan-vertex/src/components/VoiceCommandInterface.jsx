@@ -49,7 +49,8 @@ const VoiceCommandInterface = ({ onCommand }) => {
         recognition.abort();
       }
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Intentionally empty - recognition setup happens once
 
   const toggleListen = () => {
     if (isListening) {

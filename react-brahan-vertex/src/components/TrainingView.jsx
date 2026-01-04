@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { AlertTriangle, CheckCircle, XCircle, Brain, PlayCircle } from 'lucide-react';
 
 const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
+  // Reserved for future multi-module navigation
+  // eslint-disable-next-line no-unused-vars
   const [currentModule, setCurrentModule] = useState(0);
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(null);
   const [videoCompleted, setVideoCompleted] = useState({});
+  // Reserved for video module sequencing
+  // eslint-disable-next-line no-unused-vars
   const [currentVideoModule, setCurrentVideoModule] = useState(0);
 
   // YouTube video modules
