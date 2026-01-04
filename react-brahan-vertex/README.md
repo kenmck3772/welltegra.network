@@ -99,7 +99,7 @@ Click "Initiate Sequence" to enter the application
 
 ## 🔑 Key Features
 
-### Physics Mode Toggle
+### Physics Mode Toggle ✅ WORKING
 ```javascript
 const [physicsMode, setPhysicsMode] = useState(false);
 
@@ -112,7 +112,7 @@ useEffect(() => {
 }, [physicsMode]);
 ```
 
-### Execution Gatekeeper
+### Execution Gatekeeper ✅ WORKING
 ```javascript
 const handleExecutionAttempt = () => {
   if (physicsMode && well.safetyLocked) {
@@ -124,17 +124,22 @@ const handleExecutionAttempt = () => {
 };
 ```
 
-### 3D Visualization
+### Voice Commands ✅ WORKING
 ```javascript
-<Wellbore3D
-  integrityScore={well.integrityScore}
-  wellName={well.name}
-/>
+<VoiceCommandInterface onCommand={handleVoiceCommand} />
 ```
+- Push-to-talk voice interface using Web Speech API
+- Commands: "physics mode on", "emergency stop", "open planner", etc.
+
+### Wellbore Visualization (2D - Temporarily)
+**Note**: 3D viewer (React Three Fiber) temporarily disabled due to dependency conflicts.
+Current implementation shows color-coded integrity status:
 - Green: ≥80%
 - Amber: 50-79%
 - Red: 20-49%
 - Dark Red: <20%
+
+**Roadmap**: Re-enable 3D visualization after resolving three.js compatibility issues.
 
 ---
 
