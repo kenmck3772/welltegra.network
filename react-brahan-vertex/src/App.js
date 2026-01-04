@@ -151,6 +151,8 @@ function App() {
     setShowSplash(false);
   };
 
+  // HSE Veto toggle - reserved for future feature
+  // eslint-disable-next-line no-unused-vars
   const toggleHSEVeto = () => {
     setHseVetoLocked(!hseVetoLocked);
     addSystemAlert(
