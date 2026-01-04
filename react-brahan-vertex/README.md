@@ -13,15 +13,15 @@ A comprehensive React application demonstrating the integration of:
 
 ## 🎯 Portfolio Purpose
 
-This application showcases:
+This application demonstrates concepts for combining ML with domain constraints:
 
-1. **Physics-Informed ML:** Demonstrates how physics constraints can override pure ML predictions to catch risks that data-driven models might miss.
+1. **Hybrid ML Approaches:** Shows one pattern for adding physics-based checks alongside ML predictions. **Disclaimer:** Neither ML nor physics rules guarantee correctness - both can fail. This is a demonstration of defensive engineering patterns, not a production safety system.
 
-2. **Closed-Loop Learning:** When the system detects a safety violation (e.g., attempting execution on a locked well), it automatically redirects users to competency training.
+2. **Closed-Loop Learning:** When the system flags a conflict (e.g., attempting execution on a locked well), it redirects to training. **Note:** This is a UX pattern demo - in reality, training doesn't guarantee competency either.
 
-3. **3D Visualization:** React Three Fiber integration showing wellbore integrity with color-coded visual feedback.
+3. **3D Visualization:** React Three Fiber integration (currently disabled due to dependency issues - see 2D placeholder).
 
-4. **Safety Gatekeeper:** Multi-layered safety logic preventing execution when barriers are unverified.
+4. **Safety Gatekeeper:** Logic that blocks certain actions based on state. **Caveat:** Real safety systems require far more rigorous validation than a portfolio demo can provide.
 
 ---
 
@@ -30,13 +30,14 @@ This application showcases:
 ### How It Works:
 
 **1. Physics Mode Toggle:**
-- When `physicsMode = OFF`: Node-02 shows 12% integrity (ML baseline)
-- When `physicsMode = ON`: Node-02 drops to 0% integrity (physics override)
+- When `physicsMode = OFF`: Node-02 shows 12% integrity (simulated ML prediction)
+- When `physicsMode = ON`: Node-02 drops to 0% integrity (simulated physics conflict)
+- **Reality check:** This is hardcoded demo logic, not real ML or physics calculations
 
 **2. Execution Trigger:**
 - User attempts execution in "Execution" tab
 - If `physicsMode = ON` and Node-02 is safety-locked → **REDIRECT TO TRAINING**
-- Training module explains why physics constraints override ML
+- **Honest note:** This demonstrates a pattern, not a guarantee that the physics check is correct
 
 **3. Training Completion:**
 - Users must score ≥80% to return to operations
