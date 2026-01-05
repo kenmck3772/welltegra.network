@@ -72,6 +72,8 @@ function App() {
   const [trainingReason, setTrainingReason] = useState(null);
 
   // DCI and telemetry (for governance)
+  // Reserved for DCI scoring feature
+  // eslint-disable-next-line no-unused-vars
   const [dciScore, setDciScore] = useState(82);
   // Reserved for telemetry monitoring feature
   // eslint-disable-next-line no-unused-vars
