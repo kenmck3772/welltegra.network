@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { AlertTriangle, CheckCircle, XCircle, Brain, PlayCircle, BookOpen, Shield } from 'lucide-react';
+import { AlertTriangle, CheckCircle, XCircle, Brain, PlayCircle, BookOpen, Shield, Layers } from 'lucide-react';
 import HydrostaticAcademy from './hydrostatic/HydrostaticAcademy';
 import IntegrityHub from './integrity-hub/IntegrityHub';
+import WellboreVisualizer from './wellbore-visualizer/WellboreVisualizer';
 
 const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
   // Reserved for future multi-module navigation
@@ -15,6 +16,7 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
   const [currentVideoModule, setCurrentVideoModule] = useState(0);
   const [showHydrostaticAcademy, setShowHydrostaticAcademy] = useState(false);
   const [showIntegrityHub, setShowIntegrityHub] = useState(false);
+  const [showWellboreVisualizer, setShowWellboreVisualizer] = useState(false);
 
   // YouTube video modules
   const videoModules = [
@@ -121,6 +123,11 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
     return <IntegrityHub onExit={() => setShowIntegrityHub(false)} />;
   }
 
+  // Show Wellbore Visualizer if activated
+  if (showWellboreVisualizer) {
+    return <WellboreVisualizer onExit={() => setShowWellboreVisualizer(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 p-6">
       {/* Assignment Banner */}
@@ -192,6 +199,29 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
                 className="px-8 py-4 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold transition-all shadow-lg shadow-amber-500/50 hover:shadow-amber-500/70"
               >
                 Launch Hub →
+              </button>
+            </div>
+          </div>
+
+          {/* 3D Wellbore Visualizer */}
+          <div className="bg-gradient-to-r from-cyan-900/30 to-slate-900/30 border-2 border-cyan-500/50 rounded-lg p-6 hover:border-cyan-400 transition-all">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-cyan-500/20 rounded-xl flex items-center justify-center">
+                  <Layers className="w-8 h-8 text-cyan-400" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-1">3D Wellbore Visualizer</h3>
+                  <p className="text-slate-400 text-sm">
+                    Interactive 3D well design: deviation path visualization, schematic editor, component library, survey data
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowWellboreVisualizer(true)}
+                className="px-8 py-4 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70"
+              >
+                Open Visualizer →
               </button>
             </div>
           </div>
