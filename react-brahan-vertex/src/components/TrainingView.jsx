@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { AlertTriangle, CheckCircle, XCircle, Brain, PlayCircle, BookOpen } from 'lucide-react';
+import { AlertTriangle, CheckCircle, XCircle, Brain, PlayCircle, BookOpen, Shield, Layers, Wrench } from 'lucide-react';
 import HydrostaticAcademy from './hydrostatic/HydrostaticAcademy';
+import IntegrityHub from './integrity-hub/IntegrityHub';
+import WellboreVisualizer from './wellbore-visualizer/WellboreVisualizer';
+import ToolstringAssembler from './toolstring-assembler/ToolstringAssembler';
 
 const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
   // Reserved for future multi-module navigation
@@ -13,6 +16,9 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
   // eslint-disable-next-line no-unused-vars
   const [currentVideoModule, setCurrentVideoModule] = useState(0);
   const [showHydrostaticAcademy, setShowHydrostaticAcademy] = useState(false);
+  const [showIntegrityHub, setShowIntegrityHub] = useState(false);
+  const [showWellboreVisualizer, setShowWellboreVisualizer] = useState(false);
+  const [showToolstringAssembler, setShowToolstringAssembler] = useState(false);
 
   // YouTube video modules
   const videoModules = [
@@ -114,6 +120,21 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
     return <HydrostaticAcademy onExit={() => setShowHydrostaticAcademy(false)} />;
   }
 
+  // Show Integrity Hub if activated
+  if (showIntegrityHub) {
+    return <IntegrityHub onExit={() => setShowIntegrityHub(false)} />;
+  }
+
+  // Show Wellbore Visualizer if activated
+  if (showWellboreVisualizer) {
+    return <WellboreVisualizer onExit={() => setShowWellboreVisualizer(false)} />;
+  }
+
+  // Show Toolstring Assembler if activated
+  if (showToolstringAssembler) {
+    return <ToolstringAssembler onExit={() => setShowToolstringAssembler(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 p-6">
       {/* Assignment Banner */}
@@ -141,8 +162,9 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
           </p>
         </div>
 
-        {/* Hydrostatic Training Academy Access */}
-        <div className="mb-12">
+        {/* Advanced Training Modules */}
+        <div className="mb-12 space-y-6">
+          {/* Hydrostatic Training Academy */}
           <div className="bg-gradient-to-r from-blue-900/30 to-slate-900/30 border-2 border-blue-500/50 rounded-lg p-6 hover:border-blue-400 transition-all">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -161,6 +183,75 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
                 className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition-all shadow-lg shadow-blue-500/50 hover:shadow-blue-500/70"
               >
                 Enter Academy →
+              </button>
+            </div>
+          </div>
+
+          {/* Brahan Hub - Visionary Integrity */}
+          <div className="bg-gradient-to-r from-amber-900/30 to-slate-900/30 border-2 border-amber-500/50 rounded-lg p-6 hover:border-amber-400 transition-all">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-amber-500/20 rounded-xl flex items-center justify-center">
+                  <Shield className="w-8 h-8 text-amber-400" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-1">Brahan Hub - Visionary Integrity</h3>
+                  <p className="text-slate-400 text-sm">
+                    AI-powered predictive well integrity monitoring: Christmas tree diagnostics, maintenance forecasting, telemetry analysis
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowIntegrityHub(true)}
+                className="px-8 py-4 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold transition-all shadow-lg shadow-amber-500/50 hover:shadow-amber-500/70"
+              >
+                Launch Hub →
+              </button>
+            </div>
+          </div>
+
+          {/* 3D Wellbore Visualizer */}
+          <div className="bg-gradient-to-r from-cyan-900/30 to-slate-900/30 border-2 border-cyan-500/50 rounded-lg p-6 hover:border-cyan-400 transition-all">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-cyan-500/20 rounded-xl flex items-center justify-center">
+                  <Layers className="w-8 h-8 text-cyan-400" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-1">3D Wellbore Visualizer</h3>
+                  <p className="text-slate-400 text-sm">
+                    Interactive 3D well design: deviation path visualization, schematic editor, component library, survey data
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowWellboreVisualizer(true)}
+                className="px-8 py-4 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-500/50 hover:shadow-cyan-500/70"
+              >
+                Open Visualizer →
+              </button>
+            </div>
+          </div>
+
+          {/* 3D Toolstring Assembler */}
+          <div className="bg-gradient-to-r from-emerald-900/30 to-slate-900/30 border-2 border-emerald-500/50 rounded-lg p-6 hover:border-emerald-400 transition-all">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+                  <Wrench className="w-8 h-8 text-emerald-400" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-1">3D Slickline Tool String Assembler</h3>
+                  <p className="text-slate-400 text-sm">
+                    Intelligent tool string builder: component compatibility, physics calculations, connection validation, clearance checks
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowToolstringAssembler(true)}
+                className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold transition-all shadow-lg shadow-emerald-500/50 hover:shadow-emerald-500/70"
+              >
+                Build String →
               </button>
             </div>
           </div>
