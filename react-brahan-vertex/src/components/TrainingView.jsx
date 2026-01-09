@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { AlertTriangle, CheckCircle, XCircle, Brain, PlayCircle } from 'lucide-react';
+import { AlertTriangle, CheckCircle, XCircle, Brain, PlayCircle, BookOpen } from 'lucide-react';
+import HydrostaticAcademy from './hydrostatic/HydrostaticAcademy';
 
 const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
   // Reserved for future multi-module navigation
@@ -11,6 +12,7 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
   // Reserved for video module sequencing
   // eslint-disable-next-line no-unused-vars
   const [currentVideoModule, setCurrentVideoModule] = useState(0);
+  const [showHydrostaticAcademy, setShowHydrostaticAcademy] = useState(false);
 
   // YouTube video modules
   const videoModules = [
@@ -107,6 +109,11 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
 
   const allVideosCompleted = videoModules.every(vid => videoCompleted[vid.id]);
 
+  // Show Hydrostatic Academy if activated
+  if (showHydrostaticAcademy) {
+    return <HydrostaticAcademy onExit={() => setShowHydrostaticAcademy(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 p-6">
       {/* Assignment Banner */}
@@ -132,6 +139,31 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
           <p className="text-slate-400">
             Interactive learning triggered by safety anomalies - Closed-Loop Competency Development
           </p>
+        </div>
+
+        {/* Hydrostatic Training Academy Access */}
+        <div className="mb-12">
+          <div className="bg-gradient-to-r from-blue-900/30 to-slate-900/30 border-2 border-blue-500/50 rounded-lg p-6 hover:border-blue-400 transition-all">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-blue-500/20 rounded-xl flex items-center justify-center">
+                  <BookOpen className="w-8 h-8 text-blue-400" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-1">Hydrostatic Training Academy</h3>
+                  <p className="text-slate-400 text-sm">
+                    Advanced well control training: IADC WellSharp & IWCF standards, interactive simulator, exam prep
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowHydrostaticAcademy(true)}
+                className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold transition-all shadow-lg shadow-blue-500/50 hover:shadow-blue-500/70"
+              >
+                Enter Academy →
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Video Training Modules */}
