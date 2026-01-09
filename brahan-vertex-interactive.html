@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Brahan Vertex Engine Demo | Ken McKenzie</title>
+    <meta name="description" content="Live, executable demonstrations of Physics-Informed ML, Closed-Loop Training, and Voice Command interfaces in the Brahan Vertex Engine.">
+    <link rel="stylesheet" href="css/main.css">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        :root {
+            --bg: #020617;
+            --panel: #0f172a;
+            --border: #1e293b;
+            --fg: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #14b8a6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), transparent);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 3rem;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin: 0 0 1rem;
+            color: var(--accent);
+            font-weight: 800;
+        }
+        .interactive-section {
+            background: var(--panel);
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 32px rgba(20, 184, 166, 0.15);
+        }
+        .interactive-section h2 {
+            color: var(--accent);
+            margin-top: 0;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .demo-panel {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+        .demo-panel h3 {
+            color: var(--accent);
+            font-size: 1.25rem;
+            margin: 0 0 1.5rem 0;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+        }
+        .code-block {
+            background: #0a0f1a;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            color: #94a3b8;
+        }
+        .code-block code {
+            color: #e2e8f0;
+        }
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn:hover {
+            background: #0d9488;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(20, 184, 166, 0.3);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        .btn-danger {
+            background: var(--danger);
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        .btn-success {
+            background: var(--success);
+        }
+        .btn-success:hover {
+            background: #059669;
+        }
+        .status-card {
+            background: rgba(20, 184, 166, 0.1);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .status-card.critical {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--danger);
+        }
+        .status-card h4 {
+            margin: 0 0 1rem 0;
+            font-size: 1.125rem;
+            color: var(--accent);
+        }
+        .status-card.critical h4 {
+            color: var(--danger);
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .metric:last-child {
+            border-bottom: none;
+        }
+        .metric-label {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+        .metric-value {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--success);
+        }
+        .metric-value.warning {
+            color: var(--warning);
+        }
+        .metric-value.danger {
+            color: var(--danger);
+        }
+        .voice-feedback {
+            background: #0a0f1a;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Monaco', monospace;
+            font-size: 1rem;
+            min-height: 60px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .training-redirect {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.05));
+            border: 3px solid var(--danger);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 1.5rem;
+            animation: flashBorder 1s infinite;
+        }
+        @keyframes flashBorder {
+            0%, 100% { border-color: var(--danger); }
+            50% { border-color: var(--warning); }
+        }
+        .training-redirect h3 {
+            color: var(--danger);
+            margin: 0 0 1rem 0;
+            font-size: 1.5rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-success {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), #0d9488);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            margin: 0 0.5rem;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(20, 184, 166, 0.4);
+        }
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero -->
+        <div class="hero">
+            <h1>Interactive Brahan Vertex Engine</h1>
+            <p class="subtitle" style="color: var(--muted); font-size: 1.25rem; margin-bottom: 1rem;">
+                Live Demonstrations - Execute the Code, See the Results
+            </p>
+            <p style="color: var(--muted); max-width: 800px; margin: 0 auto 2rem auto;">
+                Don't just read about the architecture—<strong style="color: var(--accent);">interact with it</strong>.
+                Toggle physics mode, trigger training redirects, and test voice commands in real-time.
+            </p>
+            <div>
+                <a href="brahan-vertex.html" class="cta-button">🚀 Launch Full Application</a>
+                <a href="brahan-vertex-builds.html" class="cta-button secondary">📄 View Documentation</a>
+            </div>
+        </div>
+
+        <!-- Demo 1: Physics-Informed ML Override -->
+        <div class="interactive-section">
+            <h2>
+                <span style="font-size: 2rem;">🔬</span>
+                Demo 1: Physics-Informed ML Override
+            </h2>
+            <p style="color: var(--muted); margin-bottom: 2rem;">
+                Toggle <strong style="color: var(--accent);">Physics Mode</strong> to see how deterministic rules override probabilistic ML predictions.
+                Machine learning shows 12% integrity, but physics detects a critical violation.
+            </p>
+            <div id="physics-demo-root"></div>
+        </div>
+
+        <!-- Demo 2: Closed-Loop Competency Training -->
+        <div class="interactive-section">
+            <h2>
+                <span style="font-size: 2rem;">🎓</span>
+                Demo 2: Closed-Loop Competency Training
+            </h2>
+            <p style="color: var(--muted); margin-bottom: 2rem;">
+                Attempt an unsafe operation and watch the system <strong style="color: var(--danger);">automatically redirect</strong>
+                you to remedial training. This is how operational drift is prevented in real-time.
+            </p>
+            <div id="training-demo-root"></div>
+        </div>
+
+        <!-- Demo 3: Voice Command Interface -->
+        <div class="interactive-section">
+            <h2>
+                <span style="font-size: 2rem;">🎙️</span>
+                Demo 3: Voice Command Interface
+            </h2>
+            <p style="color: var(--muted); margin-bottom: 2rem;">
+                Test the <strong style="color: var(--accent);">hands-free voice interface</strong> designed for industrial environments.
+                Type commands or (if supported) use your microphone to control the system.
+            </p>
+            <div id="voice-demo-root"></div>
+        </div>
+    </div>
+
+    <!-- React Components -->
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Demo 1: Physics Override
+        function PhysicsDemo() {
+            const [physicsMode, setPhysicsMode] = useState(false);
+            const [wellData, setWellData] = useState({
+                id: 'well-bravo',
+                name: 'BRAVO-12',
+                mlIntegrityScore: 12,
+                actualIntegrityScore: 12,
+                safetyLocked: false,
+                pressureDecline: '2.5 psi/min',
+                thermalModel: '3.2°F/hr deviation'
+            });
+
+            useEffect(() => {
+                if (physicsMode) {
+                    // Physics override logic
+                    setWellData(prev => ({
+                        ...prev,
+                        actualIntegrityScore: 0,
+                        safetyLocked: true,
+                        pressureDecline: '15.8 psi/min ⚠️',
+                        thermalModel: '12.4°F/hr deviation ⚠️'
+                    }));
+                } else {
+                    setWellData(prev => ({
+                        ...prev,
+                        actualIntegrityScore: 12,
+                        safetyLocked: false,
+                        pressureDecline: '2.5 psi/min',
+                        thermalModel: '3.2°F/hr deviation'
+                    }));
+                }
+            }, [physicsMode]);
+
+            return (
+                <div className="demo-container">
+                    <div className="demo-panel">
+                        <h3>Control Panel</h3>
+                        <button
+                            className={`btn ${physicsMode ? 'btn-danger' : 'btn-success'}`}
+                            onClick={() => setPhysicsMode(!physicsMode)}
+                            style={{ width: '100%', marginBottom: '1rem' }}
+                        >
+                            {physicsMode ? '🔴 Physics Mode: ON' : '🟢 Physics Mode: OFF'}
+                        </button>
+                        <div className="code-block">
+                            <code>{`useEffect(() => {
+  if (physicsMode) {
+    // Override ML prediction
+    setIntegrityScore(0);
+    setSafetyLocked(true);
+  }
+}, [physicsMode]);`}</code>
+                        </div>
+                    </div>
+
+                    <div className="demo-panel">
+                        <h3>Live Well Status: {wellData.name}</h3>
+                        <div className={`status-card ${wellData.safetyLocked ? 'critical' : ''}`}>
+                            <h4>{wellData.safetyLocked ? '⚠️ CRITICAL VIOLATION' : '✓ Operational'}</h4>
+                            <div className="metric">
+                                <span className="metric-label">ML Integrity Score</span>
+                                <span className="metric-value">{wellData.mlIntegrityScore}%</span>
+                            </div>
+                            <div className="metric">
+                                <span className="metric-label">Actual Integrity Score</span>
+                                <span className={`metric-value ${wellData.actualIntegrityScore === 0 ? 'danger' : 'success'}`}>
+                                    {wellData.actualIntegrityScore}%
+                                </span>
+                            </div>
+                            <div className="metric">
+                                <span className="metric-label">Pressure Decline Rate</span>
+                                <span className="metric-value">{wellData.pressureDecline}</span>
+                            </div>
+                            <div className="metric">
+                                <span className="metric-label">Thermal Model Deviation</span>
+                                <span className="metric-value">{wellData.thermalModel}</span>
+                            </div>
+                            <div className="metric">
+                                <span className="metric-label">Safety Lock Status</span>
+                                <span className={`badge ${wellData.safetyLocked ? 'badge-danger' : 'badge-success'}`}>
+                                    {wellData.safetyLocked ? 'LOCKED' : 'UNLOCKED'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Demo 2: Training Redirect
+        function TrainingDemo() {
+            const [attemptBlocked, setAttemptBlocked] = useState(false);
+            const [eventLog, setEventLog] = useState([]);
+
+            const handleExecutionAttempt = () => {
+                setAttemptBlocked(true);
+                setEventLog(prev => [
+                    `[${new Date().toLocaleTimeString()}] Execution attempt blocked`,
+                    `[${new Date().toLocaleTimeString()}] Redirecting to competency training`,
+                    `[${new Date().toLocaleTimeString()}] Training module: Micro-Annulus Quiz`,
+                    ...prev
+                ].slice(0, 8));
+            };
+
+            const resetDemo = () => {
+                setAttemptBlocked(false);
+            };
+
+            return (
+                <div className="demo-container">
+                    <div className="demo-panel">
+                        <h3>Operator Actions</h3>
+                        <button
+                            className="btn btn-danger"
+                            onClick={handleExecutionAttempt}
+                            disabled={attemptBlocked}
+                            style={{ width: '100%', marginBottom: '1rem', opacity: attemptBlocked ? 0.5 : 1 }}
+                        >
+                            ⚠️ Attempt Unsafe Operation
+                        </button>
+                        <button
+                            className="btn btn-success"
+                            onClick={resetDemo}
+                            style={{ width: '100%' }}
+                        >
+                            🔄 Reset Demo
+                        </button>
+                        <div className="code-block">
+                            <code>{`const handleExecutionAttempt = () => {
+  if (safetyLocked) {
+    setTrainingRequired(true);
+    redirectToTraining();
+    return false; // Block
+  }
+  return true; // Allow
+};`}</code>
+                        </div>
+                    </div>
+
+                    <div className="demo-panel">
+                        <h3>System Response</h3>
+                        {attemptBlocked && (
+                            <div className="training-redirect">
+                                <h3>⚠️ TRAINING REQUIRED</h3>
+                                <p style={{ color: var(--muted), marginBottom: '1rem' }}>
+                                    Procedural violation detected. You must complete remedial training before proceeding.
+                                </p>
+                                <div style={{ background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px' }}>
+                                    <strong style={{ color: var(--warning) }}>Required Module:</strong>
+                                    <br/>
+                                    Micro-Annulus Diagnostics Quiz
+                                    <br/>
+                                    <span style={{ fontSize: '0.9rem', color: var(--muted) }}>Minimum passing score: 80%</span>
+                                </div>
+                            </div>
+                        )}
+                        <div style={{ marginTop: '1.5rem' }}>
+                            <strong style={{ color: var(--accent) }}>Event Log:</strong>
+                            <div className="code-block" style={{ marginTop: '0.5rem', maxHeight: '200px', overflow-y: auto' }}>
+                                {eventLog.length === 0 ? (
+                                    <div style={{ color: var(--muted), fontStyle: 'italic' }}>No events yet. Try clicking the button above.</div>
+                                ) : (
+                                    eventLog.map((log, i) => <div key={i}>{log}</div>)
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Demo 3: Voice Commands
+        function VoiceDemo() {
+            const [command, setCommand] = useState('');
+            const [feedback, setFeedback] = useState('Awaiting command...');
+            const [isListening, setIsListening] = useState(false);
+
+            const processCommand = (text) => {
+                const lower = text.toLowerCase();
+                if (lower.includes('physics mode on') || lower.includes('enable physics')) {
+                    setFeedback('✓ CMD: PHYSICS_MODE_ENABLED');
+                } else if (lower.includes('physics mode off') || lower.includes('disable physics')) {
+                    setFeedback('✓ CMD: PHYSICS_MODE_DISABLED');
+                } else if (lower.includes('emergency') || lower.includes('stop')) {
+                    setFeedback('⚠ ALARM: EMERGENCY_STOP_TRIGGERED');
+                } else if (lower.includes('dashboard') || lower.includes('show dashboard')) {
+                    setFeedback('✓ CMD: NAVIGATE_TO_DASHBOARD');
+                } else if (lower.includes('planner') || lower.includes('open planner')) {
+                    setFeedback('✓ CMD: NAVIGATE_TO_PLANNER');
+                } else if (lower.includes('status report')) {
+                    setFeedback('✓ CMD: GENERATING_STATUS_REPORT');
+                } else {
+                    setFeedback('❌ ERROR: COMMAND_NOT_RECOGNIZED');
+                }
+            };
+
+            const handleTextCommand = () => {
+                if (command.trim()) {
+                    processCommand(command);
+                    setCommand('');
+                }
+            };
+
+            const handleVoiceCommand = () => {
+                if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                    setFeedback('❌ ERROR: Speech recognition not supported in this browser');
+                    return;
+                }
+
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+
+                recognition.continuous = false;
+                recognition.interimResults = false;
+
+                recognition.onstart = () => {
+                    setIsListening(true);
+                    setFeedback('🎤 Listening...');
+                };
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    setCommand(transcript);
+                    processCommand(transcript);
+                    setIsListening(false);
+                };
+
+                recognition.onerror = (event) => {
+                    setFeedback(`❌ ERROR: ${event.error}`);
+                    setIsListening(false);
+                };
+
+                recognition.onend = () => {
+                    setIsListening(false);
+                };
+
+                recognition.start();
+            };
+
+            return (
+                <div className="demo-container">
+                    <div className="demo-panel">
+                        <h3>Command Input</h3>
+                        <input
+                            type="text"
+                            value={command}
+                            onChange={(e) => setCommand(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && handleTextCommand()}
+                            placeholder="Type command or use voice..."
+                            style={{
+                                width: '100%',
+                                padding: '12px',
+                                background: '#0a0f1a',
+                                border: '1px solid var(--border)',
+                                borderRadius: '8px',
+                                color: 'var(--fg)',
+                                fontSize: '1rem',
+                                marginBottom: '1rem'
+                            }}
+                        />
+                        <div style={{ display: 'flex', gap: '1rem' }}>
+                            <button
+                                className="btn"
+                                onClick={handleTextCommand}
+                                style={{ flex: 1 }}
+                            >
+                                📝 Send Text Command
+                            </button>
+                            <button
+                                className="btn btn-success"
+                                onClick={handleVoiceCommand}
+                                disabled={isListening}
+                                style={{ flex: 1, opacity: isListening ? 0.7 : 1 }}
+                            >
+                                {isListening ? '🎤 Listening...' : '🎙️ Use Voice'}
+                            </button>
+                        </div>
+                        <div className="code-block">
+                            <code>{`const processCommand = (text) => {
+  if (text.includes('physics mode on')) {
+    enablePhysicsMode();
+    setFeedback('PHYSICS_MODE_ENABLED');
+  }
+  else if (text.includes('emergency')) {
+    triggerEmergencyStop();
+    setFeedback('EMERGENCY_STOP');
+  }
+  // ... 9 command patterns
+};`}</code>
+                        </div>
+                        <div style={{ marginTop: '1.5rem' }}>
+                            <strong style={{ color: var(--accent) }}>Try These Commands:</strong>
+                            <ul style={{ color: var(--muted), fontSize: '0.9rem', marginTop: '0.5rem', lineHeight: '1.8' }}>
+                                <li>"Physics mode on"</li>
+                                <li>"Emergency stop"</li>
+                                <li>"Show dashboard"</li>
+                                <li>"Open planner"</li>
+                                <li>"Status report"</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="demo-panel">
+                        <h3>System Feedback</h3>
+                        <div className="voice-feedback">
+                            {feedback}
+                        </div>
+                        <div style={{ marginTop: '1.5rem', padding: '1rem', background: 'rgba(20, 184, 166, 0.05)', borderRadius: '8px', border: '1px solid var(--accent)' }}>
+                            <strong style={{ color: var(--accent) }}>Industrial UX Context:</strong>
+                            <p style={{ color: var(--muted), fontSize: '0.9rem', margin: '0.5rem 0 0 0', lineHeight: '1.6' }}>
+                                Voice commands are essential in offshore environments where operators wear heavy-duty gloves,
+                                work with greasy hands, or need to maintain visual contact with equipment during critical operations.
+                                This hands-free interface mirrors next-gen industrial hardware like RealWear HMT-1 and Microsoft HoloLens.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Render all demos
+        ReactDOM.render(<PhysicsDemo />, document.getElementById('physics-demo-root'));
+        ReactDOM.render(<TrainingDemo />, document.getElementById('training-demo-root'));
+        ReactDOM.render(<VoiceDemo />, document.getElementById('voice-demo-root'));
+    </script>
+</body>
+</html>
