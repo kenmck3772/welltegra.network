@@ -89,11 +89,11 @@ PORTFOLIO PROJECTS:
    - GitHub: https://github.com/kenmck3772/Craik-Electrical
 
 THE CAREER NARRATIVE - Three-Act Transformation:
-Act I (1990-2020): Offshore Well Engineering - 30 years across North Sea, Middle East, Asia-Pacific, West Africa
+Act I (1990-2020): Offshore Well Engineering - 30 years of team-based operations across North Sea, Middle East, Asia-Pacific, West Africa
 Act II (2023): Blockchain Pioneer - Operated Evernode Genesis Node, learned distributed systems & DevOps
 Act III (2024-Now): Cloud ML Engineer - Built production AI systems on GCP with physics-informed ML
 
-This is not a career change—it's a career evolution. The thread is solving industrial problems with better tools.
+This isn't a career change—it's applying industrial-grade operational discipline to AI architecture.
 
 EXPERIENCE HIGHLIGHTS:
 - 30+ years offshore well engineering across multiple regions
