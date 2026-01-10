@@ -43,6 +43,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+        continue-on-error: true
+
       - name: Run tests
         run: npm test
         continue-on-error: true
