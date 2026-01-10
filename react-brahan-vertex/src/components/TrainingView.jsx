@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { AlertTriangle, CheckCircle, XCircle, Brain, PlayCircle, BookOpen, Shield, Layers, Wrench } from 'lucide-react';
+import { AlertTriangle, CheckCircle, XCircle, Brain, PlayCircle, BookOpen, Shield, Layers, Wrench, Cable, FlaskConical } from 'lucide-react';
 import HydrostaticAcademy from './hydrostatic/HydrostaticAcademy';
 import IntegrityHub from './integrity-hub/IntegrityHub';
 import WellboreVisualizer from './wellbore-visualizer/WellboreVisualizer';
 import ToolstringAssembler from './toolstring-assembler/ToolstringAssembler';
+import SlicklineOperationsLab from './slickline/SlicklineOperationsLab';
+import WellControlAcademy from './well-control/WellControlAcademy';
 
 const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
   // Reserved for future multi-module navigation
@@ -19,6 +21,8 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
   const [showIntegrityHub, setShowIntegrityHub] = useState(false);
   const [showWellboreVisualizer, setShowWellboreVisualizer] = useState(false);
   const [showToolstringAssembler, setShowToolstringAssembler] = useState(false);
+  const [showSlicklineOperationsLab, setShowSlicklineOperationsLab] = useState(false);
+  const [showWellControlAcademy, setShowWellControlAcademy] = useState(false);
 
   // YouTube video modules
   const videoModules = [
@@ -133,6 +137,16 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
   // Show Toolstring Assembler if activated
   if (showToolstringAssembler) {
     return <ToolstringAssembler onExit={() => setShowToolstringAssembler(false)} />;
+  }
+
+  // Show Slickline Operations Lab if activated
+  if (showSlicklineOperationsLab) {
+    return <SlicklineOperationsLab onExit={() => setShowSlicklineOperationsLab(false)} />;
+  }
+
+  // Show Well Control Academy if activated
+  if (showWellControlAcademy) {
+    return <WellControlAcademy onExit={() => setShowWellControlAcademy(false)} />;
   }
 
   return (
@@ -252,6 +266,52 @@ const TrainingView = ({ showBanner = false, assignmentReason = null }) => {
                 className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold transition-all shadow-lg shadow-emerald-500/50 hover:shadow-emerald-500/70"
               >
                 Build String →
+              </button>
+            </div>
+          </div>
+
+          {/* Slickline Operations Lab */}
+          <div className="bg-gradient-to-r from-purple-900/30 to-slate-900/30 border-2 border-purple-500/50 rounded-lg p-6 hover:border-purple-400 transition-all">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-purple-500/20 rounded-xl flex items-center justify-center">
+                  <Cable className="w-8 h-8 text-purple-400" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-1">Slickline Operations Lab</h3>
+                  <p className="text-slate-400 text-sm">
+                    Modular tool string assembly simulator: job setup, wire selection, physics validation, thermal modeling
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowSlicklineOperationsLab(true)}
+                className="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-bold transition-all shadow-lg shadow-purple-500/50 hover:shadow-purple-500/70"
+              >
+                Enter Lab →
+              </button>
+            </div>
+          </div>
+
+          {/* Well Control Academy */}
+          <div className="bg-gradient-to-r from-red-900/30 to-slate-900/30 border-2 border-red-500/50 rounded-lg p-6 hover:border-red-400 transition-all">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-red-500/20 rounded-xl flex items-center justify-center">
+                  <FlaskConical className="w-8 h-8 text-red-400" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-1">Well Control Academy</h3>
+                  <p className="text-slate-400 text-sm">
+                    Digital Barrier Lab: kill sheet calculator, IWCF learning center, quiz assessments, emergency procedures
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowWellControlAcademy(true)}
+                className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-all shadow-lg shadow-red-500/50 hover:shadow-red-500/70"
+              >
+                Launch Academy →
               </button>
             </div>
           </div>
