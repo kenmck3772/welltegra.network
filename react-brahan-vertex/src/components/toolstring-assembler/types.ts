@@ -40,8 +40,8 @@ export interface WellboreData {
 
 export interface SurveyPoint {
   md: number;
-  incl: number;
-  azim: number;
+  inc: number;
+  azm: number;
   tvd: number;
 }
 

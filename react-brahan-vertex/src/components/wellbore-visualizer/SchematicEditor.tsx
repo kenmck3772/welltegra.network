@@ -131,7 +131,7 @@ export const SchematicEditor: React.FC<SchematicEditorProps> = ({
 
       if (isNaN(md) || isNaN(inc) || isNaN(azm)) return; 
 
-      const newSurveyPoint: SurveyPoint = { md, inc, azm };
+      const newSurveyPoint: SurveyPoint = { md, inc, azm, tvd: md };
       const updatedSurvey = [...well.deviationSurvey, newSurveyPoint].sort((a, b) => a.md - b.md);
       
       onSetDeviationSurvey(updatedSurvey);

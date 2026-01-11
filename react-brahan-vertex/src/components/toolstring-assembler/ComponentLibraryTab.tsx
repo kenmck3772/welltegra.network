@@ -1,7 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { WellData, ToolComponent } from '../types';
-import { componentDB } from '../data/componentDB';
+import { componentDB } from './data/componentDB';
 
 interface ComponentLibraryTabProps {
     wellData: WellData;

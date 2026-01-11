@@ -16,6 +16,8 @@ interface LeftPanelProps {
     onAddComponent: (id: string) => void;
     showNotification: (message: string, type: NotificationType) => void;
     toolString: ToolComponent[];
+    selectedComponent: ToolComponent | null;
+    onSelectComponent: React.Dispatch<React.SetStateAction<ToolComponent | null>>;
 }
 
 const TabButton: React.FC<{ tabId: ActiveTab; activeTab: ActiveTab; onClick: (tab: ActiveTab) => void; children: React.ReactNode }> = ({ tabId, activeTab, onClick, children }) => {

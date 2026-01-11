@@ -7,25 +7,35 @@ import ComponentDetailsPanel from './ComponentDetailsPanel';
 
 interface RightPanelProps {
     toolString: ToolComponent[];
-    dashboardCalculations: {
+    dashboardCalculations?: {
         totalWeight: number;
         totalLength: number;
         pressureAreaForce: number;
         weightDelta: number;
     };
     selectedComponent: ToolComponent | null;
-    onSelectComponent: (component: ToolComponent | null) => void;
+    onSelectComponent?: (component: ToolComponent | null) => void;
+    wellboreData?: any;
+    surveyData?: any;
+    onWellboreDataChange?: any;
+    onSurveyDataChange?: any;
+    showWellbore?: boolean;
+    showSchematic?: boolean;
+    showSurveyPath?: boolean;
+    onToggleWellbore?: () => void;
+    onToggleSchematic?: () => void;
+    onToggleSurvey?: () => void;
 }
 
-const RightPanel: React.FC<RightPanelProps> = ({ toolString, dashboardCalculations, selectedComponent, onSelectComponent }) => {
+const RightPanel: React.FC<RightPanelProps> = ({ toolString, dashboardCalculations, selectedComponent, onSelectComponent, ...props }) => {
     return (
         <div className="md:col-span-1 bg-gray-800 rounded-lg shadow-lg p-4 overflow-y-auto flex flex-col h-full">
             {selectedComponent ? (
-                <ComponentDetailsPanel component={selectedComponent} onClose={() => onSelectComponent(null)} />
+                <ComponentDetailsPanel component={selectedComponent} onClose={() => onSelectComponent?.(null)} />
             ) : (
                 <>
-                    <Dashboard calculations={dashboardCalculations} hasTools={toolString.length > 0} />
-                    <BillOfMaterials toolString={toolString} onSelectComponent={onSelectComponent} />
+                    <Dashboard calculations={dashboardCalculations || { totalWeight: 0, totalLength: 0, pressureAreaForce: 0, weightDelta: 0 }} hasTools={toolString.length > 0} />
+                    <BillOfMaterials toolString={toolString} onSelectComponent={onSelectComponent || (() => {})} />
                 </>
             )}
         </div>

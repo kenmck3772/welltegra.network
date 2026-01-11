@@ -143,7 +143,7 @@ export const Wellbore3D: React.FC<Wellbore3DProps> = ({ wells, wellPaths, select
           renderVolumetricCylinder(parentG, wingPoints, width * 0.6, { main: color, shadow: shadow, highlight: '#fff' });
       };
 
-      function render() {
+      const render = () => {
           // --- RULER ENHANCEMENT ---
           rulerBgGroup.selectAll('*').remove();
           rulerGroup.selectAll('*').remove();
@@ -187,7 +187,7 @@ export const Wellbore3D: React.FC<Wellbore3DProps> = ({ wells, wellPaths, select
               const transform = (p: Point3D) => ({ ...p, x: p.x + (well.surfaceX || 0), y: p.y + (well.surfaceY || 0), z: p.z });
               const transformedPath = path.map(transform);
 
-              group.append('path').datum(transformedPath).attr('d', line3D).attr('fill', 'none').attr('stroke', well.id === selectedWellId ? 'url(#pathGradient)' : '#475569').attr('stroke-width', well.id === selectedWellId ? 2.5 : 1).style('filter', well.id === selectedWellId ? 'url(#glow)' : null);
+              group.append('path').datum(transformedPath).attr('d', line3D).attr('fill', 'none').attr('stroke', well.id === selectedWellId ? 'url(#pathGradient)' : '#475569').attr('stroke-width', well.id === selectedWellId ? 2.5 : 1).style('filter', well.id === selectedWellId ? 'url(#glow)' : 'none');
               
               const treeZ = well.type === WellType.SUBSEA ? ((well as SubseaWell).datumElevation || 25) + (well as SubseaWell).waterDepth : 0;
               renderChristmasTree(group.append('g'), well, treeZ);

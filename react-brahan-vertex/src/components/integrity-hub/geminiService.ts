@@ -1,9 +1,9 @@
 
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Section, Content, ContentPiece, MaintenanceRecord, PredictiveAlert } from '../types';
 
 // Initializing the Gemini client strictly adhering to library guidelines
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenerativeAI(process.env.API_KEY || '');
 
 const getPromptForSection = (section: Section): string => {
   const systemContext = "You are the Brahan Hub AI, a visionary expert in subsea and surface well integrity with a focus on rugged industrial safety and predictive foresight. Your tone is authoritative, professional, and sophisticated.";
@@ -61,16 +61,15 @@ export const getPredictiveAlerts = async (history: MaintenanceRecord[]): Promise
   Generate exactly 3 predictive alerts (critical, warning, info) with suggested maintenance dates. Output as JSON array of PredictiveAlert objects.`;
 
   try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-3-pro-preview',
-      contents: prompt,
-      config: { 
-        responseMimeType: "application/json",
-        thinkingConfig: { thinkingBudget: 4000 }
-      },
+    const model = ai.getGenerativeModel({
+      model: 'gemini-pro',
+      generationConfig: {
+        responseMimeType: "application/json"
+      }
     });
 
-    const text = response.text || "";
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
     const jsonMatch = text.match(/\[[\s\S]*\]/);
     return jsonMatch ? JSON.parse(jsonMatch[0]) : [];
   } catch (error) {
@@ -133,18 +132,17 @@ export const fetchContentForSection = async (section: Section, retryCount = 0): 
   const isJsonOutput = section === Section.TREES || section === Section.MAINTENANCE || section === Section.SETTINGS;
 
   try {
-    const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: prompt,
-        config: { 
-          responseMimeType: isJsonOutput ? "application/json" : "text/plain",
-          thinkingConfig: { thinkingBudget: isJsonOutput ? 2000 : 0 }
-        },
+    const model = ai.getGenerativeModel({
+      model: 'gemini-pro',
+      generationConfig: {
+        responseMimeType: isJsonOutput ? "application/json" : "text/plain"
+      }
     });
 
-    const rawText = response.text;
+    const result = await model.generateContent(prompt);
+    const rawText = result.response.text();
     if (!rawText) throw new Error("Connection to Brahan Hub failed.");
-    
+
     return parseGeminiResponse(section, rawText);
   } catch (error: any) {
     console.error(`Error fetching content for ${section}:`, error);

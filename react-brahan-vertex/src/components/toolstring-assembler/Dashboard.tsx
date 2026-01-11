@@ -53,10 +53,10 @@ const Dashboard: React.FC<DashboardProps> = ({ calculations, hasTools }) => {
             <div className="space-y-3">
                 <DashboardItem label="Total String Weight" value={`${totalWeight.toFixed(0)} lbs`} />
                 <DashboardItem label="Total String Length" value={`${totalLength.toFixed(2)} ft`} />
-                <DashboardItem 
-                    label="Pressure-Area Force" 
-                    value={`${pressureAreaForce.toFixed(0)} lbs`} 
-                    sublabel="Force to overcome at WHP. (Based on 0.108\" wire)"
+                <DashboardItem
+                    label="Pressure-Area Force"
+                    value={`${pressureAreaForce.toFixed(0)} lbs`}
+                    sublabel='Force to overcome at WHP. (Based on 0.108" wire)'
                     wire={true}
                 />
                 <div className={`p-4 rounded-md text-center font-bold text-lg transition-all duration-300 ${balance.className}`}>
