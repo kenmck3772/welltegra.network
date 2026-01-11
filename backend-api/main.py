@@ -37,6 +37,14 @@ from wi_planner import (
     Severity
 )
 
+# Enhanced Barrier Verification Agent
+from barrier_agent import BarrierVerificationAgent
+from barrier_models import (
+    BarrierVerificationRequest,
+    BarrierVerificationResult,
+    BarrierEnvelope
+)
+
 # Initialize FastAPI
 app = FastAPI(
     title="Brahan Engine API",
@@ -773,6 +781,104 @@ async def initialize_database():
         "status": "initialized",
         "collections": ["teams", "telemetry", "conflicts", "alerts"],
         "team_members": len(team)
+    }
+
+# ============================================
+# BARRIER VERIFICATION AGENT (DIGITAL ENGINEER)
+# ============================================
+
+# Initialize the Barrier Verification Agent
+barrier_agent = BarrierVerificationAgent()
+
+@app.post("/api/barrier/verify", response_model=BarrierVerificationResult)
+async def verify_barrier_envelope(request: BarrierVerificationRequest):
+    """
+    Enhanced Barrier Verification using AI-powered Digital Engineer
+
+    This endpoint implements the "Digital Twin of a Well Engineer" cognitive process:
+    1. Validates dual-barrier envelope per NORSOK D-010
+    2. Checks barrier integrity and test currency
+    3. Verifies pressure ratings against reservoir conditions
+    4. Identifies depth coverage gaps
+    5. Provides executive summary with stop/go recommendation
+
+    Use this for:
+    - Pre-job barrier verification (P&A, completions, interventions)
+    - Live monitoring during operations
+    - Post-operation barrier integrity audits
+    - Training simulations (e.g., Deepwater Horizon scenario)
+
+    Example Request:
+    ```json
+    {
+        "barrier_envelope": {
+            "well_id": "WELL-666",
+            "operation_name": "P&A Abandonment",
+            "primary_barriers": [...],
+            "secondary_barriers": [...],
+            "depth_interval_start": 0,
+            "depth_interval_end": 10000,
+            "reservoir_pressure": 5000
+        },
+        "strict_mode": true,
+        "check_pressure_ratings": true
+    }
+    ```
+
+    Returns:
+    - Complete verification result with violations
+    - Executive summary (PASS/FAIL/WARNING)
+    - Stop-job flag if critical violations detected
+    """
+    try:
+        result = barrier_agent.verify_barriers(
+            envelope=request.barrier_envelope,
+            strict_mode=request.strict_mode,
+            check_pressure_ratings=request.check_pressure_ratings,
+            check_test_dates=request.check_test_dates,
+            max_test_age_days=request.max_test_age_days
+        )
+
+        return result
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Barrier verification failed: {str(e)}"
+        )
+
+@app.get("/api/barrier/agent-info")
+async def get_agent_info():
+    """
+    Get information about the Barrier Verification Agent
+
+    Returns the agent's persona, capabilities, and decision-making framework
+    """
+    return {
+        "agent_name": "Barrier Verification Agent",
+        "version": "1.0.0",
+        "persona": barrier_agent.persona,
+        "capabilities": [
+            "NORSOK D-010 compliance verification",
+            "API RP 96 barrier envelope validation",
+            "Dual-barrier requirement checking",
+            "Pressure rating verification",
+            "Test currency validation",
+            "Depth coverage gap detection",
+            "H2S environment special checks",
+            "Stop-job decision automation"
+        ],
+        "standards": [
+            "NORSOK D-010 (Well Integrity)",
+            "API RP 96 (Deepwater Well Design)",
+            "ISO 16530 (Well Integrity)"
+        ],
+        "decision_framework": {
+            "layer_1": "Physics First (pressure containment, material limits)",
+            "layer_2": "History Second (test results, previous failures)",
+            "layer_3": "Innovation Third (only if layers 1 & 2 satisfied)",
+            "fail_safe": "Default to STOP THE JOB if uncertain"
+        }
     }
 
 # ============================================
