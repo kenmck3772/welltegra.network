@@ -193,12 +193,18 @@ const ToolstringAssembler: React.FC<ToolstringAssemblerProps> = ({ onExit }) => 
                     selectedComponent={selectedComponent}
                     onSelectComponent={setSelectedComponent}
                     wellData={wellData}
-                    onWellDataChange={setWellData}
+                    setWellData={setWellData}
+                    wellboreData={wellboreData}
+                    setWellboreData={setWellboreData}
+                    surveyData={surveyData}
+                    setSurveyData={setSurveyData}
+                    showNotification={showNotification}
                 />
 
                 <div className="flex-1 relative">
                     <ThreeViewport
                         toolString={toolString}
+                        wellData={wellData}
                         wellboreData={wellboreData}
                         surveyData={surveyData}
                         selectedComponent={selectedComponent}
@@ -206,6 +212,9 @@ const ToolstringAssembler: React.FC<ToolstringAssemblerProps> = ({ onExit }) => 
                         showWellbore={showWellbore}
                         showSchematic={showSchematic}
                         showSurveyPath={showSurveyPath}
+                        onShowWellboreChange={setShowWellbore}
+                        onShowSchematicChange={setShowSchematic}
+                        onShowSurveyPathChange={setShowSurveyPath}
                     />
                 </div>
 

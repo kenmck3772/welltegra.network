@@ -26,7 +26,7 @@ const AddWellModal: React.FC<{onClose: () => void; onAddWell: (well: Well) => vo
             id: `well-${Date.now()}`,
             name: name || `Well-${Date.now() % 1000}`,
             components: [] as WellComponent[],
-            deviationSurvey: [{md: 0, inc: 0, azm: 0}],
+            deviationSurvey: [{md: 0, inc: 0, azm: 0, tvd: 0}],
             datumElevation: 25, // Default datum elevation
             surfaceX: 0,
             surfaceY: 0,

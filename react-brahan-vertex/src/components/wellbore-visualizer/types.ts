@@ -46,6 +46,7 @@ export interface SurveyPoint {
   md: number; // Measured Depth
   inc: number; // Inclination
   azm: number; // Azimuth
+  tvd: number; // True Vertical Depth
 }
 
 export interface Point3D {

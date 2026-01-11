@@ -1,8 +1,8 @@
 
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NotificationType, ToolComponent, WellData, WellboreData } from '../types';
-import { componentDB } from '../data/componentDB';
+import { componentDB } from './data/componentDB';
 
 // Data from provided CSV files (kept as string constants)
 const wellPortfolioCSV = `Well_ID,Well_Name,Field,Region,Type,Total_Depth_ft,Water_Depth_ft,Operator,Status,Last_Intervention_Date,Next_Scheduled,Production_Status,Daily_Oil_bopd,Daily_Gas_mcfd,Reservoir_Pressure_psi,Wellhead_Pressure_psi,Cumulative_NPT_hrs,Safety_Critical_Issues,Integrity_Rating,Last_Inspection_Date,Estimated_Remaining_Life_years,Well_Cost_MM_USD,Intervention_Count,Last_Intervention_Type,Risk_Level
@@ -312,7 +312,7 @@ const AIAssistantTab: React.FC<AIAssistantTabProps> = ({ showNotification, toolS
         if (fileInputRef.current) fileInputRef.current.value = '';
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+            const ai = new GoogleGenerativeAI(process.env.API_KEY as string);
             
             // Format component DB for the AI
             const componentList = Object.values(componentDB).map(c => 
@@ -382,29 +382,28 @@ const AIAssistantTab: React.FC<AIAssistantTabProps> = ({ showNotification, toolS
             
             Please provide a concise and accurate answer based on the data.`;
 
+            const modelName = currentImage ? 'gemini-1.5-pro' : 'gemini-pro';
+            const model = ai.getGenerativeModel({ model: modelName });
+
             let contents;
             if (currentImage) {
-                 contents = {
-                    parts: [
-                        { text: contextPrompt },
-                        {
-                            inlineData: {
-                                mimeType: currentMime,
-                                data: currentImage
-                            }
+                contents = [
+                    contextPrompt,
+                    {
+                        inlineData: {
+                            mimeType: currentMime,
+                            data: currentImage
                         }
-                    ]
-                };
+                    }
+                ];
             } else {
                 contents = contextPrompt;
             }
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash-image',
-                contents: contents,
-            });
+            const result = await model.generateContent(contents);
+            const responseText = result.response.text();
 
-            setChatHistory([...newHistory, { author: 'model', text: response.text, timestamp: new Date() }]);
+            setChatHistory([...newHistory, { author: 'model', text: responseText, timestamp: new Date() }]);
 
         } catch (error) {
             console.error(error);

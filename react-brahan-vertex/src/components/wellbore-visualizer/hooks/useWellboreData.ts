@@ -22,11 +22,11 @@ const initialWells: Well[] = [
         surfaceY: 0,
         datumElevation: 25,
         deviationSurvey: [
-            { md: 0, inc: 0.00, azm: 0.0 },
-            { md: 500, inc: 1.50, azm: 45.0 },
-            { md: 1000, inc: 3.50, azm: 45.0 },
-            { md: 2000, inc: 15.00, azm: 45.0 },
-            { md: 3500, inc: 45.00, azm: 45.0 },
+            { md: 0, inc: 0.00, azm: 0.0, tvd: 0 },
+            { md: 500, inc: 1.50, azm: 45.0, tvd: 500 },
+            { md: 1000, inc: 3.50, azm: 45.0, tvd: 998 },
+            { md: 2000, inc: 15.00, azm: 45.0, tvd: 1931 },
+            { md: 3500, inc: 45.00, azm: 45.0, tvd: 2475 },
         ],
         components: [
             createCasing(0, 500, 20, "Surface Casing"),
@@ -44,10 +44,10 @@ const initialWells: Well[] = [
         datumElevation: 25,
         subseaStructure: 'Template',
         deviationSurvey: [
-            { md: 0, inc: 0.00, azm: 180.0 },
-            { md: 1000, inc: 20.00, azm: 180.0 },
-            { md: 2500, inc: 60.00, azm: 180.0 },
-            { md: 4000, inc: 90.00, azm: 180.0 },
+            { md: 0, inc: 0.00, azm: 180.0, tvd: 0 },
+            { md: 1000, inc: 20.00, azm: 180.0, tvd: 940 },
+            { md: 2500, inc: 60.00, azm: 180.0, tvd: 1250 },
+            { md: 4000, inc: 90.00, azm: 180.0, tvd: 1250 },
         ],
         components: [
             createCasing(475, 1200, 20, "Surface"),

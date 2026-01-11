@@ -116,15 +116,17 @@ const WellboreVisualizer: React.FC<WellboreVisualizerProps> = ({ onExit }) => {
                 <h2 className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">Configuration</h2>
              </div>
              <div className="flex-grow overflow-y-auto scrollbar-thin">
-                 <SchematicEditor
-                     well={selectedWell}
-                     selectedComponent={selectedComponent}
-                     onSelectComponent={setSelectedComponentId}
-                     onUpdateComponent={updateComponent}
-                     onRemoveComponent={removeComponent}
-                     onUpdateWell={updateWell}
-                     onSetDeviationSurvey={setDeviationSurvey}
-                 />
+                 {selectedWell && selectedWellId && (
+                     <SchematicEditor
+                         well={selectedWell}
+                         selectedComponent={selectedComponent}
+                         onSelectComponent={setSelectedComponentId}
+                         onUpdateComponent={(id, updates) => updateComponent(selectedWellId, id, updates)}
+                         onRemoveComponent={(id) => removeComponent(selectedWellId, id)}
+                         onUpdateWell={(updates) => updateWell(selectedWellId, updates)}
+                         onSetDeviationSurvey={(survey) => setDeviationSurvey(selectedWellId, survey)}
+                     />
+                 )}
              </div>
          </div>
       </aside>
