@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { IconCasing, IconPacker, IconPerforation, IconTubing } from './IconComponents';
-import type { ComponentType } from '../types';
 
 interface ComponentButtonProps {
   icon: React.ReactNode;

@@ -3,8 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 const WellControlSimulator: React.FC = () => {
   const [pumpSpeed, setPumpSpeed] = useState(0);
   const [chokePosition, setChokePosition] = useState(50); // % open
-  const [sidpp, setSidpp] = useState(500); // psi
-  const [sicp, setSicp] = useState(800); // psi
+  const [sidpp] = useState(500); // psi
+  const [sicp] = useState(800); // psi
   const [drillPipePressure, setDrillPipePressure] = useState(500);
   const [casingPressure, setCasingPressure] = useState(800);
   const [status, setStatus] = useState<'IDLE' | 'KICK' | 'CIRCULATING' | 'KILLED' | 'FAILED'>('KICK');

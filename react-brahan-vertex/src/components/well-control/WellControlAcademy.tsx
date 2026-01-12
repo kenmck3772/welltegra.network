@@ -9,7 +9,6 @@ interface WellControlAcademyProps {
 
 const WellControlAcademy: React.FC<WellControlAcademyProps> = ({ onExit }) => {
   const [activeView, setActiveView] = useState<AcademyView>('DASHBOARD');
-  const [completionProgress, setCompletionProgress] = useState(65);
 
   const trainingTracks = [
     { id: 'drilling', title: 'Drilling Well Control', progress: 65, color: 'text-orange-500', bg: 'bg-orange-500/10' },

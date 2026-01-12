@@ -1,6 +1,5 @@
 
-import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import TelemetryChart, { HealthStatus, TelemetryHandle } from './TelemetryChart';
 import { HubConfig } from '../types';
 
@@ -283,32 +282,32 @@ const ChristmasTreeUnit: React.FC<ChristmasTreeUnitProps> = ({ data, hubConfig }
     }, 2500);
   };
 
-  const getPartData = (label: string) => {
+  const getPartData = useCallback((label: string) => {
     const currentData = (telemetryRef.current?.getCurrentData() || {}) as Record<string, number>;
     const baselines = (telemetryRef.current?.getBaselines() || {}) as Record<string, number>;
-    
+
     const entry = Object.entries(currentData).find(([key]) => key.toLowerCase() === label.toLowerCase());
     const baselineEntry = Object.entries(baselines).find(([key]) => key.toLowerCase() === label.toLowerCase());
-    
+
     const value = entry ? entry[1] : undefined;
     const baseline = baselineEntry ? baselineEntry[1] : undefined;
     const param = data.telemetryParams.find(p => p.label.toLowerCase() === label.toLowerCase());
-    
+
     if (!param) return null;
 
     const drift = baseline !== undefined && value !== undefined ? ((value - baseline) / baseline) * 100 : 0;
     const deviation = value !== undefined ? Math.abs(value - param.baseValue) / param.baseValue : 0;
-    
+
     let partStatus: HealthStatus = 'optimal';
     if (failedComponents.has(label.toLowerCase())) partStatus = 'critical';
     else if (deviation > 0.3) partStatus = 'critical';
     else if (deviation > 0.15) partStatus = 'warning';
 
     return { value, unit: param.unit, status: partStatus, drift, baseValue: param.baseValue };
-  };
+  }, [data.telemetryParams, failedComponents]);
 
   const activePartIntel = useMemo(() => activePart ? getComponentIntelligence(activePart.label) : null, [activePart]);
-  const activePartData = useMemo(() => activePart ? getPartData(activePart.label) : null, [activePart]);
+  const activePartData = useMemo(() => activePart ? getPartData(activePart.label) : null, [activePart, getPartData]);
 
   // Derived logic for the featured detail overlay
   const featuredValve = useMemo(() => {
@@ -326,7 +325,7 @@ const ChristmasTreeUnit: React.FC<ChristmasTreeUnitProps> = ({ data, hubConfig }
       isFailed,
       isActive: activePart?.label === targetLabel
     };
-  }, [activePart, failedComponents, data.telemetryParams]);
+  }, [activePart, failedComponents, getPartData]);
 
   const valveRotation = useMemo(() => {
     return ((100 - featuredValve.percentage) / 100) * 90;
