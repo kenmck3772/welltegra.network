@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { X } from 'lucide-react';
-import { ToolComponent, WellData, WellboreData, SurveyPoint, NotificationState, NotificationType, ActiveTab } from './types';
+import { ToolComponent, WellData, WellboreData, SurveyPoint, NotificationState, NotificationType } from './types';
 import { componentDB } from './data/componentDB';
 import Header from './Header';
 import LeftPanel from './LeftPanel';

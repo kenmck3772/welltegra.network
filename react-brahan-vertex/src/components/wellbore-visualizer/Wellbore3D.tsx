@@ -1,7 +1,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
-import type { Point3D, WellComponent, Casing, Tubing, Packer, Perforation, Well, SubseaWell, SubseaStructureType } from '../types';
+import type { Point3D, Casing, Well, SubseaWell } from '../types';
 import { ComponentType, WellType } from '../types';
 import { IconResetView, IconStructure } from './IconComponents';
 
@@ -115,12 +115,18 @@ export const Wellbore3D: React.FC<Wellbore3DProps> = ({ wells, wellPaths, select
       glow.append('feMerge').selectAll('feMergeNode').data(['coloredBlur', 'SourceGraphic']).enter().append('feMergeNode').attr('in', d => d);
       
       const g = svg3D.append('g');
+      // Reserved for future seabed rendering
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const seabedGroup = g.append('g').attr('class', 'seabed-group');
       const rulerBgGroup = g.append('g').attr('class', 'ruler-bg-group');
       const rulerGroup = g.append('g').attr('class', 'ruler-group');
+      // Reserved for future surface rendering
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const surfaceLayer = g.append('g').attr('class', 'surface-layer');
       const wellsLayer = g.append('g').attr('class', 'wells-layer');
       const structuresLayer = g.append('g').attr('class', 'structures-layer');
+      // Reserved for future marker rendering
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const markersLayer = g.append('g').attr('class', 'markers-layer');
 
       const renderVolumetricCylinder = (container: any, pathData: Point3D[], width: number, colors: any, addCaps: boolean = false, fullWellPath?: Point3D[]) => {
@@ -282,7 +288,7 @@ export const Wellbore3D: React.FC<Wellbore3DProps> = ({ wells, wellPaths, select
       render();
       return () => { if (rafId.current) cancelAnimationFrame(rafId.current); }
     }
-  }, [wells, wellPaths, selectedWellId, selectedComponentId, onSelectComponent, showStructures]);
+  }, [wells, wellPaths, selectedWellId, selectedComponentId, onSelectComponent, showStructures, selectedWell]);
 
   return (
     <div className="w-full h-full flex relative bg-gray-950">

@@ -361,7 +361,7 @@ const createToolMesh = (component: ToolComponent, wellData: WellData, selectedCo
     // Safe parse function
     const parseDim = (str: string | undefined) => {
         if (!str) return null;
-        const match = str.match(/([\d\.]+)/);
+        const match = str.match(/([\d.]+)/);
         return match ? parseFloat(match[1]) : null;
     }
 

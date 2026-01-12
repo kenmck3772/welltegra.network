@@ -30,8 +30,8 @@ interface Wire {
 
 const SlicklineOperationsLab: React.FC<SlicklineOperationsLabProps> = ({ onExit }) => {
   const [activeView, setActiveView] = useState<LabView>('DASHBOARD');
-  const [wellSetup, setWellSetup] = useState<WellSetup | null>(null);
-  const [selectedWire, setSelectedWire] = useState<Wire | null>(null);
+  const [wellSetup] = useState<WellSetup | null>(null);
+  const [selectedWire] = useState<Wire | null>(null);
 
   const renderDashboard = () => (
     <div className="space-y-12 animate-in fade-in duration-700">

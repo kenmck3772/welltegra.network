@@ -86,7 +86,7 @@ const MaintenanceRecordRow: React.FC<{ record: MaintenanceRecord }> = ({ record 
               <p>0x4A 0x21 0xBC 0x90 // FLOW_STABLE</p>
               <p>0x12 0xFF 0xEA 0x01 // VALVE_ACTUATED</p>
               <p>0x77 0x33 0x09 0x44 // TEMP_NOMINAL</p>
-              <div className="mt-2 pt-1 border-t border-slate-800 text-emerald-500/50 italic">// No barrier anomalies detected</div>
+              <div className="mt-2 pt-1 border-t border-slate-800 text-emerald-500/50 italic">{'// No barrier anomalies detected'}</div>
             </div>
           </div>
         </div>

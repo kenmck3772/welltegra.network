@@ -58,7 +58,7 @@ export const SchematicEditor: React.FC<SchematicEditorProps> = ({
   const surveyInputRef = useRef<HTMLInputElement>(null);
   const tallyInputRef = useRef<HTMLInputElement>(null);
 
-  const [compFilter, setCompFilter] = useState('');
+  const [compFilter] = useState('');
   const [sortConfig, setSortConfig] = useState<{key: string, direction: 'asc' | 'desc'}>({ key: 'topDepth', direction: 'asc' });
 
   useEffect(() => {
@@ -158,6 +158,8 @@ export const SchematicEditor: React.FC<SchematicEditorProps> = ({
     onUpdateComponent(selectedComponent.id, { tally: tallyString, bottomDepth: newBottomDepth });
   };
 
+  // Reserved for future table filtering feature
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const processedComponents = useMemo(() => {
       let res = [...well.components];
       if (compFilter) {
@@ -168,7 +170,7 @@ export const SchematicEditor: React.FC<SchematicEditorProps> = ({
           let valA: any = a[sortConfig.key as keyof WellComponent];
           let valB: any = b[sortConfig.key as keyof WellComponent];
           if (sortConfig.key === 'bottomDepth') {
-               valA = (a as any).bottomDepth ?? a.topDepth; 
+               valA = (a as any).bottomDepth ?? a.topDepth;
                valB = (b as any).bottomDepth ?? b.topDepth;
           }
           if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1;
@@ -178,10 +180,14 @@ export const SchematicEditor: React.FC<SchematicEditorProps> = ({
       return res;
   }, [well.components, compFilter, sortConfig]);
 
+  // Reserved for future table sorting feature
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleSort = (key: string) => {
       setSortConfig(curr => ({ key, direction: curr.key === key && curr.direction === 'asc' ? 'desc' : 'asc' }));
   }
 
+  // Reserved for future table sorting feature
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const renderSortIcon = (key: string) => {
       if (sortConfig.key !== key) return <span className="w-3 h-3 inline-block ml-1 opacity-20">↕</span>;
       return sortConfig.direction === 'asc' ? <span className="text-cyan-400 ml-1">↑</span> : <span className="text-cyan-400 ml-1">↓</span>;

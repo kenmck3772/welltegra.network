@@ -1,9 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Content, HubConfig, MaintenanceRecord } from '../types';
 import Spinner from './Spinner';
 import MaintenanceChart from './MaintenanceChart';
-import TelemetryChart from './TelemetryChart';
 import ChristmasTreeUnit from './ChristmasTreeUnit';
 
 interface ContentDisplayProps {

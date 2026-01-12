@@ -70,7 +70,7 @@ const IntegrityHub: React.FC<IntegrityHubProps> = ({ onExit }) => {
 
   useEffect(() => {
     loadContent(Section.OVERVIEW);
-  }, []);
+  }, [loadContent]);
 
   const handleUpdateConfig = (newConfig: HubConfig) => {
     setHubConfig(newConfig);
