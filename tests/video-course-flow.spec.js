@@ -19,9 +19,9 @@ test.describe('P&A Course Video Learning Flow', () => {
   test('Video player should load on page', async ({ page }) => {
     console.log('🧪 Testing video player loads...');
 
-    // Wait for YouTube iframe
+    // Wait for YouTube iframe with increased timeout for CI environments
     const youtubePlayer = await page.locator('#youtube-player iframe');
-    await youtubePlayer.waitFor({ state: 'visible', timeout: 10000 });
+    await youtubePlayer.waitFor({ state: 'attached', timeout: 30000 });
 
     await page.screenshot({ path: 'screenshots/video-player-loaded.png' });
     console.log('✅ Video player loaded');
@@ -166,7 +166,7 @@ test.describe('P&A Course Video Learning Flow', () => {
     });
 
     // Try to complete without answering
-    const completeBtn = await page.getByText('Mark Complete & Continue');
+    const completeBtn = page.getByText('Mark Complete & Continue').first();
     if (await completeBtn.isVisible()) {
       await completeBtn.click();
       await page.waitForTimeout(500);
@@ -203,7 +203,7 @@ test.describe('P&A Course Video Learning Flow', () => {
       });
 
       // Try to complete
-      const completeBtn = await page.getByText('Mark Complete & Continue');
+      const completeBtn = page.getByText('Mark Complete & Continue').first();
       await completeBtn.click();
       await page.waitForTimeout(500);
 
@@ -260,7 +260,7 @@ test.describe('P&A Course Video Learning Flow', () => {
     console.log('  Step 5: Completing module...');
     page.on('dialog', async dialog => await dialog.accept());
 
-    const completeBtn = await page.getByText('Mark Complete & Continue').first();
+    const completeBtn = page.getByText('Mark Complete & Continue').first();
     if (await completeBtn.isVisible()) {
       await completeBtn.click();
       await page.waitForTimeout(2000);

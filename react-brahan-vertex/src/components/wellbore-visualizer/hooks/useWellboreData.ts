@@ -1,6 +1,6 @@
 
 import { useState, useMemo } from 'react';
-import type { WellComponent, SurveyPoint, Point3D, Well, PlatformWell, SubseaWell, Casing } from '../types';
+import type { WellComponent, SurveyPoint, Point3D, Well, Casing } from '../types';
 import { ComponentType, WellType } from '../types';
 
 const createCasing = (top: number, bot: number, size: number, notes: string): Casing => ({
