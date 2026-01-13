@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Demonstrations | Ken McKenzie Wells Portfolio</title>
+    <meta name="description" content="Complete collection of working technical demonstrations, interactive tools, and training applications built by Ken McKenzie Wells.">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           CSS VARIABLES & FOUNDATION
+           ============================================ */
+        :root {
+            --ink: #0a1628;
+            --ink-light: #1a2d4a;
+            --slate: #334155;
+            --steel: #64748b;
+            --silver: #94a3b8;
+            --mist: #e2e8f0;
+            --cloud: #f1f5f9;
+            --white: #ffffff;
+
+            --accent: #f97316;
+            --accent-dark: #ea580c;
+            --accent-glow: rgba(249, 115, 22, 0.15);
+
+            --success: #0d9488;
+            --success-light: #14b8a6;
+
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+
+            --max-width: 1200px;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--mist);
+            background: var(--ink);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .section {
+            padding: 4rem 0;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        .nav__inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav__logo {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav__back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+        }
+
+        .nav__back:hover {
+            background: var(--accent-glow);
+            border-color: var(--accent);
+        }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        .hero {
+            padding-top: 8rem;
+            padding-bottom: 3rem;
+            text-align: center;
+        }
+
+        .hero__label {
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .hero__title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero__description {
+            font-size: 1.25rem;
+            color: var(--silver);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero__count {
+            display: inline-block;
+            background: rgba(13, 148, 136, 0.1);
+            border: 1px solid rgba(13, 148, 136, 0.3);
+            border-radius: var(--radius-md);
+            padding: 1rem 2rem;
+            margin-top: 1rem;
+        }
+
+        .hero__count-value {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--success-light);
+        }
+
+        .hero__count-label {
+            font-size: 0.875rem;
+            color: var(--silver);
+            margin-top: 0.25rem;
+        }
+
+        /* ============================================
+           CATEGORY SECTIONS
+           ============================================ */
+        .category {
+            padding: 3rem 0;
+        }
+
+        .category:nth-child(even) {
+            background: var(--ink-light);
+        }
+
+        .category__header {
+            margin-bottom: 2.5rem;
+        }
+
+        .category__label {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .category__title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .category__description {
+            color: var(--silver);
+            margin-top: 0.75rem;
+            max-width: 700px;
+        }
+
+        /* ============================================
+           DEMO GRID
+           ============================================ */
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .demo-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .demo-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(249, 115, 22, 0.1);
+        }
+
+        .demo-card__icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .demo-card__title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 0.75rem;
+        }
+
+        .demo-card__description {
+            color: var(--silver);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .demo-card__tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .demo-card__tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--success-light);
+            background: rgba(13, 148, 136, 0.1);
+            border: 1px solid rgba(13, 148, 136, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .demo-card__actions {
+            display: flex;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .demo-card__link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--accent);
+            transition: all 0.2s;
+        }
+
+        .demo-card__link:hover {
+            color: var(--accent-dark);
+            gap: 0.75rem;
+        }
+
+        .demo-card__link--secondary {
+            color: var(--silver);
+        }
+
+        .demo-card__link--secondary:hover {
+            color: var(--white);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .footer__text {
+            color: var(--silver);
+            font-size: 0.9375rem;
+        }
+
+        .footer__link {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .footer__link:hover {
+            color: var(--accent-dark);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .hero__title {
+                font-size: 2rem;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category__title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav__inner">
+                <a href="index.html" class="nav__logo">
+                    <span>⚡</span>
+                    <span>Ken McKenzie Wells</span>
+                </a>
+                <a href="index.html" class="nav__back">
+                    ← Back to Portfolio
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero__label">Complete Collection</div>
+            <h1 class="hero__title">All Working Demonstrations</h1>
+            <p class="hero__description">
+                Functional applications, interactive tools, and training modules that demonstrate full-stack development, domain expertise integration, and AI-driven engineering solutions.
+            </p>
+            <div class="hero__count">
+                <div class="hero__count-value">13+</div>
+                <div class="hero__count-label">Working Applications</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category 1: AI & Physics-Informed Systems -->
+    <section class="category">
+        <div class="container">
+            <div class="category__header">
+                <div class="category__label">Category 01</div>
+                <h2 class="category__title">AI & Physics-Informed Systems</h2>
+                <p class="category__description">
+                    Advanced machine learning applications that combine domain physics with modern neural architectures for subsurface engineering.
+                </p>
+            </div>
+
+            <div class="demo-grid">
+                <!-- Brahan Vertex Builds -->
+                <div class="demo-card">
+                    <div class="demo-card__icon">⚙️</div>
+                    <h3 class="demo-card__title">Brahan Vertex Builds</h3>
+                    <p class="demo-card__description">
+                        Interactive React application showcasing the Brahan Engine's core components: physics-informed ML, wellbore visualizer, toolstring assembler, and integrity monitoring systems.
+                    </p>
+                    <div class="demo-card__tags">
+                        <span class="demo-card__tag">React</span>
+                        <span class="demo-card__tag">ML</span>
+                        <span class="demo-card__tag">3D Viz</span>
+                    </div>
+                    <div class="demo-card__actions">
+                        <a href="brahan-vertex-builds.html" class="demo-card__link">
+                            Launch App →
+                        </a>
+                        <a href="https://github.com/kenmck3772/welltegra.network/tree/main/react-brahan-vertex" class="demo-card__link demo-card__link--secondary">
+                            Source →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Brahan Vertex Interactive -->
+                <div class="demo-card">
+                    <div class="demo-card__icon">🎯</div>
+                    <h3 class="demo-card__title">Brahan Vertex Interactive</h3>
+                    <p class="demo-card__description">
+                        Immersive demonstration of the physics-informed ML engine with live parameter tuning, constraint visualization, and real-time model performance metrics.
+                    </p>
+                    <div class="demo-card__tags">
+                        <span class="demo-card__tag">Interactive</span>
+                        <span class="demo-card__tag">Physics-ML</span>
+                        <span class="demo-card__tag">Real-time</span>
+                    </div>
+                    <div class="demo-card__actions">
+                        <a href="brahan-vertex-interactive.html" class="demo-card__link">
+                            Launch Demo →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 4-Stage Forensic Data Flow -->
+                <div class="demo-card">
+                    <div class="demo-card__icon">🔍</div>
+                    <h3 class="demo-card__title">4-Stage Forensic Data Flow</h3>
+                    <p class="demo-card__description">
+                        11-expert agent system that simulates multi-stakeholder conflict detection in offshore operations. Surfaces hidden risks and trade-offs before capital commitment.
+                    </p>
+                    <div class="demo-card__tags">
+                        <span class="demo-card__tag">Multi-Agent</span>
+                        <span class="demo-card__tag">Risk Analysis</span>
+                        <span class="demo-card__tag">AI Agents</span>
+                    </div>
+                    <div class="demo-card__actions">
+                        <a href="forensic-team.html" class="demo-card__link">
+                            View Flow →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category 2: 3D Visualization & Data Tools -->
+    <section class="category">
+        <div class="container">
+            <div class="category__header">
+                <div class="category__label">Category 02</div>
+                <h2 class="category__title">3D Visualization & Data Tools</h2>
+                <p class="category__description">
+                    WebGL-powered visualizations and data processing tools for complex subsurface geometries and engineering workflows.
+                </p>
+            </div>
+
+            <div class="demo-grid">
+                <!-- 3D Wellbore Viewer (React) -->
+                <div class="demo-card">
+                    <div class="demo-card__icon">🏔️</div>
+                    <h3 class="demo-card__title">3D Wellbore Viewer (React)</h3>
+                    <p class="demo-card__description">
+                        WebGL-powered 3D visualization built with React Three Fiber. Renders complex wellbore architecture, casing strings, completion geometry, and real-time toolstring assembly.
+                    </p>
+                    <div class="demo-card__tags">
+                        <span class="demo-card__tag">React Three Fiber</span>
+                        <span class="demo-card__tag">WebGL</span>
+                        <span class="demo-card__tag">60fps</span>
+                    </div>
+                    <div class="demo-card__actions">
+                        <a href="app/" class="demo-card__link">
+                            Launch App →
+                        </a>
+                        <a href="https://github.com/kenmck3772/welltegra.network/tree/main/react-brahan-vertex" class="demo-card__link demo-card__link--secondary">
+                            Source →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Data Ingestion Simulator -->
+                <div class="demo-card">
+                    <div class="demo-card__icon">📊</div>
+                    <h3 class="demo-card__title">Data Ingestion Simulator</h3>
+                    <p class="demo-card__description">
+                        Real-time data pipeline simulation showing WITSML, sensor data, and production analytics integration. Demonstrates cloud-native streaming architectures.
+                    </p>
+                    <div class="demo-card__tags">
+                        <span class="demo-card__tag">Real-time</span>
+                        <span class="demo-card__tag">Data Pipeline</span>
+                        <span class="demo-card__tag">WITSML</span>
+                    </div>
+                    <div class="demo-card__actions">
+                        <a href="data-ingestion.html" class="demo-card__link">
+                            Launch Simulator →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Deviation Survey Tool -->
+                <div class="demo-card">
+                    <div class="demo-card__icon">📐</div>
+                    <h3 class="demo-card__title">Deviation Survey Tool</h3>
+                    <p class="demo-card__description">
+                        Wellbore trajectory calculator with 3D visualization, dogleg severity analysis, and path planning. Built from algorithms used offshore for decades.
+                    </p>
+                    <div class="demo-card__tags">
+                        <span class="demo-card__tag">Trajectory</span>
+                        <span class="demo-card__tag">3D Viz</span>
+                        <span class="demo-card__tag">Engineering</span>
+                    </div>
+                    <div class="demo-card__actions">
+                        <a href="survey-tool.html" class="demo-card__link">
+                            Launch Tool →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category 3: Planning & Operations Tools -->
+    <section class="category">
+        <div class="container">
+            <div class="category__header">
+                <div class="category__label">Category 03</div>
+                <h2 class="category__title">Planning & Operations Tools</h2>
+                <p class="category__description">
+                    Full-stack applications for well intervention planning, equipment management, and operational decision support.
+                </p>
+            </div>
+
+            <div class="demo-grid">
+                <!-- Well Intervention Planner -->
+                <div class="demo-card">
+                    <div class="demo-card__icon">🛠️</div>
+                    <h3 class="demo-card__title">Well Intervention Planner</h3>
+                    <p class="demo-card__description">
+                        Comprehensive well data visualization platform that consolidates well schematics, deviation surveys, completion data, and historical intervention records.
+                    </p>
+                    <div class="demo-card__tags">
+                        <span class="demo-card__tag">Full-Stack</span>
+                        <span class="demo-card__tag">Data Viz</span>
+                        <span class="demo-card__tag">Planning</span>
+                    </div>
+                    <div class="demo-card__actions">
+                        <a href="planner.html" class="demo-card__link">
+                            Launch Planner →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Equipment Catalog -->
+                <div class="demo-card">
+                    <div class="demo-card__icon">📦</div>
+                    <h3 class="demo-card__title">Equipment Catalog</h3>
+                    <p class="demo-card__description">
+                        Searchable database of intervention tools with real specifications from 30 years of field experience. Filterable by type, OD range, and manufacturer.
+                    </p>
+                    <div class="demo-card__tags">
+                        <span class="demo-card__tag">Database</span>
+                        <span class="demo-card__tag">Search</span>
+                        <span class="demo-card__tag">Specs</span>
+                    </div>
+                    <div class="demo-card__actions">
+                        <a href="equipment.html" class="demo-card__link">
+                            Browse Catalog →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Operations Dashboard -->
+                <div class="demo-card">
+                    <div class="demo-card__icon">📈</div>
+                    <h3 class="demo-card__title">Operations Dashboard</h3>
+                    <p class="demo-card__description">
+                        Risk analysis and planning dashboard with Monte Carlo simulation for NPT prediction, cost modeling, and success rate forecasting.
+                    </p>
+                    <div class="demo-card__tags">
+                        <span class="demo-card__tag">Analytics</span>
+                        <span class="demo-card__tag">Monte Carlo</span>
+                        <span class="demo-card__tag">Forecasting</span>
+                    </div>
+                    <div class="demo-card__actions">
+                        <a href="operations-dashboard.html" class="demo-card__link">
+                            Launch Dashboard →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category 4: Interactive Training & Education -->
+    <section class="category">
+        <div class="container">
+            <div class="category__header">
+                <div class="category__label">Category 04</div>
+                <h2 class="category__title">Interactive Training & Education</h2>
+                <p class="category__description">
+                    Technical training modules with interactive quizzes and real-world case studies transferring decades of operational expertise.
+                </p>
+            </div>
+
+            <div class="demo-grid">
+                <!-- P&A Operations Course -->
+                <div class="demo-card">
+                    <div class="demo-card__icon">🎓</div>
+                    <h3 class="demo-card__title">P&A Operations Course</h3>
+                    <p class="demo-card__description">
+                        Comprehensive Plug & Abandonment operations training covering barrier philosophy, cement placement, verification methods, and regulatory compliance.
+                    </p>
+                    <div class="demo-card__tags">
+                        <span class="demo-card__tag">Training</span>
+                        <span class="demo-card__tag">Interactive</span>
+                        <span class="demo-card__tag">P&A</span>
+                    </div>
+                    <div class="demo-card__actions">
+                        <a href="pa-course.html" class="demo-card__link">
+                            Start Course →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Micro-Annulus Course -->
+                <div class="demo-card">
+                    <div class="demo-card__icon">🔬</div>
+                    <h3 class="demo-card__title">Micro-Annulus Diagnostics</h3>
+                    <p class="demo-card__description">
+                        Advanced training on micro-annulus detection, pressure testing methodologies, cement bond evaluation, and integrity assessment techniques.
+                    </p>
+                    <div class="demo-card__tags">
+                        <span class="demo-card__tag">Diagnostics</span>
+                        <span class="demo-card__tag">Integrity</span>
+                        <span class="demo-card__tag">Advanced</span>
+                    </div>
+                    <div class="demo-card__actions">
+                        <a href="micro-annulus-course.html" class="demo-card__link">
+                            Start Course →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Training Courses Hub -->
+                <div class="demo-card">
+                    <div class="demo-card__icon">📚</div>
+                    <h3 class="demo-card__title">Training Courses Hub</h3>
+                    <p class="demo-card__description">
+                        Central portal for all technical training modules including course navigation, progress tracking, and certificate generation.
+                    </p>
+                    <div class="demo-card__tags">
+                        <span class="demo-card__tag">Portal</span>
+                        <span class="demo-card__tag">Hub</span>
+                        <span class="demo-card__tag">Courses</span>
+                    </div>
+                    <div class="demo-card__actions">
+                        <a href="courses.html" class="demo-card__link">
+                            View All Courses →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer__text">
+                Built by <a href="index.html" class="footer__link">Ken McKenzie Wells</a> |
+                <a href="https://github.com/kenmck3772/welltegra.network" class="footer__link">View on GitHub</a>
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
