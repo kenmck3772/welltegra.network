@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ken McKenzie Wells | AI Architect & Cloud ML Engineer</title>
-    <meta name="description" content="Bridging 30 years of global offshore reliability with the next generation of stable, reasoning-capable AI on Google Cloud. Portfolio of Ken McKenzie Wells.">
+    <title>WellTegra | Industrial AI Safety Platform for Oil & Gas</title>
+    <meta name="description" content="Physics-informed AI operating system for offshore operations. Architected by a 30-year North Sea veteran to bring manifold-constrained safety to neural networks deployed on critical infrastructure.">
     <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
 
     <!-- Fonts -->
@@ -29,6 +29,10 @@
             --accent: #f97316;
             --accent-dark: #ea580c;
             --accent-glow: rgba(249, 115, 22, 0.15);
+
+            --safety-orange: #ff6b35;
+            --signal-blue: #3b82f6;
+            --industrial-steel: #71717a;
 
             --success: #0d9488;
             --success-light: #14b8a6;
@@ -100,6 +104,32 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--silver);
+            padding: 0.25rem 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--success-light);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         .nav__links {
@@ -578,13 +608,17 @@
     <nav class="nav">
         <div class="container nav__inner">
             <a href="/" class="nav__logo">
-                Ken McKenzie Wells
+                <span style="color: var(--accent);">Well</span>Tegra
             </a>
             <div class="nav__links">
-                <a href="#evolution" class="nav__link">Evolution</a>
-                <a href="#projects" class="nav__link">Projects</a>
-                <a href="#apps" class="nav__link">Apps</a>
-                <a href="#architecture" class="nav__link">Architecture</a>
+                <span class="status-indicator">
+                    <span class="status-dot"></span>
+                    Vertex AI: Online
+                </span>
+                <a href="#platform" class="nav__link">Platform</a>
+                <a href="#engine" class="nav__link">Engine</a>
+                <a href="#stack" class="nav__link">Stack</a>
+                <a href="#pilot" class="nav__link">Deploy Pilot</a>
                 <a href="https://github.com/kenmck3772" target="_blank" class="nav__link">GitHub</a>
             </div>
         </div>
@@ -596,29 +630,28 @@
     <section class="hero">
         <div class="container">
             <div class="hero__content">
-                <div class="hero__label">Portfolio of Technical Capabilities</div>
-                <h1 class="hero__title">Ken McKenzie Wells</h1>
-                <p class="hero__subtitle">AI Architect & Cloud ML Engineer<br>
-                Bridging 30 years of global offshore reliability with the next generation of stable, reasoning-capable AI on Google Cloud</p>
+                <div class="hero__label">Industrial Inference Engine (Beta)</div>
+                <h1 class="hero__title">The First Physics-Informed AI<br>Operating System for the North Sea</h1>
+                <p class="hero__subtitle">Architected by a 30-year offshore veteran to bring manifold-constrained safety to neural networks. WellTegra enforces thermodynamic constraints and material behavior through custom loss functions—preventing AI from proposing physically impossible solutions on critical infrastructure.</p>
                 <div class="hero__actions">
-                    <a href="hire-me.html" class="btn btn--primary">View Resume</a>
-                    <a href="https://github.com/kenmck3772" target="_blank" class="btn btn--secondary">GitHub Profile</a>
-                    <a href="https://www.linkedin.com/in/ken-mckenzie-b8901658" target="_blank" class="btn btn--secondary">LinkedIn</a>
+                    <a href="#pilot" class="btn btn--primary">Deploy Pilot</a>
+                    <a href="#platform" class="btn btn--secondary">Platform Overview</a>
+                    <a href="https://github.com/kenmck3772" target="_blank" class="btn btn--secondary">View Source</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ============================================
-         THREE-ACT TRANSFORMATION
+         PLATFORM FOUNDATION
          ============================================ -->
-    <section id="evolution" class="section three-act">
+    <section id="platform" class="section three-act">
         <div class="container">
             <div class="section-header">
-                <div class="section-header__label">Professional Evolution</div>
+                <div class="section-header__label">Platform Foundation</div>
                 <h2 class="section-header__title">From Physical Blowouts to Gradient Explosions</h2>
                 <p class="section-header__description">
-                    Three decades of transformation—from frontline integrity in the North Sea to building investment-grade AI systems on Google Cloud.
+                    WellTegra was architected by a 30-year offshore veteran who brings the same failure-intolerance from subsea operations to neural network design—where stability isn't optional, it's mandatory.
                 </p>
             </div>
 
@@ -679,25 +712,25 @@
     </section>
 
     <!-- ============================================
-         TECHNICAL CHALLENGES SOLVED
+         PLATFORM CAPABILITIES
          ============================================ -->
-    <section id="projects" class="section">
+    <section id="engine" class="section">
         <div class="container">
             <div class="section-header">
-                <div class="section-header__label">Featured Projects</div>
-                <h2 class="section-header__title">Technical Challenges Solved</h2>
+                <div class="section-header__label">Core Platform Capabilities</div>
+                <h2 class="section-header__title">Enterprise-Grade AI for Capital-Intensive Assets</h2>
                 <p class="section-header__description">
-                    Proof-of-concept demonstrations that bridge domain expertise with cutting-edge AI architecture.
+                    Production-ready systems that enforce physics constraints, detect stakeholder conflicts, and visualize complex subsurface geometry—built on Google Cloud Platform with enterprise security and auditability.
                 </p>
             </div>
 
             <div class="tech-grid">
-                <!-- Challenge 1: Physics-Informed ML -->
+                <!-- Capability 1: Hands-Free Rig Floor Command -->
                 <div class="tech-card">
-                    <div class="tech-card__challenge">Challenge: Grounding AI in Physics</div>
-                    <h3 class="tech-card__title">Brahan Vertex Engine</h3>
+                    <div class="tech-card__challenge">Core Capability: Voice-Activated Operations</div>
+                    <h3 class="tech-card__title">Hands-Free Rig Floor Command</h3>
                     <p class="tech-card__solution">
-                        Built a physics-informed ML system that combines 30+ years of subsurface domain knowledge with modern neural architectures. The engine enforces thermodynamic constraints and material behavior through custom loss functions, preventing the model from proposing physically impossible solutions.
+                        Voice-activated operating system for offshore technicians working with gloves in hazardous environments. Powered by GCP Vertex AI + Web Speech API, the Brahan Engine enforces thermodynamic constraints and material behavior through physics-informed neural architectures, preventing the system from proposing physically impossible solutions on live assets.
                     </p>
                     <div class="tech-card__metrics">
                         <div class="metric">
@@ -719,12 +752,12 @@
                     </div>
                 </div>
 
-                <!-- Challenge 2: Multi-Persona Conflict Detection -->
+                <!-- Capability 2: Forensic Consensus Protocol -->
                 <div class="tech-card">
-                    <div class="tech-card__challenge">Challenge: Multi-Persona Conflict Detection</div>
-                    <h3 class="tech-card__title">4-Stage Forensic Data Flow</h3>
+                    <div class="tech-card__challenge">Core Capability: NPT Pre-Mortem Analysis</div>
+                    <h3 class="tech-card__title">The Forensic Consensus Protocol</h3>
                     <p class="tech-card__solution">
-                        Designed an 11-expert agent system that simulates real-world stakeholder conflicts in offshore operations. Each agent represents a different role (Drilling Engineer, Operations Manager, HSE, etc.) and independently analyzes decisions, surfacing hidden risks and trade-offs before capital is committed.
+                        11-expert agent system (The 11 Pillars) that runs operational data through forensic gates representing real-world stakeholders: Drilling Engineer, Operations Manager, HSE, Subsea, Integrity, etc. Each agent independently analyzes decisions using Reasoning Language Models (RLMs), surfacing hidden conflicts and exposing $M+ risks before capital is committed—not after incidents occur.
                     </p>
                     <div class="tech-card__metrics">
                         <div class="metric">
@@ -743,12 +776,12 @@
                     </div>
                 </div>
 
-                <!-- Challenge 3: 3D Subsurface Visualization -->
+                <!-- Capability 3: Real-Time Subsurface Visualization -->
                 <div class="tech-card">
-                    <div class="tech-card__challenge">Challenge: Interactive Wellbore Visualization</div>
-                    <h3 class="tech-card__title">3D Wellbore Viewer</h3>
+                    <div class="tech-card__challenge">Core Capability: Mission-Critical Visualization</div>
+                    <h3 class="tech-card__title">WebGL Subsurface Operating Environment</h3>
                     <p class="tech-card__solution">
-                        Developed a browser-based 3D visualization tool using D3.js and React Three Fiber that renders complex wellbore geometries, completion strings, and deviation surveys. Enables real-time manipulation of toolstring assemblies and detection of mechanical conflicts before running expensive interventions.
+                        Enterprise-grade 3D visualization engine (React Three Fiber + WebGL) that renders complex wellbore geometries, completion assemblies, and deviation surveys at 60fps. Detects mechanical conflicts and clearance violations in real-time before running million-dollar intervention operations—turning subsurface complexity into actionable intelligence.
                     </p>
                     <div class="tech-card__metrics">
                         <div class="metric">
@@ -921,15 +954,90 @@
     </section>
 
     <!-- ============================================
-         2026 SHIFT - TECHNICAL DEPTH
+         TECHNICAL STACK & ARCHITECTURE
          ============================================ -->
-    <section id="architecture" class="section tech-depth">
+    <section id="stack" class="section" style="background: var(--ink);">
         <div class="container">
             <div class="section-header">
-                <div class="section-header__label">Architectural Discipline</div>
-                <h2 class="section-header__title">The 2026 Shift: Building Stable, Reasoning AI</h2>
+                <div class="section-header__label">The Engine Room</div>
+                <h2 class="section-header__title">Production-Grade Cloud Architecture</h2>
                 <p class="section-header__description">
-                    Moving beyond hype to engineer AI systems that meet the same reliability standards I applied to offshore operations—where failure isn't an option.
+                    Built on enterprise-grade infrastructure with the same security and reliability standards required for offshore operations—IAM, TLS, data sovereignty, and auditability at every layer.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                <!-- Cloud Infrastructure -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 12px; padding: 2rem;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">☁️</div>
+                    <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: var(--white); margin-bottom: 1rem;">Cloud Infrastructure</h3>
+                    <ul style="list-style: none; padding: 0; color: var(--silver); line-height: 2;">
+                        <li>→ <strong>Google Cloud Platform</strong></li>
+                        <li>→ Vertex AI (ML Training & Inference)</li>
+                        <li>→ Cloud Functions (Serverless)</li>
+                        <li>→ Cloud Run (Containerized Apps)</li>
+                        <li>→ BigQuery (Data Warehouse)</li>
+                    </ul>
+                </div>
+
+                <!-- Backend Stack -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 12px; padding: 2rem;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">⚙️</div>
+                    <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: var(--white); margin-bottom: 1rem;">Backend & ML</h3>
+                    <ul style="list-style: none; padding: 0; color: var(--silver); line-height: 2;">
+                        <li>→ <strong>Python</strong> (Core ML)</li>
+                        <li>→ TensorFlow / PyTorch</li>
+                        <li>→ FastAPI (API Layer)</li>
+                        <li>→ PostgreSQL (Relational Data)</li>
+                        <li>→ Docker (Containerization)</li>
+                    </ul>
+                </div>
+
+                <!-- Frontend Stack -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 12px; padding: 2rem;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🎨</div>
+                    <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: var(--white); margin-bottom: 1rem;">Frontend & Visualization</h3>
+                    <ul style="list-style: none; padding: 0; color: var(--silver); line-height: 2;">
+                        <li>→ <strong>React</strong> (UI Framework)</li>
+                        <li>→ React Three Fiber (3D/WebGL)</li>
+                        <li>→ D3.js (Data Visualization)</li>
+                        <li>→ Tailwind CSS (Styling)</li>
+                        <li>→ Web Speech API (Voice)</li>
+                    </ul>
+                </div>
+
+                <!-- Security & Compliance -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 12px; padding: 2rem;">
+                    <div style="font-size: 2rem; margin-bottom: 1rem;">🔐</div>
+                    <h3 style="font-family: var(--font-display); font-size: 1.25rem; color: var(--white); margin-bottom: 1rem;">Security & Sovereignty</h3>
+                    <ul style="list-style: none; padding: 0; color: var(--silver); line-height: 2;">
+                        <li>→ <strong>Enterprise IAM</strong></li>
+                        <li>→ TLS 1.3 Encryption</li>
+                        <li>→ Data Residency Controls</li>
+                        <li>→ Audit Logging (All Operations)</li>
+                        <li>→ Role-Based Access Control</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; text-align: center; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 2rem;">
+                <p style="color: var(--mist); font-size: 1.125rem; margin: 0;">
+                    <strong style="color: var(--signal-blue);">Built for Industrial Scale:</strong> Designed to meet the same reliability standards I applied offshore—where downtime costs $500K/day and failure isn't negotiable.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         STABILITY & REASONING
+         ============================================ -->
+    <section class="section tech-depth">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-header__label">Neural Network Stability</div>
+                <h2 class="section-header__title">Manifold-Constrained AI for Mission-Critical Systems</h2>
+                <p class="section-header__description">
+                    WellTegra implements advanced mathematical constraints to ensure AI stability on capital-intensive assets—preventing gradient explosions with the same rigor applied to preventing physical blowouts.
                 </p>
             </div>
 
@@ -986,17 +1094,18 @@
     </section>
 
     <!-- ============================================
-         FOOTER CTA
+         DEPLOY PILOT
          ============================================ -->
-    <section class="footer-cta">
+    <section id="pilot" class="footer-cta">
         <div class="container">
-            <h2 class="footer-cta__title">Let's Build Investment-Grade AI</h2>
+            <h2 class="footer-cta__title">Deploy WellTegra on Your Infrastructure</h2>
             <p class="footer-cta__description">
-                I am currently seeking a remote role where I can apply 30 years of high-stakes domain expertise to build reliable, explainable AI systems on Google Cloud.
+                Pilot deployments available for North Sea operators seeking physics-informed AI for well intervention planning, NPT pre-mortem analysis, and real-time conflict detection. Built on GCP with enterprise security and data sovereignty guarantees.
             </p>
             <div class="hero__actions">
-                <a href="hire-me.html" class="btn btn--primary">View Resume & Contact</a>
-                <a href="https://github.com/kenmck3772" target="_blank" class="btn btn--secondary">Explore GitHub</a>
+                <a href="hire-me.html" class="btn btn--primary">Request Pilot Access</a>
+                <a href="https://github.com/kenmck3772" target="_blank" class="btn btn--secondary">View Architecture</a>
+                <a href="demos.html" class="btn btn--secondary">Explore Live Demos</a>
             </div>
         </div>
     </section>
@@ -1008,7 +1117,7 @@
         <div class="container">
             <div class="footer__content">
                 <div class="footer__copyright">
-                    © 2025 Ken McKenzie Wells. All rights reserved.
+                    © 2025 WellTegra. Architected by Ken McKenzie Wells. All rights reserved.
                 </div>
                 <div class="footer__links">
                     <a href="https://github.com/kenmck3772" target="_blank" class="footer__link">GitHub</a>
