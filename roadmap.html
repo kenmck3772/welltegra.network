@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 33-Phase Digital Refinery | WellTegra Roadmap</title>
+    <meta name="description" content="From North Sea operations to Lunar Frontier - WellTegra's physics-grounded journey through 33 phases of industrial AI development.">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           CSS VARIABLES & FOUNDATION
+           ============================================ */
+        :root {
+            --ink: #0a1628;
+            --ink-light: #1a2d4a;
+            --slate-950: #0f172a;
+            --slate-900: #1e293b;
+            --slate-800: #334155;
+            --slate: #334155;
+            --steel: #64748b;
+            --silver: #94a3b8;
+            --mist: #e2e8f0;
+            --white: #ffffff;
+
+            --safety-orange: #ff6b35;
+            --signal-blue: #3b82f6;
+            --success: #14b8a6;
+
+            --earth-green: #22c55e;
+            --digital-blue: #3b82f6;
+            --lunar-purple: #8b5cf6;
+
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(180deg, var(--slate-950) 0%, var(--slate-900) 50%, var(--ink) 100%);
+            color: var(--mist);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        .nav__inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav__logo {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav__logo span:first-child {
+            color: var(--safety-orange);
+            margin-right: 0.5rem;
+        }
+
+        .nav__back {
+            color: var(--safety-orange);
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .nav__back:hover {
+            background: rgba(255, 107, 53, 0.15);
+            border-color: var(--safety-orange);
+        }
+
+        /* ============================================
+           HERO
+           ============================================ */
+        .hero {
+            padding: 8rem 0 4rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1000px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero__content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero__label {
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--safety-orange);
+            margin-bottom: 1rem;
+        }
+
+        .hero__title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero__subtitle {
+            font-size: clamp(1.125rem, 2vw, 1.375rem);
+            color: var(--silver);
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero__stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat__value {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--safety-orange);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat__label {
+            font-size: 0.875rem;
+            color: var(--steel);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* ============================================
+           TIMELINE CONTAINER
+           ============================================ */
+        .timeline-section {
+            padding: 4rem 0 6rem;
+        }
+
+        .timeline-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Vertical gradient timeline */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg,
+                var(--earth-green) 0%,
+                var(--earth-green) 33%,
+                var(--digital-blue) 33%,
+                var(--digital-blue) 66%,
+                var(--lunar-purple) 66%,
+                var(--lunar-purple) 100%
+            );
+            transform: translateX(-50%);
+        }
+
+        /* ============================================
+           ACT SECTIONS
+           ============================================ */
+        .timeline-act {
+            margin-bottom: 4rem;
+        }
+
+        .act-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .act-label {
+            display: inline-block;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-act[data-act="1"] .act-label {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid var(--earth-green);
+            color: var(--earth-green);
+        }
+
+        .timeline-act[data-act="2"] .act-label {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid var(--digital-blue);
+            color: var(--digital-blue);
+        }
+
+        .timeline-act[data-act="3"] .act-label {
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid var(--lunar-purple);
+            color: var(--lunar-purple);
+        }
+
+        .act-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .act-description {
+            color: var(--silver);
+            max-width: 600px;
+            margin: 0.5rem auto 0;
+        }
+
+        /* ============================================
+           PHASE CARDS
+           ============================================ */
+        .phase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .phase-card {
+            backdrop-filter: blur(12px);
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .phase-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(255, 107, 53, 0.2);
+        }
+
+        .phase-card.highlight {
+            border-color: var(--success);
+            background: rgba(20, 184, 166, 0.1);
+        }
+
+        .phase-card.highlight:hover {
+            box-shadow: 0 20px 50px rgba(20, 184, 166, 0.3);
+        }
+
+        .phase-card.frontier {
+            border-color: var(--lunar-purple);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .phase-card.frontier:hover {
+            box-shadow: 0 20px 50px rgba(139, 92, 246, 0.3);
+        }
+
+        .phase-number {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--safety-orange);
+            opacity: 0.3;
+            display: block;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .phase-card.highlight .phase-number {
+            color: var(--success);
+            opacity: 0.5;
+        }
+
+        .phase-card.frontier .phase-number {
+            color: var(--lunar-purple);
+            opacity: 0.5;
+        }
+
+        .phase-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.75rem;
+        }
+
+        .phase-description {
+            color: var(--mist);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .phase-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-badge.live {
+            background: rgba(20, 184, 166, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .status-badge.research {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--lunar-purple);
+            border: 1px solid var(--lunar-purple);
+        }
+
+        .physics-anchor {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--digital-blue);
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .data-source {
+            font-size: 0.75rem;
+            color: var(--success);
+            display: inline-block;
+            background: rgba(20, 184, 166, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid rgba(20, 184, 166, 0.3);
+        }
+
+        /* ============================================
+           LEGEND
+           ============================================ */
+        .roadmap-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+            padding: 2rem;
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--mist);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.live {
+            background: var(--success);
+        }
+
+        .legend-dot.research {
+            background: var(--lunar-purple);
+        }
+
+        .legend-dot.earth {
+            background: var(--earth-green);
+        }
+
+        .legend-dot.digital {
+            background: var(--digital-blue);
+        }
+
+        .legend-dot.lunar {
+            background: var(--lunar-purple);
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .footer__text {
+            color: var(--steel);
+            font-size: 0.875rem;
+        }
+
+        .footer__link {
+            color: var(--safety-orange);
+            text-decoration: none;
+        }
+
+        .footer__link:hover {
+            text-decoration: underline;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .timeline-container::before {
+                left: 20px;
+            }
+
+            .phase-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero__stats {
+                gap: 2rem;
+            }
+
+            .stat__value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav__inner">
+            <a href="index.html" class="nav__logo">
+                <span>⚡</span>
+                <span>WellTegra</span>
+            </a>
+            <a href="index.html" class="nav__back">← Back to Platform</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero__content">
+                <div class="hero__label">The Digital Refinery</div>
+                <h1 class="hero__title">The 33-Phase Roadmap</h1>
+                <p class="hero__subtitle">
+                    From North Sea Operations to Lunar Frontier: A physics-grounded journey
+                    through 33 phases of industrial AI development, anchored by Boyle's Law
+                    and validated with 50,000+ hours of Equinor Volve data.
+                </p>
+
+                <div class="hero__stats">
+                    <div class="stat">
+                        <span class="stat__value">33</span>
+                        <span class="stat__label">Total Phases</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat__value">2</span>
+                        <span class="stat__label">Live in Production</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat__value">50K+</span>
+                        <span class="stat__label">Volve Data Hours</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat__value">0.11ms</span>
+                        <span class="stat__label">ARL Trigger Speed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="timeline-section">
+        <div class="container">
+            <div class="timeline-container">
+
+                <!-- ACT I: EARTH OPERATIONS (Phases 01-11) -->
+                <div class="timeline-act" data-act="1">
+                    <div class="act-header">
+                        <div class="act-label">Act I: Earth Operations</div>
+                        <h2 class="act-title">North Sea Foundations</h2>
+                        <p class="act-description">
+                            Physics-informed safety systems grounded in 30 years of offshore experience
+                        </p>
+                    </div>
+
+                    <div class="phase-grid">
+                        <div class="phase-card">
+                            <span class="phase-number">01</span>
+                            <h3 class="phase-title">Forensic Consensus Protocol</h3>
+                            <p class="phase-description">
+                                Multi-agent RLM system that reconstructs failure sequences from sensor data.
+                                The first AI to explain "why" not just "what" happened on the rig floor.
+                            </p>
+                            <div class="phase-meta">
+                                <span class="physics-anchor">⚛️ Boyle's Law (P₁V₁=P₂V₂)</span>
+                            </div>
+                        </div>
+
+                        <div class="phase-card highlight">
+                            <span class="phase-number">14</span>
+                            <h3 class="phase-title">NPT Pre-Mortem Monitor</h3>
+                            <p class="phase-description">
+                                Fleet-wide pressure deviation monitoring with <200ms autonomous response logic.
+                                Prevents $38M/year NPT through physics-validated shut-in triggers.
+                            </p>
+                            <div class="phase-meta">
+                                <span class="status-badge live">▸ LIVE</span>
+                                <span class="physics-anchor">⚛️ ECD Validation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACT II: DIGITAL TWIN (Phases 12-22) -->
+                <div class="timeline-act" data-act="2">
+                    <div class="act-header">
+                        <div class="act-label">Act II: Digital Twin</div>
+                        <h2 class="act-title">Volve-Grounded Intelligence</h2>
+                        <p class="act-description">
+                            Real-world validation using 50,000+ hours of Equinor's public North Sea dataset
+                        </p>
+                    </div>
+
+                    <div class="phase-grid">
+                        <div class="phase-card highlight">
+                            <span class="phase-number">28</span>
+                            <h3 class="phase-title">Digital Sage (Volve Analysis)</h3>
+                            <p class="phase-description">
+                                Production-grade ML pipeline processing 1,610 timesteps of Eclipse reservoir
+                                simulation output from Wells 15/9-F-1 B and 15/9-F-4. The first drilling AI
+                                with fully transparent data provenance.
+                            </p>
+                            <div class="phase-meta">
+                                <span class="status-badge live">▸ LIVE</span>
+                                <span class="data-source">📊 Equinor Volve (50,000hrs)</span>
+                                <span class="physics-anchor">⚛️ Hydrostatic Validation</span>
+                            </div>
+                        </div>
+
+                        <div class="phase-card">
+                            <span class="phase-number">22</span>
+                            <h3 class="phase-title">Shadow Rig (Monte Carlo Pre-Drill)</h3>
+                            <p class="phase-description">
+                                1,000-iteration Monte Carlo simulations run physics-validated scenarios before
+                                spudding. Digital twin predicts formation response across pressure/temperature
+                                parameter space.
+                            </p>
+                            <div class="phase-meta">
+                                <span class="physics-anchor">⚛️ Formation Mechanics</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACT III: LUNAR FRONTIER (Phases 23-33) -->
+                <div class="timeline-act" data-act="3">
+                    <div class="act-header">
+                        <div class="act-label">Act III: Lunar Frontier</div>
+                        <h2 class="act-title">Beyond Terrestrial Operations</h2>
+                        <p class="act-description">
+                            Adapting North Sea physics for vacuum drilling and low-gravity operations
+                        </p>
+                    </div>
+
+                    <div class="phase-grid">
+                        <div class="phase-card frontier">
+                            <span class="phase-number">33</span>
+                            <h3 class="phase-title">Lunar Drilling Operations</h3>
+                            <p class="phase-description">
+                                Boyle's Law adaptation for lunar vacuum conditions (3×10⁻¹⁵ bar atmospheric
+                                pressure). Physics-informed ML for regolith penetration and ice extraction
+                                in 1.62 m/s² gravity field.
+                            </p>
+                            <div class="phase-meta">
+                                <span class="status-badge research">▸ RESEARCH</span>
+                                <span class="physics-anchor">⚛️ Boyle's Law (Vacuum)</span>
+                            </div>
+                        </div>
+
+                        <div class="phase-card frontier">
+                            <span class="phase-number">32</span>
+                            <h3 class="phase-title">Artemis Integration Layer</h3>
+                            <p class="phase-description">
+                                NASA Artemis Program data pipeline for lunar surface operations. WITSML
+                                adaptation for space-rated sensors and telemetry protocols.
+                            </p>
+                            <div class="phase-meta">
+                                <span class="status-badge research">▸ RESEARCH</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Legend -->
+            <div class="roadmap-legend">
+                <div class="legend-item">
+                    <span class="legend-dot live"></span>
+                    <span>Production (Cloud Run)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot research"></span>
+                    <span>Research Phase</span>
+                </div>
+                <div class="legend-item">
+                    <span>⚛️</span>
+                    <span>Physics-Grounded</span>
+                </div>
+                <div class="legend-item">
+                    <span>📊</span>
+                    <span>Volve-Validated</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot earth"></span>
+                    <span>Earth Operations</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot digital"></span>
+                    <span>Digital Twin</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot lunar"></span>
+                    <span>Lunar Frontier</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer__text">
+                © 2025 WellTegra. Architected by Kenneth McKenzie. All rights reserved.
+            </p>
+            <p class="footer__text" style="margin-top: 0.5rem;">
+                <a href="https://github.com/kenmck3772/welltegra.network" class="footer__link" target="_blank">View on GitHub</a> |
+                <a href="DATA_PROVENANCE.md" class="footer__link">Data Provenance</a> |
+                <a href="RED_TEAM_AUDIT.md" class="footer__link">Red Team Audit</a>
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
