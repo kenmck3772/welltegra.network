@@ -16,7 +16,7 @@ WellTegra has been transformed from a modest "hire me" portfolio into an **Enter
 | Before | After |
 |--------|-------|
 | "Portfolio of Technical Capabilities" | "Industrial Inference Engine (Beta)" |
-| "Ken McKenzie Wells" | "WellTegra" |
+| "Kenneth McKenzie" | "WellTegra" |
 | "View Resume" | "Deploy Pilot" |
 | "AI Architect & Cloud ML Engineer" | "The First Physics-Informed AI Operating System for the North Sea" |
 | "I built this to learn coding" | "Architected by a 30-year Offshore Veteran to bring Manifold-Constrained Safety to Neural Networks" |
@@ -30,7 +30,7 @@ WellTegra has been transformed from a modest "hire me" portfolio into an **Enter
 #### **Hero Section - Before:**
 ```
 Portfolio of Technical Capabilities
-Ken McKenzie Wells
+Kenneth McKenzie
 AI Architect & Cloud ML Engineer
 Bridging 30 years of global offshore reliability...
 ```
@@ -47,10 +47,10 @@ proposing physically impossible solutions on critical infrastructure.
 
 ### Key Branding Changes
 
-1. **Navigation Logo:** Changed from "Ken McKenzie Wells" to **"WellTegra"** with accent styling
+1. **Navigation Logo:** Changed from "Kenneth McKenzie" to **"WellTegra"** with accent styling
 2. **Status Indicators:** Added live system status: "Vertex AI: Online" with pulsing green dot
 3. **Navigation Links:** Changed from "Evolution/Projects/Apps" to **"Platform/Engine/Stack/Deploy Pilot"**
-4. **Footer Copyright:** "© 2025 WellTegra. Architected by Ken McKenzie Wells."
+4. **Footer Copyright:** "© 2025 WellTegra. Architected by Kenneth McKenzie."
 
 ---
 
@@ -360,6 +360,6 @@ The site now speaks to **procurement committees**, not HR departments. It positi
 
 **Next Action:** Review transformation, then proceed to Phase 2 enhancements (Unified Dashboard, Video Demo, Case Studies).
 
-**Architect:** Ken McKenzie Wells
+**Architect:** Kenneth McKenzie
 **Platform:** WellTegra Industrial AI
 **Build Date:** January 2026
