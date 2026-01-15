@@ -904,6 +904,6 @@ export function CrisisSimulator() {
 
 **Next Action:** Begin component implementation starting with CollapsibleSidebar and XRayToggle.
 
-**Architect:** Ken Mckenzie
+**Architect:** Kenneth McKenzie
 **Platform:** WellTegra Mission Control
 **Design Version:** 2.0 (Phase 2)
