@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brahan Safety Monitor | WellTegra Live Demo</title>
+    <meta name="description" content="Live demonstration of the Brahan Engine AI safety monitor - physics-informed pump failure prediction powered by Google Vertex AI on Google Cloud Platform.">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           MISSION CONTROL DESIGN SYSTEM
+           ============================================ */
+        :root {
+            --ink: #0a1628;
+            --ink-light: #1a2d4a;
+            --slate: #334155;
+            --steel: #64748b;
+            --silver: #94a3b8;
+            --mist: #e2e8f0;
+            --white: #ffffff;
+
+            --accent: #f97316;
+            --safety-orange: #ff6b35;
+            --signal-blue: #3b82f6;
+            --industrial-steel: #71717a;
+
+            --success: #0d9488;
+            --success-light: #14b8a6;
+            --danger: #dc3545;
+            --danger-light: #ef4444;
+
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--mist);
+            background: var(--ink);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        .nav__inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav__logo {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .nav__back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 6px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .nav__back:hover {
+            background: rgba(249, 115, 22, 0.15);
+            border-color: var(--accent);
+        }
+
+        /* ============================================
+           STATUS BADGE
+           ============================================ */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(12px);
+            background: rgba(10, 22, 40, 0.9);
+            border: 1px solid rgba(20, 184, 166, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--success-light);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--success-light);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            padding-top: 8rem;
+            padding-bottom: 3rem;
+            text-align: center;
+        }
+
+        .hero__label {
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .hero__title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .hero__subtitle {
+            font-size: 1.125rem;
+            color: var(--silver);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        /* ============================================
+           BRAHAN WIDGET (GLASSMORPHISM)
+           ============================================ */
+        .demo-section {
+            padding: 3rem 0 6rem;
+        }
+
+        .brahan-widget {
+            max-width: 800px;
+            margin: 0 auto;
+            backdrop-filter: blur(12px);
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .widget-header {
+            border-bottom: 2px solid var(--signal-blue);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .widget-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .widget-subtitle {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            color: var(--silver);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--mist);
+            display: block;
+            margin-bottom: 0.75rem;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .pressure-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem;
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 8px;
+            color: var(--white);
+            transition: all 0.2s;
+        }
+
+        .pressure-input:focus {
+            outline: none;
+            border-color: var(--signal-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .pressure-input::placeholder {
+            color: var(--steel);
+        }
+
+        .analyze-btn {
+            padding: 1rem 2rem;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            background: var(--signal-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .analyze-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .analyze-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           LOADING STATE
+           ============================================ */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            backdrop-filter: blur(8px);
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .loading-text {
+            font-family: var(--font-mono);
+            font-size: 0.9375rem;
+            color: var(--signal-blue);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ============================================
+           RESULT AREA
+           ============================================ */
+        .result-area {
+            display: none;
+            margin-top: 2rem;
+            padding: 2rem;
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            border-left: 5px solid var(--silver);
+        }
+
+        .result-area.active {
+            display: block;
+        }
+
+        .result-area.safe {
+            background: rgba(20, 184, 166, 0.1);
+            border-left-color: var(--success-light);
+        }
+
+        .result-area.critical {
+            background: rgba(239, 68, 68, 0.1);
+            border-left-color: var(--danger-light);
+        }
+
+        .status-text {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .result-area.safe .status-text {
+            color: var(--success-light);
+        }
+
+        .result-area.critical .status-text {
+            color: var(--danger-light);
+        }
+
+        .advice-text {
+            font-family: var(--font-mono);
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            color: var(--mist);
+            white-space: pre-wrap;
+        }
+
+        /* ============================================
+           TECH STACK INDICATOR
+           ============================================ */
+        .tech-stack {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .tech-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--steel);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .tech-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .tech-badge {
+            backdrop-filter: blur(8px);
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.8125rem;
+            color: var(--silver);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .brahan-widget {
+                padding: 1.5rem;
+            }
+
+            .input-row {
+                flex-direction: column;
+            }
+
+            .analyze-btn {
+                width: 100%;
+            }
+
+            .widget-title {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container nav__inner">
+            <div class="nav__logo">
+                <span style="color: var(--accent);">Well</span>Tegra
+            </div>
+            <a href="index.html" class="nav__back">
+                ← Back to Platform
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero__label">Live Demo</div>
+            <h1 class="hero__title">Brahan Safety Monitor</h1>
+            <p class="hero__subtitle">
+                Physics-informed pump failure prediction powered by Google Vertex AI.
+                Enter a pressure value to analyze risk in real-time using manifold-constrained neural networks.
+            </p>
+            <div style="margin-top: 1.5rem;">
+                <span class="status-badge">
+                    <span class="status-dot"></span>
+                    Vertex AI: ONLINE
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section">
+        <div class="container">
+            <div class="brahan-widget">
+                <!-- Widget Header -->
+                <div class="widget-header">
+                    <div class="widget-title">
+                        🛡️ Brahan Safety Monitor
+                    </div>
+                    <div class="widget-subtitle">
+                        Powered by Google Vertex AI → Cloud Run
+                    </div>
+                </div>
+
+                <!-- Input Group -->
+                <div class="input-group">
+                    <label class="input-label">LIVE SENSOR STREAM (PSI):</label>
+                    <div class="input-row">
+                        <input
+                            type="number"
+                            id="pressureInput"
+                            class="pressure-input"
+                            placeholder="Enter pressure (e.g., 5000)"
+                            min="0"
+                            max="15000"
+                        >
+                        <button onclick="checkSafety()" class="analyze-btn">
+                            ANALYZE RISK
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loading" class="loading">
+                    <div class="loading-text">
+                        <span class="loading-spinner">⚡</span>
+                        Processing Physics Data...
+                    </div>
+                </div>
+
+                <!-- Result Area -->
+                <div id="resultArea" class="result-area">
+                    <div id="statusText" class="status-text"></div>
+                    <div id="adviceText" class="advice-text"></div>
+                </div>
+
+                <!-- Tech Stack -->
+                <div class="tech-stack">
+                    <div class="tech-label">Technology Stack</div>
+                    <div class="tech-badges">
+                        <div class="tech-badge">GCP Vertex AI</div>
+                        <div class="tech-badge">Cloud Run</div>
+                        <div class="tech-badge">Python</div>
+                        <div class="tech-badge">Physics-Informed ML</div>
+                        <div class="tech-badge">Real-Time Inference</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script>
+        async function checkSafety() {
+            const pressure = document.getElementById('pressureInput').value;
+            const resultArea = document.getElementById('resultArea');
+            const loading = document.getElementById('loading');
+
+            // Validation
+            if (!pressure) {
+                alert("⚠️ Please enter a pressure value.");
+                return;
+            }
+
+            if (pressure < 0 || pressure > 15000) {
+                alert("⚠️ Pressure must be between 0 and 15,000 PSI.");
+                return;
+            }
+
+            // Reset UI
+            loading.classList.add('active');
+            resultArea.classList.remove('active', 'safe', 'critical');
+
+            // Live endpoint
+            const brahanUrl = "https://brahan-watchdog-cli-kujynonqza-uc.a.run.app";
+
+            try {
+                const response = await fetch(brahanUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ pressure: parseInt(pressure) })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+
+                // Hide loading
+                loading.classList.remove('active');
+
+                // Show result
+                resultArea.classList.add('active');
+
+                // Update status
+                const statusElem = document.getElementById('statusText');
+                statusElem.innerText = "STATUS: " + data.status;
+
+                // Update advice
+                document.getElementById('adviceText').innerText =
+                    data.advice || data.action || "System operating within normal parameters.";
+
+                // Apply styling based on status
+                if (data.status === "CRITICAL") {
+                    resultArea.classList.add('critical');
+                } else {
+                    resultArea.classList.add('safe');
+                }
+
+            } catch (error) {
+                console.error("Brahan API Error:", error);
+
+                loading.classList.remove('active');
+                resultArea.classList.add('active', 'critical');
+
+                document.getElementById('statusText').innerText = "STATUS: CONNECTION ERROR";
+                document.getElementById('adviceText').innerText =
+                    "Unable to connect to Brahan Engine.\n\nError: " + error.message +
+                    "\n\nPlease check your connection and try again.";
+            }
+        }
+
+        // Allow Enter key to trigger analysis
+        document.getElementById('pressureInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkSafety();
+            }
+        });
+    </script>
+</body>
+</html>
