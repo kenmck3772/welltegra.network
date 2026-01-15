@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brahan Engine | Autonomous Safety Intelligence for Offshore Drilling</title>
+    <meta name="description" content="The Brahan Engine transforms bytes into barrels—monitoring live WITSML sensor streams, validating physics constraints in real-time, and triggering automated compliance reports before incidents escalate.">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ink: #0a1628;
+            --ink-light: #1a2d4a;
+            --slate: #334155;
+            --steel: #64748b;
+            --silver: #94a3b8;
+            --mist: #e2e8f0;
+            --white: #ffffff;
+
+            --accent: #f97316;
+            --safety-orange: #ff6b35;
+            --signal-blue: #3b82f6;
+
+            --success: #0d9488;
+            --success-light: #14b8a6;
+
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--mist);
+            background: var(--ink);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        .nav__inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav__logo {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav__back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 6px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .nav__back:hover {
+            background: rgba(249, 115, 22, 0.15);
+            border-color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: 8rem;
+            padding-bottom: 4rem;
+            text-align: center;
+        }
+
+        .hero__label {
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .hero__title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .hero__subtitle {
+            font-size: clamp(1.125rem, 2vw, 1.375rem);
+            color: var(--silver);
+            max-width: 900px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+        }
+
+        /* Feature Grid */
+        .features {
+            padding: 4rem 0;
+        }
+
+        .features__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            backdrop-filter: blur(12px);
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 12px;
+            padding: 2.5rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--signal-blue);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(59, 130, 246, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-headline {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .feature-copy {
+            color: var(--mist);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+            color: var(--silver);
+            font-size: 0.9375rem;
+        }
+
+        .feature-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--signal-blue);
+            font-weight: bold;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(20, 184, 166, 0.15));
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .cta-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-subtitle {
+            font-size: 1.25rem;
+            color: var(--silver);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1.25rem 2.5rem;
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn--primary {
+            background: var(--signal-blue);
+            color: var(--white);
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn--primary:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Tech Stack */
+        .tech-stack {
+            padding: 4rem 0;
+            background: var(--ink-light);
+        }
+
+        .tech-stack__title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .tech-stack__subtitle {
+            text-align: center;
+            color: var(--silver);
+            margin-bottom: 3rem;
+        }
+
+        .tech-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .tech-badge {
+            backdrop-filter: blur(8px);
+            background: rgba(10, 22, 40, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.9375rem;
+            color: var(--mist);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--ink-light);
+            padding: 3rem 0;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .footer__content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer__copyright {
+            color: var(--steel);
+        }
+
+        .footer__links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer__link {
+            color: var(--silver);
+            transition: color 0.2s;
+            text-decoration: none;
+        }
+
+        .footer__link:hover {
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .features__grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero__title {
+                font-size: 2rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container nav__inner">
+            <a href="/" class="nav__logo">
+                <span style="color: var(--accent);">Well</span>Tegra
+            </a>
+            <a href="index.html" class="nav__back">
+                ← Back to Platform
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero__label">Autonomous Digital Twin Platform</div>
+            <h1 class="hero__title">AUTONOMOUS SAFETY INTELLIGENCE<br>FOR OFFSHORE DRILLING OPERATIONS</h1>
+            <p class="hero__subtitle">
+                The Brahan Engine transforms bytes into barrels—monitoring live WITSML sensor streams,
+                validating physics constraints in real-time, and triggering automated compliance reports
+                before incidents escalate. Digital twin precision meets autonomous decision-making.
+            </p>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="features__grid">
+                <!-- Feature 1: Live 3D Spatial Digital Twin -->
+                <div class="feature-card">
+                    <div class="feature-icon">🏔️</div>
+                    <h3 class="feature-headline">Real-Time Wellbore Visualization</h3>
+                    <p class="feature-copy">
+                        Live 3D rendering of drilling trajectory, geological target zones, and equipment
+                        positioning using Plotly spatial computing. Watch the drill bit navigate the
+                        Forties Fan Sandstone in real-time—not post-analysis. When formation pressure
+                        shifts, the digital twin updates instantaneously, showing operators exactly
+                        where risk is developing before sensors confirm it.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Ingests WITSML 1.4.1.1 data streams (industry-standard XML)</li>
+                        <li>Renders wellbore geometry, casing strings, and target formations</li>
+                        <li>Updates at sensor frequency—no latency, no guesswork</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 2: Physics-Informed AI Validation -->
+                <div class="feature-card">
+                    <div class="feature-icon">⚛️</div>
+                    <h3 class="feature-headline">Thermodynamic Constraint Engine</h3>
+                    <p class="feature-copy">
+                        Powered by Google Vertex AI (Gemini 2.0) grounded in Equinor Volve field data
+                        and BSEE safety protocols. Unlike pattern-matching AI, the Brahan Engine
+                        validates every sensor reading against hydrostatic pressure laws. If measured
+                        pressure violates physics—even when sensors appear normal—the system flags
+                        the anomaly. This is manifold-constrained inference, not statistical guessing.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Detects "impossible" readings that fool traditional monitoring</li>
+                        <li>Trained on 50,000+ hours of Volve field operations</li>
+                        <li>Explains deviations in natural language (not black-box alerts)</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 3: Autonomous Compliance Reporting -->
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3 class="feature-headline">Zero-Touch Forensic Documentation</h3>
+                    <p class="feature-copy">
+                        The moment a "Loss of Well Control" event is detected, the Brahan Engine
+                        automatically generates a timestamped, PDF Forensic Incident Report—complete
+                        with 3D wellbore state snapshots, pressure deviation analysis, and regulatory
+                        narrative. No manual log review. No post-incident scrambling. The compliance
+                        paper trail is written in real-time by the same AI that detected the anomaly.
+                    </p>
+                    <ul class="feature-list">
+                        <li>Meets BSEE/NORSOK reporting requirements out-of-the-box</li>
+                        <li>Includes timestamped sensor data + physics validation logic</li>
+                        <li>Generated in &lt;3 seconds from event trigger to downloadable PDF</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">See The Engine In Action</h2>
+            <p class="cta-subtitle">
+                Watch a simulated kick detection using real Volve field geology.
+                This is live Python code, not a render.
+            </p>
+            <a href="https://brahan-dashboard-371901038176.us-central1.run.app"
+               target="_blank"
+               class="btn btn--primary">
+                WATCH THE LIVE DEMO →
+            </a>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="tech-stack">
+        <div class="container">
+            <h3 class="tech-stack__title">Technology Stack</h3>
+            <p class="tech-stack__subtitle">Built for Industrial Scale on Google Cloud Platform</p>
+            <div class="tech-badges">
+                <div class="tech-badge">Python + FastAPI</div>
+                <div class="tech-badge">Google Cloud Run</div>
+                <div class="tech-badge">WITSML 1.4.1.1</div>
+                <div class="tech-badge">Vertex AI (Gemini 2.0)</div>
+                <div class="tech-badge">Plotly 3D</div>
+                <div class="tech-badge">Equinor Volve Data</div>
+                <div class="tech-badge">BSEE Protocols</div>
+                <div class="tech-badge">Automated PDF Reports</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__copyright">
+                    © 2025 WellTegra. Architected by Ken McKenzie Wells. All rights reserved.
+                </div>
+                <div class="footer__links">
+                    <a href="https://github.com/kenmck3772" target="_blank" class="footer__link">GitHub</a>
+                    <a href="https://www.linkedin.com/in/ken-mckenzie-b8901658" target="_blank" class="footer__link">LinkedIn</a>
+                    <a href="https://www.youtube.com/@WellTegra" target="_blank" class="footer__link">YouTube</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
