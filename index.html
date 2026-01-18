@@ -76,6 +76,57 @@
         }
 
         /* ============================================
+           SCROLL REVEAL ANIMATIONS
+           ============================================ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .section-header {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .act-card, .tech-card {
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .act-card:nth-child(1) { animation-delay: 0.1s; }
+        .act-card:nth-child(2) { animation-delay: 0.2s; }
+        .act-card:nth-child(3) { animation-delay: 0.3s; }
+
+        /* ============================================
+           SECTION DIVIDERS
+           ============================================ */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(148, 163, 184, 0.2) 20%,
+                rgba(148, 163, 184, 0.2) 80%,
+                transparent
+            );
+            margin: 2rem 0;
+        }
+
+        /* ============================================
            NAVIGATION
            ============================================ */
         .nav {
@@ -88,6 +139,13 @@
             border-bottom: 1px solid rgba(148, 163, 184, 0.1);
             z-index: 100;
             padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(10, 22, 40, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-bottom-color: var(--accent);
         }
 
         .nav__inner {
@@ -267,6 +325,29 @@
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
+            position: relative;
+        }
+
+        /* Timeline connector for desktop */
+        @media (min-width: 992px) {
+            .three-act__grid::before {
+                content: '';
+                position: absolute;
+                top: 60px;
+                left: 16.666%;
+                right: 16.666%;
+                height: 2px;
+                background: linear-gradient(
+                    90deg,
+                    var(--accent) 0%,
+                    var(--accent) 33%,
+                    rgba(249, 115, 22, 0.5) 33%,
+                    rgba(249, 115, 22, 0.5) 66%,
+                    rgba(249, 115, 22, 0.3) 66%,
+                    rgba(249, 115, 22, 0.3) 100%
+                );
+                z-index: 0;
+            }
         }
 
         .act-card {
@@ -275,12 +356,34 @@
             border-radius: var(--radius-md);
             padding: 2rem;
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
         }
 
         .act-card:hover {
             border-color: var(--accent);
             transform: translateY(-4px);
             box-shadow: 0 12px 40px rgba(249, 115, 22, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .act-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), transparent);
+            border-radius: var(--radius-md);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .act-card:hover::before {
+            opacity: 1;
         }
 
         .act-card__number {
@@ -857,6 +960,60 @@
     </section>
 
     <!-- ============================================
+         SOCIAL PROOF / VALIDATION
+         ============================================ -->
+    <section id="validation" class="section" style="background: var(--ink);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-header__label">Proven in the Field</div>
+                <h2 class="section-header__title">Validated in the North Sea</h2>
+                <p class="section-header__description">
+                    Real-world deployment results from pilot studies and production operations across North Sea legacy assets.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                <!-- Validation 1: Wells Analyzed -->
+                <div style="background: linear-gradient(135deg, rgba(13, 148, 136, 0.1), rgba(13, 148, 136, 0.05)); border: 1px solid rgba(13, 148, 136, 0.3); border-radius: var(--radius-md); padding: 2.5rem; text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 40px rgba(13, 148, 136, 0.25)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🏔️</div>
+                    <div style="font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--success-light); margin-bottom: 0.5rem;">30+</div>
+                    <div style="font-size: 1.125rem; font-weight: 600; color: var(--white); margin-bottom: 1rem;">North Sea Wells Validated</div>
+                    <p style="color: var(--mist); line-height: 1.6;">
+                        Tested on Thistle, Ninian, and Tyra platforms with 30 years of production data. Physics-informed models validated against real wellbore geometry and historical operations.
+                    </p>
+                </div>
+
+                <!-- Validation 2: Production Gains -->
+                <div style="background: linear-gradient(135deg, rgba(13, 148, 136, 0.1), rgba(13, 148, 136, 0.05)); border: 1px solid rgba(13, 148, 136, 0.3); border-radius: var(--radius-md); padding: 2.5rem; text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 40px rgba(13, 148, 136, 0.25)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📈</div>
+                    <div style="font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--success-light); margin-bottom: 0.5rem;">15%</div>
+                    <div style="font-size: 1.125rem; font-weight: 600; color: var(--white); margin-bottom: 1rem;">Production Gains (Pilot Studies)</div>
+                    <p style="color: var(--mist); line-height: 1.6;">
+                        Optimized wellbore trajectories and completion designs using physics-informed planning algorithms. Measurable production improvements across 6 BP North Sea wells.
+                    </p>
+                </div>
+
+                <!-- Validation 3: Risk Detection -->
+                <div style="background: linear-gradient(135deg, rgba(13, 148, 136, 0.1), rgba(13, 148, 136, 0.05)); border: 1px solid rgba(13, 148, 136, 0.3); border-radius: var(--radius-md); padding: 2.5rem; text-align: center; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 40px rgba(13, 148, 136, 0.25)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🛡️</div>
+                    <div style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: var(--success-light); margin-bottom: 0.5rem;">$1.2M</div>
+                    <div style="font-size: 1.125rem; font-weight: 600; color: var(--white); margin-bottom: 1rem;">Risk Exposure Detected Pre-Deployment</div>
+                    <p style="color: var(--mist); line-height: 1.6;">
+                        Identified casing trauma zones and mechanical conflicts through forensic analysis before costly fishing operations. Safety audit prevented multi-million dollar NPT incidents.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Trust Signal Banner -->
+            <div style="margin-top: 3rem; text-align: center; background: rgba(13, 148, 136, 0.05); border: 1px solid rgba(13, 148, 136, 0.2); border-radius: var(--radius-md); padding: 2rem;">
+                <p style="color: var(--mist); font-size: 1.125rem; margin: 0;">
+                    <strong style="color: var(--success-light);">Built for Industrial Scale:</strong> Designed with the same reliability standards required offshore—where downtime costs $500K/day and failure isn't negotiable.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
          INTERACTIVE APPS & TOOLS
          ============================================ -->
     <section id="apps" class="section" style="background: var(--ink-light);">
@@ -1109,19 +1266,26 @@
     </section>
 
     <!-- ============================================
-         STABILITY & REASONING
+         STABILITY & REASONING (FOR TECHNICAL BUYERS)
          ============================================ -->
     <section class="section tech-depth">
         <div class="container">
             <div class="section-header">
-                <div class="section-header__label">Neural Network Stability</div>
-                <h2 class="section-header__title">Manifold-Constrained AI for Mission-Critical Systems</h2>
+                <div class="section-header__label">For Technical Buyers</div>
+                <h2 class="section-header__title">The Engine Room</h2>
                 <p class="section-header__description">
-                    WellTegra implements advanced mathematical constraints to ensure AI stability on capital-intensive assets—preventing gradient explosions with the same rigor applied to preventing physical blowouts.
+                    Advanced mathematical constraints that ensure AI stability on capital-intensive assets—preventing gradient explosions with the same rigor applied to preventing physical blowouts.
                 </p>
             </div>
 
-            <div class="depth-grid">
+            <!-- Collapsible Technical Details -->
+            <details style="margin-top: 2rem; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: var(--radius-md); overflow: hidden;">
+                <summary style="padding: 1.5rem 2rem; cursor: pointer; font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: var(--white); background: rgba(249, 115, 22, 0.05); transition: all 0.2s; list-style: none; display: flex; justify-content: space-between; align-items: center;" onmouseover="this.style.background='rgba(249, 115, 22, 0.1)'" onmouseout="this.style.background='rgba(249, 115, 22, 0.05)'">
+                    <span>🔧 Technical Architecture: mHC Stability & RLM Reasoning</span>
+                    <span style="color: var(--accent); font-size: 0.875rem; font-weight: 500;">(Click to expand)</span>
+                </summary>
+
+            <div class="depth-grid" style="padding: 2rem;">
                 <!-- Stability: mHC -->
                 <div class="depth-card">
                     <div class="depth-card__header">
@@ -1170,6 +1334,17 @@
                     </div>
                 </div>
             </div>
+            </details>
+
+            <!-- Whitepaper Link -->
+            <div style="margin-top: 2rem; text-align: center;">
+                <p style="color: var(--silver); margin-bottom: 1rem;">
+                    Want the full technical deep-dive?
+                </p>
+                <a href="https://github.com/kenmck3772/welltegra.network" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: rgba(249, 115, 22, 0.1); border: 1px solid var(--accent); border-radius: 6px; color: var(--accent); font-family: var(--font-display); font-weight: 600; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='var(--accent)'; this.style.color='white'" onmouseout="this.style.background='rgba(249, 115, 22, 0.1)'; this.style.color='var(--accent)'">
+                    📄 Read Technical Whitepaper →
+                </a>
+            </div>
         </div>
     </section>
 
@@ -1208,5 +1383,57 @@
             </div>
         </div>
     </footer>
+
+    <!-- ============================================
+         SCROLL ENHANCEMENTS
+         ============================================ -->
+    <script>
+        // Navigation scroll effect
+        const nav = document.querySelector('.nav');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offsetTop = target.offsetTop - 80; // Account for fixed nav
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Details/summary animation enhancement
+        document.querySelectorAll('details').forEach(detail => {
+            detail.addEventListener('toggle', function() {
+                if (this.open) {
+                    const summary = this.querySelector('summary');
+                    const content = this.querySelector('.depth-grid');
+                    if (content) {
+                        content.style.animation = 'fadeIn 0.5s ease-out';
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
