@@ -1,0 +1,48 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="64" fill="#010409"/>
+
+  <!-- Grid pattern (subtle) -->
+  <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+    <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(16, 185, 129, 0.05)" stroke-width="1"/>
+  </pattern>
+  <rect width="512" height="512" fill="url(#grid)"/>
+
+  <!-- Terminal Window -->
+  <rect x="80" y="120" width="352" height="280" rx="8" fill="rgba(15, 23, 42, 0.7)" stroke="#10b981" stroke-width="2"/>
+
+  <!-- Window controls -->
+  <circle cx="104" cy="144" r="6" fill="#ef4444"/>
+  <circle cx="128" cy="144" r="6" fill="#ff5f1f"/>
+  <circle cx="152" cy="144" r="6" fill="#10b981"/>
+
+  <!-- Terminal text lines -->
+  <rect x="100" y="180" width="160" height="8" rx="2" fill="#10b981" opacity="0.8"/>
+  <rect x="100" y="200" width="240" height="8" rx="2" fill="#10b981" opacity="0.6"/>
+  <rect x="100" y="220" width="200" height="8" rx="2" fill="#10b981" opacity="0.5"/>
+  <rect x="100" y="240" width="280" height="8" rx="2" fill="#10b981" opacity="0.7"/>
+  <rect x="100" y="260" width="160" height="8" rx="2" fill="#10b981" opacity="0.5"/>
+  <rect x="100" y="280" width="220" height="8" rx="2" fill="#10b981" opacity="0.6"/>
+
+  <!-- Cursor -->
+  <rect x="100" y="310" width="16" height="20" rx="2" fill="#10b981">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- "B" letter (for Brahan) -->
+  <text x="256" y="450" font-family="monospace" font-size="120" font-weight="bold" fill="#10b981" text-anchor="middle" opacity="0.3">B</text>
+
+  <!-- Glow effect -->
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Apply glow to terminal -->
+  <rect x="80" y="120" width="352" height="280" rx="8" fill="none" stroke="#10b981" stroke-width="1" filter="url(#glow)" opacity="0.5"/>
+</svg>
