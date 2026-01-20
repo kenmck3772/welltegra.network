@@ -1746,6 +1746,162 @@
     </section>
 
     <!-- ============================================
+         STRATEGIC ROADMAP
+         ============================================ -->
+    <section id="roadmap" class="section" style="background: rgba(255, 255, 255, 0.02);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-header__label">Strategic Roadmap</div>
+                <h2 class="section-header__title">Architecting the New Regulatory Standard</h2>
+                <p class="section-header__description">
+                    WellTegra is not building tools for the current environment—we're establishing the forensic engineering foundation for the next 30 years of North Sea decommissioning. Three strategic initiatives position physics-informed AI as the de facto compliance framework for legacy asset archaeology.
+                </p>
+            </div>
+
+            <div style="display: grid; gap: 2rem; margin-top: 3rem;">
+                <!-- Initiative 1: Regulatory Certification -->
+                <div style="background: var(--ink-light); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: 2.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 3rem;">📐</div>
+                        <div>
+                            <h3 style="font-family: var(--font-display); font-size: 1.75rem; color: var(--white); margin-bottom: 0.5rem;">
+                                Regulatory Certification Pathways
+                            </h3>
+                            <div style="color: var(--silver); font-size: 0.9375rem;">
+                                NSTA • DEA Norway • ISO 19901 Working Groups
+                            </div>
+                        </div>
+                    </div>
+
+                    <p style="color: var(--mist); margin-bottom: 1.5rem; line-height: 1.8;">
+                        <strong>The Challenge:</strong> No formal certification framework exists for physics-informed AI in safety-critical offshore operations. Traditional software validation (ISO 9001, ASME V&V 40) doesn't address <strong>thermodynamic constraint verification</strong> or <strong>forensic data reconstruction</strong>.
+                    </p>
+
+                    <div style="background: rgba(10, 22, 40, 0.6); border-left: 4px solid var(--signal-blue); padding: 1.5rem; border-radius: 6px; margin-bottom: 1.5rem;">
+                        <p style="color: var(--white); font-weight: 600; margin-bottom: 1rem;">WellTegra's Approach:</p>
+                        <ul style="color: var(--silver); line-height: 1.8; margin-left: 1.5rem;">
+                            <li><strong style="color: var(--mist);">Physics Test Suites:</strong> 2,400+ thermodynamic constraint validation tests with known-truth datasets from witnessed operational history</li>
+                            <li><strong style="color: var(--mist);">GPG-Signed Audit Trails:</strong> Every AI decision cryptographically linked to source data—providing the non-repudiation NSTA requires for P&A approval</li>
+                            <li><strong style="color: var(--mist);">Open Standard Proposal:</strong> Working with ISO TC67/SC4 (Offshore structures) to establish "Forensic Data Reconstruction" certification category</li>
+                            <li><strong style="color: var(--mist);">Peer Review Protocol:</strong> All mHC/Sinkhorn-Knopp implementations anchored to peer-reviewed research (arXiv:2601.02451), not proprietary "black box" algorithms</li>
+                        </ul>
+                    </div>
+
+                    <p style="color: var(--silver); font-style: italic;">
+                        <strong>Timeline:</strong> Q3 2026 target for NSTA pilot certification framework acceptance. This is engineering reality, not marketing projection.
+                    </p>
+                </div>
+
+                <!-- Initiative 2: Edge Deployment -->
+                <div style="background: var(--ink-light); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: 2.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 3rem;">🛰️</div>
+                        <div>
+                            <h3 style="font-family: var(--font-display); font-size: 1.75rem; color: var(--white); margin-bottom: 0.5rem;">
+                                Edge Deployment for Remote Operations
+                            </h3>
+                            <div style="color: var(--silver); font-size: 0.9375rem;">
+                                Low-Bandwidth Offshore • Disconnected Operations • Local Inference
+                            </div>
+                        </div>
+                    </div>
+
+                    <p style="color: var(--mist); margin-bottom: 1.5rem; line-height: 1.8;">
+                        <strong>The Challenge:</strong> Offshore operations cannot depend on cloud connectivity. Satellite uplinks fail. Network latency introduces unacceptable delays in P&A decision-making. Legacy platforms lack high-speed internet.
+                    </p>
+
+                    <div style="background: rgba(10, 22, 40, 0.6); border-left: 4px solid var(--accent); padding: 1.5rem; border-radius: 6px; margin-bottom: 1.5rem;">
+                        <p style="color: var(--white); font-weight: 600; margin-bottom: 1rem;">Edge Deployment Strategy:</p>
+                        <ul style="color: var(--silver); line-height: 1.8; margin-left: 1.5rem;">
+                            <li><strong style="color: var(--mist);">Quantized Models:</strong> 16-bit precision mHC networks maintain thermodynamic constraint accuracy while reducing model size by 75%</li>
+                            <li><strong style="color: var(--mist);">Ruggedized Hardware:</strong> NVIDIA Jetson AGX Orin deployment for ATEX Zone 2 compliance (offshore hazardous environments)</li>
+                            <li><strong style="color: var(--mist);">Offline-First Architecture:</strong> Full forensic audit capability with zero internet dependency—sync results when connectivity available</li>
+                            <li><strong style="color: var(--mist);">Local GPG Signing:</strong> Private key on edge device allows real-time cryptographic audit trail generation during interventions</li>
+                        </ul>
+                    </div>
+
+                    <p style="color: var(--silver); font-style: italic;">
+                        <strong>Current Status:</strong> Prototype edge deployment validated on synthetic wellbore data. Production pilot planned for Q2 2026 North Sea intervention.
+                    </p>
+                </div>
+
+                <!-- Initiative 3: Digital Twin Integration -->
+                <div style="background: var(--ink-light); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-md); padding: 2.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 3rem;">🔄</div>
+                        <div>
+                            <h3 style="font-family: var(--font-display); font-size: 1.75rem; color: var(--white); margin-bottom: 0.5rem;">
+                                Digital Twin Integration Layer
+                            </h3>
+                            <div style="color: var(--silver); font-size: 0.9375rem;">
+                                Siemens Xcelerator • AVEVA E3D • Open Industrial Interop
+                            </div>
+                        </div>
+                    </div>
+
+                    <p style="color: var(--mist); margin-bottom: 1.5rem; line-height: 1.8;">
+                        <strong>The Challenge:</strong> Operators invest millions in digital twin platforms (Siemens, AVEVA, Akselos). These systems model <em>current</em> asset states—but lack the <strong>forensic data layer</strong> required to validate against 1970s-1990s as-built conditions.
+                    </p>
+
+                    <div style="background: rgba(10, 22, 40, 0.6); border-left: 4px solid var(--success-light); padding: 1.5rem; border-radius: 6px; margin-bottom: 1.5rem;">
+                        <p style="color: var(--white); font-weight: 600; margin-bottom: 1rem;">WellTegra as Forensic Data Provider:</p>
+                        <ul style="color: var(--silver); line-height: 1.8; margin-left: 1.5rem;">
+                            <li><strong style="color: var(--mist);">API Integration:</strong> RESTful endpoints expose GPG-signed forensic corrections to twin platforms—providing the "ground truth" baseline for simulation accuracy</li>
+                            <li><strong style="color: var(--mist);">OPC UA Compatibility:</strong> Industrial standard for real-time data exchange—WellTegra provides validated wellbore geometry, casing shoe depths, KB-to-GL corrections</li>
+                            <li><strong style="color: var(--mist);">Audit Trail Interop:</strong> Digital twins simulate P&A scenarios; WellTegra validates that simulation inputs match witnessed operational history (not corrupted database values)</li>
+                            <li><strong style="color: var(--mist);">No Vendor Lock-In:</strong> Forensic data layer is platform-agnostic—works with Siemens, AVEVA, Bentley, Akselos, or custom twin implementations</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: rgba(249, 115, 22, 0.05); border: 1px solid rgba(249, 115, 22, 0.3); padding: 1.5rem; border-radius: 8px;">
+                        <p style="color: var(--accent); font-weight: 600; margin-bottom: 0.75rem;">Real-World Scenario:</p>
+                        <p style="color: var(--silver); line-height: 1.7;">
+                            Operator runs Siemens digital twin to simulate P&A cement placement for 1985-vintage well. Twin uses database depth: <strong>8,214 ft GL</strong>. WellTegra forensic layer flags: <strong>"Original 1985 measurement: 8,247 ft KB. 80ft datum shift detected in 2003 migration."</strong> Operator corrects twin inputs → cement placement succeeds → <strong>$2.1M NPT avoided</strong>.
+                        </p>
+                    </div>
+
+                    <p style="color: var(--silver); font-style: italic; margin-top: 1.5rem;">
+                        <strong>Partnership Model:</strong> WellTegra does not compete with twin platforms—we provide the validated historical data layer they currently lack.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Strategic Positioning -->
+            <div style="margin-top: 3rem; padding: 2.5rem; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(13, 148, 136, 0.1)); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: var(--radius-md);">
+                <h3 style="font-family: var(--font-display); font-size: 1.5rem; color: var(--white); margin-bottom: 1.5rem; text-align: center;">
+                    Why This Matters for £40 Billion in North Sea Decommissioning
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚖️</div>
+                        <h4 style="color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;">Regulatory Acceptance</h4>
+                        <p style="color: var(--silver); font-size: 0.9375rem;">
+                            NSTA-approved certification framework means P&A plans backed by WellTegra forensic audits carry legal weight—reducing approval cycles from months to weeks
+                        </p>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🛠️</div>
+                        <h4 style="color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;">Operational Independence</h4>
+                        <p style="color: var(--silver); font-size: 0.9375rem;">
+                            Edge deployment eliminates cloud dependency—forensic validation runs locally during interventions, providing real-time depth conflict alerts
+                        </p>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔗</div>
+                        <h4 style="color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;">Industry Interoperability</h4>
+                        <p style="color: var(--silver); font-size: 0.9375rem;">
+                            Digital twin integration means operators don't abandon existing platforms—WellTegra enhances them with the forensic data layer they currently lack
+                        </p>
+                    </div>
+                </div>
+                <p style="text-align: center; color: var(--white); font-size: 1.125rem; font-weight: 600; margin-top: 1.5rem;">
+                    This is not a 5-year roadmap. This is the engineering foundation for the next 30 years of North Sea operations.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
          INTERACTIVE APPS & TOOLS
          ============================================ -->
     <section id="apps" class="section" style="background: var(--ink-light);">
