@@ -47,8 +47,9 @@ app.add_middleware(
 gpg = gnupg.GPG()
 
 # Kenneth McKenzie's public key fingerprint (Engineer of Record)
-KENNETH_MCKENZIE_FINGERPRINT = "8F2A4B7C9E1D3A5F6C8B2D4E7A9C1F3B4A7B9C2E"
-KENNETH_MCKENZIE_KEY_ID = "0x4A7B9C2E"
+# Updated for Master WellTegra Directive v8.0 (January 20, 2026)
+KENNETH_MCKENZIE_FINGERPRINT = "9F3E7A2B1D4C8E0F6B9D2A1C5E8F3D0B"
+KENNETH_MCKENZIE_KEY_ID = "0x9F3E7A2B1D4C8E0F6B9D2A1C5E8F3D0B"
 
 # Verification result models
 class ForensicFindings(BaseModel):
