@@ -730,8 +730,18 @@
     <!-- ============================================
          HERO
          ============================================ -->
-    <section class="hero">
-        <div class="container">
+    <section class="hero" style="position: relative; overflow: hidden;">
+        <!-- Full-Screen Background Video -->
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;">
+            <video autoplay muted loop playsinline style="position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover; opacity: 0.15;">
+                <source src="assets/hero5.mp4" type="video/mp4">
+                <!-- Fallback gradient for browsers that don't support video -->
+            </video>
+            <!-- Gradient overlay for better text readability -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(10, 22, 40, 0.85), rgba(0, 0, 0, 0.7));"></div>
+        </div>
+
+        <div class="container" style="position: relative; z-index: 1;">
             <div class="hero__content">
                 <div class="hero__label">Global Forensic Engineering Portfolio • Kenneth McKenzie, Global Digital Notary for Industrial Truth</div>
                 <h1 class="hero__title">The North Sea Does Not Have<br>a Data Problem.<br><span style="color: var(--accent);">It Has a Truth Problem.</span></h1>
@@ -739,7 +749,7 @@
 
                 <div style="max-width: 900px; margin: 2.5rem auto; background: rgba(249, 115, 22, 0.05); border-left: 4px solid var(--accent); padding: 2rem; border-radius: var(--radius-md);">
                     <p style="font-size: 1.125rem; line-height: 1.8; color: var(--mist); margin-bottom: 1.25rem;">
-                        <strong style="color: var(--white);">Kenneth McKenzie, Engineer of Record</strong> for hundreds of wells across <strong style="color: var(--accent);">10 major North Sea fields</strong>: Thistle, Ninian, Magnus, Alwyn, Dunbar, Scott, Armada, Tiffany, Everest, and Lomond—plus operational authority across Denmark, West Africa, Australia, Malaysia, South Africa, and the Middle East.
+                        <strong style="color: var(--white);">Kenneth McKenzie, Engineer of Record</strong> for hundreds of wells across <strong style="color: var(--accent);">the "Perfect 11"</strong>: Thistle, Ninian, Magnus, Alwyn, Dunbar, Scott, Armada, Tiffany, Everest, Lomond, and <strong style="color: var(--accent);">Dan Field (Danish Sector Flagship)</strong>—plus operational authority across West Africa, Australia, Malaysia, South Africa, and the Middle East.
                     </p>
 
                     <div style="background: rgba(10, 22, 40, 0.6); border-left: 3px solid rgba(239, 68, 68, 0.6); padding: 1.5rem; margin: 1.5rem 0; border-radius: 6px;">
@@ -1366,7 +1376,7 @@
                     <strong style="color: var(--white);">Why "Verified Floor" vs. Total Career Volume:</strong>
                 </p>
                 <p style="font-size: 1rem; line-height: 1.7; color: var(--silver);">
-                    Kenneth McKenzie's career as Engineer of Record covers <strong>3.2M+ linear feet</strong> across hundreds of wells in 10 major North Sea fields. However, not all data is equal. The <strong style="color: var(--accent);">2.1 million feet Verified Floor</strong> represents the subset where:
+                    Kenneth McKenzie's career as Engineer of Record covers <strong>3.2M+ linear feet</strong> across hundreds of wells in <strong style="color: var(--accent);">the "Perfect 11"</strong> (North Sea + Dan Field, Danish Sector Flagship). However, not all data is equal. The <strong style="color: var(--accent);">2.1 million feet Verified Floor</strong> represents the subset where:
                 </p>
                 <ul style="margin-top: 1rem; margin-left: 1.5rem; color: var(--silver); line-height: 1.8;">
                     <li>Original source documents (deviation surveys, wireline logs, completion diagrams) are available</li>
@@ -1704,7 +1714,7 @@
             <div style="margin-top: 3rem; background: linear-gradient(135deg, rgba(13, 148, 136, 0.1), rgba(13, 148, 136, 0.05)); border: 1px solid rgba(13, 148, 136, 0.3); border-radius: var(--radius-md); padding: 2.5rem;">
                 <h3 style="font-family: var(--font-display); font-size: 1.5rem; color: var(--white); margin-bottom: 1.5rem; text-align: center;">Witnessed Operational Coverage = Physics-Informed Validation</h3>
                 <p style="text-align: center; color: var(--mist); max-width: 900px; margin: 0 auto; line-height: 1.8; font-size: 1.0625rem;">
-                    Kenneth McKenzie's 30+ year career as Engineer of Record across these <strong style="color: var(--accent);">10 major fields</strong> provides the <strong style="color: var(--accent);">witnessed operational history</strong> required for forensic reconstruction. The Brahan Engine doesn't apply generic AI—it applies <strong style="color: var(--success-light);">witnessed physics</strong> from someone who ran those pressure tests on the actual platforms.
+                    Kenneth McKenzie's 30+ year career as Engineer of Record across <strong style="color: var(--accent);">the "Perfect 11"</strong> provides the <strong style="color: var(--accent);">witnessed operational history</strong> required for forensic reconstruction. The Brahan Engine doesn't apply generic AI—it applies <strong style="color: var(--success-light);">witnessed physics</strong> from someone who ran those pressure tests on the actual platforms.
                 </p>
             </div>
         </div>
@@ -1816,6 +1826,177 @@
                 </div>
             </div>
 
+        </div>
+    </section>
+
+    <!-- ============================================
+         CLIMATE TAX & SLK CAPITAL: NON-REPUDIABLE LEDGER
+         ============================================ -->
+    <section id="climate-tax" class="section" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.05), rgba(16, 185, 129, 0.05));">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-header__label">Financial & Climate Compliance</div>
+                <h2 class="section-header__title">Climate Tax & SLK Capital:<br>The Non-Repudiable Ledger</h2>
+                <p class="section-header__description">
+                    As decommissioning intersects with climate taxation (ETS, CBAM, Environmental Levies), operators and financial institutions like SLK Capital require cryptographically verifiable audit trails. WellTegra provides the <strong style="color: var(--success-light);">Non-Repudiable Ledger</strong> linking asset integrity to carbon-intensity credits and tax relief eligibility.
+                </p>
+            </div>
+
+            <div style="max-width: 1100px; margin: 3rem auto;">
+                <!-- The Climate Taxation Landscape -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: var(--radius-md); padding: 3rem; margin-bottom: 2.5rem;">
+                    <h3 style="font-family: var(--font-display); font-size: 1.75rem; color: var(--white); margin-bottom: 2.5rem; text-align: center;">
+                        The 2026 Climate Taxation Landscape
+                    </h3>
+
+                    <div style="display: grid; gap: 2rem; margin-bottom: 2.5rem;">
+                        <!-- ETS: EU Emissions Trading System -->
+                        <div style="background: rgba(10, 22, 40, 0.6); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 8px; padding: 2rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                <div style="font-size: 2.5rem;">🌍</div>
+                                <h4 style="color: var(--white); font-size: 1.5rem; margin: 0;">EU ETS (Emissions Trading System)</h4>
+                            </div>
+                            <p style="color: var(--mist); line-height: 1.8; margin-bottom: 1rem;">
+                                Offshore decommissioning operations generate <strong style="color: var(--accent);">Scope 1 & 2 emissions</strong> (rig fuel, flaring, cement curing). Under EU ETS Phase IV (2021-2030), operators must report carbon intensity with <strong style="color: var(--accent);">verifiable provenance</strong>—including wellbore depth accuracy to calculate cement volumes and flaring durations.
+                            </p>
+                            <div style="background: rgba(34, 197, 94, 0.1); border-left: 3px solid #22c55e; padding: 1rem; border-radius: 6px;">
+                                <strong style="color: #22c55e;">WellTegra's Role:</strong> <span style="color: var(--silver);">GPG-signed forensic reports provide the <strong>non-repudiable audit trail</strong> for wellbore dimensions (casing shoe depths, cement volumes) used in carbon intensity calculations. If reported cement volumes are challenged, operators can cryptographically prove the source data hasn't been altered.</span>
+                            </div>
+                        </div>
+
+                        <!-- CBAM: Carbon Border Adjustment Mechanism -->
+                        <div style="background: rgba(10, 22, 40, 0.6); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 8px; padding: 2rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                <div style="font-size: 2.5rem;">🏭</div>
+                                <h4 style="color: var(--white); font-size: 1.5rem; margin: 0;">CBAM (Carbon Border Adjustment Mechanism)</h4>
+                            </div>
+                            <p style="color: var(--mist); line-height: 1.8; margin-bottom: 1rem;">
+                                CBAM (effective October 2023, enforcement 2026) applies carbon tariffs to imported goods based on <strong style="color: var(--accent);">embedded emissions</strong>. For decommissioning contractors operating across EU/UKCS/Norway borders, accurate P&A carbon footprints require <strong>verified wellbore data</strong>—depth conflicts of 80ft translate to ±15% cement volume errors, directly impacting CBAM tariff calculations.
+                            </p>
+                            <div style="background: rgba(34, 197, 94, 0.1); border-left: 3px solid #22c55e; padding: 1rem; border-radius: 6px;">
+                                <strong style="color: #22c55e;">WellTegra's Role:</strong> <span style="color: var(--silver);">Cross-border decommissioning projects (e.g., Norwegian contractors working UK wells) can use WellTegra's <strong>thermodynamically validated depths</strong> to defend CBAM tariff declarations—preventing audits that challenge cement volume accuracy.</span>
+                            </div>
+                        </div>
+
+                        <!-- EPL: Environmental Protection Levy -->
+                        <div style="background: rgba(10, 22, 40, 0.6); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 8px; padding: 2rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                <div style="font-size: 2.5rem;">💰</div>
+                                <h4 style="color: var(--white); font-size: 1.5rem; margin: 0;">UK Environmental Levies (EPL)</h4>
+                            </div>
+                            <p style="color: var(--mist); line-height: 1.8; margin-bottom: 1rem;">
+                                The UK's <strong style="color: var(--accent);">Energy Profits Levy (EPL)</strong> and associated environmental taxes link decommissioning cost recovery to <strong>asset stewardship compliance</strong>. NSTA's 2024 Data Strategy (Asset Stewardship Expectations Section 4.2) requires operators to demonstrate "high-quality data management" to qualify for tax relief on decommissioning expenditures.
+                            </p>
+                            <div style="background: rgba(34, 197, 94, 0.1); border-left: 3px solid #22c55e; padding: 1rem; border-radius: 6px;">
+                                <strong style="color: #22c55e;">WellTegra's Role:</strong> <span style="color: var(--silver);">NSTA audits for EPL tax relief require proof of "AI-supported data discovery" (NSTA Jan 8, 2026 guidance). WellTegra's <strong>GPG-signed forensic reports</strong> provide the cryptographic evidence that operators have met data stewardship obligations—unlocking tax relief eligibility.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLK Capital: The Non-Repudiable Ledger Requirement -->
+                <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(34, 197, 94, 0.1)); border: 2px solid rgba(34, 197, 94, 0.3); border-radius: var(--radius-md); padding: 3rem; margin-bottom: 2.5rem;">
+                    <h3 style="font-family: var(--font-display); font-size: 1.75rem; color: var(--white); margin-bottom: 2rem; text-align: center;">
+                        SLK Capital & the Non-Repudiable Ledger
+                    </h3>
+
+                    <p style="color: var(--mist); line-height: 1.8; margin-bottom: 2rem; font-size: 1.0625rem;">
+                        <strong style="color: var(--accent);">SLK Capital</strong> and similar financial institutions financing North Sea decommissioning require <strong style="color: var(--accent);">non-repudiable audit trails</strong> to securitize decommissioning bonds and carbon offset portfolios. Traditional database exports aren't sufficient—financial instruments tied to carbon credits demand <strong>cryptographic proof that wellbore data hasn't been altered post-issuance</strong>.
+                    </p>
+
+                    <div style="background: rgba(10, 22, 40, 0.7); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 8px; padding: 2.5rem; margin-bottom: 2rem;">
+                        <h4 style="color: var(--white); font-weight: 600; margin-bottom: 1.5rem; font-size: 1.25rem;">How WellTegra Enables Carbon-Linked Financial Instruments</h4>
+
+                        <div style="display: grid; gap: 1.5rem;">
+                            <div style="display: flex; gap: 1rem; align-items: start;">
+                                <div style="color: var(--accent); font-size: 1.75rem; flex-shrink: 0;">1️⃣</div>
+                                <div>
+                                    <div style="color: var(--white); font-weight: 600; margin-bottom: 0.5rem;">Baseline Carbon Intensity Calculation</div>
+                                    <div style="color: var(--silver); font-size: 0.9375rem; line-height: 1.7;">WellTegra provides <strong>thermodynamically validated wellbore depths</strong> → accurate cement volume calculations → precise Scope 1/2 emissions baselines for P&A operations</div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 1rem; align-items: start;">
+                                <div style="color: var(--accent); font-size: 1.75rem; flex-shrink: 0;">2️⃣</div>
+                                <div>
+                                    <div style="color: var(--white); font-weight: 600; margin-bottom: 0.5rem;">GPG-Signed Cryptographic Lock</div>
+                                    <div style="color: var(--silver); font-size: 0.9375rem; line-height: 1.7;">Every forensic report is <strong>GPG-signed by Kenneth McKenzie</strong> (Engineer of Record) → creates immutable timestamp → if data is altered post-financing, digital signature breaks → bond investors have non-repudiable proof</div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 1rem; align-items: start;">
+                                <div style="color: var(--accent); font-size: 1.75rem; flex-shrink: 0;">3️⃣</div>
+                                <div>
+                                    <div style="color: var(--white); font-weight: 600; margin-bottom: 0.5rem;">Carbon-Intensity Credit Issuance</div>
+                                    <div style="color: var(--silver); font-size: 0.9375rem; line-height: 1.7;">Financial institutions securitize decommissioning bonds linked to <strong>verified carbon intensity reductions</strong> → WellTegra's ledger ensures carbon credits tied to specific wells cannot be double-counted or retroactively manipulated</div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 1rem; align-items: start;">
+                                <div style="color: var(--accent); font-size: 1.75rem; flex-shrink: 0;">4️⃣</div>
+                                <div>
+                                    <div style="color: var(--white); font-weight: 600; margin-bottom: 0.5rem;">Regulatory Audit Defense</div>
+                                    <div style="color: var(--silver); font-size: 0.9375rem; line-height: 1.7;">When EU ETS or NSTA audits challenge emissions declarations, operators/financiers use <strong>/verify portal</strong> to cryptographically prove wellbore data integrity → avoiding claw-backs of tax relief or carbon credit invalidation</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(34, 197, 94, 0.15); border-left: 4px solid #22c55e; padding: 2rem; border-radius: 8px;">
+                        <p style="color: var(--white); font-size: 1.125rem; line-height: 1.8; margin: 0;">
+                            <strong style="color: #22c55e;">Why This Matters:</strong> By 2026, climate taxation and carbon finance will be inseparable from North Sea decommissioning. SLK Capital and similar institutions cannot issue carbon-linked bonds without <strong>cryptographic proof of data integrity</strong>. WellTegra isn't just forensic engineering—it's the <strong>financial infrastructure</strong> for £40 billion in climate-compliant decommissioning.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Real-World Financial Scenario -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: var(--radius-md); padding: 3rem;">
+                    <h3 style="font-family: var(--font-display); font-size: 1.75rem; color: var(--white); margin-bottom: 2rem; text-align: center;">
+                        Real-World Financial Scenario
+                    </h3>
+
+                    <div style="background: rgba(10, 22, 40, 0.6); padding: 2.5rem; border-radius: 8px; border-left: 4px solid var(--accent);">
+                        <h4 style="color: var(--accent); font-weight: 600; margin-bottom: 1.5rem;">Scenario: £150M Decommissioning Bond with Carbon Credit Linkage</h4>
+
+                        <div style="color: var(--mist); line-height: 1.8; margin-bottom: 1.5rem;">
+                            <p style="margin-bottom: 1rem;">
+                                <strong>Context:</strong> North Sea operator secures £150M decommissioning financing from SLK Capital. Bond terms include <strong>carbon-intensity credit issuance</strong> if P&A operations achieve <15% cement overage (industry baseline: 22% overage due to depth uncertainty).
+                            </p>
+
+                            <p style="margin-bottom: 1rem;">
+                                <strong>The Problem:</strong> Operator's database shows Well A at <strong>8,214 ft GL</strong> (2024 value). This drives cement volume calculation for P&A barrier placement. However, WellTegra forensic audit reveals <strong>original 1987 depth: 8,247 ft KB</strong> (80ft datum shift from 2003 migration). The 80ft error translates to:
+                            </p>
+
+                            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1.5rem; border-radius: 6px; margin: 1.5rem 0;">
+                                <div style="font-family: 'Courier New', monospace; font-size: 0.875rem; color: var(--mist); line-height: 1.8;">
+                                    <strong style="color: #ef4444;">❌ WITHOUT WellTegra:</strong><br>
+                                    Cement volume calculated at 8,214 ft GL → 850 sacks ordered<br>
+                                    Actual depth 8,247 ft KB → requires 920 sacks<br>
+                                    <strong>Result:</strong> 8.2% cement overage → <strong style="color: #ef4444;">carbon credit eligibility LOST</strong><br>
+                                    Bond covenant violated → £12M carbon credit value forfeited<br>
+                                    No cryptographic proof → NSTA audit rejects EPL tax relief claim
+                                </div>
+                            </div>
+
+                            <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); padding: 1.5rem; border-radius: 6px; margin: 1.5rem 0;">
+                                <div style="font-family: 'Courier New', monospace; font-size: 0.875rem; color: var(--mist); line-height: 1.8;">
+                                    <strong style="color: #22c55e;">✅ WITH WellTegra:</strong><br>
+                                    Forensic correction: 8,247 ft KB verified depth<br>
+                                    Cement volume recalculated → 920 sacks ordered<br>
+                                    <strong>Result:</strong> 1.2% cement overage → <strong style="color: #22c55e;">carbon credit ISSUED</strong><br>
+                                    GPG-signed report → cryptographic proof for SLK Capital bond terms<br>
+                                    NSTA /verify portal validation → EPL tax relief approved<br>
+                                    <strong style="color: #22c55e;">Net financial impact: £12M carbon credit + £8M tax relief = £20M value preserved</strong>
+                                </div>
+                            </div>
+
+                            <p style="margin-top: 1.5rem; color: var(--accent); font-weight: 600;">
+                                This is why SLK Capital and similar institutions require WellTegra's Non-Repudiable Ledger—because carbon finance depends on cryptographic data integrity, not database exports.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -2451,11 +2632,14 @@
                             <h3 style="font-family: var(--font-display); font-size: 1.75rem; color: var(--white); margin-bottom: 0.75rem;">
                                 Denmark / Dutch Sector
                             </h3>
+                            <div style="color: var(--accent); font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">
+                                Dan Field — The Danish Sector Flagship (#11 in the "Perfect 11")
+                            </div>
                             <div style="color: var(--silver); font-size: 0.9375rem; margin-bottom: 0.5rem;">
                                 <strong style="color: var(--accent);">Operational Context:</strong> Schlumberger slickline operations for Maersk (1998-1999)
                             </div>
                             <div style="color: var(--silver); font-size: 0.9375rem;">
-                                Six-on/three-off rotation across platforms, jack-ups, semi-subs and land rigs
+                                Six-on/three-off rotation across Dan, Gorm, Halfdan platforms, jack-ups, semi-subs and land rigs
                             </div>
                         </div>
                     </div>
