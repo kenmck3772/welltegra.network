@@ -457,7 +457,7 @@
                             <th>Access Level</th>
                             <th>Who Has Access</th>
                             <th>What They See</th>
-                            <th>Privacy Protection</th>
+                            <th>Example Use Case</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -465,22 +465,29 @@
                             <td><span class="tier-badge tier-1">Tier 1: General</span></td>
                             <td>Public users, researchers, general stakeholders</td>
                             <td><strong>Fully anonymized:</strong> "Senior Wireline Engineer, 18 years offshore, 97% validation rate"</td>
-                            <td><strong>Maximum</strong> (zero name disclosure)</td>
+                            <td><strong>CASE-NS-2024-017:</strong> Public case study shows "Tier-1 Northern North Sea, fixed platform, 1980s vintage" with physics conflict and validation method—zero name disclosure</td>
                         </tr>
                         <tr>
                             <td><span class="tier-badge tier-2">Tier 2: Engineering</span></td>
-                            <td>Licensed operators under NDA, NSTA/HSE oversight</td>
+                            <td>Licensed operators under NDA, NSTA/HSE regulatory oversight</td>
                             <td><strong>Role-based masking:</strong> "J.A., Senior Wireline Engineer, Schlumberger, March 1985"</td>
-                            <td><strong>Moderate</strong> (initials + role context)</td>
+                            <td><strong>P&A Planning:</strong> Operator planning Thistle intervention sees "Toolpusher M.F. successfully completed similar work on C07 (1986), C09 (1987)"—enough context to validate procedure without full identity</td>
                         </tr>
                         <tr>
                             <td><span class="tier-badge tier-3">Tier 3: Forensic</span></td>
-                            <td>Incident reconstruction, regulatory investigators, legal counsel</td>
-                            <td><strong>Full attribution:</strong> "James Anderson, Badge #4472, complete operational lineage"</td>
-                            <td><strong>Minimal</strong> (full transparency, strict access controls)</td>
+                            <td>NSTA incident reconstruction, HSE regulatory investigators, legal counsel with signed access agreements</td>
+                            <td><strong>Full attribution:</strong> "James Anderson, Badge #4472, Schlumberger, complete operational lineage (1982-2001)"</td>
+                            <td><strong>Regulatory Audit:</strong> NSTA investigates 2025 wellbore integrity incident, requires full audit trail including original engineer identity for cross-examination with source documents</td>
                         </tr>
                     </tbody>
                 </table>
+
+                <div style="background: rgba(249, 115, 22, 0.05); border-left: 4px solid var(--accent); padding: 1.5rem; margin-top: 1rem; border-radius: 6px;">
+                    <p style="font-weight: 600; margin-bottom: 0.5rem; color: var(--white);">Audit Trail Requirement:</p>
+                    <p style="color: var(--silver);">
+                        All Tier 2 and Tier 3 accesses are cryptographically logged with: (1) Accessor identity and organization, (2) Timestamp and duration, (3) Specific data accessed (well ID, engineer names, time period), (4) Justification linked to incident report or regulatory inquiry, (5) Approval chain (Tier 3 requires Legal Counsel + Senior Leadership sign-off). Logs retained for 10 years per GDPR Article 30.
+                    </p>
+                </div>
             </div>
 
             <!-- Regulatory Compliance -->
@@ -492,6 +499,40 @@
                     <li><strong>NSTA Asset Transparency (2024-2026):</strong> Provides cryptographically signed forensic audits with full data provenance for P&A planning and decommissioning operations</li>
                     <li><strong>Data Protection Impact Assessment (DPIA):</strong> Moderate risk rating (most data subjects retired/deceased, strong mitigation measures, public safety justification)</li>
                 </ul>
+            </div>
+
+            <!-- NSTA 2024 Data Strategy Compliance -->
+            <div class="trust-card" style="background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2);">
+                <h3><span class="icon">📐</span> NSTA 2024 Data Strategy: De Facto Compliance Enabler</h3>
+                <p style="margin-bottom: var(--space-md); font-size: 1.125rem;">
+                    WellTegra <strong>does not create new regulatory mandates</strong>. Instead, we provide operators with the technical tools to meet <strong>existing NSTA requirements</strong> for transparent, auditable data provenance in P&A operations.
+                </p>
+
+                <div style="background: rgba(10, 22, 40, 0.8); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 8px; padding: 1.5rem; margin: 1rem 0;">
+                    <p style="margin-bottom: 1rem; color: var(--white); font-weight: 600;">NSTA Asset Stewardship Expectations 2024, Section 4.2:</p>
+                    <p style="color: var(--silver); font-style: italic; margin-bottom: 1rem;">
+                        "Operators must demonstrate <strong>transparent, auditable data provenance</strong> for all wellbore data used in P&A planning and decommissioning operations, with particular attention to legacy assets where original source documents may be fragmented or corrupted."
+                    </p>
+                </div>
+
+                <p style="margin-bottom: var(--space-sm);"><strong>How WellTegra Enables Compliance:</strong></p>
+                <ul>
+                    <li><strong>GPG-Signed Forensic Reports:</strong> Cryptographic audit trails that provide non-repudiation. If future data migrations alter a single byte, the digital signature breaks—satisfying NSTA's requirement for "auditable data provenance"</li>
+                    <li><strong>Physics-Informed Validation:</strong> Thermodynamic constraints (Navier-Stokes continuity, formation gradients, P-T validation) ensure data corrections are defensible to technical reviewers, not just database migrations</li>
+                    <li><strong>Immutable Decision Lineage:</strong> Reasoning Language Models (RLMs) document every forensic decision with traceable logic chains—critical for demonstrating due diligence in regulatory audits</li>
+                    <li><strong>Source Document Traceability:</strong> All corrections cross-referenced to original 1970s-1990s deviation surveys, wireline logs, and completion diagrams—the "archaeological" evidence that proves reconstruction validity</li>
+                </ul>
+
+                <div style="background: rgba(13, 148, 136, 0.1); border-left: 4px solid var(--success-light); padding: 1.5rem; margin-top: 1rem; border-radius: 6px;">
+                    <p style="color: var(--white); font-weight: 600; margin-bottom: 0.5rem;">Technical Audit Scenario:</p>
+                    <p style="color: var(--silver);">
+                        When NSTA requests proof that a KB-to-GL depth correction is defensible, operators using WellTegra can provide: (1) GPG-signed forensic report with cryptographic hash, (2) Original 1987 deviation survey PDF cross-reference, (3) Thermodynamic validation log showing Navier-Stokes continuity confirmation, (4) RLM reasoning chain documenting why corporate 2003 migration introduced error. This is <strong>transparent, auditable provenance</strong>—not guesswork.
+                    </p>
+                </div>
+
+                <p style="margin-top: var(--space-md); color: var(--silver); font-size: 0.9rem;">
+                    <strong>Important:</strong> WellTegra is a <strong>compliance tool</strong>, not a compliance authority. NSTA sets the requirements; WellTegra provides the forensic engineering capability to meet them.
+                </p>
             </div>
 
             <!-- Immutable Audit Trail -->
