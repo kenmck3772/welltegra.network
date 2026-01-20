@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trust Center | Forensic Governance & Data Ethics | WellTegra</title>
+    <meta name="description" content="How WellTegra honors North Sea pioneers through forensic data governance. Tiered access controls, No-Blame guardrails, and Living Legend protocols for legacy wellbore data archaeology.">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ink: #0a1628;
+            --ink-light: #1a2d4a;
+            --slate: #334155;
+            --steel: #64748b;
+            --silver: #94a3b8;
+            --mist: #e2e8f0;
+            --cloud: #f1f5f9;
+            --white: #ffffff;
+            --accent: #f97316;
+            --accent-dark: #ea580c;
+            --success: #0d9488;
+            --success-light: #14b8a6;
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2.5rem;
+            --space-xl: 4rem;
+            --max-width: 1200px;
+            --radius-md: 12px;
+            --shadow-md: 0 4px 12px rgba(10, 22, 40, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--mist);
+            background: var(--ink);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-sm);
+        }
+
+        /* Header */
+        .header {
+            background: var(--ink-light);
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav-link {
+            color: var(--silver);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+            background: rgba(249, 115, 22, 0.1);
+        }
+
+        /* Hero */
+        .hero {
+            padding: var(--space-xl) 0 var(--space-lg);
+            text-align: center;
+            background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: var(--space-sm);
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--silver);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .trust-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(13, 148, 136, 0.1);
+            border: 1px solid rgba(13, 148, 136, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--success-light);
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        /* Section */
+        .section {
+            padding: var(--space-xl) 0;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: var(--space-md);
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--silver);
+            margin-bottom: var(--space-lg);
+            max-width: 800px;
+        }
+
+        /* Audience Tabs */
+        .audience-nav {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: var(--space-lg);
+        }
+
+        .audience-tab {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--silver);
+            text-decoration: none;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .audience-tab:hover {
+            background: rgba(249, 115, 22, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Cards */
+        .trust-card {
+            background: var(--ink-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+        }
+
+        .trust-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--white);
+            margin-bottom: var(--space-sm);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .trust-card h3 .icon {
+            font-size: 1.75rem;
+        }
+
+        .trust-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .trust-card ul li {
+            padding-left: 1.75rem;
+            position: relative;
+            margin-bottom: 0.75rem;
+            color: var(--mist);
+            line-height: 1.7;
+        }
+
+        .trust-card ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success-light);
+            font-weight: 700;
+        }
+
+        /* Table */
+        .tier-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--space-lg) 0;
+            background: var(--ink-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .tier-table th {
+            background: rgba(249, 115, 22, 0.1);
+            color: var(--white);
+            padding: 1rem;
+            text-align: left;
+            font-family: var(--font-display);
+            font-weight: 600;
+        }
+
+        .tier-table td {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--mist);
+        }
+
+        .tier-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .tier-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .tier-1 {
+            background: rgba(13, 148, 136, 0.2);
+            color: var(--success-light);
+        }
+
+        .tier-2 {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
+        .tier-3 {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-md);
+            margin: var(--space-lg) 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--silver);
+            font-size: 0.9rem;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: rgba(13, 148, 136, 0.1);
+            border-left: 4px solid var(--success-light);
+            padding: var(--space-md);
+            border-radius: 6px;
+            margin: var(--space-md) 0;
+        }
+
+        .highlight-box strong {
+            color: var(--success-light);
+        }
+
+        /* CTA */
+        .cta-box {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(249, 115, 22, 0.05));
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            text-align: center;
+            margin-top: var(--space-xl);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.875rem 2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            margin: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 2px solid var(--silver);
+            color: var(--silver);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--ink-light);
+            padding: var(--space-lg) 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--silver);
+            margin: 0 1rem;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .tier-table {
+                font-size: 0.875rem;
+            }
+
+            .tier-table th,
+            .tier-table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">WellTegra Trust Center</a>
+                <a href="index.html" class="nav-link">← Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <h1>Forensic Governance & Data Ethics</h1>
+            <p>How we honor North Sea pioneers through responsible name attribution, tiered privacy controls, and "No-Blame" forensic archaeology</p>
+            <div class="trust-badge">
+                🛡️ GDPR Compliant • NSTA Aligned • Forensically Auditable
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Principle -->
+    <section class="section">
+        <div class="container">
+            <div class="highlight-box" style="text-align: center; font-size: 1.125rem;">
+                <strong>Core Principle:</strong> We search names to <strong>vindicate pioneer work</strong>, not to assign fault. Attribution serves Data Provenance, not litigation.
+            </div>
+        </div>
+    </section>
+
+    <!-- Audience Navigation -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="audience-nav">
+                <a href="#regulators" class="audience-tab">⚖️ For Regulators</a>
+                <a href="#operators" class="audience-tab">🏗️ For Operators</a>
+                <a href="#pioneers" class="audience-tab">🏛️ For the Old Guard</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOR REGULATORS -->
+    <section id="regulators" class="section" style="background: rgba(255, 255, 255, 0.02);">
+        <div class="container">
+            <h2 class="section-title">⚖️ For Regulators: NSTA, HSE, Data Protection Authorities</h2>
+            <p class="section-subtitle">
+                How WellTegra satisfies North Sea transparency requirements while protecting individual privacy through tiered access controls and immutable audit trails.
+            </p>
+
+            <!-- Tiered Access Table -->
+            <div class="trust-card">
+                <h3><span class="icon">🔐</span> Three-Tier Access Control Model</h3>
+                <p style="margin-bottom: var(--space-md);">
+                    WellTegra implements graduated privacy protection that scales disclosure with forensic need. All access levels are logged with immutable audit trails.
+                </p>
+
+                <table class="tier-table">
+                    <thead>
+                        <tr>
+                            <th>Access Level</th>
+                            <th>Who Has Access</th>
+                            <th>What They See</th>
+                            <th>Privacy Protection</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="tier-badge tier-1">Tier 1: General</span></td>
+                            <td>Public users, researchers, general stakeholders</td>
+                            <td><strong>Fully anonymized:</strong> "Senior Wireline Engineer, 18 years offshore, 97% validation rate"</td>
+                            <td><strong>Maximum</strong> (zero name disclosure)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tier-badge tier-2">Tier 2: Engineering</span></td>
+                            <td>Licensed operators under NDA, NSTA/HSE oversight</td>
+                            <td><strong>Role-based masking:</strong> "J.A., Senior Wireline Engineer, Schlumberger, March 1985"</td>
+                            <td><strong>Moderate</strong> (initials + role context)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tier-badge tier-3">Tier 3: Forensic</span></td>
+                            <td>Incident reconstruction, regulatory investigators, legal counsel</td>
+                            <td><strong>Full attribution:</strong> "James Anderson, Badge #4472, complete operational lineage"</td>
+                            <td><strong>Minimal</strong> (full transparency, strict access controls)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Regulatory Compliance -->
+            <div class="trust-card">
+                <h3><span class="icon">📋</span> Regulatory Compliance Framework</h3>
+                <ul>
+                    <li><strong>GDPR Article 6(1)(f) - Legitimate Interests:</strong> Processing serves public safety (incident prevention), regulatory compliance (NSTA transparency), and industrial heritage preservation</li>
+                    <li><strong>GDPR Article 17 - Right to Be Forgotten:</strong> Balances privacy requests with safety-critical infrastructure exemptions. Anonymization preserves operational data while removing direct name searchability</li>
+                    <li><strong>NSTA Asset Transparency (2024-2026):</strong> Provides cryptographically signed forensic audits with full data provenance for P&A planning and decommissioning operations</li>
+                    <li><strong>Data Protection Impact Assessment (DPIA):</strong> Moderate risk rating (most data subjects retired/deceased, strong mitigation measures, public safety justification)</li>
+                </ul>
+            </div>
+
+            <!-- Immutable Audit Trail -->
+            <div class="trust-card">
+                <h3><span class="icon">🔍</span> Immutable Audit Trail</h3>
+                <p style="margin-bottom: var(--space-sm);">
+                    Every Tier 2 and Tier 3 access is cryptographically logged and reviewed quarterly by our Data Ethics Committee:
+                </p>
+                <ul>
+                    <li><strong>Timestamp & accessor identity:</strong> Who accessed what, when</li>
+                    <li><strong>Justification:</strong> Linked to incident report, regulatory inquiry, or forensic audit</li>
+                    <li><strong>Data accessed:</strong> Specific individuals, wells, time periods</li>
+                    <li><strong>Approval chain:</strong> Tier 3 requires WellTegra Legal Counsel + Senior Leadership sign-off</li>
+                    <li><strong>Retention:</strong> 10-year log retention for regulatory compliance</li>
+                    <li><strong>Transparency:</strong> Quarterly reports published (anonymized summaries)</li>
+                </ul>
+            </div>
+
+            <!-- Prohibited Uses -->
+            <div class="trust-card">
+                <h3><span class="icon">🚫</span> Prohibited Uses</h3>
+                <p style="margin-bottom: var(--space-sm);">
+                    To safeguard the "No-Blame" principle, WellTegra explicitly prohibits:
+                </p>
+                <ul>
+                    <li><strong>Retroactive litigation:</strong> Name attribution cannot be used to assign individual blame for historical incidents</li>
+                    <li><strong>Performance reviews/HR actions:</strong> Historical operational data never used for current employee evaluation</li>
+                    <li><strong>Marketing/commercial exploitation:</strong> Names not used in public-facing content without explicit written consent</li>
+                    <li><strong>Third-party data sales:</strong> Expertise Index is WellTegra's proprietary forensic tool, not a commercial database</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOR OPERATORS -->
+    <section id="operators" class="section">
+        <div class="container">
+            <h2 class="section-title">🏗️ For Operators: Engineering Teams & Project Managers</h2>
+            <p class="section-subtitle">
+                How name attribution delivers measurable value through data confidence scoring, pattern recognition, and NPT avoidance—without compromising privacy or creating blame culture.
+            </p>
+
+            <!-- Value Metrics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-value">$400K+</span>
+                    <span class="stat-label">NPT Savings (Single Well)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">97%</span>
+                    <span class="stat-label">Data Confidence (Expert Operators)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">$850K</span>
+                    <span class="stat-label">Fishing Operation Avoided</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">91%</span>
+                    <span class="stat-label">First-Run Success (Validated Procedures)</span>
+                </div>
+            </div>
+
+            <!-- Data Confidence Scoring -->
+            <div class="trust-card">
+                <h3><span class="icon">📊</span> Data Confidence Scoring</h3>
+                <p style="margin-bottom: var(--space-sm);">
+                    When the Brahan Engine encounters a 1987 temperature log, it queries the Expertise Index to contextualize forensic weight:
+                </p>
+
+                <div style="background: rgba(10, 22, 40, 0.5); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 8px; padding: 1.5rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.9rem; line-height: 1.8;">
+                    <div style="color: var(--silver); margin-bottom: 0.5rem;">OPERATOR PROFILE:</div>
+                    <div style="color: var(--mist);">J. Wilson: 18 years offshore, 140 logged temperature surveys</div>
+                    <div style="color: var(--mist);">Cross-validation rate: 97% | Safety record: Zero incidents</div>
+                    <div style="color: var(--mist);">Specialization: HPHT formations</div>
+                    <div style="color: var(--success-light); margin-top: 1rem; font-weight: 700;">→ CONFIDENCE SCORE: HIGH (0.94/1.0)</div>
+                </div>
+
+                <p style="margin-top: var(--space-sm); color: var(--silver); font-style: italic;">
+                    Both expert and early-career measurements are valid. The Expertise Index simply contextualizes their forensic weight for planning decisions.
+                </p>
+            </div>
+
+            <!-- Pattern Recognition -->
+            <div class="trust-card">
+                <h3><span class="icon">🔍</span> Pattern Recognition Across Assets</h3>
+                <p style="margin-bottom: var(--space-sm);">
+                    <strong>Case Study: Ninian-C12 Intervention Planning (2025)</strong>
+                </p>
+
+                <div style="background: rgba(249, 115, 22, 0.05); border-left: 4px solid var(--accent); padding: 1.5rem; margin: 1rem 0;">
+                    <p style="margin-bottom: 1rem;">
+                        <strong>Brahan Engine Identifies:</strong><br>
+                        "Toolpusher M. Fraser successfully completed similar interventions on Ninian-C07 (1986), C09 (1987), and C14 (1988). Common pattern: Pre-reamed 50 ft above target depth to avoid tight spot at 9,100 ft."
+                    </p>
+                    <p style="margin-bottom: 1rem;">
+                        <strong>Fraser's Track Record:</strong><br>
+                        Zero fishing operations, Average NPT: 4.2 hours (vs. field average 18.7 hours)
+                    </p>
+                    <p style="color: var(--accent); font-weight: 600;">
+                        <strong>Result:</strong> Current operator follows Fraser's validated procedure → Intervention succeeds without NPT → <strong>$400K saved</strong>
+                    </p>
+                </div>
+
+                <p style="color: var(--silver); font-style: italic;">
+                    Fraser's tacit knowledge, reconstructed from attribution, prevents costly trial-and-error. The "Summary Era" discarded this expertise—Forensic Archaeology recovers it.
+                </p>
+            </div>
+
+            <!-- Systemic Learning -->
+            <div class="trust-card">
+                <h3><span class="icon">⚙️</span> Systemic Learning, Not Individual Fault</h3>
+                <p style="margin-bottom: var(--space-sm);">
+                    <strong>Case Study: Ninian Casing Trauma Pattern (Q2-Q3 1987)</strong>
+                </p>
+
+                <ul>
+                    <li><strong>Pattern Detected:</strong> 12 wells show casing deformation at 9,180-9,240 ft MD</li>
+                    <li><strong>Timeframe:</strong> All drilled June-September 1987 by Contractor X</li>
+                    <li><strong>Root Cause:</strong> Equipment calibration drift (common in era before real-time torque monitoring)</li>
+                    <li><strong>Operator Vindicated:</strong> Driller R. Thomson's overall success rate (89%, 240 wells) validates expertise—this was a period-specific equipment issue, not individual error</li>
+                    <li><strong>Engineering Insight:</strong> Account for potential casing wear at 9,200 ft when planning interventions on affected wells</li>
+                </ul>
+
+                <div class="highlight-box" style="margin-top: 1rem;">
+                    <strong>No Blame Assigned:</strong> Attribution identifies the pattern, not culprits. Technology limitations of the era caused the issue—systemic learning prevents future incidents.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOR THE OLD GUARD -->
+    <section id="pioneers" class="section" style="background: rgba(255, 255, 255, 0.02);">
+        <div class="container">
+            <h2 class="section-title">🏛️ For the Old Guard: Honoring North Sea Pioneers</h2>
+            <p class="section-subtitle">
+                If you worked offshore in the 1970s-1990s, your handwritten logs and deviation surveys are now "carbonized scrolls" that underpin billions in decommissioning. This is how we honor your work—and why your expertise matters in 2025.
+            </p>
+
+            <!-- Vindication Principle -->
+            <div class="trust-card">
+                <h3><span class="icon">✅</span> The Vindication Principle</h3>
+                <p style="margin-bottom: var(--space-md);">
+                    Many depth-shift errors and metadata conflicts occur because <strong>the original engineer was correct, but subsequent data migrations corrupted their work</strong>. The Brahan Engine's primary function is to <strong>prove the pioneer right</strong>.
+                </p>
+
+                <div style="background: rgba(13, 148, 136, 0.1); border: 1px solid rgba(13, 148, 136, 0.3); border-radius: 8px; padding: 1.5rem; margin: 1rem 0;">
+                    <p style="margin-bottom: 1rem;"><strong>Example: James Anderson, 1985 Wireline Log</strong></p>
+                    <p style="margin-bottom: 0.5rem;"><strong>Original Measurement:</strong> Formation top at 8,247 ft KB (March 14, 1985, Thistle Alpha)</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>2024 Database:</strong> Shows 8,214 ft GL (33 ft discrepancy)</p>
+                    <p style="margin-bottom: 1rem;"><strong>Corporate Assumption:</strong> "Old data is probably wrong"</p>
+
+                    <p style="margin-bottom: 0.5rem; color: var(--success-light);"><strong>Brahan Engine Forensic Reconstruction:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li>Cross-referenced with gamma ray, temperature, resistivity readings</li>
+                        <li>Thermodynamic fingerprint analyzed (pressure gradient, salinity, temperature)</li>
+                        <li>Physics confirms: Formation top is <strong>8,247 ft KB</strong>, exactly as Anderson recorded</li>
+                        <li>GL conversion error introduced during 2003 corporate migration (audit trail confirmed)</li>
+                    </ul>
+
+                    <p style="color: var(--accent); font-weight: 600;">
+                        <strong>Outcome:</strong> J. Anderson's 1985 measurement validated. Corporate database corrected. Anderson's expertise vindicated.
+                    </p>
+                </div>
+
+                <p style="margin-top: 1rem; font-style: italic; color: var(--silver);">
+                    <strong>This is archaeology, not accounting.</strong> We're recovering lost truth, not assigning fault.
+                </p>
+            </div>
+
+            <!-- Living Legend Protocol -->
+            <div class="trust-card">
+                <h3><span class="icon">👥</span> The Living Legend Protocol</h3>
+                <p style="margin-bottom: var(--space-sm);">
+                    When the Brahan Engine identifies a name associated with particularly successful operations, WellTegra follows a strict protocol to reconnect you with current operators—<strong>not to interrogate, but to honor</strong>.
+                </p>
+
+                <div style="background: rgba(10, 22, 40, 0.5); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: 8px; padding: 1.5rem; margin: 1rem 0;">
+                    <p style="margin-bottom: 1rem;"><strong>How It Works:</strong></p>
+
+                    <p style="margin-bottom: 0.5rem;"><strong>Step 1: Pattern Recognition</strong></p>
+                    <p style="margin-bottom: 1rem; color: var(--silver);">
+                        Brahan Engine identifies operator with consistently successful outcomes on specific asset type (e.g., M. Fraser, 23 Thistle wells, 91% first-run success)
+                    </p>
+
+                    <p style="margin-bottom: 0.5rem;"><strong>Step 2: Respectful Outreach (If You're Willing)</strong></p>
+                    <p style="margin-bottom: 1rem; color: var(--silver);">
+                        WellTegra attempts to locate retiree for voluntary consultation. <strong>You control the conversation</strong>—we never share your contact information without permission.
+                    </p>
+
+                    <p style="margin-bottom: 0.5rem;"><strong>Step 3: Tacit Knowledge Capture</strong></p>
+                    <p style="margin-bottom: 1rem; color: var(--silver);">
+                        Framed as: <em>"We're validating your work from 1985. Your temperature spike observation at 8,200 ft just saved us from a $1.2M fishing operation. Would you be willing to share any other insights about that well?"</em>
+                    </p>
+
+                    <p style="color: var(--success-light); font-weight: 600;">
+                        <strong>Result:</strong> You're honored for your expertise. Current operators gain irreplaceable knowledge. The industry bridges generational gaps.
+                    </p>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 1rem;">
+                    <strong>You Are Never Obligated:</strong> Participation in the Living Legend Protocol is 100% voluntary. If you prefer not to be contacted, we anonymize your entries while preserving your operational data.
+                </div>
+            </div>
+
+            <!-- Your Rights -->
+            <div class="trust-card">
+                <h3><span class="icon">⚖️</span> Your Rights: Privacy & Control</h3>
+                <p style="margin-bottom: var(--space-sm);">
+                    Under GDPR and WellTegra policy, you have the following rights regarding your data:
+                </p>
+
+                <ul>
+                    <li><strong>Right to Be Informed:</strong> This Trust Center page explains exactly how your name appears in legacy records and how it's used</li>
+                    <li><strong>Right of Access:</strong> You can request a full report of what data we hold about you and how it's been accessed</li>
+                    <li><strong>Right to Be Forgotten:</strong> You can request anonymization of your entries. We'll convert "James Anderson" to "Senior Wireline Engineer, 1985" while preserving operational data for safety purposes</li>
+                    <li><strong>Right to Restrict Processing:</strong> You can request we limit how your data is used (e.g., allow Tier 1/2 access but not Tier 3)</li>
+                    <li><strong>Right to Object:</strong> You can object to specific uses (e.g., "Don't contact me for Living Legend Protocol")</li>
+                </ul>
+
+                <div style="background: rgba(249, 115, 22, 0.05); border-left: 4px solid var(--accent); padding: 1.5rem; margin-top: 1rem;">
+                    <p style="font-weight: 600; margin-bottom: 0.5rem;">How to Exercise Your Rights:</p>
+                    <p style="margin-bottom: 0.5rem;">Email: <a href="mailto:privacy@welltegra.network" style="color: var(--accent);">privacy@welltegra.network</a></p>
+                    <p style="margin-bottom: 0.5rem;">Subject: "Data Privacy Request - [Your Name]"</p>
+                    <p style="color: var(--silver); font-size: 0.9rem;">We respond within 7 business days and complete requests within 30 days (GDPR requirement).</p>
+                </div>
+            </div>
+
+            <!-- No Blame Guarantee -->
+            <div class="trust-card">
+                <h3><span class="icon">🛡️</span> The "No-Blame" Guarantee</h3>
+                <p style="margin-bottom: var(--space-sm); font-size: 1.125rem;">
+                    <strong>WellTegra's Non-Negotiable Policy:</strong>
+                </p>
+                <p style="margin-bottom: var(--space-md); font-size: 1.125rem; color: var(--accent);">
+                    <em>The Brahan Engine does not attribute fault to individuals for legacy data discrepancies. It identifies <strong>systemic patterns</strong> and <strong>honors pioneer judgment</strong> within the constraints of 1970s-1990s technology.</em>
+                </p>
+
+                <div style="background: rgba(13, 148, 136, 0.1); border: 1px solid rgba(13, 148, 136, 0.3); border-radius: 8px; padding: 1.5rem;">
+                    <p style="margin-bottom: 1rem;"><strong>The Three Rules of Attribution:</strong></p>
+
+                    <p style="margin-bottom: 0.5rem;"><strong>Rule 1: Context Over Condemnation</strong></p>
+                    <p style="margin-bottom: 1rem; color: var(--silver);">
+                        When conflicts arise, we identify <em>when</em> and <em>how</em> errors were introduced (usually corporate migrations), not <em>who</em> to blame.
+                    </p>
+
+                    <p style="margin-bottom: 0.5rem;"><strong>Rule 2: Systemic Learning, Not Individual Fault</strong></p>
+                    <p style="margin-bottom: 1rem; color: var(--silver);">
+                        Patterns are attributed to era-specific equipment limitations, operational conditions, or technology constraints—never individual incompetence.
+                    </p>
+
+                    <p style="margin-bottom: 0.5rem;"><strong>Rule 3: Vindication Through Forensics</strong></p>
+                    <p style="color: var(--silver);">
+                        The Brahan Engine's primary function is to prove the pioneer right when corporate systems failed to preserve their work.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Governance & Oversight -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Governance & Oversight</h2>
+
+            <div class="trust-card">
+                <h3><span class="icon">👥</span> Data Ethics Committee</h3>
+                <p style="margin-bottom: var(--space-sm);"><strong>Independent Oversight Body:</strong></p>
+                <ul>
+                    <li>Kenneth McKenzie, Principal Engineer (Chair)</li>
+                    <li>Data Protection Officer (DPO)</li>
+                    <li>Legal Counsel</li>
+                    <li>Senior Offshore Operations Advisor (retired industry veteran)</li>
+                    <li>Independent Ethics Advisor (external, non-commercial)</li>
+                </ul>
+                <p style="margin-top: var(--space-md);"><strong>Responsibilities:</strong></p>
+                <ul>
+                    <li>Quarterly review of all Tier 3 accesses</li>
+                    <li>Annual audit of "No-Blame" policy compliance</li>
+                    <li>Approval of new forensic use cases involving sensitive attribution</li>
+                    <li>Investigation of any reported misuse</li>
+                    <li>Right to Be Forgotten request evaluation</li>
+                </ul>
+            </div>
+
+            <div class="trust-card">
+                <h3><span class="icon">📊</span> Transparency Reporting</h3>
+                <p style="margin-bottom: var(--space-sm);">WellTegra publishes quarterly transparency reports covering:</p>
+                <ul>
+                    <li>Number of Tier 2 and Tier 3 accesses (anonymized)</li>
+                    <li>Justification categories (incident reconstruction, regulatory inquiry, etc.)</li>
+                    <li>Right to Be Forgotten requests processed</li>
+                    <li>Data Ethics Committee decisions (anonymized summaries)</li>
+                    <li>Policy updates and governance changes</li>
+                </ul>
+                <p style="margin-top: var(--space-md); color: var(--silver);">
+                    <strong>Next Report:</strong> Q2 2025 | <strong>View Archive:</strong> <a href="#" style="color: var(--accent);">Previous Reports</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section">
+        <div class="container">
+            <div class="cta-box">
+                <h2 style="font-family: var(--font-display); font-size: 2rem; color: var(--white); margin-bottom: var(--space-sm);">
+                    Questions About Data Ethics or Privacy?
+                </h2>
+                <p style="color: var(--silver); max-width: 700px; margin: 0 auto var(--space-lg);">
+                    Our Data Protection Officer is available to answer questions, process privacy requests, or discuss governance policies. We respond within 7 business days.
+                </p>
+                <a href="mailto:privacy@welltegra.network" class="btn btn-primary">Contact Privacy Team</a>
+                <a href="index.html" class="btn btn-ghost">Back to Home</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p style="color: var(--steel); margin-bottom: var(--space-sm);">&copy; 2025 WellTegra Network. Built by Ken McKenzie.</p>
+            <p style="color: var(--steel); font-size: 0.875rem;">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="trust.html" style="color: var(--accent);">Trust Center</a>
+                <a href="mailto:privacy@welltegra.network">Privacy</a>
+            </p>
+            <p style="color: var(--steel); font-size: 0.75rem; margin-top: 1rem;">
+                Framework Version 1.0 | Last Updated: January 2025 | Next Review: Q2 2025
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
