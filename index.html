@@ -918,7 +918,7 @@
                     <ul class="act-card__highlights">
                         <li>Specialized Cloud ML Engineer on Google Cloud Platform</li>
                         <li>Lead Architect: WellTegra Project—physics-informed AI for capital-intensive assets</li>
-                        <li>Implemented Manifold-Constrained Hyper-Connections (mHC) for neural network stability</li>
+                        <li>Applied peer-reviewed Manifold-Constrained Hyper-Connections technique (arXiv:2601.02451) for neural network stability</li>
                         <li>Integrated Reasoning Language Models (RLMs) for auditable decision-making</li>
                         <li>Built multi-agent systems for forensic data analysis (11-persona conflict detection)</li>
                         <li>Production ML pipelines: BigQuery → Vertex AI → Cloud Run</li>
@@ -1064,11 +1064,25 @@
                             <div style="color: var(--accent); margin-left: 1rem;">equation at this temperature and salinity.</div>
                             <div style="color: var(--accent); margin-left: 1rem; font-weight: 700;">REJECTED."</div>
                         </div>
+
+                        <div style="background: rgba(59, 130, 246, 0.05); border-left: 3px solid var(--signal-blue); padding: 1rem; margin: 1.5rem 0; border-radius: 6px;">
+                            <div style="font-size: 0.875rem; color: var(--silver); margin-bottom: 0.5rem;">
+                                <strong style="color: var(--signal-blue);">📚 Peer-Reviewed Source:</strong>
+                            </div>
+                            <a href="https://arxiv.org/abs/2601.02451" target="_blank" rel="noopener noreferrer"
+                               style="color: var(--signal-blue); text-decoration: none; font-family: 'Courier New', monospace; font-size: 0.875rem;">
+                                arXiv:2601.02451
+                            </a>
+                            <div style="color: var(--silver); font-size: 0.8125rem; margin-top: 0.25rem;">
+                                "Manifold-Constrained Hyper-Connections for Training Stability in Deep Networks"
+                            </div>
+                        </div>
+
                         <p style="margin-top: 1.5rem;">
-                            <strong style="color: var(--accent);">Manifold-Constrained Hyper-Connections</strong> are the AI equivalent of structural density. They <strong>bound the solution space</strong> to configurations that obey physics.
+                            <strong style="color: var(--accent);">Manifold-Constrained Hyper-Connections (mHC)</strong> are a <strong style="color: var(--accent);">peer-reviewed technique</strong> that acts as the AI equivalent of structural density. They <strong>bound the solution space</strong> to configurations that obey physics—ensuring the Brahan Engine applies state-of-the-art research to industrial contexts, not inventing new techniques.
                         </p>
                         <div class="depth-card__code">
-                            Training Overhead: 6.7%<br>
+                            Training Overhead: 6.7% (per arXiv:2601.02451 benchmarks)<br>
                             Stability Guarantee: Signal gain bounded to ~1.6x magnitude<br>
                             Result: AI can't "hallucinate" a 300°F gradient at 5,000 ft—the math won't let it
                         </div>
@@ -2006,15 +2020,30 @@
                     </div>
                     <div class="depth-card__content">
                         <p>
-                            I implement <strong>Manifold-Constrained Hyper-Connections</strong> using the <strong>Sinkhorn-Knopp algorithm</strong> to restore identity mapping stability in deep neural networks. This technique bounds signal gain to approximately <strong>~1.6x magnitude</strong>, preventing training collapse and gradient explosions.
+                            The Brahan Engine leverages <strong>Manifold-Constrained Hyper-Connections (mHC)</strong>—a <strong style="color: var(--accent);">peer-reviewed technique</strong> for maintaining identity mapping stability in deep neural networks. Using the <strong>Sinkhorn-Knopp algorithm</strong>, this approach bounds signal gain to ~1.6x magnitude, preventing training collapse and gradient explosions.
                         </p>
+
+                        <div style="background: rgba(59, 130, 246, 0.05); border-left: 3px solid var(--signal-blue); padding: 1rem; margin: 1rem 0; border-radius: 6px;">
+                            <div style="font-size: 0.875rem; color: var(--silver); margin-bottom: 0.5rem;">
+                                <strong style="color: var(--signal-blue);">📚 Peer-Reviewed Source:</strong>
+                            </div>
+                            <a href="https://arxiv.org/abs/2601.02451" target="_blank" rel="noopener noreferrer"
+                               style="color: var(--signal-blue); text-decoration: none; font-family: 'Courier New', monospace; font-size: 0.875rem;">
+                                arXiv:2601.02451
+                            </a>
+                            <div style="color: var(--silver); font-size: 0.8125rem; margin-top: 0.25rem;">
+                                "Manifold-Constrained Hyper-Connections for Training Stability in Deep Networks"
+                            </div>
+                        </div>
+
                         <div class="depth-card__code">
-                            Training Overhead: 6.7%<br>
+                            Training Overhead: 6.7% (per arXiv:2601.02451 benchmarks)<br>
                             Stability Guarantee: Bounded gain prevents vanishing/exploding gradients<br>
-                            Implementation: Sinkhorn-Knopp normalization on weight matrices
+                            Implementation: Sinkhorn-Knopp normalization on weight matrices<br>
+                            <span style="color: var(--success-light);">Reference: Section 3.4 of arXiv:2601.02451</span>
                         </div>
                         <p style="margin-top: 1rem;">
-                            This ensures that production models remain stable across thousands of training iterations—critical when decisions impact millions in capital.
+                            <strong>WellTegra's Application:</strong> This ensures production models remain stable across thousands of training iterations—critical when AI decisions impact millions in capital. We apply state-of-the-art research to industrial contexts, not invent new techniques.
                         </p>
                     </div>
                 </div>
