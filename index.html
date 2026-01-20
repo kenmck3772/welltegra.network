@@ -1474,6 +1474,146 @@
     </section>
 
     <!-- ============================================
+         FIELD-SPECIFIC FORENSIC MODULES
+         ============================================ -->
+    <section id="field-modules" class="section" style="background: var(--ink-light);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-header__label">8 Major North Sea Field Clusters</div>
+                <h2 class="section-header__title">Field-Specific Forensic Modules</h2>
+                <p class="section-header__description">
+                    Each regional cluster presents unique challenges. The Brahan Engine applies specialized forensic techniques tailored to the specific physics, geology, and corporate history of each field type.
+                </p>
+            </div>
+
+            <!-- Regional Cluster Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 2.5rem; margin-top: 3rem;">
+
+                <!-- Northern North Sea -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: var(--radius-md); padding: 2.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 3rem;">🏔️</div>
+                        <div>
+                            <h3 style="font-family: var(--font-display); font-size: 1.75rem; color: var(--white); margin-bottom: 0.25rem;">Northern North Sea</h3>
+                            <div style="color: var(--accent); font-size: 0.9375rem; font-weight: 600;">Thistle, Ninian, Magnus</div>
+                        </div>
+                    </div>
+
+                    <h4 style="font-family: var(--font-display); font-size: 1.125rem; color: var(--white); margin-bottom: 0.75rem;">Primary Challenge: The 80ft KB-to-GL Datum Shift</h4>
+                    <p style="color: var(--silver); line-height: 1.7; margin-bottom: 1rem;">
+                        Fixed platform assets from the 1970s-80s era experienced systematic depth-shift errors during the <strong style="color: var(--accent);">2003 corporate migration wave</strong>. Original KB measurements were incorrectly converted to GL references, introducing <strong>80 ft systematic offsets</strong>.
+                    </p>
+                    <div style="background: rgba(249, 115, 22, 0.05); border-left: 4px solid var(--accent); padding: 1.25rem; border-radius: 6px; margin-bottom: 1rem;">
+                        <div style="font-family: 'Courier New', monospace; font-size: 0.875rem; color: var(--mist); line-height: 1.6;">
+                            <strong style="color: var(--accent);">Forensic Technique:</strong><br>
+                            1. Cross-reference gamma ray formation markers<br>
+                            2. Thermodynamic fingerprint validation<br>
+                            3. Original deviation surveys from 1987-1998<br>
+                            <span style="color: var(--success-light);">→ Original engineer's KB measurement VINDICATED</span>
+                        </div>
+                    </div>
+                    <p style="color: var(--silver); font-size: 0.9375rem;">
+                        <strong>Case Study:</strong> CASE-NS-2024-017 (12 wells, 847K cumulative feet corrected)
+                    </p>
+                </div>
+
+                <!-- Subsea T-Block -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: var(--radius-md); padding: 2.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 3rem;">🌊</div>
+                        <div>
+                            <h3 style="font-family: var(--font-display); font-size: 1.75rem; color: var(--white); margin-bottom: 0.25rem;">Subsea T-Block</h3>
+                            <div style="color: var(--accent); font-size: 0.9375rem; font-weight: 600;">Armada, Tiffany</div>
+                        </div>
+                    </div>
+
+                    <h4 style="font-family: var(--font-display); font-size: 1.125rem; color: var(--white); margin-bottom: 0.75rem;">Primary Challenge: Data Fragmentation</h4>
+                    <p style="color: var(--silver); line-height: 1.7; margin-bottom: 1rem;">
+                        Subsea completions from the <strong style="color: var(--accent);">BG / Agip / CNR era</strong> experienced severe data fragmentation as assets changed hands. High-resolution logs were <strong>scattered across 3+ corporate archives</strong>.
+                    </p>
+                    <div style="background: rgba(249, 115, 22, 0.05); border-left: 4px solid var(--accent); padding: 1.25rem; border-radius: 6px; margin-bottom: 1rem;">
+                        <div style="font-family: 'Courier New', monospace; font-size: 0.875rem; color: var(--mist); line-height: 1.6;">
+                            <strong style="color: var(--accent);">Forensic Technique:</strong><br>
+                            1. Reassembly from completion diagrams<br>
+                            2. Cross-operator reconciliation<br>
+                            3. Thermodynamic validation<br>
+                            <span style="color: var(--success-light);">→ 124 metadata entries RESTORED</span>
+                        </div>
+                    </div>
+                    <p style="color: var(--silver); font-size: 0.9375rem;">
+                        <strong>Case Study:</strong> CASE-NS-2024-041 (P&A planning unblocked)
+                    </p>
+                </div>
+
+                <!-- Central North Sea -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: var(--radius-md); padding: 2.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 3rem;">⚡</div>
+                        <div>
+                            <h3 style="font-family: var(--font-display); font-size: 1.75rem; color: var(--white); margin-bottom: 0.25rem;">Central North Sea</h3>
+                            <div style="color: var(--accent); font-size: 0.9375rem; font-weight: 600;">Everest, Lomond (CATS)</div>
+                        </div>
+                    </div>
+
+                    <h4 style="font-family: var(--font-display); font-size: 1.125rem; color: var(--white); margin-bottom: 0.75rem;">Primary Challenge: Gas Condensate Pressure Heartbeat Loss</h4>
+                    <p style="color: var(--silver); line-height: 1.7; margin-bottom: 1rem;">
+                        CATS pipeline fields relied on <strong style="color: var(--accent);">15-minute pressure intervals</strong>. 1990s digitization <strong>downsampled to daily averages</strong>, losing critical transient events.
+                    </p>
+                    <div style="background: rgba(249, 115, 22, 0.05); border-left: 4px solid var(--accent); padding: 1.25rem; border-radius: 6px; margin-bottom: 1rem;">
+                        <div style="font-family: 'Courier New', monospace; font-size: 0.875rem; color: var(--mist); line-height: 1.6;">
+                            <strong style="color: var(--accent);">Forensic Technique:</strong><br>
+                            1. Digitize analog chart recorders<br>
+                            2. Reconstruct 15-min heartbeats<br>
+                            3. Validate against CATS flow constraints<br>
+                            <span style="color: var(--success-light);">→ High-res pressure history RESTORED</span>
+                        </div>
+                    </div>
+                    <p style="color: var(--silver); font-size: 0.9375rem;">
+                        <strong>Impact:</strong> Enables accurate reservoir modeling for P&A
+                    </p>
+                </div>
+
+                <!-- Deep Frontier HPHT -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: var(--radius-md); padding: 2.5rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 3rem;">🔥</div>
+                        <div>
+                            <h3 style="font-family: var(--font-display); font-size: 1.75rem; color: var(--white); margin-bottom: 0.25rem;">Deep Frontier HPHT</h3>
+                            <div style="color: var(--accent); font-size: 0.9375rem; font-weight: 600;">Alwyn (15K+ psi)</div>
+                        </div>
+                    </div>
+
+                    <h4 style="font-family: var(--font-display); font-size: 1.125rem; color: var(--white); margin-bottom: 0.75rem;">Primary Challenge: HPHT Thermodynamic Corruption</h4>
+                    <p style="color: var(--silver); line-height: 1.7; margin-bottom: 1rem;">
+                        1990s <strong style="color: var(--accent);">analog wireline tools</strong> with manual interpretation. Analog-to-digital migration introduced <strong>pressure gradient errors</strong> from incorrect gauge digitization.
+                    </p>
+                    <div style="background: rgba(249, 115, 22, 0.05); border-left: 4px solid var(--accent); padding: 1.25rem; border-radius: 6px; margin-bottom: 1rem;">
+                        <div style="font-family: 'Courier New', monospace; font-size: 0.875rem; color: var(--mist); line-height: 1.6;">
+                            <strong style="color: var(--accent);">Forensic Technique:</strong><br>
+                            1. Navier-Stokes continuity validation<br>
+                            2. Formation gradient cross-check<br>
+                            3. Temperature-salinity-resistivity fingerprint<br>
+                            <span style="color: var(--success-light);">→ Corrected profile prevents failure</span>
+                        </div>
+                    </div>
+                    <p style="color: var(--silver); font-size: 0.9375rem;">
+                        <strong>Case Study:</strong> CASE-NS-2025-008
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Summary Box -->
+            <div style="margin-top: 3rem; background: linear-gradient(135deg, rgba(13, 148, 136, 0.1), rgba(13, 148, 136, 0.05)); border: 1px solid rgba(13, 148, 136, 0.3); border-radius: var(--radius-md); padding: 2.5rem;">
+                <h3 style="font-family: var(--font-display); font-size: 1.5rem; color: var(--white); margin-bottom: 1.5rem; text-align: center;">Witnessed Operational Coverage = Physics-Informed Validation</h3>
+                <p style="text-align: center; color: var(--mist); max-width: 900px; margin: 0 auto; line-height: 1.8; font-size: 1.0625rem;">
+                    Kenneth McKenzie's 30+ year career as Engineer of Record across these 8 field clusters provides the <strong style="color: var(--accent);">witnessed operational history</strong> required for forensic reconstruction. The Brahan Engine doesn't apply generic AI—it applies <strong style="color: var(--success-light);">witnessed physics</strong> from someone who ran those pressure tests on the actual platforms.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
          INTERACTIVE APPS & TOOLS
          ============================================ -->
     <section id="apps" class="section" style="background: var(--ink-light);">
