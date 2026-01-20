@@ -1614,6 +1614,115 @@
     </section>
 
     <!-- ============================================
+         GPG-SIGNED REPORTS: THE DIGITAL NOTARY
+         ============================================ -->
+    <section id="gpg-reports" class="section" style="background: var(--ink);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-header__label">Cryptographic Audit Trails</div>
+                <h2 class="section-header__title">GPG-Signed Forensic Reports:<br>The Digital Notary for Industrial Truth</h2>
+                <p class="section-header__description">
+                    Every depth correction, metadata restoration, and thermodynamic validation issued by the Brahan Engine is cryptographically signed with GPG (GNU Privacy Guard). This provides <strong style="color: var(--accent);">non-repudiation</strong>: if a future data migration alters a single byte, the digital signature breaks.
+                </p>
+            </div>
+
+            <!-- The Problem -->
+            <div style="max-width: 900px; margin: 3rem auto;">
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: var(--radius-md); padding: 2.5rem; margin-bottom: 2rem;">
+                    <h3 style="font-family: var(--font-display); font-size: 1.5rem; color: var(--white); margin-bottom: 1.5rem;">The Problem: Data Mutability in Corporate Migrations</h3>
+                    <p style="color: var(--silver); line-height: 1.7; margin-bottom: 1rem;">
+                        Between 1998-2024, North Sea wellbore data has passed through an average of <strong style="color: var(--accent);">3.2 corporate handovers per asset</strong>. Each migration introduced KB-to-GL conversion errors, metadata loss, format transformations, and <strong style="color: var(--accent);">no cryptographic verification</strong> of data integrity.
+                    </p>
+                    <p style="margin-top: 1.5rem; color: var(--mist); font-size: 1.125rem; font-weight: 600;">
+                        Result: By 2025, operators cannot prove wellbore data hasn't been altered since 1985.
+                    </p>
+                </div>
+
+                <!-- The Solution: GPG Signing -->
+                <div style="background: linear-gradient(135deg, rgba(13, 148, 136, 0.1), rgba(13, 148, 136, 0.05)); border: 1px solid rgba(13, 148, 136, 0.3); border-radius: var(--radius-md); padding: 2.5rem;">
+                    <h3 style="font-family: var(--font-display); font-size: 1.5rem; color: var(--white); margin-bottom: 1.5rem;">The Solution: Cryptographic Non-Repudiation</h3>
+
+                    <div style="background: rgba(10, 22, 40, 0.6); border-left: 4px solid var(--success-light); padding: 1.5rem; border-radius: 6px; margin-bottom: 1.5rem;">
+                        <div style="font-family: 'Courier New', monospace; font-size: 0.9375rem; color: var(--mist); line-height: 1.8;">
+                            <strong style="color: var(--success-light);">GPG-Signed Forensic Report Structure:</strong><br><br>
+
+                            <span style="color: var(--accent);">1. DATA PACKAGE</span><br>
+                            &nbsp;&nbsp;├─ Original 1987 deviation survey (PDF)<br>
+                            &nbsp;&nbsp;├─ Corrected KB-to-GL depths (CSV)<br>
+                            &nbsp;&nbsp;├─ Thermodynamic validation log (JSON)<br>
+                            &nbsp;&nbsp;└─ Audit trail (who, what, when, why)<br><br>
+
+                            <span style="color: var(--accent);">2. GPG SIGNATURE</span><br>
+                            &nbsp;&nbsp;├─ Kenneth McKenzie's private key signs package<br>
+                            &nbsp;&nbsp;├─ Generates unique cryptographic hash<br>
+                            &nbsp;&nbsp;└─ Public key allows anyone to verify<br><br>
+
+                            <span style="color: var(--accent);">3. NON-REPUDIATION GUARANTEE</span><br>
+                            &nbsp;&nbsp;├─ Future migration alters data → signature breaks<br>
+                            &nbsp;&nbsp;├─ Operator proves data integrity to NSTA<br>
+                            &nbsp;&nbsp;└─ Engineer of Record accountable for findings
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔐</div>
+                            <div style="font-family: var(--font-display); font-size: 1.125rem; color: var(--white); margin-bottom: 0.5rem;">Immutable</div>
+                            <div style="color: var(--silver); font-size: 0.9375rem;">Cannot be altered without breaking seal</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">✅</div>
+                            <div style="font-family: var(--font-display); font-size: 1.125rem; color: var(--white); margin-bottom: 0.5rem;">Verifiable</div>
+                            <div style="color: var(--silver); font-size: 0.9375rem;">Anyone with public key can validate</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">👤</div>
+                            <div style="font-family: var(--font-display); font-size: 1.125rem; color: var(--white); margin-bottom: 0.5rem;">Accountable</div>
+                            <div style="color: var(--silver); font-size: 0.9375rem;">Engineer of Record's identity sealed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real-World Example -->
+            <div style="max-width: 900px; margin: 3rem auto;">
+                <h3 style="font-family: var(--font-display); font-size: 1.5rem; color: var(--white); margin-bottom: 1.5rem; text-align: center;">Real-World Scenario: NSTA Audit Trail</h3>
+
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(148, 163, 184, 0.1); border-radius: var(--radius-md); padding: 2.5rem;">
+                    <p style="color: var(--mist); line-height: 1.7; margin-bottom: 1.5rem;">
+                        <strong style="color: var(--accent);">Scenario:</strong> Operator submits P&A plan to NSTA for a 1987-vintage well. NSTA challenges depth-shift correction from 8,247 ft KB (original) to 8,214 ft GL (current database).
+                    </p>
+
+                    <div style="background: rgba(249, 115, 22, 0.05); border-left: 4px solid var(--accent); padding: 1.5rem; border-radius: 6px; margin-bottom: 1.5rem;">
+                        <div style="font-family: 'Courier New', monospace; font-size: 0.875rem; color: var(--mist); line-height: 1.8;">
+                            <strong style="color: var(--accent);">Without GPG Signing:</strong><br>
+                            ❌ Cannot prove when depth was changed<br>
+                            ❌ No audit trail to 2003 migration<br>
+                            ❌ NSTA cannot verify thermodynamic validation<br>
+                            <span style="color: var(--steel);">→ P&A plan rejected, delays, additional surveys</span>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(13, 148, 136, 0.05); border-left: 4px solid var(--success-light); padding: 1.5rem; border-radius: 6px;">
+                        <div style="font-family: 'Courier New', monospace; font-size: 0.875rem; color: var(--mist); line-height: 1.8;">
+                            <strong style="color: var(--success-light);">With GPG-Signed Report:</strong><br>
+                            ✅ GPG-signed report from Kenneth McKenzie<br>
+                            ✅ Shows: 1987 deviation survey + validation + 2003 error<br>
+                            ✅ NSTA verifies signature using public key<br>
+                            <span style="color: var(--success-light);">→ P&A plan accepted, transparency satisfied</span>
+                        </div>
+                    </div>
+
+                    <p style="margin-top: 1.5rem; color: var(--accent); font-weight: 600;">
+                        This is why GPG-signed reports are essential for £40 billion in North Sea decommissioning: they provide the cryptographic proof NSTA requires.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================
          INTERACTIVE APPS & TOOLS
          ============================================ -->
     <section id="apps" class="section" style="background: var(--ink-light);">
