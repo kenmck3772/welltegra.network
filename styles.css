@@ -841,6 +841,57 @@ body {
 }
 
 /* ───────────────────────────────────────────────────────────
+   FOOTNOTES & DISCLAIMERS
+   ─────────────────────────────────────────────────────────── */
+
+.footnotes-section {
+    background: rgba(26, 45, 74, 0.5);
+    border-top: 1px solid rgba(100, 116, 139, 0.2);
+    padding: 2rem 0;
+}
+
+.footnote {
+    font-size: 0.875rem;
+    color: var(--steel);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.footnote:last-child {
+    margin-bottom: 0;
+}
+
+.footnote strong {
+    color: var(--white);
+}
+
+.calculator-disclaimer {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(249, 115, 22, 0.1);
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    border-radius: var(--radius-md);
+}
+
+.calculator-disclaimer p {
+    font-size: 0.875rem;
+    color: var(--silver);
+    line-height: 1.8;
+    margin: 0;
+}
+
+.calculator-disclaimer a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.calculator-disclaimer a:hover {
+    color: var(--accent-dark);
+    text-decoration: underline;
+}
+
+/* ───────────────────────────────────────────────────────────
    FOOTER
    ─────────────────────────────────────────────────────────── */
 
