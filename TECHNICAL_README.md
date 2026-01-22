@@ -55,7 +55,7 @@ Traditional AI learns correlations from data but does not respect physical laws 
 The Brahan Engine implements **Manifold-Constrained Hyper-Connections (mHC)** via:
 
 1. **Sinkhorn-Knopp Projection** to the Birkhoff polytope (doubly stochastic matrices)
-2. **mHC-GNN** architecture (128 layers, 74% accuracy on 1,000-well sovereign audits)
+2. **mHC-GNN** architecture (128 layers, 74% accuracy on citation network benchmarks [arXiv:2601.02451]; target: North Sea wellbore networks)
 3. **11-Agent Consensus Protocol** for multi-disciplinary validation
 
 ### 2.2 Mathematical Foundation
@@ -99,9 +99,11 @@ Our Graph Neural Network solves the **Scale Abyss** (over-smoothing beyond 16 la
 
 **Performance:**
 - 128 layers, 512 hidden dimensions
-- 74% accuracy on 1,000-well sovereign audit task
-- Training: 12 hours on NVIDIA Vera Rubin NVL72
-- Inference: 180ms per 1,000-well field (NVFP4 precision)
+- **Research Benchmark:** 74% accuracy on citation network datasets (PubMed)
+- **Engineering Target:** Reproduce on North Sea wellbore correlation networks (442 wells)
+- **Proof-of-Concept:** Thistle A-12 correction (8,247→8,214 ft, 99.7% confidence)
+- Target Training: 12 hours on NVIDIA Vera Rubin NVL72
+- Target Inference: 180ms per 1,000-well field (NVFP4 precision)
 
 **Reference:** [arXiv:2601.02451](https://arxiv.org/abs/2601.02451) - "mHC-GNN: Solving the Scale Abyss"
 
@@ -133,15 +135,15 @@ Inspired by multi-agent deliberation, the Brahan Engine requires approval from 1
 
 **NVL72 Configuration:**
 - **GPU Count:** 72× Vera GPUs in NVLink-connected topology
-- **Total Memory:** 10.08 TB HBM3e (140 GB per GPU)
+- **Total Memory:** 10.08 TB HBM4 (140 GB per GPU)
 - **FP4 Throughput:** 14.4 PetaFLOPS (NVFP4 4-bit precision)
-- **Interconnect:** 1.8 TB/s NVLink 5.0 per GPU
+- **Interconnect:** 1.8 TB/s NVLink 6 per GPU
 - **Power:** 120 kW total system power
 
 **Why Vera Rubin?**
 - **NVFP4 Precision:** 2× throughput vs. FP8, sufficient for manifold projection
-- **NVLink 5.0:** Low-latency field-wide GNN communication
-- **HBM3e Capacity:** Entire Perfect 11 dataset (442 wells) fits in GPU memory
+- **NVLink 6:** Low-latency field-wide GNN communication
+- **HBM4 Capacity:** Entire Perfect 11 dataset (442 wells) fits in GPU memory
 
 ### 3.2 NVFP4 4-Bit Precision
 
@@ -322,7 +324,7 @@ Kenneth McKenzie's 30-year career as Engineer of Record across 11 flagship North
 | Traceability to original logs | Data Steward traces lineage to 1972 | ✅ |
 | Multi-disciplinary validation | 11-Agent Consensus (9/11 threshold) | ✅ |
 
-**First WIOS-Compliant Platform in the North Sea.**
+**NSTA Workflow-Optimized Platform designed to support regulatory reporting requirements.**
 
 ### 6.3 UK ETS Period 2 (2026-2030)
 

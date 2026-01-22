@@ -7,7 +7,7 @@
 
 **WellTegra Ltd** (SC876023 | Incorporated January 21, 2026)
 
-Sovereign Industrial AI platform providing forensic ground truth for North Sea wellbore integrity using Physical AI (Manifold-Constrained Hyper-Connections). NVIDIA Vera Rubin optimized, NSTA WIOS 2026 compliant.
+Sovereign Industrial AI platform (R&D/Beta) providing forensic ground truth for North Sea wellbore integrity using Physical AI (Manifold-Constrained Hyper-Connections). Targeting NVIDIA Vera Rubin NVL72, NSTA workflow-optimized.
 
 **Founder:** Kenneth McKenzie, Chief AI Architect
 **Heritage:** 30 years Engineer of Record across Perfect 11 North Sea assets (442 wells)
@@ -37,7 +37,8 @@ Sovereign Industrial AI platform with three pillars:
 ### 1. Manifold Reasoning (Physics-Invariant AI)
 - **mHC-GNN**: 128-layer graph neural network solving "Scale Abyss" (over-smoothing)
 - **Sinkhorn-Knopp** projection to Birkhoff polytope (thermodynamic consistency)
-- **74% accuracy** on sovereign-scale audits (1,000+ wells)
+- **Research Benchmark:** 74% accuracy on citation networks (PubMed, arXiv:2601.02451)
+- **Engineering Target:** North Sea wellbore correlation networks (442 wells)
 - **arXiv citations**: 2512.24880, 2601.02451
 
 ### 2. Agentic Consensus (11-Agent Protocol)
@@ -71,9 +72,9 @@ Sovereign Industrial AI platform with three pillars:
 
 ## TRACTION & VALIDATION
 
-**✅ NSTA WIOS Compliance:** First platform satisfying January 8, 2026 mandate
+**✅ NSTA Workflow Support:** Platform designed to support January 8, 2026 reporting requirements
 **✅ Perfect 11 Coverage:** 442 wells under management (30 years witnessed memory)
-**✅ EPL Tax Relief:** £1.58B secured via GPG-signed forensic evidence
+**✅ EPL Tax Relief Positions:** £1.58B identified (pending third-party audit)
 **✅ Technical Validation:** Thistle A-12 sample report (99.7% confidence depth correction)
 **✅ Regulatory Authority:** Kenneth McKenzie, 30-year Engineer of Record
 
@@ -83,11 +84,11 @@ Sovereign Industrial AI platform with three pillars:
 
 ### What WellTegra Brings to NVIDIA
 
-1. **First Industrial AI vertical** for NVIDIA Vera Rubin NVL72
-2. **mHC-GNN architecture** (128 layers, 74% accuracy, NVFP4-optimized)
-3. **BlueField-4 showcase** (cryptographic offload at sovereign scale)
-4. **NIM reference implementation** (Kubernetes-native, production-ready)
-5. **Regulatory validation** (NSTA WIOS, UK ETS Period 2, HMRC)
+1. **First Industrial AI vertical** targeting NVIDIA Vera Rubin NVL72
+2. **mHC-GNN architecture** (128 layers, 74% on citation networks, NVFP4-optimized)
+3. **BlueField-4 showcase** (cryptographic offload target for sovereign scale)
+4. **NIM reference implementation** (Kubernetes-native deployment manifest)
+5. **Regulatory alignment** (NSTA workflow support, UK ETS Period 2, HMRC)
 
 ### What NVIDIA Partnership Delivers
 
@@ -117,6 +118,8 @@ Sovereign Industrial AI platform with three pillars:
 - **Total Value:** £318M
 - **WellTegra Cost:** £2.0M
 - **Customer ROI:** **159× ROI**
+
+*Note: ROI based on industry-standard NPT risk models (£2.1M/well median). Actual results vary by asset. Thistle-specific validation pending.*
 
 **Unit Economics:**
 - Gross Margin: 92% (software platform, minimal COGS)

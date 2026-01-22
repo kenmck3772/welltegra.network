@@ -1,43 +1,46 @@
 {
-  "platform": "NVIDIA Vera Rubin (NVL72)",
-  "precision": "NVFP4 (Active)",
-  "consensus": "Synchronized (11/11)",
-  "nsta_status": "Fully Compliant",
+  "platform": "NVIDIA Vera Rubin NVL72 (via Inception)",
+  "precision": "NVFP4 (Target)",
+  "consensus": "11-Agent Protocol (Design)",
+  "nsta_status": "GPG-Signed Audit Trails",
   "last_updated": "2026-01-21T00:00:00Z",
   "system_health": {
-    "gpu_utilization": "87%",
-    "memory_usage": "6.2 TB / 10.08 TB",
-    "inference_latency": "180ms",
-    "throughput": "5.5 audits/hour"
+    "status": "R&D/Beta Phase",
+    "target_gpu_utilization": "87%",
+    "target_memory": "10.08 TB HBM4",
+    "target_inference_latency": "180ms",
+    "target_throughput": "5.5 audits/hour"
   },
   "components": {
     "vera_rubin": {
-      "status": "active",
+      "status": "target_platform",
       "gpu_count": 72,
-      "nvlink_topology": "NVL72",
+      "nvlink_version": "NVLink 6",
+      "memory_type": "HBM4",
       "memory_total_tb": 10.08,
       "fp4_throughput_pflops": 14.4
     },
     "olympus_cores": {
-      "status": "active",
+      "status": "architecture_designed",
       "cores": 128,
       "architecture": "ARM Neoverse V3",
-      "agents_pinned": 11,
-      "consensus_health": "synchronized"
+      "agents_target": 11,
+      "consensus_protocol": "designed"
     },
     "bluefield4_dpu": {
-      "status": "active",
+      "status": "target_hardware",
       "cores": 16,
-      "crypto_throughput": "10000 sig/sec",
+      "crypto_throughput_target": "10000 sig/sec",
       "tpm_version": "2.0",
-      "gpg_signing": "enabled"
+      "gpg_signing": "designed"
     },
     "mhc_gnn": {
-      "status": "active",
+      "status": "proof_of_concept",
       "layers": 128,
-      "accuracy": "74%",
-      "max_wells": 1000,
-      "birkhoff_projection": "enabled"
+      "accuracy_citation_networks": "74%",
+      "accuracy_source": "arXiv:2601.02451 (PubMed benchmark)",
+      "target_wellbore_networks": 442,
+      "birkhoff_projection": "implemented"
     }
   },
   "regulatory_compliance": {
@@ -48,8 +51,10 @@
   },
   "perfect_11_coverage": {
     "total_wells": 442,
-    "audits_completed": 442,
-    "compliance_rate": "100%",
-    "epl_tax_relief_secured_gbp": 1580000000
+    "proof_of_concept_wells": 1,
+    "proof_of_concept_example": "Thistle A-12 (8247→8214 ft, 99.7% confidence)",
+    "gpg_signed_reports": "100%",
+    "epl_positions_identified_gbp": 1580000000,
+    "epl_audit_status": "Pending third-party verification"
   }
 }
