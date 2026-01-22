@@ -756,6 +756,411 @@ body {
 }
 
 /* ───────────────────────────────────────────────────────────
+   THE INDUSTRIAL SEER SECTION
+   ─────────────────────────────────────────────────────────── */
+
+.seer-section {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, var(--ink), var(--ink-light));
+    border-top: 3px solid var(--steel);
+}
+
+.seer-content {
+    max-width: 900px;
+    margin: 3rem auto 0;
+}
+
+.seer-legend,
+.seer-modern,
+.seer-grit,
+.seer-sovereign,
+.seer-credentials {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+    border-radius: var(--radius-md);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.seer-legend {
+    border-left: 4px solid var(--accent);
+}
+
+.seer-modern {
+    border-left: 4px solid var(--signal-blue);
+}
+
+.seer-grit {
+    border-left: 4px solid var(--steel);
+}
+
+.seer-sovereign {
+    border-left: 4px solid var(--success);
+}
+
+.seer-credentials {
+    background: rgba(100, 116, 139, 0.1);
+    border: 2px solid var(--steel);
+}
+
+.seer-content h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.seer-content p {
+    font-size: 1.05rem;
+    color: var(--silver);
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+}
+
+.seer-content p:last-child {
+    margin-bottom: 0;
+}
+
+.seer-content strong {
+    color: var(--white);
+    font-weight: 600;
+}
+
+.seer-quote {
+    border-left: 4px solid var(--accent);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--mist);
+    font-weight: 500;
+}
+
+.seer-tagline {
+    font-size: 1.5rem;
+    color: var(--accent);
+    font-weight: 700;
+    text-align: center;
+    margin: 2rem 0 0;
+    padding: 1.5rem;
+    background: rgba(249, 115, 22, 0.1);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius-md);
+}
+
+.seer-bio {
+    font-size: 1rem;
+    color: var(--steel);
+    line-height: 1.8;
+    font-style: italic;
+}
+
+/* ───────────────────────────────────────────────────────────
+   TACTICAL EDGE ARCHITECTURE SECTION
+   ─────────────────────────────────────────────────────────── */
+
+.edge-section {
+    padding: 6rem 0;
+    background: var(--ink);
+    border-top: 3px solid var(--accent);
+}
+
+.edge-problem,
+.edge-solution,
+.edge-hardware,
+.edge-workflow,
+.edge-nvidia,
+.edge-benefits,
+.edge-footer {
+    margin-top: 3rem;
+}
+
+.edge-problem h3,
+.edge-solution h3,
+.edge-hardware h3,
+.edge-workflow h3,
+.edge-nvidia h3,
+.edge-benefits h3 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+}
+
+.edge-problem p,
+.edge-solution p,
+.edge-workflow p {
+    font-size: 1.05rem;
+    color: var(--silver);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+}
+
+.edge-risks {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.risk-card {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.risk-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.risk-card h4 {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #ef4444;
+    margin-bottom: 0.5rem;
+}
+
+.risk-card p {
+    font-size: 0.875rem;
+    color: var(--silver);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.edge-disclaimer {
+    font-size: 1.25rem;
+    color: var(--accent);
+    font-weight: 700;
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(249, 115, 22, 0.1);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius-md);
+    margin-top: 2rem;
+}
+
+.hardware-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.hardware-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    position: relative;
+}
+
+.hardware-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+}
+
+.atex-zone1 {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid #ef4444;
+    color: #ef4444;
+}
+
+.atex-zone2 {
+    background: rgba(251, 146, 60, 0.2);
+    border: 1px solid #fb923c;
+    color: #fb923c;
+}
+
+.hardware-card h4 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+}
+
+.hardware-specs {
+    list-style: none;
+}
+
+.hardware-specs li {
+    font-size: 0.95rem;
+    color: var(--silver);
+    line-height: 2;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.hardware-specs li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: bold;
+}
+
+.edge-scenario {
+    font-size: 1.125rem;
+    color: var(--mist);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.edge-scenario strong {
+    color: var(--white);
+    font-weight: 600;
+}
+
+.workflow-example {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.workflow-step {
+    flex: 1;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    position: relative;
+}
+
+.step-number {
+    position: absolute;
+    top: -12px;
+    left: 1rem;
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+
+.workflow-step p {
+    font-size: 0.95rem;
+    color: var(--silver);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.workflow-step strong {
+    color: var(--accent);
+}
+
+.workflow-arrow {
+    font-size: 2rem;
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.edge-tagline {
+    font-size: 1.5rem;
+    color: var(--accent);
+    font-weight: 700;
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(249, 115, 22, 0.1);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius-md);
+}
+
+.nvidia-features {
+    list-style: none;
+    margin-top: 1.5rem;
+}
+
+.nvidia-features li {
+    font-size: 1rem;
+    color: var(--silver);
+    line-height: 1.8;
+    padding-left: 1.5rem;
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.nvidia-features li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: bold;
+}
+
+.nvidia-features strong {
+    color: var(--white);
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.benefit-card {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    text-align: center;
+}
+
+.benefit-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.benefit-card h4 {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--success);
+    margin-bottom: 0.75rem;
+}
+
+.benefit-card p {
+    font-size: 0.875rem;
+    color: var(--silver);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.edge-note {
+    font-size: 1rem;
+    color: var(--steel);
+    line-height: 1.8;
+    text-align: center;
+    font-style: italic;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* ───────────────────────────────────────────────────────────
    PILOT PROGRAM SECTION
    ─────────────────────────────────────────────────────────── */
 
@@ -1211,5 +1616,20 @@ body {
 
     .cta-buttons {
         flex-direction: column;
+    }
+
+    .edge-risks,
+    .hardware-grid,
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .workflow-example {
+        flex-direction: column;
+    }
+
+    .workflow-arrow {
+        transform: rotate(90deg);
+        margin: 1rem 0;
     }
 }
