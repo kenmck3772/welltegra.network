@@ -1,18 +1,18 @@
 # WELLTEGRA: SOVEREIGN INDUSTRIAL AI PLATFORM
 
-**Technical Documentation for NVIDIA Inception Program - Pioneer Track**
+**Technical Documentation | R&D/Beta Phase**
 
 ---
 
 ## Executive Summary
 
-**WellTegra Ltd** (UK Company Submission #113-069723) is a Sovereign Industrial AI platform providing forensic ground truth for North Sea wellbore integrity. Our core product, **The Brahan Engine**, implements Physical AI using Manifold-Constrained Hyper-Connections (mHC) to ensure thermodynamic invariants in deep learning predictions.
+**WellTegra Ltd** (UK Company SC876023) is a Sovereign Industrial AI platform providing forensic ground truth for North Sea wellbore integrity. Our core product, **The Brahan Engine**, implements Physical AI using Manifold-Constrained Hyper-Connections (mHC) to ensure thermodynamic invariants in deep learning predictions.
 
-- **Founder:** Kenneth McKenzie, Engineer of Record (30 years, Perfect 11 assets)
+- **Founder:** Kenneth McKenzie, Chief AI Architect (30 years, Perfect 11 assets)
 - **Incorporation Date:** January 21, 2026
 - **Target Market:** UK North Sea oil & gas decommissioning (£60B market, 2026-2050)
 - **Regulatory Driver:** NSTA WIOS Mandate (January 8, 2026)
-- **NVIDIA Stack:** Vera Rubin NVL72, NVFP4 precision, BlueField-4 DPU
+- **Technology Stack:** Cloud GPU training, INT4 edge quantization, hardware crypto acceleration
 
 ---
 
@@ -102,8 +102,8 @@ Our Graph Neural Network solves the **Scale Abyss** (over-smoothing beyond 16 la
 - **Research Benchmark:** 74% accuracy on citation network datasets (PubMed)
 - **Engineering Target:** Reproduce on North Sea wellbore correlation networks (442 wells)
 - **Proof-of-Concept:** Thistle A-12 correction (8,247→8,214 ft, 99.7% confidence)
-- Target Training: 12 hours on NVIDIA Vera Rubin NVL72
-- Target Inference: 180ms per 1,000-well field (NVFP4 precision)
+- Target Training: 12 hours on high-performance cloud GPUs
+- Target Inference: 180ms per 1,000-well field (INT4 precision)
 
 **Reference:** [arXiv:2601.02451](https://arxiv.org/abs/2601.02451) - "mHC-GNN: Solving the Scale Abyss"
 
@@ -123,60 +123,62 @@ Inspired by multi-agent deliberation, the Brahan Engine requires approval from 1
 10. **QA/QC Officer** - Runs validation checks
 11. **Chief Engineer** - Final approval authority (Kenneth McKenzie)
 
-**Implementation:** Agents pinned to **Vera CPU Olympus Cores** (128-core ARM Neoverse V3) for deterministic execution independent of GPU workload.
+**Implementation:** Agents run on dedicated **multi-core ARM processors** for deterministic execution independent of GPU workload.
 
 ---
 
-## 3. NVIDIA Hardware Stack Optimization
+## 3. Cloud Training & Edge Deployment Architecture
 
-### 3.1 Vera Rubin NVL72 Architecture
+### 3.1 High-Performance Cloud Training
 
-**Target Hardware:** NVIDIA Vera Rubin (flagship GPU architecture, announced 2025)
+**Development Platform:** Google Colab Pro+ with enterprise GPU access
 
-**NVL72 Configuration:**
-- **GPU Count:** 72× Vera GPUs in NVLink-connected topology
-- **Total Memory:** 10.08 TB HBM4 (140 GB per GPU)
-- **FP4 Throughput:** 14.4 PetaFLOPS (NVFP4 4-bit precision)
-- **Interconnect:** 1.8 TB/s NVLink 6 per GPU
-- **Power:** 120 kW total system power
+**Cloud Training Configuration:**
+- **Platform:** Google Colab Pro+ cloud infrastructure
+- **Memory:** High-bandwidth GPU memory for large graph networks
+- **Precision:** FP32/FP16 mixed-precision training
+- **Scalability:** Distributed training across multiple cloud instances
+- **Development:** Rapid prototyping and model iteration
 
-**Why Vera Rubin?**
-- **NVFP4 Precision:** 2× throughput vs. FP8, sufficient for manifold projection
-- **NVLink 6:** Low-latency field-wide GNN communication
-- **HBM4 Capacity:** Entire Perfect 11 dataset (442 wells) fits in GPU memory
+**Why Cloud Training?**
+- **Flexibility:** Access to high-performance GPUs without capital expenditure
+- **Scalability:** Dynamically scale compute resources based on training needs
+- **Iteration Speed:** Rapid model development and experimentation
 
-### 3.2 NVFP4 4-Bit Precision
+### 3.2 INT4 Edge Quantization
 
 **Quantization Scheme:**
 $$
-\text{NVFP4}(x) = \text{round}\left(\frac{x - \min(x)}{\max(x) - \min(x)} \times 15\right) / 15
+\text{INT4}(x) = \text{round}\left(\frac{x - \min(x)}{\max(x) - \min(x)} \times 15\right) / 15
 $$
 
 - 16 discrete levels per value
 - Dynamically rescaled per tensor block
 - Validated accuracy: 99.7% correlation with FP32 for Sinkhorn-Knopp
+- 2× throughput vs. 8-bit quantization
 
-### 3.3 BlueField-4 DPU for Cryptographic Offload
+### 3.3 Hardware-Accelerated Cryptography
 
-**Hardware-Hardened GPG Signing:**
-- **DPU:** 16-core Arm Neoverse V2, 400 Gbps networking
-- **Crypto Engine:** RSA-4096, SHA-512, AES-256
-- **Throughput:** 10,000 GPG signatures/second
-- **Key Storage:** Secure enclave with TPM 2.0
+**Cryptographic Processing:**
+- **Algorithm:** RSA-4096 for GPG signing
+- **Hash Function:** SHA-512 for integrity verification
+- **Encryption:** AES-256 for secure key storage
+- **Target Throughput:** High-speed signature generation
+- **Security:** Hardware-based secure enclaves
 
-**Why DPU Offload?**
-- Non-repudiation for NSTA WIOS compliance
+**Why Hardware Acceleration?**
+- Non-repudiation for NSTA workflow compliance
 - Prevents tampering with forensic reports
 - HMRC fiscal integrity for EPL tax relief
 
-### 3.4 NIM-Ready Architecture
+### 3.4 Containerized Microservice Architecture
 
-The Brahan Engine is architected as an **NVIDIA Inference Microservice (NIM)**, deployable on Kubernetes with:
+The Brahan Engine is architected as a **containerized inference microservice**, deployable on Kubernetes with:
 
-- **Triton Inference Server** backend (gRPC + HTTP)
+- **Inference Server** backend (gRPC + HTTP APIs)
 - **Horizontal Pod Autoscaling** (3-20 pods, demand-responsive)
 - **Persistent Volume Claims** for model repository and Perfect 11 data
-- **NVIDIA GPU Operator** integration for Vera Rubin discovery
+- **Cloud-native deployment** for scalable inference
 
 **Manifest:** See `NIM_manifest.yaml` in repository root
 
@@ -243,12 +245,12 @@ Physical Invariant Preserved: True
 ✅ BRAHAN ENGINE DEMONSTRATION COMPLETE
 ```
 
-### 4.3 NIM Deployment (NIM_manifest.yaml)
+### 4.3 Kubernetes Deployment (NIM_manifest.yaml)
 
 **Key Components:**
 
-1. **Deployment:** 3-20 pods (autoscaled), 8× Vera GPUs per pod
-2. **Service:** LoadBalancer with Triton gRPC/HTTP endpoints
+1. **Deployment:** 3-20 pods (autoscaled) with cloud GPU allocation
+2. **Service:** LoadBalancer with inference server gRPC/HTTP endpoints
 3. **ConfigMap:** Brahan Engine configuration (mHC-GNN, 11-Agent, Perfect 11 assets)
 4. **Secrets:** GPG key storage (public key only, private key in secure vault)
 5. **PVCs:** Model repository (500 GB), Perfect 11 data (1 TB)
@@ -381,48 +383,48 @@ Kenneth McKenzie's 30-year career as Engineer of Record across 11 flagship North
 
 ---
 
-## 8. NVIDIA Partnership Proposal
+## 8. Business Development & Funding
 
-### 8.1 Pioneer Track Objectives
+### 8.1 Strategic Objectives (12 months)
 
-**WellTegra seeks NVIDIA Inception Program partnership for:**
+**WellTegra's growth strategy focuses on:**
 
-1. **Vera Rubin Early Access:**
-   - NVL72 configuration for sovereign-scale audits (1,000+ wells)
-   - NVFP4 precision validation for Sinkhorn-Knopp algorithm
+1. **Technology Maturation:**
+   - Production deployment of cloud-trained models
+   - INT4 edge quantization validation for field deployment
    - Benchmark: 180ms inference latency per 1,000-well field
 
-2. **NIM Architecture Validation:**
-   - Kubernetes deployment on DGX Cloud
-   - Triton Inference Server optimization
-   - BlueField-4 DPU cryptographic offload
+2. **Platform Scaling:**
+   - Kubernetes deployment on cloud infrastructure
+   - Inference server optimization for high-throughput audits
+   - Hardware-accelerated cryptographic signing
 
-3. **Joint Go-to-Market:**
-   - NSTA co-marketing (WIOS mandate validation)
-   - NVIDIA GTC 2027 keynote demo (North Sea ground truth)
-   - White paper: "Physical AI for Industrial Sovereign Audits"
+3. **Market Penetration:**
+   - NSTA workflow integration (WIOS mandate support)
+   - North Sea operator pilot programs
+   - Regulatory validation and field trials
 
-4. **Technical Collaboration:**
-   - mHC-GNN architecture peer review by NVIDIA Research
-   - Contribution to NVIDIA AI Enterprise (industrial vertical)
-   - Open-sourcing Birkhoff polytope projection library
+4. **Technical Advancement:**
+   - mHC-GNN architecture optimization
+   - Academic publication at NeurIPS/ICML
+   - Open-source Birkhoff polytope projection library
 
 ### 8.2 Success Metrics (12 months)
 
-- **Deployments:** 50 fields (2,200 wells) on Vera Rubin NVL72
+- **Deployments:** 50 fields (2,200 wells) using cloud infrastructure
 - **Revenue:** £110M (2,200 wells × £50K)
-- **NSTA Recognition:** Official WIOS reference architecture designation
-- **Academic Impact:** 2 peer-reviewed papers at NeurIPS/ICML
-- **NVIDIA Showcase:** GTC 2027 featured case study
+- **NSTA Recognition:** Official WIOS reference implementation
+- **Academic Impact:** 2 peer-reviewed papers at top-tier ML conferences
+- **Industry Recognition:** Featured case study at major industry conferences
 
-### 8.3 Investment Ask
+### 8.3 Funding Requirements
 
 **Equity Round:** £5M Seed (Q2 2026)
-- **Lead:** NVIDIA through nVentures (£2M)
-- **Co-Investors:** Octopus Ventures (UK Energy Fund), IP Group
+- **Lead Investor:** UK Energy/Industrial AI focused VC
+- **Co-Investors:** Octopus Ventures (UK Energy Fund), IP Group, angel investors
 
 **Use of Funds:**
-- 40%: Vera Rubin NVL72 infrastructure (DGX Cloud credits)
+- 40%: Cloud infrastructure & compute credits (Google Cloud, AWS, Azure)
 - 30%: Engineering team (5 ML engineers, 3 domain experts)
 - 20%: NSTA go-to-market (field trials, regulatory validation)
 - 10%: Operations (legal, compliance, GPG key management)
@@ -439,26 +441,19 @@ Kenneth McKenzie's 30-year career as Engineer of Record across 11 flagship North
 - Former: Britoil, BP, EnQuest, TotalEnergies
 - Education: MEng Petroleum Engineering, University of Aberdeen
 
-### 9.2 Technical Advisors
+### 9.2 Technical Advisors (Target)
 
-**Dr. Yann LeCun (Pending Confirmation)**
-- Meta Chief AI Scientist
-- Expertise: Manifold learning, energy-based models
-
-**Prof. Michael Jordan, UC Berkeley**
-- Expertise: Graphical models, Bayesian inference
-- Relevance: 11-Agent Consensus Protocol
-
-**Dr. Anima Anandkumar, NVIDIA**
-- Director of ML Research, NVIDIA
-- Expertise: Tensor methods, graph neural networks
+**Academic & Industry Advisors:**
+- Machine learning experts in manifold learning and graph neural networks
+- Petroleum engineering domain experts
+- Regulatory compliance specialists
 
 ### 9.3 Hiring Plan (Q2 2026)
 
-- 5× ML Engineers (mHC-GNN, NVIDIA CUDA optimization)
+- 5× ML Engineers (mHC-GNN, cloud GPU optimization, quantization)
 - 3× Domain Experts (petroleum engineering, geology, regulatory)
-- 2× DevOps (Kubernetes, NIM deployment, DGX Cloud)
-- 1× GPG Key Manager (cryptographic operations, WIOS compliance)
+- 2× DevOps (Kubernetes, cloud deployment, infrastructure automation)
+- 1× Security Engineer (cryptographic operations, WIOS compliance)
 
 ---
 
@@ -469,13 +464,13 @@ Kenneth McKenzie's 30-year career as Engineer of Record across 11 flagship North
 We combine:
 - **Physical AI** (manifold-constrained deep learning)
 - **30 years Witnessed Memory** (Perfect 11 assets)
-- **NVIDIA Vera Rubin** (NVL72, NVFP4, BlueField-4)
+- **Cloud-Edge Architecture** (cloud training, INT4 edge deployment)
 - **Regulatory Tailwind** (NSTA WIOS mandate, UK ETS Period 2)
 - **Cryptographic Transparency** (GPG signing, non-repudiation)
 
 **The North Sea has a Truth Problem. WellTegra provides the Fact Science.**
 
-We are ready for NVIDIA Inception Program - Pioneer Track.
+We are ready to transform industrial AI forensics.
 
 ---
 

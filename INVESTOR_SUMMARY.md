@@ -1,5 +1,5 @@
 # WELLTEGRA LTD - INVESTOR SUMMARY
-**Sovereign Industrial AI Platform | NVIDIA Inception Program - Pioneer Track**
+**Sovereign Industrial AI Platform | R&D/Beta Phase**
 
 ---
 
@@ -7,7 +7,7 @@
 
 **WellTegra Ltd** (SC876023 | Incorporated January 21, 2026)
 
-Sovereign Industrial AI platform (R&D/Beta) providing forensic ground truth for North Sea wellbore integrity using Physical AI (Manifold-Constrained Hyper-Connections). Targeting NVIDIA Vera Rubin NVL72, NSTA workflow-optimized.
+Sovereign Industrial AI platform (R&D/Beta) providing forensic ground truth for North Sea wellbore integrity using Physical AI (Manifold-Constrained Hyper-Connections). Edge-first architecture with cloud GPU training, NSTA workflow-optimized.
 
 **Founder:** Kenneth McKenzie, Chief AI Architect
 **Heritage:** 30 years Engineer of Record across Perfect 11 North Sea assets (442 wells)
@@ -43,13 +43,13 @@ Sovereign Industrial AI platform with three pillars:
 
 ### 2. Agentic Consensus (11-Agent Protocol)
 - Multi-disciplinary validation (Drilling, HSE, Reservoir, Integrity, Regulatory, etc.)
-- Pinned to **NVIDIA Olympus Cores** (128-core ARM Neoverse V3)
+- Runs on dedicated **multi-core ARM processors** for deterministic execution
 - Minimum 9/11 threshold for forensic report approval
 
 ### 3. Digital Notary (Cryptographic Non-Repudiation)
-- GPG RSA-4096 signing via **BlueField-4 DPU** (10,000 sig/sec)
-- Hardware-hardened cryptography (TPM 2.0 secure enclave)
-- Satisfies NSTA WIOS, HMRC fiscal integrity requirements
+- GPG RSA-4096 signing via **hardware-accelerated crypto processors**
+- Hardware-based secure enclaves for key storage
+- Satisfies NSTA workflow requirements, HMRC fiscal integrity
 
 ---
 
@@ -80,30 +80,32 @@ Sovereign Industrial AI platform with three pillars:
 
 ---
 
-## NVIDIA PARTNERSHIP (PIONEER TRACK)
+## TECHNOLOGY DIFFERENTIATION
 
-### What WellTegra Brings to NVIDIA
+### What Makes WellTegra Unique
 
-1. **First Industrial AI vertical** targeting NVIDIA Vera Rubin NVL72
-2. **mHC-GNN architecture** (128 layers, 74% on citation networks, NVFP4-optimized)
-3. **BlueField-4 showcase** (cryptographic offload target for sovereign scale)
-4. **NIM reference implementation** (Kubernetes-native deployment manifest)
-5. **Regulatory alignment** (NSTA workflow support, UK ETS Period 2, HMRC)
+1. **Sovereign Industrial AI** - First platform combining Physical AI with 30-year industry expertise
+2. **mHC-GNN architecture** (128 layers, 74% accuracy on citation networks, INT4-optimized for edge)
+3. **Hardware-accelerated cryptography** for regulatory-grade non-repudiation
+4. **Cloud-edge architecture** (cloud training, edge inference deployment)
+5. **Regulatory alignment** (NSTA workflow support, UK ETS Period 2, HMRC fiscal integrity)
 
-### What NVIDIA Partnership Delivers
+### Technical Advantages
 
-**Technical:**
-- Vera Rubin NVL72 early access (14.4 PetaFLOPS NVFP4)
-- NIM architecture validation (Triton Inference Server)
-- BlueField-4 DPU optimization (10,000 GPG sig/sec target)
+**Cloud Training:**
+- High-performance GPU infrastructure (Google Colab Pro+)
+- Rapid model iteration and prototyping
+- Scalable distributed training
 
-**Go-to-Market:**
-- NSTA co-marketing (WIOS mandate validation)
-- GTC 2027 keynote demo ("North Sea Ground Truth")
-- NVIDIA AI Enterprise partnership (industrial vertical)
+**Edge Deployment:**
+- INT4 quantization for 2× throughput vs. 8-bit
+- Low-latency on-site inference
+- ATEX-certified ruggedized hardware compatibility
 
-**Investment:**
-- £2M lead from **NVIDIA nVentures** (£5M Seed round total)
+**Cryptographic Security:**
+- Hardware-accelerated RSA-4096 GPG signing
+- Tamper-proof audit trails
+- HMRC fiscal integrity compliance
 
 ---
 
@@ -150,25 +152,25 @@ Sovereign Industrial AI platform with three pillars:
 - 442 wells under EoR authority (Thistle, Ninian, Magnus, etc.)
 - MEng Petroleum Engineering, University of Aberdeen
 
-**Advisors (Pending Confirmation):**
-- Dr. Anima Anandkumar (NVIDIA Director of ML Research)
-- Prof. Michael Jordan (UC Berkeley - graphical models)
-- Yann LeCun (Meta Chief AI Scientist - manifold learning)
+**Advisors (Target):**
+- Machine learning experts in manifold learning and graph neural networks
+- Petroleum engineering domain specialists
+- Regulatory compliance advisors
 
 **Hiring Plan (Q2 2026):**
-- 5× ML Engineers (mHC-GNN, NVIDIA CUDA)
-- 3× Domain Experts (petroleum engineering, regulatory)
-- 2× DevOps (Kubernetes, NIM, DGX Cloud)
+- 5× ML Engineers (mHC-GNN, cloud GPU optimization, INT4 quantization)
+- 3× Domain Experts (petroleum engineering, regulatory compliance)
+- 2× DevOps (Kubernetes, cloud infrastructure, CI/CD)
 
 ---
 
 ## SEED ROUND (£5M)
 
-**Lead:** NVIDIA nVentures (£2M)
-**Co-Investors:** Octopus Ventures (UK Energy Fund), IP Group
+**Lead:** UK Energy/Industrial AI focused VC
+**Co-Investors:** Octopus Ventures (UK Energy Fund), IP Group, angel investors
 
 **Use of Funds:**
-- 40%: NVIDIA infrastructure (Vera Rubin NVL72, DGX Cloud credits)
+- 40%: Cloud infrastructure & compute (Google Cloud, AWS, Azure GPU credits)
 - 30%: Engineering team (ML + domain experts)
 - 20%: Go-to-market (NSTA field trials, regulatory validation)
 - 10%: Operations (legal, compliance, GPG key management)
@@ -180,20 +182,20 @@ Sovereign Industrial AI platform with three pillars:
 1. **Regulatory Catalyst:** NSTA WIOS mandate (January 8, 2026) creates legal requirement
 2. **UK ETS Period 2:** 2026-2030 reporting window (£85/tonne carbon price)
 3. **Decommissioning Wave:** £60B North Sea spend (2026-2050)
-4. **NVIDIA Stack Readiness:** Vera Rubin + BlueField-4 enable sovereign-scale AI
-5. **First-Mover Advantage:** No competing AI platforms satisfy WIOS Section 7
+4. **Cloud-Edge Maturity:** Enterprise cloud infrastructure + edge quantization enable sovereign-scale AI
+5. **First-Mover Advantage:** No competing AI platforms provide WIOS-optimized workflow
 
 ---
 
 ## THE ASK
 
-**£2M lead investment from NVIDIA nVentures** (Pioneer Track)
+**£5M Seed Round** led by UK Energy/Industrial AI focused VC
 
-**Partnership Deliverables:**
-- Vera Rubin NVL72 early access (Q2 2026)
-- NIM architecture validation (Kubernetes + Triton)
-- Joint NSTA go-to-market (WIOS reference architecture)
-- GTC 2027 keynote demo ("Sovereign Industrial AI")
+**Use of Investment:**
+- Cloud infrastructure scale-up for production deployment
+- Engineering team expansion (ML engineers + domain experts)
+- NSTA field trials and regulatory validation
+- Go-to-market for North Sea operator acquisition
 
 ---
 
@@ -204,11 +206,11 @@ Sovereign Industrial AI platform with three pillars:
 WellTegra represents the first **Sovereign Industrial AI** platform, combining:
 - **30 years witnessed memory** (not synthetic data)
 - **Physical AI** (manifold-constrained deep learning)
-- **NVIDIA 2026 Stack** (Vera Rubin, BlueField-4, Olympus Cores)
+- **Cloud-Edge Architecture** (cloud training, INT4 edge deployment, hardware crypto)
 - **Regulatory tailwind** (NSTA WIOS, UK ETS, HMRC)
 - **£280M TAM** with 100× ROI for customers
 
-**We are ready for NVIDIA Inception Program - Pioneer Track.**
+**We are ready to transform industrial AI forensics.**
 
 ---
 
