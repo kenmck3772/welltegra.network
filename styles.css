@@ -756,6 +756,229 @@ body {
 }
 
 /* ───────────────────────────────────────────────────────────
+   PILOT PROGRAM SECTION
+   ─────────────────────────────────────────────────────────── */
+
+.pilot-section {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.05), rgba(34, 197, 94, 0.05));
+    border-top: 2px solid var(--accent);
+    border-bottom: 2px solid var(--success);
+}
+
+.hero-pilot-note {
+    font-size: 0.875rem;
+    color: var(--silver);
+    text-align: center;
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(249, 115, 22, 0.1);
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    border-radius: var(--radius-md);
+}
+
+.hero-pilot-note strong {
+    color: var(--accent);
+}
+
+.pilot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.pilot-value-card,
+.pilot-requirements-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+    border-radius: var(--radius-md);
+    padding: 2.5rem;
+}
+
+.pilot-value-card {
+    border-left: 4px solid var(--success);
+}
+
+.pilot-requirements-card {
+    border-left: 4px solid var(--accent);
+}
+
+.pilot-value-card h3,
+.pilot-requirements-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+}
+
+.pilot-checklist,
+.pilot-requirements {
+    list-style: none;
+    margin-bottom: 2rem;
+}
+
+.pilot-checklist li,
+.pilot-requirements li {
+    font-size: 0.95rem;
+    color: var(--silver);
+    line-height: 2;
+    padding-left: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.pilot-checklist li strong,
+.pilot-requirements li strong {
+    color: var(--white);
+}
+
+.pilot-value {
+    font-size: 1.125rem;
+    color: var(--success);
+    padding: 1.5rem;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+
+.pilot-value strong {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.pilot-why {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+    border-radius: var(--radius-md);
+    padding: 2.5rem;
+    margin: 3rem 0;
+}
+
+.pilot-why h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1rem;
+}
+
+.pilot-why p {
+    font-size: 1rem;
+    color: var(--silver);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.pilot-why ul {
+    list-style: none;
+    margin: 1rem 0;
+}
+
+.pilot-why ul li {
+    font-size: 1rem;
+    color: var(--silver);
+    line-height: 1.8;
+    padding-left: 1.5rem;
+    position: relative;
+    margin-bottom: 0.75rem;
+}
+
+.pilot-why ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+}
+
+.pilot-cta {
+    text-align: center;
+    padding: 3rem;
+    background: rgba(249, 115, 22, 0.05);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius-lg);
+    margin: 3rem 0;
+}
+
+.pilot-cta h3 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+}
+
+.pilot-urgency {
+    font-size: 0.95rem;
+    color: var(--accent);
+    margin-top: 1rem;
+    font-weight: 600;
+}
+
+.pilot-faq {
+    margin-top: 4rem;
+}
+
+.pilot-faq h3 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.faq-item {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+}
+
+.faq-item h4 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+}
+
+.faq-item p {
+    font-size: 0.875rem;
+    color: var(--silver);
+    line-height: 1.6;
+}
+
+.faq-item p strong {
+    color: var(--white);
+}
+
+.cta-note {
+    font-size: 0.95rem;
+    color: var(--steel);
+    margin-top: 1.5rem;
+}
+
+.cta-note a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.cta-note a:hover {
+    color: var(--accent-dark);
+    text-decoration: underline;
+}
+
+/* ───────────────────────────────────────────────────────────
    CTA SECTION
    ─────────────────────────────────────────────────────────── */
 
@@ -979,5 +1202,14 @@ body {
 
     .heritage-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pilot-grid,
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
     }
 }
