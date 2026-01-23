@@ -85,7 +85,7 @@ body {
 .nav-container {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: 1.25rem 2rem; /* Increased from 1rem for more breathing room */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -179,7 +179,7 @@ body {
     z-index: 2;
     text-align: center;
     max-width: 900px;
-    padding: 2rem;
+    padding: 8rem 2rem 2rem 2rem; /* Added 8rem top padding to clear fixed nav */
 }
 
 .hero-badge {
@@ -208,7 +208,7 @@ body {
     font-weight: 700;
     color: var(--white);
     line-height: 1.1;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem; /* Increased from 1rem for better spacing */
     letter-spacing: -0.02em;
 }
 
@@ -222,7 +222,7 @@ body {
     font-weight: 600;
     color: var(--mist);
     line-height: 1.2;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem; /* Increased from 2rem for better spacing */
 }
 
 .hero-subtitle-accent {
@@ -233,7 +233,7 @@ body {
     font-size: 1.125rem;
     color: var(--silver);
     line-height: 1.8;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem; /* Adjusted for better rhythm with CTA buttons */
 }
 
 .hero-description strong {
@@ -1173,13 +1173,14 @@ body {
 
 .hero-pilot-note {
     font-size: 0.875rem;
-    color: var(--silver);
+    color: var(--mist); /* Increased from silver for better readability */
     text-align: center;
     margin-top: 1rem;
-    padding: 0.75rem 1.5rem;
-    background: rgba(249, 115, 22, 0.1);
-    border: 1px solid rgba(249, 115, 22, 0.3);
+    padding: 1rem 1.5rem; /* Increased vertical padding */
+    background: rgba(0, 0, 0, 0.6); /* Much darker background for contrast */
+    border: 1px solid rgba(249, 115, 22, 0.4); /* Slightly stronger orange border */
     border-radius: var(--radius-md);
+    backdrop-filter: blur(10px); /* Added blur for glass-morphism effect */
 }
 
 .hero-pilot-note strong {
@@ -1579,12 +1580,26 @@ body {
    ─────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
+    .hero-content {
+        padding: 6rem 1.5rem 2rem 1.5rem; /* Reduced top padding for mobile */
+    }
+
     .hero-title {
         font-size: 2.5rem;
     }
 
     .hero-subtitle {
         font-size: 1.5rem;
+    }
+
+    .hero-cta-group {
+        flex-direction: column; /* Stack buttons vertically on mobile */
+        gap: 0.75rem;
+    }
+
+    .hero-pilot-note {
+        font-size: 0.8rem; /* Slightly smaller text on mobile */
+        padding: 0.875rem 1.25rem;
     }
 
     .hero-stats,
