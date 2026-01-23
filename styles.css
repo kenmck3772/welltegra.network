@@ -85,7 +85,7 @@ body {
 .nav-container {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: 1.25rem 2rem; /* Increased from 1rem for more breathing room */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -179,7 +179,7 @@ body {
     z-index: 2;
     text-align: center;
     max-width: 900px;
-    padding: 2rem;
+    padding: 8rem 2rem 2rem 2rem; /* Added 8rem top padding to clear fixed nav */
 }
 
 .hero-badge {
@@ -208,7 +208,7 @@ body {
     font-weight: 700;
     color: var(--white);
     line-height: 1.1;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem; /* Increased from 1rem for better spacing */
     letter-spacing: -0.02em;
 }
 
@@ -222,7 +222,7 @@ body {
     font-weight: 600;
     color: var(--mist);
     line-height: 1.2;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem; /* Increased from 2rem for better spacing */
 }
 
 .hero-subtitle-accent {
@@ -233,7 +233,7 @@ body {
     font-size: 1.125rem;
     color: var(--silver);
     line-height: 1.8;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem; /* Adjusted for better rhythm with CTA buttons */
 }
 
 .hero-description strong {
@@ -416,6 +416,182 @@ body {
     font-size: 1.125rem;
     color: var(--silver);
     line-height: 1.8;
+}
+
+/* ───────────────────────────────────────────────────────────
+   PROBLEM SECTION (ANALOG LIMITATION)
+   ─────────────────────────────────────────────────────────── */
+
+.problem-section {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, rgba(10, 22, 40, 0.95), rgba(26, 45, 74, 0.95));
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.problem-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.problem-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    transition: var(--transition);
+}
+
+.problem-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+}
+
+.problem-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.problem-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--white);
+    margin-bottom: 1rem;
+}
+
+.problem-card p {
+    color: var(--silver);
+    line-height: 1.8;
+}
+
+.problem-card strong {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.problem-summary {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: rgba(249, 115, 22, 0.05);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius-sm);
+}
+
+.problem-summary p {
+    font-size: 1.125rem;
+    color: var(--mist);
+    line-height: 1.8;
+}
+
+.problem-summary strong {
+    color: var(--white);
+    font-weight: 600;
+}
+
+/* ───────────────────────────────────────────────────────────
+   SOVEREIGN AI SECTION
+   ─────────────────────────────────────────────────────────── */
+
+.sovereign-section {
+    padding: 6rem 0;
+    background: var(--ink);
+}
+
+.sovereign-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.sovereign-card {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(147, 51, 234, 0.05));
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    transition: var(--transition);
+}
+
+.sovereign-card:hover {
+    border-color: var(--signal-blue);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1);
+}
+
+.sovereign-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.sovereign-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--white);
+    margin-bottom: 1rem;
+}
+
+.sovereign-card p {
+    color: var(--silver);
+    line-height: 1.8;
+}
+
+.sovereign-card strong {
+    color: var(--signal-blue);
+    font-weight: 600;
+}
+
+.sovereign-guarantee {
+    margin-top: 4rem;
+    padding: 3rem;
+    background: rgba(15, 23, 42, 0.6);
+    border: 2px solid var(--signal-blue);
+    border-radius: var(--radius-lg);
+}
+
+.sovereign-guarantee h3 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.sovereign-principles {
+    list-style: none;
+    margin-bottom: 2rem;
+}
+
+.sovereign-principles li {
+    font-size: 1.125rem;
+    color: var(--silver);
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(100, 116, 139, 0.2);
+}
+
+.sovereign-principles li:last-child {
+    border-bottom: none;
+}
+
+.sovereign-principles strong {
+    color: var(--signal-blue);
+    font-weight: 600;
+}
+
+.sovereign-tagline {
+    text-align: center;
+    font-size: 1.125rem;
+    color: var(--mist);
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(100, 116, 139, 0.2);
+}
+
+.sovereign-tagline strong {
+    color: var(--white);
+    font-weight: 600;
 }
 
 /* ───────────────────────────────────────────────────────────
@@ -1173,13 +1349,14 @@ body {
 
 .hero-pilot-note {
     font-size: 0.875rem;
-    color: var(--silver);
+    color: var(--mist); /* Increased from silver for better readability */
     text-align: center;
     margin-top: 1rem;
-    padding: 0.75rem 1.5rem;
-    background: rgba(249, 115, 22, 0.1);
-    border: 1px solid rgba(249, 115, 22, 0.3);
+    padding: 1rem 1.5rem; /* Increased vertical padding */
+    background: rgba(0, 0, 0, 0.6); /* Much darker background for contrast */
+    border: 1px solid rgba(249, 115, 22, 0.4); /* Slightly stronger orange border */
     border-radius: var(--radius-md);
+    backdrop-filter: blur(10px); /* Added blur for glass-morphism effect */
 }
 
 .hero-pilot-note strong {
@@ -1579,6 +1756,10 @@ body {
    ─────────────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
+    .hero-content {
+        padding: 6rem 1.5rem 2rem 1.5rem; /* Reduced top padding for mobile */
+    }
+
     .hero-title {
         font-size: 2.5rem;
     }
@@ -1587,10 +1768,22 @@ body {
         font-size: 1.5rem;
     }
 
+    .hero-cta-group {
+        flex-direction: column; /* Stack buttons vertically on mobile */
+        gap: 0.75rem;
+    }
+
+    .hero-pilot-note {
+        font-size: 0.8rem; /* Slightly smaller text on mobile */
+        padding: 0.875rem 1.25rem;
+    }
+
     .hero-stats,
     .status-grid,
+    .problem-grid,
     .feature-grid,
     .tech-grid,
+    .sovereign-grid,
     .heritage-stats,
     .footer-grid {
         grid-template-columns: 1fr;
