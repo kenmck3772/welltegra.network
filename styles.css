@@ -9,23 +9,25 @@
    ─────────────────────────────────────────────────────────── */
 
 :root {
-    /* Forensic Dark Mode Palette */
-    --ink: #0a1628;
-    --ink-light: #1a2d4a;
-    --slate: #334155;
-    --steel: #64748b;
-    --silver: #94a3b8;
-    --mist: #e2e8f0;
+    /* Chromebook-Optimized Dark Mode Palette - Lean Engineering UI */
+    --deep-ocean: #051122;        /* Deep Ocean Blue - Primary Background */
+    --ocean-mid: #0a1e3d;         /* Mid Ocean Blue - Secondary Background */
+    --ocean-light: #1e4d7b;       /* Light Ocean Blue - Borders & Accents */
+    --slate-dark: #2d3748;        /* Slate Grey Dark */
+    --slate: #475569;             /* Slate Grey - Mid Tone */
+    --slate-light: #64748b;       /* Slate Grey Light */
+    --silver: #94a3b8;            /* Silver Grey */
+    --mist: #e2e8f0;              /* Light Text */
     --cloud: #f1f5f9;
     --white: #ffffff;
 
-    /* Accent Colors */
-    --accent: #f97316;            /* Industrial Orange */
-    --accent-dark: #ea580c;
-    --accent-glow: rgba(249, 115, 22, 0.15);
+    /* Terminal Accent Colors */
+    --terminal-green: #22d3ee;    /* Terminal Green/Cyan - Primary Accent */
+    --terminal-green-dark: #14b8a6;
+    --terminal-glow: rgba(34, 211, 238, 0.15);
 
-    --success: #22c55e;           /* Industrial Green */
-    --success-light: #4ade80;
+    --warning-amber: #f59e0b;     /* Warning/Status Amber */
+    --success: #10b981;           /* Success Green */
     --signal-blue: #3b82f6;
 
     /* Typography */
@@ -55,9 +57,11 @@ html {
 body {
     font-family: var(--font-body);
     color: var(--mist);
-    background: var(--ink);
+    background: var(--deep-ocean);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    /* Chromebook optimization: reduce rendering complexity */
+    text-rendering: optimizeLegibility;
 }
 
 .container {
@@ -146,41 +150,39 @@ body {
    ─────────────────────────────────────────────────────────── */
 
 .hero {
-    position: relative;
-    min-height: 100vh;
+    /* Chromebook-Optimized: No video, pure CSS gradient background */
+    background: linear-gradient(135deg, var(--ocean-mid) 0%, var(--deep-ocean) 100%);
+    border-bottom: 2px solid var(--ocean-light);
+    min-height: 85vh; /* Reduced from 100vh to ensure CTA always visible on 13" displays */
+    max-height: 900px; /* Cap height for smaller displays */
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    padding: 0; /* Ensure no extra padding at section level */
+    padding: 0;
+    position: relative;
+    overflow: visible; /* Allow content to extend if needed */
 }
 
+/* Remove video-related styles for lean UI */
 .hero-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
+    display: none; /* Disabled for Chromebook optimization */
 }
 
 .hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(10, 22, 40, 0.9), rgba(10, 22, 40, 0.7));
-    z-index: 1;
+    display: none; /* No overlay needed without video */
 }
 
 .hero-content {
     position: relative;
     z-index: 2;
     text-align: center;
-    max-width: 1100px;
-    padding: 5rem 2rem 2rem 2rem; /* Reduced from 8rem to prevent title cutoff */
+    max-width: 1150px;
+    width: 100%;
+    padding: 4rem 2rem 2.5rem 2rem; /* Optimized padding for 13" displays */
+    /* Ensure content never pushes CTA off-screen */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .hero-badge {
@@ -209,12 +211,16 @@ body {
     font-weight: 700;
     color: var(--white);
     line-height: 1.1;
-    margin-bottom: 1.5rem; /* Increased from 1rem for better spacing */
+    margin-bottom: 1.5rem;
     letter-spacing: -0.02em;
+    /* Terminal aesthetic: subtle text shadow for depth */
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .hero-title-accent {
-    color: var(--accent);
+    color: var(--terminal-green); /* Terminal Green for accent */
+    /* Subtle glow effect for terminal aesthetic */
+    text-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
 }
 
 .hero-subtitle {
@@ -1874,32 +1880,40 @@ body {
 
 @media (max-width: 768px) {
     .hero {
-        min-height: 100vh; /* Allow hero to expand beyond viewport if needed */
-        height: auto;
+        min-height: 70vh; /* Chromebook-optimized: reduced height for smaller displays */
+        max-height: 700px;
     }
 
     .hero-content {
-        padding: 4.5rem 1.5rem 2rem 1.5rem; /* Further reduced top padding for mobile */
+        padding: 3.5rem 1.25rem 2rem 1.25rem; /* Compact padding for mobile/Chromebook */
     }
 
     .hero-title {
-        font-size: 2rem; /* Smaller for mobile to prevent cutoff */
+        font-size: 1.85rem; /* Chromebook-optimized: smaller for mobile */
         margin-bottom: 1rem;
     }
 
     .hero-subtitle {
-        font-size: 1.2rem;
-        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        margin-bottom: 1.25rem;
     }
 
     .hero-cta-group {
         flex-direction: column; /* Stack buttons vertically on mobile */
         gap: 0.75rem;
+        margin-bottom: 2rem; /* Ensure spacing before stats */
     }
 
     .hero-pilot-note {
-        font-size: 0.8rem; /* Slightly smaller text on mobile */
-        padding: 0.875rem 1.25rem;
+        font-size: 0.8rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .hero-features {
+        /* Chromebook optimization: simplify grid on mobile */
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem !important;
+        margin-bottom: 2rem !important;
     }
 
     .hero-stats,
