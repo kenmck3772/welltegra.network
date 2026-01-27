@@ -36,7 +36,7 @@ jobs:
       - name: Build React Brahan Vertex App
         run: |
           cd react-brahan-vertex
-          npm ci
+          npm install
           npm run build
           cd ..
           echo "✅ React app built successfully"
