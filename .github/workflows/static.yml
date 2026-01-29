@@ -47,8 +47,59 @@ jobs:
         run: npx playwright install --with-deps
         continue-on-error: true
 
-      - name: Run tests
+      - name: Run E2E tests (Playwright)
         run: npm test
+        continue-on-error: true
+
+      # Unit Tests with Coverage - React Brahan Vertex
+      - name: Install React Brahan Vertex test dependencies
+        run: |
+          cd react-brahan-vertex
+          npm ci
+        continue-on-error: true
+
+      - name: Run React Brahan Vertex unit tests with coverage
+        run: |
+          cd react-brahan-vertex
+          npm run test:coverage -- --run
+        continue-on-error: true
+
+      # Unit Tests with Coverage - BPT-PWA
+      - name: Install BPT-PWA test dependencies
+        run: |
+          cd BPT-PWA
+          npm ci
+        continue-on-error: true
+
+      - name: Run BPT-PWA unit tests with coverage
+        run: |
+          cd BPT-PWA
+          npm run test:coverage -- --run
+        continue-on-error: true
+
+      # Python Tests
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+        continue-on-error: true
+
+      - name: Install Python test dependencies
+        run: |
+          pip install pytest pytest-cov pydantic fastapi httpx
+        continue-on-error: true
+
+      - name: Run backend-api Python tests
+        run: |
+          cd backend-api
+          python -m pytest -v --cov=. --cov-report=term-missing
+        continue-on-error: true
+
+      - name: Run backend Python tests
+        run: |
+          cd backend
+          pip install python-gnupg
+          python -m pytest test_verify_portal.py -v --cov=. --cov-report=term-missing
         continue-on-error: true
 
       # REACT APP BUILD RE-ENABLED - Three.js removed, build now succeeds
