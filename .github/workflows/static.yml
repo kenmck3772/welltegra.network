@@ -60,7 +60,7 @@ jobs:
       - name: Install BPT-PWA test dependencies
         run: |
           cd BPT-PWA
-          npm ci
+          npm install --legacy-peer-deps
         continue-on-error: true
 
       - name: Run BPT-PWA unit tests with coverage
@@ -78,7 +78,7 @@ jobs:
 
       - name: Install Python test dependencies
         run: |
-          pip install pytest pytest-cov pydantic fastapi httpx
+          pip install pytest pytest-cov pydantic fastapi httpx python-multipart
         continue-on-error: true
 
       - name: Run backend-api Python tests
