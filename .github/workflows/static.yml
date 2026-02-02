@@ -102,6 +102,10 @@ jobs:
           cd react-brahan-vertex
           npm install
           npm run build
+
+      - name: Prepare deployment files
+        run: |
+          mkdir -p _deploy
           cd ..
           echo "✅ React app built successfully"
       
@@ -127,7 +131,13 @@ jobs:
             ! -name 'test-results' \
             ! -name '.env' \
             ! -name 'react-brahan-vertex' \
+            ! -name 'backend' \
+            ! -name 'BPT-PWA' \
             -exec cp -r {} _deploy/ \;
+          mkdir -p _deploy/app
+          cp -r react-brahan-vertex/build/* _deploy/app/
+          echo "✅ Deployed"
+
           # Copy React app build to /app/
           mkdir -p _deploy/app
           cp -r react-brahan-vertex/build/* _deploy/app/
