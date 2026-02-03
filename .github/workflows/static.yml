@@ -47,6 +47,7 @@ jobs:
       - name: Install React Brahan Vertex test dependencies
         run: |
           cd react-brahan-vertex
+          npm install --legacy-peer-deps
           npm ci
         continue-on-error: true
 
