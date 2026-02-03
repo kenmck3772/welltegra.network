@@ -1,5 +1,4 @@
-# WellTegra Network - Deploy to GitHub Pages
-name: Deploy to GitHub Pages
+name: Deploy static content to Pages
 
 on:
   push:
@@ -24,24 +23,97 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-
+      
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Build React Brahan Vertex App
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+        continue-on-error: true
+
+      - name: Run E2E tests (Playwright)
+        run: npm test
+        continue-on-error: true
+
+      # Unit Tests with Coverage - React Brahan Vertex
+      - name: Install React Brahan Vertex test dependencies
         run: |
           cd react-brahan-vertex
           npm install --legacy-peer-deps
+          npm ci
+        continue-on-error: true
+
+      - name: Run React Brahan Vertex unit tests with coverage
+        run: |
+          cd react-brahan-vertex
+          npm run test:coverage -- --run
+        continue-on-error: true
+
+      # Unit Tests with Coverage - BPT-PWA
+      - name: Install BPT-PWA test dependencies
+        run: |
+          cd BPT-PWA
+          npm install --legacy-peer-deps
+        continue-on-error: true
+
+      - name: Run BPT-PWA unit tests with coverage
+        run: |
+          cd BPT-PWA
+          npm run test:coverage -- --run
+        continue-on-error: true
+
+      # Python Tests
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+        continue-on-error: true
+
+      - name: Install Python test dependencies
+        run: |
+          pip install pytest pytest-cov pydantic fastapi httpx python-multipart
+        continue-on-error: true
+
+      - name: Run backend-api Python tests
+        run: |
+          cd backend-api
+          python -m pytest -v --cov=. --cov-report=term-missing
+        continue-on-error: true
+
+      - name: Run backend Python tests
+        run: |
+          cd backend
+          pip install python-gnupg
+          python -m pytest test_verify_portal.py -v --cov=. --cov-report=term-missing
+        continue-on-error: true
+
+      # REACT APP BUILD RE-ENABLED - Three.js removed, build now succeeds
+      
+      # Build React app (only install dependencies needed for React)
+      - name: Build React Brahan Vertex App
+        run: |
+          cd react-brahan-vertex
+          npm install
           npm run build
 
       - name: Prepare deployment files
         run: |
           mkdir -p _deploy
+          cd ..
+          echo "✅ React app built successfully"
+      
+      - name: Prepare deployment files
+        run: |
+          mkdir -p _deploy
+          # Copy all files and directories, excluding specific paths
           find . -maxdepth 1 -mindepth 1 \
             ! -name '_deploy' \
             ! -name 'node_modules' \
@@ -67,11 +139,19 @@ jobs:
           cp -r react-brahan-vertex/build/* _deploy/app/
           echo "✅ Deployed"
 
+          # Copy React app build to /app/
+          mkdir -p _deploy/app
+          cp -r react-brahan-vertex/build/* _deploy/app/
+          # Verify deployment structure
+          ls -la _deploy/data/ || echo "No data directory"
+          ls -la _deploy/app/
+          echo "✅ Deployment files prepared - React app deployed to /app/"
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '_deploy'
-
+      
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
