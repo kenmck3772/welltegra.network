@@ -101,7 +101,7 @@ jobs:
       - name: Build React Brahan Vertex App
         run: |
           cd react-brahan-vertex
-          npm install
+          npm install --legacy-peer-depsl
           npm run build
 
       - name: Prepare deployment files
