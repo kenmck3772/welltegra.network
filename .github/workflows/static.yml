@@ -1,3 +1,4 @@
+
 name: Deploy static content to Pages
 
 on:
@@ -101,7 +102,7 @@ jobs:
       - name: Build React Brahan Vertex App
         run: |
           cd react-brahan-vertex
-          npm install --legacy-peer-depsl
+          npm install --legacy-peer-deps
           npm run build
 
       - name: Prepare deployment files
