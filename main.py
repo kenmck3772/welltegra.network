@@ -1,44 +1,34 @@
-import os
-from flask import Flask, request, jsonify
-from google.cloud import firestore
-from datetime import datetime
+from firebase_functions import firestore_fn
+from firebase_admin import initialize_app, firestore
+import vertexai
+from vertexai.generative_models import GenerativeModel
 
-app = Flask(__name__)
+# Initialize services
+initialize_app()
+vertexai.init(project="brahan-483303", location="us-central1")
 
-# Initialize Firestore Client
-# It will use project ID: brahan-483303 automatically
-try:
-    db = firestore.Client()
-except Exception as e:
-    print(f"Firestore initialization warning: {e}")
+@firestore_fn.on_document_created(document="ingested_data/{docId}")
+def analyze_new_data(event: firestore_fn.Event[firestore_fn.DocumentSnapshot | None]) -> None:
+    """Triggered when a new record hits Firestore."""
+    data = event.data.to_dict()
+    doc_id = event.params["docId"]
+    
+    print(f"🤖 Brahan AI: Processing new record {doc_id}")
 
-@app.route("/")
-def health():
-    return jsonify({"status": "online", "engine": "Brahan Engine"}), 200
-
-@app.route("/ingest", methods=["POST"])
-def ingest():
+    # Process with Gemini AI
+    model = GenerativeModel("gemini-1.5-flash")
+    prompt = f"Review this sensor reading: {data}. Provide a short technical status summary."
+    
     try:
-        data = request.get_json()
-        if not data:
-            return jsonify({"error": "No data provided"}), 400
+        response = model.generate_content(prompt)
+        ai_insight = response.text.strip()
 
-        # Add metadata for tracking
-        data['processed_at'] = datetime.utcnow().isoformat()
-        data['source'] = 'brahan_ingest_service'
-
-        # Save to Firestore collection 'ingested_data'
-        doc_ref = db.collection('ingested_data').document()
-        doc_ref.set(data)
-
-        return jsonify({
-            "message": "Data secured in Brahan Engine",
-            "document_id": doc_ref.id
-        }), 201
-
+        # Write insight back to Firestore
+        db = firestore.client()
+        db.collection("ingested_data").document(doc_id).update({
+            "brahan_ai_insight": ai_insight
+        })
+        print(f"✅ AI Analysis complete: {ai_insight}")
+        
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))
-    app.run(debug=True, host="0.0.0.0", port=port)
+        print(f"❌ AI Analysis failed: {e}")
