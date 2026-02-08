@@ -1,0 +1,6 @@
+#!/home/wells/welltegra.network/venv_brahan/bin/python3
+import sys
+from lasio.convert_version import convert_version
+if __name__ == '__main__':
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
+    sys.exit(convert_version())
