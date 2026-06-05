@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo: How the Brahan Engine Prevents Disasters | WellTegra</title>
+    <meta name="description" content="See how the Brahan Engine would have prevented the catastrophic Well_666 disaster. A step-by-step walkthrough of AI-powered well intervention planning.">
+    <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b1220;
+            --panel: #0f172a;
+            --card: #1e293b;
+            --border: #334155;
+            --fg: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #14b8a6;
+            --accent-hover: #2dd4bf;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 18, 32, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .logo img { height: 40px; border-radius: 8px; }
+        .logo-text { font-weight: 900; font-size: 1.25rem; }
+
+        .nav { display: flex; gap: 0.5rem; }
+        .nav a {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav a:hover, .nav a.active { color: var(--fg); background: var(--card); }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(180deg, rgba(239, 68, 68, 0.1) 0%, var(--bg) 100%);
+            padding: 4rem 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--danger);
+        }
+
+        .hero-stat-label {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        /* Main */
+        .main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+
+        /* Chapter */
+        .chapter {
+            margin-bottom: 4rem;
+        }
+
+        .chapter-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .chapter-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--accent);
+            color: #0b1220;
+            font-weight: 900;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .chapter-number.disaster {
+            background: var(--danger);
+            color: white;
+        }
+
+        .chapter-number.prevention {
+            background: var(--success);
+            color: white;
+        }
+
+        .chapter-title {
+            font-size: 1.75rem;
+            font-weight: 900;
+        }
+
+        .chapter-subtitle {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        /* Story card */
+        .story-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-card.disaster {
+            border-color: var(--danger);
+        }
+
+        .story-card.prevention {
+            border-color: var(--success);
+        }
+
+        .story-header {
+            padding: 1.25rem 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .story-label {
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .story-label.what-happened { color: var(--danger); }
+        .story-label.what-would-have { color: var(--success); }
+        .story-label.result { color: var(--warning); }
+
+        .story-date {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .story-body {
+            padding: 1.5rem;
+        }
+
+        .story-body h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .story-body p {
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        .story-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Quote */
+        .quote {
+            padding: 1rem 1.25rem;
+            background: var(--card);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+            font-style: italic;
+        }
+
+        .quote-source {
+            font-size: 0.85rem;
+            color: var(--muted);
+            font-style: normal;
+            margin-top: 0.5rem;
+        }
+
+        /* Comparison */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comparison-col h5 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .comparison-col.without h5 { color: var(--danger); }
+        .comparison-col.with h5 { color: var(--success); }
+
+        .comparison-list {
+            list-style: none;
+        }
+
+        .comparison-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .comparison-list li svg {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Feature highlight */
+        .feature-highlight {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, var(--card) 100%);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .feature-highlight h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-highlight p {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        /* Timeline mini */
+        .timeline-mini {
+            position: relative;
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .timeline-mini::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-mini-item {
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .timeline-mini-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 6px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--danger);
+        }
+
+        .timeline-mini-item.success::before {
+            background: var(--success);
+        }
+
+        .timeline-mini-item strong {
+            font-size: 0.9rem;
+        }
+
+        .timeline-mini-item p {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Cost box */
+        .cost-box {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.25rem;
+            background: var(--card);
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .cost-amount {
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .cost-amount.negative { color: var(--danger); }
+        .cost-amount.positive { color: var(--success); }
+
+        .cost-label {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .cta-section h2 {
+            font-size: 1.75rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #0b1220;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: var(--card);
+            color: var(--fg);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+        }
+
+        /* Link cards */
+        .link-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .link-card {
+            display: block;
+            padding: 1.5rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--fg);
+            transition: all 0.2s;
+        }
+
+        .link-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .link-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .link-card p {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.jpg" alt="WellTegra">
+                <span class="logo-text">WellTegra</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="demo.html" class="active">Demo</a>
+                <a href="case-studies.html">Case Studies</a>
+                <a href="equipment.html">Equipment</a>
+                <a href="sop-library.html">SOPs</a>
+                <a href="planner.html">Planner</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-badge">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                Based on Real Events
+            </div>
+            <h1>How a $1.5M Job Became a $75M Disaster</h1>
+            <p>And how the Brahan Engine would have prevented it. This is the story of Well_666 — "The Perfect Storm" — a cascading failure that started with a single tong die and ended with a permanently damaged well.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">$74.8M</div>
+                    <div class="hero-stat-label">Total Cost</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">840 hrs</div>
+                    <div class="hero-stat-label">NPT</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">5</div>
+                    <div class="hero-stat-label">Critical Failures</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main -->
+    <main class="main">
+        <!-- Chapter 1: The Setup -->
+        <section class="chapter">
+            <div class="chapter-header">
+                <div class="chapter-number">1</div>
+                <div>
+                    <h2 class="chapter-title">The Setup</h2>
+                    <p class="chapter-subtitle">A routine bridge plug retrieval on a high-performing HPHT well</p>
+                </div>
+            </div>
+
+            <div class="story-card">
+                <div class="story-body">
+                    <p>Well_666 was a star performer — 10,500 boepd from the Brahan Alpha Sandstone. In October 2016, the team planned a routine zone isolation job: retrieve a bridge plug at 4,800m to manage increasing water cut.</p>
+                    
+                    <p><strong>The AFE was $1.5M. The job was planned for one week.</strong></p>
+                    
+                    <div class="quote">
+                        "Mike, the crew is struggling to get a good latch on the plug. We've been working it for four hours now. The jarring is getting aggressive. I'm concerned about the TRSSV profile. The procedure says to pull, but my gut says we need to stop and run a LIB first. The day-shift guy wants to push on. Advise."
+                        <div class="quote-source">— Night Supervisor email, October 17, 2016, 22:30</div>
+                    </div>
+                    
+                    <p>The crew was on their <strong>14th consecutive night shift</strong>. The fiscal year deadline was approaching. They pushed on.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 2: The Disaster -->
+        <section class="chapter">
+            <div class="chapter-header">
+                <div class="chapter-number disaster">2</div>
+                <div>
+                    <h2 class="chapter-title">The Disaster Unfolds</h2>
+                    <p class="chapter-subtitle">Six weeks of cascading failures</p>
+                </div>
+            </div>
+
+            <div class="story-card disaster">
+                <div class="story-header">
+                    <span class="story-label what-happened">What Happened</span>
+                    <span class="story-date">October 18 - November 20, 2016</span>
+                </div>
+                <div class="story-body">
+                    <div class="timeline-mini">
+                        <div class="timeline-mini-item">
+                            <strong>Oct 18: Bridge plug element stuck</strong>
+                            <p>After 4 hours of aggressive jarring, the plug element came free — but snagged the TRSSV protection sleeve on the way out. Pieces fell back into the wellbore.</p>
+                        </div>
+                        <div class="timeline-mini-item">
+                            <strong>Oct 19 - Nov 2: Fishing operations</strong>
+                            <p>Two weeks of fishing with overshots, spears, grabs. Most tools failed. A simple junk basket worked better than anything else.</p>
+                        </div>
+                        <div class="timeline-mini-item">
+                            <strong>Nov 15: The missed clue</strong>
+                            <p>A Lead Impression Block showed a clear impression of something metallic. The crew dismissed it as "unclear." <strong>It was a 3/4" tong die.</strong></p>
+                        </div>
+                        <div class="timeline-mini-item">
+                            <strong>Nov 20: The reveal</strong>
+                            <p>After case-hardened pins and extreme jarring forces, the plug finally came free. The tong die — dropped during surface operations — had jammed the mechanism the entire time.</p>
+                        </div>
+                    </div>
+
+                    <div class="cost-box">
+                        <div>
+                            <div class="cost-amount negative">$7.2M</div>
+                            <div class="cost-label">2016 intervention cost (AFE was $1.5M)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="story-card disaster">
+                <div class="story-header">
+                    <span class="story-label result">The Aftermath</span>
+                    <span class="story-date">2017 - 2021</span>
+                </div>
+                <div class="story-body">
+                    <p>The aggressive jarring didn't just retrieve the plug — it deformed the 9-5/8" production casing at 4,500m (>20% ovality) and damaged the TRSSV profile.</p>
+                    
+                    <p>A $18.5M workover in 2017 got the well back online at reduced rates. Then in 2021, the TRSSV failed its function test — stuck closed, likely from debris or damage from 2016.</p>
+                    
+                    <p><strong>The well has been shut-in ever since.</strong></p>
+
+                    <div class="cost-box">
+                        <div>
+                            <div class="cost-amount negative">$140M</div>
+                            <div class="cost-label">Lost production (2016-2021)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 3: What Brahan Engine Would Have Done -->
+        <section class="chapter">
+            <div class="chapter-header">
+                <div class="chapter-number prevention">3</div>
+                <div>
+                    <h2 class="chapter-title">What Brahan Engine Would Have Done</h2>
+                    <p class="chapter-subtitle">Five intervention points that would have changed everything</p>
+                </div>
+            </div>
+
+            <div class="feature-highlight">
+                <h4>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                    Safety Gateway: Fatigue Flag
+                </h4>
+                <p>The system tracks personnel rotation. At 14 consecutive night shifts, a <strong>mandatory fatigue review</strong> would have been triggered before the operation continued. The crew's judgment was impaired — the system would have flagged it.</p>
+            </div>
+
+            <div class="feature-highlight">
+                <h4>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    SOP Decision Point: LIB After Failed Latch
+                </h4>
+                <p>The Bridge Plug Retrieval SOP (SOP_003) now includes: <strong>"After 3 failed latch attempts → STOP → Run LIB → Send to shore for expert analysis."</strong> The Brahan Engine enforces this as a mandatory checkpoint, not a suggestion.</p>
+            </div>
+
+            <div class="feature-highlight">
+                <h4>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    AI Advisor: "This Impression Needs Expert Review"
+                </h4>
+                <p>When the LIB came back on Nov 15, the AI would have analyzed the impression image and flagged: <strong>"Foreign object detected - metallic signature inconsistent with plug profile. Recommend shore-based expert review before proceeding."</strong></p>
+            </div>
+
+            <div class="feature-highlight">
+                <h4>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    Jarring Limit Enforcement
+                </h4>
+                <p>SOP_003 now specifies: <strong>"Maximum 5 jar strokes without engineering review."</strong> The system tracks jarring operations in real-time. Exceeding the limit triggers an automatic stop-work alert and requires engineering sign-off to continue.</p>
+            </div>
+
+            <div class="feature-highlight">
+                <h4>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    Lessons Learned: Automatic Surfacing
+                </h4>
+                <p>For any bridge plug retrieval, the system automatically surfaces relevant lessons: <strong>LL-666-001 (FOD prevention), LL-666-003 (LIB analysis), LL-666-005 (barrier awareness).</strong> The crew sees exactly what went wrong before — and how to prevent it.</p>
+            </div>
+
+            <div class="comparison">
+                <div class="comparison-col without">
+                    <h5>
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+                        Without Brahan Engine
+                    </h5>
+                    <ul class="comparison-list">
+                        <li>
+                            <svg width="16" height="16" fill="var(--danger)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                            <span>Fatigue undetected — 14 night shifts</span>
+                        </li>
+                        <li>
+                            <svg width="16" height="16" fill="var(--danger)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                            <span>LIB impression dismissed as "unclear"</span>
+                        </li>
+                        <li>
+                            <svg width="16" height="16" fill="var(--danger)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                            <span>Aggressive jarring damages casing</span>
+                        </li>
+                        <li>
+                            <svg width="16" height="16" fill="var(--danger)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                            <span>SCSSV profile compromised</span>
+                        </li>
+                        <li>
+                            <svg width="16" height="16" fill="var(--danger)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                            <span>$74.8M total cost, well shut-in</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="comparison-col with">
+                    <h5>
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                        With Brahan Engine
+                    </h5>
+                    <ul class="comparison-list">
+                        <li>
+                            <svg width="16" height="16" fill="var(--success)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                            <span>Fatigue flag at day 10 — fresh crew</span>
+                        </li>
+                        <li>
+                            <svg width="16" height="16" fill="var(--success)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                            <span>LIB sent to shore — tong die identified</span>
+                        </li>
+                        <li>
+                            <svg width="16" height="16" fill="var(--success)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                            <span>Debris cleared before plug retrieval</span>
+                        </li>
+                        <li>
+                            <svg width="16" height="16" fill="var(--success)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                            <span>Plug retrieves cleanly</span>
+                        </li>
+                        <li>
+                            <svg width="16" height="16" fill="var(--success)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                            <span>~$2M total cost, well still producing</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="cost-box">
+                <div>
+                    <div class="cost-amount positive">$72.8M</div>
+                    <div class="cost-label">Estimated savings if Brahan Engine had been in use</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chapter 4: See It In Action -->
+        <section class="chapter">
+            <div class="chapter-header">
+                <div class="chapter-number">4</div>
+                <div>
+                    <h2 class="chapter-title">Explore the System</h2>
+                    <p class="chapter-subtitle">See the data, procedures, and tools that would have prevented this</p>
+                </div>
+            </div>
+
+            <div class="link-cards">
+                <a href="well-666.html" class="link-card">
+                    <h4>
+                        <svg width="20" height="20" fill="none" stroke="var(--danger)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        Well_666 Full Case Study
+                    </h4>
+                    <p>Complete 10-pillar analysis including real-time data, personnel records, correspondence, risk assessments, and economics.</p>
+                </a>
+                <a href="sop-library.html" class="link-card">
+                    <h4>
+                        <svg width="20" height="20" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                        SOP Library
+                    </h4>
+                    <p>See SOP_003 (Bridge Plug Retrieval) with all the lessons learned from Well_666 built into the decision points.</p>
+                </a>
+                <a href="equipment.html" class="link-card">
+                    <h4>
+                        <svg width="20" height="20" fill="none" stroke="var(--info)" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                        Equipment Catalog
+                    </h4>
+                    <p>The toolstring that was used — and the clash detection that validates every tool against tubing restrictions.</p>
+                </a>
+                <a href="case-studies.html" class="link-card">
+                    <h4>
+                        <svg width="20" height="20" fill="none" stroke="var(--warning)" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                        All Case Studies
+                    </h4>
+                    <p>Seven Brahan Field wells — Well_666 is the cautionary tale, the others show normal operations.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <h2>See What Others Can't</h2>
+            <p>The Brahan Engine doesn't just store data — it connects the dots that humans miss. Fatigue patterns. Dismissed diagnostics. Procedure violations. The small decisions that cascade into disasters.</p>
+            <div class="cta-buttons">
+                <a href="index.html#pilot" class="btn btn-primary">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    Join the Pilot Program
+                </a>
+                <a href="index.html" class="btn btn-secondary">
+                    Back to Home
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 WellTegra · The Brahan Engine · See What Others Can't</p>
+    </footer>
+</body>
+</html>

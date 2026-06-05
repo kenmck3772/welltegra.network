@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Well Intervention Emissions Calculator | Well-Tegra</title>
+  <meta name="description" content="Calculate and track carbon emissions for well intervention operations. Scope 1, 2, and 3 emissions tracking for ESG compliance.">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #0a0e1a 0%, #1a1f35 100%);
+      color: #e5e7eb;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px 20px;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 16px;
+      border: 1px solid rgba(6, 182, 212, 0.2);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: #94a3b8;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #06b6d4;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .scope-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .scope-1 { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    .scope-2 { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    .scope-3 { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #cbd5e1;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(100, 116, 139, 0.3);
+      border-radius: 8px;
+      color: #e5e7eb;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    input[type="number"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #06b6d4;
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+    }
+
+    .input-hint {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    button {
+      flex: 1;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(100, 116, 139, 0.2);
+      color: #cbd5e1;
+      border: 1px solid rgba(100, 116, 139, 0.3);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(100, 116, 139, 0.3);
+    }
+
+    .results-container {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .results-container.active {
+      display: block;
+    }
+
+    .total-emissions {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+      border: 2px solid #06b6d4;
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .total-emissions h3 {
+      font-size: 1.2rem;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+
+    .total-value {
+      font-size: 3.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .total-unit {
+      font-size: 1.2rem;
+      color: #64748b;
+    }
+
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .breakdown-card {
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid rgba(100, 116, 139, 0.2);
+    }
+
+    .breakdown-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 12px 0;
+    }
+
+    .breakdown-label {
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+
+    .chart-container {
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .chart-wrapper {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .equivalents-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .equivalent-card {
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(100, 116, 139, 0.2);
+    }
+
+    .equivalent-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .equivalent-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #06b6d4;
+      margin-bottom: 8px;
+    }
+
+    .equivalent-label {
+      font-size: 0.95rem;
+      color: #94a3b8;
+    }
+
+    .details-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(30, 41, 59, 0.6);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .details-table th,
+    .details-table td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(100, 116, 139, 0.2);
+    }
+
+    .details-table th {
+      background: rgba(6, 182, 212, 0.1);
+      color: #06b6d4;
+      font-weight: 600;
+    }
+
+    .details-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .details-table .value-cell {
+      text-align: right;
+      font-weight: 600;
+      color: #06b6d4;
+    }
+
+    @media (max-width: 768px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .breakdown-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .equivalents-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .total-value {
+        font-size: 2.5rem;
+      }
+    }
+
+    .info-box {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .info-box p {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Well Intervention Emissions Calculator</h1>
+      <p class="subtitle">Calculate and track carbon emissions for ESG compliance and sustainability reporting</p>
+    </header>
+
+    <div class="main-grid">
+      <!-- Scope 1: Direct Emissions -->
+      <div class="card">
+        <h2>
+          <span class="scope-badge scope-1">Scope 1</span>
+          Direct Emissions
+        </h2>
+        <div class="info-box">
+          <p>Direct emissions from sources you own or control (diesel generators, vehicles, on-site equipment)</p>
+        </div>
+
+        <div class="input-group">
+          <label for="diesel">Diesel Fuel Consumed (liters)</label>
+          <input type="number" id="diesel" min="0" step="0.1" placeholder="0">
+          <div class="input-hint">Rig generators, pumps, vehicles</div>
+        </div>
+
+        <div class="input-group">
+          <label for="naturalGas">Natural Gas Consumed (m³)</label>
+          <input type="number" id="naturalGas" min="0" step="0.1" placeholder="0">
+          <div class="input-hint">On-site heating, flaring</div>
+        </div>
+
+        <div class="input-group">
+          <label for="propane">Propane/LPG (kg)</label>
+          <input type="number" id="propane" min="0" step="0.1" placeholder="0">
+          <div class="input-hint">Portable heaters, equipment</div>
+        </div>
+      </div>
+
+      <!-- Scope 2: Indirect Energy Emissions -->
+      <div class="card">
+        <h2>
+          <span class="scope-badge scope-2">Scope 2</span>
+          Indirect Energy
+        </h2>
+        <div class="info-box">
+          <p>Emissions from purchased electricity, steam, heating, and cooling</p>
+        </div>
+
+        <div class="input-group">
+          <label for="electricity">Electricity Consumed (kWh)</label>
+          <input type="number" id="electricity" min="0" step="0.1" placeholder="0">
+          <div class="input-hint">Grid-powered equipment, lighting</div>
+        </div>
+
+        <div class="input-group">
+          <label for="gridRegion">Grid Region</label>
+          <select id="gridRegion">
+            <option value="us_average">United States (Average)</option>
+            <option value="texas">Texas (ERCOT)</option>
+            <option value="california">California</option>
+            <option value="norway">Norway (Low Carbon)</option>
+            <option value="uk">United Kingdom</option>
+            <option value="middle_east">Middle East</option>
+          </select>
+          <div class="input-hint">Regional grid carbon intensity</div>
+        </div>
+      </div>
+
+      <!-- Scope 3: Other Indirect Emissions -->
+      <div class="card">
+        <h2>
+          <span class="scope-badge scope-3">Scope 3</span>
+          Supply Chain & Transport
+        </h2>
+        <div class="info-box">
+          <p>Emissions from supply chain, transport, waste, and business travel</p>
+        </div>
+
+        <div class="input-group">
+          <label for="truckDistance">Road Transport (km)</label>
+          <input type="number" id="truckDistance" min="0" step="1" placeholder="0">
+          <div class="input-hint">Equipment delivery, crew transport</div>
+        </div>
+
+        <div class="input-group">
+          <label for="helicopterHours">Helicopter Hours</label>
+          <input type="number" id="helicopterHours" min="0" step="0.1" placeholder="0">
+          <div class="input-hint">Offshore crew transport</div>
+        </div>
+
+        <div class="input-group">
+          <label for="hotelNights">Hotel Nights</label>
+          <input type="number" id="hotelNights" min="0" step="1" placeholder="0">
+          <div class="input-hint">Crew accommodation</div>
+        </div>
+
+        <div class="input-group">
+          <label for="wasteGenerated">Waste Generated (kg)</label>
+          <input type="number" id="wasteGenerated" min="0" step="1" placeholder="0">
+          <div class="input-hint">General waste sent to landfill</div>
+        </div>
+      </div>
+
+      <!-- Operation Details -->
+      <div class="card">
+        <h2>Operation Details</h2>
+
+        <div class="input-group">
+          <label for="operationName">Operation Name</label>
+          <input type="text" id="operationName" placeholder="e.g., Well ABC-123 CT Cleanout">
+        </div>
+
+        <div class="input-group">
+          <label for="operationType">Operation Type</label>
+          <select id="operationType">
+            <option value="ct">Coiled Tubing (CT)</option>
+            <option value="els">E-Line Services (ELS)</option>
+            <option value="slk">Slickline (SLK)</option>
+            <option value="whm">Wireline/Hydraulics (WHM)</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label for="duration">Duration (hours)</label>
+          <input type="number" id="duration" min="0" step="0.5" placeholder="0">
+        </div>
+
+        <div class="button-group">
+          <button class="btn-primary" onclick="calculateEmissions()">Calculate Emissions</button>
+          <button class="btn-secondary" onclick="resetForm()">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="resultsContainer" class="results-container">
+      <div class="total-emissions">
+        <h3>Total Carbon Footprint</h3>
+        <div class="total-value" id="totalEmissions">0</div>
+        <div class="total-unit">tonnes CO₂e</div>
+      </div>
+
+      <div class="breakdown-grid">
+        <div class="breakdown-card">
+          <div class="scope-badge scope-1">Scope 1</div>
+          <div class="breakdown-value" style="color: #ef4444;" id="scope1Value">0</div>
+          <div class="breakdown-label">tonnes CO₂e</div>
+        </div>
+        <div class="breakdown-card">
+          <div class="scope-badge scope-2">Scope 2</div>
+          <div class="breakdown-value" style="color: #3b82f6;" id="scope2Value">0</div>
+          <div class="breakdown-label">tonnes CO₂e</div>
+        </div>
+        <div class="breakdown-card">
+          <div class="scope-badge scope-3">Scope 3</div>
+          <div class="breakdown-value" style="color: #a855f7;" id="scope3Value">0</div>
+          <div class="breakdown-label">tonnes CO₂e</div>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <h3 style="margin-bottom: 20px; color: #cbd5e1;">Emissions Breakdown</h3>
+        <div class="chart-wrapper">
+          <canvas id="emissionsChart"></canvas>
+        </div>
+      </div>
+
+      <div class="equivalents-grid">
+        <div class="equivalent-card">
+          <div class="equivalent-icon">[CAR]</div>
+          <div class="equivalent-value" id="carMiles">0</div>
+          <div class="equivalent-label">miles driven by average car</div>
+        </div>
+        <div class="equivalent-card">
+          <div class="equivalent-icon">[TREE]</div>
+          <div class="equivalent-value" id="treesNeeded">0</div>
+          <div class="equivalent-label">trees needed to offset (1 year)</div>
+        </div>
+        <div class="equivalent-card">
+          <div class="equivalent-icon">[HOME]</div>
+          <div class="equivalent-value" id="homeDays">0</div>
+          <div class="equivalent-label">days of home energy use</div>
+        </div>
+        <div class="equivalent-card">
+          <div class="equivalent-icon">[COAL]</div>
+          <div class="equivalent-value" id="coalEquiv">0</div>
+          <div class="equivalent-label">kg of coal burned</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Detailed Breakdown</h2>
+        <table class="details-table" id="detailsTable">
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>Quantity</th>
+              <th>Emissions (kg CO₂e)</th>
+            </tr>
+          </thead>
+          <tbody id="detailsBody">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="button-group" style="margin-top: 24px;">
+        <button class="btn-primary" onclick="exportPDF()">Export PDF Report</button>
+        <button class="btn-secondary" onclick="saveCalculation()">Save Calculation</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script>
+    // Emission factors (kg CO₂e per unit)
+    const EMISSION_FACTORS = {
+      diesel: {
+        combustion: 2.68,  // kg CO₂e per liter
+        upstream: 0.63     // kg CO₂e per liter (extraction, refining, transport)
+      },
+      naturalGas: {
+        combustion: 2.0,   // kg CO₂e per m³
+        upstream: 0.5      // kg CO₂e per m³
+      },
+      propane: {
+        combustion: 3.0,   // kg CO₂e per kg
+        upstream: 0.4      // kg CO₂e per kg
+      },
+      electricity: {
+        us_average: 0.41,
+        texas: 0.38,
+        california: 0.22,
+        norway: 0.02,
+        uk: 0.23,
+        middle_east: 0.55
+      },
+      transport: {
+        truck: 0.12,       // kg CO₂e per km (heavy truck)
+        helicopter: 250    // kg CO₂e per hour
+      },
+      hotel: 20,           // kg CO₂e per night
+      waste: 0.5          // kg CO₂e per kg (landfill)
+    };
+
+    let emissionsChart = null;
+
+    function calculateEmissions() {
+      // Get input values
+      const diesel = parseFloat(document.getElementById('diesel').value) || 0;
+      const naturalGas = parseFloat(document.getElementById('naturalGas').value) || 0;
+      const propane = parseFloat(document.getElementById('propane').value) || 0;
+      const electricity = parseFloat(document.getElementById('electricity').value) || 0;
+      const gridRegion = document.getElementById('gridRegion').value;
+      const truckDistance = parseFloat(document.getElementById('truckDistance').value) || 0;
+      const helicopterHours = parseFloat(document.getElementById('helicopterHours').value) || 0;
+      const hotelNights = parseFloat(document.getElementById('hotelNights').value) || 0;
+      const wasteGenerated = parseFloat(document.getElementById('wasteGenerated').value) || 0;
+
+      // Calculate Scope 1
+      const dieselEmissions = diesel * (EMISSION_FACTORS.diesel.combustion);
+      const gasEmissions = naturalGas * EMISSION_FACTORS.naturalGas.combustion;
+      const propaneEmissions = propane * EMISSION_FACTORS.propane.combustion;
+      const scope1 = dieselEmissions + gasEmissions + propaneEmissions;
+
+      // Calculate Scope 2
+      const scope2 = electricity * EMISSION_FACTORS.electricity[gridRegion];
+
+      // Calculate Scope 3
+      const dieselUpstream = diesel * EMISSION_FACTORS.diesel.upstream;
+      const gasUpstream = naturalGas * EMISSION_FACTORS.naturalGas.upstream;
+      const propaneUpstream = propane * EMISSION_FACTORS.propane.upstream;
+      const truckEmissions = truckDistance * EMISSION_FACTORS.transport.truck;
+      const helicopterEmissions = helicopterHours * EMISSION_FACTORS.transport.helicopter;
+      const hotelEmissions = hotelNights * EMISSION_FACTORS.hotel;
+      const wasteEmissions = wasteGenerated * EMISSION_FACTORS.waste;
+      const scope3 = dieselUpstream + gasUpstream + propaneUpstream + truckEmissions +
+                     helicopterEmissions + hotelEmissions + wasteEmissions;
+
+      // Total emissions in kg
+      const totalKg = scope1 + scope2 + scope3;
+      const totalTonnes = totalKg / 1000;
+
+      // Update display
+      document.getElementById('totalEmissions').textContent = totalTonnes.toFixed(2);
+      document.getElementById('scope1Value').textContent = (scope1 / 1000).toFixed(2);
+      document.getElementById('scope2Value').textContent = (scope2 / 1000).toFixed(2);
+      document.getElementById('scope3Value').textContent = (scope3 / 1000).toFixed(2);
+
+      // Calculate equivalents
+      const carMiles = (totalKg / 0.404).toFixed(0); // 0.404 kg CO₂e per mile
+      const treesNeeded = Math.ceil(totalKg / 21); // 21 kg CO₂e absorbed per tree per year
+      const homeDays = (totalKg / 28).toFixed(1); // 28 kg CO₂e per day (average home)
+      const coalEquiv = (totalKg / 2.86).toFixed(0); // 2.86 kg CO₂e per kg coal
+
+      document.getElementById('carMiles').textContent = carMiles.toLocaleString();
+      document.getElementById('treesNeeded').textContent = treesNeeded.toLocaleString();
+      document.getElementById('homeDays').textContent = homeDays;
+      document.getElementById('coalEquiv').textContent = coalEquiv.toLocaleString();
+
+      // Build details table
+      const detailsBody = document.getElementById('detailsBody');
+      detailsBody.innerHTML = '';
+
+      const addRow = (source, quantity, unit, emissions) => {
+        if (quantity > 0) {
+          const row = detailsBody.insertRow();
+          row.innerHTML = `
+            <td>${source}</td>
+            <td>${quantity.toFixed(1)} ${unit}</td>
+            <td class="value-cell">${emissions.toFixed(1)}</td>
+          `;
+        }
+      };
+
+      // Scope 1 rows
+      addRow('Diesel Fuel (combustion)', diesel, 'L', dieselEmissions);
+      addRow('Natural Gas', naturalGas, 'm³', gasEmissions);
+      addRow('Propane/LPG', propane, 'kg', propaneEmissions);
+
+      // Scope 2 rows
+      addRow(`Electricity (${gridRegion})`, electricity, 'kWh', scope2);
+
+      // Scope 3 rows
+      addRow('Diesel Fuel (upstream)', diesel, 'L', dieselUpstream);
+      addRow('Natural Gas (upstream)', naturalGas, 'm³', gasUpstream);
+      addRow('Propane/LPG (upstream)', propane, 'kg', propaneUpstream);
+      addRow('Road Transport', truckDistance, 'km', truckEmissions);
+      addRow('Helicopter Transport', helicopterHours, 'hours', helicopterEmissions);
+      addRow('Hotel Accommodation', hotelNights, 'nights', hotelEmissions);
+      addRow('Waste to Landfill', wasteGenerated, 'kg', wasteEmissions);
+
+      // Update chart
+      updateChart(scope1, scope2, scope3);
+
+      // Show results
+      document.getElementById('resultsContainer').classList.add('active');
+      document.getElementById('resultsContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function updateChart(scope1, scope2, scope3) {
+      const ctx = document.getElementById('emissionsChart').getContext('2d');
+
+      if (emissionsChart) {
+        emissionsChart.destroy();
+      }
+
+      emissionsChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Scope 1 (Direct)', 'Scope 2 (Energy)', 'Scope 3 (Supply Chain)'],
+          datasets: [{
+            data: [scope1 / 1000, scope2 / 1000, scope3 / 1000],
+            backgroundColor: [
+              'rgba(239, 68, 68, 0.8)',
+              'rgba(59, 130, 246, 0.8)',
+              'rgba(168, 85, 247, 0.8)'
+            ],
+            borderColor: [
+              '#ef4444',
+              '#3b82f6',
+              '#a855f7'
+            ],
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                color: '#cbd5e1',
+                font: {
+                  size: 12
+                },
+                padding: 15
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.label + ': ' + context.parsed.toFixed(2) + ' tonnes CO₂e';
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function resetForm() {
+      document.querySelectorAll('input[type="number"]').forEach(input => input.value = '');
+      document.getElementById('operationName').value = '';
+      document.getElementById('resultsContainer').classList.remove('active');
+      if (emissionsChart) {
+        emissionsChart.destroy();
+        emissionsChart = null;
+      }
+    }
+
+    function exportPDF() {
+      alert('PDF export functionality would integrate with a library like jsPDF or pdfmake.\n\nThis would generate a professional emissions report including:\n- Operation details\n- Total emissions summary\n- Scope 1/2/3 breakdown\n- Equivalents comparison\n- Detailed source table\n- Recommendations for reduction');
+    }
+
+    function saveCalculation() {
+      const calculation = {
+        timestamp: new Date().toISOString(),
+        operation: document.getElementById('operationName').value || 'Unnamed Operation',
+        type: document.getElementById('operationType').value,
+        duration: document.getElementById('duration').value,
+        inputs: {
+          diesel: document.getElementById('diesel').value,
+          naturalGas: document.getElementById('naturalGas').value,
+          propane: document.getElementById('propane').value,
+          electricity: document.getElementById('electricity').value,
+          gridRegion: document.getElementById('gridRegion').value,
+          truckDistance: document.getElementById('truckDistance').value,
+          helicopterHours: document.getElementById('helicopterHours').value,
+          hotelNights: document.getElementById('hotelNights').value,
+          wasteGenerated: document.getElementById('wasteGenerated').value
+        },
+        results: {
+          total: document.getElementById('totalEmissions').textContent,
+          scope1: document.getElementById('scope1Value').textContent,
+          scope2: document.getElementById('scope2Value').textContent,
+          scope3: document.getElementById('scope3Value').textContent
+        }
+      };
+
+      // Save to localStorage
+      const saved = JSON.parse(localStorage.getItem('welltegra_emissions') || '[]');
+      saved.push(calculation);
+      localStorage.setItem('welltegra_emissions', JSON.stringify(saved));
+
+      alert('Calculation saved successfully!\n\nView saved calculations in the Analytics dashboard (coming soon).');
+    }
+  </script>
+</body>
+</html>

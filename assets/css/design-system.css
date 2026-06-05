@@ -1,0 +1,458 @@
+/* ============================================
+   WELLTEGRA NETWORK - UNIFIED DESIGN SYSTEM
+   Single source of truth for branding & styles
+   Use this across ALL pages for consistency
+   ============================================ */
+
+/* ============================================
+   CSS VARIABLES - DESIGN TOKENS
+   ============================================ */
+:root {
+    /* ===== Brand Colors =====  */
+    /* Primary Palette - Industrial/Technical */
+    --ink: #0a1628;              /* Darkest background */
+    --ink-light: #1a2d4a;        /* Card/panel background */
+    --slate: #334155;            /* Borders, dividers */
+    --steel: #64748b;            /* Secondary text */
+    --silver: #94a3b8;           /* Tertiary text, labels */
+    --mist: #e2e8f0;             /* Primary text on dark */
+    --cloud: #f1f5f9;            /* Light backgrounds */
+    --white: #ffffff;            /* Pure white */
+
+    /* Accent Colors */
+    --accent: #f97316;           /* Safety Orange - Primary CTA */
+    --accent-dark: #ea580c;      /* Hover state */
+    --accent-glow: rgba(249, 115, 22, 0.15);
+
+    /* Success/Teal */
+    --success: #0d9488;          /* Success states, confirmation */
+    --success-light: #14b8a6;    /* Hover */
+    --success-glow: rgba(13, 148, 136, 0.12);
+
+    /* Danger/Error */
+    --danger: #ef4444;           /* Errors, warnings */
+    --danger-dark: #dc2626;
+
+    /* Info/Blue */
+    --info: #3b82f6;             /* Informational highlights */
+    --info-dark: #2563eb;
+
+    /* ===== Typography ===== */
+    --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+    /* Font Sizes */
+    --text-xs: 0.75rem;          /* 12px */
+    --text-sm: 0.875rem;         /* 14px */
+    --text-base: 1rem;           /* 16px */
+    --text-lg: 1.125rem;         /* 18px */
+    --text-xl: 1.25rem;          /* 20px */
+    --text-2xl: 1.5rem;          /* 24px */
+    --text-3xl: 1.875rem;        /* 30px */
+    --text-4xl: 2.25rem;         /* 36px */
+    --text-5xl: 3rem;            /* 48px */
+
+    /* Font Weights */
+    --font-normal: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+
+    /* Line Heights */
+    --leading-tight: 1.25;
+    --leading-snug: 1.375;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.625;
+    --leading-loose: 2;
+
+    /* ===== Spacing ===== */
+    --space-xs: 0.5rem;          /* 8px */
+    --space-sm: 1rem;            /* 16px */
+    --space-md: 1.5rem;          /* 24px */
+    --space-lg: 2rem;            /* 32px */
+    --space-xl: 2.5rem;          /* 40px */
+    --space-2xl: 3.5rem;         /* 56px */
+    --space-3xl: 4.5rem;         /* 72px */
+
+    /* ===== Layout ===== */
+    --max-width: 1200px;
+    --max-width-prose: 65ch;     /* Readable text width */
+    --max-width-narrow: 768px;
+    --max-width-wide: 1440px;
+
+    /* Border Radius */
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
+
+    /* ===== Shadows ===== */
+    --shadow-xs: 0 1px 2px rgba(10, 22, 40, 0.05);
+    --shadow-sm: 0 1px 3px rgba(10, 22, 40, 0.08);
+    --shadow-md: 0 4px 12px rgba(10, 22, 40, 0.1);
+    --shadow-lg: 0 12px 40px rgba(10, 22, 40, 0.15);
+    --shadow-xl: 0 20px 60px rgba(10, 22, 40, 0.2);
+    --shadow-glow: 0 0 60px rgba(249, 115, 22, 0.2);
+
+    /* ===== Transitions ===== */
+    --transition-fast: 150ms ease;
+    --transition-base: 250ms ease;
+    --transition-slow: 350ms ease;
+    --transition-all: all var(--transition-base);
+
+    /* ===== Breakpoints (for reference in JS) ===== */
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
+    --breakpoint-2xl: 1536px;
+
+    /* ===== Z-Index Scale ===== */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+}
+
+/* ============================================
+   TYPOGRAPHY STYLES
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: var(--font-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: var(--space-md);
+}
+
+h1 {
+    font-size: clamp(var(--text-3xl), 5vw, var(--text-5xl));
+}
+
+h2 {
+    font-size: clamp(var(--text-2xl), 4vw, var(--text-4xl));
+}
+
+h3 {
+    font-size: clamp(var(--text-xl), 3vw, var(--text-3xl));
+}
+
+h4 {
+    font-size: var(--text-xl);
+}
+
+h5 {
+    font-size: var(--text-lg);
+}
+
+h6 {
+    font-size: var(--text-base);
+}
+
+p {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--mist);
+    margin-bottom: var(--space-md);
+}
+
+.text-sm {
+    font-size: var(--text-sm);
+}
+
+.text-lg {
+    font-size: var(--text-lg);
+}
+
+/* ============================================
+   BUTTON STYLES - CONSISTENT ACROSS SITE
+   ============================================ */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1.75rem;
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    line-height: 1;
+    text-decoration: none;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-all);
+    white-space: nowrap;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+}
+
+/* Button Variants */
+.btn--primary,
+.btn-primary {
+    background: var(--accent);
+    color: var(--white);
+}
+
+.btn--primary:hover,
+.btn-primary:hover {
+    background: var(--accent-dark);
+    box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+}
+
+.btn--ghost,
+.btn-ghost {
+    background: transparent;
+    border: 2px solid var(--silver);
+    color: var(--silver);
+}
+
+.btn--ghost:hover,
+.btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(249, 115, 22, 0.05);
+}
+
+.btn--accent,
+.btn-accent {
+    background: var(--success);
+    color: var(--white);
+}
+
+.btn--accent:hover,
+.btn-accent:hover {
+    background: var(--success-light);
+    box-shadow: 0 8px 20px rgba(13, 148, 136, 0.3);
+}
+
+.btn--sm {
+    padding: 0.625rem 1.25rem;
+    font-size: var(--text-sm);
+}
+
+.btn--lg {
+    padding: 1.125rem 2.5rem;
+    font-size: var(--text-lg);
+}
+
+/* ============================================
+   CARD STYLES
+   ============================================ */
+
+.card {
+    background: var(--ink-light);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    transition: var(--transition-all);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.card__title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--white);
+    margin-bottom: var(--space-sm);
+}
+
+.card__text {
+    color: var(--silver);
+    line-height: var(--leading-relaxed);
+}
+
+/* ============================================
+   SECTION STYLES
+   ============================================ */
+
+.section {
+    padding: var(--space-xl) 0;
+}
+
+.section--lg {
+    padding: var(--space-2xl) 0;
+}
+
+.section__title {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+}
+
+.section__subtitle {
+    text-align: center;
+    color: var(--silver);
+    font-size: var(--text-lg);
+    max-width: var(--max-width-prose);
+    margin: 0 auto var(--space-xl);
+}
+
+/* ============================================
+   CONTAINER & LAYOUT
+   ============================================ */
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-sm);
+}
+
+.container--narrow {
+    max-width: var(--max-width-narrow);
+}
+
+.container--wide {
+    max-width: var(--max-width-wide);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-accent {
+    color: var(--accent);
+}
+
+.text-success {
+    color: var(--success);
+}
+
+.text-muted {
+    color: var(--steel);
+}
+
+.mb-sm {
+    margin-bottom: var(--space-sm);
+}
+
+.mb-md {
+    margin-bottom: var(--space-md);
+}
+
+.mb-lg {
+    margin-bottom: var(--space-lg);
+}
+
+.mt-sm {
+    margin-top: var(--space-sm);
+}
+
+.mt-md {
+    margin-top: var(--space-md);
+}
+
+.mt-lg {
+    margin-top: var(--space-lg);
+}
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+
+@media (max-width: 768px) {
+    :root {
+        --space-xl: 2rem;
+        --space-2xl: 2.5rem;
+        --space-3xl: 3rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        font-size: var(--text-sm);
+    }
+
+    .card {
+        padding: var(--space-md);
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--accent);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: var(--z-tooltip);
+    border-radius: 4px;
+}
+
+.skip-link:focus {
+    top: 6px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ============================================
+   FOCUS STATES
+   ============================================ */
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+}
+
+a:focus-visible {
+    outline-color: var(--accent);
+}
+
+/* ============================================
+   SMOOTH SCROLLING
+   ============================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}

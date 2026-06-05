@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # The Scavenger API (FastAPI)
+  bridge:
+    build: .
+    command: uvicorn bridge:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+  # The Forensic UI (Streamlit)
+  forensic-engine:
+    build: .
+    command: streamlit run scavenger_engine.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+
+  # Your Main Project (Frontend)
+  frontend:
+    image: node:18
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    command: npm run dev

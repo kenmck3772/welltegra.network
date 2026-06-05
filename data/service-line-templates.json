@@ -1,0 +1,283 @@
+{
+  "coiled_tubing": {
+    "name": "Coiled Tubing (CT)",
+    "description": "Coiled tubing intervention services",
+    "templates": [
+      {
+        "id": "ct_wellbore_cleanout",
+        "name": "Wellbore Cleanout Package",
+        "description": "Standard CT package for wellbore cleanout and circulation with jetting tools",
+        "difficulty": "standard",
+        "duration_hours": 12,
+        "equipment_ids": ["run_006", "run_009", "cent_001", "wire_006"],
+        "applications": [
+          "Scale removal",
+          "Debris cleanout",
+          "Circulation",
+          "Well stimulation prep"
+        ]
+      },
+      {
+        "id": "ct_scale_removal",
+        "name": "Scale Removal Assembly",
+        "description": "CT with chemical injection and mechanical jetting for hard scale",
+        "difficulty": "complex",
+        "duration_hours": 18,
+        "equipment_ids": ["run_006", "wire_006", "wire_007", "comp_003"],
+        "applications": [
+          "Barium sulfate scale",
+          "Calcium carbonate",
+          "Iron sulfide"
+        ]
+      },
+      {
+        "id": "ct_fishing",
+        "name": "CT Fishing Assembly",
+        "description": "CT-conveyed fishing tools for debris recovery",
+        "difficulty": "complex",
+        "duration_hours": 16,
+        "equipment_ids": ["run_006", "fish_010", "fish_011", "bail_002"],
+        "applications": [
+          "Debris recovery",
+          "Small fish retrieval",
+          "Junk basket runs"
+        ]
+      }
+    ]
+  },
+  "eline_services": {
+    "name": "E-Line Services (ELS)",
+    "description": "Electric line wireline operations",
+    "templates": [
+      {
+        "id": "els_fishing_standard",
+        "name": "Standard Fishing Assembly",
+        "description": "Complete fishing assembly for wireline operations with jars and spears",
+        "difficulty": "standard",
+        "duration_hours": 10,
+        "equipment_ids": ["wire_001", "wire_002", "run_001", "fish_003", "misc_001"],
+        "applications": [
+          "Tool fishing",
+          "Wireline fishing",
+          "Tubing fish"
+        ]
+      },
+      {
+        "id": "els_fishing_heavy",
+        "name": "Heavy Duty Fishing Package",
+        "description": "Heavy-duty fishing for stuck pipe or large fish",
+        "difficulty": "complex",
+        "duration_hours": 16,
+        "equipment_ids": ["wire_001", "run_003", "run_008", "fish_006", "fish_007"],
+        "applications": [
+          "Stuck pipe",
+          "Large fish",
+          "High pull forces"
+        ]
+      },
+      {
+        "id": "els_gauge_cutter",
+        "name": "Gauge Cutting Assembly",
+        "description": "Wireline gauge cutter for tubing or casing cutting operations",
+        "difficulty": "standard",
+        "duration_hours": 8,
+        "equipment_ids": ["wire_001", "wire_005", "wire_008", "wire_009"],
+        "applications": [
+          "Tubing cutting",
+          "Gauge cutting",
+          "Casing cutting"
+        ]
+      },
+      {
+        "id": "els_plug_setting",
+        "name": "Plug Setting Assembly",
+        "description": "E-line plug setting with CAT/HIIT tool",
+        "difficulty": "standard",
+        "duration_hours": 6,
+        "equipment_ids": ["wire_001", "wire_002", "wire_004", "comp_005"],
+        "applications": [
+          "Bridge plug setting",
+          "Cement plug",
+          "Well abandonment"
+        ]
+      }
+    ]
+  },
+  "slickline": {
+    "name": "Slickline (SLK)",
+    "description": "Slickline wireline operations",
+    "templates": [
+      {
+        "id": "slk_gaslift_install",
+        "name": "Gas Lift Valve Installation",
+        "description": "Standard slickline setup for gas lift valve installation",
+        "difficulty": "standard",
+        "duration_hours": 8,
+        "equipment_ids": ["wire_001", "gas_001", "gas_002", "gas_003"],
+        "applications": [
+          "Gas lift installation",
+          "Valve replacement",
+          "Artificial lift"
+        ]
+      },
+      {
+        "id": "slk_gaslift_retrieve",
+        "name": "Gas Lift Valve Retrieval",
+        "description": "Slickline retrieval of gas lift valves with safety tools",
+        "difficulty": "standard",
+        "duration_hours": 6,
+        "equipment_ids": ["wire_001", "gas_002", "gas_004", "wire_002"],
+        "applications": [
+          "Valve retrieval",
+          "Valve replacement",
+          "System maintenance"
+        ]
+      },
+      {
+        "id": "slk_fishing_simple",
+        "name": "Simple Slickline Fishing",
+        "description": "Light fishing operations with grab tools",
+        "difficulty": "simple",
+        "duration_hours": 6,
+        "equipment_ids": ["wire_001", "fish_001", "fish_008", "fish_010"],
+        "applications": [
+          "Light fishing",
+          "Tool retrieval",
+          "Debris recovery"
+        ]
+      },
+      {
+        "id": "slk_baker_gaslift",
+        "name": "Baker Gas Lift Package",
+        "description": "Baker Hughes gas lift valve service package",
+        "difficulty": "standard",
+        "duration_hours": 8,
+        "manufacturer": "Baker Hughes",
+        "equipment_ids": ["wire_001", "baker_001", "baker_003", "baker_004"],
+        "applications": [
+          "Baker valve service",
+          "J/D series valves",
+          "R/S series valves"
+        ]
+      },
+      {
+        "id": "slk_otis_service",
+        "name": "Otis Equipment Service",
+        "description": "Otis manufacturer tools for downhole operations",
+        "difficulty": "standard",
+        "duration_hours": 10,
+        "manufacturer": "Otis",
+        "equipment_ids": ["otis_001", "otis_002", "otis_003", "otis_004"],
+        "applications": [
+          "Otis valve service",
+          "Plug operations",
+          "Lock mandrel"
+        ]
+      }
+    ]
+  },
+  "wireline_hydraulics": {
+    "name": "Wireline/Hydraulics Management (WHM)",
+    "description": "Advanced wireline and well control operations",
+    "templates": [
+      {
+        "id": "whm_completion_standard",
+        "name": "Completion Tools Package",
+        "description": "Standard completion tools for well completion operations",
+        "difficulty": "standard",
+        "duration_hours": 12,
+        "equipment_ids": ["comp_001", "comp_002", "comp_004", "comp_005"],
+        "applications": [
+          "Well completion",
+          "Tubing operations",
+          "Downhole isolation"
+        ]
+      },
+      {
+        "id": "whm_safety_valve",
+        "name": "Safety Valve Service",
+        "description": "WRSSV (Wireline Retrievable Surface Safety Valve) operations",
+        "difficulty": "complex",
+        "duration_hours": 10,
+        "equipment_ids": ["camco_005", "camco_003", "otis_003", "misc_001"],
+        "applications": [
+          "Safety valve installation",
+          "SCSSV operations",
+          "Well control"
+        ]
+      },
+      {
+        "id": "whm_bailer_operations",
+        "name": "Bailer Operations Package",
+        "description": "Complete bailer package for fluid and debris recovery",
+        "difficulty": "simple",
+        "duration_hours": 6,
+        "equipment_ids": ["bail_001", "bail_002", "bail_003", "wire_001"],
+        "applications": [
+          "Fluid sampling",
+          "Debris removal",
+          "Well cleaning"
+        ]
+      },
+      {
+        "id": "whm_camco_completion",
+        "name": "Camco Completion Assembly",
+        "description": "Camco manufacturer completion tools",
+        "difficulty": "standard",
+        "duration_hours": 10,
+        "manufacturer": "Camco",
+        "equipment_ids": ["camco_001", "camco_002", "camco_003", "camco_004"],
+        "applications": [
+          "Camco tool operations",
+          "Kick-over tool",
+          "Standing valves"
+        ]
+      }
+    ]
+  },
+  "specialized": {
+    "name": "Specialized Operations",
+    "description": "Complex multi-discipline operations",
+    "templates": [
+      {
+        "id": "spec_multi_intervention",
+        "name": "Multi-Discipline Intervention",
+        "description": "Complex intervention requiring multiple service lines",
+        "difficulty": "expert",
+        "duration_hours": 36,
+        "equipment_ids": ["run_001", "run_003", "fish_003", "fish_006", "wire_004", "comp_003"],
+        "applications": [
+          "Complex interventions",
+          "Multiple objectives",
+          "Extended operations"
+        ]
+      },
+      {
+        "id": "spec_emergency_fishing",
+        "name": "Emergency Fishing Package",
+        "description": "Emergency response fishing with full tool complement",
+        "difficulty": "expert",
+        "duration_hours": 24,
+        "equipment_ids": ["fish_001", "fish_003", "fish_006", "fish_007", "fish_008", "fish_010", "run_001", "run_003"],
+        "applications": [
+          "Emergency fishing",
+          "Critical operations",
+          "High-value fish"
+        ]
+      },
+      {
+        "id": "spec_well_abandonment",
+        "name": "Well Abandonment Assembly",
+        "description": "Complete package for permanent well abandonment",
+        "difficulty": "complex",
+        "duration_hours": 48,
+        "equipment_ids": ["wire_004", "wire_008", "wire_009", "comp_005", "comp_006", "misc_007"],
+        "applications": [
+          "P&A operations",
+          "Plug and abandonment",
+          "Decommissioning"
+        ]
+      }
+    ]
+  }
+}

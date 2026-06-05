@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Data Ingestion Simulator | WellTegra</title>
+    <meta name="description" content="Live simulation of WITSML sensor data streaming through GCP pipeline with real-time analytics">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #020617;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 2px solid rgba(20, 184, 166, 0.2);
+            margin-bottom: 3rem;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            color: #14b8a6;
+            margin-bottom: 1rem;
+        }
+        .header p {
+            font-size: 1.1rem;
+            color: #94a3b8;
+        }
+        .controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #14b8a6, #0d9488);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .pipeline {
+            background: #0f172a;
+            border: 2px solid rgba(20, 184, 166, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .pipeline-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .pipeline-stage {
+            flex: 1;
+            min-width: 150px;
+            background: rgba(20, 184, 166, 0.1);
+            border: 2px solid rgba(20, 184, 166, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s;
+        }
+        .pipeline-stage.active {
+            border-color: #14b8a6;
+            box-shadow: 0 0 30px rgba(20, 184, 166, 0.4);
+            transform: scale(1.05);
+        }
+        .pipeline-stage-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .pipeline-stage-title {
+            font-weight: 700;
+            color: #14b8a6;
+            margin-bottom: 0.25rem;
+        }
+        .pipeline-stage-count {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-top: 0.5rem;
+        }
+        .pipeline-arrow {
+            font-size: 2rem;
+            color: #14b8a6;
+            animation: flow 2s infinite;
+        }
+        @keyframes flow {
+            0%, 100% { opacity: 0.3; transform: translateX(0); }
+            50% { opacity: 1; transform: translateX(10px); }
+        }
+        .data-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #14b8a6;
+            border-radius: 50%;
+            animation: particle-flow 3s linear infinite;
+            box-shadow: 0 0 10px #14b8a6;
+        }
+        @keyframes particle-flow {
+            0% { transform: translateX(0) scale(1); opacity: 1; }
+            100% { transform: translateX(calc(100vw - 200px)) scale(0.5); opacity: 0; }
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .metric-card {
+            background: #0f172a;
+            border: 2px solid rgba(20, 184, 166, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .metric-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #14b8a6;
+        }
+        .metric-trend {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+        .metric-trend.up {
+            color: #10b981;
+        }
+        .metric-trend.down {
+            color: #ef4444;
+        }
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .chart-card {
+            background: #0f172a;
+            border: 2px solid rgba(20, 184, 166, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #14b8a6;
+            margin-bottom: 1rem;
+        }
+        .sensor-feed {
+            background: #0f172a;
+            border: 2px solid rgba(20, 184, 166, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .sensor-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .sensor-row:last-child {
+            border-bottom: none;
+        }
+        .sensor-name {
+            font-weight: 600;
+            color: #94a3b8;
+        }
+        .sensor-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #14b8a6;
+            font-family: 'Courier New', monospace;
+        }
+        .log-console {
+            background: #000;
+            border: 2px solid rgba(20, 184, 166, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+        .log-console::-webkit-scrollbar {
+            width: 8px;
+        }
+        .log-console::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .log-console::-webkit-scrollbar-thumb {
+            background: #14b8a6;
+            border-radius: 4px;
+        }
+        .log-entry {
+            margin-bottom: 0.5rem;
+            animation: logSlide 0.3s ease;
+        }
+        @keyframes logSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .log-timestamp {
+            color: #94a3b8;
+        }
+        .log-info {
+            color: #14b8a6;
+        }
+        .log-success {
+            color: #10b981;
+        }
+        .log-warning {
+            color: #f59e0b;
+        }
+        .log-error {
+            color: #ef4444;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+        .status-indicator.active {
+            background: #10b981;
+        }
+        .status-indicator.inactive {
+            background: #64748b;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        @media (max-width: 768px) {
+            .pipeline-flow {
+                flex-direction: column;
+            }
+            .pipeline-arrow {
+                transform: rotate(90deg);
+            }
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌊 Real-Time Data Ingestion Simulator</h1>
+            <p>Live WITSML Sensor Streaming → GCP Pipeline → Analytics Dashboard</p>
+        </div>
+
+        <div class="controls">
+            <button id="startBtn" class="btn btn-primary">▶️ Start Simulation</button>
+            <button id="stopBtn" class="btn btn-danger" disabled>⏸️ Stop Simulation</button>
+        </div>
+
+        <!-- Pipeline Visualization -->
+        <div class="pipeline">
+            <h2 style="color: #14b8a6; margin-bottom: 1.5rem;">Data Pipeline Flow</h2>
+            <div class="pipeline-flow">
+                <div class="pipeline-stage" id="stage-sensors">
+                    <div class="pipeline-stage-icon">📡</div>
+                    <div class="pipeline-stage-title">IoT Sensors</div>
+                    <div class="pipeline-stage-count" id="count-sensors">0</div>
+                    <small style="color: #94a3b8;">msgs/sec</small>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-stage" id="stage-pubsub">
+                    <div class="pipeline-stage-icon">☁️</div>
+                    <div class="pipeline-stage-title">Pub/Sub</div>
+                    <div class="pipeline-stage-count" id="count-pubsub">0</div>
+                    <small style="color: #94a3b8;">queued</small>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-stage" id="stage-functions">
+                    <div class="pipeline-stage-icon">⚙️</div>
+                    <div class="pipeline-stage-title">Cloud Functions</div>
+                    <div class="pipeline-stage-count" id="count-functions">0</div>
+                    <small style="color: #94a3b8;">processed</small>
+                </div>
+                <div class="pipeline-arrow">→</div>
+                <div class="pipeline-stage" id="stage-firestore">
+                    <div class="pipeline-stage-icon">🔥</div>
+                    <div class="pipeline-stage-title">Firestore</div>
+                    <div class="pipeline-stage-count" id="count-firestore">0</div>
+                    <small style="color: #94a3b8;">stored</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">
+                    <span class="status-indicator active"></span>
+                    Messages Processed
+                </div>
+                <div class="metric-value" id="metric-total">0</div>
+                <div class="metric-trend up" id="metric-trend">↗ +0/sec</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Pipeline Latency</div>
+                <div class="metric-value" id="metric-latency">0ms</div>
+                <div class="metric-trend" id="latency-trend">P95 latency</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Error Rate</div>
+                <div class="metric-value" id="metric-errors">0.0%</div>
+                <div class="metric-trend down" id="error-trend">↘ Excellent</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Throughput</div>
+                <div class="metric-value" id="metric-throughput">0</div>
+                <div class="metric-trend up" id="throughput-trend">msgs/min</div>
+            </div>
+        </div>
+
+        <!-- Real-Time Sensor Feed -->
+        <div class="sensor-feed">
+            <h2 style="color: #14b8a6; margin-bottom: 1rem;">Live WITSML Sensor Data</h2>
+            <div class="sensor-row">
+                <span class="sensor-name">Torque</span>
+                <span class="sensor-value" id="sensor-torque">0 ft-lbs</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-name">Weight on Bit (WOB)</span>
+                <span class="sensor-value" id="sensor-wob">0 klbs</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-name">Rotary Speed (RPM)</span>
+                <span class="sensor-value" id="sensor-rpm">0 rpm</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-name">Flow Rate</span>
+                <span class="sensor-value" id="sensor-flow">0 gpm</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-name">Standpipe Pressure</span>
+                <span class="sensor-value" id="sensor-pressure">0 psi</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-name">Depth</span>
+                <span class="sensor-value" id="sensor-depth">0 ft</span>
+            </div>
+        </div>
+
+        <!-- Real-Time Charts -->
+        <div class="charts-container">
+            <div class="chart-card">
+                <div class="chart-title">Torque & WOB Trends</div>
+                <canvas id="torqueChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <div class="chart-title">Flow Rate & Pressure</div>
+                <canvas id="flowChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Log Console -->
+        <div>
+            <h2 style="color: #14b8a6; margin-bottom: 1rem;">Pipeline Event Log</h2>
+            <div class="log-console" id="logConsole"></div>
+        </div>
+    </div>
+
+    <script>
+        class DataIngestionSimulator {
+            constructor() {
+                this.isRunning = false;
+                this.totalMessages = 0;
+                this.sensorData = {
+                    torque: 0,
+                    wob: 0,
+                    rpm: 0,
+                    flow: 0,
+                    pressure: 0,
+                    depth: 8500
+                };
+                this.pipelineCounts = {
+                    sensors: 0,
+                    pubsub: 0,
+                    functions: 0,
+                    firestore: 0
+                };
+                this.logs = [];
+                this.initCharts();
+                this.bindEvents();
+            }
+
+            initCharts() {
+                const chartConfig = {
+                    type: 'line',
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        animation: { duration: 0 },
+                        scales: {
+                            x: { display: false },
+                            y: {
+                                grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                                ticks: { color: '#94a3b8' }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: { color: '#e2e8f0' }
+                            }
+                        }
+                    }
+                };
+
+                // Torque & WOB Chart
+                this.torqueChart = new Chart(
+                    document.getElementById('torqueChart'),
+                    {
+                        ...chartConfig,
+                        data: {
+                            labels: Array(30).fill(''),
+                            datasets: [
+                                {
+                                    label: 'Torque (ft-lbs)',
+                                    data: Array(30).fill(0),
+                                    borderColor: '#14b8a6',
+                                    backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                                    tension: 0.4
+                                },
+                                {
+                                    label: 'WOB (klbs)',
+                                    data: Array(30).fill(0),
+                                    borderColor: '#f59e0b',
+                                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                                    tension: 0.4
+                                }
+                            ]
+                        }
+                    }
+                );
+
+                // Flow & Pressure Chart
+                this.flowChart = new Chart(
+                    document.getElementById('flowChart'),
+                    {
+                        ...chartConfig,
+                        data: {
+                            labels: Array(30).fill(''),
+                            datasets: [
+                                {
+                                    label: 'Flow Rate (gpm)',
+                                    data: Array(30).fill(0),
+                                    borderColor: '#10b981',
+                                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                                    tension: 0.4
+                                },
+                                {
+                                    label: 'Pressure (psi)',
+                                    data: Array(30).fill(0),
+                                    borderColor: '#ef4444',
+                                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                                    tension: 0.4
+                                }
+                            ]
+                        }
+                    }
+                );
+            }
+
+            bindEvents() {
+                document.getElementById('startBtn').addEventListener('click', () => this.start());
+                document.getElementById('stopBtn').addEventListener('click', () => this.stop());
+            }
+
+            start() {
+                this.isRunning = true;
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = false;
+
+                this.addLog('info', 'Simulation started');
+                this.addLog('success', 'Connected to IoT sensors');
+                this.addLog('success', 'GCP Pub/Sub connection established');
+
+                this.sensorInterval = setInterval(() => this.updateSensors(), 1000);
+                this.pipelineInterval = setInterval(() => this.updatePipeline(), 500);
+                this.chartInterval = setInterval(() => this.updateCharts(), 2000);
+            }
+
+            stop() {
+                this.isRunning = false;
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('stopBtn').disabled = true;
+
+                clearInterval(this.sensorInterval);
+                clearInterval(this.pipelineInterval);
+                clearInterval(this.chartInterval);
+
+                this.addLog('warning', 'Simulation paused');
+            }
+
+            updateSensors() {
+                // Simulate realistic sensor variations
+                this.sensorData.torque = 28000 + Math.random() * 5000;
+                this.sensorData.wob = 15 + Math.random() * 8;
+                this.sensorData.rpm = 80 + Math.random() * 40;
+                this.sensorData.flow = 450 + Math.random() * 100;
+                this.sensorData.pressure = 3200 + Math.random() * 400;
+                this.sensorData.depth += Math.random() * 2;
+
+                // Update UI
+                document.getElementById('sensor-torque').textContent =
+                    Math.round(this.sensorData.torque).toLocaleString() + ' ft-lbs';
+                document.getElementById('sensor-wob').textContent =
+                    this.sensorData.wob.toFixed(1) + ' klbs';
+                document.getElementById('sensor-rpm').textContent =
+                    Math.round(this.sensorData.rpm) + ' rpm';
+                document.getElementById('sensor-flow').textContent =
+                    Math.round(this.sensorData.flow) + ' gpm';
+                document.getElementById('sensor-pressure').textContent =
+                    Math.round(this.sensorData.pressure) + ' psi';
+                document.getElementById('sensor-depth').textContent =
+                    Math.round(this.sensorData.depth) + ' ft';
+
+                // Occasional log entries
+                if (Math.random() < 0.1) {
+                    this.addLog('info', `WITSML data received: Depth=${Math.round(this.sensorData.depth)}ft, RPM=${Math.round(this.sensorData.rpm)}`);
+                }
+            }
+
+            updatePipeline() {
+                // Simulate message flow through pipeline
+                const newMessages = Math.floor(Math.random() * 15) + 10;
+
+                this.pipelineCounts.sensors = newMessages;
+                this.pipelineCounts.pubsub = Math.floor(this.pipelineCounts.sensors * 0.95);
+                this.pipelineCounts.functions = Math.floor(this.pipelineCounts.pubsub * 0.98);
+                this.pipelineCounts.firestore = this.pipelineCounts.functions;
+
+                this.totalMessages += this.pipelineCounts.firestore;
+
+                // Update pipeline stages
+                document.getElementById('count-sensors').textContent = this.pipelineCounts.sensors;
+                document.getElementById('count-pubsub').textContent = this.pipelineCounts.pubsub;
+                document.getElementById('count-functions').textContent = this.pipelineCounts.functions;
+                document.getElementById('count-firestore').textContent = this.totalMessages;
+
+                // Animate active stages
+                this.animateStage('stage-sensors');
+                setTimeout(() => this.animateStage('stage-pubsub'), 300);
+                setTimeout(() => this.animateStage('stage-functions'), 600);
+                setTimeout(() => this.animateStage('stage-firestore'), 900);
+
+                // Update metrics
+                document.getElementById('metric-total').textContent = this.totalMessages.toLocaleString();
+                document.getElementById('metric-trend').textContent = `↗ +${this.pipelineCounts.sensors}/sec`;
+                document.getElementById('metric-latency').textContent =
+                    Math.floor(350 + Math.random() * 150) + 'ms';
+                document.getElementById('metric-errors').textContent =
+                    (Math.random() * 0.5).toFixed(2) + '%';
+                document.getElementById('metric-throughput').textContent =
+                    Math.round(this.pipelineCounts.sensors * 60);
+
+                // Random log entries
+                if (Math.random() < 0.2) {
+                    const events = [
+                        ['success', 'Message batch processed successfully'],
+                        ['info', 'Cloud Function execution time: 145ms'],
+                        ['success', 'Data written to Firestore collection'],
+                        ['info', 'Pub/Sub acknowledging message delivery']
+                    ];
+                    const event = events[Math.floor(Math.random() * events.length)];
+                    this.addLog(event[0], event[1]);
+                }
+            }
+
+            updateCharts() {
+                // Update torque chart
+                this.torqueChart.data.datasets[0].data.shift();
+                this.torqueChart.data.datasets[0].data.push(this.sensorData.torque);
+                this.torqueChart.data.datasets[1].data.shift();
+                this.torqueChart.data.datasets[1].data.push(this.sensorData.wob * 1000);
+                this.torqueChart.update();
+
+                // Update flow chart
+                this.flowChart.data.datasets[0].data.shift();
+                this.flowChart.data.datasets[0].data.push(this.sensorData.flow);
+                this.flowChart.data.datasets[1].data.shift();
+                this.flowChart.data.datasets[1].data.push(this.sensorData.pressure);
+                this.flowChart.update();
+            }
+
+            animateStage(stageId) {
+                const stage = document.getElementById(stageId);
+                stage.classList.add('active');
+                setTimeout(() => stage.classList.remove('active'), 400);
+            }
+
+            addLog(type, message) {
+                const timestamp = new Date().toLocaleTimeString();
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                logEntry.innerHTML = `<span class="log-timestamp">[${timestamp}]</span> <span class="log-${type}">${message}</span>`;
+
+                const console = document.getElementById('logConsole');
+                console.insertBefore(logEntry, console.firstChild);
+
+                // Keep only last 50 entries
+                if (console.children.length > 50) {
+                    console.removeChild(console.lastChild);
+                }
+            }
+        }
+
+        // Initialize simulator
+        const simulator = new DataIngestionSimulator();
+    </script>
+</body>
+</html>

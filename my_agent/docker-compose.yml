@@ -1,0 +1,79 @@
+# Dark Kenneth Triad - Docker Compose Configuration
+version: '3.8'
+
+services:
+  # Production agent service
+  triad:
+    build:
+      context: .
+      target: production
+    container_name: dark-kenneth-triad
+    environment:
+      - ANTHROPIC_VERTEX_PROJECT_ID=${VERTEX_PROJECT_ID}
+      - ANTHROPIC_VERTEX_REGION=${VERTEX_REGION:-us-east5}
+      - ENABLE_WEB_SEARCH=${ENABLE_WEB_SEARCH:-false}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - ./data:/app/data:ro
+      - ./logs:/app/logs
+    restart: unless-stopped
+    profiles:
+      - production
+
+  # Web interface service
+  web:
+    build:
+      context: .
+      target: web
+    container_name: dark-kenneth-triad-web
+    ports:
+      - "8000:8000"
+    environment:
+      - ANTHROPIC_VERTEX_PROJECT_ID=${VERTEX_PROJECT_ID}
+      - ANTHROPIC_VERTEX_REGION=${VERTEX_REGION:-us-east5}
+      - ENABLE_WEB_SEARCH=${ENABLE_WEB_SEARCH:-false}
+      - WEB_HOST=0.0.0.0
+      - WEB_PORT=8000
+    volumes:
+      - ./data:/app/data:ro
+    restart: unless-stopped
+    profiles:
+      - web
+
+  # Development service with hot reload
+  dev:
+    build:
+      context: .
+      target: development
+    container_name: dark-kenneth-triad-dev
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - .:/app
+      - /app/.pytest_cache
+    working_dir: /app
+    command: tail -f /dev/null
+    profiles:
+      - dev
+
+  # Test runner
+  test:
+    build:
+      context: .
+      target: development
+    container_name: dark-kenneth-triad-test
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: pytest tests/ -v --cov=src --cov-report=html
+    profiles:
+      - test
+
+volumes:
+  logs:
+  data:
+
+networks:
+  default:
+    name: triad-network

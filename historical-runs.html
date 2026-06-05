@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historical Toolstring Runs | WellTegra</title>
+    <meta name="description" content="Real-world toolstring configurations from operational archives. View historical runs, analyze equipment selections, and learn from actual field operations.">
+    <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b1220;
+            --panel: #0f172a;
+            --card: #1e293b;
+            --border: #334155;
+            --fg: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #14b8a6;
+            --accent-hover: #2dd4bf;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Portfolio Notice Banner */
+        .portfolio-notice {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.15), rgba(59, 130, 246, 0.15));
+            border-bottom: 2px solid rgba(20, 184, 166, 0.3);
+            padding: 0.75rem 1rem;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--fg);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .portfolio-notice span { color: var(--accent); font-weight: 700; }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 18, 32, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+        }
+        .header-inner {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--fg);
+        }
+        .logo img { height: 40px; border-radius: 8px; }
+        .logo-text { font-weight: 900; font-size: 1.25rem; }
+        .nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .nav a {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .nav a:hover, .nav a.active { color: var(--fg); background: var(--card); }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(59, 130, 246, 0.05));
+            border-bottom: 1px solid var(--border);
+            padding: 3rem 1.5rem;
+        }
+        .hero-inner {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--info));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            color: var(--muted);
+            font-size: 1.1rem;
+        }
+
+        /* Main */
+        .main {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+        .stat-label {
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Run Grid */
+        .run-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .run-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .run-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(20, 184, 166, 0.15);
+        }
+
+        .run-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .run-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--fg);
+            margin-bottom: 0.25rem;
+        }
+        .run-meta {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+        .run-badge {
+            background: rgba(20, 184, 166, 0.2);
+            color: var(--accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .run-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .run-stat {
+            text-align: center;
+            padding: 0.75rem;
+            background: var(--card);
+            border-radius: 8px;
+        }
+        .run-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .run-stat-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .run-tools {
+            margin-top: 1rem;
+        }
+        .run-tools-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+        .tool-item {
+            padding: 0.5rem;
+            background: var(--card);
+            border-left: 3px solid var(--accent);
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+        .tool-name {
+            font-weight: 600;
+            color: var(--fg);
+        }
+        .tool-specs {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--muted);
+        }
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1rem;
+            opacity: 0.3;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.75rem; }
+            .run-grid { grid-template-columns: 1fr; }
+            .portfolio-notice { font-size: 0.75rem; padding: 0.6rem 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Portfolio Notice -->
+    <div class="portfolio-notice">
+        📋 <span>PORTFOLIO PROJECT</span> | Historical toolstring analysis by Ken McKenzie | Educational purposes - data from operational archives
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo.jpg" alt="WellTegra">
+                <span class="logo-text">WellTegra</span>
+            </a>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="case-studies.html">Case Studies</a>
+                <a href="equipment.html">Equipment</a>
+                <a href="planner.html">Planner</a>
+                <a href="historical-runs.html" class="active">Historical Runs</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <h1>🏛️ Historical Toolstring Runs</h1>
+            <p>Real-world toolstring configurations extracted from operational archives. Analyze actual field runs, equipment selections, and lessons learned.</p>
+        </div>
+    </section>
+
+    <!-- Main -->
+    <main class="main">
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-value" id="statRuns">-</div>
+                <div class="stat-label">Historical Runs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statTools">-</div>
+                <div class="stat-label">Total Tools</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statMaxOD">-"</div>
+                <div class="stat-label">Largest OD</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statAvgLength">-ft</div>
+                <div class="stat-label">Avg String Length</div>
+            </div>
+        </div>
+
+        <!-- Run Grid -->
+        <div class="run-grid" id="runGrid">
+            <div class="empty-state">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <h3>Loading Historical Data...</h3>
+                <p>Extracting toolstring configurations from operational archives</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Run Details</h2>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 WellTegra Portfolio Project by Ken McKenzie | Educational demonstration of historical toolstring analysis</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Data extracted from anonymized operational archives | Not affiliated with any commercial operator</p>
+    </footer>
+
+    <script>
+        let historicalData = null;
+
+        async function loadHistoricalData() {
+            try {
+                const response = await fetch('data/historical-case-studies.json');
+                historicalData = await response.json();
+                renderPage();
+            } catch (error) {
+                console.error('Failed to load historical data:', error);
+                // Use fallback data
+                historicalData = getFallbackData();
+                renderPage();
+            }
+        }
+
+        function getFallbackData() {
+            return {
+                runs: [
+                    {
+                        id: "demo-run-1",
+                        name: "Demo Run #1 - Standard Drift",
+                        well: "Anonymized Well A",
+                        date: "Historical Record",
+                        toolstring: [
+                            { name: "Rope Socket", od: 1.5, neck: 1.375, length: 0.5 },
+                            { name: "Swivel", od: 1.5, neck: 1.375, length: 1.0 },
+                            { name: "3ft Stem", od: 1.5, neck: 1.375, length: 3.0 },
+                            { name: "Gauge Cutter", od: 3.85, neck: 2.313, length: 2.0 }
+                        ],
+                        stats: { toolCount: 4, totalLength: 6.5, maxOD: 3.85 },
+                        outcome: "Successful drift operation",
+                        lessons: "Standard configuration for gauge cutting operations"
+                    }
+                ]
+            };
+        }
+
+        function renderPage() {
+            if (!historicalData || !historicalData.runs) return;
+
+            const runs = historicalData.runs;
+
+            // Render stats
+            const totalTools = runs.reduce((sum, r) => sum + r.stats.toolCount, 0);
+            const maxOD = Math.max(...runs.map(r => r.stats.maxOD));
+            const avgLength = runs.reduce((sum, r) => sum + r.stats.totalLength, 0) / runs.length;
+
+            document.getElementById('statRuns').textContent = runs.length;
+            document.getElementById('statTools').textContent = totalTools;
+            document.getElementById('statMaxOD').textContent = maxOD.toFixed(2) + '"';
+            document.getElementById('statAvgLength').textContent = avgLength.toFixed(1) + 'ft';
+
+            // Render run cards
+            const grid = document.getElementById('runGrid');
+            grid.innerHTML = runs.map(run => renderRunCard(run)).join('');
+        }
+
+        function renderRunCard(run) {
+            return `
+                <div class="run-card" onclick="viewRun('${run.id}')">
+                    <div class="run-header">
+                        <div>
+                            <div class="run-title">${run.name}</div>
+                            <div class="run-meta">${run.well}</div>
+                        </div>
+                        <div class="run-badge">${run.stats.toolCount} tools</div>
+                    </div>
+
+                    <div class="run-stats">
+                        <div class="run-stat">
+                            <div class="run-stat-value">${run.stats.totalLength.toFixed(1)}</div>
+                            <div class="run-stat-label">Length (ft)</div>
+                        </div>
+                        <div class="run-stat">
+                            <div class="run-stat-value">${run.stats.maxOD.toFixed(2)}</div>
+                            <div class="run-stat-label">Max OD (in)</div>
+                        </div>
+                        <div class="run-stat">
+                            <div class="run-stat-value">${run.stats.toolCount}</div>
+                            <div class="run-stat-label">Tools</div>
+                        </div>
+                    </div>
+
+                    <div class="run-tools">
+                        <div class="run-tools-title">First 3 Tools</div>
+                        ${run.toolstring.slice(0, 3).map(tool => `
+                            <div class="tool-item">
+                                <div class="tool-name">${tool.name}</div>
+                                <div class="tool-specs">OD: ${tool.od || '-'}" | Neck: ${tool.neck || '-'}" | Length: ${tool.length || '-'}ft</div>
+                            </div>
+                        `).join('')}
+                        ${run.toolstring.length > 3 ? `<div style="text-align: center; color: var(--muted); font-size: 0.8rem; margin-top: 0.5rem;">+${run.toolstring.length - 3} more tools - click to view all</div>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function viewRun(runId) {
+            const run = historicalData.runs.find(r => r.id === runId);
+            if (!run) return;
+
+            document.getElementById('modalTitle').textContent = run.name;
+            document.getElementById('modalBody').innerHTML = `
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 0.9rem; font-weight: 700; color: var(--muted); margin-bottom: 0.5rem;">WELL INFORMATION</h3>
+                    <p><strong>Well:</strong> ${run.well}</p>
+                    ${run.date ? `<p><strong>Date:</strong> ${run.date}</p>` : ''}
+                    <p><strong>Outcome:</strong> ${run.outcome}</p>
+                    <p><strong>Lessons:</strong> ${run.lessons}</p>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 0.9rem; font-weight: 700; color: var(--muted); margin-bottom: 0.5rem;">TOOLSTRING (${run.toolstring.length} TOOLS)</h3>
+                    ${run.toolstring.map((tool, idx) => `
+                        <div class="tool-item" style="margin-bottom: 0.75rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div>
+                                    <div class="tool-name">#${idx + 1} ${tool.name}</div>
+                                    <div class="tool-specs">
+                                        OD: ${tool.od ? tool.od + '"' : 'N/A'} |
+                                        Neck: ${tool.neck ? tool.neck + '"' : 'N/A'} |
+                                        Length: ${tool.length ? tool.length + 'ft' : 'N/A'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div>
+                    <h3 style="font-size: 0.9rem; font-weight: 700; color: var(--muted); margin-bottom: 0.5rem;">STATISTICS</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                        <div class="run-stat">
+                            <div class="run-stat-value">${run.stats.totalLength.toFixed(2)}</div>
+                            <div class="run-stat-label">Total Length (ft)</div>
+                        </div>
+                        <div class="run-stat">
+                            <div class="run-stat-value">${run.stats.maxOD.toFixed(2)}</div>
+                            <div class="run-stat-label">Max OD (in)</div>
+                        </div>
+                        <div class="run-stat">
+                            <div class="run-stat-value">${run.stats.toolCount}</div>
+                            <div class="run-stat-label">Tool Count</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        // Close modal on overlay click
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+
+        // Initialize
+        loadHistoricalData();
+    </script>
+</body>
+</html>

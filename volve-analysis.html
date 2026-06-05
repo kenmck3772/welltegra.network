@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volve Field Data Analysis | Real North Sea Production Data</title>
+    <meta name="description" content="Analysis of Equinor's public Volve dataset demonstrating real-world data processing skills with Eclipse simulator output and North Sea production data.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ink: #0a1628;
+            --ink-light: #1a2d4a;
+            --slate: #334155;
+            --steel: #64748b;
+            --silver: #94a3b8;
+            --mist: #e2e8f0;
+            --white: #ffffff;
+            --accent: #f97316;
+            --accent-dark: #ea580c;
+            --success: #0d9488;
+            --success-light: #14b8a6;
+            --warning: #f59e0b;
+            --font-display: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+            --max-width: 1200px;
+            --radius-md: 12px;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 2.5rem;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--ink);
+            color: var(--mist);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        header {
+            background: var(--ink-light);
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: var(--space-xl);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav a {
+            color: var(--silver);
+            text-decoration: none;
+            margin-left: var(--space-md);
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--accent);
+        }
+
+        .hero {
+            text-align: center;
+            padding: var(--space-xl) 0;
+            margin-bottom: var(--space-xl);
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--white);
+            margin-bottom: var(--space-md);
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--silver);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(249, 115, 22, 0.2);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+        }
+
+        .card {
+            background: var(--ink-light);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-lg);
+        }
+
+        .card h2 {
+            font-family: var(--font-display);
+            color: var(--white);
+            font-size: 1.5rem;
+            margin-bottom: var(--space-md);
+        }
+
+        .card h3 {
+            color: var(--success-light);
+            font-size: 1.125rem;
+            margin-bottom: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .metric-box {
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--silver);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--space-md) 0;
+        }
+
+        .data-table th {
+            background: rgba(249, 115, 22, 0.1);
+            color: var(--accent);
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .data-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            color: var(--mist);
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid var(--accent);
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            color: var(--mist);
+            overflow-x: auto;
+            margin: var(--space-md) 0;
+        }
+
+        .highlight {
+            background: rgba(20, 184, 166, 0.2);
+            color: var(--success-light);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        ul {
+            margin-left: 1.5rem;
+            color: var(--silver);
+            line-height: 1.8;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--white);
+            padding: 0.875rem 1.75rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: var(--space-xl);
+            padding: var(--space-lg) 0;
+            text-align: center;
+            color: var(--steel);
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">Ken McKenzie</a>
+                <nav class="nav">
+                    <a href="index.html">← Home</a>
+                    <a href="planner.html">Well Planner</a>
+                    <a href="equipment.html">Equipment</a>
+                    <a href="index.html#contact">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <span class="badge">REAL NORTH SEA DATA</span>
+            <h1>Volve Field Data Analysis</h1>
+            <p>Demonstrating real-world data processing skills using Equinor's public Volve dataset - actual North Sea production data from Eclipse reservoir simulation</p>
+        </div>
+
+        <div class="card">
+            <h2>🎯 Skills Demonstrated</h2>
+            <p>Processing <span class="highlight">Equinor's Volve field dataset</span> (1,610 timesteps of North Sea production data) proves capability to:</p>
+            <ul>
+                <li><strong>Parse Complex Simulation Output:</strong> Extract structured data from Eclipse PRT files using regex mining techniques</li>
+                <li><strong>Handle Real Field Data:</strong> Process actual reservoir pressure (329→282 bar), watercut (0→89%), and GOR trends from live operations</li>
+                <li><strong>Build ML-Ready Pipelines:</strong> Transform raw simulator output into JSON schemas for machine learning workflows</li>
+                <li><strong>Work Production-Scale:</strong> Manage 8+ years of timestep data (6.66 MMSm³ oil production) with full well construction details</li>
+            </ul>
+            <p style="margin-top: var(--space-md); padding: 1rem; background: rgba(14, 165, 233, 0.1); border-left: 3px solid #0ea5e9; border-radius: 4px;">
+                <strong style="color: #0ea5e9;">Day-One Value:</strong> If your reservoir simulation team needs PRT files processed, completion data structured, or production trends analyzed - this work proves I can deliver immediately without ramp-up time.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>📊 Volve Dataset Overview</h2>
+            <div class="grid-2">
+                <div class="metric-box">
+                    <div class="metric-value">1,610</div>
+                    <div class="metric-label">Simulation Timesteps</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-value">2008-2016</div>
+                    <div class="metric-label">Production Period</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-value">~10 MMboe</div>
+                    <div class="metric-label">Field Production</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-value">82m</div>
+                    <div class="metric-label">Water Depth</div>
+                </div>
+            </div>
+
+            <h3>Production Parameters Available</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Description</th>
+                        <th>Units</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>PAV</strong></td>
+                        <td>Average bottomhole pressure</td>
+                        <td>bar</td>
+                    </tr>
+                    <tr>
+                        <td><strong>WCT</strong></td>
+                        <td>Watercut</td>
+                        <td>%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GOR</strong></td>
+                        <td>Gas-oil ratio</td>
+                        <td>SM3/SM3</td>
+                    </tr>
+                    <tr>
+                        <td><strong>WGR</strong></td>
+                        <td>Water-gas ratio</td>
+                        <td>SM3/SM3</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>🛢️ Wells Integrated into Portfolio</h2>
+
+            <h3>Well 15/9-F-1 B (Volve Producer 1)</h3>
+            <ul>
+                <li><strong>Type:</strong> Horizontal oil producer (88° inclination)</li>
+                <li><strong>Reservoir:</strong> Hugin Formation (Lower Jurassic)</li>
+                <li><strong>Total Depth:</strong> 3,150m MD</li>
+                <li><strong>Initial Pressure:</strong> 329.6 bar</li>
+                <li><strong>Temperature:</strong> 92°C</li>
+                <li><strong>Porosity:</strong> 25-30%</li>
+                <li><strong>Status:</strong> Available in planner with full completion details</li>
+            </ul>
+
+            <div class="code-block">
+{<br>
+  "id": "volve-f1",<br>
+  "name": "15/9-F-1 B",<br>
+  "dataSource": "Equinor Public Volve Dataset",<br>
+  "productionData": {<br>
+    "source": "Eclipse PRT File - VOLVE_2016",<br>
+    "timesteps": 1610,<br>
+    "dateRange": "2008-01-01 to 2016-10-01"<br>
+  }<br>
+}
+            </div>
+
+            <h3>Well 15/9-F-4 (Volve Producer 4)</h3>
+            <ul>
+                <li><strong>Type:</strong> Horizontal oil producer (90° inclination)</li>
+                <li><strong>Total Depth:</strong> 3,200m MD</li>
+                <li><strong>Production Trend:</strong> Watercut increasing over field life (real data)</li>
+                <li><strong>Scenario:</strong> Configured for intervention planning demonstration</li>
+                <li><strong>Demonstrates:</strong> Typical North Sea waterflood behavior</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🔧 Technical Implementation</h2>
+            <p>The Volve wells are fully integrated into the Well Operations Planner:</p>
+            <ul>
+                <li>✅ Complete well construction data (casing program, depths, grades)</li>
+                <li>✅ Real reservoir properties (porosity, permeability, pressure, temperature)</li>
+                <li>✅ Actual production trends from Eclipse simulation</li>
+                <li>✅ Full completion details (tubing, packers, safety systems)</li>
+                <li>✅ Available for intervention planning scenarios</li>
+                <li>✅ JSON schema compatible with existing planning algorithms</li>
+            </ul>
+
+            <p style="margin-top: var(--space-md); padding: 1rem; background: rgba(16, 185, 129, 0.1); border-left: 3px solid #10b981; border-radius: 4px;">
+                <strong style="color: #10b981;">Production-Ready Integration:</strong> Full well construction data (casing, tubing, packers) + reservoir properties + 8 years of production history = complete intervention planning capability. No data prep required - ready for your engineering workflows.
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>📈 Production Trend Analysis</h2>
+            <p>Charts below show processed Eclipse simulator data (Well 15/9-F-1 B, 1,610 timesteps). If you need reservoir engineers who can extract insights from PRT files, identify waterflood breakthrough, or flag pressure depletion risks - this is proof of capability.</p>
+
+            <h3>Reservoir Pressure Decline</h3>
+            <p style="font-size: 0.875rem; color: var(--silver); margin-bottom: 1rem;"><strong>Depletion analysis:</strong> Bottomhole pressure drops 47 bar over 8 years (329.6→282 bar). Pattern recognition capability for artificial lift timing decisions.</p>
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                <canvas id="pressureChart" style="max-height: 300px;"></canvas>
+            </div>
+
+            <h3>Watercut Progression</h3>
+            <p style="font-size: 0.875rem; color: var(--silver); margin-bottom: 1rem;"><strong>Waterflood breakthrough detection:</strong> 0%→89% over field life. Experience interpreting North Sea injection response and economics thresholds.</p>
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                <canvas id="watercutChart" style="max-height: 300px;"></canvas>
+            </div>
+
+            <h3>Gas-Oil Ratio (GOR)</h3>
+            <p style="font-size: 0.875rem; color: var(--silver); margin-bottom: 1rem;"><strong>Solution gas behavior:</strong> GOR rises from 0→169 SM³/SM³ as pressure declines. Proves understanding of PVT relationships and production optimization.</p>
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                <canvas id="gorChart" style="max-height: 300px;"></canvas>
+            </div>
+
+            <h3>Cumulative Oil Production</h3>
+            <p style="font-size: 0.875rem; color: var(--silver); margin-bottom: 1rem;"><strong>Recovery tracking:</strong> 6.66 MMSm³ total production processed from timestep data. Capability to aggregate, validate, and visualize field-scale EUR.</p>
+            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                <canvas id="cumulativeChart" style="max-height: 300px;"></canvas>
+            </div>
+
+            <div style="margin-top: var(--space-md); padding: 1rem; background: rgba(249, 115, 22, 0.1); border-left: 3px solid var(--accent); border-radius: 4px;">
+                <strong style="color: var(--accent);">Technical Note:</strong> Monthly samples shown for clarity. Full 1,610 timestep dataset processed from Eclipse PRT output demonstrates high-frequency data handling capability.
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📚 Technical Methodology</h2>
+            <p><strong>Data Processing Pipeline:</strong> Regex-based mining of Eclipse PRT files → JSON schema transformation → Chart.js visualization. Methodology adapted from <a href="https://github.com/f0nzie/volve-reservoir-model-evolution" target="_blank" style="color: var(--accent);">f0nzie/volve-reservoir-model-evolution</a> techniques.</p>
+
+            <p style="margin-top: 1rem;"><strong>Source Dataset:</strong> Equinor's Volve field (Norwegian North Sea, Block 15/9) - first complete oil & gas field data released publicly (June 2018).</p>
+
+            <div style="margin-top: var(--space-lg); padding: 1.5rem; background: rgba(16, 185, 129, 0.1); border: 2px solid rgba(16, 185, 129, 0.3); border-radius: 12px;">
+                <h3 style="color: #10b981; font-size: 1.125rem; margin-bottom: 1rem;">What This Proves for Your Team</h3>
+                <ul style="margin-left: 1.5rem; line-height: 1.8;">
+                    <li><strong>Simulator Expertise:</strong> Can extract and process Eclipse/INTERSECT/CMG output files</li>
+                    <li><strong>Data Engineering:</strong> Transform unstructured text (PRT) into structured JSON/CSV for analytics</li>
+                    <li><strong>Domain Knowledge:</strong> Understand reservoir depletion, waterflood behavior, PVT relationships</li>
+                    <li><strong>Production Ready:</strong> Wells integrated into planner with full completion data - not just charts</li>
+                </ul>
+                <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--silver);">
+                    <strong>Bottom Line:</strong> If you need reservoir engineers who can hit the ground running with simulator data processing and production analytics, this work demonstrates Day-One capability.
+                </p>
+            </div>
+
+            <div style="margin-top: var(--space-lg); text-align: center;">
+                <a href="planner.html" class="btn">View Integrated Well Planner →</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 Ken McKenzie Portfolio | Using Equinor's Public Volve Dataset | Educational Demonstration</p>
+            <p style="margin-top: 0.5rem;">Data Source: <a href="https://www.equinor.com/energy/volve-data-sharing" target="_blank" style="color: var(--accent);">Equinor Volve Dataset</a></p>
+        </div>
+    </footer>
+
+    <!-- Load Volve production data and create charts -->
+    <script src="data/volve-sample-data.js"></script>
+    <script>
+        // Chart configuration defaults
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = 'rgba(148, 163, 184, 0.2)';
+        Chart.defaults.font.family = "'DM Sans', system-ui, sans-serif";
+
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: true,
+            aspectRatio: 2.5,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(10, 22, 40, 0.95)',
+                    padding: 12,
+                    borderColor: '#f97316',
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    }
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(148, 163, 184, 0.1)'
+                    }
+                }
+            }
+        };
+
+        // 1. Pressure Decline Chart
+        new Chart(document.getElementById('pressureChart'), {
+            type: 'line',
+            data: {
+                labels: volveProductionData.monthly.dates,
+                datasets: [{
+                    label: 'Bottomhole Pressure (bar)',
+                    data: volveProductionData.monthly.pav_bar,
+                    borderColor: '#0ea5e9',
+                    backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 3,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    ...chartOptions.scales,
+                    y: {
+                        ...chartOptions.scales.y,
+                        title: {
+                            display: true,
+                            text: 'Pressure (bar)',
+                            color: '#94a3b8'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 2. Watercut Chart
+        new Chart(document.getElementById('watercutChart'), {
+            type: 'line',
+            data: {
+                labels: volveProductionData.monthly.dates,
+                datasets: [{
+                    label: 'Watercut (%)',
+                    data: volveProductionData.monthly.wct_pct,
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 3,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    ...chartOptions.scales,
+                    y: {
+                        ...chartOptions.scales.y,
+                        title: {
+                            display: true,
+                            text: 'Watercut (%)',
+                            color: '#94a3b8'
+                        },
+                        min: 0,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // 3. GOR Chart
+        new Chart(document.getElementById('gorChart'), {
+            type: 'line',
+            data: {
+                labels: volveProductionData.monthly.dates,
+                datasets: [{
+                    label: 'Gas-Oil Ratio (SM³/SM³)',
+                    data: volveProductionData.monthly.gor_m3m3,
+                    borderColor: '#f59e0b',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 3,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    ...chartOptions.scales,
+                    y: {
+                        ...chartOptions.scales.y,
+                        title: {
+                            display: true,
+                            text: 'GOR (SM³/SM³)',
+                            color: '#94a3b8'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 4. Cumulative Production Chart
+        new Chart(document.getElementById('cumulativeChart'), {
+            type: 'line',
+            data: {
+                labels: volveProductionData.monthly.dates,
+                datasets: [{
+                    label: 'Cumulative Oil (MMSm³)',
+                    data: volveProductionData.monthly.cumulative_oil_mmsm3,
+                    borderColor: '#14b8a6',
+                    backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 3,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    ...chartOptions.scales,
+                    y: {
+                        ...chartOptions.scales.y,
+                        title: {
+                            display: true,
+                            text: 'Cumulative Oil (MMSm³)',
+                            color: '#94a3b8'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

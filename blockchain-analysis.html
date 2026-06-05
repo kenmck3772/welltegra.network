@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain for Well Engineering | Ken McKenzie</title>
+    <meta name="description" content="Technical analysis exploring blockchain and smart contract applications in well engineering, drilling operations, and oil & gas supply chain management.">
+    <link rel="icon" href="assets/images/logo.jpg" type="image/jpeg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0a1628;
+            --ink-light: #1a2d4a;
+            --slate: #334155;
+            --steel: #64748b;
+            --silver: #94a3b8;
+            --mist: #e2e8f0;
+            --white: #ffffff;
+            --accent: #f97316;
+            --teal: #14b8a6;
+            --purple: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--ink);
+            color: var(--silver);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        header {
+            background: rgba(10, 22, 40, 0.95);
+            border-bottom: 1px solid var(--slate);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: var(--teal);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--white);
+        }
+
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            border-bottom: 1px solid var(--slate);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--purple);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--silver);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .content {
+            padding: 60px 0;
+        }
+
+        .intro {
+            font-size: 1.125rem;
+            color: var(--mist);
+            margin-bottom: 48px;
+            padding: 24px;
+            background: rgba(30, 41, 59, 0.4);
+            border-left: 4px solid var(--purple);
+            border-radius: 8px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--white);
+            margin: 48px 0 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--slate);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--white);
+            margin: 36px 0 16px;
+        }
+
+        p {
+            margin-bottom: 16px;
+        }
+
+        ul {
+            margin: 16px 0 16px 24px;
+        }
+
+        li {
+            margin-bottom: 12px;
+        }
+
+        strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .use-case {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid var(--slate);
+            border-radius: 12px;
+            padding: 32px;
+            margin: 32px 0;
+        }
+
+        .use-case h3 {
+            margin-top: 0;
+            color: var(--teal);
+        }
+
+        .problem {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .solution {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid #22c55e;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        .benefit {
+            background: rgba(20, 184, 166, 0.1);
+            border-left: 4px solid var(--teal);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            background: rgba(30, 41, 59, 0.4);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: var(--slate);
+            color: var(--white);
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 16px;
+            border-top: 1px solid var(--slate);
+        }
+
+        tr:hover {
+            background: rgba(20, 184, 166, 0.05);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(20, 184, 166, 0.1));
+            border: 1px solid var(--purple);
+            border-radius: 12px;
+            padding: 32px;
+            margin: 48px 0;
+        }
+
+        .highlight-box h3 {
+            margin-top: 0;
+            color: var(--purple);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .use-case {
+                padding: 24px;
+            }
+
+            table {
+                font-size: 0.875rem;
+            }
+
+            th, td {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">Ken McKenzie</a>
+                <a href="/#portfolio" class="back-link">← Back to Portfolio</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <span class="hero-badge">Technical Analysis</span>
+            <h1>Blockchain & Smart Contracts for Well Engineering</h1>
+            <p class="subtitle">
+                Exploring Web3 applications in drilling operations, supply chain management, and automated compliance
+            </p>
+        </div>
+    </section>
+
+    <main class="content">
+        <div class="container">
+            <div class="intro">
+                <strong>Well Engineering</strong> (drilling, completions, and intervention) is the most capital-intensive and multi-party sector of the oil industry. It involves dozens of service companies (mud logging, directional drilling, cementing, casing) all working on one rig, often leading to massive friction in data and payments. This analysis explores how blockchain and smart contracts can address these challenges.
+            </div>
+
+            <h2>1. Automated Performance-Based Smart Contracts</h2>
+
+            <div class="use-case">
+                <h3>Application: Automating Service Level Agreements (SLAs)</h3>
+
+                <p>The biggest specific application in well engineering is automating the agreements between Operators (e.g., Shell, BP) and Service Companies (e.g., Halliburton, Schlumberger).</p>
+
+                <div class="problem">
+                    <strong>The Current Problem:</strong> A directional driller might be promised a bonus if they drill a section in under 48 hours. This requires manual review of daily drilling reports (DDRs), manual invoicing, and weeks of delay before payment.
+                </div>
+
+                <div class="solution">
+                    <strong>The Smart Contract Solution:</strong> A smart contract is written with the clause: <em>"If Rate of Penetration (ROP) > X ft/hr AND Downtime < Y%, release bonus payment immediately."</em>
+                </div>
+
+                <p><strong>How it works:</strong></p>
+                <ul>
+                    <li>Rig sensors (IoT) feed drilling data directly to the blockchain</li>
+                    <li>The smart contract reads this data in real-time</li>
+                    <li>If criteria are met, payment executes automatically without human intervention</li>
+                </ul>
+
+                <div class="benefit">
+                    <strong>Benefit:</strong> Reduces "Day Sales Outstanding" (DSO) from 60+ days to near-instant, improving cash flow for service companies and reducing administrative overhead for operators.
+                </div>
+            </div>
+
+            <h2>2. Immutable Well Construction History</h2>
+
+            <div class="use-case">
+                <h3>The "Digital Passport" for Wells</h3>
+
+                <p>A well is built in stages (surface, intermediate, production). If a blowout or failure occurs years later, finding the exact certification of the cement batch or the torque logs for a specific casing connection is difficult.</p>
+
+                <p><strong>Traceability Applications:</strong></p>
+
+                <ul>
+                    <li><strong>Equipment Digital Twins:</strong> Every piece of equipment (casing joints, wellheads, packers) has a digital twin on the blockchain</li>
+                    <li><strong>Casing & Tubing:</strong> As pipes are run into the hole, torque-turn data (proving the connection was tightened correctly) is hashed to the blockchain, creating an unalterable legal record</li>
+                    <li><strong>Cementing Records:</strong> The exact chemical composition, density, and pump pressure of a cement job can be recorded. If the well leaks methane 10 years later, the operator can prove they followed regulations</li>
+                </ul>
+
+                <div class="benefit">
+                    <strong>Value:</strong> Creates audit-proof evidence for regulators and insurance, while providing permanent integrity records for well lifecycle management.
+                </div>
+            </div>
+
+            <h2>3. Joint Venture (JV) Cost Reconciliation</h2>
+
+            <div class="use-case">
+                <h3>Real-Time Cost Sharing for Well Consortiums</h3>
+
+                <p>Most wells are not owned by one company; they are owned by a consortium (e.g., 40% Operator, 30% Partner A, 30% Partner B).</p>
+
+                <div class="problem">
+                    <strong>The Current Problem:</strong> The Operator pays the bills and then sends "Cash Calls" to partners to get reimbursed. This often leads to disputes where partners refuse to pay for Non-Productive Time (NPT) caused by operator error.
+                </div>
+
+                <div class="solution">
+                    <strong>The Blockchain Solution:</strong> A private blockchain network allows all JV partners to see well costs in real-time. Instead of a monthly "Cash Call," money can be drawn from a smart-contract escrow account as expenses are incurred, provided all partners digitally "sign off" on the daily operations.
+                </div>
+            </div>
+
+            <h2>4. Supply Chain: Tracking Critical Tools</h2>
+
+            <div class="use-case">
+                <h3>Chain of Custody for High-Value Equipment</h3>
+
+                <p>In well engineering, specific tools (like a radioactive source for logging or a specific diamond drill bit) are high-value and regulated.</p>
+
+                <ul>
+                    <li><strong>Chain of Custody:</strong> Blockchain tracks the physical location of these tools from the warehouse to the rig floor</li>
+                    <li><strong>Maintenance Verification:</strong> Before a Blowout Preventer (BOP) is shipped to a rig, its maintenance certificate is uploaded to the blockchain. The rig's operating system could "reject" the BOP if the smart contract detects the maintenance certificate is expired, preventing a safety violation</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <h3>Real-World Example: Equinor & Data Gumbo</h3>
+
+                <p>A prime real-world example is the Norwegian operator <strong>Equinor</strong>. They utilized a blockchain network (Data Gumbo) for their <strong>Integrated Drilling and Well Services (IDWS)</strong> contracts.</p>
+
+                <p><strong>Result:</strong> They automated payments for drilling services based on sensor data. If the drill bit was turning, the service company got paid. If it stopped due to a tool failure, payment paused automatically. This eliminated weeks of invoicing disputes.</p>
+            </div>
+
+            <h2>Summary of Benefits for Well Engineers</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Engineering Benefit</th>
+                        <th>Commercial Benefit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Smart Contracts</strong></td>
+                        <td>Automates compliance (e.g., stops drilling if safety parameter is breached)</td>
+                        <td>Automates payments (e.g., instant bonus for fast drilling)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Immutable Ledger</strong></td>
+                        <td>Permanent record of well integrity (cement/casing logs)</td>
+                        <td>Audit-proof evidence for regulators and insurance</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tokenization</strong></td>
+                        <td>Tracking usage of rental tools (paid by the hour)</td>
+                        <td>Precise cost allocation to JV partners</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Technical Skills Demonstrated</h2>
+
+            <div class="use-case">
+                <ul>
+                    <li><strong>Blockchain Architecture:</strong> Understanding of distributed ledger technology and consensus mechanisms</li>
+                    <li><strong>Smart Contract Logic:</strong> Ability to design automated business logic and conditional payments</li>
+                    <li><strong>IoT Integration:</strong> Connecting real-world sensor data to blockchain networks</li>
+                    <li><strong>Industry Analysis:</strong> Identifying high-value use cases and commercial applications</li>
+                    <li><strong>Technical Writing:</strong> Communicating complex technical concepts clearly to non-technical stakeholders</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

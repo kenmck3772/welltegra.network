@@ -1,0 +1,299 @@
+# Well-Tegra Apache Caching Configuration
+#
+# This .htaccess file optimizes caching and compression for Apache servers
+# Place this file in your web root directory
+#
+# Performance improvements:
+# - Browser caching reduces repeat requests by 60-80%
+# - Gzip compression reduces transfer sizes by 70-90%
+# - Proper ETags enable efficient cache validation
+#
+# Requirements:
+# - mod_deflate (for compression)
+# - mod_expires (for cache headers)
+# - mod_headers (for additional headers)
+# - mod_rewrite (for URL rewriting)
+
+# ==================================================
+# ENABLE REWRITE ENGINE
+# ==================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Force HTTPS (uncomment if you have SSL)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Redirect www to non-www (or vice versa)
+    # RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    # RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+</IfModule>
+
+# ==================================================
+# GZIP COMPRESSION
+# ==================================================
+
+<IfModule mod_deflate.c>
+    # Compress HTML, CSS, JavaScript, Text, XML and fonts
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE application/x-font
+    AddOutputFilterByType DEFLATE application/x-font-opentype
+    AddOutputFilterByType DEFLATE application/x-font-otf
+    AddOutputFilterByType DEFLATE application/x-font-truetype
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE image/x-icon
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+
+    # Remove browser bugs (only needed for really old browsers)
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+    Header append Vary User-Agent
+</IfModule>
+
+# ==================================================
+# LEVERAGE BROWSER CACHING
+# ==================================================
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # Default expiration: 1 hour
+    ExpiresDefault "access plus 1 hour"
+
+    # HTML: 5 minutes
+    ExpiresByType text/html "access plus 5 minutes"
+
+    # CSS and JavaScript: 1 month
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/x-javascript "access plus 1 month"
+
+    # JSON: 1 hour
+    ExpiresByType application/json "access plus 1 hour"
+
+    # Images: 1 year
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+
+    # Video: 6 months
+    ExpiresByType video/mp4 "access plus 6 months"
+    ExpiresByType video/webm "access plus 6 months"
+    ExpiresByType video/ogg "access plus 6 months"
+
+    # Fonts: 1 year
+    ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+    ExpiresByType application/x-font-ttf "access plus 1 year"
+    ExpiresByType application/x-font-truetype "access plus 1 year"
+    ExpiresByType application/x-font-opentype "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    ExpiresByType font/eot "access plus 1 year"
+    ExpiresByType font/opentype "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+# ==================================================
+# CACHE-CONTROL HEADERS
+# ==================================================
+
+<IfModule mod_headers.c>
+    # 1 YEAR - Static assets
+    <FilesMatch "\.(ico|jpg|jpeg|png|gif|webp|svg|woff|woff2|ttf|otf|eot)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # 1 MONTH - CSS and JavaScript
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "public, max-age=2592000, must-revalidate"
+    </FilesMatch>
+
+    # 6 MONTHS - Videos
+    <FilesMatch "\.(mp4|webm|ogg)$">
+        Header set Cache-Control "public, max-age=15552000, immutable"
+    </FilesMatch>
+
+    # 1 HOUR - JSON
+    <FilesMatch "\.json$">
+        Header set Cache-Control "public, max-age=3600, must-revalidate"
+    </FilesMatch>
+
+    # 5 MINUTES - HTML
+    <FilesMatch "\.html?$">
+        Header set Cache-Control "public, max-age=300, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ==================================================
+# SECURITY HEADERS
+# ==================================================
+
+<IfModule mod_headers.c>
+    # Prevent clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Prevent MIME sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Enable XSS protection
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # Referrer policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Content Security Policy (adjust as needed)
+    # Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:;"
+</IfModule>
+
+# ==================================================
+# WEBP IMAGE FALLBACK
+# ==================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Check if browser accepts WebP
+    RewriteCond %{HTTP_ACCEPT} image/webp
+
+    # Check if WebP version exists
+    RewriteCond %{REQUEST_FILENAME} (.*)\.(jpe?g|png)$
+    RewriteCond %1.webp -f
+
+    # Serve WebP image instead
+    RewriteRule (.*)\.(jpe?g|png)$ $1.webp [T=image/webp,E=accept:1]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header append Vary Accept env=REDIRECT_accept
+</IfModule>
+
+AddType image/webp .webp
+
+# ==================================================
+# PREVENT DIRECTORY LISTING
+# ==================================================
+
+Options -Indexes
+
+# ==================================================
+# ERROR DOCUMENTS
+# ==================================================
+
+# ErrorDocument 404 /404.html
+# ErrorDocument 500 /500.html
+
+# ==================================================
+# UTF-8 ENCODING
+# ==================================================
+
+AddDefaultCharset UTF-8
+<IfModule mod_mime.c>
+    AddCharset UTF-8 .atom .css .js .json .rss .xml
+</IfModule>
+
+# ==================================================
+# FILE ACCESS PROTECTION
+# ==================================================
+
+# Deny access to hidden files (except .well-known)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} "!(^|/)\.well-known/([^./]+./?)+$" [NC]
+    RewriteCond %{SCRIPT_FILENAME} -d [OR]
+    RewriteCond %{SCRIPT_FILENAME} -f
+    RewriteRule "(^|/)\." - [F]
+</IfModule>
+
+# Deny access to sensitive files
+<FilesMatch "(^\.htaccess|^\.git|composer\.json|composer\.lock|package\.json|package-lock\.json|yarn\.lock)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# ==================================================
+# MIME TYPES
+# ==================================================
+
+<IfModule mod_mime.c>
+    # JavaScript
+    AddType application/javascript js
+    AddType application/json json map
+
+    # Video
+    AddType video/mp4 mp4 m4v
+    AddType video/webm webm
+    AddType video/ogg ogv
+
+    # Audio
+    AddType audio/mp3 mp3
+    AddType audio/ogg ogg oga
+    AddType audio/webm webm
+
+    # Images
+    AddType image/webp webp
+    AddType image/svg+xml svg svgz
+
+    # Fonts
+    AddType application/vnd.ms-fontobject eot
+    AddType application/font-woff woff
+    AddType application/font-woff2 woff2
+    AddType application/x-font-ttf ttf ttc
+    AddType font/opentype otf
+</IfModule>
+
+# ==================================================
+# SINGLE PAGE APPLICATION (SPA) ROUTING
+# ==================================================
+
+# Uncomment for SPA (React, Vue, Angular)
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteBase /
+#     RewriteRule ^index\.html$ - [L]
+#     RewriteCond %{REQUEST_FILENAME} !-f
+#     RewriteCond %{REQUEST_FILENAME} !-d
+#     RewriteRule . /index.html [L]
+# </IfModule>
+
+# ==================================================
+# PERFORMANCE TESTING
+# ==================================================
+
+# Test your configuration by checking HTTP headers:
+#   curl -I https://welltegra.com/assets/logo.webp
+#
+# Expected headers:
+#   Cache-Control: public, max-age=31536000, immutable
+#   Content-Encoding: gzip
+#   Expires: [date 1 year in future]
+#
+# Use Google PageSpeed Insights to verify:
+#   https://pagespeed.web.dev/
+#
+# Check Lighthouse score in Chrome DevTools:
+#   DevTools > Lighthouse > Generate Report

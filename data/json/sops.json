@@ -1,0 +1,933 @@
+{
+  "library": {
+    "name": "Brahan Engine SOP Library",
+    "version": "1.0",
+    "lastUpdated": "2025-11-28",
+    "description": "Standard Operating Procedures for well intervention operations. Each SOP defines the operational sequence, required equipment, hazards, and decision points."
+  },
+  "categories": [
+    { "id": "slickline", "name": "Slickline Operations", "color": "#14b8a6" },
+    { "id": "wireline", "name": "Wireline Operations", "color": "#3b82f6" },
+    { "id": "coiled_tubing", "name": "Coiled Tubing", "color": "#8b5cf6" },
+    { "id": "well_control", "name": "Well Control", "color": "#ef4444" },
+    { "id": "diagnostics", "name": "Diagnostics & Logging", "color": "#f59e0b" },
+    { "id": "fishing", "name": "Fishing Operations", "color": "#ec4899" }
+  ],
+  "procedures": [
+    {
+      "id": "sop_001",
+      "title": "Gas Lift Valve Change-Out",
+      "category": "slickline",
+      "version": "2.1",
+      "approvedDate": "2024-03-15",
+      "approvedBy": "Well Operations Manager",
+      "riskLevel": "medium",
+      "estimatedDuration": { "min": 8, "max": 16, "unit": "hours" },
+      "description": "Procedure for pulling and replacing gas lift valves in side pocket mandrels using slickline kickover tool.",
+      "applicability": {
+        "wellTypes": ["Producer", "Gas Lift"],
+        "completionTypes": ["Side Pocket Mandrel"],
+        "restrictions": ["Min tubing ID 2.75\"", "Max deviation 70° at mandrel depth"]
+      },
+      "prerequisites": [
+        { "id": "prereq_1", "description": "Well shut-in and secured", "mandatory": true },
+        { "id": "prereq_2", "description": "SCSSV function tested within 6 months", "mandatory": true },
+        { "id": "prereq_3", "description": "GLV pocket depth confirmed from completion records", "mandatory": true },
+        { "id": "prereq_4", "description": "Replacement GLV tested and certified", "mandatory": true },
+        { "id": "prereq_5", "description": "Lubricator pressure tested to MAASP", "mandatory": true }
+      ],
+      "barriers": {
+        "required": ["SCSSV", "Lubricator", "Stuffing Box"],
+        "notes": "SCSSV must remain functional throughout operation. If SCSSV fails function test, STOP and implement well kill procedure."
+      },
+      "equipmentRequired": [
+        { "category": "slickline_tools", "items": ["Rope Socket", "Stem", "Knuckle Joint", "Roller Stem"] },
+        { "category": "gas_lift", "items": ["Kickover Tool", "GLV Running Tool", "GLV Pulling Tool", "Replacement GLV"] },
+        { "category": "pce", "items": ["Lubricator Sections", "Stuffing Box", "BPV"] }
+      ],
+      "steps": [
+        {
+          "sequence": 1,
+          "phase": "Preparation",
+          "action": "Confirm well is shut-in and pressures stabilized",
+          "duration": 30,
+          "durationUnit": "minutes",
+          "hazards": ["Trapped pressure", "H2S exposure"],
+          "verification": "THP and CHP stable for minimum 30 minutes",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 2,
+          "phase": "Preparation",
+          "action": "Rig up lubricator and pressure test to MAASP + 10%",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["High pressure release", "Dropped objects"],
+          "verification": "Pressure held for 10 minutes with no bleed-off",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 3,
+          "phase": "Preparation",
+          "action": "Function test SCSSV",
+          "duration": 30,
+          "durationUnit": "minutes",
+          "hazards": ["Barrier failure"],
+          "verification": "SCSSV closes on command, THP builds confirming seal",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "SCSSV passes", "action": "Continue to Step 4" },
+            { "condition": "SCSSV fails", "action": "STOP. Implement SOP_015 (SCSSV Failure Response)" }
+          ]
+        },
+        {
+          "sequence": 4,
+          "phase": "Running In Hole",
+          "action": "Make up pulling toolstring: Rope Socket → Stem → Knuckle Joint → Kickover Tool → GLV Pulling Tool",
+          "duration": 30,
+          "durationUnit": "minutes",
+          "hazards": ["Incorrect assembly", "Thread damage"],
+          "verification": "All connections torqued to spec, tool string measured and recorded",
+          "toolstring": [
+            { "position": 1, "tool": "Rope Socket", "od": 1.5, "length": 6 },
+            { "position": 2, "tool": "Stem (36\")", "od": 1.5, "length": 36 },
+            { "position": 3, "tool": "Knuckle Joint", "od": 1.75, "length": 12 },
+            { "position": 4, "tool": "Kickover Tool", "od": 2.25, "length": 48 },
+            { "position": 5, "tool": "GLV Pulling Tool", "od": 1.5, "length": 18 }
+          ],
+          "decisionPoint": false
+        },
+        {
+          "sequence": 5,
+          "phase": "Running In Hole",
+          "action": "RIH at controlled speed (60 ft/min max), correlate depths using tubing collar log",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Stuck toolstring", "Depth correlation error"],
+          "verification": "Collar count matches expected, weight indicator shows smooth descent",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 6,
+          "phase": "Running In Hole",
+          "action": "Locate GLV pocket - feel for mandrel profile, confirm depth",
+          "duration": 15,
+          "durationUnit": "minutes",
+          "hazards": ["Wrong pocket", "Kickover tool malfunction"],
+          "verification": "Depth matches completion schematic, kickover engages pocket",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Pocket located and engaged", "action": "Continue to Step 7" },
+            { "condition": "Cannot locate pocket", "action": "POOH, run drift/gauge first (SOP_008)" },
+            { "condition": "Multiple attempts fail", "action": "POOH, review completion schematic, consider memory gauge run" }
+          ]
+        },
+        {
+          "sequence": 7,
+          "phase": "Pulling GLV",
+          "action": "Kick over into pocket, engage GLV latch, apply steady upward pull",
+          "duration": 15,
+          "durationUnit": "minutes",
+          "hazards": ["Stuck GLV", "Sheared latch"],
+          "verification": "Weight indicator shows release, string free",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "GLV releases cleanly", "action": "Continue to Step 8" },
+            { "condition": "GLV stuck - high pull required", "action": "Apply jar, max 3 attempts. If unsuccessful, POOH and evaluate" },
+            { "condition": "Latch shears without releasing GLV", "action": "POOH, prepare fishing string (SOP_020)" }
+          ]
+        },
+        {
+          "sequence": 8,
+          "phase": "Pulling Out of Hole",
+          "action": "POOH with pulled GLV at controlled speed",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Dropped valve", "Stuck string"],
+          "verification": "GLV recovered to surface, inspected for damage",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 9,
+          "phase": "Running Replacement",
+          "action": "Make up running toolstring with new GLV",
+          "duration": 30,
+          "durationUnit": "minutes",
+          "hazards": ["GLV damage during handling"],
+          "verification": "GLV serial number recorded, test rack pressure confirmed",
+          "toolstring": [
+            { "position": 1, "tool": "Rope Socket", "od": 1.5, "length": 6 },
+            { "position": 2, "tool": "Stem (36\")", "od": 1.5, "length": 36 },
+            { "position": 3, "tool": "Knuckle Joint", "od": 1.75, "length": 12 },
+            { "position": 4, "tool": "Kickover Tool", "od": 2.25, "length": 48 },
+            { "position": 5, "tool": "GLV Running Tool", "od": 1.5, "length": 18 },
+            { "position": 6, "tool": "Gas Lift Valve", "od": 1.5, "length": 12 }
+          ],
+          "decisionPoint": false
+        },
+        {
+          "sequence": 10,
+          "phase": "Running Replacement",
+          "action": "RIH to target pocket, locate and kick over",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Wrong pocket", "GLV damage"],
+          "verification": "Depth confirmed, kickover engaged",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 11,
+          "phase": "Setting GLV",
+          "action": "Push GLV into pocket until latch engages, apply set-down weight to confirm",
+          "duration": 15,
+          "durationUnit": "minutes",
+          "hazards": ["Incomplete latch", "GLV damage"],
+          "verification": "Weight indicator shows release, string pulls free",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "GLV latches, string free", "action": "Continue to Step 12" },
+            { "condition": "GLV will not latch", "action": "Pull back, re-attempt max 3 times. If fails, POOH with GLV, inspect pocket (may need gauge ring run)" }
+          ]
+        },
+        {
+          "sequence": 12,
+          "phase": "Pulling Out of Hole",
+          "action": "POOH with running tool",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Stuck string"],
+          "verification": "String recovered, running tool intact",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 13,
+          "phase": "Verification",
+          "action": "Rig down lubricator, restore well to production",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Uncontrolled flow", "Leak"],
+          "verification": "Well flowing, THP/CHP stable, GLV functioning per design",
+          "decisionPoint": false
+        }
+      ],
+      "nptRisks": [
+        { "risk": "Stuck GLV", "probability": "Medium", "impact": "4-8 hours", "mitigation": "Pre-job review of GLV history, have fishing tools on standby" },
+        { "risk": "Kickover tool failure", "probability": "Low", "impact": "2-4 hours", "mitigation": "Backup kickover tool rigged up" },
+        { "risk": "Depth correlation error", "probability": "Low", "impact": "2-4 hours", "mitigation": "Review completion schematic, run CCL if required" }
+      ],
+      "lessonsLinked": ["LL-666-005"],
+      "relatedSOPs": ["SOP_008", "SOP_015", "SOP_020"],
+      "documents": ["GLV_Changeout_Checklist.pdf", "Kickover_Tool_Manual.pdf"]
+    },
+    {
+      "id": "sop_002",
+      "title": "Bridge Plug Setting",
+      "category": "slickline",
+      "version": "1.3",
+      "approvedDate": "2024-01-20",
+      "approvedBy": "Well Operations Manager",
+      "riskLevel": "high",
+      "estimatedDuration": { "min": 12, "max": 24, "unit": "hours" },
+      "description": "Procedure for running and setting a retrievable or permanent bridge plug for zone isolation.",
+      "applicability": {
+        "wellTypes": ["All"],
+        "completionTypes": ["All"],
+        "restrictions": ["Confirm no restrictions below setting depth", "Min 100ft rat hole below plug"]
+      },
+      "prerequisites": [
+        { "id": "prereq_1", "description": "Well shut-in and secured", "mandatory": true },
+        { "id": "prereq_2", "description": "Drift run completed to confirm clear bore to setting depth + 100ft", "mandatory": true },
+        { "id": "prereq_3", "description": "Bridge plug tested and certified", "mandatory": true },
+        { "id": "prereq_4", "description": "Setting depth confirmed from completion schematic", "mandatory": true },
+        { "id": "prereq_5", "description": "Slickline weight calculations completed", "mandatory": true }
+      ],
+      "barriers": {
+        "required": ["SCSSV", "Lubricator", "Stuffing Box"],
+        "notes": "Bridge plug will become a barrier element once set and tested"
+      },
+      "equipmentRequired": [
+        { "category": "slickline_tools", "items": ["Rope Socket", "Stem", "Knuckle Joint", "Jar", "Roller Stem"] },
+        { "category": "plugs_locks", "items": ["Bridge Plug", "Setting Tool"] },
+        { "category": "pce", "items": ["Lubricator Sections", "Stuffing Box"] }
+      ],
+      "steps": [
+        {
+          "sequence": 1,
+          "phase": "Preparation",
+          "action": "Confirm well status, review completion schematic, confirm setting depth",
+          "duration": 30,
+          "durationUnit": "minutes",
+          "hazards": ["Incorrect depth selection"],
+          "verification": "Setting depth signed off by operations and engineering",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 2,
+          "phase": "Preparation",
+          "action": "Rig up lubricator and pressure test",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["High pressure release"],
+          "verification": "Pressure test passed",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 3,
+          "phase": "Drift Run",
+          "action": "Run gauge ring/drift to setting depth + 100ft to confirm clear bore",
+          "duration": 90,
+          "durationUnit": "minutes",
+          "hazards": ["Obstruction", "Stuck tool"],
+          "verification": "Drift reaches target depth, POOH clean",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Drift successful", "action": "Continue to Step 4" },
+            { "condition": "Obstruction encountered", "action": "STOP. Run LIB to identify obstruction. May require fishing or cleanout." }
+          ]
+        },
+        {
+          "sequence": 4,
+          "phase": "Running Plug",
+          "action": "Make up bridge plug on setting tool with appropriate slickline string",
+          "duration": 45,
+          "durationUnit": "minutes",
+          "hazards": ["Incorrect assembly", "Premature setting"],
+          "verification": "Assembly checked by two personnel, setting mechanism confirmed safe",
+          "toolstring": [
+            { "position": 1, "tool": "Rope Socket", "od": 1.5, "length": 6 },
+            { "position": 2, "tool": "Stem", "od": 1.75, "length": 36 },
+            { "position": 3, "tool": "Knuckle Joint", "od": 1.75, "length": 12 },
+            { "position": 4, "tool": "Jar (Up)", "od": 2.25, "length": 48 },
+            { "position": 5, "tool": "Stem", "od": 1.75, "length": 24 },
+            { "position": 6, "tool": "Setting Tool", "od": 2.5, "length": 24 },
+            { "position": 7, "tool": "Bridge Plug", "od": 3.5, "length": 36 }
+          ],
+          "decisionPoint": false
+        },
+        {
+          "sequence": 5,
+          "phase": "Running Plug",
+          "action": "RIH to setting depth at controlled speed, correlate using collar log",
+          "duration": 90,
+          "durationUnit": "minutes",
+          "hazards": ["Premature setting", "Depth error"],
+          "verification": "Depth confirmed by collar count",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 6,
+          "phase": "Setting Plug",
+          "action": "Confirm exact depth, apply setting force per manufacturer specs",
+          "duration": 30,
+          "durationUnit": "minutes",
+          "hazards": ["Incomplete set", "Casing damage"],
+          "verification": "Weight indicator shows plug has set, string releases",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Plug sets, string releases", "action": "Continue to Step 7" },
+            { "condition": "Plug will not set", "action": "Pull back 50ft, re-run, attempt set again. Max 3 attempts." },
+            { "condition": "String will not release", "action": "Apply jar per procedure. If stuck, initiate fishing contingency." }
+          ]
+        },
+        {
+          "sequence": 7,
+          "phase": "Verification",
+          "action": "POOH with setting tool, rig up pressure test assembly",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Dropped objects"],
+          "verification": "Setting tool recovered intact",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 8,
+          "phase": "Verification",
+          "action": "Pressure test plug from above to confirm seal",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Plug failure", "Uncontrolled pressure"],
+          "verification": "Plug holds test pressure for required duration",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Pressure test passes", "action": "Operation complete. Document and proceed to next activity." },
+            { "condition": "Pressure test fails", "action": "Retrieve plug (SOP_003), inspect, re-run or replace" }
+          ]
+        }
+      ],
+      "nptRisks": [
+        { "risk": "Obstruction prevents reaching depth", "probability": "Medium", "impact": "4-12 hours", "mitigation": "Always run drift before plug" },
+        { "risk": "Plug fails to set", "probability": "Low", "impact": "4-8 hours", "mitigation": "Verify plug condition pre-job, have backup plug" },
+        { "risk": "Plug fails pressure test", "probability": "Low", "impact": "8-16 hours", "mitigation": "Use quality plugs, confirm setting depth is in good casing" }
+      ],
+      "lessonsLinked": ["LL-666-001", "LL-666-003", "LL-666-005"],
+      "relatedSOPs": ["SOP_003", "SOP_008"],
+      "documents": ["Bridge_Plug_Setting_Checklist.pdf"]
+    },
+    {
+      "id": "sop_003",
+      "title": "Bridge Plug Retrieval",
+      "category": "slickline",
+      "version": "2.0",
+      "approvedDate": "2024-06-01",
+      "approvedBy": "Well Operations Manager",
+      "riskLevel": "high",
+      "estimatedDuration": { "min": 8, "max": 48, "unit": "hours" },
+      "description": "Procedure for retrieving a retrievable bridge plug. NOTE: This procedure was revised following the Well_666 incident.",
+      "applicability": {
+        "wellTypes": ["All"],
+        "completionTypes": ["All"],
+        "restrictions": ["Confirm plug is retrievable type", "Review original setting report"]
+      },
+      "prerequisites": [
+        { "id": "prereq_1", "description": "Well shut-in and secured", "mandatory": true },
+        { "id": "prereq_2", "description": "Original plug setting report reviewed", "mandatory": true },
+        { "id": "prereq_3", "description": "Pressure above and below plug equalized where possible", "mandatory": true },
+        { "id": "prereq_4", "description": "Pulling tool and jar certified and inspected", "mandatory": true },
+        { "id": "prereq_5", "description": "CONTINGENCY: Fishing tools on standby", "mandatory": true }
+      ],
+      "barriers": {
+        "required": ["SCSSV", "Lubricator", "Stuffing Box"],
+        "notes": "WARNING: Be aware of barrier status once plug is retrieved. Ensure secondary barriers in place."
+      },
+      "equipmentRequired": [
+        { "category": "slickline_tools", "items": ["Rope Socket", "Stem", "Knuckle Joint", "Jar", "Roller Stem"] },
+        { "category": "pulling_tools", "items": ["Overshot", "Releasing Spear", "Shear Release"] },
+        { "category": "fishing_tools", "items": ["LIB (on standby)", "Junk Basket (on standby)"] },
+        { "category": "pce", "items": ["Lubricator Sections", "Stuffing Box"] }
+      ],
+      "steps": [
+        {
+          "sequence": 1,
+          "phase": "Preparation",
+          "action": "Review original setting report - confirm plug type, depth, any anomalies during setting",
+          "duration": 30,
+          "durationUnit": "minutes",
+          "hazards": ["Unknown plug condition"],
+          "verification": "Setting report reviewed, plug details confirmed",
+          "decisionPoint": false,
+          "criticalNote": "LESSON FROM WELL_666: Always review historical data before attempting retrieval"
+        },
+        {
+          "sequence": 2,
+          "phase": "Preparation",
+          "action": "Rig up lubricator with sufficient length for plug + toolstring",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["High pressure release"],
+          "verification": "Lubricator pressure tested, length sufficient",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 3,
+          "phase": "Preparation",
+          "action": "Equalize pressure across plug if possible",
+          "duration": 30,
+          "durationUnit": "minutes",
+          "hazards": ["Differential pressure"],
+          "verification": "Pressure readings confirm equalization or document differential",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Pressures equalized", "action": "Continue to Step 4" },
+            { "condition": "Cannot equalize - high differential", "action": "Document differential, ensure pulling tool rated for load, consider staged retrieval" }
+          ]
+        },
+        {
+          "sequence": 4,
+          "phase": "Running Pulling Tool",
+          "action": "Make up pulling toolstring with SHEAR RELEASE above overshot",
+          "duration": 45,
+          "durationUnit": "minutes",
+          "hazards": ["Incorrect assembly"],
+          "verification": "Shear release confirmed in string, shear value documented",
+          "toolstring": [
+            { "position": 1, "tool": "Rope Socket", "od": 1.5, "length": 6 },
+            { "position": 2, "tool": "Stem", "od": 1.75, "length": 36 },
+            { "position": 3, "tool": "Knuckle Joint", "od": 1.75, "length": 12 },
+            { "position": 4, "tool": "Jar (Up)", "od": 2.25, "length": 48 },
+            { "position": 5, "tool": "Shear Release", "od": 2.0, "length": 12 },
+            { "position": 6, "tool": "Stem", "od": 1.75, "length": 24 },
+            { "position": 7, "tool": "Overshot", "od": 2.875, "length": 24 }
+          ],
+          "decisionPoint": false,
+          "criticalNote": "LESSON FROM WELL_666: ALWAYS include shear release to prevent uncontrolled forces on completion"
+        },
+        {
+          "sequence": 5,
+          "phase": "Running Pulling Tool",
+          "action": "RIH to plug depth, tag top of plug gently",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Plug deeper than expected", "Obstruction above plug"],
+          "verification": "Plug tagged at expected depth",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Plug tagged at expected depth", "action": "Continue to Step 6" },
+            { "condition": "Tag shallow - possible debris on plug", "action": "STOP. POOH and run LIB to inspect (Step 5a)" },
+            { "condition": "No tag at depth - plug may have moved", "action": "Continue deeper cautiously, reassess" }
+          ]
+        },
+        {
+          "sequence": "5a",
+          "phase": "Diagnostics",
+          "action": "Run Lead Impression Block (LIB) to inspect plug top",
+          "duration": 90,
+          "durationUnit": "minutes",
+          "hazards": ["Inconclusive results"],
+          "verification": "LIB recovered, impression analyzed BY QUALIFIED PERSONNEL",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Clean impression of plug fishing neck", "action": "Continue retrieval attempt" },
+            { "condition": "Debris or FOD visible in impression", "action": "STOP. Clean out debris before retrieval (junk basket, magnet)" },
+            { "condition": "Impression unclear", "action": "Send impression to shore for expert analysis before proceeding" }
+          ],
+          "criticalNote": "LESSON FROM WELL_666: The LIB showed the tong die but was not recognized. ALWAYS have impressions reviewed by experienced personnel. When in doubt, send to shore."
+        },
+        {
+          "sequence": 6,
+          "phase": "Latching Plug",
+          "action": "Engage overshot onto plug fishing neck, confirm latch",
+          "duration": 15,
+          "durationUnit": "minutes",
+          "hazards": ["Incomplete latch", "Wrong engagement point"],
+          "verification": "Overpull confirms latch engagement",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Firm latch confirmed", "action": "Continue to Step 7" },
+            { "condition": "Latch feels soft or incomplete", "action": "Release, reposition, re-attempt. Max 3 attempts before running LIB." },
+            { "condition": "Cannot achieve latch after 3 attempts", "action": "STOP. Run LIB (Step 5a). DO NOT apply excessive force." }
+          ],
+          "criticalNote": "LESSON FROM WELL_666: Multiple failed latch attempts without diagnostics led to catastrophic outcome"
+        },
+        {
+          "sequence": 7,
+          "phase": "Releasing Plug",
+          "action": "Apply steady upward pull to release plug from seat. Use jar if required - CONTROLLED strokes only.",
+          "duration": 30,
+          "durationUnit": "minutes",
+          "hazards": ["Stuck plug", "Excessive jarring force damages completion"],
+          "verification": "Weight indicator shows release, string free to move",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Plug releases with normal pull", "action": "Continue to Step 8" },
+            { "condition": "Plug releases with jarring (< 5 strokes)", "action": "Continue to Step 8, document jarring force used" },
+            { "condition": "Plug stuck after 5 jar strokes", "action": "STOP. Do NOT continue jarring. Shear release if necessary. Run diagnostics. Consult engineering." }
+          ],
+          "criticalNote": "LESSON FROM WELL_666: Excessive jarring caused casing deformation and barrier damage. NEVER exceed 5 jar strokes without engineering review."
+        },
+        {
+          "sequence": 8,
+          "phase": "Pulling Out of Hole",
+          "action": "POOH slowly with plug. Monitor for hang-ups, especially at SCSSV and tubing hanger.",
+          "duration": 90,
+          "durationUnit": "minutes",
+          "hazards": ["Plug hangs on restriction", "Element snags SCSSV profile"],
+          "verification": "Plug clears all restrictions, recovered to surface",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Plug recovers cleanly", "action": "Continue to Step 9" },
+            { "condition": "Plug hangs at known restriction", "action": "Work carefully. If stuck, do NOT force. May need to set back and run smaller retrieval tool." },
+            { "condition": "Plug hangs at SCSSV", "action": "CRITICAL: Stop immediately. Assess risk of SCSSV damage. Consult engineering before proceeding." }
+          ],
+          "criticalNote": "LESSON FROM WELL_666: Expanded element snagged SCSSV protection sleeve, causing catastrophic barrier damage"
+        },
+        {
+          "sequence": 9,
+          "phase": "Verification",
+          "action": "Recover plug to surface, inspect for damage, debris, or anomalies. Rig down.",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["FOD in wellbore"],
+          "verification": "Plug complete and intact. If any parts missing, initiate fishing operation.",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Plug complete and intact", "action": "Operation complete. Document condition." },
+            { "condition": "Parts missing from plug", "action": "STOP. Initiate SOP_020 (Fishing Operations). Do NOT proceed with other activities until FOD cleared." }
+          ]
+        }
+      ],
+      "nptRisks": [
+        { "risk": "Plug stuck and cannot be retrieved", "probability": "Medium", "impact": "24-72 hours", "mitigation": "Have fishing contingency ready, engineering support on call" },
+        { "risk": "FOD on top of plug prevents latching", "probability": "Low", "impact": "4-12 hours", "mitigation": "Run LIB before attempting latch if any doubt" },
+        { "risk": "Plug element damages completion during POOH", "probability": "Low", "impact": "Catastrophic", "mitigation": "Know all restrictions, POOH slowly, stop at first sign of resistance" }
+      ],
+      "lessonsLinked": ["LL-666-001", "LL-666-002", "LL-666-003", "LL-666-004", "LL-666-005"],
+      "relatedSOPs": ["SOP_002", "SOP_008", "SOP_020"],
+      "documents": ["Bridge_Plug_Retrieval_Checklist_Rev2.pdf", "LIB_Analysis_Guide.pdf"],
+      "revisionNotes": "Rev 2.0 incorporates all lessons from Well_666 incident. Key changes: mandatory shear release, mandatory LIB after 3 failed latch attempts, jarring limit of 5 strokes, enhanced POOH monitoring at SCSSV."
+    },
+    {
+      "id": "sop_008",
+      "title": "Drift/Gauge Run",
+      "category": "diagnostics",
+      "version": "1.1",
+      "approvedDate": "2023-11-15",
+      "approvedBy": "Well Operations Manager",
+      "riskLevel": "low",
+      "estimatedDuration": { "min": 4, "max": 8, "unit": "hours" },
+      "description": "Procedure for running drift or gauge ring to confirm minimum bore and identify any restrictions.",
+      "applicability": {
+        "wellTypes": ["All"],
+        "completionTypes": ["All"],
+        "restrictions": ["None"]
+      },
+      "prerequisites": [
+        { "id": "prereq_1", "description": "Well shut-in", "mandatory": true },
+        { "id": "prereq_2", "description": "Target depth identified", "mandatory": true },
+        { "id": "prereq_3", "description": "Drift size selected based on completion schematic min ID", "mandatory": true }
+      ],
+      "barriers": {
+        "required": ["SCSSV", "Lubricator"],
+        "notes": "Standard barrier requirements"
+      },
+      "equipmentRequired": [
+        { "category": "slickline_tools", "items": ["Rope Socket", "Stem", "Knuckle Joint"] },
+        { "category": "gauges_logging", "items": ["Drift/Gauge Ring"] },
+        { "category": "pce", "items": ["Lubricator", "Stuffing Box"] }
+      ],
+      "steps": [
+        {
+          "sequence": 1,
+          "phase": "Preparation",
+          "action": "Rig up lubricator, pressure test",
+          "duration": 45,
+          "durationUnit": "minutes",
+          "hazards": ["High pressure"],
+          "verification": "Pressure test passed",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 2,
+          "phase": "Running",
+          "action": "Make up drift toolstring, RIH to target depth at controlled speed",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Stuck drift"],
+          "verification": "Drift reaches target depth",
+          "toolstring": [
+            { "position": 1, "tool": "Rope Socket", "od": 1.5, "length": 6 },
+            { "position": 2, "tool": "Stem", "od": 1.5, "length": 36 },
+            { "position": 3, "tool": "Knuckle Joint", "od": 1.75, "length": 12 },
+            { "position": 4, "tool": "Drift Ring", "od": 2.0, "length": 6 }
+          ],
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Drift reaches target depth", "action": "Continue to Step 3" },
+            { "condition": "Drift stops above target", "action": "Record depth of restriction, POOH, run LIB to identify" }
+          ]
+        },
+        {
+          "sequence": 3,
+          "phase": "Verification",
+          "action": "POOH, inspect drift for damage/marks",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["None"],
+          "verification": "Drift recovered, condition documented",
+          "decisionPoint": false
+        }
+      ],
+      "nptRisks": [
+        { "risk": "Unexpected restriction", "probability": "Medium", "impact": "2-4 hours", "mitigation": "Have LIB ready as contingency" }
+      ],
+      "lessonsLinked": [],
+      "relatedSOPs": ["SOP_002", "SOP_003"],
+      "documents": ["Drift_Run_Log_Template.pdf"]
+    },
+    {
+      "id": "sop_015",
+      "title": "SCSSV Function Test",
+      "category": "well_control",
+      "version": "1.4",
+      "approvedDate": "2024-02-01",
+      "approvedBy": "Well Integrity Manager",
+      "riskLevel": "medium",
+      "estimatedDuration": { "min": 2, "max": 4, "unit": "hours" },
+      "description": "Procedure for testing Surface Controlled Subsurface Safety Valve function and integrity.",
+      "applicability": {
+        "wellTypes": ["All producing wells"],
+        "completionTypes": ["SCSSV installed"],
+        "restrictions": ["Test frequency per regulatory requirements"]
+      },
+      "prerequisites": [
+        { "id": "prereq_1", "description": "Control line pressure available", "mandatory": true },
+        { "id": "prereq_2", "description": "Well can be safely shut-in", "mandatory": true },
+        { "id": "prereq_3", "description": "Previous test results reviewed", "mandatory": true }
+      ],
+      "barriers": {
+        "required": ["Wellhead Valves"],
+        "notes": "SCSSV is the barrier being tested"
+      },
+      "equipmentRequired": [
+        { "category": "well_control", "items": ["Control Line", "Test Equipment", "Pressure Recording"] }
+      ],
+      "steps": [
+        {
+          "sequence": 1,
+          "phase": "Preparation",
+          "action": "Shut in well, allow pressures to stabilize",
+          "duration": 30,
+          "durationUnit": "minutes",
+          "hazards": ["Pressure build-up"],
+          "verification": "THP/CHP stable",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 2,
+          "phase": "Closure Test",
+          "action": "Bleed control line pressure to close SCSSV",
+          "duration": 15,
+          "durationUnit": "minutes",
+          "hazards": ["SCSSV fails to close"],
+          "verification": "Control line pressure at zero, THP begins to rise (confirms closure)",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "SCSSV closes, THP rises", "action": "Continue to Step 3" },
+            { "condition": "SCSSV does not close", "action": "FAILURE. Implement contingency - well kill or insert valve may be required." }
+          ]
+        },
+        {
+          "sequence": 3,
+          "phase": "Leak Test",
+          "action": "Monitor THP for leak-off through closed SCSSV",
+          "duration": 30,
+          "durationUnit": "minutes",
+          "hazards": ["SCSSV leaking"],
+          "verification": "THP holds or increases (no leak)",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "No leak detected", "action": "Continue to Step 4" },
+            { "condition": "THP decreasing - possible leak", "action": "Document leak rate. If exceeds criteria, SCSSV requires repair/replacement." }
+          ]
+        },
+        {
+          "sequence": 4,
+          "phase": "Opening Test",
+          "action": "Apply control line pressure to re-open SCSSV",
+          "duration": 15,
+          "durationUnit": "minutes",
+          "hazards": ["SCSSV fails to open"],
+          "verification": "Control line pressure at operating value, THP/CHP equalize",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "SCSSV opens normally", "action": "Test complete. Document results." },
+            { "condition": "SCSSV stuck closed", "action": "CRITICAL FAILURE. Well cannot be produced. Wireline intervention required to lock open or replace." }
+          ],
+          "criticalNote": "Well_666 SCSSV was found stuck closed in 2021, likely due to debris or damage from 2016 event"
+        }
+      ],
+      "nptRisks": [
+        { "risk": "SCSSV fails to close", "probability": "Low", "impact": "Major - loss of barrier", "mitigation": "Regular testing, prompt response to any anomalies" },
+        { "risk": "SCSSV stuck closed", "probability": "Low", "impact": "Major - well shut-in", "mitigation": "Insert valve contingency" }
+      ],
+      "lessonsLinked": ["LL-666-005"],
+      "relatedSOPs": ["SOP_016"],
+      "documents": ["SCSSV_Test_Report_Template.pdf"]
+    },
+    {
+      "id": "sop_020",
+      "title": "Slickline Fishing Operations",
+      "category": "fishing",
+      "version": "1.2",
+      "approvedDate": "2024-07-01",
+      "approvedBy": "Well Operations Manager",
+      "riskLevel": "high",
+      "estimatedDuration": { "min": 12, "max": 168, "unit": "hours" },
+      "description": "Procedure for recovering lost or stuck equipment from the wellbore using slickline fishing tools. Based on lessons from Well_666.",
+      "applicability": {
+        "wellTypes": ["All"],
+        "completionTypes": ["All"],
+        "restrictions": ["Fish must be within slickline capability"]
+      },
+      "prerequisites": [
+        { "id": "prereq_1", "description": "Fish location and description documented", "mandatory": true },
+        { "id": "prereq_2", "description": "LIB run to confirm fish top and condition", "mandatory": true },
+        { "id": "prereq_3", "description": "Fishing tools selected based on fish dimensions", "mandatory": true },
+        { "id": "prereq_4", "description": "Fishing specialist consulted", "mandatory": true },
+        { "id": "prereq_5", "description": "Time and cost contingency approved by management", "mandatory": true }
+      ],
+      "barriers": {
+        "required": ["SCSSV", "Lubricator"],
+        "notes": "Extended fishing operations require regular barrier verification"
+      },
+      "equipmentRequired": [
+        { "category": "slickline_tools", "items": ["Rope Socket", "Stem", "Knuckle Joint", "Jar"] },
+        { "category": "fishing_tools", "items": ["Overshot", "Spear", "Prong Grabs", "Junk Basket", "LIB", "Magnet"] },
+        { "category": "pce", "items": ["Lubricator", "Stuffing Box"] }
+      ],
+      "steps": [
+        {
+          "sequence": 1,
+          "phase": "Assessment",
+          "action": "Review all available data on fish - how it got there, dimensions, orientation",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Incomplete information"],
+          "verification": "Fishing plan documented and approved",
+          "decisionPoint": false,
+          "criticalNote": "LESSON FROM WELL_666: Thorough assessment before fishing prevents extended NPT"
+        },
+        {
+          "sequence": 2,
+          "phase": "Assessment",
+          "action": "Run LIB to confirm fish top depth, orientation, and any debris",
+          "duration": 90,
+          "durationUnit": "minutes",
+          "hazards": ["Inconclusive results"],
+          "verification": "Clear impression obtained, analyzed by experienced personnel",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Clear impression, fish identified", "action": "Continue to Step 3" },
+            { "condition": "Unclear impression", "action": "Run additional LIBs at different approaches. Send to shore for expert analysis if needed." },
+            { "condition": "Debris obscuring fish", "action": "Clean out debris first (junk basket, magnet) before fishing attempt" }
+          ],
+          "criticalNote": "LESSON FROM WELL_666: Always analyze LIB carefully. The tong die was visible but not recognized."
+        },
+        {
+          "sequence": 3,
+          "phase": "Tool Selection",
+          "action": "Select appropriate fishing tool based on fish type and LIB results",
+          "duration": 30,
+          "durationUnit": "minutes",
+          "hazards": ["Wrong tool selection"],
+          "verification": "Tool selection approved by fishing specialist",
+          "decisionPoint": false,
+          "criticalNote": "LESSON FROM WELL_666: Simple tools (junk basket) were more effective than complex tools in debris recovery"
+        },
+        {
+          "sequence": 4,
+          "phase": "Fishing Attempt",
+          "action": "Make up fishing string with SHEAR RELEASE, RIH to fish",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Tool stuck on fish"],
+          "verification": "Tools reach fish depth",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 5,
+          "phase": "Fishing Attempt",
+          "action": "Engage fish, apply controlled pull. If jar required, limit strokes.",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Stuck string", "Completion damage"],
+          "verification": "Fish engaged and moving, or string released safely",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Fish engaged and moving", "action": "POOH carefully, continue to Step 6" },
+            { "condition": "Cannot engage fish after 3 attempts", "action": "POOH, run LIB, reassess approach" },
+            { "condition": "Fish engaged but stuck", "action": "Limited jarring (max 5 strokes). If no movement, shear release and reassess." }
+          ]
+        },
+        {
+          "sequence": 6,
+          "phase": "Recovery",
+          "action": "POOH with fish, inspect at surface",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Fish drops off during POOH"],
+          "verification": "Fish recovered complete",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Fish recovered complete", "action": "Document, assess if further fishing required" },
+            { "condition": "Partial recovery - pieces remain", "action": "Return to Step 2, continue fishing until bore clear" },
+            { "condition": "Fish lost during POOH", "action": "Run LIB to locate, restart fishing sequence" }
+          ]
+        }
+      ],
+      "nptRisks": [
+        { "risk": "Extended fishing operation", "probability": "High", "impact": "24-168 hours", "mitigation": "Expert involvement, clear decision points, management escalation triggers" },
+        { "risk": "Secondary fish created", "probability": "Medium", "impact": "Additional days", "mitigation": "Use shear release, controlled jarring, proper tool selection" },
+        { "risk": "Well damage during fishing", "probability": "Low", "impact": "Catastrophic", "mitigation": "Force limits, engineering oversight, stop work authority" }
+      ],
+      "lessonsLinked": ["LL-666-001", "LL-666-002", "LL-666-003", "LL-666-004", "LL-666-005"],
+      "relatedSOPs": ["SOP_003", "SOP_008"],
+      "documents": ["Fishing_Operations_Guide.pdf", "LIB_Analysis_Guide.pdf"],
+      "revisionNotes": "Incorporates all lessons from Well_666 fishing operation"
+    },
+    {
+      "id": "sop_025",
+      "title": "Lead Impression Block (LIB) Run",
+      "category": "diagnostics",
+      "version": "2.0",
+      "approvedDate": "2024-06-15",
+      "approvedBy": "Well Operations Manager",
+      "riskLevel": "low",
+      "estimatedDuration": { "min": 3, "max": 6, "unit": "hours" },
+      "description": "Procedure for running Lead Impression Block to obtain impression of downhole obstructions or equipment. Critical diagnostic tool - revised based on Well_666 lessons.",
+      "applicability": {
+        "wellTypes": ["All"],
+        "completionTypes": ["All"],
+        "restrictions": ["None"]
+      },
+      "prerequisites": [
+        { "id": "prereq_1", "description": "Target depth known", "mandatory": true },
+        { "id": "prereq_2", "description": "LIB size appropriate for bore", "mandatory": true },
+        { "id": "prereq_3", "description": "Experienced analyst available for impression interpretation", "mandatory": true }
+      ],
+      "barriers": {
+        "required": ["SCSSV", "Lubricator"],
+        "notes": "Standard requirements"
+      },
+      "equipmentRequired": [
+        { "category": "slickline_tools", "items": ["Rope Socket", "Stem"] },
+        { "category": "fishing_tools", "items": ["Lead Impression Block"] },
+        { "category": "pce", "items": ["Lubricator"] }
+      ],
+      "steps": [
+        {
+          "sequence": 1,
+          "phase": "Preparation",
+          "action": "Select LIB size, prepare fresh lead face, document pre-run condition",
+          "duration": 30,
+          "durationUnit": "minutes",
+          "hazards": ["Contaminated lead"],
+          "verification": "LIB photographed before run",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 2,
+          "phase": "Running",
+          "action": "RIH to target, tag obstruction gently to obtain impression",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Damage to LIB or fish"],
+          "verification": "LIB contacts target at expected depth",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 3,
+          "phase": "Recovery",
+          "action": "POOH, recover LIB to surface",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["LIB damage during POOH"],
+          "verification": "LIB recovered intact",
+          "decisionPoint": false
+        },
+        {
+          "sequence": 4,
+          "phase": "Analysis",
+          "action": "Photograph impression from multiple angles. Analyze with experienced personnel.",
+          "duration": 60,
+          "durationUnit": "minutes",
+          "hazards": ["Misinterpretation"],
+          "verification": "Impression analyzed and documented",
+          "decisionPoint": true,
+          "decisionOptions": [
+            { "condition": "Clear impression, object identified", "action": "Plan next steps based on identification" },
+            { "condition": "Unclear impression", "action": "Consider additional LIB run at different angle/approach" },
+            { "condition": "Unexpected object in impression", "action": "DO NOT DISMISS. Send photos to shore for expert analysis. Review all possibilities including FOD." }
+          ],
+          "criticalNote": "LESSON FROM WELL_666: The LIB showed a tong die impression but was dismissed as 'unclear' by on-site crew. This single miss led to catastrophic failure. WHEN IN DOUBT, SEND TO SHORE FOR EXPERT ANALYSIS."
+        }
+      ],
+      "nptRisks": [
+        { "risk": "Inconclusive impression", "probability": "Medium", "impact": "2-4 hours for re-run", "mitigation": "Run multiple LIBs if first unclear" }
+      ],
+      "lessonsLinked": ["LL-666-003"],
+      "relatedSOPs": ["SOP_003", "SOP_020"],
+      "documents": ["LIB_Analysis_Guide.pdf", "LIB_Photo_Protocol.pdf"],
+      "revisionNotes": "Rev 2.0 adds mandatory expert analysis requirement for any unclear impressions. Direct result of Well_666 incident."
+    }
+  ]
+}

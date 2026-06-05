@@ -1,0 +1,360 @@
+# BRAHAN ENGINE - NVIDIA INFERENCE MICROSERVICE (NIM) MANIFEST
+# WellTegra Ltd (Submission #113-069723)
+# Sovereign Industrial AI Platform for North Sea Ground Truth
+#
+# This manifest defines the Brahan Engine as an NVIDIA Inference Microservice
+# optimized for Vera Rubin (NVL72) deployment with NVFP4 precision.
+#
+# Deployment Target: NVIDIA Inference Microservices (NIM) on Kubernetes
+# Hardware: Vera Rubin NVL72 (72× Vera GPUs) + BlueField-4 DPU
+# Date: January 21, 2026
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: brahan-engine-nim
+  namespace: welltegra-platform
+  labels:
+    app: brahan-engine
+    tier: inference
+    vendor: welltegra-ltd
+    nvidia-nim: "enabled"
+    submission-id: "113-069723"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: brahan-engine
+  template:
+    metadata:
+      labels:
+        app: brahan-engine
+        tier: inference
+        gpu-type: vera-rubin
+    spec:
+      # Node affinity for Vera Rubin GPU nodes
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nvidia.com/gpu-type
+                operator: In
+                values:
+                - vera-rubin
+              - key: nvidia.com/nvl-topology
+                operator: In
+                values:
+                - nvl72
+
+      # Container specification
+      containers:
+      - name: brahan-engine
+        image: welltegra/brahan-engine:1.0.0-nim
+        imagePullPolicy: IfNotPresent
+
+        # Resource requests and limits for Vera Rubin
+        resources:
+          requests:
+            memory: "128Gi"
+            cpu: "32"
+            nvidia.com/gpu: "8"  # 8× Vera GPUs per pod
+            nvidia.com/dpu: "1"  # 1× BlueField-4 DPU for crypto offload
+          limits:
+            memory: "256Gi"
+            cpu: "64"
+            nvidia.com/gpu: "8"
+            nvidia.com/dpu: "1"
+
+        # Environment variables for NVIDIA stack optimization
+        env:
+        - name: NVIDIA_VISIBLE_DEVICES
+          value: "all"
+        - name: NVIDIA_DRIVER_CAPABILITIES
+          value: "compute,utility"
+        - name: CUDA_DEVICE_ORDER
+          value: "PCI_BUS_ID"
+
+        # Brahan Engine specific configuration
+        - name: BRAHAN_PRECISION_MODE
+          value: "NVFP4"  # 4-bit floating point for Vera Rubin
+        - name: BRAHAN_MAX_WELLS
+          value: "1000"   # Sovereign-scale audit capacity
+        - name: BRAHAN_GNN_LAYERS
+          value: "128"    # mHC-GNN depth (74% accuracy target)
+        - name: BRAHAN_CONSENSUS_AGENTS
+          value: "11"     # 11-Agent Consensus Protocol
+        - name: BRAHAN_DPU_CRYPTO_OFFLOAD
+          value: "true"   # BlueField-4 cryptographic notarization
+
+        # NVIDIA NIM specific environment
+        - name: NIM_MODEL_NAME
+          value: "brahan-mhc-gnn"
+        - name: NIM_MODEL_VERSION
+          value: "1.0.0"
+        - name: NIM_INFERENCE_BACKEND
+          value: "triton"
+        - name: NIM_TRITON_GRPC_PORT
+          value: "8001"
+        - name: NIM_TRITON_HTTP_PORT
+          value: "8000"
+        - name: NIM_TRITON_METRICS_PORT
+          value: "8002"
+
+        # Regulatory compliance
+        - name: WELLTEGRA_NSTA_WIOS_MODE
+          value: "enabled"
+        - name: WELLTEGRA_UK_ETS_PERIOD
+          value: "2"      # UK ETS Period 2 (2026-2030)
+        - name: WELLTEGRA_GPG_SIGNING
+          value: "enabled"
+        - name: WELLTEGRA_GPG_KEY_ID
+          value: "0x5AF1E97DBD6CAE7F"
+
+        # Ports
+        ports:
+        - name: http
+          containerPort: 8000
+          protocol: TCP
+        - name: grpc
+          containerPort: 8001
+          protocol: TCP
+        - name: metrics
+          containerPort: 8002
+          protocol: TCP
+
+        # Health checks
+        livenessProbe:
+          httpGet:
+            path: /v2/health/live
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        readinessProbe:
+          httpGet:
+            path: /v2/health/ready
+            port: http
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+        # Volume mounts
+        volumeMounts:
+        - name: model-repository
+          mountPath: /models
+          readOnly: true
+        - name: gpg-keyring
+          mountPath: /etc/welltegra/gpg
+          readOnly: true
+        - name: perfect-11-data
+          mountPath: /data/perfect-11
+          readOnly: true
+
+      # Volumes
+      volumes:
+      - name: model-repository
+        persistentVolumeClaim:
+          claimName: brahan-models-pvc
+      - name: gpg-keyring
+        secret:
+          secretName: welltegra-gpg-keys
+      - name: perfect-11-data
+        persistentVolumeClaim:
+          claimName: perfect-11-wellbore-data
+
+      # NVIDIA GPU Operator integration
+      runtimeClassName: nvidia
+
+---
+# Service for Brahan Engine NIM
+apiVersion: v1
+kind: Service
+metadata:
+  name: brahan-engine-service
+  namespace: welltegra-platform
+  labels:
+    app: brahan-engine
+spec:
+  type: LoadBalancer
+  selector:
+    app: brahan-engine
+  ports:
+  - name: http
+    port: 8000
+    targetPort: 8000
+    protocol: TCP
+  - name: grpc
+    port: 8001
+    targetPort: 8001
+    protocol: TCP
+  - name: metrics
+    port: 8002
+    targetPort: 8002
+    protocol: TCP
+
+---
+# Horizontal Pod Autoscaler for demand-responsive scaling
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: brahan-engine-hpa
+  namespace: welltegra-platform
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: brahan-engine-nim
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Pods
+    pods:
+      metric:
+        name: inference_requests_per_second
+      target:
+        type: AverageValue
+        averageValue: "100"
+
+---
+# ConfigMap for Brahan Engine Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: brahan-config
+  namespace: welltegra-platform
+data:
+  brahan_config.yaml: |
+    # Brahan Engine Configuration
+    version: "1.0.0"
+    platform: "Sovereign Industrial AI"
+
+    # Physical AI Settings
+    manifold_projection:
+      algorithm: "sinkhorn-knopp"
+      birkhoff_polytope: true
+      max_iterations: 100
+      convergence_threshold: 1e-6
+      arxiv_ref: "2512.24880"
+
+    # mHC-GNN Architecture
+    graph_neural_network:
+      type: "mHC-GNN"
+      layers: 128
+      target_accuracy: 0.74
+      max_wells: 1000
+      arxiv_ref: "2601.02451"
+
+    # NVIDIA Hardware Optimization
+    nvidia_stack:
+      gpu_architecture: "vera-rubin"
+      nvl_topology: "nvl72"
+      precision: "NVFP4"
+      dpu_model: "bluefield-4"
+      cpu_cores: "olympus"
+
+    # 11-Agent Consensus Protocol
+    consensus:
+      agents:
+        - drilling_engineer
+        - hse_officer
+        - reservoir_engineer
+        - completion_engineer
+        - geologist
+        - production_engineer
+        - integrity_engineer
+        - regulatory_specialist
+        - data_steward
+        - qa_qc_officer
+        - chief_engineer
+      minimum_approval: 9  # 9/11 required for consensus
+      pinned_to: "olympus-cores"
+
+    # Cryptographic Notarization
+    cryptography:
+      gpg_signing: true
+      key_id: "0x5AF1E97DBD6CAE7F"
+      fingerprint: "8447 0409 82A2 FBC5 47AF E337 5AF1 E97D BD6C AE7F"
+      dpu_offload: true  # BlueField-4 hardware acceleration
+
+    # Perfect 11 Asset Manifest
+    perfect_11_assets:
+      - thistle
+      - ninian
+      - magnus
+      - alwyn
+      - dunbar
+      - scott
+      - armada
+      - tiffany
+      - everest
+      - lomond
+      - dan_field
+
+    # Regulatory Compliance
+    regulatory:
+      nsta_wios: true
+      nsta_section_7: true
+      uk_ets_period: 2
+      uk_ets_years: [2026, 2027, 2028, 2029, 2030]
+      hmrc_fiscal_integrity: true
+
+---
+# Secret for GPG Keys (placeholder - populate with actual keys)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: welltegra-gpg-keys
+  namespace: welltegra-platform
+type: Opaque
+stringData:
+  public-key.asc: |
+    # GPG public key will be injected here
+    # Key ID: 0x5AF1E97DBD6CAE7F
+    # Fingerprint: 8447 0409 82A2 FBC5 47AF E337 5AF1 E97D BD6C AE7F
+  # private-key.asc: <REDACTED - stored in secure vault>
+
+---
+# PersistentVolumeClaim for Model Repository
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: brahan-models-pvc
+  namespace: welltegra-platform
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 500Gi
+  storageClassName: fast-nvme
+
+---
+# PersistentVolumeClaim for Perfect 11 Wellbore Data
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: perfect-11-wellbore-data
+  namespace: welltegra-platform
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 1Ti
+  storageClassName: high-throughput-ssd

@@ -1,0 +1,260 @@
+{
+  "INSTRUCTIONS": "Copy the category templates below and add to equipment.json",
+  "NOTE": "Remove this instruction section when copying to the main file",
+
+  "NEW_CATEGORIES_TO_ADD": [
+    {
+      "id": "coiled_tubing",
+      "name": "Coiled Tubing Tools",
+      "description": "Coiled tubing BHA components and specialized tools for CT operations",
+      "equipment": [
+        {
+          "id": "CT-001",
+          "name": "CT Connector (Quick)",
+          "od": 2.875,
+          "length": 12.0,
+          "weight": 15,
+          "dailyRate": 200,
+          "manufacturer": "Halliburton",
+          "pressureRating": 10000,
+          "tempRating": 300,
+          "connectionType": "Pin x Box",
+          "notes": "Quick connector for CT BHA assembly"
+        },
+        {
+          "id": "CT-002",
+          "name": "CT Wash Tool",
+          "od": 2.5,
+          "length": 48.0,
+          "weight": 45,
+          "dailyRate": 350,
+          "manufacturer": "Weatherford",
+          "pressureRating": 10000,
+          "tempRating": 350,
+          "nozzles": 4,
+          "nozzleSize": "0.25\"",
+          "notes": "High-pressure jetting tool for wellbore cleanout"
+        },
+        {
+          "id": "CT-003",
+          "name": "CT Mill (Rotary)",
+          "od": 2.75,
+          "length": 36.0,
+          "weight": 55,
+          "dailyRate": 500,
+          "manufacturer": "Baker Hughes",
+          "pressureRating": 10000,
+          "tempRating": 350,
+          "cuttingType": "Tungsten Carbide",
+          "notes": "For milling scale, cement, or soft metals"
+        }
+      ]
+    },
+    {
+      "id": "wireline_tools",
+      "name": "Wireline Tools",
+      "description": "Electric line and braided line intervention tools",
+      "equipment": [
+        {
+          "id": "WL-001",
+          "name": "E-Line Cable (7/16\")",
+          "od": 0.4375,
+          "length": null,
+          "weight": null,
+          "dailyRate": 1500,
+          "manufacturer": "Schlumberger",
+          "pressureRating": 15000,
+          "tempRating": 350,
+          "conductors": 7,
+          "breakingStrength": 12000,
+          "notes": "Per day rate for cable and unit"
+        },
+        {
+          "id": "WL-002",
+          "name": "CCL (Casing Collar Locator)",
+          "od": 1.6875,
+          "length": 24.0,
+          "weight": 12,
+          "dailyRate": 250,
+          "manufacturer": "Schlumberger",
+          "pressureRating": 20000,
+          "tempRating": 350,
+          "toolType": "Correlation",
+          "notes": "Magnetic casing collar detection"
+        },
+        {
+          "id": "WL-003",
+          "name": "GR (Gamma Ray)",
+          "od": 1.6875,
+          "length": 36.0,
+          "weight": 18,
+          "dailyRate": 350,
+          "manufacturer": "Halliburton",
+          "pressureRating": 20000,
+          "tempRating": 350,
+          "toolType": "Correlation",
+          "notes": "Natural gamma ray measurement for depth correlation"
+        },
+        {
+          "id": "WL-004",
+          "name": "Setting Tool (Mechanical)",
+          "od": 2.125,
+          "length": 48.0,
+          "weight": 35,
+          "dailyRate": 450,
+          "manufacturer": "Baker Hughes",
+          "pressureRating": 15000,
+          "tempRating": 350,
+          "settingForce": "25,000 lbs",
+          "notes": "For setting bridge plugs and packers"
+        }
+      ]
+    },
+    {
+      "id": "well_maintenance",
+      "name": "Well Maintenance Tools",
+      "description": "Tools for wellbore cleaning, scale removal, and integrity maintenance",
+      "equipment": [
+        {
+          "id": "WM-001",
+          "name": "Rotary Jetting Tool",
+          "od": 2.5,
+          "length": 48.0,
+          "weight": 45,
+          "dailyRate": 400,
+          "manufacturer": "Weatherford",
+          "pressureRating": 10000,
+          "tempRating": 300,
+          "nozzles": 6,
+          "maxFlowRate": "8 bpm",
+          "notes": "360° rotating jetting for scale removal"
+        },
+        {
+          "id": "WM-002",
+          "name": "Scraper Tool (Bladed)",
+          "od": 3.5,
+          "length": 24.0,
+          "weight": 28,
+          "dailyRate": 250,
+          "manufacturer": "Various",
+          "pressureRating": 5000,
+          "tempRating": 250,
+          "bladeType": "Spring-loaded carbide",
+          "notes": "For removing paraffin and light scale deposits"
+        },
+        {
+          "id": "WM-003",
+          "name": "Magnet (Heavy Duty)",
+          "od": 2.75,
+          "length": 36.0,
+          "weight": 42,
+          "dailyRate": 300,
+          "manufacturer": "Bowen",
+          "pressureRating": 10000,
+          "tempRating": 300,
+          "pullStrength": "800 lbs",
+          "notes": "For retrieving ferrous debris"
+        }
+      ]
+    },
+    {
+      "id": "tool_packages",
+      "name": "Tool Packages",
+      "description": "Pre-configured toolstring packages for common operations",
+      "equipment": [
+        {
+          "id": "PKG-001",
+          "name": "Gas Lift Valve Change-Out Package",
+          "od": 2.25,
+          "length": 126.0,
+          "weight": 75,
+          "dailyRate": 1200,
+          "manufacturer": "Integrated Package",
+          "pressureRating": 15000,
+          "tempRating": 350,
+          "packageContents": [
+            "Rope Socket",
+            "Stem (3ft x2)",
+            "Knuckle Joint",
+            "Mechanical Jar",
+            "Kickover Tool",
+            "GLV Running Tool",
+            "Gas Lift Valve"
+          ],
+          "notes": "Complete package for single GLV replacement, ready to run"
+        },
+        {
+          "id": "PKG-002",
+          "name": "Bridge Plug Setting Package",
+          "od": 2.875,
+          "length": 150.0,
+          "weight": 110,
+          "dailyRate": 2500,
+          "manufacturer": "Integrated Package",
+          "pressureRating": 15000,
+          "tempRating": 350,
+          "packageContents": [
+            "Rope Socket",
+            "CCL/GR Combo",
+            "Stem (3ft)",
+            "Knuckle Joint",
+            "Mechanical Jar",
+            "Setting Tool",
+            "Bridge Plug (4.5\" Retrievable)"
+          ],
+          "notes": "Complete bridge plug setting string with depth correlation"
+        },
+        {
+          "id": "PKG-003",
+          "name": "CT Cleanout Package",
+          "od": 2.875,
+          "length": 180.0,
+          "weight": 185,
+          "dailyRate": 3500,
+          "manufacturer": "Integrated Package",
+          "pressureRating": 10000,
+          "tempRating": 300,
+          "packageContents": [
+            "CT Connector",
+            "Check Valve",
+            "Wash Tool",
+            "Jetting Sub",
+            "Mill (if needed)",
+            "Magnet"
+          ],
+          "notes": "Complete CT cleanout BHA with options for milling"
+        }
+      ]
+    }
+  ],
+
+  "PROPERTY_DEFINITIONS": {
+    "REQUIRED_PROPERTIES": {
+      "id": "Unique identifier (e.g., 'CT-001', 'WL-002')",
+      "name": "Tool name",
+      "od": "Outer diameter in inches (use null if not applicable)",
+      "length": "Length in inches (use null if not applicable)",
+      "weight": "Weight in pounds (use null if not applicable)",
+      "dailyRate": "Daily rental rate in USD",
+      "manufacturer": "Tool manufacturer or 'Various'",
+      "pressureRating": "Maximum working pressure in PSI",
+      "tempRating": "Maximum temperature rating in Fahrenheit"
+    },
+    "OPTIONAL_PROPERTIES": {
+      "connectionType": "Thread type (e.g., 'Pin x Box', 'VAM TOP')",
+      "notes": "Important operational notes",
+      "jarType": "For jars: 'up', 'down', or 'up/down'",
+      "triggerLoad": "For jars: trigger force in lbs",
+      "pullStrength": "For fishing tools: maximum pull force in lbs",
+      "fishRange": "For grabs: min-max diameter range",
+      "nozzles": "Number of nozzles for jetting tools",
+      "nozzleSize": "Nozzle diameter",
+      "cuttingType": "For mills: cutting element material",
+      "settingForce": "For setting tools: force in lbs",
+      "packageContents": "For packages: array of included tools",
+      "bladeType": "For scrapers: blade description",
+      "conductors": "For e-line: number of conductors",
+      "breakingStrength": "For cables: maximum tension in lbs"
+    }
+  }
+}
