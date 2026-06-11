@@ -9,13 +9,18 @@ import EngineRoomVideoVault from './EngineRoomVideoVault';
 import CTASection from './CTASection';
 import Footer from './Footer';
 import ProjectIndexDashboard from './ProjectIndexDashboard';
+import EnhancedProjectIndexDashboard from './EnhancedProjectIndexDashboard';
 import WellPlannerCanvas from './WellPlannerCanvas';
 import EquipmentCatalog from './EquipmentCatalog';
 import PlatformShell from './PlatformShell';
+import EnhancedPlatformShell from './EnhancedPlatformShell';
 import UnifiedPlatformExplorer from './UnifiedPlatformExplorer';
+import { YouTubeVideoGallery, YouTubeChannelIntegration } from './YouTubeIntegration';
+import { YouTubeGrowthCTA, CommunityEngagementCTA } from './YouTubeCTAComponents';
+import { YouTubeAnalyticsDashboard } from './YouTubeAnalytics';
 
 // Application View Types
-type AppView = 'landing' | 'dashboard' | 'platform-explorer' | 'well-planner' | 'equipment-catalog';
+type AppView = 'landing' | 'dashboard' | 'platform-explorer' | 'well-planner' | 'equipment-catalog' | 'youtube-analytics';
 
 // Main App Component with Multimedia Integration
 export default function AppIntegration() {
@@ -34,6 +39,16 @@ export default function AppIntegration() {
           <PlatformExplorer />
           <PedigreeTimeline />
           <EngineRoomVideoVault />
+
+          {/* YouTube Integration Section */}
+          <div className="py-24 px-6 lg:px-8 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+            <div className="max-w-7xl mx-auto space-y-16">
+              <YouTubeGrowthCTA />
+              <YouTubeVideoGallery />
+              <CommunityEngagementCTA />
+            </div>
+          </div>
+
           <CTASection />
           <Footer />
         </div>
@@ -44,7 +59,7 @@ export default function AppIntegration() {
     const currentApp = getCurrentApp();
 
     return (
-      <PlatformShell>
+      <EnhancedPlatformShell>
         {currentView === 'landing' && (
           <div className="space-y-6">
             <div>
@@ -94,6 +109,19 @@ export default function AppIntegration() {
                 </div>
                 <div className="text-sm text-slate-400">
                   Trajectory design and validation
+                </div>
+              </button>
+
+              <button
+                onClick={() => setCurrentView('youtube-analytics')}
+                className="p-6 bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-xl text-left hover:border-red-500/50 transition-colors group"
+              >
+                <div className="text-3xl mb-3">🎬</div>
+                <div className="font-semibold text-white mb-2 group-hover:text-red-400 transition-colors">
+                  YouTube Analytics
+                </div>
+                <div className="text-sm text-slate-400">
+                  Channel performance and insights
                 </div>
               </button>
             </div>
@@ -151,11 +179,11 @@ export default function AppIntegration() {
                   <ul className="space-y-2 text-sm text-slate-400">
                     <li className="flex items-center gap-2">
                       <span className="text-teal-500">→</span>
-                      <span>Google Cloud Run (auto-scaling to 100 instances)</span>
+                      <span>Containerized microservices (auto-scaling to 100 instances)</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="text-teal-500">→</span>
-                      <span>Vertex AI endpoints with real-time monitoring</span>
+                      <span>Edge computing endpoints with real-time monitoring</span>
                     </li>
                     <li className="flex items-center gap-2">
                       <span className="text-teal-500">→</span>
@@ -168,11 +196,12 @@ export default function AppIntegration() {
           </div>
         )}
 
-        {currentView === 'dashboard' && <ProjectIndexDashboard />}
+        {currentView === 'dashboard' && <EnhancedProjectIndexDashboard />}
         {currentView === 'platform-explorer' && <UnifiedPlatformExplorer />}
         {currentView === 'well-planner' && <WellPlannerCanvas />}
         {currentView === 'equipment-catalog' && <EquipmentCatalog />}
-      </PlatformShell>
+        {currentView === 'youtube-analytics' && <YouTubeAnalyticsDashboard />}
+      </EnhancedPlatformShell>
     );
   };
 

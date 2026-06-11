@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 
@@ -113,10 +113,22 @@ export default function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-            <button className="px-8 py-4 bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-teal-500/50">
+            <button className="relative px-8 py-4 bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded-lg transition-all duration-200 font-display-industrial" style={{
+              boxShadow: '0 4px 6px rgba(20,184,166,0.2), inset 0 1px 0 rgba(255,255,255,0.1)'
+            }}>
+              {/* Corner Accents */}
+              <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-white/30" />
+              <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-white/30" />
+              <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-white/30" />
+              <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-white/30" />
               Launch Platform Explorer
             </button>
-            <button className="px-8 py-4 bg-slate-800/80 hover:bg-slate-700/80 text-white font-semibold rounded-lg border border-white/10 backdrop-blur-sm transition-all duration-200">
+            <button className="relative px-8 py-4 bg-slate-800/80 hover:bg-slate-700/80 text-white font-semibold rounded-lg border-2 border-white/10 backdrop-blur-sm transition-all duration-200 font-display-industrial" style={{
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 6px rgba(0,0,0,0.3)'
+            }}>
+              {/* Corner Accents */}
+              <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-white/10" />
+              <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-white/10" />
               View Technical Documentation
             </button>
           </div>

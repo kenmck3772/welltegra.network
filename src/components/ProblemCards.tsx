@@ -1,4 +1,4 @@
-import React from 'react';
+import EnhancedStatCard from './EnhancedStatCard';
 
 // Stat Card Data Structure
 interface StatCard {
@@ -127,7 +127,15 @@ export default function ProblemCards() {
         {/* Stats Grid */}
         <div className="grid md:grid-cols-3 gap-8">
           {statCards.map((card, index) => (
-            <StatCard key={index} card={card} index={index} />
+            <EnhancedStatCard
+              key={index}
+              title={card.label}
+              value={card.value}
+              description={card.description}
+              color={card.accentColor}
+              isLive={true}
+              precision={card.accentColor === 'orange' ? '±£50K' : card.accentColor === 'teal' ? '±1 well' : undefined}
+            />
           ))}
         </div>
 
@@ -160,7 +168,7 @@ export default function ProblemCards() {
       </div>
 
       {/* Animation Styles */}
-      <style jsx>{`
+      <style>{`
         @keyframes fadeInUp {
           from {
             opacity: 0;

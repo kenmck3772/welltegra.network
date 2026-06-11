@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ExpandableMultimediaCard from './ExpandableMultimediaCard';
 
 // Interface for platform applications
@@ -44,8 +44,8 @@ export default function UnifiedPlatformExplorer() {
       id: 'brahan-dashboard',
       name: 'Brahan Engine Dashboard',
       description: 'Real-time wellbore verification dashboard with 60fps physics-constrained predictions. Live monitoring of all 11 consensus agents.',
-      type: 'gcp-dashboard',
-      url: 'https://brahan-dashboard-371901038176.us-central1.run.app',
+      type: 'custom-embed',
+      url: 'https://brahan-dashboard.welltegra.network', // Replace with actual sovereign endpoint
       status: 'live',
       accentColor: 'teal',
       technicalSpecs: [
@@ -60,19 +60,19 @@ export default function UnifiedPlatformExplorer() {
         {
           category: 'Infrastructure',
           items: [
-            { label: 'Platform', value: 'Cloud Run' },
-            { label: 'Region', value: 'us-central1' },
+            { label: 'Platform', value: 'Edge Computing' },
+            { label: 'Deployment', value: 'Distributed Nodes' },
             { label: 'Instances', value: '3/5 active' }
           ]
         }
       ]
     },
     {
-      id: 'vertex-ai-pipeline',
-      name: 'Vertex AI Pipeline Monitor',
+      id: 'ml-pipeline-monitor',
+      name: 'Sovereign AI Pipeline Monitor',
       description: 'Live ML pipeline monitoring with real-time model performance, data drift detection, and automated retraining triggers.',
-      type: 'gcp-dashboard',
-      url: 'https://vertex-ai-pipeline-monitor.web.app',
+      type: 'custom-embed',
+      url: 'https://ml-pipeline-monitor.welltegra.network', // Replace with actual sovereign endpoint
       status: 'live',
       accentColor: 'blue',
       technicalSpecs: [
@@ -98,8 +98,8 @@ export default function UnifiedPlatformExplorer() {
       id: 'structural-verification',
       name: 'Structural Verification Builder',
       description: '60fps real-time wellbore structural analysis with physics-constrained neural networks and safety boundary enforcement.',
-      type: 'google-app',
-      url: 'https://script.google.com/macros/s/AKfycbx-TIME_FOR_REAL_URL/exec',
+      type: 'custom-embed',
+      url: 'https://structural-verification.welltegra.network', // Replace with actual sovereign endpoint
       status: 'beta',
       accentColor: 'orange',
       technicalSpecs: [
@@ -125,8 +125,8 @@ export default function UnifiedPlatformExplorer() {
       id: 'nsta-compliance',
       name: 'NSTA WIOS Compliance Checker',
       description: 'Automated NSTA Well Integrity Operations Standards compliance verification with PDF report generation.',
-      type: 'google-app',
-      url: 'https://nsta-compliance-tool.web.app',
+      type: 'custom-embed',
+      url: 'https://nsta-compliance.welltegra.network', // Replace with actual sovereign endpoint
       status: 'live',
       accentColor: 'purple',
       technicalSpecs: [
@@ -152,8 +152,8 @@ export default function UnifiedPlatformExplorer() {
       id: 'eu-ai-act-validator',
       name: 'EU AI Act Compliance Validator',
       description: 'Real-time validation against EU AI Act requirements for high-risk AI systems in critical infrastructure.',
-      type: 'google-app',
-      url: 'https://eu-ai-validator.web.app',
+      type: 'custom-embed',
+      url: 'https://eu-ai-validator.welltegra.network', // Replace with actual sovereign endpoint
       status: 'beta',
       accentColor: 'amber',
       technicalSpecs: [
@@ -179,8 +179,8 @@ export default function UnifiedPlatformExplorer() {
       id: 'decommissioning-calculator',
       name: 'Decommissioning Cost Calculator',
       description: 'Interactive ROI calculator for P&A operations with physics-based cost modeling and risk assessment.',
-      type: 'google-app',
-      url: 'https://decommissioning-calc.web.app',
+      type: 'custom-embed',
+      url: 'https://decommissioning-calc.welltegra.network', // Replace with actual sovereign endpoint
       status: 'live',
       accentColor: 'teal',
       technicalSpecs: [
@@ -207,8 +207,8 @@ export default function UnifiedPlatformExplorer() {
   // Filter apps by category
   const filteredApps = platformApps.filter(app => {
     if (selectedCategory === 'all') return true;
-    if (selectedCategory === 'dashboards') return app.type === 'gcp-dashboard';
-    if (selectedCategory === 'apps') return app.type === 'google-app' || app.type === 'custom-embed';
+    if (selectedCategory === 'dashboards') return app.type === 'custom-embed' && app.url.includes('dashboard');
+    if (selectedCategory === 'apps') return app.type === 'custom-embed';
     if (selectedCategory === 'videos') return app.type === 'youtube';
     return true;
   });
@@ -229,7 +229,7 @@ export default function UnifiedPlatformExplorer() {
           Unified Platform Explorer
         </h1>
         <p className="text-slate-400">
-          Live application sandbox for GCP dashboards, interactive tools, and technical demonstrations
+          Live application sandbox for sovereign infrastructure dashboards, interactive tools, and technical demonstrations
         </p>
       </div>
 
@@ -336,7 +336,7 @@ export default function UnifiedPlatformExplorer() {
           <div>
             <h4 className="font-semibold text-teal-400 mb-2 text-sm">Interactive Applications</h4>
             <p className="text-sm text-slate-400 leading-relaxed">
-              Click "Load Application" to initialize live GCP dashboards and interactive tools.
+              Click "Load Application" to initialize live sovereign infrastructure dashboards and interactive tools.
               Each application runs in a secure sandbox environment with real-time data processing.
             </p>
           </div>

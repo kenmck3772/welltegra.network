@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 // Main Well Planner Canvas Component
 export default function WellPlannerCanvas() {

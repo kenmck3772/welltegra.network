@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 // Technical Detail Data Structure
 interface TechnicalSection {
@@ -111,7 +111,7 @@ export default function EngineRoom() {
       icon: '⚙️',
       details: [
         'Python 3.11+ with FastAPI for high-performance async API endpoints',
-        'Google Cloud Vertex AI for managed ML model deployment',
+        'Sovereign AI infrastructure for managed ML model deployment',
         'Docker containerization with Kubernetes orchestration',
         'PostgreSQL with TimescaleDB for time-series wellbore data',
         'Redis for real-time caching and session management',
@@ -214,7 +214,7 @@ def verify_consensus(verification_result, agent_count=11, required=9):
       description: 'Production-ready infrastructure designed for offshore operations',
       icon: '🚀',
       details: [
-        'Multi-region GCP deployment with automatic failover',
+        'Multi-region sovereign deployment with automatic failover',
         'Horizontal pod autoscaling based on verification load',
         'Edge deployment on ARM architectures for offshore platforms',
         'Air-gapped deployment options for restricted networks',

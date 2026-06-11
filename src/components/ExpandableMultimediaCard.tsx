@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 // Content types for multimedia cards
 type MediaType = 'youtube' | 'google-app' | 'gcp-dashboard' | 'custom-embed';
@@ -108,8 +108,10 @@ export default function ExpandableMultimediaCard({
       case 'youtube':
         return getYouTubeEmbedUrl(content.url);
       case 'google-app':
-      case 'gcp-dashboard':
         return getGoogleAppEmbedUrl(content.url);
+      case 'gcp-dashboard':
+      case 'custom-embed':
+        return content.url;
       default:
         return content.url;
     }
@@ -124,6 +126,8 @@ export default function ExpandableMultimediaCard({
         return '📊';
       case 'gcp-dashboard':
         return '☁️';
+      case 'custom-embed':
+        return '🔧';
       default:
         return '🔧';
     }

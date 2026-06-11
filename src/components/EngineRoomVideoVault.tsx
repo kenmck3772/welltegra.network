@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ExpandableMultimediaCard from './ExpandableMultimediaCard';
 
 // Interface for video content
@@ -36,10 +36,10 @@ export default function EngineRoomVideoVault() {
   // Video Content Data
   const videoContent: VideoContent[] = [
     {
-      id: 'vertex-ai-pipeline',
-      title: 'Vertex AI Pipeline Architecture Deep Dive',
-      description: 'Complete walkthrough of our Vertex AI ML pipeline including data preprocessing, model training, deployment, and monitoring. Covers Google Cloud architecture, API design patterns, and production scaling.',
-      url: 'https://www.youtube.com/watch?v=vertex-ai-pipeline-url',
+      id: 'sovereign-ai-pipeline',
+      title: 'Sovereign AI Inference Engine Architecture',
+      description: 'Complete walkthrough of our containerized microservices architecture including data preprocessing, model training, deployment, and monitoring. Covers sovereign infrastructure, API design patterns, and production scaling.',
+      url: 'https://www.youtube.com/watch?v=sovereign-ai-pipeline-url',
       duration: '45:32',
       category: 'architecture',
       technicalLevel: 'advanced',
@@ -55,20 +55,20 @@ export default function EngineRoomVideoVault() {
           ]
         },
         {
-          category: 'GCP Infrastructure',
+          category: 'Infrastructure',
           items: [
-            { label: 'Vertex AI', value: 'Endpoints x3' },
-            { label: 'Cloud Storage', value: 'TB-scale data' },
-            { label: 'Pub/Sub', value: 'Event-driven' }
+            { label: 'Inference Engine', value: 'Endpoints x3' },
+            { label: 'Edge Storage', value: 'TB-scale data' },
+            { label: 'Message Queue', value: 'Event-driven' }
           ]
         }
       ]
     },
     {
-      id: 'docker-cloud-run',
-      title: 'Dockerized Cloud Run API Deployment',
-      description: 'Step-by-step guide to containerizing WellTegra APIs with Docker, deploying to Google Cloud Run, and setting up auto-scaling and load balancing for production workloads.',
-      url: 'https://www.youtube.com/watch?v=docker-cloud-run-url',
+      id: 'containerized-microservices',
+      title: 'Containerized Microservices Deployment',
+      description: 'Step-by-step guide to containerizing WellTegra APIs with Docker, deploying to sovereign infrastructure, and setting up auto-scaling and load balancing for production workloads.',
+      url: 'https://www.youtube.com/watch?v=containerized-microservices-url',
       duration: '38:15',
       category: 'deployment',
       technicalLevel: 'intermediate',
@@ -84,7 +84,7 @@ export default function EngineRoomVideoVault() {
           ]
         },
         {
-          category: 'Cloud Run Setup',
+          category: 'Deployment Setup',
           items: [
             { label: 'Instances', value: '3-100 auto-scale' },
             { label: 'Memory', value: '1Gi per instance' },
@@ -295,7 +295,7 @@ export default function EngineRoomVideoVault() {
                     Technical Video Vault
                   </h3>
                   <p className="text-sm text-slate-400">
-                    Deep-dive walkthroughs of Vertex AI pipelines, Docker deployments, and Python architecture
+                    Deep-dive walkthroughs of sovereign AI pipelines, containerized deployments, and Python architecture
                   </p>
                 </div>
               </div>
@@ -404,7 +404,7 @@ export default function EngineRoomVideoVault() {
                           <div className="font-semibold text-white group-hover:text-teal-400 transition-colors">
                             Research Papers
                           </div>
-                          <div className="text-xs text-slate-500">arXiv publications</div>
+                          <div className="text-xs text-slate-500">Peer-reviewed publications</div>
                         </div>
                       </div>
                       <p className="text-sm text-slate-400">
@@ -447,7 +447,7 @@ export default function EngineRoomVideoVault() {
                     Core Technology Stack
                   </h3>
                   <p className="text-sm text-slate-400">
-                    Python, FastAPI, Vertex AI, Docker, Kubernetes
+                    Python, FastAPI, Sovereign AI, Docker, Kubernetes
                   </p>
                 </div>
               </div>

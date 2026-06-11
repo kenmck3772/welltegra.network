@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 // Timeline Milestone Data Structure
 interface Milestone {
@@ -108,7 +108,7 @@ export default function PedigreeTimeline() {
     {
       year: '2015',
       title: 'Cloud ML Pivot',
-      description: 'GCP Machine Learning Specialist - Enterprise AI transformation',
+      description: 'Cloud ML Specialist - Enterprise AI transformation',
       icon: '☁️',
       accentColor: 'orange',
       details: [
@@ -300,7 +300,7 @@ export default function PedigreeTimeline() {
       </div>
 
       {/* Scrollbar Hide Utility */}
-      <style jsx>{`
+      <style>{`
         .scrollbar-hide {
           -ms-overflow-style: none;
           scrollbar-width: none;

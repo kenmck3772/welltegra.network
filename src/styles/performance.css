@@ -1,0 +1,322 @@
+/*
+ * Performance Optimization CSS
+ * Hardware-accelerated animations and optimized rendering
+ */
+
+/* ===== HARDWARE ACCELERATION ===== */
+
+/* Force hardware acceleration for animated elements */
+.gpu-accelerated {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimized animations with GPU acceleration */
+@keyframes fadeInOptimized {
+  from {
+    opacity: 0;
+    transform: translateZ(0) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(0) translateY(0);
+  }
+}
+
+@keyframes slideInOptimized {
+  from {
+    transform: translateZ(0) translateX(-8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateZ(0) translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulseOptimized {
+  0%, 100% {
+    transform: translateZ(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateZ(0) scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(20,184,166,0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(20,184,166,0.4);
+  }
+}
+
+/* Apply optimized animations */
+.animate-fade-in-optimized {
+  animation: fadeInOptimized 0.4s ease-out forwards;
+}
+
+.animate-slide-in-optimized {
+  animation: slideInOptimized 0.3s ease-out forwards;
+}
+
+.animate-pulse-optimized {
+  animation: pulseOptimized 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-glow {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* ===== REDUCED MOTION SUPPORT ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .gpu-accelerated {
+    will-change: auto;
+  }
+}
+
+/* ===== CONTENT VISIBILITY ===== */
+
+/* Optimize rendering of off-screen elements */
+.optimized-list {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+.optimized-grid {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 400px;
+}
+
+/* ===== CONTAINMENT ===== */
+
+/* CSS containment for performance isolation */
+.contain-layout {
+  contain: layout;
+}
+
+.contain-paint {
+  contain: paint;
+}
+
+.contain-size {
+  contain: size;
+}
+
+.contain-style {
+  contain: style;
+}
+
+.contain-all {
+  contain: layout paint size style;
+}
+
+/* ===== OPTIMIZED TRANSITIONS ===== */
+
+.fast-transition {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bounded-transition {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== PERFORMANCE MONITORING ===== */
+
+/* Visual performance indicators (for development) */
+.performance-meter::before {
+  content: '⚡';
+  font-size: 10px;
+  margin-right: 4px;
+}
+
+/* ===== IMAGE OPTIMIZATION ===== */
+
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+.optimized-image {
+  loading: lazy;
+  decoding: async;
+}
+
+/* ===== FONT OPTIMIZATION ===== */
+
+@font-face {
+  font-family: 'Industrial Display';
+  font-display: swap;
+  src: local('Space Grotesk');
+}
+
+@font-face {
+  font-family: 'Industrial Mono';
+  font-display: swap;
+  src: local('SF Mono'), local('Fira Code');
+}
+
+/* ===== SCROLL OPTIMIZATION ===== */
+
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.optimized-scroll {
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(30, 41, 59, 0.5) transparent;
+}
+
+.optimized-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.optimized-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.optimized-scroll::-webkit-scrollbar-thumb {
+  background: rgba(30, 41, 59, 0.5);
+  border-radius: 3px;
+}
+
+.optimized-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(30, 41, 59, 0.8);
+}
+
+/* ===== LAYOUT STABILITY ===== */
+
+.stable-layout {
+  position: relative;
+  min-height: 0;
+}
+
+.shift-prevention {
+  transform: translateZ(0);
+}
+
+/* ===== CRITICAL CSS HINTS ===== */
+
+.render-blocking {
+  display: contents;
+}
+
+.non-critical {
+  contain: strict;
+}
+
+/* ===== ANIMATION PERFORMANCE ===== */
+
+.batched-updates {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.composited-layer {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* ===== TEXT RENDERING ===== */
+
+.optimized-text {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-loading {
+  .font-loading-fallback {
+    visibility: hidden;
+  }
+
+  .font-loaded {
+    visibility: visible;
+  }
+}
+
+/* ===== INTERACTION OPTIMIZATION ===== */
+
+.interactive-element {
+  touch-action: manipulation;
+  -ms-touch-action: manipulation;
+  pointer-events: auto;
+}
+
+.passive-element {
+  pointer-events: none;
+}
+
+/* ===== MEMORY OPTIMIZATION ===== */
+
+.will-change-cache {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Clear will-change after animation */
+@keyframes optimizedFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+    will-change: opacity, transform;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    will-change: auto;
+  }
+}
+
+/* ===== RESPONSIVE PERFORMANCE ===== */
+
+@media (max-width: 768px) {
+  .mobile-optimized {
+    content-visibility: auto;
+  }
+
+  .reduce-animation-mobile {
+    animation-duration: 0.2s;
+    transition-duration: 0.2s;
+  }
+}
+
+/* ===== PRINT OPTIMIZATION ===== */
+
+@media print {
+  .no-print {
+    display: none;
+  }
+
+  .print-optimized {
+    color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

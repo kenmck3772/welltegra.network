@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 // Main Equipment Catalog Component
 export default function EquipmentCatalog() {

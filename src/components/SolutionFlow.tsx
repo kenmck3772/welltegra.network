@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 // Step Data Structure
 interface ProcessStep {
@@ -40,10 +40,25 @@ function ProcessStep({ step, isActive, isCompleted }: {
 
       {/* Step Card */}
       <div className={`
-        relative z-10 p-6 rounded-xl border-2 transition-all duration-300
+        relative z-10 p-6 rounded-xl border-2 transition-all duration-300 overflow-hidden
         ${isActive ? `${accentColors[step.accentColor]} ${bgColors[step.accentColor]} scale-105 shadow-lg` : 'border-slate-700 bg-slate-900/60 opacity-60 hover:opacity-100'}
         ${isCompleted ? 'border-green-500/50 bg-green-500/5' : ''}
-      `}>
+      `}
+        style={{
+          boxShadow: isActive
+            ? `inset 0 1px 0 rgba(255,255,255,0.05), 0 6px 12px rgba(0,0,0,0.4), 0 0 20px ${step.accentColor === 'teal' ? 'rgba(20,184,166,0.2)' : step.accentColor === 'orange' ? 'rgba(249,115,22,0.2)' : step.accentColor === 'amber' ? 'rgba(245,158,11,0.2)' : 'rgba(59,130,246,0.2)'}`
+            : 'inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 6px rgba(0,0,0,0.3)'
+        }}
+      >
+        {/* Corner Accents */}
+        {isActive && (
+          <>
+            <div className={`absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 ${step.accentColor === 'teal' ? 'border-teal-500' : step.accentColor === 'orange' ? 'border-orange-500' : step.accentColor === 'amber' ? 'border-amber-500' : 'border-blue-500'} opacity-60`} />
+            <div className={`absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 ${step.accentColor === 'teal' ? 'border-teal-500' : step.accentColor === 'orange' ? 'border-orange-500' : step.accentColor === 'amber' ? 'border-amber-500' : 'border-blue-500'} opacity-60`} />
+            <div className={`absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 ${step.accentColor === 'teal' ? 'border-teal-500' : step.accentColor === 'orange' ? 'border-orange-500' : step.accentColor === 'amber' ? 'border-amber-500' : 'border-blue-500'} opacity-60`} />
+            <div className={`absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 ${step.accentColor === 'teal' ? 'border-teal-500' : step.accentColor === 'orange' ? 'border-orange-500' : step.accentColor === 'amber' ? 'border-amber-500' : 'border-blue-500'} opacity-60`} />
+          </>
+        )}
         {/* Status Indicator */}
         <div className="flex items-center justify-between mb-4">
           <div className={`
@@ -237,7 +252,7 @@ export default function SolutionFlow() {
       </div>
 
       {/* Animation Styles */}
-      <style jsx>{`
+      <style>{`
         @keyframes gridScroll {
           0% {
             transform: translateY(0);

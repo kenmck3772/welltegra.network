@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 // Stat Card Component (The "Line" - Simple Business Metrics)
 function StatCard({
